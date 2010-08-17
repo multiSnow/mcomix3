@@ -1,0 +1,72 @@
+- Comix README -
+
+=== About =====================================================================
+  
+  Comix is a user-friendly, customizable image viewer. It is specifically
+  designed to handle comic books, but also serves as a generic viewer. It
+  reads images in ZIP, RAR or tar archives as well as plain image files. It
+  is written in Python and uses GTK+ through the PyGTK bindings. 
+
+=== Installation ==============================================================
+
+  Run "python install.py install" as root to install Comix in /usr/local.
+  To uninstall, simply run "python install.py uninstall".
+  
+  If order to install Comix in another base directory, use the --dir option.
+  
+  Example:
+  
+      # python install.py --dir /usr install
+
+  If you have installed with --dir, do not forget to use the same option when
+  uninstalling.
+  
+  There is another option, --no-mime, that can be used to tell install.py that
+  it should not register new mime types for cbz, cbr and cbt archives, or
+  install the thumbnail creation script for these files that is used by some
+  file managers (such as Nautilus and Thunar).
+  
+  As an example of how to install Comix from the downloaded tar.gz file, run
+  as the root user (via su or sudo):
+  
+      # tar -xzf comix-x.y.tar.gz
+      # cd comix-x.y
+      # python install.py install
+  
+  If you don't want to install Comix in some system directory, you can just
+  execute the file src/comix.py in the unpacked Comix directory to run the
+  program. You could also create a symlink somewhere in your PATH pointing to
+  this file.
+  
+=== Dependencies ==============================================================
+  
+  Comix needs Python 2.4, PyGTK 2.12 and PIL (Python Imaging Library) 1.1.5 or
+  newer to function. 
+  
+  To use the library you need pysqlite (which is usually included in the
+  standard library for Python 2.5 and later).
+  
+  You also need either the "unrar" or the "rar" program installed if you wish
+  to read RAR (.cbr) archives.
+  
+=== Credits ===================================================================
+  
+  Thanks to everyone who have contributed translations, suggestions, bug 
+  reports, fixes and donations!
+  
+  Icons with a filename starting with "gimp" are taken from The GIMP, and
+  icons with a filename starting with "tango" are taken from the Tango Desktop
+  Project. Most other icons are made by Victor Castillejo, creator of the
+  GNOME-Colors icon theme.
+  
+=== Contact ===================================================================
+  
+  Pontus Ekberg <herrekberg@users.sourceforge.net>
+  http://comix.sourceforge.net
+  
+  Don't hesitate to contact me.
+
+===============================================================================
+  
+  Have a nice day.
+
