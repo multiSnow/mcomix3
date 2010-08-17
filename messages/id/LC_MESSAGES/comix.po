@@ -1,0 +1,1748 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2008 Pontus Ekberg
+# Andhika Padmawan <andhika.padmawan@gmail.com>, 2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Comix-4.0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-11-22 02:42+0100\n"
+"PO-Revision-Date: 2008-12-13 21:23+0700\n"
+"Last-Translator: Andhika Padmawan <andhika.padmawan@gmail.com>\n"
+"Language-Team: Indonesia <id@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Poedit-Language: Indonesian\n"
+"X-Poedit-Country: INDONESIA\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#
+# File: src/about.py, line: 18
+# File: src/about.py, line: 67
+#: src/about.py:19 src/about.py:68
+msgid "About"
+msgstr "Tentang"
+
+#
+# File: src/about.py, line: 55
+#: src/about.py:56
+msgid "Comix is an image viewer specifically designed to handle comic books."
+msgstr ""
+"Comix adalah penampil gambar yang didesain khusus untuk menangani buku komik."
+
+#
+# File: src/about.py, line: 57
+#: src/about.py:58
+msgid "It reads ZIP, RAR and tar archives, as well as plain image files."
+msgstr ""
+"Comix membaca arsip ZIP, RAR dan tar, begitu pula dengan berkas citra biasa."
+
+#
+# File: src/about.py, line: 59
+#: src/about.py:60
+msgid "Comix is licensed under the GNU General Public License."
+msgstr "Comix dilisensikan di bawah GNU General Public License."
+
+#
+# File: src/about.py, line: 75
+#: src/about.py:83
+msgid "Developer"
+msgstr "Pengembang"
+
+#
+# File: src/about.py, line: 77
+#: src/about.py:84 src/about.py:85
+msgid "Simplified Chinese translation"
+msgstr "Terjemahan bahasa China yang disederhanakan"
+
+#
+# File: src/about.py, line: 78
+#: src/about.py:86
+msgid "Spanish translation"
+msgstr "Terjemahan bahasa Spanyol"
+
+#
+# File: src/about.py, line: 79
+#: src/about.py:87
+msgid "Brazilian Portuguese translation"
+msgstr "Terjemahan bahasa Portugis Brasil"
+
+#
+# File: src/about.py, line: 81
+#: src/about.py:88
+msgid "German translation and Nautilus thumbnailer"
+msgstr "Terjemahan bahasa Jerman dan pembuat miniatur gambar Nautilus"
+
+#
+# File: src/about.py, line: 82
+#: src/about.py:89 src/about.py:90
+msgid "Italian translation"
+msgstr "Terjemahan bahasa Italia"
+
+#
+# File: src/about.py, line: 83
+#: src/about.py:91
+msgid "Dutch translation"
+msgstr "Terjemahan bahasa Belanda"
+
+#
+# File: src/about.py, line: 84
+#: src/about.py:92 src/about.py:93
+msgid "French translation"
+msgstr "Terjemahan bahasa Prancis"
+
+#
+# File: src/about.py, line: 85
+#: src/about.py:94 src/about.py:95
+msgid "Polish translation"
+msgstr "Terjemahan bahasa Polandia"
+
+#
+# File: src/about.py, line: 86
+#: src/about.py:96
+msgid "Greek translation"
+msgstr "Terjemahan bahasa Yunani"
+
+#
+# File: src/about.py, line: 87
+#: src/about.py:97
+msgid "Catalan translation"
+msgstr "Terjemahan bahasa Catalan"
+
+#
+# File: src/about.py, line: 88
+#: src/about.py:98 src/about.py:99
+msgid "Traditional Chinese translation"
+msgstr "Terjemahan bahasa China tradisional"
+
+#
+# File: src/about.py, line: 89
+#: src/about.py:100
+msgid "Japanese translation"
+msgstr "Terjemahan bahasa Jepang"
+
+#
+# File: src/about.py, line: 90
+#: src/about.py:101
+msgid "Hungarian translation"
+msgstr "Terjemahan bahasa Hungaria"
+
+#
+# File: src/about.py, line: 91
+#: src/about.py:102
+msgid "Russian translation"
+msgstr "Terjemahan bahasa Rusia"
+
+#
+# File: src/about.py, line: 92
+#: src/about.py:103
+msgid "Croatian translation"
+msgstr "Terjemahan bahasa Kroasia"
+
+#
+# File: src/about.py, line: 93
+#: src/about.py:104
+msgid "Korean translation"
+msgstr "Terjemahan bahasa Korea"
+
+#
+# File: src/about.py, line: 94
+#: src/about.py:105
+msgid "Persian translation"
+msgstr "Terjemahan bahasa Persia"
+
+#
+# File: src/about.py, line: 95
+#: src/about.py:106
+msgid "Indonesian translation"
+msgstr "Terjemahan bahasa Indonesia"
+
+#
+# File: src/about.py, line: 96
+#: src/about.py:107
+msgid "Czech translation"
+msgstr "Terjemahan bahasa Ceko"
+
+#: src/about.py:108
+msgid "Ukrainian translation"
+msgstr ""
+
+#
+# File: src/about.py, line: 97
+#: src/about.py:109
+msgid "Icon design"
+msgstr "Desain ikon"
+
+#
+# File: src/about.py, line: 106
+#: src/about.py:116
+msgid "Credits"
+msgstr "Kredit"
+
+#
+# File: src/archive.py, line: 66
+#: src/archive.py:66
+msgid "Could not find RAR file extractor!"
+msgstr "Tak dapat menemukan pengekstrak berkas RAR!"
+
+#
+# File: src/archive.py, line: 68
+#: src/archive.py:68
+msgid ""
+"You need either the <i>rar</i> or the <i>unrar</i> program installed in "
+"order to read RAR (.cbr) files."
+msgstr ""
+"Anda memerlukan program <i>rar</i> atau <i>unrar</i> yang terinstal untuk "
+"dapat membaca berkas RAR (.cbr)."
+
+#
+# File: src/archive.py, line: 301
+#: src/archive.py:306
+msgid "ZIP archive"
+msgstr "Arsip ZIP"
+
+#
+# File: src/archive.py, line: 302
+#: src/archive.py:307
+msgid "Tar archive"
+msgstr "Arsip Tar"
+
+#
+# File: src/archive.py, line: 303
+#: src/archive.py:308
+msgid "Gzip compressed tar archive"
+msgstr "Arsip tar terkompres Gzip"
+
+#
+# File: src/archive.py, line: 304
+#: src/archive.py:309
+msgid "Bzip2 compressed tar archive"
+msgstr "Arsip tar terkompres Bzip2"
+
+#
+# File: src/archive.py, line: 305
+#: src/archive.py:310
+msgid "RAR archive"
+msgstr "Arsip RAR"
+
+#
+# File: src/bookmark.py, line: 27
+#: src/bookmark.py:28
+msgid "_Add bookmark"
+msgstr "_Tambah bookmark"
+
+#
+# File: src/bookmark.py, line: 29
+#: src/bookmark.py:30
+msgid "_Edit bookmarks..."
+msgstr "_Sunting bookmark..."
+
+#
+# File: src/bookmark.py, line: 31
+#: src/bookmark.py:32
+msgid "_Clear bookmarks..."
+msgstr "_Hapus bookmark..."
+
+#
+# File: src/bookmark.py, line: 77
+#: src/bookmark.py:78
+msgid "Clear all bookmarks?"
+msgstr "Hapus semua bookmark?"
+
+#
+# File: src/bookmark.py, line: 79
+#: src/bookmark.py:80
+msgid ""
+"All stored bookmarks will be removed. Are you sure that you want to continue?"
+msgstr "Semua bookmark tersimpan akan dihapus. Anda yakin ingin melanjutkan?"
+
+#
+# File: src/bookmark.py, line: 229
+#: src/bookmark.py:230
+msgid "Edit bookmarks"
+msgstr "Sunting bookmark"
+
+#
+# File: src/bookmark.py, line: 255
+# File: src/edit.py, line: 267
+#: src/bookmark.py:256 src/edit.py:270
+msgid "Name"
+msgstr "Nama"
+
+#
+# File: src/bookmark.py, line: 256
+#: src/bookmark.py:257
+msgid "Page"
+msgstr "Halaman"
+
+#
+# File: src/comment.py, line: 16
+# File: src/preferences.py, line: 288
+#: src/comment.py:16 src/preferences.py:301
+msgid "Comments"
+msgstr "Komentar"
+
+#
+# File: src/comment.py, line: 53
+#: src/comment.py:53
+#, python-format
+msgid "Could not read %s"
+msgstr "Tak dapat membaca %s"
+
+#
+# File: src/deprecated.py, line: 16
+#: src/deprecated.py:16
+msgid "There are deprecated files left on your computer."
+msgstr "Ada berkas tertinggal di komputer anda."
+
+#
+# File: src/deprecated.py, line: 22
+#: src/deprecated.py:22
+msgid ""
+"Some old files (that were used for storing preferences, the library, "
+"bookmarks etc. for older versions of Comix) were found on your computer. If "
+"you do not plan on using the older versions of Comix again, you should "
+"remove these files in order to save some disk space. Do you want these files "
+"to be removed for you now?"
+msgstr ""
+"Beberapa berkas lama (yang digunakan untuk pengaturan penyimpanan, pustaka, "
+"bookmark, dll. untuk versi lama Comix) ditemukan di komputer anda. Jika anda "
+"tidak berencana untuk menggunakan versi lama Comix lagi, anda harus "
+"menghapus berkas ini agar menghemat ruang kosong di cakram. Anda ingin "
+"berkas ini dihapus sekarang?"
+
+#
+# File: src/edit.py, line: 28
+#: src/edit.py:29
+msgid "Edit archive"
+msgstr "Sunting arsip"
+
+#
+# File: src/edit.py, line: 36
+#: src/edit.py:37
+msgid "Import"
+msgstr "Impor"
+
+#
+# File: src/edit.py, line: 50
+#: src/edit.py:51
+msgid "Images"
+msgstr "Citra"
+
+#
+# File: src/edit.py, line: 51
+#: src/edit.py:52
+msgid "Other files"
+msgstr "Berkas lain"
+
+#
+# File: src/edit.py, line: 99
+#: src/edit.py:101
+msgid "The new archive could not be saved!"
+msgstr "Berkas baru tak dapat disimpan!"
+
+#
+# File: src/edit.py, line: 101
+#: src/edit.py:103
+msgid "The original files have not been removed."
+msgstr "Berkas asli belum dihapus."
+
+#
+# File: src/edit.py, line: 115
+#: src/edit.py:117
+msgid "Archives are stored as ZIP files."
+msgstr "Arsip disimpan sebagai berkas ZIP."
+
+#
+# File: src/edit.py, line: 168
+# File: src/edit.py, line: 285
+#: src/edit.py:170 src/edit.py:288
+msgid "Remove from archive"
+msgstr "Hapus dari arsip"
+
+#
+# File: src/edit.py, line: 255
+#: src/edit.py:258
+msgid ""
+"Please note that the only files that are automatically added to this list "
+"are those files in archives that Comix recognizes as comments."
+msgstr ""
+"Perlu dicatat bahwa satu-satunya berkas yang secara otomatis ditambah ke "
+"senarai ini adalah berkas di dalam arsip yang Comix kenali sebagai komentar."
+
+#
+# File: src/edit.py, line: 270
+#: src/edit.py:273
+msgid "Size"
+msgstr "Ukuran"
+
+#
+# File: src/enhance.py, line: 51
+#: src/enhance.py:51
+msgid "Enhance image"
+msgstr "Tingkatkan citra"
+
+#
+# File: src/enhance.py, line: 52
+#: src/enhance.py:52
+msgid "Defaults"
+msgstr "Standar"
+
+#
+# File: src/enhance.py, line: 79
+#: src/enhance.py:79
+msgid "Brightness"
+msgstr "Kecerahan"
+
+#
+# File: src/enhance.py, line: 90
+#: src/enhance.py:90
+msgid "Contrast"
+msgstr "Kontras"
+
+#
+# File: src/enhance.py, line: 101
+#: src/enhance.py:101
+msgid "Saturation"
+msgstr "Saturasi"
+
+#
+# File: src/enhance.py, line: 112
+#: src/enhance.py:112
+msgid "Sharpness"
+msgstr "Ketajaman"
+
+#
+# File: src/enhance.py, line: 126
+#: src/enhance.py:126
+msgid "Automatically adjust contrast."
+msgstr "Otomatis menyesuaikan kontras."
+
+#
+# File: src/enhance.py, line: 128
+#: src/enhance.py:128
+msgid ""
+"Automatically adjust contrast (both lightness and darkness), separately for "
+"each colour band."
+msgstr ""
+"Otomatis menyesuaikan kontras (baik kecerahan dan kegelapan), terpisah untuk "
+"tiap pita warna."
+
+#
+# File: src/filechooser.py, line: 35
+# File: src/library.py, line: 489
+#: src/filechooser.py:38 src/library.py:490
+msgid "Open"
+msgstr "Buka"
+
+#
+# File: src/filechooser.py, line: 39
+#: src/filechooser.py:42
+msgid "Save"
+msgstr "Simpan"
+
+#
+# File: src/filechooser.py, line: 75
+#: src/filechooser.py:78
+msgid "All files"
+msgstr "Semua berkas"
+
+#
+# File: src/filechooser.py, line: 78
+#: src/filechooser.py:81
+msgid "All Archives"
+msgstr "Semua Arsip"
+
+#
+# File: src/filechooser.py, line: 82
+#: src/filechooser.py:85
+msgid "ZIP archives"
+msgstr "Arsip ZIP"
+
+#
+# File: src/filechooser.py, line: 84
+#: src/filechooser.py:87
+msgid "RAR archives"
+msgstr "Arsip RAR"
+
+#
+# File: src/filechooser.py, line: 86
+#: src/filechooser.py:89
+msgid "Tar archives"
+msgstr "Arsip Tar"
+
+#
+# File: src/filechooser.py, line: 125
+#: src/filechooser.py:139
+#, python-format
+msgid "A file named '%s' already exists. Do you want to replace it?"
+msgstr "Berkas bernama '%s' telah ada. Anda ingin menggantinya?"
+
+#
+# File: src/filechooser.py, line: 128
+#: src/filechooser.py:142
+msgid "Replacing it will overwrite its contents."
+msgstr "Mengganti berkas akan menimpa isinya."
+
+#
+# File: src/filechooser.py, line: 171
+# File: src/filechooser.py, line: 249
+#: src/filechooser.py:187 src/filechooser.py:304
+msgid "All images"
+msgstr "Semua gambar"
+
+#
+# File: src/filechooser.py, line: 173
+# File: src/filechooser.py, line: 251
+#: src/filechooser.py:189 src/filechooser.py:306
+msgid "JPEG images"
+msgstr "Citra JPEG"
+
+#
+# File: src/filechooser.py, line: 174
+# File: src/filechooser.py, line: 252
+#: src/filechooser.py:190 src/filechooser.py:307
+msgid "PNG images"
+msgstr "Citra PNG"
+
+#
+# File: src/filechooser.py, line: 195
+#: src/filechooser.py:231
+msgid "Automatically add the books to this collection"
+msgstr "Otomatis menambah buku ke koleksi ini"
+
+#
+# File: src/filehandler.py, line: 209
+#: src/filehandler.py:209
+#, python-format
+msgid "Could not open %s: Is a directory."
+msgstr "Tak dapat membuka %s: Sebuah direktori."
+
+#
+# File: src/filehandler.py, line: 213
+#: src/filehandler.py:213
+#, python-format
+msgid "Could not open %s: No such file."
+msgstr "Tak dapat membuka %s: Tak ada berkas."
+
+#
+# File: src/filehandler.py, line: 217
+#: src/filehandler.py:217
+#, python-format
+msgid "Could not open %s: Permission denied."
+msgstr "Tak dapat membuka %s: Hak akses ditolak."
+
+#
+# File: src/filehandler.py, line: 222
+#: src/filehandler.py:222
+#, python-format
+msgid "Could not open %s: Unknown file type."
+msgstr "Tak dapat membuka %s: Tipe berkas tak diketahui."
+
+#
+# File: src/filehandler.py, line: 285
+#: src/filehandler.py:285
+#, python-format
+msgid "No images in '%s'"
+msgstr "Tak ada citra di '%s'"
+
+#
+# File: src/filehandler.py, line: 411
+#: src/filehandler.py:413
+msgid "Unknown filetype"
+msgstr "Tipe berkas tak diketahui"
+
+#
+# File: src/librarybackend.py, line: 272
+# File: src/librarybackend.py, line: 274
+#: src/librarybackend.py:271 src/librarybackend.py:273
+msgid "(Copy)"
+msgstr "(Salin)"
+
+#
+# File: src/library.py, line: 38
+#: src/library.py:38
+msgid "Library"
+msgstr "Perpustakan"
+
+#
+# File: src/library.py, line: 150
+#: src/library.py:150
+msgid "Rename..."
+msgstr "Ganti Nama..."
+
+#
+# File: src/library.py, line: 152
+#: src/library.py:152
+msgid "Duplicate collection"
+msgstr "Duplikasi koleksi"
+
+#
+# File: src/library.py, line: 154
+#: src/library.py:154
+msgid "Remove collection..."
+msgstr "Hapus koleksi..."
+
+#
+# File: src/library.py, line: 202
+#: src/library.py:202
+msgid "All books"
+msgstr "Semua buku"
+
+#
+# File: src/library.py, line: 231
+#: src/library.py:231
+msgid "Remove collection from the library?"
+msgstr "Hapus koleksi dari pustaka?"
+
+#
+# File: src/library.py, line: 233
+#: src/library.py:233
+msgid ""
+"The selected collection will be removed from the library (but the books and "
+"subcollections in it will remain). Are you sure that you want to continue?"
+msgstr ""
+"Koleksi terpilih akan dihapus dari pustaka (tapi buku dan subkoleksi di "
+"dalamnya akan tetap terjaga). Apakah anda yakin ingin melanjutkan?"
+
+#
+# File: src/library.py, line: 251
+#: src/library.py:251
+msgid "Rename collection?"
+msgstr "Ganti nama koleksi?"
+
+#
+# File: src/library.py, line: 253
+#: src/library.py:253
+msgid "Please enter a new name for the selected collection."
+msgstr "Silakan masukkan nama baru untuk koleksi terpilih."
+
+#
+# File: src/library.py, line: 271
+#: src/library.py:271
+#, python-format
+msgid "Could not change the name to '%s'."
+msgstr "Tak dapat mengubah nama ke '%s'."
+
+#
+# File: src/library.py, line: 275
+# File: src/library.py, line: 881
+#: src/library.py:275 src/library.py:882
+msgid "A collection by that name already exists."
+msgstr "Koleksi dengan nama tersebut telah ada."
+
+#
+# File: src/library.py, line: 285
+#: src/library.py:285
+msgid "Could not duplicate collection."
+msgstr "Tak dapat menduplikasi koleksi."
+
+#
+# File: src/library.py, line: 382
+#: src/library.py:382
+msgid "Root"
+msgstr "Root"
+
+#
+# File: src/library.py, line: 386
+#: src/library.py:386
+#, python-format
+msgid ""
+"Put the collection '%(subcollection)s' in the collection '%(supercollection)"
+"s'."
+msgstr "Taruh koleksi '%(subcollection)s' di koleksi '%(supercollection)s'."
+
+#
+# File: src/library.py, line: 407
+#: src/library.py:407
+#, python-format
+msgid "Add books to '%s'."
+msgstr "Tambah buku ke '%s'."
+
+#
+# File: src/library.py, line: 411
+#: src/library.py:411
+#, python-format
+msgid ""
+"Move books from '%(source collection)s' to '%(destination collection)s'."
+msgstr ""
+"Pindah buku dari '%(source collection)s' ke '%(destination collection)s'."
+
+#
+# File: src/library.py, line: 492
+#: src/library.py:493
+msgid "Remove from this collection"
+msgstr "Hapus dari koleksi ini"
+
+#
+# File: src/library.py, line: 495
+#: src/library.py:496
+msgid "Remove from the library..."
+msgstr "Hapus dari pustaka..."
+
+#
+# File: src/library.py, line: 588
+#: src/library.py:589
+#, python-format
+msgid "Removed %(num)d book(s) from '%(collection)s'."
+msgstr "Hapus %(num)d buku dari '%(collection)s'."
+
+#
+# File: src/library.py, line: 597
+#: src/library.py:598
+msgid "Remove books from the library?"
+msgstr "Hapus buku dari pustaka?"
+
+#
+# File: src/library.py, line: 599
+#: src/library.py:600
+msgid ""
+"The selected books will be removed from the library (but the original files "
+"will be untouched). Are you sure that you want to continue?"
+msgstr ""
+"Buku terpilih akan dihapus dari pustaka (tapi berkas aslinya akan tetap tak "
+"tersentuh). Anda yakin ingin melanjutkan?"
+
+#
+# File: src/library.py, line: 609
+#: src/library.py:610
+#, python-format
+msgid "Removed %d book(s) from the library."
+msgstr "Hapus %d buku dari pustaka."
+
+#
+# File: src/library.py, line: 769
+#: src/library.py:770
+msgid "Search"
+msgstr "Cari"
+
+#
+# File: src/library.py, line: 774
+#: src/library.py:775
+msgid ""
+"Display only those books that have the specified text string in their full "
+"path. The search is not case sensitive."
+msgstr ""
+"Hanya tampilkan buku yang mempunyai benang teks di alamat penuh mereka. "
+"Pencarian tidak sensitif huruf."
+
+#
+# File: src/library.py, line: 776
+#: src/library.py:777
+msgid "Cover size"
+msgstr "Ukuran sampul"
+
+#
+# File: src/library.py, line: 789
+#: src/library.py:790
+msgid "Add books"
+msgstr "Tambah buku"
+
+#
+# File: src/library.py, line: 793
+#: src/library.py:794
+msgid "Add more books to the library."
+msgstr "Tambah lebih banyak buku ke pustaka."
+
+#
+# File: src/library.py, line: 795
+#: src/library.py:796
+msgid "Add collection"
+msgstr "Tambah koleksi"
+
+#
+# File: src/library.py, line: 800
+#: src/library.py:801
+msgid "Add a new empty collection."
+msgstr "Tambah koleksi kosong baru."
+
+#
+# File: src/library.py, line: 806
+#: src/library.py:807
+msgid "Open the selected book."
+msgstr "Buka buku terpilih."
+
+#
+# File: src/library.py, line: 832
+# File: src/properties.py, line: 113
+#: src/library.py:833 src/properties.py:118
+#, python-format
+msgid "%d pages"
+msgstr "%d halaman"
+
+#
+# File: src/library.py, line: 854
+#: src/library.py:855
+msgid "Add new collection?"
+msgstr "Tambah koleksi baru?"
+
+#
+# File: src/library.py, line: 856
+#: src/library.py:857
+msgid "Please enter a name for the new collection."
+msgstr "Silakan masukkan nama untuk koleksi baru."
+
+#
+# File: src/library.py, line: 862
+#: src/library.py:863
+msgid "New collection"
+msgstr "Koleksi baru"
+
+#
+# File: src/library.py, line: 876
+#: src/library.py:877
+#, python-format
+msgid "Could not add a new collection called '%s'."
+msgstr "Tak dapat menambah koleksi baru bernama '%s'."
+
+#
+# File: src/library.py, line: 910
+#: src/library.py:911
+msgid "Adding books"
+msgstr "Menambah buku"
+
+#
+# File: src/library.py, line: 930
+#: src/library.py:931
+msgid "Added books"
+msgstr "Buku yang ditambah"
+
+#
+# File: src/library.py, line: 952
+#: src/library.py:953
+#, python-format
+msgid "Adding '%s'..."
+msgstr "Menambah '%s'..."
+
+#
+# File: src/main.py, line: 666
+#: src/main.py:704
+msgid "SLIDESHOW"
+msgstr "SALINDIA"
+
+#
+# File: src/preferences.py, line: 78
+#: src/preferences.py:82
+msgid "Preferences"
+msgstr "Pengaturan"
+
+#
+# File: src/preferences.py, line: 93
+#: src/preferences.py:97
+msgid "Background"
+msgstr "Latar Belakang"
+
+#
+# File: src/preferences.py, line: 95
+#: src/preferences.py:99
+msgid "Use this colour as background"
+msgstr "Gunakan warna ini sebagai latar belakang"
+
+#
+# File: src/preferences.py, line: 97
+#: src/preferences.py:101
+msgid "Always use this selected colour as the background colour."
+msgstr "Selalu gunakan warna terpilih ini sebagai warna latar belakang."
+
+#
+# File: src/preferences.py, line: 102
+#: src/preferences.py:106
+msgid "Use dynamic background colour."
+msgstr "Gunakan warna latar belakang dinamis."
+
+#
+# File: src/preferences.py, line: 106
+#: src/preferences.py:110
+msgid "Automatically pick a background colour that fits the viewed image."
+msgstr ""
+"Secara otomatis mengambil warna latar belakang yang cocok dengan citra yang "
+"ditampilkan."
+
+#
+# File: src/preferences.py, line: 109
+#: src/preferences.py:113
+msgid "Thumbnails"
+msgstr "Miniatur gambar"
+
+#
+# File: src/preferences.py, line: 110
+#: src/preferences.py:114
+msgid "Thumbnail size (in pixels)"
+msgstr "Ukuran miniatur (dalam piksel)"
+
+#
+# File: src/preferences.py, line: 117
+#: src/preferences.py:121
+msgid "Show page numbers on thumbnails."
+msgstr "Tampilkan nomor halaman di miniatur."
+
+#
+# File: src/preferences.py, line: 124
+#: src/preferences.py:128
+msgid "Magnifying Glass"
+msgstr "Lensa Pembesar"
+
+#
+# File: src/preferences.py, line: 125
+#: src/preferences.py:129
+msgid "Magnifying glass size (in pixels)"
+msgstr "Ukuran lensa pembesar (dalam piksel)"
+
+#
+# File: src/preferences.py, line: 131
+#: src/preferences.py:135
+msgid ""
+"Set the size of the magnifying glass. It is a square with a side of this "
+"many pixels."
+msgstr ""
+"Atur ukuran lensa pembesar. Berupa kotak dengan sisi dari sebanyak ini "
+"piksel."
+
+#
+# File: src/preferences.py, line: 133
+#: src/preferences.py:137
+msgid "Magnification factor"
+msgstr "Faktor pembesaran"
+
+#
+# File: src/preferences.py, line: 140
+#: src/preferences.py:144
+msgid "Set the magnification factor of the magnifying glass."
+msgstr "Atur faktor pembesaran dari lensa pembesar."
+
+#
+# File: src/preferences.py, line: 143
+#: src/preferences.py:147
+msgid "Image scaling"
+msgstr "Skala citra"
+
+#
+# File: src/preferences.py, line: 144
+#: src/preferences.py:148
+msgid "Stretch small images."
+msgstr "Rentangkan citra kecil."
+
+#
+# File: src/preferences.py, line: 148
+#: src/preferences.py:152
+msgid ""
+"Stretch images to a size that is larger than their original size if the "
+"current zoom mode requests it. If this preference is unset, images are never "
+"scaled to be larger than their original size."
+msgstr ""
+"Rentangkan citra ke ukuran yang lebih besar dari ukuran asli jika mode "
+"pembesaran saat ini memintanya. Jika pengaturan ini tak diatur, citra tidak "
+"pernah diubah menjadi lebih besar dari ukuran aslinya."
+
+#
+# File: src/preferences.py, line: 151
+#: src/preferences.py:155
+msgid "Transparency"
+msgstr "Transparansi"
+
+#
+# File: src/preferences.py, line: 153
+#: src/preferences.py:157
+msgid "Use checkered background for transparent images."
+msgstr "Gunakan latar belakang yang telah diperiksa untuk citra transparan."
+
+#
+# File: src/preferences.py, line: 159
+#: src/preferences.py:163
+msgid ""
+"Use a grey checkered background for transparent images. If this preference "
+"is unset, the background is plain white instead."
+msgstr ""
+"Gunakan warna latar belakang yang telah diperiksa untuk citra transparan. "
+"Jika pengaturan ini tidak diatur, latar belakang menjadi putih polos."
+
+#
+# File: src/preferences.py, line: 161
+#: src/preferences.py:165
+msgid "Appearance"
+msgstr "Penampilan"
+
+#
+# File: src/preferences.py, line: 167
+#: src/preferences.py:171
+msgid "Scroll"
+msgstr "Gulung"
+
+#
+# File: src/preferences.py, line: 169
+#: src/preferences.py:173
+msgid "Use smart space key scrolling."
+msgstr "Gunakan penggulung tombol spasi cerdas."
+
+#
+# File: src/preferences.py, line: 174
+#: src/preferences.py:178
+msgid ""
+"Use smart scrolling with the space key. Normally the space key scrolls only "
+"right down (or up when shift is pressed), but with this preference set it "
+"also scrolls sideways and so tries to follow the natural reading order of "
+"the comic book."
+msgstr ""
+"Gunakan penggulung cerdas dengan tombol spasi. Normalnya tombol gulung spasi "
+"hanya bergerak dari kanan ke bawah (atau atas jika shift ditekan), tapi "
+"dengan pengaturan ini diatur tombol akan menggulung ke samping dan mencoba "
+"untuk mengikuti urutan membaca natural buku komik."
+
+#: src/preferences.py:182
+msgid "Flip pages when scrolling off the edges of the page."
+msgstr "Lipat halaman ketika menggulung tepi halaman."
+
+#: src/preferences.py:187
+msgid ""
+"Flip pages when scrolling \"off the page\" with the scroll wheel or with the "
+"arrow keys. It takes three consecutive \"steps\" with the scroll wheel or "
+"the arrow keys for the pages to be flipped."
+msgstr ""
+"Lipat halaman ketika menggulung \"tepi halaman\" dengan roda gulung atau "
+"tombol panah. Membutuhkan tiga \"langkah\" berurutan dengan menggunakan roda "
+"gulung atau tombol panah agar halaman terlipat."
+
+#
+# File: src/preferences.py, line: 177
+# File: src/ui.py, line: 296
+#: src/preferences.py:190 src/ui.py:298
+msgid "Double page mode"
+msgstr "Mode halaman ganda"
+
+#
+# File: src/preferences.py, line: 179
+#: src/preferences.py:192
+msgid "Flip two pages in double page mode."
+msgstr "Lipat dua halaman dalam mode halaman ganda."
+
+#
+# File: src/preferences.py, line: 184
+#: src/preferences.py:197
+msgid ""
+"Flip two pages, instead of one, each time we flip pages in double page mode."
+msgstr ""
+"Lipat dua halaman, ketimbang satu, tiap kali kami menggulung dalam mode "
+"halaman ganda."
+
+#
+# File: src/preferences.py, line: 187
+#: src/preferences.py:200
+msgid "Show only one wide image in double page mode."
+msgstr "Hanya tampilkan satu citra lebar dalam mode halaman ganda."
+
+#
+# File: src/preferences.py, line: 193
+#: src/preferences.py:206
+msgid ""
+"Display only one image in double page mode, if the image's width exceeds its "
+"height. The result of this is that scans that span two pages are displayed "
+"properly (i.e. alone) also in double page mode."
+msgstr ""
+"Hanya tampilkan satu citra dalam mode halaman ganda, jika lebar citra "
+"melebihi tingginya. Hasil dari ini adalah pemindaian yang merentangkan dua "
+"halaman akan ditampilkan secara benar (misalnya sendiri) juga dalam mode "
+"halaman ganda."
+
+#
+# File: src/preferences.py, line: 196
+#: src/preferences.py:209
+msgid "Files"
+msgstr "Berkas"
+
+#
+# File: src/preferences.py, line: 198
+#: src/preferences.py:211
+msgid "Automatically open the next archive."
+msgstr "Otomatis membuka arsip berikutnya."
+
+#
+# File: src/preferences.py, line: 203
+#: src/preferences.py:216
+msgid ""
+"Automatically open the next archive in the directory when flipping past the "
+"last page, or the previous archive when flipping past the first page."
+msgstr ""
+"Otomatis membuka arsip berikutnya di direktori ketika melipat halaman "
+"terakhir, atau arsip sebelumnya ketika melipat halaman pertama."
+
+#
+# File: src/preferences.py, line: 206
+#: src/preferences.py:219
+msgid "Automatically open the last viewed file on startup."
+msgstr "Otomatis membuka berkas yang terakhir ditampilkan pada hidupkan."
+
+#
+# File: src/preferences.py, line: 211
+#: src/preferences.py:224
+msgid ""
+"Automatically open, on startup, the file that was open when Comix was last "
+"closed."
+msgstr ""
+"Otomatis membuka, pada hidupkan, berkas yang terbuka ketika Comix terakhir "
+"kali ditutup."
+
+#
+# File: src/preferences.py, line: 214
+#: src/preferences.py:227
+msgid "Store information about recently opened files."
+msgstr "Simpan informasi tentang berkas yang baru-baru ini terbuka."
+
+#
+# File: src/preferences.py, line: 219
+#: src/preferences.py:232
+msgid ""
+"Add information about all files opened from within Comix to the shared "
+"recent files list."
+msgstr ""
+"Tambah informasi tentang semua berkas yang dibuka dari dalam Comix ke "
+"senarai berkas terkini yang dikongsi."
+
+#
+# File: src/preferences.py, line: 222
+#: src/preferences.py:235
+msgid "Store thumbnails for opened files."
+msgstr "Simpan miniatur untuk berkas yang dibuka."
+
+#
+# File: src/preferences.py, line: 227
+#: src/preferences.py:240
+msgid ""
+"Store thumbnails for opened files according to the freedesktop.org "
+"specification. These thumbnails are shared by many other applications, such "
+"as most file managers."
+msgstr ""
+"Simpan miniatur untuk berkas yang dibuka menurut spesifikasi freedesktop."
+"org. Miniatur ini dikongsikan oleh banyak aplikasi lain, seperti kebanyakan "
+"manajer berkas."
+
+#
+# File: src/preferences.py, line: 230
+#: src/preferences.py:243
+msgid "Cache"
+msgstr "Tembolok"
+
+#
+# File: src/preferences.py, line: 231
+#: src/preferences.py:244
+msgid "Use a cache to speed up browsing."
+msgstr "Gunakan tembolok untuk meningkatkan kecepatan meramban."
+
+#
+# File: src/preferences.py, line: 235
+#: src/preferences.py:248
+msgid ""
+"Cache the images that are next to the currently viewed image in order to "
+"speed up browsing. Since the speed improvements are quite big, it is "
+"recommended that you have this preference set, unless you are running short "
+"on free RAM."
+msgstr ""
+"Tembolok citra yang ada di samping ke citra yang saat ini ditampilkan supaya "
+"meningkatkan kecepatan meramban. Karena peningkatan kecepatan cukup besar, "
+"disarankan agar anda mengatur pengaturan ini, kecuali anda kekurangan RAM "
+"bebas."
+
+#
+# File: src/preferences.py, line: 237
+#: src/preferences.py:250
+msgid "Behaviour"
+msgstr "Perilaku"
+
+#
+# File: src/preferences.py, line: 243
+#: src/preferences.py:256
+msgid "Default modes"
+msgstr "Mode standar"
+
+#
+# File: src/preferences.py, line: 245
+#: src/preferences.py:258
+msgid "Use double page mode by default."
+msgstr "Gunakan mode halaman gandar sebagai standar."
+
+#
+# File: src/preferences.py, line: 250
+#: src/preferences.py:263
+msgid "Use fullscreen by default."
+msgstr "Gunakan layar penuh sebagai standar."
+
+#
+# File: src/preferences.py, line: 255
+#: src/preferences.py:268
+msgid "Use manga mode by default."
+msgstr "Gunakan mode manga sebagai standar."
+
+#
+# File: src/preferences.py, line: 260
+#: src/preferences.py:273
+msgid "Default zoom mode"
+msgstr "Mode pembesaran standar"
+
+#
+# File: src/preferences.py, line: 262
+# File: src/ui.py, line: 288
+#: src/preferences.py:275 src/ui.py:290
+msgid "Best fit mode"
+msgstr "Mode ukuran terbaik"
+
+#
+# File: src/preferences.py, line: 263
+# File: src/ui.py, line: 290
+#: src/preferences.py:276 src/ui.py:292
+msgid "Fit width mode"
+msgstr "Mode sesuai lebar"
+
+#
+# File: src/preferences.py, line: 264
+# File: src/ui.py, line: 292
+#: src/preferences.py:277 src/ui.py:294
+msgid "Fit height mode"
+msgstr "Mode sesuai tinggi"
+
+#
+# File: src/preferences.py, line: 265
+# File: src/ui.py, line: 294
+#: src/preferences.py:278 src/ui.py:296
+msgid "Manual zoom mode"
+msgstr "Mode pembesaran manual"
+
+#
+# File: src/preferences.py, line: 271
+#: src/preferences.py:284
+msgid "Fullscreen"
+msgstr "Layar Penuh"
+
+#
+# File: src/preferences.py, line: 273
+#: src/preferences.py:286
+msgid "Automatically hide all toolbars in fullscreen."
+msgstr "Otomatis menyembunyikan semua batang alat di layar penuh."
+
+#
+# File: src/preferences.py, line: 279
+#: src/preferences.py:292
+msgid "Slideshow"
+msgstr "Presentasi"
+
+#
+# File: src/preferences.py, line: 280
+#: src/preferences.py:293
+msgid "Slideshow delay (in seconds)"
+msgstr "Jeda salindia (dalam detik)"
+
+#
+# File: src/preferences.py, line: 289
+#: src/preferences.py:302
+msgid "Comment extensions"
+msgstr "Ekstensi komentar"
+
+#
+# File: src/preferences.py, line: 295
+#: src/preferences.py:308
+msgid ""
+"Treat all files found within archives, that have one of these file endings, "
+"as comments."
+msgstr ""
+"Perlakukan semua berkas yang ditemukan dalam arsip, yang mempunyai salah "
+"satu akhiran berkas ini, sebagai komentarl."
+
+#: src/preferences.py:311
+msgid "Rotation"
+msgstr ""
+
+#: src/preferences.py:313
+msgid "Automatically rotate images according to their metadata."
+msgstr ""
+
+#: src/preferences.py:318
+msgid ""
+"Automatically rotate images when an orientation is specified in the image "
+"metadata, such as in an Exif tag."
+msgstr ""
+
+#
+# File: src/preferences.py, line: 297
+#: src/preferences.py:320
+msgid "Display"
+msgstr "Tampilan"
+
+#
+# File: src/properties.py, line: 89
+#: src/properties.py:94
+msgid "Properties"
+msgstr "Properti"
+
+#
+# File: src/properties.py, line: 114
+#: src/properties.py:119
+#, python-format
+msgid "%d comments"
+msgstr "%d komentar"
+
+#
+# File: src/properties.py, line: 124
+# File: src/properties.py, line: 159
+#: src/properties.py:129 src/properties.py:164
+msgid "Location"
+msgstr "Lokasi"
+
+#
+# File: src/properties.py, line: 126
+# File: src/properties.py, line: 160
+#: src/properties.py:131 src/properties.py:165
+msgid "Accessed"
+msgstr "Diakses"
+
+#
+# File: src/properties.py, line: 128
+# File: src/properties.py, line: 162
+#: src/properties.py:133 src/properties.py:167
+msgid "Modified"
+msgstr "Dimodifikasi"
+
+#
+# File: src/properties.py, line: 130
+# File: src/properties.py, line: 164
+#: src/properties.py:135 src/properties.py:169
+msgid "Permissions"
+msgstr "Hak Akses"
+
+#
+# File: src/properties.py, line: 131
+# File: src/properties.py, line: 165
+#: src/properties.py:136 src/properties.py:170
+msgid "Owner"
+msgstr "Pemilik"
+
+#
+# File: src/properties.py, line: 135
+#: src/properties.py:140
+msgid "Archive"
+msgstr "Arsip"
+
+#
+# File: src/properties.py, line: 169
+#: src/properties.py:174
+msgid "Image"
+msgstr "Gambar"
+
+#
+# File: src/thumbremover.py, line: 22
+#: src/thumbremover.py:24
+msgid "Thumbnail maintenance"
+msgstr "Pengelolaan miniatur"
+
+#
+# File: src/thumbremover.py, line: 24
+#: src/thumbremover.py:26
+msgid "Cleanup"
+msgstr "Bersihkan"
+
+#
+# File: src/thumbremover.py, line: 36
+#: src/thumbremover.py:38
+msgid "Cleanup thumbnails"
+msgstr "Bersihkan miniatur"
+
+#
+# File: src/thumbremover.py, line: 46
+#: src/thumbremover.py:48
+msgid ""
+"Thumbnails for files (such as image files and comic book archives) are "
+"stored in your home directory. Many different applications use and create "
+"these thumbnails, but sometimes thumbnails remain even though the original "
+"files have been removed - wasting space. This dialog can cleanup your stored "
+"thumbnails by removing orphaned and outdated thumbnails."
+msgstr ""
+"Miniatur untuk berkas (seperti berkas citra dan arsip buku komik) yang "
+"disimpan di direktori rumah anda. Banyak aplikasi yang berbeda menggunakan "
+"dan membuat miniatur ini, tapi terkadang miniatur akan tetap meskipun berkas "
+"aslinya telah dihapus - menghabiskan ruang. Dialog ini dapat membersihkan "
+"miniatur tersimpan anda dengan menghapus miniatur yatim dan kadaluwarsa."
+
+#
+# File: src/thumbremover.py, line: 58
+#: src/thumbremover.py:60
+msgid "Thumbnail directory"
+msgstr "Direktori miniatur"
+
+#
+# File: src/thumbremover.py, line: 65
+#: src/thumbremover.py:67
+msgid "Total number of thumbnails"
+msgstr "Jumlah total miniatur"
+
+#
+# File: src/thumbremover.py, line: 68
+# File: src/thumbremover.py, line: 75
+#: src/thumbremover.py:70 src/thumbremover.py:77
+msgid "Calculating..."
+msgstr "Mengalkulasi..."
+
+#
+# File: src/thumbremover.py, line: 72
+#: src/thumbremover.py:74
+msgid "Total size of thumbnails"
+msgstr "Ukuran total miniatur"
+
+#
+# File: src/thumbremover.py, line: 80
+#: src/thumbremover.py:82
+msgid "Do you want to cleanup orphaned and outdated thumbnails now?"
+msgstr "Anda ingin menghapus miniatur yatim dan kadaluwarsa sekarang?"
+
+#
+# File: src/thumbremover.py, line: 116
+#: src/thumbremover.py:118
+msgid "Removing thumbnails"
+msgstr "Menghapus miniatur gambar"
+
+#
+# File: src/thumbremover.py, line: 135
+#: src/thumbremover.py:137
+msgid "Number of removed thumbnails"
+msgstr "Jumlah miniatur yatim"
+
+#
+# File: src/thumbremover.py, line: 142
+#: src/thumbremover.py:144
+msgid "Total size of removed thumbnails"
+msgstr "Ukuran total miniatur yang dihapus"
+
+#
+# File: src/thumbremover.py, line: 193
+#: src/thumbremover.py:195
+#, python-format
+msgid "Removed thumbnail for '%s'"
+msgstr "Hapus miniatur untuk '%s'"
+
+#
+# File: src/ui.py, line: 34
+#: src/ui.py:34
+msgid "_Next page"
+msgstr "Halaman _berikutnya"
+
+#
+# File: src/ui.py, line: 36
+#: src/ui.py:36
+msgid "_Previous page"
+msgstr "Halaman _sebelumnya"
+
+#
+# File: src/ui.py, line: 38
+#: src/ui.py:38
+msgid "_First page"
+msgstr "Halaman _pertama"
+
+#
+# File: src/ui.py, line: 40
+#: src/ui.py:40
+msgid "_Last page"
+msgstr "Halaman _terakhir"
+
+#
+# File: src/ui.py, line: 42
+#: src/ui.py:42
+msgid "_Zoom in"
+msgstr "_Pembesaran ke dalam"
+
+#
+# File: src/ui.py, line: 44
+#: src/ui.py:44
+msgid "Zoom _out"
+msgstr "Pembesaran _ke luar"
+
+#
+# File: src/ui.py, line: 46
+#: src/ui.py:46
+msgid "O_riginal size"
+msgstr "U_kuran asli"
+
+#
+# File: src/ui.py, line: 48
+#: src/ui.py:48
+msgid "_Close"
+msgstr "_Tutup"
+
+#
+# File: src/ui.py, line: 50
+#: src/ui.py:50
+msgid "_Quit"
+msgstr "_Keluar"
+
+#
+# File: src/ui.py, line: 52
+#: src/ui.py:52
+msgid "_Rotate 90 degrees CW"
+msgstr "_Rotasi 90 derajat searah jarum jam"
+
+#
+# File: src/ui.py, line: 54
+#: src/ui.py:54
+msgid "Rotate 180 de_grees"
+msgstr "Rotasi 180 de_rajat"
+
+#
+# File: src/ui.py, line: 56
+#: src/ui.py:56
+msgid "Rotat_e 90 degrees CCW"
+msgstr "Rotasi 90 derajat b_erlawanan arah jarum jam"
+
+#
+# File: src/ui.py, line: 58
+#: src/ui.py:58
+msgid "Fli_p horizontally"
+msgstr "Put_ar horizontal"
+
+#
+# File: src/ui.py, line: 60
+#: src/ui.py:60
+msgid "Flip _vertically"
+msgstr "Putar _vertikal"
+
+#
+# File: src/ui.py, line: 62
+#: src/ui.py:62
+msgid "Manual _Zoom"
+msgstr "Pembesaran _Manual"
+
+#
+# File: src/ui.py, line: 63
+#: src/ui.py:63
+msgid "Open _recent"
+msgstr "Buk_a terkini"
+
+#
+# File: src/ui.py, line: 64
+#: src/ui.py:64
+msgid "_Bookmarks"
+msgstr "B_ookmark"
+
+#
+# File: src/ui.py, line: 65
+#: src/ui.py:65
+msgid "T_oolbars"
+msgstr "B_atang alat"
+
+#
+# File: src/ui.py, line: 66
+#: src/ui.py:66
+msgid "_Edit"
+msgstr "_Sunting"
+
+#
+# File: src/ui.py, line: 67
+#: src/ui.py:67
+msgid "_File"
+msgstr "_Berkas"
+
+#
+# File: src/ui.py, line: 68
+#: src/ui.py:68
+msgid "_View"
+msgstr "_Tampilan"
+
+#
+# File: src/ui.py, line: 69
+#: src/ui.py:69
+msgid "_Go"
+msgstr "_Ke"
+
+#
+# File: src/ui.py, line: 70
+#: src/ui.py:70
+msgid "_Help"
+msgstr "Ba_ntuan"
+
+#
+# File: src/ui.py, line: 71
+#: src/ui.py:71
+msgid "_Transform"
+msgstr "_Ubah"
+
+#
+# File: src/ui.py, line: 75
+#: src/ui.py:75
+msgid "_Fullscreen"
+msgstr "La_yar penuh"
+
+#
+# File: src/ui.py, line: 77
+#: src/ui.py:77
+msgid "_Double page mode"
+msgstr "Mode _halaman ganda"
+
+#
+# File: src/ui.py, line: 79
+#: src/ui.py:79
+msgid "_Toolbar"
+msgstr "Batang _alat"
+
+#
+# File: src/ui.py, line: 81
+#: src/ui.py:81
+msgid "_Menubar"
+msgstr "Batang _menu"
+
+#
+# File: src/ui.py, line: 83
+#: src/ui.py:83
+msgid "St_atusbar"
+msgstr "Batang st_atus"
+
+#
+# File: src/ui.py, line: 85
+#: src/ui.py:85
+msgid "S_crollbars"
+msgstr "Batang _gulung"
+
+#
+# File: src/ui.py, line: 87
+#: src/ui.py:87
+msgid "Th_umbnails"
+msgstr "Miniat_ur"
+
+#
+# File: src/ui.py, line: 89
+#: src/ui.py:89
+msgid "H_ide all"
+msgstr "Sembuny_ikan semua"
+
+#
+# File: src/ui.py, line: 91
+#: src/ui.py:91
+msgid "_Manga mode"
+msgstr "_Mode manga"
+
+#
+# File: src/ui.py, line: 93
+#: src/ui.py:93
+msgid "_Keep transformation"
+msgstr "_Jaga transformasi"
+
+#
+# File: src/ui.py, line: 95
+#: src/ui.py:95
+msgid "Run _slideshow"
+msgstr "Jalankan _salindia"
+
+#
+# File: src/ui.py, line: 97
+#: src/ui.py:97
+msgid "Magnifying _glass"
+msgstr "Lensa _pembesar"
+
+#
+# File: src/ui.py, line: 101
+#: src/ui.py:103
+msgid "_Best fit mode"
+msgstr "Mode ukuran te_rbaik"
+
+#
+# File: src/ui.py, line: 103
+#: src/ui.py:105
+msgid "Fit _width mode"
+msgstr "Mode sesuai _lebar"
+
+#
+# File: src/ui.py, line: 105
+#: src/ui.py:107
+msgid "Fit _height mode"
+msgstr "Mode sesuai _tinggi"
+
+#
+# File: src/ui.py, line: 107
+#: src/ui.py:109
+msgid "M_anual zoom mode"
+msgstr "Mode pembesaran m_anual"
+
+#
+# File: src/ui.py, line: 113
+#: src/ui.py:115
+msgid "_About"
+msgstr "_Tentang"
+
+#
+# File: src/ui.py, line: 115
+#: src/ui.py:117
+msgid "_View comments..."
+msgstr "_Tampilkan komentar..."
+
+#
+# File: src/ui.py, line: 117
+#: src/ui.py:119
+msgid "_Edit archive..."
+msgstr "_Sunting arsip..."
+
+#
+# File: src/ui.py, line: 119
+#: src/ui.py:121
+msgid "_Open..."
+msgstr "B_uka..."
+
+#
+# File: src/ui.py, line: 121
+#: src/ui.py:123
+msgid "_Properties"
+msgstr "_Properti"
+
+#
+# File: src/ui.py, line: 123
+#: src/ui.py:125
+msgid "_Enhance image..."
+msgstr "Tingkatkan _citra..."
+
+#
+# File: src/ui.py, line: 126
+#: src/ui.py:128
+msgid "_Thumbnail maintenance..."
+msgstr "Pengelolaan _miniatur..."
+
+#
+# File: src/ui.py, line: 128
+#: src/ui.py:130
+msgid "Pr_eferences"
+msgstr "P_engaturan"
+
+#
+# File: src/ui.py, line: 132
+#: src/ui.py:134
+msgid "_Library..."
+msgstr "Pus_taka..."
+
+#
+# File: src/ui.py, line: 282
+#: src/ui.py:284
+msgid "First page"
+msgstr "Halaman pertama"
+
+#
+# File: src/ui.py, line: 284
+#: src/ui.py:286
+msgid "Previous page"
+msgstr "Halaman sebelumnya"
+
+#
+# File: src/ui.py, line: 285
+#: src/ui.py:287
+msgid "Next page"
+msgstr "Halaman berikutnya"
+
+#
+# File: src/ui.py, line: 286
+#: src/ui.py:288
+msgid "Last page"
+msgstr "Halaman terakhir"
+
+#
+# File: src/ui.py, line: 297
+#: src/ui.py:299
+msgid "Manga mode"
+msgstr "Mode manga"
+
+#
+# File: src/ui.py, line: 298
+#: src/ui.py:300
+msgid "Magnifying glass"
+msgstr "Lensa pembesar"

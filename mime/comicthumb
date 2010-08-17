@@ -1,0 +1,212 @@
+#!/usr/bin/env python
+
+"""comicthumb - Thumbnailer for comic book archives, bundled with Comix.
+
+comicthumb is dependent on the Python Imaging Library (PIL).
+
+comicthumb was originally written by Christoph Wolk, this version was
+re-written from scratch for Comix 4 by Pontus Ekberg. 
+
+Supported formats: ZIP, RAR and tar (.cbz, .cbr, .cbt)
+
+Usage: comicthumb INFILE OUTFILE [SIZE]
+"""
+
+import os
+import sys
+import gc
+import re
+import cStringIO
+import zipfile
+import tarfile
+import subprocess
+
+try:
+    import Image
+except ImportError:
+    print '! Could not import the Image module (PIL).'
+    print __doc__
+    sys.exit(1)
+
+ZIP, RAR, TAR, GZIP, BZIP2 = range(5)
+
+
+class Process:
+    
+    """The subprocess and popen2 modules in Python are broken (see issue
+    #1336). The problem (i.e. complete crash) they can cause happen fairly
+    often (once is too often) in Comix when calling "rar" or "unrar" to
+    extract specific files from archives. We roll our own very simple
+    process spawning module here instead.
+    """
+    # TODO: I can no longer reproduce the issue. Check if this version of
+    # process.py still solves it.
+
+    def __init__(self, args):
+        """Setup a Process where <args> is a sequence of arguments that defines
+        the process, e.g. ['ls', '-a'].
+        """
+        self._args = args
+        self._proc = None
+    
+    def _exec(self):
+        """Spawns the process, and returns its stdout.
+        (NOTE: separate function to make python2.4 exception syntax happy)
+        """
+        try:
+            self._proc = subprocess.Popen(self._args, stdout=subprocess.PIPE)
+            return self._proc.stdout
+        except Exception:
+            return None
+
+    def spawn(self):
+        """Spawn the process defined by the args in __init__(). Return a
+        file-like object linked to the spawned process' stdout.
+        """
+        try:
+            gc.disable() # Avoid Python issue #1336!
+            return self._exec()
+        finally:
+            gc.enable()
+
+    def wait(self):
+        """Wait for the process to terminate."""
+        if self._proc is None:
+            raise Exception('Process not spawned.')
+        return self._proc.wait()
+
+
+class Extractor:
+
+    """Extractor is a class for extracting different archive formats.
+    This is a much simplified version of the Extractor class from Comix.
+    """
+
+    def __init__(self, src):
+        """Setup the extractor with archive <src>."""
+        self._src = src
+        self._type = archive_mime_type(src)
+        self._files = []
+        
+        if self._type == ZIP:
+            self._zfile = zipfile.ZipFile(src, 'r')
+            self._files = self._zfile.namelist()
+        elif self._type in [TAR, GZIP, BZIP2]:
+            self._tfile = tarfile.open(src, 'r')
+            self._files = self._tfile.getnames()
+        elif self._type == RAR:
+            self._rar = None
+            for command in ('unrar', 'rar'):
+                if Process([command]).spawn() is not None:
+                    self._rar = command
+            if self._rar == None:
+                print '! Could not find the "rar" or "unrar" executable.'
+                sys.exit(1)
+            proc = Process([self._rar, 'vb', src])
+            fobj = proc.spawn()
+            self._files = fobj.readlines()
+            proc.wait()
+            self._files = [name.rstrip('\n') for name in self._files]
+    
+    def get_files(self):
+        """Return a list of the files in the archive."""
+        return self._files
+        
+    def extract(self, chosen): 
+        """Extract the file <chosen> and return it as a cStringIO.StringIO
+        object. The <chosen> file must be one of the files in the list
+        returned by the get_files() method.
+        """
+        if self._type == ZIP:
+            return cStringIO.StringIO(self._zfile.read(chosen))
+        elif self._type in [TAR, GZIP, BZIP2]:
+            return cStringIO.StringIO(self._tfile.extractfile(chosen).read())
+        elif self._type == RAR:
+            proc = Process([self._rar, 'p', '-inul', '-p-', '--',
+                self._src, chosen])
+            fobj = proc.spawn()
+            return cStringIO.StringIO(fobj.read())
+
+
+def archive_mime_type(path):
+    """Return the archive type of <path> or None for non-archives."""
+    try:
+        if os.path.isfile(path):
+            if not os.access(path, os.R_OK):
+                return None
+            if zipfile.is_zipfile(path):
+                return ZIP
+            fd = open(path, 'rb')
+            magic = fd.read(4)
+            fd.close()
+            if tarfile.is_tarfile(path) and os.path.getsize(path) > 0:
+                if magic.startswith('BZh'):
+                    return BZIP2
+                if magic.startswith('\037\213'):
+                    return GZIP
+                return TAR
+            if magic == 'Rar!':
+                return RAR
+    except Exception:
+        print '! Error while reading', path
+    return None
+
+
+def guess_cover(files):
+    """Return the filename within <files> that is the most likely to be
+    the cover of an archive.
+    """
+    alphanumeric_sort(files)
+    ext_re = re.compile(r'\.(jpg|jpeg|png|gif|tif|tiff)\s*$', re.I)
+    front_re = re.compile('(cover|front)', re.I)
+    images = filter(ext_re.search, files)
+    candidates = filter(front_re.search, images)
+    candidates = [c for c in candidates if not 'back' in c.lower()]
+    if candidates:
+        return candidates[0]
+    if images:
+        return images[0]
+    return None
+
+def alphanumeric_sort(filenames):
+    """Do an in-place alphanumeric sort of the strings in <filenames>,
+    such that for an example "1.jpg", "2.jpg", "10.jpg" is a sorted
+    ordering.
+    """
+    def _format_substring(s):
+        if s.isdigit():
+            return int(s)
+        return s.lower()
+
+    rec = re.compile("\d+|\D+")
+    filenames.sort(key=lambda s: map(_format_substring, rec.findall(s)))
+
+
+if __name__ == '__main__':
+    try:
+        in_path = sys.argv[1]
+        out_path = sys.argv[2]
+        if len(sys.argv) == 4:
+            size = int(sys.argv[3])
+        else:
+            size = 128
+    except:
+        print __doc__
+        sys.exit(1)
+    extractor = Extractor(in_path)
+    files = extractor.get_files()
+    chosen = guess_cover(files)
+    fd = extractor.extract(chosen)
+    im = Image.open(fd)
+    if im.size[0] > im.size[1]:
+        x = size
+        y = size * im.size[1] / im.size[0]
+    else:
+        x = size * im.size[0] / im.size[1]
+        y = size
+    x = max(1, x)
+    y = max(1, y)
+    im.thumbnail((x, y), Image.ANTIALIAS)
+    im = im.convert('RGB')
+    im.save(out_path, 'PNG')
+    sys.exit(0)

@@ -1,0 +1,1228 @@
+# Translation of comix to German
+# Copyright (C) Pontus Ekberg <herrekberg@users.sourceforge.net>, 2005.
+# This file is distributed under the same license as the comix package.
+# Christoph Wolk <christoph.wolk@googlemail.com>, 2006.
+# Chris Leick <c.leick@vollbio.de>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: comix 4.0.4-1\n"
+"Report-Msgid-Bugs-To: Emfox Zhou <emfox@debian.org>\n"
+"POT-Creation-Date: 2009-04-08 12:00+0000\n"
+"PO-Revision-Date: 2009-09-18 21:02+GMT\n"
+"Last-Translator: Chris Leick <c.leick@vollbio.de>\n"
+"Language-Team: German <debian-l10n-german@lists.debian.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+#: src/about.py:19 src/about.py:68
+msgid "About"
+msgstr "Über"
+
+#: src/about.py:56
+msgid "Comix is an image viewer specifically designed to handle comic books."
+msgstr ""
+"Comix ist ein Bildbetrachter, der extra für den Umgang mit Comicbüchern "
+"entworfen wurde."
+
+#: src/about.py:58
+msgid "It reads ZIP, RAR and tar archives, as well as plain image files."
+msgstr "Es liest ZIP-, RAR- und Tar-Archive ebenso wie einfache Bilddateien."
+
+#: src/about.py:60
+msgid "Comix is licensed under the GNU General Public License."
+msgstr "Comix ist unter der »GNU General Public License« lizenziert."
+
+#: src/about.py:83
+msgid "Developer"
+msgstr "Entwickler"
+
+#: src/about.py:84 src/about.py:85
+msgid "Simplified Chinese translation"
+msgstr "Vereinfachte chinesische Übersetzung"
+
+#: src/about.py:86
+msgid "Spanish translation"
+msgstr "Spanische Übersetzung"
+
+#: src/about.py:87
+msgid "Brazilian Portuguese translation"
+msgstr "Portugiesische Übersetzung"
+
+#: src/about.py:88
+msgid "German translation and Nautilus thumbnailer"
+msgstr "Deutsche Übersetzung und Vorschaubildersteller für Nautilus"
+
+#: src/about.py:89 src/about.py:90
+msgid "Italian translation"
+msgstr "Italienische Übersetzung"
+
+#: src/about.py:91
+msgid "Dutch translation"
+msgstr "Holländische Übersetzung"
+
+#: src/about.py:92
+msgid "French translation"
+msgstr "Französische Übersetzung"
+
+#: src/about.py:93 src/about.py:94
+msgid "Polish translation"
+msgstr "Polnische Übersetzung"
+
+#: src/about.py:95
+msgid "Greek translation"
+msgstr "Griechische Übersetzung"
+
+#: src/about.py:96
+msgid "Catalan translation"
+msgstr "Katalanische Übersetzung"
+
+#: src/about.py:97 src/about.py:98
+msgid "Traditional Chinese translation"
+msgstr "Traditionell-chinesische Übersetzung"
+
+#: src/about.py:99
+msgid "Japanese translation"
+msgstr "Japanische Übersetzung"
+
+#: src/about.py:100
+msgid "Hungarian translation"
+msgstr "Ungarische Übersetzung"
+
+#: src/about.py:101
+msgid "Russian translation"
+msgstr "Russische Übersetzung"
+
+#: src/about.py:102
+msgid "Croatian translation"
+msgstr "Kroatische Übersetzung"
+
+#: src/about.py:103
+msgid "Korean translation"
+msgstr "Koreanische Übersetzung"
+
+#: src/about.py:104
+msgid "Persian translation"
+msgstr "Persische Übersetzung"
+
+#: src/about.py:105
+msgid "Indonesian translation"
+msgstr "Indonesische Übersetzung"
+
+#: src/about.py:106
+msgid "Czech translation"
+msgstr "Tschechische Übersetzung"
+
+#: src/about.py:107
+msgid "Icon design"
+msgstr "Symbol-Design"
+
+#: src/about.py:114
+msgid "Credits"
+msgstr "Danksagungen"
+
+#: src/archive.py:66
+msgid "Could not find RAR file extractor!"
+msgstr "Entpacker für RAR-Dateien konnte nicht gefunden werden."
+
+#: src/archive.py:68
+msgid ""
+"You need either the <i>rar</i> or the <i>unrar</i> program installed in "
+"order to read RAR (.cbr) files."
+msgstr ""
+"Sie benötigen entweder das <i>rar</i>- oder das <i>unrar</i>-Programm, "
+"um RAR-Dateien (.cbr) zu lesen."
+
+#: src/archive.py:305
+msgid "ZIP archive"
+msgstr "ZIP-Archiv"
+
+#: src/archive.py:306
+msgid "Tar archive"
+msgstr "Tar-Archiv"
+
+#: src/archive.py:307
+msgid "Gzip compressed tar archive"
+msgstr "Gzip-komprimiertes Tar-Archiv"
+
+#: src/archive.py:308
+msgid "Bzip2 compressed tar archive"
+msgstr "Bzip2-komprimiertes Tar-Archiv"
+
+#: src/archive.py:309
+msgid "RAR archive"
+msgstr "RAR-Archiv"
+
+#: src/bookmark.py:28
+msgid "_Add bookmark"
+msgstr "_Lesezeichen hinzufügen"
+
+#: src/bookmark.py:30
+msgid "_Edit bookmarks..."
+msgstr "Lesezeichen _bearbeiten ..."
+
+#: src/bookmark.py:32
+msgid "_Clear bookmarks..."
+msgstr "Lese_zeichen löschen ..."
+
+#: src/bookmark.py:78
+msgid "Clear all bookmarks?"
+msgstr "Alle Lesezeichen löschen?"
+
+#: src/bookmark.py:80
+msgid ""
+"All stored bookmarks will be removed. Are you sure that you want to continue?"
+msgstr ""
+"Alle gespeicherten Lesezeichen werden entfernt. Sind Sie sicher, dass Sie "
+"fortfahren möchten?"
+
+#: src/bookmark.py:230
+msgid "Edit bookmarks"
+msgstr "Lesezeichen bearbeiten"
+
+#: src/bookmark.py:256 src/edit.py:270
+msgid "Name"
+msgstr "Name"
+
+#: src/bookmark.py:257
+msgid "Page"
+msgstr "Seite"
+
+#: src/comment.py:16 src/preferences.py:299
+msgid "Comments"
+msgstr "Kommentare"
+
+#: src/comment.py:53
+#, python-format
+msgid "Could not read %s"
+msgstr "%s kann nicht gelesen werden"
+
+#: src/deprecated.py:16
+msgid "There are deprecated files left on your computer."
+msgstr "Es sind missbilligte Dateien auf Ihrem Rechner zurückgeblieben."
+
+#: src/deprecated.py:22
+msgid ""
+"Some old files (that were used for storing preferences, the library, "
+"bookmarks etc. for older versions of Comix) were found on your computer. If "
+"you do not plan on using the older versions of Comix again, you should "
+"remove these files in order to save some disk space. Do you want these files "
+"to be removed for you now?"
+msgstr ""
+"Einige alte Dateien (die von älteren Versionen von Comix für zum "
+"Speichern von Einstellungen, die Bibliothek, Lesezeichen usw. benutzt "
+"wurden) wurden auf Ihrem Rechner gefunden. Wenn Sie nicht planen, die "
+"älteren Versionen von Comix erneut zu benutzen, sollten Sie diese Dateien "
+"entfernen, um Festplattenplatz zu sparen. Möchten Sie, dass diese Dateien "
+"nun für Sie entfernt werden?"
+
+#: src/edit.py:29
+msgid "Edit archive"
+msgstr "Archiv bearbeiten"
+
+#: src/edit.py:37
+msgid "Import"
+msgstr "Import"
+
+#: src/edit.py:51
+msgid "Images"
+msgstr "Bilder"
+
+#: src/edit.py:52
+msgid "Other files"
+msgstr "Andere Dateien"
+
+#: src/edit.py:101
+msgid "The new archive could not be saved!"
+msgstr "Das neue Archiv konnte nicht gespeichert werden."
+
+#: src/edit.py:103
+msgid "The original files have not been removed."
+msgstr "Die Originaldateien wurden nicht entfernt."
+
+#: src/edit.py:117
+msgid "Archives are stored as ZIP files."
+msgstr "Archive sind als ZIP-Dateien gespeichert."
+
+#: src/edit.py:170 src/edit.py:288
+msgid "Remove from archive"
+msgstr "Aus dem Archiv entfernen"
+
+#: src/edit.py:258
+msgid ""
+"Please note that the only files that are automatically added to this list "
+"are those files in archives that Comix recognizes as comments."
+msgstr ""
+"Bitte beachten Sie, dass nur Dateien zu dieser Liste automatisch "
+"hinzugefügt werden, die sich in Archiven befinden, die Comix als "
+"Kommentare erkennt."
+
+#: src/edit.py:273
+msgid "Size"
+msgstr "Größe"
+
+#: src/enhance.py:51
+msgid "Enhance image"
+msgstr "Bild aufbessern"
+
+#: src/enhance.py:52
+msgid "Defaults"
+msgstr "Vorgaben"
+
+#: src/enhance.py:79
+msgid "Brightness"
+msgstr "Helligkeit"
+
+#: src/enhance.py:90
+msgid "Contrast"
+msgstr "Kontrast"
+
+#: src/enhance.py:101
+msgid "Saturation"
+msgstr "Sättigung"
+
+#: src/enhance.py:112
+msgid "Sharpness"
+msgstr "Schärfe"
+
+#: src/enhance.py:126
+msgid "Automatically adjust contrast."
+msgstr "Kontrast automatisch einstellen."
+
+#: src/enhance.py:128
+msgid ""
+"Automatically adjust contrast (both lightness and darkness), separately for "
+"each colour band."
+msgstr ""
+"Kontrast automatisch einstellen (sowohl Helligkeit, als auch Dunkelheit) "
+"getrennt für jedes Farbband."
+
+#: src/filechooser.py:38 src/library.py:490
+msgid "Open"
+msgstr "Öffnen"
+
+#: src/filechooser.py:42
+msgid "Save"
+msgstr "Speichern"
+
+#: src/filechooser.py:78
+msgid "All files"
+msgstr "Alle Dateien"
+
+#: src/filechooser.py:81
+msgid "All Archives"
+msgstr "Alle Archive"
+
+#: src/filechooser.py:85
+msgid "ZIP archives"
+msgstr "ZIP-Archive"
+
+#: src/filechooser.py:87
+msgid "RAR archives"
+msgstr "RAR-Archive"
+
+#: src/filechooser.py:89
+msgid "Tar archives"
+msgstr "Tar-Archive"
+
+#: src/filechooser.py:134
+#, python-format
+msgid "A file named '%s' already exists. Do you want to replace it?"
+msgstr ""
+"Eine Datei mit dem Namen »%s« existiert bereits. Möchten Sie sie ersetzen?"
+
+#: src/filechooser.py:137
+msgid "Replacing it will overwrite its contents."
+msgstr "Sie zu ersetzen, wird ihre Inhalte überschreiben."
+
+#: src/filechooser.py:182 src/filechooser.py:260
+msgid "All images"
+msgstr "Alle Bilder"
+
+#: src/filechooser.py:184 src/filechooser.py:262
+msgid "JPEG images"
+msgstr "JPEG-Bilder"
+
+#: src/filechooser.py:185 src/filechooser.py:263
+msgid "PNG images"
+msgstr "PNG-Bilder"
+
+#: src/filechooser.py:206
+msgid "Automatically add the books to this collection"
+msgstr "Die Bücher automatisch zu dieser Sammlung hinzufügen"
+
+#: src/filehandler.py:209
+#, python-format
+msgid "Could not open %s: Is a directory."
+msgstr "%s kann nicht geöffnet werden: Es ist ein Verzeichnis."
+
+#: src/filehandler.py:213
+#, python-format
+msgid "Could not open %s: No such file."
+msgstr "%s kann nicht geöffnet werden: Datei nicht gefunden."
+
+#: src/filehandler.py:217
+#, python-format
+msgid "Could not open %s: Permission denied."
+msgstr "%s kann nicht geöffnet werden: Zugriff verweigert."
+
+#: src/filehandler.py:222
+#, python-format
+msgid "Could not open %s: Unknown file type."
+msgstr "%s kann nicht geöffnet werden: Unbekannter Dateityp."
+
+#: src/filehandler.py:285
+#, python-format
+msgid "No images in '%s'"
+msgstr "Keine Bilder in »%s«"
+
+#: src/filehandler.py:413
+msgid "Unknown filetype"
+msgstr "Unbekannter Dateityp"
+
+#: src/librarybackend.py:273 src/librarybackend.py:275
+msgid "(Copy)"
+msgstr "(Kopieren)"
+
+#: src/library.py:38
+msgid "Library"
+msgstr "Bibliothek"
+
+#: src/library.py:150
+msgid "Rename..."
+msgstr "Umbenennen ..."
+
+#: src/library.py:152
+msgid "Duplicate collection"
+msgstr "Sammlung duplizieren"
+
+#: src/library.py:154
+msgid "Remove collection..."
+msgstr "Sammlung entfernen ..."
+
+#: src/library.py:202
+msgid "All books"
+msgstr "Alle Bücher"
+
+#: src/library.py:231
+msgid "Remove collection from the library?"
+msgstr "Sammlung aus der Bibliothek entfernen?"
+
+#: src/library.py:233
+msgid ""
+"The selected collection will be removed from the library (but the books and "
+"subcollections in it will remain). Are you sure that you want to continue?"
+msgstr ""
+"Die ausgewählte Sammlung wird aus der Bibliothek entfernt (aber die "
+"Bücher und Untersammlungen darin werden bestehen bleiben). Sind Sie "
+"sicher, dass Sie fortfahren möchten?"
+
+#: src/library.py:251
+msgid "Rename collection?"
+msgstr "Sammlung umbenennen?"
+
+#: src/library.py:253
+msgid "Please enter a new name for the selected collection."
+msgstr "Bitte geben Sie einen neuen Namen für die ausgewählte Sammlung ein."
+
+#: src/library.py:271
+#, python-format
+msgid "Could not change the name to '%s'."
+msgstr "Name konnte nicht zu »%s« geändert werden."
+
+#: src/library.py:275 src/library.py:882
+msgid "A collection by that name already exists."
+msgstr "Eine Sammlung mit diesem Namen existiert bereits."
+
+#: src/library.py:285
+msgid "Could not duplicate collection."
+msgstr "Sammlung konnte nicht dupliziert werden."
+
+#: src/library.py:382
+msgid "Root"
+msgstr "Wurzel"
+
+#: src/library.py:386
+#, python-format
+msgid ""
+"Put the collection '%(subcollection)s' in the collection '%(supercollection)"
+"s'."
+msgstr ""
+"Die Sammlung »%(subcollection)s« in die Sammlung »%(supercollection)s« "
+"stellen."
+
+#: src/library.py:407
+#, python-format
+msgid "Add books to '%s'."
+msgstr "Bücher zu »%s« hinzufügen."
+
+#: src/library.py:411
+#, python-format
+msgid ""
+"Move books from '%(source collection)s' to '%(destination collection)s'."
+msgstr ""
+"Bücher von »%(source collection)s« nach »%(destination collection)s« "
+"verschieben."
+
+#: src/library.py:493
+msgid "Remove from this collection"
+msgstr "Aus dieser Sammlung entfernen"
+
+#: src/library.py:496
+msgid "Remove from the library..."
+msgstr "Aus dieser Bibliothek entfernen ..."
+
+#: src/library.py:589
+#, python-format
+msgid "Removed %(num)d book(s) from '%(collection)s'."
+msgstr "%(num)d Buch(Bücher) wurden aus »%(collection)s« entfernt."
+
+#: src/library.py:598
+msgid "Remove books from the library?"
+msgstr "Bücher aus der Bibliothek entfernen?"
+
+#: src/library.py:600
+msgid ""
+"The selected books will be removed from the library (but the original files "
+"will be untouched). Are you sure that you want to continue?"
+msgstr ""
+"Die ausgewählten Bücher werden aus der Bibliothek entfernt (aber die "
+"Originaldateien werden nicht angerührt). Sind Sie sicher, dass Sie "
+"fortfahren möchten?"
+
+#: src/library.py:610
+#, python-format
+msgid "Removed %d book(s) from the library."
+msgstr "%d Buch(Bücher) wurden aus der Bibliothek entfernt."
+
+#: src/library.py:770
+msgid "Search"
+msgstr "Suche"
+
+#: src/library.py:775
+msgid ""
+"Display only those books that have the specified text string in their full "
+"path. The search is not case sensitive."
+msgstr ""
+"Nur die Bücher anzeigen, die die angegebene Zeichenkette in ihrem "
+"vollständigen Pfad haben. Die Suche ist unabhängig von Groß- und "
+"Kleinschreibung."
+
+#: src/library.py:777
+msgid "Cover size"
+msgstr "Deckelgröße"
+
+#: src/library.py:790
+msgid "Add books"
+msgstr "Bücher hinzufügen"
+
+#: src/library.py:794
+msgid "Add more books to the library."
+msgstr "Weitere Bücher zu der Bibliothek hinzufügen."
+
+#: src/library.py:796
+msgid "Add collection"
+msgstr "Sammlung hinzufügen"
+
+#: src/library.py:801
+msgid "Add a new empty collection."
+msgstr "Eine neue, leere Sammlung hinzufügen."
+
+#: src/library.py:807
+msgid "Open the selected book."
+msgstr "Das ausgewählte Buch öffnen."
+
+#: src/library.py:833 src/properties.py:118
+#, python-format
+msgid "%d pages"
+msgstr "%d Seiten"
+
+#: src/library.py:855
+msgid "Add new collection?"
+msgstr "Neue Sammlung hinzufügen?"
+
+#: src/library.py:857
+msgid "Please enter a name for the new collection."
+msgstr "Bitte geben Sie einen Namen für die neue Sammlung ein."
+
+#: src/library.py:863
+msgid "New collection"
+msgstr "Neue Sammlung"
+
+#: src/library.py:877
+#, python-format
+msgid "Could not add a new collection called '%s'."
+msgstr "Eine neue Sammlung mit Namen »%s« konnte nicht hinzugefügt werden."
+
+#: src/library.py:911
+msgid "Adding books"
+msgstr "Bücher hinzufügen"
+
+#: src/library.py:931
+msgid "Added books"
+msgstr "Hinzugefügte Bücher"
+
+#: src/library.py:953
+#, python-format
+msgid "Adding '%s'..."
+msgstr "Füge »%s« hinzu ..."
+
+#: src/main.py:699
+msgid "SLIDESHOW"
+msgstr "DIASCHAU"
+
+#: src/preferences.py:80
+msgid "Preferences"
+msgstr "Einstellungen"
+
+#: src/preferences.py:95
+msgid "Background"
+msgstr "Hintergrund"
+
+#: src/preferences.py:97
+msgid "Use this colour as background"
+msgstr "Diese Farbe als Hintergrund verwenden"
+
+#: src/preferences.py:99
+msgid "Always use this selected colour as the background colour."
+msgstr "Diese ausgewählte Farbe immer als Hintergrundfarbe verwenden"
+
+#: src/preferences.py:104
+msgid "Use dynamic background colour."
+msgstr "Dynamische Hintergrundfarbe verwenden"
+
+#: src/preferences.py:108
+msgid "Automatically pick a background colour that fits the viewed image."
+msgstr ""
+"Automatisch eine Hintergrundfarbe wählen, die zum angeschauten Bild passt."
+
+#: src/preferences.py:111
+msgid "Thumbnails"
+msgstr "Vorschaubilder"
+
+#: src/preferences.py:112
+msgid "Thumbnail size (in pixels)"
+msgstr "Vorschaubildergröße (in Pixeln)"
+
+#: src/preferences.py:119
+msgid "Show page numbers on thumbnails."
+msgstr "Seitennummer auf Vorschaubildern anzeigen"
+
+#: src/preferences.py:126
+msgid "Magnifying Glass"
+msgstr "Lupe"
+
+#: src/preferences.py:127
+msgid "Magnifying glass size (in pixels)"
+msgstr "Lupengröße (in Pixeln)"
+
+#: src/preferences.py:133
+msgid ""
+"Set the size of the magnifying glass. It is a square with a side of this "
+"many pixels."
+msgstr ""
+"Die Größe der Lupe setzen. Es ist ein Quadrat mit einer Seite von dieser "
+"Anzahl Pixeln."
+
+#: src/preferences.py:135
+msgid "Magnification factor"
+msgstr "Vergrößerungsfaktor"
+
+#: src/preferences.py:142
+msgid "Set the magnification factor of the magnifying glass."
+msgstr "Den Vergrößerungsfaktor der Lupe setzen"
+
+#: src/preferences.py:145
+msgid "Image scaling"
+msgstr "Bildskalierung"
+
+#: src/preferences.py:146
+msgid "Stretch small images."
+msgstr "Kleine Bilder strecken"
+
+#: src/preferences.py:150
+msgid ""
+"Stretch images to a size that is larger than their original size if the "
+"current zoom mode requests it. If this preference is unset, images are never "
+"scaled to be larger than their original size."
+msgstr ""
+"Bilder auf eine Größe strecken, die größer als die Originalgröße ist, "
+"wenn der aktuelle Vergrößerungsmodus das erfordert. Wenn diese "
+"Einstellung nicht gesetzt ist, werden Bilder niemals so skaliert, dass "
+"sie größer als ihre Originalgröße sind."
+
+#: src/preferences.py:153
+msgid "Transparency"
+msgstr "Transparenz"
+
+#: src/preferences.py:155
+msgid "Use checkered background for transparent images."
+msgstr "Für transparente Bilder einen gepunkteten Hintergrund verwenden"
+
+#: src/preferences.py:161
+msgid ""
+"Use a grey checkered background for transparent images. If this preference "
+"is unset, the background is plain white instead."
+msgstr ""
+"Einen grauen, gepunkteten Hintergrund für transparente Bilder benutzen. "
+"Wenn diese Einstellung nicht gesetzt ist, ist der Hintergrund stattdessen "
+"einfach weiß."
+
+#: src/preferences.py:163
+msgid "Appearance"
+msgstr "Aussehen"
+
+#: src/preferences.py:169
+msgid "Scroll"
+msgstr "Rollen"
+
+#: src/preferences.py:171
+msgid "Use smart space key scrolling."
+msgstr "Intelligentes Rollen mittels Leertaste benutzen."
+
+#: src/preferences.py:176
+msgid ""
+"Use smart scrolling with the space key. Normally the space key scrolls only "
+"right down (or up when shift is pressed), but with this preference set it "
+"also scrolls sideways and so tries to follow the natural reading order of "
+"the comic book."
+msgstr ""
+"Intelligentes Rollen mittels Leertaste benutzen. Normalerweise rollt die "
+"Leertaste nur genau nach unten (oder oben, wenn die Umschalttaste "
+"gedrückt ist), aber mit dieser Einstellung rollt sie außerdem seitwärts "
+"und versucht so, der natürlichen Lesereihenfolge von Comicbüchern zu "
+"folgen."
+
+#: src/preferences.py:180
+msgid "Flip pages when scrolling off the edges of the page."
+msgstr "Seiten beim Rollen über den Rand der Seite hinaus umblättern."
+
+#: src/preferences.py:185
+msgid ""
+"Flip pages when scrolling \"off the page\" with the scroll wheel or with the "
+"arrow keys. It takes three consecutive \"steps\" with the scroll wheel or "
+"the arrow keys for the pages to be flipped."
+msgstr ""
+"Seiten umblättern, wenn mit dem Mausrad oder den Pfeiltasten »von der "
+"Seite« herunter gerollt wird. Es nimmt drei aufeinander folgende "
+"»Schritte« mit dem Mausrad oder den Pfeiltasten auf, um die Seiten "
+"umzublättern."
+
+#: src/preferences.py:188 src/ui.py:298
+msgid "Double page mode"
+msgstr "Doppelseitiger Modus"
+
+#: src/preferences.py:190
+msgid "Flip two pages in double page mode."
+msgstr "Zwei Seiten im doppelseitigen Modus umblättern"
+
+#: src/preferences.py:195
+msgid ""
+"Flip two pages, instead of one, each time we flip pages in double page mode."
+msgstr ""
+"Jedesmal zwei, anstatt eine Seite umblättern, wenn im doppelseitigen "
+"Modus umgeblättert wird."
+
+#: src/preferences.py:198
+msgid "Show only one wide image in double page mode."
+msgstr "Nur ein breites Bild im doppelseitigen Modus anzeigen"
+
+#: src/preferences.py:204
+msgid ""
+"Display only one image in double page mode, if the image's width exceeds its "
+"height. The result of this is that scans that span two pages are displayed "
+"properly (i.e. alone) also in double page mode."
+msgstr ""
+"Nur ein Bild im doppelseitigen Modus anzeigen, wenn die Breite des "
+"Bildes seine Höhe übersteigt. Im Ergebnis werden gescannte Bilder, die "
+"sich über zwei Seiten erstrecken, auch im doppelseitigen Modus korrekt "
+"(d.h. allein) dargestellt werden."
+
+#: src/preferences.py:207
+msgid "Files"
+msgstr "Dateien"
+
+#: src/preferences.py:209
+msgid "Automatically open the next archive."
+msgstr "Automatisch das nächste Archiv öffnen"
+
+#: src/preferences.py:214
+msgid ""
+"Automatically open the next archive in the directory when flipping past the "
+"last page, or the previous archive when flipping past the first page."
+msgstr ""
+"Automatisch das nächste Archiv im Verzeichnis öffnen, wenn nach der "
+"letzten Seite umgeblättert wird oder das vorherige Archiv, wenn über die "
+"erste Seite geblättert wird."
+
+#: src/preferences.py:217
+msgid "Automatically open the last viewed file on startup."
+msgstr "Beim Starten automatisch die letzte angesehene Datei öffnen"
+
+#: src/preferences.py:222
+msgid ""
+"Automatically open, on startup, the file that was open when Comix was last "
+"closed."
+msgstr ""
+"Automatisch beim Starten die letzte Datei öffnen, die offen war, als "
+"Comix das letzte Mal geschlossen wurde"
+
+#: src/preferences.py:225
+msgid "Store information about recently opened files."
+msgstr "Informationen über aktuell geöffnete Dateien speichern"
+
+#: src/preferences.py:230
+msgid ""
+"Add information about all files opened from within Comix to the shared "
+"recent files list."
+msgstr ""
+"Informationen über alle innerhalb von Comix geöffneten Dateien in der "
+"freigegebenen aktuellen Dateiliste hinzufügen"
+
+#: src/preferences.py:233
+msgid "Store thumbnails for opened files."
+msgstr "Vorschaubilder für geöffnete Dateien speichern"
+
+#: src/preferences.py:238
+msgid ""
+"Store thumbnails for opened files according to the freedesktop.org "
+"specification. These thumbnails are shared by many other applications, such "
+"as most file managers."
+msgstr ""
+"Vorschaubilder für geöffnete Dateien gemäß der Spezifikation von "
+"freedesktop.org speichern. Diese Vorschaubilder werden mit vielen anderen "
+"Anwendungen, zumeist Dateimanagern, gemeinsam benutzt."
+
+#: src/preferences.py:241
+msgid "Cache"
+msgstr "Zwischenspeicher"
+
+#: src/preferences.py:242
+msgid "Use a cache to speed up browsing."
+msgstr ""
+"Einen Zwischenspeicher benutzen, um das Durchstöbern zu beschleunigen"
+
+#: src/preferences.py:246
+msgid ""
+"Cache the images that are next to the currently viewed image in order to "
+"speed up browsing. Since the speed improvements are quite big, it is "
+"recommended that you have this preference set, unless you are running short "
+"on free RAM."
+msgstr ""
+"Die Bilder, die nahe zum aktuell betrachteten Bild sind, "
+"zwischenspeichern, um das Durchstöbern zu beschleunigen. Weil die "
+"Geschwindigkeit ziemlich start erhöht wird, wird empfohlen, dass Sie "
+"diese Einstellung gesetzt haben, außer wenn Ihr freier Arbeitsspeicher "
+"knapp ist."
+
+#: src/preferences.py:248
+msgid "Behaviour"
+msgstr "Verhalten"
+
+#: src/preferences.py:254
+msgid "Default modes"
+msgstr "Vogabemodi"
+
+#: src/preferences.py:256
+msgid "Use double page mode by default."
+msgstr "Als Vorgabe doppelseitigen Modus benutzen"
+
+#: src/preferences.py:261
+msgid "Use fullscreen by default."
+msgstr "Als Vorgabe Vollbild benutzen"
+
+#: src/preferences.py:266
+msgid "Use manga mode by default."
+msgstr "Als Vorgabe Manga-Modus benutzen"
+
+#: src/preferences.py:271
+msgid "Default zoom mode"
+msgstr "Standard-Vergrößerungsmodus"
+
+#: src/preferences.py:273 src/ui.py:290
+msgid "Best fit mode"
+msgstr "Am besten passender Modus"
+
+#: src/preferences.py:274 src/ui.py:292
+msgid "Fit width mode"
+msgstr "Modus mit angepasster Breite"
+
+#: src/preferences.py:275 src/ui.py:294
+msgid "Fit height mode"
+msgstr "Modus mit angepasster Höhe"
+
+#: src/preferences.py:276 src/ui.py:296
+msgid "Manual zoom mode"
+msgstr "Manueller Vergrößerungsmodus"
+
+#: src/preferences.py:282
+msgid "Fullscreen"
+msgstr "Vollbild"
+
+#: src/preferences.py:284
+msgid "Automatically hide all toolbars in fullscreen."
+msgstr "Bei Vollbild automatisch alle Werkzeugleisten ausblenden"
+
+#: src/preferences.py:290
+msgid "Slideshow"
+msgstr "Diaschau"
+
+#: src/preferences.py:291
+msgid "Slideshow delay (in seconds)"
+msgstr "Diaschauverzögerung (in Sekunden)"
+
+#: src/preferences.py:300
+msgid "Comment extensions"
+msgstr "Kommentarerweiterungen"
+
+#: src/preferences.py:306
+msgid ""
+"Treat all files found within archives, that have one of these file endings, "
+"as comments."
+msgstr ""
+"Alle in den Archiven gefundenen Dateien, die eine dieser Erweiterungen "
+"haben, werden als Kommentare behandelt."
+
+#: src/preferences.py:309
+msgid "Rotation"
+msgstr "Drehung"
+
+#: src/preferences.py:311
+msgid "Automatically rotate images according to their metadata."
+msgstr "Bilder automatisch gemäß ihrer Metadaten drehen"
+
+#: src/preferences.py:316
+msgid ""
+"Automatically rotate images when an orientation is specified in the image "
+"metadata, such as in an Exif tag."
+msgstr ""
+"Bilder automatisch drehen, wenn die Ausrichtung in den Metadaten, wie zum "
+"Beispiel einem Exif-Etikett des Bildes, angegeben wurde."
+
+#: src/preferences.py:318
+msgid "Display"
+msgstr "Anzeige"
+
+#: src/properties.py:94
+msgid "Properties"
+msgstr "Eigenschaften"
+
+#: src/properties.py:119
+#, python-format
+msgid "%d comments"
+msgstr "%d Kommentare"
+
+#: src/properties.py:129 src/properties.py:164
+msgid "Location"
+msgstr "Ort"
+
+#: src/properties.py:131 src/properties.py:165
+msgid "Accessed"
+msgstr "Zugegriffen"
+
+#: src/properties.py:133 src/properties.py:167
+msgid "Modified"
+msgstr "Geändert"
+
+#: src/properties.py:135 src/properties.py:169
+msgid "Permissions"
+msgstr "Rechte"
+
+#: src/properties.py:136 src/properties.py:170
+msgid "Owner"
+msgstr "Eigentümer"
+
+#: src/properties.py:140
+msgid "Archive"
+msgstr "Archiv"
+
+#: src/properties.py:174
+msgid "Image"
+msgstr "Bild"
+
+#: src/thumbremover.py:24
+msgid "Thumbnail maintenance"
+msgstr "Vorschaubilderverwaltung"
+
+#: src/thumbremover.py:26
+msgid "Cleanup"
+msgstr "Aufräumen"
+
+#: src/thumbremover.py:38
+msgid "Cleanup thumbnails"
+msgstr "Vorschaubilder aufräumen"
+
+#: src/thumbremover.py:48
+msgid ""
+"Thumbnails for files (such as image files and comic book archives) are "
+"stored in your home directory. Many different applications use and create "
+"these thumbnails, but sometimes thumbnails remain even though the original "
+"files have been removed - wasting space. This dialog can cleanup your stored "
+"thumbnails by removing orphaned and outdated thumbnails."
+msgstr ""
+"Vorschaubilder für Dateien (wie Bilddateien und Comicbucharchive) "
+"werden in Ihrem Home-Verzeichnis gespeichert. Viele unterschiedliche "
+"Anwendungen benutzen und erzeugen diese Vorschaubilder, aber manchmal "
+"bleiben die Vorschaubilder bestehen, obwohl das Original entfernt wurde – "
+"verschwendeter Speicher. Dieser Dialog kann Ihre gespeicherten "
+"Vorschaubilder durch Entfernen von verwaisten und veralteten "
+"Vorschaubildern aufräumen."
+
+#: src/thumbremover.py:60
+msgid "Thumbnail directory"
+msgstr "Vorschaubilderverzeichnis"
+
+#: src/thumbremover.py:67
+msgid "Total number of thumbnails"
+msgstr "Gesamtzahl der Vorschaubilder"
+
+#: src/thumbremover.py:70 src/thumbremover.py:77
+msgid "Calculating..."
+msgstr "Wird berechnet ..."
+
+#: src/thumbremover.py:74
+msgid "Total size of thumbnails"
+msgstr "Gesamtgröße der Vorschaubilder"
+
+#: src/thumbremover.py:82
+msgid "Do you want to cleanup orphaned and outdated thumbnails now?"
+msgstr "Möchten Sie nun verwaiste und veraltete Vorschaubilder aufräumen?"
+
+#: src/thumbremover.py:118
+msgid "Removing thumbnails"
+msgstr "Vorschaubilder werden entfernt"
+
+#: src/thumbremover.py:137
+msgid "Number of removed thumbnails"
+msgstr "Anzahl der entfernten Vorschaubilder"
+
+#: src/thumbremover.py:144
+msgid "Total size of removed thumbnails"
+msgstr "Gesamtgröße der entfernten Vorschaubilder"
+
+#: src/thumbremover.py:195
+#, python-format
+msgid "Removed thumbnail for '%s'"
+msgstr "Vorschaubild für »%s« wurde entfernt"
+
+#: src/ui.py:34
+msgid "_Next page"
+msgstr "_Nächste Seite"
+
+#: src/ui.py:36
+msgid "_Previous page"
+msgstr "_Vorherige Seite"
+
+#: src/ui.py:38
+msgid "_First page"
+msgstr "_Erste Seite"
+
+#: src/ui.py:40
+msgid "_Last page"
+msgstr "_Letzte Seite"
+
+#: src/ui.py:42
+msgid "_Zoom in"
+msgstr "Ver_größern"
+
+#: src/ui.py:44
+msgid "Zoom _out"
+msgstr "Ver_kleinern"
+
+#: src/ui.py:46
+msgid "O_riginal size"
+msgstr "_Originalgröße"
+
+#: src/ui.py:48
+msgid "_Close"
+msgstr "_Schließen"
+
+#: src/ui.py:50
+msgid "_Quit"
+msgstr "_Beenden"
+
+#: src/ui.py:52
+msgid "_Rotate 90 degrees CW"
+msgstr "90 Grad im _Uhrzeigersinn drehen"
+
+#: src/ui.py:54
+msgid "Rotate 180 de_grees"
+msgstr "180 Grad _drehen"
+
+#: src/ui.py:56
+msgid "Rotat_e 90 degrees CCW"
+msgstr "90 Grad gegen den Uhr_zeigersinn drehen"
+
+#: src/ui.py:58
+msgid "Fli_p horizontally"
+msgstr "Hori_zontal blättern"
+
+#: src/ui.py:60
+msgid "Flip _vertically"
+msgstr "Ver_tikal blättern"
+
+#: src/ui.py:62
+msgid "Manual _Zoom"
+msgstr "_Manuell Vergrößern"
+
+#: src/ui.py:63
+msgid "Open _recent"
+msgstr "Aktuelles Ö_ffnen"
+
+#: src/ui.py:64
+msgid "_Bookmarks"
+msgstr "Lesezei_chen"
+
+#: src/ui.py:65
+msgid "T_oolbars"
+msgstr "_Werkzeugleisten"
+
+#: src/ui.py:66
+msgid "_Edit"
+msgstr "Bea_rbeiten"
+
+#: src/ui.py:67
+msgid "_File"
+msgstr "Date_i"
+
+#: src/ui.py:68
+msgid "_View"
+msgstr "Ansic_ht"
+
+#: src/ui.py:69
+msgid "_Go"
+msgstr "_Gehe"
+
+#: src/ui.py:70
+msgid "_Help"
+msgstr "_Hilfe"
+
+#: src/ui.py:71
+msgid "_Transform"
+msgstr "_Umwandeln"
+
+#: src/ui.py:75
+msgid "_Fullscreen"
+msgstr "_Vollbild"
+
+#: src/ui.py:77
+msgid "_Double page mode"
+msgstr "_Doppelseitiger Modus"
+
+#: src/ui.py:79
+msgid "_Toolbar"
+msgstr "_Werkzeugleiste"
+
+#: src/ui.py:81
+msgid "_Menubar"
+msgstr "_Menüleiste"
+
+#: src/ui.py:83
+msgid "St_atusbar"
+msgstr "St_atusleiste"
+
+#: src/ui.py:85
+msgid "S_crollbars"
+msgstr "Ro_llleiste"
+
+#: src/ui.py:87
+msgid "Th_umbnails"
+msgstr "_Vorschaubilder"
+
+#: src/ui.py:89
+msgid "H_ide all"
+msgstr "Alle verstec_ken"
+
+#: src/ui.py:91
+msgid "_Manga mode"
+msgstr "_Manga-Modus"
+
+#: src/ui.py:93
+msgid "_Keep transformation"
+msgstr "Veränderung _behalten"
+
+#: src/ui.py:95
+msgid "Run _slideshow"
+msgstr "_Diaschau ausführen"
+
+#: src/ui.py:97
+msgid "Magnifying _glass"
+msgstr "_Lupe"
+
+#: src/ui.py:103
+msgid "_Best fit mode"
+msgstr "Am besten _passender Modus"
+
+#: src/ui.py:105
+msgid "Fit _width mode"
+msgstr "Modus mit angepasster Breite"
+
+#: src/ui.py:107
+msgid "Fit _height mode"
+msgstr "Modus mit angepasster H_öhe"
+
+#: src/ui.py:109
+msgid "M_anual zoom mode"
+msgstr "_Manueller Vergrößerungsmodus"
+
+#: src/ui.py:115
+msgid "_About"
+msgstr "_Über"
+
+#: src/ui.py:117
+msgid "_View comments..."
+msgstr "_Kommentare ansehen ..."
+
+#: src/ui.py:119
+msgid "_Edit archive..."
+msgstr "Ar_chive bearbeiten ..."
+
+#: src/ui.py:121
+msgid "_Open..."
+msgstr "Ö_ffnen ..."
+
+#: src/ui.py:123
+msgid "_Properties"
+msgstr "_Eigenschaften"
+
+#: src/ui.py:125
+msgid "_Enhance image..."
+msgstr "Bild aufbesser_n ..."
+
+#: src/ui.py:128
+msgid "_Thumbnail maintenance..."
+msgstr "Vorschaubilderver_waltung ..."
+
+#: src/ui.py:130
+msgid "Pr_eferences"
+msgstr "Einstell_ungen"
+
+#: src/ui.py:134
+msgid "_Library..."
+msgstr "Bibliothe_k ..."
+
+#: src/ui.py:284
+msgid "First page"
+msgstr "Erste Seite"
+
+#: src/ui.py:286
+msgid "Previous page"
+msgstr "Vorherige Seite"
+
+#: src/ui.py:287
+msgid "Next page"
+msgstr "Nächste Seite"
+
+#: src/ui.py:288
+msgid "Last page"
+msgstr "Letzte Seite"
+
+#: src/ui.py:299
+msgid "Manga mode"
+msgstr "Manga-Modus"
+
+#: src/ui.py:300
+msgid "Magnifying glass"
+msgstr "Lupe"

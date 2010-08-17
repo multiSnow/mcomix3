@@ -1,0 +1,1738 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-11-22 02:42+0100\n"
+"PO-Revision-Date: 2009-01-25 21:54+0100\n"
+"Last-Translator: Jan Nekvasil <jan.nekvasil@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+#
+# File: src/about.py, line: 18
+# File: src/about.py, line: 67
+#: src/about.py:19 src/about.py:68
+msgid "About"
+msgstr "O programu"
+
+#
+# File: src/about.py, line: 55
+#: src/about.py:56
+msgid "Comix is an image viewer specifically designed to handle comic books."
+msgstr "Comix je prohlížeč obrázků obzvláště uzpůsobený k práci s komiksy."
+
+#
+# File: src/about.py, line: 57
+#: src/about.py:58
+msgid "It reads ZIP, RAR and tar archives, as well as plain image files."
+msgstr "Čte ZIP, RAR a tar archivy, stejně jako prosté obrázkové soubory."
+
+#
+# File: src/about.py, line: 59
+#: src/about.py:60
+msgid "Comix is licensed under the GNU General Public License."
+msgstr "Comix je licencován pod GNU obecnou veřejnou licencí."
+
+#
+# File: src/about.py, line: 75
+#: src/about.py:83
+msgid "Developer"
+msgstr "Vývojář"
+
+#
+# File: src/about.py, line: 77
+#: src/about.py:84 src/about.py:85
+msgid "Simplified Chinese translation"
+msgstr "Překlad do zjednodušené čínštiny"
+
+#
+# File: src/about.py, line: 78
+#: src/about.py:86
+msgid "Spanish translation"
+msgstr "Překlad do španělštiny"
+
+#
+# File: src/about.py, line: 79
+#: src/about.py:87
+msgid "Brazilian Portuguese translation"
+msgstr "Překlad do brazilské portugalštiny"
+
+#
+# File: src/about.py, line: 81
+#: src/about.py:88
+msgid "German translation and Nautilus thumbnailer"
+msgstr "Překlad do němčiny a vytvářeč náhledů pro Nautilus"
+
+#
+# File: src/about.py, line: 82
+#: src/about.py:89 src/about.py:90
+msgid "Italian translation"
+msgstr "Překlad do italštiny"
+
+#
+# File: src/about.py, line: 83
+#: src/about.py:91
+msgid "Dutch translation"
+msgstr "Překlad do holandštiny"
+
+#
+# File: src/about.py, line: 84
+#: src/about.py:92 src/about.py:93
+msgid "French translation"
+msgstr "Překlad do francouzštiny"
+
+#
+# File: src/about.py, line: 85
+#: src/about.py:94 src/about.py:95
+msgid "Polish translation"
+msgstr "Překlad do polštiny"
+
+#
+# File: src/about.py, line: 86
+#: src/about.py:96
+msgid "Greek translation"
+msgstr "Překlad do řečtiny"
+
+#
+# File: src/about.py, line: 87
+#: src/about.py:97
+msgid "Catalan translation"
+msgstr "Překlad do katalánštiny"
+
+#
+# File: src/about.py, line: 88
+#: src/about.py:98 src/about.py:99
+msgid "Traditional Chinese translation"
+msgstr "Překlad do tradiční čínštiny"
+
+#
+# File: src/about.py, line: 89
+#: src/about.py:100
+msgid "Japanese translation"
+msgstr "Překlad do japonštiny"
+
+#
+# File: src/about.py, line: 90
+#: src/about.py:101
+msgid "Hungarian translation"
+msgstr "Překlad do maďarštiny"
+
+#
+# File: src/about.py, line: 91
+#: src/about.py:102
+msgid "Russian translation"
+msgstr "Překlad do maďarštiny"
+
+#
+# File: src/about.py, line: 92
+#: src/about.py:103
+msgid "Croatian translation"
+msgstr "Překlad do chorvatštiny"
+
+#
+# File: src/about.py, line: 93
+#: src/about.py:104
+msgid "Korean translation"
+msgstr "Překlad do korejštiny"
+
+#
+# File: src/about.py, line: 94
+#: src/about.py:105
+msgid "Persian translation"
+msgstr "Překlad do perštiny"
+
+#
+# File: src/about.py, line: 95
+#: src/about.py:106
+msgid "Indonesian translation"
+msgstr "Překlad do indonéštiny"
+
+#
+# File: src/about.py, line: 96
+#: src/about.py:107
+msgid "Czech translation"
+msgstr "Překlad do češtiny"
+
+#: src/about.py:108
+msgid "Ukrainian translation"
+msgstr ""
+
+#
+# File: src/about.py, line: 97
+#: src/about.py:109
+msgid "Icon design"
+msgstr "Ikony"
+
+#
+# File: src/about.py, line: 106
+#: src/about.py:116
+msgid "Credits"
+msgstr "Poděkování"
+
+#
+# File: src/archive.py, line: 66
+#: src/archive.py:66
+msgid "Could not find RAR file extractor!"
+msgstr "Nelze nalézt rozbalovač souborů RAR!"
+
+#
+# File: src/archive.py, line: 68
+#: src/archive.py:68
+msgid ""
+"You need either the <i>rar</i> or the <i>unrar</i> program installed in "
+"order to read RAR (.cbr) files."
+msgstr ""
+"Ke čtení RAR (.cbr) souborů je třeba mít nejprve nainstalovaný program "
+"<i>rar</i> nebo <i>unrar</i>."
+
+#
+# File: src/archive.py, line: 301
+#: src/archive.py:306
+msgid "ZIP archive"
+msgstr "Archiv ZIP"
+
+#
+# File: src/archive.py, line: 302
+#: src/archive.py:307
+msgid "Tar archive"
+msgstr "Archiv tar"
+
+#
+# File: src/archive.py, line: 303
+#: src/archive.py:308
+msgid "Gzip compressed tar archive"
+msgstr "Archiv tar komprimovaný pomocí gzip"
+
+#
+# File: src/archive.py, line: 304
+#: src/archive.py:309
+msgid "Bzip2 compressed tar archive"
+msgstr "Archiv tar komprimovaný pomocí bzip2"
+
+#
+# File: src/archive.py, line: 305
+#: src/archive.py:310
+msgid "RAR archive"
+msgstr "Archiv RAR"
+
+#
+# File: src/bookmark.py, line: 27
+#: src/bookmark.py:28
+msgid "_Add bookmark"
+msgstr "_Přidat záložku"
+
+#
+# File: src/bookmark.py, line: 29
+#: src/bookmark.py:30
+msgid "_Edit bookmarks..."
+msgstr "_Upravit záložky…"
+
+#
+# File: src/bookmark.py, line: 31
+#: src/bookmark.py:32
+msgid "_Clear bookmarks..."
+msgstr "_Vymazat záložky…"
+
+#
+# File: src/bookmark.py, line: 77
+#: src/bookmark.py:78
+msgid "Clear all bookmarks?"
+msgstr "Vymazat všechny záložky?"
+
+#
+# File: src/bookmark.py, line: 79
+#: src/bookmark.py:80
+msgid ""
+"All stored bookmarks will be removed. Are you sure that you want to continue?"
+msgstr ""
+"Všechny uložené záložky budou tímto odstraněny. Jste si jisti, že chcete "
+"pokračovat?"
+
+#
+# File: src/bookmark.py, line: 229
+#: src/bookmark.py:230
+msgid "Edit bookmarks"
+msgstr "Upravit záložky"
+
+#
+# File: src/bookmark.py, line: 255
+# File: src/edit.py, line: 267
+#: src/bookmark.py:256 src/edit.py:270
+msgid "Name"
+msgstr "Jméno"
+
+#
+# File: src/bookmark.py, line: 256
+#: src/bookmark.py:257
+msgid "Page"
+msgstr "Strana"
+
+#
+# File: src/comment.py, line: 16
+# File: src/preferences.py, line: 288
+#: src/comment.py:16 src/preferences.py:301
+msgid "Comments"
+msgstr "Komentáře"
+
+#
+# File: src/comment.py, line: 53
+#: src/comment.py:53
+#, python-format
+msgid "Could not read %s"
+msgstr "%s nelze načíst"
+
+#
+# File: src/deprecated.py, line: 16
+#: src/deprecated.py:16
+msgid "There are deprecated files left on your computer."
+msgstr "Na vašem počítači byly nalezeny zastaralé soubory."
+
+#
+# File: src/deprecated.py, line: 22
+#: src/deprecated.py:22
+msgid ""
+"Some old files (that were used for storing preferences, the library, "
+"bookmarks etc. for older versions of Comix) were found on your computer. If "
+"you do not plan on using the older versions of Comix again, you should "
+"remove these files in order to save some disk space. Do you want these files "
+"to be removed for you now?"
+msgstr ""
+"Na vašem počítači byly nalezeny soubory vytvořené starší verzí Comixu "
+"(uživatelské nastavení, knihovna, záložky atd.). Pokud neplánujete další "
+"používání některé ze starších verzí, je možno odstraněním těchto souborů "
+"uvolnit trochu místa na disku. Přejete si tyto soubory nyní odstranit?"
+
+#
+# File: src/edit.py, line: 28
+#: src/edit.py:29
+msgid "Edit archive"
+msgstr "Upravit archiv"
+
+#
+# File: src/edit.py, line: 36
+#: src/edit.py:37
+msgid "Import"
+msgstr "Importovat"
+
+#
+# File: src/edit.py, line: 50
+#: src/edit.py:51
+msgid "Images"
+msgstr "Obrázky"
+
+#
+# File: src/edit.py, line: 51
+#: src/edit.py:52
+msgid "Other files"
+msgstr "Ostatní soubory"
+
+#
+# File: src/edit.py, line: 99
+#: src/edit.py:101
+msgid "The new archive could not be saved!"
+msgstr "Nelze uložit nový archiv!"
+
+#
+# File: src/edit.py, line: 101
+#: src/edit.py:103
+msgid "The original files have not been removed."
+msgstr "Původní soubory nebyly odstraněny."
+
+#
+# File: src/edit.py, line: 115
+#: src/edit.py:117
+msgid "Archives are stored as ZIP files."
+msgstr "Archivy jsou uchovávány jako ZIP soubory."
+
+#
+# File: src/edit.py, line: 168
+# File: src/edit.py, line: 285
+#: src/edit.py:170 src/edit.py:288
+msgid "Remove from archive"
+msgstr "Odstranit z archivu"
+
+#
+# File: src/edit.py, line: 255
+#: src/edit.py:258
+msgid ""
+"Please note that the only files that are automatically added to this list "
+"are those files in archives that Comix recognizes as comments."
+msgstr ""
+"Vezměte prosím v úvahu, že na tento seznam jsou automaticky přidány pouze ty "
+"soubory, které Comix v archivech rozpozná jako komentáře."
+
+#
+# File: src/edit.py, line: 270
+#: src/edit.py:273
+msgid "Size"
+msgstr "Velikost"
+
+#
+# File: src/enhance.py, line: 51
+#: src/enhance.py:51
+msgid "Enhance image"
+msgstr "Vylepšit obrázek"
+
+#
+# File: src/enhance.py, line: 52
+#: src/enhance.py:52
+msgid "Defaults"
+msgstr "Výchozí hodnoty"
+
+#
+# File: src/enhance.py, line: 79
+#: src/enhance.py:79
+msgid "Brightness"
+msgstr "Jas"
+
+#
+# File: src/enhance.py, line: 90
+#: src/enhance.py:90
+msgid "Contrast"
+msgstr "Kontrast"
+
+#
+# File: src/enhance.py, line: 101
+#: src/enhance.py:101
+msgid "Saturation"
+msgstr "Sytost"
+
+#
+# File: src/enhance.py, line: 112
+#: src/enhance.py:112
+msgid "Sharpness"
+msgstr "Ostrost"
+
+#
+# File: src/enhance.py, line: 126
+#: src/enhance.py:126
+msgid "Automatically adjust contrast."
+msgstr "Automaticky upravit kontrast."
+
+#
+# File: src/enhance.py, line: 128
+#: src/enhance.py:128
+msgid ""
+"Automatically adjust contrast (both lightness and darkness), separately for "
+"each colour band."
+msgstr ""
+"Automaticky upravit kontrast (světlost i tmavost) odděleně pro každý rozsah "
+"barev."
+
+#
+# File: src/filechooser.py, line: 35
+# File: src/library.py, line: 489
+#: src/filechooser.py:38 src/library.py:490
+msgid "Open"
+msgstr "Otevřít"
+
+#
+# File: src/filechooser.py, line: 39
+#: src/filechooser.py:42
+msgid "Save"
+msgstr "Uložit"
+
+#
+# File: src/filechooser.py, line: 75
+#: src/filechooser.py:78
+msgid "All files"
+msgstr "Všechny soubory"
+
+#
+# File: src/filechooser.py, line: 78
+#: src/filechooser.py:81
+msgid "All Archives"
+msgstr "Všechny archivy"
+
+#
+# File: src/filechooser.py, line: 82
+#: src/filechooser.py:85
+msgid "ZIP archives"
+msgstr "Archivy ZIP"
+
+#
+# File: src/filechooser.py, line: 84
+#: src/filechooser.py:87
+msgid "RAR archives"
+msgstr "Archivy RAR"
+
+#
+# File: src/filechooser.py, line: 86
+#: src/filechooser.py:89
+msgid "Tar archives"
+msgstr "Archivy TAR"
+
+#
+# File: src/filechooser.py, line: 125
+#: src/filechooser.py:139
+#, python-format
+msgid "A file named '%s' already exists. Do you want to replace it?"
+msgstr "Soubor jménem „%s“ již existuje. Přejete si jej nahradit?"
+
+#
+# File: src/filechooser.py, line: 128
+#: src/filechooser.py:142
+msgid "Replacing it will overwrite its contents."
+msgstr "Nahrazením bude přepsán původní obsah."
+
+#
+# File: src/filechooser.py, line: 171
+# File: src/filechooser.py, line: 249
+#: src/filechooser.py:187 src/filechooser.py:304
+msgid "All images"
+msgstr "Všechny obrázky"
+
+#
+# File: src/filechooser.py, line: 173
+# File: src/filechooser.py, line: 251
+#: src/filechooser.py:189 src/filechooser.py:306
+msgid "JPEG images"
+msgstr "Obrázky JPEG"
+
+#
+# File: src/filechooser.py, line: 174
+# File: src/filechooser.py, line: 252
+#: src/filechooser.py:190 src/filechooser.py:307
+msgid "PNG images"
+msgstr "Obrázky PNG"
+
+#
+# File: src/filechooser.py, line: 195
+#: src/filechooser.py:231
+msgid "Automatically add the books to this collection"
+msgstr "Automaticky přidat knihy do této sbírky"
+
+#
+# File: src/filehandler.py, line: 209
+#: src/filehandler.py:209
+#, python-format
+msgid "Could not open %s: Is a directory."
+msgstr "Nelze otevřít %s: Je to složka"
+
+#
+# File: src/filehandler.py, line: 213
+#: src/filehandler.py:213
+#, python-format
+msgid "Could not open %s: No such file."
+msgstr "Nelze otevřít %s: Soubor neexistuje."
+
+#
+# File: src/filehandler.py, line: 217
+#: src/filehandler.py:217
+#, python-format
+msgid "Could not open %s: Permission denied."
+msgstr "Nelze otevřít %s: Přístup odmítnut."
+
+#
+# File: src/filehandler.py, line: 222
+#: src/filehandler.py:222
+#, python-format
+msgid "Could not open %s: Unknown file type."
+msgstr "Nelze otevřít %s: Neznámý typ souboru."
+
+#
+# File: src/filehandler.py, line: 285
+#: src/filehandler.py:285
+#, python-format
+msgid "No images in '%s'"
+msgstr "„%s“ neobsahuje žádné obrázky"
+
+#
+# File: src/filehandler.py, line: 411
+#: src/filehandler.py:413
+msgid "Unknown filetype"
+msgstr "Neznámý typ souboru"
+
+#
+# File: src/librarybackend.py, line: 272
+# File: src/librarybackend.py, line: 274
+#: src/librarybackend.py:271 src/librarybackend.py:273
+msgid "(Copy)"
+msgstr "(Kopie)"
+
+#
+# File: src/library.py, line: 38
+#: src/library.py:38
+msgid "Library"
+msgstr "Knihovna"
+
+#
+# File: src/library.py, line: 150
+#: src/library.py:150
+msgid "Rename..."
+msgstr "Přejmenovat…"
+
+#
+# File: src/library.py, line: 152
+#: src/library.py:152
+msgid "Duplicate collection"
+msgstr "Zduplikovat sbírku"
+
+#
+# File: src/library.py, line: 154
+#: src/library.py:154
+msgid "Remove collection..."
+msgstr "Odstranit sbírku…"
+
+#
+# File: src/library.py, line: 202
+#: src/library.py:202
+msgid "All books"
+msgstr "Všechny knihy"
+
+#
+# File: src/library.py, line: 231
+#: src/library.py:231
+msgid "Remove collection from the library?"
+msgstr "Odstranit sbírku z knihovny?"
+
+#
+# File: src/library.py, line: 233
+#: src/library.py:233
+msgid ""
+"The selected collection will be removed from the library (but the books and "
+"subcollections in it will remain). Are you sure that you want to continue?"
+msgstr ""
+"Vybraná sbírka bude tímto odstraněna z knihovny (přičemž knihy a podsbírky v "
+"ní zůstanou zachovány). Jste si jisti, že chcete pokračovat?"
+
+#
+# File: src/library.py, line: 251
+#: src/library.py:251
+msgid "Rename collection?"
+msgstr "Přejmenovat sbírku?"
+
+#
+# File: src/library.py, line: 253
+#: src/library.py:253
+msgid "Please enter a new name for the selected collection."
+msgstr "Prosím vložte nové jméno vybrané sbírky."
+
+#
+# File: src/library.py, line: 271
+#: src/library.py:271
+#, python-format
+msgid "Could not change the name to '%s'."
+msgstr "Nelze změnit jméno na „%s“."
+
+#
+# File: src/library.py, line: 275
+# File: src/library.py, line: 881
+#: src/library.py:275 src/library.py:882
+msgid "A collection by that name already exists."
+msgstr "Sbírka tohoto jména již existuje."
+
+#
+# File: src/library.py, line: 285
+#: src/library.py:285
+msgid "Could not duplicate collection."
+msgstr "Sbírku nelze zduplikovat."
+
+#
+# File: src/library.py, line: 382
+#: src/library.py:382
+msgid "Root"
+msgstr "Kořen"
+
+#
+# File: src/library.py, line: 386
+#: src/library.py:386
+#, python-format
+msgid ""
+"Put the collection '%(subcollection)s' in the collection '%(supercollection)"
+"s'."
+msgstr "Vložit sbírku „%(subcollection)s“ do sbírky „%(supercollection)s“."
+
+#
+# File: src/library.py, line: 407
+#: src/library.py:407
+#, python-format
+msgid "Add books to '%s'."
+msgstr "Přidat knihy do „%s“."
+
+#
+# File: src/library.py, line: 411
+#: src/library.py:411
+#, python-format
+msgid ""
+"Move books from '%(source collection)s' to '%(destination collection)s'."
+msgstr ""
+"Přesunout knihy z „%(source collection)s“ do „%(destination collection)s“."
+
+#
+# File: src/library.py, line: 492
+#: src/library.py:493
+msgid "Remove from this collection"
+msgstr "Odstranit z této sbírky"
+
+#
+# File: src/library.py, line: 495
+#: src/library.py:496
+msgid "Remove from the library..."
+msgstr "Odstranit z knihovny…"
+
+#
+# File: src/library.py, line: 588
+#: src/library.py:589
+#, python-format
+msgid "Removed %(num)d book(s) from '%(collection)s'."
+msgstr "Odstraněno %(num)d knih ze sbírky „%(collection)s“."
+
+#
+# File: src/library.py, line: 597
+#: src/library.py:598
+msgid "Remove books from the library?"
+msgstr "Odstranit knihy z knihovny?"
+
+#
+# File: src/library.py, line: 599
+#: src/library.py:600
+msgid ""
+"The selected books will be removed from the library (but the original files "
+"will be untouched). Are you sure that you want to continue?"
+msgstr ""
+"Vybrané knihy budou tímto odstraněny z knihovny (přičemž původní soubory "
+"zůstanou netknuty).  Jste si jisti, že chcete pokračovat?"
+
+#
+# File: src/library.py, line: 609
+#: src/library.py:610
+#, python-format
+msgid "Removed %d book(s) from the library."
+msgstr "Odstraněno %d knih z knihovny."
+
+#
+# File: src/library.py, line: 769
+#: src/library.py:770
+msgid "Search"
+msgstr "Hledat"
+
+#
+# File: src/library.py, line: 774
+#: src/library.py:775
+msgid ""
+"Display only those books that have the specified text string in their full "
+"path. The search is not case sensitive."
+msgstr ""
+"Zobrazit pouze ty knihy, jejichž celá cesta obsahuje daný výraz. Vyhledávání "
+"nerozlišuje velká a malá písmena."
+
+#
+# File: src/library.py, line: 776
+#: src/library.py:777
+msgid "Cover size"
+msgstr "Velikost přebalu"
+
+#
+# File: src/library.py, line: 789
+#: src/library.py:790
+msgid "Add books"
+msgstr "Přidat knihy"
+
+#
+# File: src/library.py, line: 793
+#: src/library.py:794
+msgid "Add more books to the library."
+msgstr "Přidat další knihy do knihovny."
+
+#
+# File: src/library.py, line: 795
+#: src/library.py:796
+msgid "Add collection"
+msgstr "Přidat sbírku"
+
+#
+# File: src/library.py, line: 800
+#: src/library.py:801
+msgid "Add a new empty collection."
+msgstr "Přidat novou prázdnou sbírku."
+
+#
+# File: src/library.py, line: 806
+#: src/library.py:807
+msgid "Open the selected book."
+msgstr "Otevřít vybranou knihu."
+
+#
+# File: src/library.py, line: 832
+# File: src/properties.py, line: 113
+#: src/library.py:833 src/properties.py:118
+#, python-format
+msgid "%d pages"
+msgstr "%d stránek"
+
+#
+# File: src/library.py, line: 854
+#: src/library.py:855
+msgid "Add new collection?"
+msgstr "Přidat novou sbírku?"
+
+#
+# File: src/library.py, line: 856
+#: src/library.py:857
+msgid "Please enter a name for the new collection."
+msgstr "Prosím vložte jméno nové sbírky."
+
+#
+# File: src/library.py, line: 862
+#: src/library.py:863
+msgid "New collection"
+msgstr "Nová sbírka"
+
+#
+# File: src/library.py, line: 876
+#: src/library.py:877
+#, python-format
+msgid "Could not add a new collection called '%s'."
+msgstr "Nelze přidat novou sbírku jménem „%s“."
+
+#
+# File: src/library.py, line: 910
+#: src/library.py:911
+msgid "Adding books"
+msgstr "Přidávají se knihy"
+
+#
+# File: src/library.py, line: 930
+#: src/library.py:931
+msgid "Added books"
+msgstr "Přidané knihy"
+
+#
+# File: src/library.py, line: 952
+#: src/library.py:953
+#, python-format
+msgid "Adding '%s'..."
+msgstr "Přidává se „%s“…"
+
+#
+# File: src/main.py, line: 666
+#: src/main.py:704
+msgid "SLIDESHOW"
+msgstr "PROMÍTÁNÍ OBRÁZKŮ"
+
+#
+# File: src/preferences.py, line: 78
+#: src/preferences.py:82
+msgid "Preferences"
+msgstr "Nastavení"
+
+#
+# File: src/preferences.py, line: 93
+#: src/preferences.py:97
+msgid "Background"
+msgstr "Pozadí"
+
+#
+# File: src/preferences.py, line: 95
+#: src/preferences.py:99
+msgid "Use this colour as background"
+msgstr "Používat tuto barvu jako pozadí"
+
+#
+# File: src/preferences.py, line: 97
+#: src/preferences.py:101
+msgid "Always use this selected colour as the background colour."
+msgstr "Vždy používat vybranou barvu jako barvu pozadí."
+
+#
+# File: src/preferences.py, line: 102
+#: src/preferences.py:106
+msgid "Use dynamic background colour."
+msgstr "Používat dynamickou barvu pozadí."
+
+#
+# File: src/preferences.py, line: 106
+#: src/preferences.py:110
+msgid "Automatically pick a background colour that fits the viewed image."
+msgstr "Automaticky vybírat barvu hodící se k prohlíženému obrázku."
+
+#
+# File: src/preferences.py, line: 109
+#: src/preferences.py:113
+msgid "Thumbnails"
+msgstr "Náhledy"
+
+#
+# File: src/preferences.py, line: 110
+#: src/preferences.py:114
+msgid "Thumbnail size (in pixels)"
+msgstr "Velikost náhledu (v pixelech)"
+
+#
+# File: src/preferences.py, line: 117
+#: src/preferences.py:121
+msgid "Show page numbers on thumbnails."
+msgstr "Zobrazit čísla stran v náhledech."
+
+#
+# File: src/preferences.py, line: 124
+#: src/preferences.py:128
+msgid "Magnifying Glass"
+msgstr "Lupa"
+
+#
+# File: src/preferences.py, line: 125
+#: src/preferences.py:129
+msgid "Magnifying glass size (in pixels)"
+msgstr "Velikost lupy (v pixelech)"
+
+#
+# File: src/preferences.py, line: 131
+#: src/preferences.py:135
+msgid ""
+"Set the size of the magnifying glass. It is a square with a side of this "
+"many pixels."
+msgstr ""
+"Nastavit velikost lupy, čtverce o velikosti strany daného počtu pixelů."
+
+#
+# File: src/preferences.py, line: 133
+#: src/preferences.py:137
+msgid "Magnification factor"
+msgstr "Úroveň zvětšení"
+
+#
+# File: src/preferences.py, line: 140
+#: src/preferences.py:144
+msgid "Set the magnification factor of the magnifying glass."
+msgstr "Nastavit úroveň zvětšení lupy."
+
+#
+# File: src/preferences.py, line: 143
+#: src/preferences.py:147
+msgid "Image scaling"
+msgstr "Škálování obrázku."
+
+#
+# File: src/preferences.py, line: 144
+#: src/preferences.py:148
+msgid "Stretch small images."
+msgstr "Roztáhnout malé obrázky."
+
+#
+# File: src/preferences.py, line: 148
+#: src/preferences.py:152
+msgid ""
+"Stretch images to a size that is larger than their original size if the "
+"current zoom mode requests it. If this preference is unset, images are never "
+"scaled to be larger than their original size."
+msgstr ""
+"Roztáhnout obrázky na větší než původní velikost, pokud to daný režim "
+"přiblížení vyžaduje. Není-li tato volba nastavena, obrázky nejsou nikdy "
+"zvětšovány přes svou původní velikost."
+
+#
+# File: src/preferences.py, line: 151
+#: src/preferences.py:155
+msgid "Transparency"
+msgstr "Průhlednost"
+
+#
+# File: src/preferences.py, line: 153
+#: src/preferences.py:157
+msgid "Use checkered background for transparent images."
+msgstr "Používat šachovnicové pozadí pro průhledné obrázky."
+
+#
+# File: src/preferences.py, line: 159
+#: src/preferences.py:163
+msgid ""
+"Use a grey checkered background for transparent images. If this preference "
+"is unset, the background is plain white instead."
+msgstr ""
+"Používat šedé šachovnicové pozadí pro průhledné obrázky. Není-li tato volba "
+"nastavena, je použito prosté bílé pozadí."
+
+#
+# File: src/preferences.py, line: 161
+#: src/preferences.py:165
+msgid "Appearance"
+msgstr "Vzhled"
+
+#
+# File: src/preferences.py, line: 167
+#: src/preferences.py:171
+msgid "Scroll"
+msgstr "Posun"
+
+#
+# File: src/preferences.py, line: 169
+#: src/preferences.py:173
+msgid "Use smart space key scrolling."
+msgstr "Používat chytré posouvání mezerníkem."
+
+#
+# File: src/preferences.py, line: 174
+#: src/preferences.py:178
+msgid ""
+"Use smart scrolling with the space key. Normally the space key scrolls only "
+"right down (or up when shift is pressed), but with this preference set it "
+"also scrolls sideways and so tries to follow the natural reading order of "
+"the comic book."
+msgstr ""
+"Používat chytré posouvání mezerníkem. Běžně mezerník posouvá stranu pouze "
+"přímo dolů (nebo nahoru, je-li přidržen Shift), s tímto nastavením je však "
+"strana posouvána i do stran ve snaze následovat přirozený způsob čtení "
+"komiksu."
+
+#: src/preferences.py:182
+msgid "Flip pages when scrolling off the edges of the page."
+msgstr "Obracet strany při posunu přes okraj strany."
+
+#: src/preferences.py:187
+msgid ""
+"Flip pages when scrolling \"off the page\" with the scroll wheel or with the "
+"arrow keys. It takes three consecutive \"steps\" with the scroll wheel or "
+"the arrow keys for the pages to be flipped."
+msgstr ""
+"Obracet strany při posunu „mimo stranu“ šipkami nebo kolečkem myši. Obrácení "
+"vyžaduje tři sousledné „kroky“ stejnou klávesou nebo kolečkem ve stejném "
+"směru."
+
+#
+# File: src/preferences.py, line: 177
+# File: src/ui.py, line: 296
+#: src/preferences.py:190 src/ui.py:298
+msgid "Double page mode"
+msgstr "Dvoustránkový režim"
+
+#
+# File: src/preferences.py, line: 179
+#: src/preferences.py:192
+msgid "Flip two pages in double page mode."
+msgstr "Obracet po dvou stranách ve dvoustránkovém režimu."
+
+#
+# File: src/preferences.py, line: 184
+#: src/preferences.py:197
+msgid ""
+"Flip two pages, instead of one, each time we flip pages in double page mode."
+msgstr "Obracet dvě strany místo jedné při listování ve dvoustránkovém režimu."
+
+#
+# File: src/preferences.py, line: 187
+#: src/preferences.py:200
+msgid "Show only one wide image in double page mode."
+msgstr "Zobrazovat pouze jeden široký obrázek ve dvoustránkovém režimu."
+
+#
+# File: src/preferences.py, line: 193
+#: src/preferences.py:206
+msgid ""
+"Display only one image in double page mode, if the image's width exceeds its "
+"height. The result of this is that scans that span two pages are displayed "
+"properly (i.e. alone) also in double page mode."
+msgstr ""
+"Zobrazit pouze jeden obrázek ve dvoustránkovém režimu, přesáhne-li šířka "
+"obrázku jeho výšku. Ve výsledku jsou takto zobrazovány vcelku naskenované "
+"dvoustrany správně (t.j. jako jediný obrázek) i ve dvoustránkovém režimu."
+
+#
+# File: src/preferences.py, line: 196
+#: src/preferences.py:209
+msgid "Files"
+msgstr "Soubory"
+
+#
+# File: src/preferences.py, line: 198
+#: src/preferences.py:211
+msgid "Automatically open the next archive."
+msgstr "Automaticky otvírat následující archiv."
+
+#
+# File: src/preferences.py, line: 203
+#: src/preferences.py:216
+msgid ""
+"Automatically open the next archive in the directory when flipping past the "
+"last page, or the previous archive when flipping past the first page."
+msgstr ""
+"Automaticky otevírat následující archiv ve složce po otočení poslední "
+"strany, či naopak archiv předchozí při nalistování před první stranu."
+
+#
+# File: src/preferences.py, line: 206
+#: src/preferences.py:219
+msgid "Automatically open the last viewed file on startup."
+msgstr "Při startu automaticky otevírat poslední prohlížený soubor."
+
+#
+# File: src/preferences.py, line: 211
+#: src/preferences.py:224
+msgid ""
+"Automatically open, on startup, the file that was open when Comix was last "
+"closed."
+msgstr ""
+"Automaticky otevírat při spuštění soubor otevřený při posledním ukončení "
+"Comixu."
+
+#
+# File: src/preferences.py, line: 214
+#: src/preferences.py:227
+msgid "Store information about recently opened files."
+msgstr "Ukládat informace o nedávno otevřených souborech."
+
+#
+# File: src/preferences.py, line: 219
+#: src/preferences.py:232
+msgid ""
+"Add information about all files opened from within Comix to the shared "
+"recent files list."
+msgstr ""
+"Přidávat údaje o všech souborech otevíraných v Comixu na obecný seznam "
+"nedávno používaných souborů."
+
+#
+# File: src/preferences.py, line: 222
+#: src/preferences.py:235
+msgid "Store thumbnails for opened files."
+msgstr "Ukládat náhledy otevřených souborů."
+
+#
+# File: src/preferences.py, line: 227
+#: src/preferences.py:240
+msgid ""
+"Store thumbnails for opened files according to the freedesktop.org "
+"specification. These thumbnails are shared by many other applications, such "
+"as most file managers."
+msgstr ""
+"Ukládat náhledy pro otevírané soubory v souladu se specifikací freedesktop."
+"org. Tyto náhledy jsou používány mnoha jinými aplikacemi, jako například "
+"většinou správců souborů."
+
+#
+# File: src/preferences.py, line: 230
+#: src/preferences.py:243
+msgid "Cache"
+msgstr "Přednačítání"
+
+#
+# File: src/preferences.py, line: 231
+#: src/preferences.py:244
+msgid "Use a cache to speed up browsing."
+msgstr "Používat přednačítání pro zrychlení prohlížení."
+
+#
+# File: src/preferences.py, line: 235
+#: src/preferences.py:248
+msgid ""
+"Cache the images that are next to the currently viewed image in order to "
+"speed up browsing. Since the speed improvements are quite big, it is "
+"recommended that you have this preference set, unless you are running short "
+"on free RAM."
+msgstr ""
+"Přednačítat následující obrázky pro urychlení prohlížení. Vzhledem k "
+"výraznému zlepšení rychlosti je doporučeno povolit tuto volbu pokud nehrozí "
+"nedostatek volné operační paměti."
+
+#
+# File: src/preferences.py, line: 237
+#: src/preferences.py:250
+msgid "Behaviour"
+msgstr "Chování"
+
+#
+# File: src/preferences.py, line: 243
+#: src/preferences.py:256
+msgid "Default modes"
+msgstr "Výchozí režimy"
+
+#
+# File: src/preferences.py, line: 245
+#: src/preferences.py:258
+msgid "Use double page mode by default."
+msgstr "Použít dvoustránkový režim jako výchozí."
+
+#
+# File: src/preferences.py, line: 250
+#: src/preferences.py:263
+msgid "Use fullscreen by default."
+msgstr "Použít zobrazení přes celou obrazovku jako výchozí."
+
+#
+# File: src/preferences.py, line: 255
+#: src/preferences.py:268
+msgid "Use manga mode by default."
+msgstr "Použít manga režim jako výchozí."
+
+#
+# File: src/preferences.py, line: 260
+#: src/preferences.py:273
+msgid "Default zoom mode"
+msgstr "Výchozí úroveň přiblížení"
+
+#
+# File: src/preferences.py, line: 262
+# File: src/ui.py, line: 288
+#: src/preferences.py:275 src/ui.py:290
+msgid "Best fit mode"
+msgstr "Optimální přizpůsobení"
+
+#
+# File: src/preferences.py, line: 263
+# File: src/ui.py, line: 290
+#: src/preferences.py:276 src/ui.py:292
+msgid "Fit width mode"
+msgstr "Přizpůsobit na šířku"
+
+#
+# File: src/preferences.py, line: 264
+# File: src/ui.py, line: 292
+#: src/preferences.py:277 src/ui.py:294
+msgid "Fit height mode"
+msgstr "Přizpůsobit na výšku"
+
+#
+# File: src/preferences.py, line: 265
+# File: src/ui.py, line: 294
+#: src/preferences.py:278 src/ui.py:296
+msgid "Manual zoom mode"
+msgstr "Ruční přiblížení"
+
+#
+# File: src/preferences.py, line: 271
+#: src/preferences.py:284
+msgid "Fullscreen"
+msgstr "Celá obrazovka"
+
+#
+# File: src/preferences.py, line: 273
+#: src/preferences.py:286
+msgid "Automatically hide all toolbars in fullscreen."
+msgstr ""
+"Automaticky schovávat lištu nástrojů při zobrazení přes celou obrazovku."
+
+#
+# File: src/preferences.py, line: 279
+#: src/preferences.py:292
+msgid "Slideshow"
+msgstr "Promítání snímků"
+
+#
+# File: src/preferences.py, line: 280
+#: src/preferences.py:293
+msgid "Slideshow delay (in seconds)"
+msgstr "Prodleva při promítání obrázků (ve vteřinách)"
+
+#
+# File: src/preferences.py, line: 289
+#: src/preferences.py:302
+msgid "Comment extensions"
+msgstr "Přípony komentářů"
+
+#
+# File: src/preferences.py, line: 295
+#: src/preferences.py:308
+msgid ""
+"Treat all files found within archives, that have one of these file endings, "
+"as comments."
+msgstr "Zacházet se soubory s jednou z těchto přípon v názvu jako s komentáři."
+
+#: src/preferences.py:311
+msgid "Rotation"
+msgstr "Orientace"
+
+#: src/preferences.py:313
+msgid "Automatically rotate images according to their metadata."
+msgstr "Automaticky upravovat orientaci obrázků podle jejich metadat."
+
+#: src/preferences.py:318
+msgid ""
+"Automatically rotate images when an orientation is specified in the image "
+"metadata, such as in an Exif tag."
+msgstr ""
+"Automaticky pootáčet obrázky pokud jejich metadata obsahují údaj o "
+"orientaci, jako např. značku Exif."
+
+#
+# File: src/preferences.py, line: 297
+#: src/preferences.py:320
+msgid "Display"
+msgstr "Zobrazit"
+
+#
+# File: src/properties.py, line: 89
+#: src/properties.py:94
+msgid "Properties"
+msgstr "Vlastnosti"
+
+#
+# File: src/properties.py, line: 114
+#: src/properties.py:119
+#, python-format
+msgid "%d comments"
+msgstr "%d komentářů"
+
+#
+# File: src/properties.py, line: 124
+# File: src/properties.py, line: 159
+#: src/properties.py:129 src/properties.py:164
+msgid "Location"
+msgstr "Umístění"
+
+#
+# File: src/properties.py, line: 126
+# File: src/properties.py, line: 160
+#: src/properties.py:131 src/properties.py:165
+msgid "Accessed"
+msgstr "Použitý"
+
+#
+# File: src/properties.py, line: 128
+# File: src/properties.py, line: 162
+#: src/properties.py:133 src/properties.py:167
+msgid "Modified"
+msgstr "Změněný"
+
+#
+# File: src/properties.py, line: 130
+# File: src/properties.py, line: 164
+#: src/properties.py:135 src/properties.py:169
+msgid "Permissions"
+msgstr "Oprávnění"
+
+#
+# File: src/properties.py, line: 131
+# File: src/properties.py, line: 165
+#: src/properties.py:136 src/properties.py:170
+msgid "Owner"
+msgstr "Vlastník"
+
+#
+# File: src/properties.py, line: 135
+#: src/properties.py:140
+msgid "Archive"
+msgstr "Archiv"
+
+#
+# File: src/properties.py, line: 169
+#: src/properties.py:174
+msgid "Image"
+msgstr "Obrázek"
+
+#
+# File: src/thumbremover.py, line: 22
+#: src/thumbremover.py:24
+msgid "Thumbnail maintenance"
+msgstr "Správa náhledů"
+
+#
+# File: src/thumbremover.py, line: 24
+#: src/thumbremover.py:26
+msgid "Cleanup"
+msgstr "Pročištění"
+
+#
+# File: src/thumbremover.py, line: 36
+#: src/thumbremover.py:38
+msgid "Cleanup thumbnails"
+msgstr "Pročistit náhledy"
+
+#
+# File: src/thumbremover.py, line: 46
+#: src/thumbremover.py:48
+msgid ""
+"Thumbnails for files (such as image files and comic book archives) are "
+"stored in your home directory. Many different applications use and create "
+"these thumbnails, but sometimes thumbnails remain even though the original "
+"files have been removed - wasting space. This dialog can cleanup your stored "
+"thumbnails by removing orphaned and outdated thumbnails."
+msgstr ""
+"Náhledy pro soubory (jako jsou třeba obrázky a archivy komiksů) jsou "
+"ukládány do vaší domovské složky. Mnoho různých aplikací používá a vytváří "
+"tyto náhledy, občas však náhledy zůstanou na disku i po odstranění původních "
+"souborů, čím zbytečně zabírají místo. Tento nástroj umožňuje pročistit vaše "
+"uložené náhledy odstraněním těch osiřelých a zastaralých."
+
+#
+# File: src/thumbremover.py, line: 58
+#: src/thumbremover.py:60
+msgid "Thumbnail directory"
+msgstr "Složka náhledů"
+
+#
+# File: src/thumbremover.py, line: 65
+#: src/thumbremover.py:67
+msgid "Total number of thumbnails"
+msgstr "Celkový počet náhledů"
+
+#
+# File: src/thumbremover.py, line: 68
+# File: src/thumbremover.py, line: 75
+#: src/thumbremover.py:70 src/thumbremover.py:77
+msgid "Calculating..."
+msgstr "Přepočítává se…"
+
+#
+# File: src/thumbremover.py, line: 72
+#: src/thumbremover.py:74
+msgid "Total size of thumbnails"
+msgstr "Celková velikost náhledů"
+
+#
+# File: src/thumbremover.py, line: 80
+#: src/thumbremover.py:82
+msgid "Do you want to cleanup orphaned and outdated thumbnails now?"
+msgstr "Přejete si nyní pročistit osiřelé a zastaralé náhledy?"
+
+#
+# File: src/thumbremover.py, line: 116
+#: src/thumbremover.py:118
+msgid "Removing thumbnails"
+msgstr "Odstraňují se náhledy"
+
+#
+# File: src/thumbremover.py, line: 135
+#: src/thumbremover.py:137
+msgid "Number of removed thumbnails"
+msgstr "Počet odstraněných náhledů"
+
+#
+# File: src/thumbremover.py, line: 142
+#: src/thumbremover.py:144
+msgid "Total size of removed thumbnails"
+msgstr "Celková velikost odstraněných náhledů"
+
+#
+# File: src/thumbremover.py, line: 193
+#: src/thumbremover.py:195
+#, python-format
+msgid "Removed thumbnail for '%s'"
+msgstr "Odstraněn náhled pro „%s“"
+
+#
+# File: src/ui.py, line: 34
+#: src/ui.py:34
+msgid "_Next page"
+msgstr "_Následující strana"
+
+#
+# File: src/ui.py, line: 36
+#: src/ui.py:36
+msgid "_Previous page"
+msgstr "_Předchozí strana"
+
+#
+# File: src/ui.py, line: 38
+#: src/ui.py:38
+msgid "_First page"
+msgstr "P_rvní strana"
+
+#
+# File: src/ui.py, line: 40
+#: src/ui.py:40
+msgid "_Last page"
+msgstr "P_oslední strana"
+
+#
+# File: src/ui.py, line: 42
+#: src/ui.py:42
+msgid "_Zoom in"
+msgstr "_Přiblížit"
+
+#
+# File: src/ui.py, line: 44
+#: src/ui.py:44
+msgid "Zoom _out"
+msgstr "_Oddálit"
+
+#
+# File: src/ui.py, line: 46
+#: src/ui.py:46
+msgid "O_riginal size"
+msgstr "Původní _velikost"
+
+#
+# File: src/ui.py, line: 48
+#: src/ui.py:48
+msgid "_Close"
+msgstr "_Zavřít"
+
+#
+# File: src/ui.py, line: 50
+#: src/ui.py:50
+msgid "_Quit"
+msgstr "_Ukončit"
+
+#
+# File: src/ui.py, line: 52
+#: src/ui.py:52
+msgid "_Rotate 90 degrees CW"
+msgstr "Pootočit o 90° _ve směru hodinových ručiček"
+
+#
+# File: src/ui.py, line: 54
+#: src/ui.py:54
+msgid "Rotate 180 de_grees"
+msgstr "Pootočit _o 180°"
+
+#
+# File: src/ui.py, line: 56
+#: src/ui.py:56
+msgid "Rotat_e 90 degrees CCW"
+msgstr "Pootočit o 90° _proti směru hodinových ručiček"
+
+#
+# File: src/ui.py, line: 58
+#: src/ui.py:58
+msgid "Fli_p horizontally"
+msgstr "Převrátit _vodorovně"
+
+#
+# File: src/ui.py, line: 60
+#: src/ui.py:60
+msgid "Flip _vertically"
+msgstr "Převrátit _svisle"
+
+#
+# File: src/ui.py, line: 62
+#: src/ui.py:62
+msgid "Manual _Zoom"
+msgstr "_Ruční přiblížení"
+
+#
+# File: src/ui.py, line: 63
+#: src/ui.py:63
+msgid "Open _recent"
+msgstr "Ot_evřít nedávný"
+
+#
+# File: src/ui.py, line: 64
+#: src/ui.py:64
+msgid "_Bookmarks"
+msgstr "_Záložky"
+
+#
+# File: src/ui.py, line: 65
+#: src/ui.py:65
+msgid "T_oolbars"
+msgstr "_Lišty nástrojů"
+
+#
+# File: src/ui.py, line: 66
+#: src/ui.py:66
+msgid "_Edit"
+msgstr "_Upravit"
+
+#
+# File: src/ui.py, line: 67
+#: src/ui.py:67
+msgid "_File"
+msgstr "_Soubor"
+
+#
+# File: src/ui.py, line: 68
+#: src/ui.py:68
+msgid "_View"
+msgstr "_Zobrazit"
+
+#
+# File: src/ui.py, line: 69
+#: src/ui.py:69
+msgid "_Go"
+msgstr "_Přejít"
+
+#
+# File: src/ui.py, line: 70
+#: src/ui.py:70
+msgid "_Help"
+msgstr "_Nápověda"
+
+#
+# File: src/ui.py, line: 71
+#: src/ui.py:71
+msgid "_Transform"
+msgstr "_Transformace"
+
+#
+# File: src/ui.py, line: 75
+#: src/ui.py:75
+msgid "_Fullscreen"
+msgstr "_Celá obrazovka"
+
+#
+# File: src/ui.py, line: 77
+#: src/ui.py:77
+msgid "_Double page mode"
+msgstr "_Dvoustránkový režim"
+
+#
+# File: src/ui.py, line: 79
+#: src/ui.py:79
+msgid "_Toolbar"
+msgstr "_Lišta nástrojů"
+
+#
+# File: src/ui.py, line: 81
+#: src/ui.py:81
+msgid "_Menubar"
+msgstr "Lišta _nabídky"
+
+#
+# File: src/ui.py, line: 83
+#: src/ui.py:83
+msgid "St_atusbar"
+msgstr "_Stavová lišta"
+
+#
+# File: src/ui.py, line: 85
+#: src/ui.py:85
+msgid "S_crollbars"
+msgstr "_Posuvníky"
+
+#
+# File: src/ui.py, line: 87
+#: src/ui.py:87
+msgid "Th_umbnails"
+msgstr "_Náhledy"
+
+#
+# File: src/ui.py, line: 89
+#: src/ui.py:89
+msgid "H_ide all"
+msgstr "_Skrýt vše"
+
+#
+# File: src/ui.py, line: 91
+#: src/ui.py:91
+msgid "_Manga mode"
+msgstr "_Manga režim"
+
+#
+# File: src/ui.py, line: 93
+#: src/ui.py:93
+msgid "_Keep transformation"
+msgstr "_Zachovat transformaci"
+
+#
+# File: src/ui.py, line: 95
+#: src/ui.py:95
+msgid "Run _slideshow"
+msgstr "_Spustit promítání obrázků"
+
+#
+# File: src/ui.py, line: 97
+#: src/ui.py:97
+msgid "Magnifying _glass"
+msgstr "_Lupa"
+
+#
+# File: src/ui.py, line: 101
+#: src/ui.py:103
+msgid "_Best fit mode"
+msgstr "_Optimální přiblížení"
+
+#
+# File: src/ui.py, line: 103
+#: src/ui.py:105
+msgid "Fit _width mode"
+msgstr "Přizpůsobit na _šířku"
+
+#
+# File: src/ui.py, line: 105
+#: src/ui.py:107
+msgid "Fit _height mode"
+msgstr "Přizpůsobit na _výšku"
+
+#
+# File: src/ui.py, line: 107
+#: src/ui.py:109
+msgid "M_anual zoom mode"
+msgstr "Režim ručního _přiblížení"
+
+#
+# File: src/ui.py, line: 113
+#: src/ui.py:115
+msgid "_About"
+msgstr "_O programu"
+
+#
+# File: src/ui.py, line: 115
+#: src/ui.py:117
+msgid "_View comments..."
+msgstr "_Prohlédnout komentáře…"
+
+#
+# File: src/ui.py, line: 117
+#: src/ui.py:119
+msgid "_Edit archive..."
+msgstr "Upravit _archiv"
+
+#
+# File: src/ui.py, line: 119
+#: src/ui.py:121
+msgid "_Open..."
+msgstr "_Otevřít…"
+
+#
+# File: src/ui.py, line: 121
+#: src/ui.py:123
+msgid "_Properties"
+msgstr "_Vlastnosti"
+
+#
+# File: src/ui.py, line: 123
+#: src/ui.py:125
+msgid "_Enhance image..."
+msgstr "_Vylepšit obrázek"
+
+#
+# File: src/ui.py, line: 126
+#: src/ui.py:128
+msgid "_Thumbnail maintenance..."
+msgstr "_Správa náhledů"
+
+#
+# File: src/ui.py, line: 128
+#: src/ui.py:130
+msgid "Pr_eferences"
+msgstr "_Nastavení"
+
+#
+# File: src/ui.py, line: 132
+#: src/ui.py:134
+msgid "_Library..."
+msgstr "_Knihovna"
+
+#
+# File: src/ui.py, line: 282
+#: src/ui.py:284
+msgid "First page"
+msgstr "První strana"
+
+#
+# File: src/ui.py, line: 284
+#: src/ui.py:286
+msgid "Previous page"
+msgstr "Předchozí strana"
+
+#
+# File: src/ui.py, line: 285
+#: src/ui.py:287
+msgid "Next page"
+msgstr "Následující strana"
+
+#
+# File: src/ui.py, line: 286
+#: src/ui.py:288
+msgid "Last page"
+msgstr "Poslední strana"
+
+#
+# File: src/ui.py, line: 297
+#: src/ui.py:299
+msgid "Manga mode"
+msgstr "Manga režim"
+
+#
+# File: src/ui.py, line: 298
+#: src/ui.py:300
+msgid "Magnifying glass"
+msgstr "Lupa"
