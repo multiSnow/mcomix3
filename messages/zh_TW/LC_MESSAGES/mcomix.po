@@ -1,0 +1,1633 @@
+# MComix Traditional Chinese (zh_TW) translation.
+#
+# Hsin-lin Cheng <lancetw@gmail.com> 2006.
+# Wayne Su <mstarmstar@gmail.com>, 2008.
+#
+# Please give any advice here:
+# http://www.ubuntu-tw.org/modules/newbb/viewtopic.php?topic_id=12432&forum=15
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Comix 4.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-08-09 09:40-0400\n"
+"PO-Revision-Date: 2009-03-11 14:57+0800\n"
+"Last-Translator: Wayne Su <mstarmstar@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Chinese\n"
+"X-Poedit-Country: TAIWAN\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: about_dialog.py:12 about_dialog.py:66
+msgid "About"
+msgstr "關於"
+
+#: about_dialog.py:45
+msgid "! Could not find the icon file \"mcomix.png\"\n"
+msgstr ""
+
+#: about_dialog.py:53
+#, fuzzy
+msgid "MComix is an image viewer specifically designed to handle comic books."
+msgstr "Comix 是一個特別設計來觀看漫畫書的圖片檢視器。"
+
+#: about_dialog.py:55
+msgid "It reads ZIP, RAR and tar archives, as well as plain image files."
+msgstr ""
+"可以讀取圖片檔，又能讀取 ZIP、RAR、tar 壓縮檔 (含以 gzip、bzip2 壓縮的)。"
+
+#: about_dialog.py:57
+#, fuzzy
+msgid "MComix is released to the public domain."
+msgstr "Comix 係採用 GNU 通用公共授權條款。"
+
+#: about_dialog.py:93
+msgid "Credits"
+msgstr "致謝"
+
+#: archive_extractor.py:77 archive_extractor.py:230
+#, fuzzy
+msgid "! Could not find RAR file extractor."
+msgstr "無法找到 RAR 檔解壓縮程式！"
+
+#: archive_extractor.py:81
+msgid "Could not find RAR file extractor!"
+msgstr "無法找到 RAR 檔解壓縮程式！"
+
+#: archive_extractor.py:84
+msgid ""
+"You need either the <i>rar</i> or the <i>unrar</i> program installed in "
+"order to read RAR (.cbr) files."
+msgstr "您需要安裝 <i>rar</i> 或 <i>unrar</i> 程式，才能讀取 RAR (.cbr) 檔。"
+
+#: archive_extractor.py:111
+msgid "! Non-supported archive format:"
+msgstr ""
+
+#: archive_extractor.py:220
+msgid "! Non-local tar member:"
+msgstr ""
+
+#: archive_packer.py:55
+#, fuzzy
+msgid "! Could not create archive at "
+msgstr "無法變更名稱為「%s」。"
+
+#: archive_packer.py:68 archive_packer.py:90
+#, fuzzy
+msgid "! Could not add file "
+msgstr "無法讀取 %s"
+
+#: archive_packer.py:68 archive_packer.py:90
+msgid " to "
+msgstr ""
+
+#: archive_packer.py:68 archive_packer.py:90
+msgid ", aborting..."
+msgstr ""
+
+#: archive_tools.py:45
+msgid "! Error while reading"
+msgstr ""
+
+#: bookmark_backend.py:34
+msgid "! bookmark.py: Could not parse"
+msgstr ""
+
+#: bookmark_backend.py:35
+msgid "! bookmark.py: Deleting corrupt bookmarks file.\n"
+msgstr ""
+
+#: bookmark_dialog.py:13
+msgid "Edit bookmarks"
+msgstr "編輯書籤"
+
+#: bookmark_dialog.py:45
+msgid "Type"
+msgstr ""
+
+#: bookmark_dialog.py:46 edit_comment_area.py:31
+msgid "Name"
+msgstr "名稱"
+
+#: bookmark_dialog.py:47
+msgid "Page"
+msgstr "頁次"
+
+#: bookmark_menu.py:21
+msgid "_Add bookmark"
+msgstr "加入書籤 (_A)"
+
+#: bookmark_menu.py:23
+msgid "_Edit bookmarks..."
+msgstr "編輯書籤... (_E)"
+
+#: bookmark_menu.py:25
+msgid "_Clear bookmarks..."
+msgstr "清除書籤... (_C)"
+
+#: bookmark_menu.py:78
+msgid "Clear all bookmarks?"
+msgstr "要清除所有書籤嗎？"
+
+#: bookmark_menu.py:81
+msgid ""
+"All stored bookmarks will be removed. Are you sure that you want to continue?"
+msgstr "所有保存的書籤都會被移除，您確定要這樣做嗎？"
+
+#: comment_dialog.py:10 preferences_dialog.py:384
+msgid "Comments"
+msgstr "註解"
+
+#: comment_dialog.py:54
+#, python-format
+msgid "Could not read %s"
+msgstr "無法讀取 %s"
+
+#: constants.py:38
+msgid "ZIP archive"
+msgstr "ZIP 壓縮檔"
+
+#: constants.py:39
+msgid "Tar archive"
+msgstr "TAR 壓縮檔"
+
+#: constants.py:40
+msgid "Gzip compressed tar archive"
+msgstr "以 GZIP 壓縮的 tar 壓縮檔"
+
+#: constants.py:41
+msgid "Bzip2 compressed tar archive"
+msgstr "以 BZIP2 壓縮的 tar 壓縮檔"
+
+#: constants.py:42
+msgid "RAR archive"
+msgstr "RAR 壓縮檔"
+
+#: constants.py:54
+msgid "Lead developer of MComix"
+msgstr ""
+
+#: constants.py:55
+msgid "Original vision/developer of Comix"
+msgstr ""
+
+#: constants.py:56 constants.py:57
+msgid "Simplified Chinese translation"
+msgstr "簡體中文翻譯"
+
+#: constants.py:58
+msgid "Spanish translation"
+msgstr "西班牙語翻譯"
+
+#: constants.py:59
+msgid "Brazilian Portuguese translation"
+msgstr "巴西葡萄牙語翻譯"
+
+#: constants.py:60
+msgid "German translation and Nautilus thumbnailer"
+msgstr "德語翻譯與 Nautilus 縮圖功能作者"
+
+#: constants.py:61
+#, fuzzy
+msgid "German translation"
+msgstr "波斯語翻譯"
+
+#: constants.py:62 constants.py:63
+msgid "Italian translation"
+msgstr "義大利語翻譯"
+
+#: constants.py:64
+msgid "Dutch translation"
+msgstr "荷蘭語翻譯"
+
+#: constants.py:65 constants.py:66
+msgid "French translation"
+msgstr "法語翻譯"
+
+#: constants.py:67
+#, fuzzy
+msgid "Polish translatin"
+msgstr "波蘭語翻譯"
+
+#: constants.py:68
+msgid "Polish translation"
+msgstr "波蘭語翻譯"
+
+#: constants.py:69
+msgid "Greek translation"
+msgstr "希臘語翻譯"
+
+#: constants.py:70
+msgid "Catalan translation"
+msgstr "加泰羅尼亞語翻譯"
+
+#: constants.py:71 constants.py:72
+msgid "Traditional Chinese translation"
+msgstr "正體中文翻譯"
+
+#: constants.py:73
+msgid "Japanese translation"
+msgstr "日語翻譯"
+
+#: constants.py:74
+msgid "Hungarian translation"
+msgstr "匈牙利語翻譯"
+
+#: constants.py:75
+msgid "Russian translation"
+msgstr "俄語翻譯"
+
+#: constants.py:76
+msgid "Croatian translation"
+msgstr "克羅埃西亞語翻譯"
+
+#: constants.py:77
+msgid "Korean translation"
+msgstr "韓語翻譯"
+
+#: constants.py:78
+msgid "Persian translation"
+msgstr "波斯語翻譯"
+
+#: constants.py:79
+msgid "Indonesian translation"
+msgstr "印尼語翻譯"
+
+#: constants.py:80
+msgid "Czech translation"
+msgstr "捷克語翻譯"
+
+#: constants.py:81
+msgid "Ukrainian translation"
+msgstr ""
+
+#: constants.py:82
+#, fuzzy
+msgid "Galician translation"
+msgstr "義大利語翻譯"
+
+#: constants.py:83
+msgid "Icon design"
+msgstr "圖示設計"
+
+#: deprecated.py:13
+msgid "There are deprecated files left on your computer."
+msgstr "您的電腦中有一些已不再使用的檔案。"
+
+#: deprecated.py:19
+#, fuzzy
+msgid ""
+"Some old files (that were used for storing preferences, the library, "
+"bookmarks etc. for older versions of MComix) were found on your computer. If "
+"you do not plan on using the older versions of MComix again, you should "
+"remove these files in order to save some disk space. Do you want these files "
+"to be removed for you now?"
+msgstr ""
+"在您的電腦中有一些檔案，是舊版本 Comix 的設定檔、收藏庫、書籤等。如果您以後不"
+"會再使用舊版 Comix，可以刪除它們以節省磁碟空間。您想要現在就刪除這些檔案嗎？"
+
+#: deprecated.py:33
+#, fuzzy
+msgid "! Could not remove"
+msgstr "無法讀取 %s"
+
+#: edit_comment_area.py:18
+#, fuzzy
+msgid ""
+"Please note that the only files that are automatically added to this list "
+"are those files in archives that MComix recognizes as comments."
+msgstr ""
+"請注意：只有壓縮檔內被 Comix 認為是註解的檔案，才會被自動加入這個清單。"
+
+#: edit_comment_area.py:35
+msgid "Size"
+msgstr "大小"
+
+#: edit_comment_area.py:52 edit_image_area.py:45
+msgid "Remove from archive"
+msgstr "從壓縮檔移除"
+
+#: edit_dialog.py:23
+msgid "Edit archive"
+msgstr "編輯壓縮檔"
+
+#: edit_dialog.py:33
+msgid "Import"
+msgstr "匯入"
+
+#: edit_dialog.py:49
+msgid "Images"
+msgstr "圖片"
+
+#: edit_dialog.py:50
+#, fuzzy
+msgid "Comment files"
+msgstr "註解"
+
+#: edit_dialog.py:112
+msgid "The new archive could not be saved!"
+msgstr "無法儲存新壓縮檔！"
+
+#: edit_dialog.py:114
+msgid "The original files have not been removed."
+msgstr "原始檔案未被移除。"
+
+#: edit_dialog.py:133
+msgid "Archives are stored as ZIP files."
+msgstr "已儲存 ZIP 壓縮檔。"
+
+#: enhance_dialog.py:17
+msgid "Enhance image"
+msgstr "強化圖片"
+
+#: enhance_dialog.py:21
+msgid "Defaults"
+msgstr "預設值"
+
+#: enhance_dialog.py:48
+msgid "Brightness"
+msgstr "亮度"
+
+#: enhance_dialog.py:59
+msgid "Contrast"
+msgstr "對比"
+
+#: enhance_dialog.py:70
+msgid "Saturation"
+msgstr "飽和度"
+
+#: enhance_dialog.py:81
+msgid "Sharpness"
+msgstr "清晰度"
+
+#: enhance_dialog.py:95
+msgid "Automatically adjust contrast."
+msgstr "自動調整對比。"
+
+#: enhance_dialog.py:97
+msgid ""
+"Automatically adjust contrast (both lightness and darkness), separately for "
+"each colour band."
+msgstr "分別為每個色帶自動調整明亮度對比。"
+
+#: file_chooser_base_dialog.py:33 library_book_area.py:68
+msgid "Open"
+msgstr "開啟"
+
+#: file_chooser_base_dialog.py:38
+msgid "Save"
+msgstr "儲存"
+
+#: file_chooser_base_dialog.py:76
+msgid "All files"
+msgstr "所有檔案"
+
+#: file_chooser_base_dialog.py:79
+msgid "All Archives"
+msgstr "所有壓縮檔"
+
+#: file_chooser_base_dialog.py:84
+msgid "ZIP archives"
+msgstr "ZIP 壓縮檔"
+
+#: file_chooser_base_dialog.py:87
+msgid "RAR archives"
+msgstr "RAR 壓縮檔"
+
+#: file_chooser_base_dialog.py:90
+msgid "Tar archives"
+msgstr "TAR 壓縮檔"
+
+#: file_chooser_base_dialog.py:149
+#, python-format
+msgid "A file named '%s' already exists. Do you want to replace it?"
+msgstr "檔案 %s 已存在，您要替換掉它嗎？"
+
+#: file_chooser_base_dialog.py:153
+msgid "Replacing it will overwrite its contents."
+msgstr "替換後將會覆蓋掉原有內容。"
+
+#: file_chooser_library_dialog.py:24
+msgid "Automatically add the books to this collection"
+msgstr "自動將此書籍加入收藏"
+
+#: file_chooser_main_dialog.py:20 file_chooser_simple_dialog.py:22
+msgid "All images"
+msgstr "所有圖片"
+
+#: file_chooser_main_dialog.py:22 file_chooser_simple_dialog.py:24
+msgid "JPEG images"
+msgstr "JPEG 圖片"
+
+#: file_chooser_main_dialog.py:23 file_chooser_simple_dialog.py:25
+msgid "PNG images"
+msgstr "PNG 圖片"
+
+#: file_chooser_main_dialog.py:24 file_chooser_simple_dialog.py:26
+#, fuzzy
+msgid "GIF images"
+msgstr "PNG 圖片"
+
+#: file_chooser_main_dialog.py:25 file_chooser_simple_dialog.py:27
+#, fuzzy
+msgid "TIFF images"
+msgstr "圖片"
+
+#: file_chooser_main_dialog.py:26 file_chooser_simple_dialog.py:28
+#, fuzzy
+msgid "BMP images"
+msgstr "PNG 圖片"
+
+#: file_handler.py:71
+#, python-format
+msgid "Could not open %s: Is a directory."
+msgstr "無法開啟 %s：它是目錄。"
+
+#: file_handler.py:76
+#, python-format
+msgid "Could not open %s: No such file."
+msgstr "無法開啟 %s：找不到檔案。"
+
+#: file_handler.py:81
+#, python-format
+msgid "Could not open %s: Permission denied."
+msgstr "無法開啟 %s：沒有權限。"
+
+#: file_handler.py:88
+#, python-format
+msgid "Could not open %s: Unknown file type."
+msgstr "無法開啟 %s：不明的檔案類型。"
+
+#: file_handler.py:178
+#, python-format
+msgid "No images in '%s'"
+msgstr "%s 內沒有圖片"
+
+#: file_handler.py:430 main.py:974 preferences.py:85
+msgid "! Corrupt preferences file \""
+msgstr ""
+
+#: file_handler.py:430 main.py:974 preferences.py:85
+msgid "\", deleting..."
+msgstr ""
+
+#: icons.py:63
+#, fuzzy
+msgid "! Could not load icon \""
+msgstr "無法讀取 %s"
+
+#: image_handler.py:408
+msgid "Unknown filetype"
+msgstr "不明的檔案類型"
+
+#: library_add_progress_dialog.py:23
+msgid "Adding books"
+msgstr "正在新增書籍"
+
+#: library_add_progress_dialog.py:45
+msgid "Added books"
+msgstr "已新增書籍"
+
+#: library_add_progress_dialog.py:63
+msgid "Searching for archives..."
+msgstr ""
+
+#: library_add_progress_dialog.py:93
+#, python-format
+msgid "Adding '%s'..."
+msgstr "正在新增 %s ..."
+
+#: library_backend.py:11
+msgid "! Could neither find pysqlite2 nor sqlite3."
+msgstr ""
+
+#: library_backend.py:78
+msgid "! Non-existant book #"
+msgstr ""
+
+#: library_backend.py:83
+#, fuzzy
+msgid "! Could not get cover for "
+msgstr "無法變更名稱為「%s」。"
+
+#: library_backend.py:203 library_backend.py:231
+#, fuzzy
+msgid "! Could not add book "
+msgstr "無法讀取 %s"
+
+#: library_backend.py:203
+#, fuzzy
+msgid " to the library"
+msgstr "從此收藏庫移除..."
+
+#: library_backend.py:220
+#, fuzzy
+msgid "! Could not add collection"
+msgstr "無法備份收藏。"
+
+#: library_backend.py:231
+#, fuzzy
+msgid " to collection "
+msgstr "加入收藏"
+
+#: library_backend.py:257
+#, fuzzy
+msgid "! Could not rename collection to "
+msgstr "無法備份收藏。"
+
+#: library_backend.py:268 library_backend.py:270
+msgid "(Copy)"
+msgstr "(複製)"
+
+#: library_book_area.py:71
+msgid "Remove from this collection"
+msgstr "從此收藏移除"
+
+#: library_book_area.py:74
+msgid "Remove from the library..."
+msgstr "從此收藏庫移除..."
+
+#: library_book_area.py:77
+msgid "Completey remove..."
+msgstr ""
+
+#: library_book_area.py:184
+#, python-format
+msgid "Removed %(num)d book(s) from '%(collection)s'."
+msgstr "已移除 %(num)d 本 %(collection)s 收藏的書籍。"
+
+#: library_book_area.py:195 library_book_area.py:221
+msgid "Remove books from the library?"
+msgstr "從此收藏庫移除書籍？"
+
+#: library_book_area.py:197
+msgid ""
+"The selected books will be removed from the library (but the original files "
+"will be untouched). Are you sure that you want to continue?"
+msgstr "這些書籍將從收藏庫中移除，但原始檔案不會受影響。您確定要繼續嗎？"
+
+#: library_book_area.py:210
+#, python-format
+msgid "Removed %d book(s) from the library."
+msgstr "已從收藏庫移除 %d 本書籍。"
+
+#: library_book_area.py:223
+#, fuzzy
+msgid ""
+"The selected books will be removed from the library and permanently deleted. "
+"Are you sure that you want to continue?"
+msgstr "這些書籍將從收藏庫中移除，但原始檔案不會受影響。您確定要繼續嗎？"
+
+#: library_book_area.py:249
+#, python-format
+msgid "! An error was thrown while attempting to delete: %s"
+msgstr ""
+
+#: library_collection_area.py:60
+msgid "Rename..."
+msgstr "重新命名..."
+
+#: library_collection_area.py:62
+msgid "Duplicate collection"
+msgstr "備份收藏"
+
+#: library_collection_area.py:64
+msgid "Remove collection..."
+msgstr "移除收藏..."
+
+#: library_collection_area.py:112
+msgid "All books"
+msgstr "所有書籍"
+
+#: library_collection_area.py:141
+msgid "Remove collection from the library?"
+msgstr "要從收藏庫中移除收藏嗎？"
+
+#: library_collection_area.py:143
+msgid ""
+"The selected collection will be removed from the library (but the books and "
+"subcollections in it will remain). Are you sure that you want to continue?"
+msgstr "這些收藏將從收藏庫中移除，但書籍與子收藏仍會留著。您確定要繼續嗎？"
+
+#: library_collection_area.py:161
+msgid "Rename collection?"
+msgstr "重新命名收藏？"
+
+#: library_collection_area.py:163
+msgid "Please enter a new name for the selected collection."
+msgstr "請輸入此收藏的新名稱。"
+
+#: library_collection_area.py:181
+#, python-format
+msgid "Could not change the name to '%s'."
+msgstr "無法變更名稱為「%s」。"
+
+#: library_collection_area.py:185 library_control_area.py:191
+msgid "A collection by that name already exists."
+msgstr "已有相同名稱的收藏。"
+
+#: library_collection_area.py:195
+msgid "Could not duplicate collection."
+msgstr "無法備份收藏。"
+
+#: library_collection_area.py:292
+msgid "Root"
+msgstr "Root"
+
+#: library_collection_area.py:296
+#, python-format
+msgid ""
+"Put the collection '%(subcollection)s' in the collection '%(supercollection)"
+"s'."
+msgstr "將收藏 %(subcollection)s 放到 %(supercollection)s 。"
+
+#: library_collection_area.py:317
+#, python-format
+msgid "Add books to '%s'."
+msgstr "將書籍加入 %s。"
+
+#: library_collection_area.py:321
+#, python-format
+msgid ""
+"Move books from '%(source collection)s' to '%(destination collection)s'."
+msgstr "將書籍從 %(source collection)s 移到 %(destination collection)s 。"
+
+#: library_control_area.py:68
+msgid "Search"
+msgstr "搜尋"
+
+#: library_control_area.py:73
+msgid ""
+"Display only those books that have the specified text string in their full "
+"path. The search is not case sensitive."
+msgstr "只顯示完整路徑中有指定關鍵字的書籍，搜尋時不區分大小寫。"
+
+#: library_control_area.py:76
+msgid "Cover size"
+msgstr "封面大小"
+
+#: library_control_area.py:89
+msgid "Add books"
+msgstr "加入書籍"
+
+#: library_control_area.py:93
+msgid "Add more books to the library."
+msgstr "加入更多書籍到收藏庫中。"
+
+#: library_control_area.py:96
+msgid "Add folder"
+msgstr ""
+
+#: library_control_area.py:101
+msgid "Add a new empty collection."
+msgstr "加入新的空白收藏。"
+
+#: library_control_area.py:108
+msgid "Open the selected book."
+msgstr "開啟選取的書籍。"
+
+#: library_control_area.py:140 properties_dialog.py:46
+#, python-format
+msgid "%d pages"
+msgstr "%d 頁"
+
+#: library_control_area.py:164
+msgid "Add new collection?"
+msgstr "加入新收藏嗎？"
+
+#: library_control_area.py:166
+msgid "Please enter a name for the new collection."
+msgstr "請輸入新收藏的名稱。"
+
+#: library_control_area.py:172
+msgid "New collection"
+msgstr "新收藏"
+
+#: library_control_area.py:186
+#, python-format
+msgid "Could not add a new collection called '%s'."
+msgstr "無法新增收藏 %s 。"
+
+#: library_main_dialog.py:31
+msgid "Library"
+msgstr "收藏庫"
+
+#: library_main_dialog.py:110
+msgid "! You need an sqlite wrapper to use the library."
+msgstr ""
+
+#: main.py:877
+msgid "SLIDESHOW"
+msgstr "投影片放映"
+
+#: mcomix.py:41
+msgid "You don't have the required versions of GTK+ and/or PyGTK"
+msgstr ""
+
+#: mcomix.py:42
+msgid "installed."
+msgstr ""
+
+#: mcomix.py:43
+msgid "Installed GTK+ version is: "
+msgstr ""
+
+#: mcomix.py:45
+msgid "Required GTK+ version is: 2.12.0 or higher\n"
+msgstr ""
+
+#: mcomix.py:46
+msgid "Installed PyGTK version is: "
+msgstr ""
+
+#: mcomix.py:48
+msgid "Required PyGTK version is: 2.12.0 or higher"
+msgstr ""
+
+#: mcomix.py:53
+msgid "PyGTK version 2.12.0 or higher is required to run MComix."
+msgstr ""
+
+#: mcomix.py:54
+msgid "No version of PyGTK was found on your system."
+msgstr ""
+
+#: mcomix.py:63
+msgid "You don't have the required version of the Python Imaging"
+msgstr ""
+
+#: mcomix.py:64
+msgid "Library (PIL) installed."
+msgstr ""
+
+#: mcomix.py:65
+#, python-format
+msgid "Installed PIL version is: %s"
+msgstr ""
+
+#: mcomix.py:66
+msgid "Required PIL version is: 1.1.5 or higher"
+msgstr ""
+
+#: mcomix.py:70
+msgid "Python Imaging Library (PIL) 1.1.5 or higher is required."
+msgstr ""
+
+#: mcomix.py:71
+msgid "No version of the Python Imaging Library was found on your"
+msgstr ""
+
+#: mcomix.py:86
+#, fuzzy
+msgid "Usage:"
+msgstr "頁次"
+
+#: mcomix.py:87
+msgid "[OPTION...] [PATH]"
+msgstr ""
+
+#: mcomix.py:88
+msgid ""
+"\n"
+"View images and comic book archives.\n"
+msgstr ""
+
+#: mcomix.py:89
+msgid "Options:"
+msgstr ""
+
+#: mcomix.py:90
+msgid "  -h, --help              Show this help and exit."
+msgstr ""
+
+#: mcomix.py:91
+msgid "  -f, --fullscreen        Start the application in fullscreen mode."
+msgstr ""
+
+#: mcomix.py:92
+msgid "  -l, --library           Show the library on startup."
+msgstr ""
+
+#: mcomix.py:72
+msgid "system."
+msgstr ""
+
+#: pageselect.py:15 ui.py:77
+msgid "_Go"
+msgstr "前往 (_G)"
+
+#: pageselect.py:16
+#, fuzzy
+msgid "_Cancel"
+msgstr "快取"
+
+#: preferences_dialog.py:18
+msgid "Preferences"
+msgstr "偏好設定"
+
+#: preferences_dialog.py:40
+msgid "Background"
+msgstr "背景"
+
+#: preferences_dialog.py:43
+msgid "Use this colour as background"
+msgstr "使用此顏色當背景"
+
+#: preferences_dialog.py:45
+msgid "Always use this selected colour as the background colour."
+msgstr "使用選取的顏色當背景顏色。"
+
+#: preferences_dialog.py:53
+msgid "Use dynamic background colour."
+msgstr "使用動態背景顏色。"
+
+#: preferences_dialog.py:57
+msgid "Automatically pick a background colour that fits the viewed image."
+msgstr "自動挑選適合觀看中圖片的背景顏色。"
+
+#: preferences_dialog.py:61
+msgid "Thumbnails"
+msgstr "縮圖"
+
+#: preferences_dialog.py:64
+#, fuzzy
+msgid "Use this colour as the thumbnail background"
+msgstr "使用此顏色當背景"
+
+#: preferences_dialog.py:66
+#, fuzzy
+msgid "Always use this selected colour as the thumbnail background colour."
+msgstr "使用選取的顏色當背景顏色。"
+
+#: preferences_dialog.py:74
+#, fuzzy
+msgid "Use the dynamic background colour for the thumbnail background."
+msgstr "使用動態背景顏色。"
+
+#: preferences_dialog.py:77
+#, fuzzy
+msgid ""
+"Automatically use the colour that fits the viewed image for the thumbnail "
+"background."
+msgstr "自動挑選適合觀看中圖片的背景顏色。"
+
+#: preferences_dialog.py:92
+msgid "Thumbnail size (in pixels)"
+msgstr "縮圖大小 (像素)"
+
+#: preferences_dialog.py:100
+msgid "Show page numbers on thumbnails."
+msgstr "在縮圖上顯示頁碼。"
+
+#: preferences_dialog.py:107
+msgid "Magnifying Glass"
+msgstr "放大鏡"
+
+#: preferences_dialog.py:108
+msgid "Magnifying glass size (in pixels)"
+msgstr "放大鏡大小 (像素)"
+
+#: preferences_dialog.py:114
+msgid ""
+"Set the size of the magnifying glass. It is a square with a side of this "
+"many pixels."
+msgstr "設定放大鏡的大小，請填入正方形的單邊長。"
+
+#: preferences_dialog.py:116
+msgid "Magnification factor"
+msgstr "放大倍率"
+
+#: preferences_dialog.py:123
+msgid "Set the magnification factor of the magnifying glass."
+msgstr "設定放大鏡的放大倍率。"
+
+#: preferences_dialog.py:126
+msgid "Image scaling"
+msgstr "圖片縮放"
+
+#: preferences_dialog.py:127
+msgid "Stretch small images."
+msgstr "伸展較小圖片。"
+
+#: preferences_dialog.py:131
+msgid ""
+"Stretch images to a size that is larger than their original size if the "
+"current zoom mode requests it. If this preference is unset, images are never "
+"scaled to be larger than their original size."
+msgstr "配合目前的縮放模式，將圖片伸展放大到設定的大小。"
+
+#: preferences_dialog.py:134
+msgid "Transparency"
+msgstr "透明度"
+
+#: preferences_dialog.py:136
+msgid "Use checkered background for transparent images."
+msgstr "透明色圖片使用方格背景。"
+
+#: preferences_dialog.py:142
+msgid ""
+"Use a grey checkered background for transparent images. If this preference "
+"is unset, the background is plain white instead."
+msgstr "透明色圖片使用灰色方格背景。如果未設定此項目，則將使用白色背景。"
+
+#: preferences_dialog.py:144
+msgid "Appearance"
+msgstr "外觀"
+
+#: preferences_dialog.py:150
+msgid "Scroll"
+msgstr "捲動"
+
+#: preferences_dialog.py:152
+msgid "Use smart space key scrolling."
+msgstr "使用智慧型空白鍵捲動。"
+
+#: preferences_dialog.py:157
+msgid ""
+"Use smart scrolling with the space key. Normally the space key scrolls only "
+"right down (or up when shift is pressed), but with this preference set it "
+"also scrolls sideways and so tries to follow the natural reading order of "
+"the comic book."
+msgstr ""
+"使用智慧型的空白鍵捲動。通常按下空白鍵時只會向下捲動 (若按住 shift 時則是下上"
+"捲動)，但設定此項目後，也會側向捲動，以儘量配合一般的漫畫書閱讀順序。"
+
+#: preferences_dialog.py:161
+msgid "Flip pages when scrolling off the edges of the page."
+msgstr "當捲動到頁面的頂端或底部時翻頁"
+
+#: preferences_dialog.py:166
+#, fuzzy
+msgid ""
+"Flip pages when scrolling \"off the page\" with the scroll wheel or with the "
+"arrow keys. It takes n consecutive \"steps\" with the scroll wheel or the "
+"arrow keys for the pages to be flipped."
+msgstr ""
+"以滾輪或方向鍵捲動到「超出本頁」時翻頁。要翻頁時，需要連續滾動滑鼠滾輪或按方"
+"向鍵「三次」。"
+
+#: preferences_dialog.py:170
+msgid "Avoid possibly unintentional page flips."
+msgstr ""
+
+#: preferences_dialog.py:174
+msgid "Only flip to a new page if MComix is the top window. "
+msgstr ""
+
+#: preferences_dialog.py:175
+msgid "This prevents the possibility of \"accidental\" page flips when "
+msgstr ""
+
+#: preferences_dialog.py:176
+msgid "clicking on the MComix window surface while trying to make MComix the "
+msgstr ""
+
+#: preferences_dialog.py:177
+msgid "top window."
+msgstr ""
+
+#: preferences_dialog.py:183
+msgid "Automatically open the next archive."
+msgstr "自動開啟下一個壓縮檔。"
+
+#: preferences_dialog.py:188
+msgid ""
+"Automatically open the next archive in the directory when flipping past the "
+"last page, or the previous archive when flipping past the first page."
+msgstr ""
+"當在目前壓縮檔翻頁離開最後一頁時，自動開啟目錄中的下一個壓縮檔；當翻頁跳出第"
+"一頁時，則自動開啟上一個壓縮檔。"
+
+#: preferences_dialog.py:191
+msgid "Number of pixels to scroll per arrow key press"
+msgstr ""
+
+#: preferences_dialog.py:197
+msgid "Set the number of pixels to scroll on a page when using the arrow keys."
+msgstr ""
+
+#: preferences_dialog.py:200
+msgid "Number of pixels to scroll per mouse wheel turn"
+msgstr ""
+
+#: preferences_dialog.py:206
+msgid "Set the number of pixels to scroll on a page when using a mouse wheel."
+msgstr ""
+
+#: preferences_dialog.py:209
+msgid "Number of \"steps\" to take before flipping the page"
+msgstr ""
+
+#: preferences_dialog.py:215
+msgid ""
+"Set the number of \"steps\" needed to flip to the next or previous page.  "
+"Less steps will allow for very fast page turning but you might find yourself "
+"accidentally turning pages."
+msgstr ""
+
+#: preferences_dialog.py:218 ui.py:336
+msgid "Double page mode"
+msgstr "雙頁模式"
+
+#: preferences_dialog.py:221
+msgid "Flip two pages in double page mode."
+msgstr "雙頁模式時一次翻兩頁。"
+
+#: preferences_dialog.py:226
+msgid ""
+"Flip two pages, instead of one, each time we flip pages in double page mode."
+msgstr "雙頁模式時一次翻兩頁，而不是只翻一頁。"
+
+#: preferences_dialog.py:230
+msgid "Show only one wide image in double page mode."
+msgstr "雙頁模式時只顯示單張的寬幅圖片。"
+
+#: preferences_dialog.py:236
+msgid ""
+"Display only one image in double page mode, if the image's width exceeds its "
+"height. The result of this is that scans that span two pages are displayed "
+"properly (i.e. alone) also in double page mode."
+msgstr "如果圖片寬度大於高度，則在雙頁模式時仍只顯示單張圖片。"
+
+#: preferences_dialog.py:239
+msgid "Files"
+msgstr "檔案"
+
+#: preferences_dialog.py:242
+msgid "Automatically open the last viewed file on startup."
+msgstr "啟動時自動開啟最後檢視的檔案。"
+
+#: preferences_dialog.py:247
+#, fuzzy
+msgid ""
+"Automatically open, on startup, the file that was open when MComix was last "
+"closed."
+msgstr "當 Comix 啟動時，自動開啟上次最後開啟過的檔案。"
+
+#: preferences_dialog.py:251
+msgid "Store information about recently opened files."
+msgstr "儲存最近開啟過的檔案資訊。"
+
+#: preferences_dialog.py:256
+#, fuzzy
+msgid ""
+"Add information about all files opened from within MComix to the shared "
+"recent files list."
+msgstr "將 Comix 開啟過的檔案資訊加入共享的「最近存取文件」清單中。"
+
+#: preferences_dialog.py:260
+msgid "Store thumbnails for opened files."
+msgstr "替開啟過的檔案儲存縮圖。"
+
+#: preferences_dialog.py:265
+msgid ""
+"Store thumbnails for opened files according to the freedesktop.org "
+"specification. These thumbnails are shared by many other applications, such "
+"as most file managers."
+msgstr ""
+"依據 freedesktop.org 的標準，替開啟過的檔案儲存縮圖。這些縮圖也可由檔案管理程"
+"式等其他各種應用程式分享共用。"
+
+#: preferences_dialog.py:268
+msgid "Cache"
+msgstr "快取"
+
+#: preferences_dialog.py:270
+msgid "Maximum number of pages to store in the cache"
+msgstr ""
+
+#: preferences_dialog.py:276
+msgid ""
+"Set the max number of pages to cache. A value of -1 will cache the entire "
+"archive."
+msgstr ""
+
+#: preferences_dialog.py:279
+msgid "Crash Recovery"
+msgstr ""
+
+#: preferences_dialog.py:282
+msgid "Enable crash recovery."
+msgstr ""
+
+#: preferences_dialog.py:287
+msgid ""
+"Crash recovery saves the current configuration information every specified "
+"seconds.  In case of a crash the previous file will be re-loaded."
+msgstr ""
+
+#: preferences_dialog.py:290
+msgid "Save the current configuration information every n seconds"
+msgstr ""
+
+#: preferences_dialog.py:296
+msgid ""
+"Every n seconds the current configuration will be saved to disk.  Choose a "
+"lower number if crashes are frequent on your machine. 30 seconds (default)"
+msgstr ""
+
+#: preferences_dialog.py:299
+msgid "Behaviour"
+msgstr "行為"
+
+#: preferences_dialog.py:305
+msgid "Default modes"
+msgstr "預設模式"
+
+#: preferences_dialog.py:307
+msgid "Use double page mode by default."
+msgstr "預設使用雙頁模式。"
+
+#: preferences_dialog.py:313
+msgid "Use fullscreen by default."
+msgstr "預設使用全螢幕。"
+
+#: preferences_dialog.py:319
+msgid "Use manga mode by default."
+msgstr "預設使用漫畫模式。"
+
+#: preferences_dialog.py:325
+msgid "Default zoom mode"
+msgstr "預設縮放模式"
+
+#: preferences_dialog.py:328 ui.py:328
+msgid "Best fit mode"
+msgstr "最佳大小模式"
+
+#: preferences_dialog.py:329 ui.py:330
+msgid "Fit width mode"
+msgstr "符合寬度模式"
+
+#: preferences_dialog.py:330 ui.py:332
+msgid "Fit height mode"
+msgstr "符合高度模式"
+
+#: preferences_dialog.py:331 ui.py:334
+msgid "Manual zoom mode"
+msgstr "手動縮放模式"
+
+#: preferences_dialog.py:337
+msgid "Fullscreen"
+msgstr "全螢幕"
+
+#: preferences_dialog.py:339
+msgid "Automatically hide all toolbars in fullscreen."
+msgstr "全螢幕時自動隱藏所有工具列。"
+
+#: preferences_dialog.py:345
+msgid "Slideshow"
+msgstr "投影片放映"
+
+#: preferences_dialog.py:346
+msgid "Slideshow delay (in seconds)"
+msgstr "投影片放映延遲 (秒)"
+
+#: preferences_dialog.py:355
+#, fuzzy
+msgid "Slideshow step (in pixels)"
+msgstr "投影片放映延遲 (秒)"
+
+#: preferences_dialog.py:363
+msgid ""
+"Specify the number of pixels to scroll while in slideshow mode. A positive "
+"value will scroll forward, a negative value will scroll backwards, and a "
+"value of 0 will cause the slideshow to always flip to a new page."
+msgstr ""
+
+#: preferences_dialog.py:367
+#, fuzzy
+msgid "During a slideshow automatically open the next archive."
+msgstr "自動開啟下一個壓縮檔。"
+
+#: preferences_dialog.py:372
+msgid ""
+"While in slideshow mode allow the next archive to automatically be opened."
+msgstr ""
+
+#: preferences_dialog.py:375
+msgid "Page Numbers"
+msgstr ""
+
+#: preferences_dialog.py:376
+#, fuzzy
+msgid "Show page numbers."
+msgstr "在縮圖上顯示頁碼。"
+
+#: preferences_dialog.py:381
+msgid ""
+"Show page numbers in the Title bar and the status bar. If unset the page "
+"numbers will be hidden."
+msgstr ""
+
+#: preferences_dialog.py:385
+msgid "Comment extensions"
+msgstr "註解的副檔名"
+
+#: preferences_dialog.py:392
+msgid ""
+"Treat all files found within archives, that have one of these file endings, "
+"as comments."
+msgstr "壓縮檔內檔名結尾相符的檔案，將被認定為註解。"
+
+#: preferences_dialog.py:395
+msgid "Rotation"
+msgstr "旋轉"
+
+#: preferences_dialog.py:397
+msgid "Automatically rotate images according to their metadata."
+msgstr "根據內建資料自動旋轉圖片。"
+
+#: preferences_dialog.py:402
+msgid ""
+"Automatically rotate images when an orientation is specified in the image "
+"metadata, such as in an Exif tag."
+msgstr "當圖片內建的資料 (如 EXTIF) 中有指定方向時，自動旋轉圖片。"
+
+#: preferences_dialog.py:404
+msgid "Display"
+msgstr "顯示"
+
+#: properties_dialog.py:21
+msgid "Properties"
+msgstr "屬性"
+
+#: properties_dialog.py:47
+#, python-format
+msgid "%d comments"
+msgstr "%d 個註解"
+
+#: properties_dialog.py:60 properties_dialog.py:98
+msgid "Location"
+msgstr "位置"
+
+#: properties_dialog.py:62 properties_dialog.py:99
+msgid "Accessed"
+msgstr "存取時間"
+
+#: properties_dialog.py:64 properties_dialog.py:101
+msgid "Modified"
+msgstr "修改時間"
+
+#: properties_dialog.py:66 properties_dialog.py:103
+msgid "Permissions"
+msgstr "權限"
+
+#: properties_dialog.py:67 properties_dialog.py:104
+msgid "Owner"
+msgstr "擁有者"
+
+#: properties_dialog.py:74
+msgid "Archive"
+msgstr "壓縮檔"
+
+#: properties_dialog.py:108
+msgid "Image"
+msgstr "圖片"
+
+#: slideshow.py:42
+#, fuzzy
+msgid "Stop slideshow"
+msgstr "投影片放映"
+
+#: slideshow.py:46 ui.py:325
+#, fuzzy
+msgid "Start slideshow"
+msgstr "投影片放映"
+
+#: thumbnail_tools.py:171
+msgid "! thumbnail.py: Could not write"
+msgstr ""
+
+#: ui.py:30
+#, fuzzy
+msgid "_Copy"
+msgstr "(複製)"
+
+#: ui.py:32
+msgid "_Next page"
+msgstr "下一頁 (_N)"
+
+#: ui.py:34
+msgid "_Previous page"
+msgstr "上一頁 (_P)"
+
+#: ui.py:36
+msgid "_First page"
+msgstr "第一頁 (_F)"
+
+#: ui.py:38
+msgid "_Last page"
+msgstr "最後一頁 (_L)"
+
+#: ui.py:40
+msgid "_Go to page..."
+msgstr ""
+
+#: ui.py:42
+msgid "_Refresh file"
+msgstr ""
+
+#: ui.py:44
+#, fuzzy
+msgid "_Next archive"
+msgstr "編輯壓縮檔"
+
+#: ui.py:46
+#, fuzzy
+msgid "_Previous archive"
+msgstr "上一頁 (_P)"
+
+#: ui.py:48
+msgid "_Zoom in"
+msgstr "放大 (_Z)"
+
+#: ui.py:50
+msgid "Zoom _out"
+msgstr "縮小 (_o)"
+
+#: ui.py:52
+msgid "O_riginal size"
+msgstr "正常大小 (_r)"
+
+#: ui.py:54
+msgid "_Close"
+msgstr "關閉 (_C)"
+
+#: ui.py:56
+msgid "_Quit"
+msgstr "離開 (_Q)"
+
+#: ui.py:58
+msgid "_Save and quit"
+msgstr ""
+
+#: ui.py:60
+msgid "_Rotate 90 degrees CW"
+msgstr "順時針旋轉 90° (_R)"
+
+#: ui.py:62
+msgid "Rotate 180 de_grees"
+msgstr "旋轉 180° (_g)"
+
+#: ui.py:64
+msgid "Rotat_e 90 degrees CCW"
+msgstr "逆時針旋轉 90° (_e)"
+
+#: ui.py:66
+msgid "Fli_p horizontally"
+msgstr "水平翻轉 (_p)"
+
+#: ui.py:68
+msgid "Flip _vertically"
+msgstr "垂直翻轉 (_v)"
+
+#: ui.py:70
+msgid "Manual _Zoom"
+msgstr "手動縮放 (_Z)"
+
+#: ui.py:71
+msgid "Open _recent"
+msgstr "最近存取的檔案 (_r)"
+
+#: ui.py:72
+msgid "_Bookmarks"
+msgstr "書籤 (_B)"
+
+#: ui.py:73
+msgid "T_oolbars"
+msgstr "工具列 (_o)"
+
+#: ui.py:74
+msgid "_Edit"
+msgstr "編輯 (_E)"
+
+#: ui.py:75
+msgid "_File"
+msgstr "檔案 (_F)"
+
+#: ui.py:76
+msgid "_View"
+msgstr "檢視 (_V)"
+
+#: ui.py:78
+#, fuzzy
+msgid "_Tools"
+msgstr "工具列 (_T)"
+
+#: ui.py:79
+msgid "_Help"
+msgstr "說明 (_H)"
+
+#: ui.py:80
+#, fuzzy
+msgid "_Transform image..."
+msgstr "變換 (_T)"
+
+#: ui.py:84
+msgid "_Fullscreen"
+msgstr "全螢幕 (_F)"
+
+#: ui.py:86
+msgid "_Double page mode"
+msgstr "雙頁模式 (_D)"
+
+#: ui.py:88
+msgid "_Toolbar"
+msgstr "工具列 (_T)"
+
+#: ui.py:90
+msgid "_Menubar"
+msgstr "選單列 (_M)"
+
+#: ui.py:92
+msgid "St_atusbar"
+msgstr "狀態列 (_a)"
+
+#: ui.py:94
+msgid "S_crollbars"
+msgstr "捲軸 (_c)"
+
+#: ui.py:96
+msgid "Th_umbnails"
+msgstr "縮圖 (_u)"
+
+#: ui.py:98
+msgid "H_ide all"
+msgstr "全部隱藏 (_i)"
+
+#: ui.py:100
+msgid "_Manga mode"
+msgstr "漫畫模式 (_M)"
+
+#: ui.py:102
+msgid "_Keep transformation"
+msgstr "保持變換 (_K)"
+
+#: ui.py:104
+#, fuzzy
+msgid "Start _slideshow"
+msgstr "開始投影片放映 (_s)"
+
+#: ui.py:106
+msgid "Magnifying _glass"
+msgstr "放大鏡 (_g)"
+
+#: ui.py:112
+msgid "_Best fit mode"
+msgstr "最佳大小模式 (_B)"
+
+#: ui.py:114
+msgid "Fit _width mode"
+msgstr "符合寬度模式 (_w)"
+
+#: ui.py:116
+msgid "Fit _height mode"
+msgstr "符合高度模式 (_h)"
+
+#: ui.py:118
+msgid "M_anual zoom mode"
+msgstr "手動縮放模式 (_a)"
+
+#: ui.py:123
+msgid "_About"
+msgstr "關於 (_A)"
+
+#: ui.py:127
+msgid "_View comments..."
+msgstr "檢視註解... (_V)"
+
+#: ui.py:131
+msgid "_Properties"
+msgstr "屬性 (_P)"
+
+#: ui.py:135
+msgid "Pr_eferences"
+msgstr "偏好設定 (_e)"
+
+#: ui.py:140
+msgid "_Edit archive..."
+msgstr "編輯壓縮檔... (_E)"
+
+#: ui.py:142
+msgid "_Open..."
+msgstr "開啟... (_O)"
+
+#: ui.py:144
+msgid "_Enhance image..."
+msgstr "強化圖片... (_E)"
+
+#: ui.py:148
+msgid "_Library..."
+msgstr "收藏庫... (_L)"
+
+#: ui.py:316
+msgid "First page"
+msgstr "第一頁"
+
+#: ui.py:318
+msgid "Previous page"
+msgstr "上一頁"
+
+#: ui.py:319
+msgid "Go to page..."
+msgstr ""
+
+#: ui.py:320
+msgid "Next page"
+msgstr "下一頁"
+
+#: ui.py:321
+msgid "Last page"
+msgstr "最後一頁"
+
+#: ui.py:322
+#, fuzzy
+msgid "Previous archive"
+msgstr "上一頁"
+
+#: ui.py:323
+#, fuzzy
+msgid "Next archive"
+msgstr "編輯壓縮檔"
+
+#: ui.py:324
+#, fuzzy
+msgid "Refresh file"
+msgstr "其他檔案"
+
+#: ui.py:337
+msgid "Manga mode"
+msgstr "漫畫模式"
+
+#: ui.py:338
+msgid "Magnifying glass"
+msgstr "放大鏡"
+
+#~ msgid "Developer"
+#~ msgstr "開發者"
+
+#~ msgid "Use a cache to speed up browsing."
+#~ msgstr "使用快取以加速瀏覽。"
+
+#~ msgid ""
+#~ "Cache the images that are next to the currently viewed image in order to "
+#~ "speed up browsing. Since the speed improvements are quite big, it is "
+#~ "recommended that you have this preference set, unless you are running "
+#~ "short on free RAM."
+#~ msgstr ""
+#~ "替下一張圖片建立快取以增加瀏覽速度。由於效果非常優異，除非是在記憶體較不足"
+#~ "的系統上，不然建議您啟用此功能。"
+
+#~ msgid "Thumbnail maintenance"
+#~ msgstr "縮圖管理"
+
+#~ msgid "Cleanup"
+#~ msgstr "清理"
+
+#~ msgid "Cleanup thumbnails"
+#~ msgstr "清理縮圖"
+
+#~ msgid ""
+#~ "Thumbnails for files (such as image files and comic book archives) are "
+#~ "stored in your home directory. Many different applications use and create "
+#~ "these thumbnails, but sometimes thumbnails remain even though the "
+#~ "original files have been removed - wasting space. This dialog can cleanup "
+#~ "your stored thumbnails by removing orphaned and outdated thumbnails."
+#~ msgstr ""
+#~ "各種應用程式儲存了許多圖片檔、壓縮檔的縮圖在您的個人目錄中，但很可能縮圖還"
+#~ "在而原始檔案已經被移除了，因而浪費許多空間。這個項目可以清理、移除失效與過"
+#~ "期的縮圖。"
+
+#~ msgid "Thumbnail directory"
+#~ msgstr "縮圖目錄"
+
+#~ msgid "Total number of thumbnails"
+#~ msgstr "縮圖總數"
+
+#~ msgid "Calculating..."
+#~ msgstr "計算中..."
+
+#~ msgid "Total size of thumbnails"
+#~ msgstr "縮圖總大小"
+
+#~ msgid "Do you want to cleanup orphaned and outdated thumbnails now?"
+#~ msgstr "您要立即清理失效與過期的縮圖嗎？"
+
+#~ msgid "Removing thumbnails"
+#~ msgstr "正在移除縮圖"
+
+#~ msgid "Number of removed thumbnails"
+#~ msgstr "已移除的縮圖數量"
+
+#~ msgid "Total size of removed thumbnails"
+#~ msgstr "已移除的縮圖總大小"
+
+#~ msgid "Removed thumbnail for '%s'"
+#~ msgstr "已移除 %s 的縮圖"
+
+#~ msgid "_Thumbnail maintenance..."
+#~ msgstr "縮圖管理... (_T)"

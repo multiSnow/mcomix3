@@ -1,0 +1,2291 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-08-09 09:40-0400\n"
+"PO-Revision-Date: 2009-02-02 14:19+0100\n"
+"Last-Translator: Dariusz Jakoniuk <pipaceliny@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+#
+# File: src/about.py, line: 18
+# File: src/about.py, line: 67
+#: about_dialog.py:12 about_dialog.py:66
+msgid "About"
+msgstr "O programie"
+
+#: about_dialog.py:45
+msgid "! Could not find the icon file \"mcomix.png\"\n"
+msgstr ""
+
+#
+# File: src/about.py, line: 55
+#: about_dialog.py:53
+#, fuzzy
+msgid "MComix is an image viewer specifically designed to handle comic books."
+msgstr ""
+"Comix jest przegladarką obrazów stworzoną specjalnie do ogladania komiksów."
+
+#
+# File: src/about.py, line: 57
+#: about_dialog.py:55
+msgid "It reads ZIP, RAR and tar archives, as well as plain image files."
+msgstr "Comix czyta archiwa ZIP, RAR i tar, jak również zwykłe obrazy."
+
+#
+# File: src/about.py, line: 59
+#: about_dialog.py:57
+#, fuzzy
+msgid "MComix is released to the public domain."
+msgstr "Comix jest rozpowszechniany na licencji GNU General Public License."
+
+#
+# File: src/about.py, line: 106
+#: about_dialog.py:93
+msgid "Credits"
+msgstr "Podziękowania"
+
+#
+# File: src/archive.py, line: 66
+#: archive_extractor.py:77 archive_extractor.py:230
+#, fuzzy
+msgid "! Could not find RAR file extractor."
+msgstr "Nie można znaleźć ekstraktora RAR!"
+
+#
+# File: src/archive.py, line: 66
+#: archive_extractor.py:81
+msgid "Could not find RAR file extractor!"
+msgstr "Nie można znaleźć ekstraktora RAR!"
+
+#
+# File: src/archive.py, line: 68
+#: archive_extractor.py:84
+msgid ""
+"You need either the <i>rar</i> or the <i>unrar</i> program installed in "
+"order to read RAR (.cbr) files."
+msgstr ""
+"Do odczytu RAR (.cbr) potrzebujesz mieć zainstalowany program <i>rar</i> "
+"albo <i>unrar</i>."
+
+#: archive_extractor.py:111
+msgid "! Non-supported archive format:"
+msgstr ""
+
+#: archive_extractor.py:220
+msgid "! Non-local tar member:"
+msgstr ""
+
+#
+# File: src/library.py, line: 271
+#: archive_packer.py:55
+#, fuzzy
+msgid "! Could not create archive at "
+msgstr "Nie można zmienić nazwy na „%s“."
+
+#
+# File: src/comment.py, line: 53
+#: archive_packer.py:68 archive_packer.py:90
+#, fuzzy
+msgid "! Could not add file "
+msgstr "Nie mozna odczytać %s"
+
+#: archive_packer.py:68 archive_packer.py:90
+msgid " to "
+msgstr ""
+
+#: archive_packer.py:68 archive_packer.py:90
+msgid ", aborting..."
+msgstr ""
+
+#: archive_tools.py:45
+msgid "! Error while reading"
+msgstr ""
+
+#: bookmark_backend.py:34
+msgid "! bookmark.py: Could not parse"
+msgstr ""
+
+#: bookmark_backend.py:35
+msgid "! bookmark.py: Deleting corrupt bookmarks file.\n"
+msgstr ""
+
+#
+# File: src/bookmark.py, line: 229
+#: bookmark_dialog.py:13
+msgid "Edit bookmarks"
+msgstr "Edytuj zakładki"
+
+#: bookmark_dialog.py:45
+msgid "Type"
+msgstr ""
+
+#
+# File: src/bookmark.py, line: 255
+# File: src/edit.py, line: 267
+#: bookmark_dialog.py:46 edit_comment_area.py:31
+msgid "Name"
+msgstr "Imię"
+
+#
+# File: src/bookmark.py, line: 256
+#: bookmark_dialog.py:47
+msgid "Page"
+msgstr "Strona"
+
+#
+# File: src/bookmark.py, line: 27
+#: bookmark_menu.py:21
+msgid "_Add bookmark"
+msgstr "_Dodaj zakładkę"
+
+#
+# File: src/bookmark.py, line: 29
+#: bookmark_menu.py:23
+msgid "_Edit bookmarks..."
+msgstr "_Edytuj zakładki…"
+
+#
+# File: src/bookmark.py, line: 31
+#: bookmark_menu.py:25
+msgid "_Clear bookmarks..."
+msgstr "_Usuń zakładki…"
+
+#
+# File: src/bookmark.py, line: 77
+#: bookmark_menu.py:78
+msgid "Clear all bookmarks?"
+msgstr "Usunąć wszystkie zakładki?"
+
+#
+# File: src/bookmark.py, line: 79
+#: bookmark_menu.py:81
+msgid ""
+"All stored bookmarks will be removed. Are you sure that you want to continue?"
+msgstr ""
+"Wszystkie zakładki zostaną usunięte. Czy jesteś pewien, że chcesz "
+"kontynuować?"
+
+#
+# File: src/comment.py, line: 16
+# File: src/preferences.py, line: 288
+#: comment_dialog.py:10 preferences_dialog.py:384
+msgid "Comments"
+msgstr "Uwagi"
+
+#
+# File: src/comment.py, line: 53
+#: comment_dialog.py:54
+#, python-format
+msgid "Could not read %s"
+msgstr "Nie mozna odczytać %s"
+
+#
+# File: src/archive.py, line: 301
+#: constants.py:38
+msgid "ZIP archive"
+msgstr "Archiwum ZIP"
+
+#
+# File: src/archive.py, line: 302
+#: constants.py:39
+msgid "Tar archive"
+msgstr "Archiwum tar"
+
+#
+# File: src/archive.py, line: 303
+#: constants.py:40
+msgid "Gzip compressed tar archive"
+msgstr "Archiwum tar skopresowane przy użyciu gzip"
+
+#
+# File: src/archive.py, line: 304
+#: constants.py:41
+msgid "Bzip2 compressed tar archive"
+msgstr "Archiwum tar skopresowane przy użyciu bzip2"
+
+#
+# File: src/archive.py, line: 305
+#: constants.py:42
+msgid "RAR archive"
+msgstr "Archiwum RAR"
+
+#: constants.py:54
+msgid "Lead developer of MComix"
+msgstr ""
+
+#: constants.py:55
+msgid "Original vision/developer of Comix"
+msgstr ""
+
+#
+# File: src/about.py, line: 77
+#: constants.py:56 constants.py:57
+msgid "Simplified Chinese translation"
+msgstr "Tłumaczenie na uproszczony chinski"
+
+#
+# File: src/about.py, line: 78
+#: constants.py:58
+msgid "Spanish translation"
+msgstr "Tłumaczenie na hiszpański"
+
+#
+# File: src/about.py, line: 79
+#: constants.py:59
+msgid "Brazilian Portuguese translation"
+msgstr "Tłumaczenie na portugalski brazylijski"
+
+#
+# File: src/about.py, line: 81
+#: constants.py:60
+msgid "German translation and Nautilus thumbnailer"
+msgstr "Tłumaczenie na niemiecki i thumbnailer w Nautilusie"
+
+#
+# File: src/about.py, line: 94
+#: constants.py:61
+#, fuzzy
+msgid "German translation"
+msgstr "Tłumaczenie na perski"
+
+#
+# File: src/about.py, line: 82
+#: constants.py:62 constants.py:63
+msgid "Italian translation"
+msgstr "Tłumaczenie na włoski"
+
+#
+# File: src/about.py, line: 83
+#: constants.py:64
+msgid "Dutch translation"
+msgstr "Tłumaczenie na holenderski"
+
+#
+# File: src/about.py, line: 84
+#: constants.py:65 constants.py:66
+msgid "French translation"
+msgstr "Tłumaczenie na francuski"
+
+#
+# File: src/about.py, line: 85
+#: constants.py:67
+#, fuzzy
+msgid "Polish translatin"
+msgstr "Tłumaczenie na polski"
+
+#
+# File: src/about.py, line: 85
+#: constants.py:68
+msgid "Polish translation"
+msgstr "Tłumaczenie na polski"
+
+#
+# File: src/about.py, line: 86
+#: constants.py:69
+msgid "Greek translation"
+msgstr "Tłumaczenie na grecki"
+
+#
+# File: src/about.py, line: 87
+#: constants.py:70
+msgid "Catalan translation"
+msgstr "Tłumaczenie na kataloński"
+
+#
+# File: src/about.py, line: 88
+#: constants.py:71 constants.py:72
+msgid "Traditional Chinese translation"
+msgstr "Tłumaczenie na tradycyjny chiński"
+
+#
+# File: src/about.py, line: 89
+#: constants.py:73
+msgid "Japanese translation"
+msgstr "Tłumaczenie na japoński"
+
+#
+# File: src/about.py, line: 90
+#: constants.py:74
+msgid "Hungarian translation"
+msgstr "Tłumaczenie na węgierski"
+
+#
+# File: src/about.py, line: 91
+#: constants.py:75
+msgid "Russian translation"
+msgstr "Tłumaczenie na rosyjski"
+
+#
+# File: src/about.py, line: 92
+#: constants.py:76
+msgid "Croatian translation"
+msgstr "Tłumaczenie na chorwacki"
+
+#
+# File: src/about.py, line: 93
+#: constants.py:77
+msgid "Korean translation"
+msgstr "Tłumaczenie na kareański"
+
+#
+# File: src/about.py, line: 94
+#: constants.py:78
+msgid "Persian translation"
+msgstr "Tłumaczenie na perski"
+
+#
+# File: src/about.py, line: 95
+#: constants.py:79
+msgid "Indonesian translation"
+msgstr "Tłumaczenie na indonezyjski"
+
+#
+# File: src/about.py, line: 96
+#: constants.py:80
+msgid "Czech translation"
+msgstr "Tłumaczenie na czeski"
+
+#: constants.py:81
+msgid "Ukrainian translation"
+msgstr ""
+
+#
+# File: src/about.py, line: 82
+#: constants.py:82
+#, fuzzy
+msgid "Galician translation"
+msgstr "Tłumaczenie na włoski"
+
+#
+# File: src/about.py, line: 97
+#: constants.py:83
+msgid "Icon design"
+msgstr "Projekt ikon"
+
+#
+# File: src/deprecated.py, line: 16
+#: deprecated.py:13
+msgid "There are deprecated files left on your computer."
+msgstr "Na komputerze są przestarzałe pliki."
+
+#
+# File: src/deprecated.py, line: 22
+#: deprecated.py:19
+#, fuzzy
+msgid ""
+"Some old files (that were used for storing preferences, the library, "
+"bookmarks etc. for older versions of MComix) were found on your computer. If "
+"you do not plan on using the older versions of MComix again, you should "
+"remove these files in order to save some disk space. Do you want these files "
+"to be removed for you now?"
+msgstr ""
+"Na komputerze znaleziono przestarzałe pliki (używane do przechowywania "
+"ustawień, biblioteki, ulubionych zakładek dla starszych wersji programu "
+"Comix). Jeżeli nie planujesz używać starszej wersji programu Comix, "
+"powinieneś usunąć te pliki, aby oszczędzić miejsce na dysku. Czy chcesz "
+"usunąć te pliki?"
+
+#
+# File: src/comment.py, line: 53
+#: deprecated.py:33
+#, fuzzy
+msgid "! Could not remove"
+msgstr "Nie mozna odczytać %s"
+
+#
+# File: src/edit.py, line: 255
+#: edit_comment_area.py:18
+#, fuzzy
+msgid ""
+"Please note that the only files that are automatically added to this list "
+"are those files in archives that MComix recognizes as comments."
+msgstr ""
+"Należy zauwazyć, że jedynymi plikami jakie są automatycznie dodawane do tej "
+"listy, są pliki w archiwach, które Comix rozpoznaje jako komentarze."
+
+#
+# File: src/edit.py, line: 270
+#: edit_comment_area.py:35
+msgid "Size"
+msgstr "Rozmiar"
+
+#
+# File: src/edit.py, line: 168
+# File: src/edit.py, line: 285
+#: edit_comment_area.py:52 edit_image_area.py:45
+msgid "Remove from archive"
+msgstr "Usuń z archiwum"
+
+#
+# File: src/edit.py, line: 28
+#: edit_dialog.py:23
+msgid "Edit archive"
+msgstr "Edytuj archiwum"
+
+#
+# File: src/edit.py, line: 36
+#: edit_dialog.py:33
+msgid "Import"
+msgstr "Importuj"
+
+#
+# File: src/edit.py, line: 50
+#: edit_dialog.py:49
+msgid "Images"
+msgstr "Obrazki"
+
+#
+# File: src/comment.py, line: 16
+# File: src/preferences.py, line: 288
+#: edit_dialog.py:50
+#, fuzzy
+msgid "Comment files"
+msgstr "Uwagi"
+
+#
+# File: src/edit.py, line: 99
+#: edit_dialog.py:112
+msgid "The new archive could not be saved!"
+msgstr "Nowe archiwum nie może być zapisane!"
+
+#
+# File: src/edit.py, line: 101
+#: edit_dialog.py:114
+msgid "The original files have not been removed."
+msgstr "Oryginalne pliki nie zostały usunięte."
+
+#
+# File: src/edit.py, line: 115
+#: edit_dialog.py:133
+msgid "Archives are stored as ZIP files."
+msgstr "Archiwa są przechowywane jako pliki zip."
+
+#
+# File: src/enhance.py, line: 51
+#: enhance_dialog.py:17
+msgid "Enhance image"
+msgstr "Popraw obrazek"
+
+#
+# File: src/enhance.py, line: 52
+#: enhance_dialog.py:21
+msgid "Defaults"
+msgstr "Ustawienia domyślne"
+
+#
+# File: src/enhance.py, line: 79
+#: enhance_dialog.py:48
+msgid "Brightness"
+msgstr "Jasność"
+
+#
+# File: src/enhance.py, line: 90
+#: enhance_dialog.py:59
+msgid "Contrast"
+msgstr "Kontrast"
+
+#
+# File: src/enhance.py, line: 101
+#: enhance_dialog.py:70
+msgid "Saturation"
+msgstr "Nasycenie"
+
+#
+# File: src/enhance.py, line: 112
+#: enhance_dialog.py:81
+msgid "Sharpness"
+msgstr "Ostrość"
+
+#
+# File: src/enhance.py, line: 126
+#: enhance_dialog.py:95
+msgid "Automatically adjust contrast."
+msgstr "Automatycznie dostosuj kontrast."
+
+#
+# File: src/enhance.py, line: 128
+#: enhance_dialog.py:97
+msgid ""
+"Automatically adjust contrast (both lightness and darkness), separately for "
+"each colour band."
+msgstr ""
+"Automatycznie dostosuj kontrast (jasość i ciemność), oddzielnie dla każdego "
+"koloru."
+
+#
+# File: src/filechooser.py, line: 35
+# File: src/library.py, line: 489
+#: file_chooser_base_dialog.py:33 library_book_area.py:68
+msgid "Open"
+msgstr "Otwórz"
+
+#
+# File: src/filechooser.py, line: 39
+#: file_chooser_base_dialog.py:38
+msgid "Save"
+msgstr "Zapisz"
+
+#
+# File: src/filechooser.py, line: 75
+#: file_chooser_base_dialog.py:76
+msgid "All files"
+msgstr "Wszystkie pliki"
+
+#
+# File: src/filechooser.py, line: 78
+#: file_chooser_base_dialog.py:79
+msgid "All Archives"
+msgstr "Wszystkie archiwa"
+
+#
+# File: src/filechooser.py, line: 82
+#: file_chooser_base_dialog.py:84
+msgid "ZIP archives"
+msgstr "Archiwa ZIP"
+
+#
+# File: src/filechooser.py, line: 84
+#: file_chooser_base_dialog.py:87
+msgid "RAR archives"
+msgstr "Archiwa RAR"
+
+#
+# File: src/filechooser.py, line: 86
+#: file_chooser_base_dialog.py:90
+msgid "Tar archives"
+msgstr "Archiwa TAR"
+
+#
+# File: src/filechooser.py, line: 125
+#: file_chooser_base_dialog.py:149
+#, python-format
+msgid "A file named '%s' already exists. Do you want to replace it?"
+msgstr "Plik o nazwie „%s“ już istnieje. Czy chcesz go nadpisać?"
+
+#
+# File: src/filechooser.py, line: 128
+#: file_chooser_base_dialog.py:153
+msgid "Replacing it will overwrite its contents."
+msgstr "Nadpisanie pliku zmieni jego zawartość."
+
+#
+# File: src/filechooser.py, line: 195
+#: file_chooser_library_dialog.py:24
+msgid "Automatically add the books to this collection"
+msgstr "Automatycznie dodaj ksiązki do tej kolekcji"
+
+#
+# File: src/filechooser.py, line: 171
+# File: src/filechooser.py, line: 249
+#: file_chooser_main_dialog.py:20 file_chooser_simple_dialog.py:22
+msgid "All images"
+msgstr "Wszystkie obrazki"
+
+#
+# File: src/filechooser.py, line: 173
+# File: src/filechooser.py, line: 251
+#: file_chooser_main_dialog.py:22 file_chooser_simple_dialog.py:24
+msgid "JPEG images"
+msgstr "Obrazy JPEG"
+
+#
+# File: src/filechooser.py, line: 174
+# File: src/filechooser.py, line: 252
+#: file_chooser_main_dialog.py:23 file_chooser_simple_dialog.py:25
+msgid "PNG images"
+msgstr "Obrazy PNG"
+
+#
+# File: src/filechooser.py, line: 174
+# File: src/filechooser.py, line: 252
+#: file_chooser_main_dialog.py:24 file_chooser_simple_dialog.py:26
+#, fuzzy
+msgid "GIF images"
+msgstr "Obrazy PNG"
+
+#
+# File: src/edit.py, line: 50
+#: file_chooser_main_dialog.py:25 file_chooser_simple_dialog.py:27
+#, fuzzy
+msgid "TIFF images"
+msgstr "Obrazki"
+
+#
+# File: src/filechooser.py, line: 174
+# File: src/filechooser.py, line: 252
+#: file_chooser_main_dialog.py:26 file_chooser_simple_dialog.py:28
+#, fuzzy
+msgid "BMP images"
+msgstr "Obrazy PNG"
+
+#
+# File: src/filehandler.py, line: 209
+#: file_handler.py:71
+#, python-format
+msgid "Could not open %s: Is a directory."
+msgstr "Nie można otworzyć %s: Jest katalogiem."
+
+#
+# File: src/filehandler.py, line: 213
+#: file_handler.py:76
+#, python-format
+msgid "Could not open %s: No such file."
+msgstr "Nie można otworzyć %s: Brak pliku."
+
+#
+# File: src/filehandler.py, line: 217
+#: file_handler.py:81
+#, python-format
+msgid "Could not open %s: Permission denied."
+msgstr "Nie można otworzyć %s: Brak dostępu."
+
+#
+# File: src/filehandler.py, line: 222
+#: file_handler.py:88
+#, python-format
+msgid "Could not open %s: Unknown file type."
+msgstr "Nie można otworzyć %s: Nieznany typ pliku."
+
+#
+# File: src/filehandler.py, line: 285
+#: file_handler.py:178
+#, python-format
+msgid "No images in '%s'"
+msgstr "Brak obrazów w „%s“"
+
+#: file_handler.py:430 main.py:974 preferences.py:85
+msgid "! Corrupt preferences file \""
+msgstr ""
+
+#: file_handler.py:430 main.py:974 preferences.py:85
+msgid "\", deleting..."
+msgstr ""
+
+#
+# File: src/comment.py, line: 53
+#: icons.py:63
+#, fuzzy
+msgid "! Could not load icon \""
+msgstr "Nie mozna odczytać %s"
+
+#
+# File: src/filehandler.py, line: 411
+#: image_handler.py:408
+msgid "Unknown filetype"
+msgstr "Nieznany typ pliku"
+
+#
+# File: src/library.py, line: 910
+#: library_add_progress_dialog.py:23
+msgid "Adding books"
+msgstr "Dodawanie książek"
+
+#
+# File: src/library.py, line: 930
+#: library_add_progress_dialog.py:45
+msgid "Added books"
+msgstr "Dodane książki"
+
+#: library_add_progress_dialog.py:63
+msgid "Searching for archives..."
+msgstr ""
+
+#
+# File: src/library.py, line: 952
+#: library_add_progress_dialog.py:93
+#, python-format
+msgid "Adding '%s'..."
+msgstr "Dodawanie „%s“…"
+
+#: library_backend.py:11
+msgid "! Could neither find pysqlite2 nor sqlite3."
+msgstr ""
+
+#: library_backend.py:78
+msgid "! Non-existant book #"
+msgstr ""
+
+#
+# File: src/library.py, line: 271
+#: library_backend.py:83
+#, fuzzy
+msgid "! Could not get cover for "
+msgstr "Nie można zmienić nazwy na „%s“."
+
+#
+# File: src/comment.py, line: 53
+#: library_backend.py:203 library_backend.py:231
+#, fuzzy
+msgid "! Could not add book "
+msgstr "Nie mozna odczytać %s"
+
+#
+# File: src/library.py, line: 495
+#: library_backend.py:203
+#, fuzzy
+msgid " to the library"
+msgstr "Usuń z biblioteki…"
+
+#
+# File: src/library.py, line: 285
+#: library_backend.py:220
+#, fuzzy
+msgid "! Could not add collection"
+msgstr "Nie można zduplikować kolekcji."
+
+#
+# File: src/library.py, line: 795
+#: library_backend.py:231
+#, fuzzy
+msgid " to collection "
+msgstr "Dodaj kolekcję"
+
+#
+# File: src/library.py, line: 285
+#: library_backend.py:257
+#, fuzzy
+msgid "! Could not rename collection to "
+msgstr "Nie można zduplikować kolekcji."
+
+#
+# File: src/librarybackend.py, line: 272
+# File: src/librarybackend.py, line: 274
+#: library_backend.py:268 library_backend.py:270
+msgid "(Copy)"
+msgstr "(Kopia)"
+
+#
+# File: src/library.py, line: 492
+#: library_book_area.py:71
+msgid "Remove from this collection"
+msgstr "Usuń z tej kolekcji"
+
+#
+# File: src/library.py, line: 495
+#: library_book_area.py:74
+msgid "Remove from the library..."
+msgstr "Usuń z biblioteki…"
+
+#: library_book_area.py:77
+msgid "Completey remove..."
+msgstr ""
+
+#
+# File: src/library.py, line: 588
+#: library_book_area.py:184
+#, python-format
+msgid "Removed %(num)d book(s) from '%(collection)s'."
+msgstr "Usuń %(num)d książkę(książki) z „%(collection)s“."
+
+#
+# File: src/library.py, line: 597
+#: library_book_area.py:195 library_book_area.py:221
+msgid "Remove books from the library?"
+msgstr "Usuń książki z biblioteki?"
+
+#
+# File: src/library.py, line: 599
+#: library_book_area.py:197
+msgid ""
+"The selected books will be removed from the library (but the original files "
+"will be untouched). Are you sure that you want to continue?"
+msgstr ""
+"Wybrane książki zostaną usunięte z biblioteki (oryginalne pliki pozostaną "
+"nietknięte).  Czy jesteś pewny, że chcesz kontynuować?"
+
+#
+# File: src/library.py, line: 609
+#: library_book_area.py:210
+#, python-format
+msgid "Removed %d book(s) from the library."
+msgstr "Usunięto %d książek z biblioteki."
+
+#
+# File: src/library.py, line: 599
+#: library_book_area.py:223
+#, fuzzy
+msgid ""
+"The selected books will be removed from the library and permanently deleted. "
+"Are you sure that you want to continue?"
+msgstr ""
+"Wybrane książki zostaną usunięte z biblioteki (oryginalne pliki pozostaną "
+"nietknięte).  Czy jesteś pewny, że chcesz kontynuować?"
+
+#: library_book_area.py:249
+#, python-format
+msgid "! An error was thrown while attempting to delete: %s"
+msgstr ""
+
+#
+# File: src/library.py, line: 150
+#: library_collection_area.py:60
+msgid "Rename..."
+msgstr "Zmień nazwę…"
+
+#
+# File: src/library.py, line: 152
+#: library_collection_area.py:62
+msgid "Duplicate collection"
+msgstr "Zduplikuj kolekcję"
+
+#
+# File: src/library.py, line: 154
+#: library_collection_area.py:64
+msgid "Remove collection..."
+msgstr "Usuń kolekcję…"
+
+#
+# File: src/library.py, line: 202
+#: library_collection_area.py:112
+msgid "All books"
+msgstr "Wszystkie książki"
+
+#
+# File: src/library.py, line: 231
+#: library_collection_area.py:141
+msgid "Remove collection from the library?"
+msgstr "Czy usuńąć kolekcję z biblioteki?"
+
+#
+# File: src/library.py, line: 233
+#: library_collection_area.py:143
+msgid ""
+"The selected collection will be removed from the library (but the books and "
+"subcollections in it will remain). Are you sure that you want to continue?"
+msgstr ""
+"Wybrana kolekcja zostanie usunięta z biblioteki (książki i podkolekcje w tej "
+"kolekcji pozostaną nadal w bibliotece). Czy jesteś pewny, że chcesz "
+"kontynuawać?"
+
+#
+# File: src/library.py, line: 251
+#: library_collection_area.py:161
+msgid "Rename collection?"
+msgstr "Zmienić nazwę kolekcji?"
+
+#
+# File: src/library.py, line: 253
+#: library_collection_area.py:163
+msgid "Please enter a new name for the selected collection."
+msgstr "Wpisz nową nazwę dla wybranej kolekcji. "
+
+#
+# File: src/library.py, line: 271
+#: library_collection_area.py:181
+#, python-format
+msgid "Could not change the name to '%s'."
+msgstr "Nie można zmienić nazwy na „%s“."
+
+#
+# File: src/library.py, line: 275
+# File: src/library.py, line: 881
+#: library_collection_area.py:185 library_control_area.py:191
+msgid "A collection by that name already exists."
+msgstr "Kolekcja o tej nazwie już istnieje."
+
+#
+# File: src/library.py, line: 285
+#: library_collection_area.py:195
+msgid "Could not duplicate collection."
+msgstr "Nie można zduplikować kolekcji."
+
+#
+# File: src/library.py, line: 382
+#: library_collection_area.py:292
+msgid "Root"
+msgstr "Korzeń"
+
+#
+# File: src/library.py, line: 386
+#: library_collection_area.py:296
+#, python-format
+msgid ""
+"Put the collection '%(subcollection)s' in the collection '%(supercollection)"
+"s'."
+msgstr "Umieść kolekcję „%(subcollection)s“ w kolekcji „%(supercollection)s“."
+
+#
+# File: src/library.py, line: 407
+#: library_collection_area.py:317
+#, python-format
+msgid "Add books to '%s'."
+msgstr "Dodaj książki do „%s“."
+
+#
+# File: src/library.py, line: 411
+#: library_collection_area.py:321
+#, python-format
+msgid ""
+"Move books from '%(source collection)s' to '%(destination collection)s'."
+msgstr ""
+"Przenieś książki z „%(source collection)s“ do „%(destination collection)s“."
+
+#
+# File: src/library.py, line: 769
+#: library_control_area.py:68
+msgid "Search"
+msgstr "Szukaj"
+
+#
+# File: src/library.py, line: 774
+#: library_control_area.py:73
+msgid ""
+"Display only those books that have the specified text string in their full "
+"path. The search is not case sensitive."
+msgstr ""
+"Wyświetlaj tylko te książki, które mają speczyficzny tekst w swojej pełnej "
+"ścieżce. Szukaj nie rozróżnia wielkich i małych liter."
+
+#
+# File: src/library.py, line: 776
+#: library_control_area.py:76
+msgid "Cover size"
+msgstr "Wielkość okładki"
+
+#
+# File: src/library.py, line: 789
+#: library_control_area.py:89
+msgid "Add books"
+msgstr "Dodaj książki"
+
+#
+# File: src/library.py, line: 793
+#: library_control_area.py:93
+msgid "Add more books to the library."
+msgstr "Dodaj więcej książek do biblioteki."
+
+#: library_control_area.py:96
+msgid "Add folder"
+msgstr ""
+
+#
+# File: src/library.py, line: 800
+#: library_control_area.py:101
+msgid "Add a new empty collection."
+msgstr "Dodaj nowa pustą kolekcję."
+
+#
+# File: src/library.py, line: 806
+#: library_control_area.py:108
+msgid "Open the selected book."
+msgstr "Otwórz zaznaczoną książkę."
+
+#
+# File: src/library.py, line: 832
+# File: src/properties.py, line: 113
+#: library_control_area.py:140 properties_dialog.py:46
+#, python-format
+msgid "%d pages"
+msgstr "%d stron"
+
+#
+# File: src/library.py, line: 854
+#: library_control_area.py:164
+msgid "Add new collection?"
+msgstr "Dodać nową kolekcję?"
+
+#
+# File: src/library.py, line: 856
+#: library_control_area.py:166
+msgid "Please enter a name for the new collection."
+msgstr "Proszę wstawić nazwę nowej kolekcji."
+
+#
+# File: src/library.py, line: 862
+#: library_control_area.py:172
+msgid "New collection"
+msgstr "Nowa kolekcja"
+
+#
+# File: src/library.py, line: 876
+#: library_control_area.py:186
+#, python-format
+msgid "Could not add a new collection called '%s'."
+msgstr "Nie można dodać nowej kolekcji o nazwie „%s“."
+
+#
+# File: src/library.py, line: 38
+#: library_main_dialog.py:31
+msgid "Library"
+msgstr "Biblioteka"
+
+#: library_main_dialog.py:110
+msgid "! You need an sqlite wrapper to use the library."
+msgstr ""
+
+#
+# File: src/main.py, line: 666
+#: main.py:877
+msgid "SLIDESHOW"
+msgstr "POKAZ SLAJDÓW"
+
+#: mcomix.py:41
+msgid "You don't have the required versions of GTK+ and/or PyGTK"
+msgstr ""
+
+#: mcomix.py:42
+msgid "installed."
+msgstr ""
+
+#: mcomix.py:43
+msgid "Installed GTK+ version is: "
+msgstr ""
+
+#: mcomix.py:45
+msgid "Required GTK+ version is: 2.12.0 or higher\n"
+msgstr ""
+
+#: mcomix.py:46
+msgid "Installed PyGTK version is: "
+msgstr ""
+
+#: mcomix.py:48
+msgid "Required PyGTK version is: 2.12.0 or higher"
+msgstr ""
+
+#: mcomix.py:53
+msgid "PyGTK version 2.12.0 or higher is required to run MComix."
+msgstr ""
+
+#: mcomix.py:54
+msgid "No version of PyGTK was found on your system."
+msgstr ""
+
+#: mcomix.py:63
+msgid "You don't have the required version of the Python Imaging"
+msgstr ""
+
+#: mcomix.py:64
+msgid "Library (PIL) installed."
+msgstr ""
+
+#: mcomix.py:65
+#, python-format
+msgid "Installed PIL version is: %s"
+msgstr ""
+
+#: mcomix.py:66
+msgid "Required PIL version is: 1.1.5 or higher"
+msgstr ""
+
+#: mcomix.py:70
+msgid "Python Imaging Library (PIL) 1.1.5 or higher is required."
+msgstr ""
+
+#: mcomix.py:71
+msgid "No version of the Python Imaging Library was found on your"
+msgstr ""
+
+#
+# File: src/bookmark.py, line: 256
+#: mcomix.py:86
+#, fuzzy
+msgid "Usage:"
+msgstr "Strona"
+
+#: mcomix.py:87
+msgid "[OPTION...] [PATH]"
+msgstr ""
+
+#: mcomix.py:88
+msgid ""
+"\n"
+"View images and comic book archives.\n"
+msgstr ""
+
+#: mcomix.py:89
+msgid "Options:"
+msgstr ""
+
+#: mcomix.py:90
+msgid "  -h, --help              Show this help and exit."
+msgstr ""
+
+#: mcomix.py:91
+msgid "  -f, --fullscreen        Start the application in fullscreen mode."
+msgstr ""
+
+#: mcomix.py:92
+msgid "  -l, --library           Show the library on startup."
+msgstr ""
+
+#: mcomix.py:72
+msgid "system."
+msgstr ""
+
+#
+# File: src/ui.py, line: 69
+#: pageselect.py:15 ui.py:77
+msgid "_Go"
+msgstr "_Przejdź"
+
+#
+# File: src/preferences.py, line: 230
+#: pageselect.py:16
+#, fuzzy
+msgid "_Cancel"
+msgstr "Pamięć podręczna"
+
+#
+# File: src/preferences.py, line: 78
+#: preferences_dialog.py:18
+msgid "Preferences"
+msgstr "Preferencje"
+
+#
+# File: src/preferences.py, line: 93
+#: preferences_dialog.py:40
+msgid "Background"
+msgstr "Tło"
+
+#
+# File: src/preferences.py, line: 95
+#: preferences_dialog.py:43
+msgid "Use this colour as background"
+msgstr "Użyj tego koloru jako tła"
+
+#
+# File: src/preferences.py, line: 97
+#: preferences_dialog.py:45
+msgid "Always use this selected colour as the background colour."
+msgstr "Zawsze używaj tego wybranego koloru, jako koloru tła."
+
+#
+# File: src/preferences.py, line: 102
+#: preferences_dialog.py:53
+msgid "Use dynamic background colour."
+msgstr "Używaj dynamicznego koloru tła."
+
+#
+# File: src/preferences.py, line: 106
+#: preferences_dialog.py:57
+msgid "Automatically pick a background colour that fits the viewed image."
+msgstr "Automatycznie wybierz kolor tła, który pasuje do ogladanego obrazka."
+
+#
+# File: src/preferences.py, line: 109
+#: preferences_dialog.py:61
+msgid "Thumbnails"
+msgstr "Miniatury"
+
+#
+# File: src/preferences.py, line: 95
+#: preferences_dialog.py:64
+#, fuzzy
+msgid "Use this colour as the thumbnail background"
+msgstr "Użyj tego koloru jako tła"
+
+#
+# File: src/preferences.py, line: 97
+#: preferences_dialog.py:66
+#, fuzzy
+msgid "Always use this selected colour as the thumbnail background colour."
+msgstr "Zawsze używaj tego wybranego koloru, jako koloru tła."
+
+#
+# File: src/preferences.py, line: 102
+#: preferences_dialog.py:74
+#, fuzzy
+msgid "Use the dynamic background colour for the thumbnail background."
+msgstr "Używaj dynamicznego koloru tła."
+
+#
+# File: src/preferences.py, line: 106
+#: preferences_dialog.py:77
+#, fuzzy
+msgid ""
+"Automatically use the colour that fits the viewed image for the thumbnail "
+"background."
+msgstr "Automatycznie wybierz kolor tła, który pasuje do ogladanego obrazka."
+
+#
+# File: src/preferences.py, line: 110
+#: preferences_dialog.py:92
+msgid "Thumbnail size (in pixels)"
+msgstr "Wielkośc miniatury (w pikselach)"
+
+#
+# File: src/preferences.py, line: 117
+#: preferences_dialog.py:100
+msgid "Show page numbers on thumbnails."
+msgstr "Pokaż numery stron w miniaturach."
+
+#
+# File: src/preferences.py, line: 124
+#: preferences_dialog.py:107
+msgid "Magnifying Glass"
+msgstr "Lupa"
+
+#
+# File: src/preferences.py, line: 125
+#: preferences_dialog.py:108
+msgid "Magnifying glass size (in pixels)"
+msgstr "Wielkość lupy (w pikselach)"
+
+#
+# File: src/preferences.py, line: 131
+#: preferences_dialog.py:114
+msgid ""
+"Set the size of the magnifying glass. It is a square with a side of this "
+"many pixels."
+msgstr ""
+"Ustaw wielkość lupy. Lupa jest kwadratem z bokiem o tej ilości pikseli."
+
+#
+# File: src/preferences.py, line: 133
+#: preferences_dialog.py:116
+msgid "Magnification factor"
+msgstr "Współczynnik powiększenia"
+
+#
+# File: src/preferences.py, line: 140
+#: preferences_dialog.py:123
+msgid "Set the magnification factor of the magnifying glass."
+msgstr "Ustaw współczynnik lupy."
+
+#
+# File: src/preferences.py, line: 143
+#: preferences_dialog.py:126
+msgid "Image scaling"
+msgstr "Skalowanie obrazu."
+
+#
+# File: src/preferences.py, line: 144
+#: preferences_dialog.py:127
+msgid "Stretch small images."
+msgstr "Rozciągnij małe obrazy."
+
+#
+# File: src/preferences.py, line: 148
+#: preferences_dialog.py:131
+msgid ""
+"Stretch images to a size that is larger than their original size if the "
+"current zoom mode requests it. If this preference is unset, images are never "
+"scaled to be larger than their original size."
+msgstr ""
+"Rozciągnij obrazy do rozmiaru, który jest większy od ich oryginalnych "
+"wymiarów, jeżeli bieżący tryb zoomu tego wymaga. Jeśli ta opcja nie jest "
+"wybrana, obrazy nigdy nie są skalowane do rozmiaru większego, niż ich "
+"oryginalny rozmiar."
+
+#
+# File: src/preferences.py, line: 151
+#: preferences_dialog.py:134
+msgid "Transparency"
+msgstr "Przeźroczystość"
+
+#
+# File: src/preferences.py, line: 153
+#: preferences_dialog.py:136
+msgid "Use checkered background for transparent images."
+msgstr "Użyj szachownicy jako tła dla przeźroczystych obrazów."
+
+#
+# File: src/preferences.py, line: 159
+#: preferences_dialog.py:142
+msgid ""
+"Use a grey checkered background for transparent images. If this preference "
+"is unset, the background is plain white instead."
+msgstr ""
+"Użyj szarej szachownicy jako tła dla przeźroczystych obrazów. Jeśli ta opcja "
+"nie jest wybrana, tło jest białe."
+
+#
+# File: src/preferences.py, line: 161
+#: preferences_dialog.py:144
+msgid "Appearance"
+msgstr "Wygląd"
+
+#
+# File: src/preferences.py, line: 167
+#: preferences_dialog.py:150
+msgid "Scroll"
+msgstr "Przewiń"
+
+#
+# File: src/preferences.py, line: 169
+#: preferences_dialog.py:152
+msgid "Use smart space key scrolling."
+msgstr "Użyj sprytnego przewijania klawiszem spacji."
+
+#
+# File: src/preferences.py, line: 174
+#: preferences_dialog.py:157
+msgid ""
+"Use smart scrolling with the space key. Normally the space key scrolls only "
+"right down (or up when shift is pressed), but with this preference set it "
+"also scrolls sideways and so tries to follow the natural reading order of "
+"the comic book."
+msgstr ""
+"Użyj sprytnego przewijania klawiszem spacji. Normalnie klawisz spacji "
+"przewija tylko do dołu (albo w górę, kiedy klawisz shift jest wciśnięty), "
+"ale z ta opcją włączoną klawisz ten przesuwa obraz na bok, starając się "
+"podążać za naturalnym porządkiem czytania komiksów."
+
+#: preferences_dialog.py:161
+msgid "Flip pages when scrolling off the edges of the page."
+msgstr ""
+"Przeskocz do nastepnej strony, kiedy zakończono przegladanie bieżącej  "
+
+#: preferences_dialog.py:166
+#, fuzzy
+msgid ""
+"Flip pages when scrolling \"off the page\" with the scroll wheel or with the "
+"arrow keys. It takes n consecutive \"steps\" with the scroll wheel or the "
+"arrow keys for the pages to be flipped."
+msgstr ""
+"Przeskocz do nastepnej strony, kiedy przewijając myszką lub strzałkami "
+"natrafiono na koniec strony. Wymaga trzech kolejnych \"kroków\" kółkiem "
+"myszki lub klawiszami strzałek, aby przeskoczyć do nastepnej strony."
+
+#: preferences_dialog.py:170
+msgid "Avoid possibly unintentional page flips."
+msgstr ""
+
+#: preferences_dialog.py:174
+msgid "Only flip to a new page if MComix is the top window. "
+msgstr ""
+
+#: preferences_dialog.py:175
+msgid "This prevents the possibility of \"accidental\" page flips when "
+msgstr ""
+
+#: preferences_dialog.py:176
+msgid "clicking on the MComix window surface while trying to make MComix the "
+msgstr ""
+
+#: preferences_dialog.py:177
+msgid "top window."
+msgstr ""
+
+#
+# File: src/preferences.py, line: 198
+#: preferences_dialog.py:183
+msgid "Automatically open the next archive."
+msgstr "Automatycznie otwórz następne archiwum."
+
+#
+# File: src/preferences.py, line: 203
+#: preferences_dialog.py:188
+msgid ""
+"Automatically open the next archive in the directory when flipping past the "
+"last page, or the previous archive when flipping past the first page."
+msgstr ""
+"Automatycznie otwórz następne archiwum w katalogu, kiedy ukończono "
+"przeglądanie ostatniej strony, albo poprzednie archiwum, jeśli ukończono "
+"przeglądanie pierwszej ze stron."
+
+#: preferences_dialog.py:191
+msgid "Number of pixels to scroll per arrow key press"
+msgstr ""
+
+#: preferences_dialog.py:197
+msgid "Set the number of pixels to scroll on a page when using the arrow keys."
+msgstr ""
+
+#: preferences_dialog.py:200
+msgid "Number of pixels to scroll per mouse wheel turn"
+msgstr ""
+
+#: preferences_dialog.py:206
+msgid "Set the number of pixels to scroll on a page when using a mouse wheel."
+msgstr ""
+
+#: preferences_dialog.py:209
+msgid "Number of \"steps\" to take before flipping the page"
+msgstr ""
+
+#: preferences_dialog.py:215
+msgid ""
+"Set the number of \"steps\" needed to flip to the next or previous page.  "
+"Less steps will allow for very fast page turning but you might find yourself "
+"accidentally turning pages."
+msgstr ""
+
+#
+# File: src/preferences.py, line: 177
+# File: src/ui.py, line: 296
+#: preferences_dialog.py:218 ui.py:336
+msgid "Double page mode"
+msgstr "Tryb dwóch stron"
+
+#
+# File: src/preferences.py, line: 179
+#: preferences_dialog.py:221
+msgid "Flip two pages in double page mode."
+msgstr "Przeglądaj po dwie strony na raz w trybie dwóch stron."
+
+#
+# File: src/preferences.py, line: 184
+#: preferences_dialog.py:226
+msgid ""
+"Flip two pages, instead of one, each time we flip pages in double page mode."
+msgstr ""
+"Przeglądaj po dwie strony, zamiast po jednej, za każdym razem, gdy "
+"przejdziesz do następnej strony, w trybie dwóch stron."
+
+#
+# File: src/preferences.py, line: 187
+#: preferences_dialog.py:230
+msgid "Show only one wide image in double page mode."
+msgstr "Pokazuj tylko jeden szeroki obraz w trybie dwóch stron."
+
+#
+# File: src/preferences.py, line: 193
+#: preferences_dialog.py:236
+msgid ""
+"Display only one image in double page mode, if the image's width exceeds its "
+"height. The result of this is that scans that span two pages are displayed "
+"properly (i.e. alone) also in double page mode."
+msgstr ""
+"Pokazuj tylko jeden obraz w trybie dwóch stron, jeśli szerokość obrazu "
+"przekracza jego wysokość. Skutkuje to tym, że obrazowania, które obejmują "
+"dwie strony, są wyświetlane poprawnie (t.j. jako jeden obraz), również w "
+"trybie dwóch stron."
+
+#
+# File: src/preferences.py, line: 196
+#: preferences_dialog.py:239
+msgid "Files"
+msgstr "Pliki"
+
+#
+# File: src/preferences.py, line: 206
+#: preferences_dialog.py:242
+msgid "Automatically open the last viewed file on startup."
+msgstr "Podczas startu automatycznie otwórz ostatnio ogladany plik."
+
+#
+# File: src/preferences.py, line: 211
+#: preferences_dialog.py:247
+#, fuzzy
+msgid ""
+"Automatically open, on startup, the file that was open when MComix was last "
+"closed."
+msgstr ""
+"Automatycznie otwórz podczas startu plik, który był otwarty, kiedy zamknięto "
+"Comix"
+
+#
+# File: src/preferences.py, line: 214
+#: preferences_dialog.py:251
+msgid "Store information about recently opened files."
+msgstr "Przechowuj informację o ostatnio otwieranych plikach."
+
+#
+# File: src/preferences.py, line: 219
+#: preferences_dialog.py:256
+#, fuzzy
+msgid ""
+"Add information about all files opened from within MComix to the shared "
+"recent files list."
+msgstr ""
+"Dodaj informację o wszystkich plikach otwieranych w Comix do listy ostatnio "
+"otwieranych plików."
+
+#
+# File: src/preferences.py, line: 222
+#: preferences_dialog.py:260
+msgid "Store thumbnails for opened files."
+msgstr "Przechowuj miniatury dla otwartych plików."
+
+#
+# File: src/preferences.py, line: 227
+#: preferences_dialog.py:265
+msgid ""
+"Store thumbnails for opened files according to the freedesktop.org "
+"specification. These thumbnails are shared by many other applications, such "
+"as most file managers."
+msgstr ""
+"Przechowuj miniatury dla otwartych plików zgodnie ze specyfikacją "
+"freedesktop.org. Te miniatury są współdzielone przez wiele innych programów, "
+"takich jak wiekszość menadżerów plików."
+
+#
+# File: src/preferences.py, line: 230
+#: preferences_dialog.py:268
+msgid "Cache"
+msgstr "Pamięć podręczna"
+
+#: preferences_dialog.py:270
+msgid "Maximum number of pages to store in the cache"
+msgstr ""
+
+#: preferences_dialog.py:276
+msgid ""
+"Set the max number of pages to cache. A value of -1 will cache the entire "
+"archive."
+msgstr ""
+
+#: preferences_dialog.py:279
+msgid "Crash Recovery"
+msgstr ""
+
+#: preferences_dialog.py:282
+msgid "Enable crash recovery."
+msgstr ""
+
+#: preferences_dialog.py:287
+msgid ""
+"Crash recovery saves the current configuration information every specified "
+"seconds.  In case of a crash the previous file will be re-loaded."
+msgstr ""
+
+#: preferences_dialog.py:290
+msgid "Save the current configuration information every n seconds"
+msgstr ""
+
+#: preferences_dialog.py:296
+msgid ""
+"Every n seconds the current configuration will be saved to disk.  Choose a "
+"lower number if crashes are frequent on your machine. 30 seconds (default)"
+msgstr ""
+
+#
+# File: src/preferences.py, line: 237
+#: preferences_dialog.py:299
+msgid "Behaviour"
+msgstr "Zachowanie"
+
+#
+# File: src/preferences.py, line: 243
+#: preferences_dialog.py:305
+msgid "Default modes"
+msgstr "Domyślne tryby"
+
+#
+# File: src/preferences.py, line: 245
+#: preferences_dialog.py:307
+msgid "Use double page mode by default."
+msgstr "Użyj trybu dwóch stron jako domyślnego."
+
+#
+# File: src/preferences.py, line: 250
+#: preferences_dialog.py:313
+msgid "Use fullscreen by default."
+msgstr "Użyj trybu pełen ekran jako domyślnego."
+
+#
+# File: src/preferences.py, line: 255
+#: preferences_dialog.py:319
+msgid "Use manga mode by default."
+msgstr "Użyj trybu manga jako domyślnego."
+
+#
+# File: src/preferences.py, line: 260
+#: preferences_dialog.py:325
+msgid "Default zoom mode"
+msgstr "Domyślny tryb zoomu"
+
+#
+# File: src/preferences.py, line: 262
+# File: src/ui.py, line: 288
+#: preferences_dialog.py:328 ui.py:328
+msgid "Best fit mode"
+msgstr "Tryb najlepszego dopasowania"
+
+#
+# File: src/preferences.py, line: 263
+# File: src/ui.py, line: 290
+#: preferences_dialog.py:329 ui.py:330
+msgid "Fit width mode"
+msgstr "Tryb dopasowania szerokości"
+
+#
+# File: src/preferences.py, line: 264
+# File: src/ui.py, line: 292
+#: preferences_dialog.py:330 ui.py:332
+msgid "Fit height mode"
+msgstr "Tryb dopasowania wysokości"
+
+#
+# File: src/preferences.py, line: 265
+# File: src/ui.py, line: 294
+#: preferences_dialog.py:331 ui.py:334
+msgid "Manual zoom mode"
+msgstr "Ręczny tryb zoomu"
+
+#
+# File: src/preferences.py, line: 271
+#: preferences_dialog.py:337
+msgid "Fullscreen"
+msgstr "Pełen ekran"
+
+#
+# File: src/preferences.py, line: 273
+#: preferences_dialog.py:339
+msgid "Automatically hide all toolbars in fullscreen."
+msgstr ""
+"Automatycznie schowaj wszystkie paski narzędzi w trybie pełnego ekranu."
+
+#
+# File: src/preferences.py, line: 279
+#: preferences_dialog.py:345
+msgid "Slideshow"
+msgstr "Pokaz slajdów"
+
+#
+# File: src/preferences.py, line: 280
+#: preferences_dialog.py:346
+msgid "Slideshow delay (in seconds)"
+msgstr "Opóźnienie pokazu slajdów (w sekundach)"
+
+#
+# File: src/preferences.py, line: 280
+#: preferences_dialog.py:355
+#, fuzzy
+msgid "Slideshow step (in pixels)"
+msgstr "Opóźnienie pokazu slajdów (w sekundach)"
+
+#: preferences_dialog.py:363
+msgid ""
+"Specify the number of pixels to scroll while in slideshow mode. A positive "
+"value will scroll forward, a negative value will scroll backwards, and a "
+"value of 0 will cause the slideshow to always flip to a new page."
+msgstr ""
+
+#
+# File: src/preferences.py, line: 198
+#: preferences_dialog.py:367
+#, fuzzy
+msgid "During a slideshow automatically open the next archive."
+msgstr "Automatycznie otwórz następne archiwum."
+
+#: preferences_dialog.py:372
+msgid ""
+"While in slideshow mode allow the next archive to automatically be opened."
+msgstr ""
+
+#: preferences_dialog.py:375
+msgid "Page Numbers"
+msgstr ""
+
+#
+# File: src/preferences.py, line: 117
+#: preferences_dialog.py:376
+#, fuzzy
+msgid "Show page numbers."
+msgstr "Pokaż numery stron w miniaturach."
+
+#: preferences_dialog.py:381
+msgid ""
+"Show page numbers in the Title bar and the status bar. If unset the page "
+"numbers will be hidden."
+msgstr ""
+
+#
+# File: src/preferences.py, line: 289
+#: preferences_dialog.py:385
+msgid "Comment extensions"
+msgstr "Rozszerzenia komentarzy"
+
+#
+# File: src/preferences.py, line: 295
+#: preferences_dialog.py:392
+msgid ""
+"Treat all files found within archives, that have one of these file endings, "
+"as comments."
+msgstr ""
+"Traktuj wszystkie pliki znalezione wewnątrz archiwów, jeśli mają jedno z "
+"tych zakończeń, jako komentarze."
+
+#: preferences_dialog.py:395
+msgid "Rotation"
+msgstr "Obrót"
+
+#: preferences_dialog.py:397
+msgid "Automatically rotate images according to their metadata."
+msgstr ""
+"Automatycznie obróć obrazy, stosownie do informacji zawartych w oglądanym "
+"pliku grafiki."
+
+#: preferences_dialog.py:402
+msgid ""
+"Automatically rotate images when an orientation is specified in the image "
+"metadata, such as in an Exif tag."
+msgstr ""
+"Automatycznie obróc obrazy, kiedy orjentacja jest określona w informacjach "
+"obrazu, takich jak tagi Exif."
+
+#
+# File: src/preferences.py, line: 297
+#: preferences_dialog.py:404
+msgid "Display"
+msgstr "Wyświetlanie"
+
+#
+# File: src/properties.py, line: 89
+#: properties_dialog.py:21
+msgid "Properties"
+msgstr "Właściwości"
+
+#
+# File: src/properties.py, line: 114
+#: properties_dialog.py:47
+#, python-format
+msgid "%d comments"
+msgstr "%d komentarze"
+
+#
+# File: src/properties.py, line: 124
+# File: src/properties.py, line: 159
+#: properties_dialog.py:60 properties_dialog.py:98
+msgid "Location"
+msgstr "Umiejscowienie"
+
+#
+# File: src/properties.py, line: 126
+# File: src/properties.py, line: 160
+#: properties_dialog.py:62 properties_dialog.py:99
+msgid "Accessed"
+msgstr "Użyty"
+
+#
+# File: src/properties.py, line: 128
+# File: src/properties.py, line: 162
+#: properties_dialog.py:64 properties_dialog.py:101
+msgid "Modified"
+msgstr "Zmieniony"
+
+#
+# File: src/properties.py, line: 130
+# File: src/properties.py, line: 164
+#: properties_dialog.py:66 properties_dialog.py:103
+msgid "Permissions"
+msgstr "Uprawnienia"
+
+#
+# File: src/properties.py, line: 131
+# File: src/properties.py, line: 165
+#: properties_dialog.py:67 properties_dialog.py:104
+msgid "Owner"
+msgstr "Właściciel"
+
+#
+# File: src/properties.py, line: 135
+#: properties_dialog.py:74
+msgid "Archive"
+msgstr "Archiwum"
+
+#
+# File: src/properties.py, line: 169
+#: properties_dialog.py:108
+msgid "Image"
+msgstr "Obraz"
+
+#
+# File: src/preferences.py, line: 279
+#: slideshow.py:42
+#, fuzzy
+msgid "Stop slideshow"
+msgstr "Pokaz slajdów"
+
+#
+# File: src/preferences.py, line: 279
+#: slideshow.py:46 ui.py:325
+#, fuzzy
+msgid "Start slideshow"
+msgstr "Pokaz slajdów"
+
+#: thumbnail_tools.py:171
+msgid "! thumbnail.py: Could not write"
+msgstr ""
+
+#
+# File: src/librarybackend.py, line: 272
+# File: src/librarybackend.py, line: 274
+#: ui.py:30
+#, fuzzy
+msgid "_Copy"
+msgstr "(Kopia)"
+
+#
+# File: src/ui.py, line: 34
+#: ui.py:32
+msgid "_Next page"
+msgstr "_Nastepna strona"
+
+#
+# File: src/ui.py, line: 36
+#: ui.py:34
+msgid "_Previous page"
+msgstr "_Poprzednia strona"
+
+#
+# File: src/ui.py, line: 38
+#: ui.py:36
+msgid "_First page"
+msgstr "Pierwsza strona"
+
+#
+# File: src/ui.py, line: 40
+#: ui.py:38
+msgid "_Last page"
+msgstr "Ostatnia strona"
+
+#: ui.py:40
+msgid "_Go to page..."
+msgstr ""
+
+#: ui.py:42
+msgid "_Refresh file"
+msgstr ""
+
+#
+# File: src/edit.py, line: 28
+#: ui.py:44
+#, fuzzy
+msgid "_Next archive"
+msgstr "Edytuj archiwum"
+
+#
+# File: src/ui.py, line: 36
+#: ui.py:46
+#, fuzzy
+msgid "_Previous archive"
+msgstr "_Poprzednia strona"
+
+#
+# File: src/ui.py, line: 42
+#: ui.py:48
+msgid "_Zoom in"
+msgstr "_Przybliż"
+
+#
+# File: src/ui.py, line: 44
+#: ui.py:50
+msgid "Zoom _out"
+msgstr "_Oddal"
+
+#
+# File: src/ui.py, line: 46
+#: ui.py:52
+msgid "O_riginal size"
+msgstr "Rozmiar oryginalny"
+
+#
+# File: src/ui.py, line: 48
+#: ui.py:54
+msgid "_Close"
+msgstr "_Zamknij"
+
+#
+# File: src/ui.py, line: 50
+#: ui.py:56
+msgid "_Quit"
+msgstr "_Wyjdź"
+
+#: ui.py:58
+msgid "_Save and quit"
+msgstr ""
+
+#
+# File: src/ui.py, line: 52
+#: ui.py:60
+msgid "_Rotate 90 degrees CW"
+msgstr "Obróć o 90° w kierunku ruchu wskazówek zegara"
+
+#
+# File: src/ui.py, line: 54
+#: ui.py:62
+msgid "Rotate 180 de_grees"
+msgstr "Obróć o 180°"
+
+#
+# File: src/ui.py, line: 56
+#: ui.py:64
+msgid "Rotat_e 90 degrees CCW"
+msgstr "Obróć o 90° przeciwnie do ruchu wskazówek zegara"
+
+#
+# File: src/ui.py, line: 58
+#: ui.py:66
+msgid "Fli_p horizontally"
+msgstr "Przewróć w poziomie"
+
+#
+# File: src/ui.py, line: 60
+#: ui.py:68
+msgid "Flip _vertically"
+msgstr "Przewróć w pionie"
+
+#
+# File: src/ui.py, line: 62
+#: ui.py:70
+msgid "Manual _Zoom"
+msgstr "_Ręczny zoom"
+
+#
+# File: src/ui.py, line: 63
+#: ui.py:71
+msgid "Open _recent"
+msgstr "Otwórz ostatnie"
+
+#
+# File: src/ui.py, line: 64
+#: ui.py:72
+msgid "_Bookmarks"
+msgstr "_Zakładki"
+
+#
+# File: src/ui.py, line: 65
+#: ui.py:73
+msgid "T_oolbars"
+msgstr "_Paski narzędziowe"
+
+#
+# File: src/ui.py, line: 66
+#: ui.py:74
+msgid "_Edit"
+msgstr "_Edycja"
+
+#
+# File: src/ui.py, line: 67
+#: ui.py:75
+msgid "_File"
+msgstr "_Plik"
+
+#
+# File: src/ui.py, line: 68
+#: ui.py:76
+msgid "_View"
+msgstr "_Widok"
+
+#
+# File: src/ui.py, line: 79
+#: ui.py:78
+#, fuzzy
+msgid "_Tools"
+msgstr "_Pasek narzędzi"
+
+#
+# File: src/ui.py, line: 70
+#: ui.py:79
+msgid "_Help"
+msgstr "_Pomoc"
+
+#
+# File: src/ui.py, line: 71
+#: ui.py:80
+#, fuzzy
+msgid "_Transform image..."
+msgstr "_Przekształć"
+
+#
+# File: src/ui.py, line: 75
+#: ui.py:84
+msgid "_Fullscreen"
+msgstr "_Pełen ekran"
+
+#
+# File: src/ui.py, line: 77
+#: ui.py:86
+msgid "_Double page mode"
+msgstr "_Tryb podwójnej strony"
+
+#
+# File: src/ui.py, line: 79
+#: ui.py:88
+msgid "_Toolbar"
+msgstr "_Pasek narzędzi"
+
+#
+# File: src/ui.py, line: 81
+#: ui.py:90
+msgid "_Menubar"
+msgstr "Pasek menu"
+
+#
+# File: src/ui.py, line: 83
+#: ui.py:92
+msgid "St_atusbar"
+msgstr "_Pasek stanu"
+
+#
+# File: src/ui.py, line: 85
+#: ui.py:94
+msgid "S_crollbars"
+msgstr "_Paski przesuwania"
+
+#
+# File: src/ui.py, line: 87
+#: ui.py:96
+msgid "Th_umbnails"
+msgstr "_Miniatury"
+
+#
+# File: src/ui.py, line: 89
+#: ui.py:98
+msgid "H_ide all"
+msgstr "_Ukryj wszystkie"
+
+#
+# File: src/ui.py, line: 91
+#: ui.py:100
+msgid "_Manga mode"
+msgstr "_Tryb manga"
+
+#
+# File: src/ui.py, line: 93
+#: ui.py:102
+msgid "_Keep transformation"
+msgstr "_Utrzymaj transformację"
+
+#
+# File: src/ui.py, line: 95
+#: ui.py:104
+#, fuzzy
+msgid "Start _slideshow"
+msgstr "_Uruchom pokaz"
+
+#
+# File: src/ui.py, line: 97
+#: ui.py:106
+msgid "Magnifying _glass"
+msgstr "_Lupa"
+
+#
+# File: src/ui.py, line: 101
+#: ui.py:112
+msgid "_Best fit mode"
+msgstr "_Tryb optymalnego przybliżenia"
+
+#
+# File: src/ui.py, line: 103
+#: ui.py:114
+msgid "Fit _width mode"
+msgstr "Dopasuj na szerokość"
+
+#
+# File: src/ui.py, line: 105
+#: ui.py:116
+msgid "Fit _height mode"
+msgstr "Dopasuj na wysokość"
+
+#
+# File: src/ui.py, line: 107
+#: ui.py:118
+msgid "M_anual zoom mode"
+msgstr "Tryb ręcznego przybliżenia"
+
+#
+# File: src/ui.py, line: 113
+#: ui.py:123
+msgid "_About"
+msgstr "_O programie"
+
+#
+# File: src/ui.py, line: 115
+#: ui.py:127
+msgid "_View comments..."
+msgstr "_Obejrzyj komentarze…"
+
+#
+# File: src/ui.py, line: 121
+#: ui.py:131
+msgid "_Properties"
+msgstr "_Właściwości"
+
+#
+# File: src/ui.py, line: 128
+#: ui.py:135
+msgid "Pr_eferences"
+msgstr "_Ustawienia"
+
+#
+# File: src/ui.py, line: 117
+#: ui.py:140
+msgid "_Edit archive..."
+msgstr "Edytuj archiwum"
+
+#
+# File: src/ui.py, line: 119
+#: ui.py:142
+msgid "_Open..."
+msgstr "_Otwórz…"
+
+#
+# File: src/ui.py, line: 123
+#: ui.py:144
+msgid "_Enhance image..."
+msgstr "_Ulepsz obraz"
+
+#
+# File: src/ui.py, line: 132
+#: ui.py:148
+msgid "_Library..."
+msgstr "_Biblioteka"
+
+#
+# File: src/ui.py, line: 282
+#: ui.py:316
+msgid "First page"
+msgstr "Pierwsza strona"
+
+#
+# File: src/ui.py, line: 284
+#: ui.py:318
+msgid "Previous page"
+msgstr "Poprzednia strona"
+
+#: ui.py:319
+msgid "Go to page..."
+msgstr ""
+
+#
+# File: src/ui.py, line: 285
+#: ui.py:320
+msgid "Next page"
+msgstr "Następna strona"
+
+#
+# File: src/ui.py, line: 286
+#: ui.py:321
+msgid "Last page"
+msgstr "Ostatnia strona"
+
+#
+# File: src/ui.py, line: 284
+#: ui.py:322
+#, fuzzy
+msgid "Previous archive"
+msgstr "Poprzednia strona"
+
+#
+# File: src/edit.py, line: 28
+#: ui.py:323
+#, fuzzy
+msgid "Next archive"
+msgstr "Edytuj archiwum"
+
+#
+# File: src/edit.py, line: 51
+#: ui.py:324
+#, fuzzy
+msgid "Refresh file"
+msgstr "Inne pliki"
+
+#
+# File: src/ui.py, line: 297
+#: ui.py:337
+msgid "Manga mode"
+msgstr "Tryb manga"
+
+#
+# File: src/ui.py, line: 298
+#: ui.py:338
+msgid "Magnifying glass"
+msgstr "Lupa"
+
+#
+# File: src/about.py, line: 75
+#~ msgid "Developer"
+#~ msgstr "Programista"
+
+#
+# File: src/preferences.py, line: 231
+#~ msgid "Use a cache to speed up browsing."
+#~ msgstr "Użyj pamięci podręcznej, aby przyśpieszyć przeglądanie."
+
+#
+# File: src/preferences.py, line: 235
+#~ msgid ""
+#~ "Cache the images that are next to the currently viewed image in order to "
+#~ "speed up browsing. Since the speed improvements are quite big, it is "
+#~ "recommended that you have this preference set, unless you are running "
+#~ "short on free RAM."
+#~ msgstr ""
+#~ "Ładuj do pamięci obrazy, które będą wkrótce oglądane, aby przyśpieszyć "
+#~ "ich przeglądanie. Odkąd poprawiono prędkości działania komputerów, "
+#~ "rekomenduje się, aby zaznaczyć tę opcję, chybaże komputer jest wyposażony "
+#~ "w małą ilość pamięci RAM."
+
+#
+# File: src/thumbremover.py, line: 22
+#~ msgid "Thumbnail maintenance"
+#~ msgstr "Zarządzanie miniaturami"
+
+#
+# File: src/thumbremover.py, line: 24
+#~ msgid "Cleanup"
+#~ msgstr "Wyczyść"
+
+#
+# File: src/thumbremover.py, line: 36
+#~ msgid "Cleanup thumbnails"
+#~ msgstr "Wyczyść miniatury"
+
+#
+# File: src/thumbremover.py, line: 46
+#~ msgid ""
+#~ "Thumbnails for files (such as image files and comic book archives) are "
+#~ "stored in your home directory. Many different applications use and create "
+#~ "these thumbnails, but sometimes thumbnails remain even though the "
+#~ "original files have been removed - wasting space. This dialog can cleanup "
+#~ "your stored thumbnails by removing orphaned and outdated thumbnails."
+#~ msgstr ""
+#~ "Miniatury plików (takie jak pliki obrazów i archiwów komiksów) są "
+#~ "przechowywane w Twoim katalogu domowym. Wiele róznych aplikacji używa i "
+#~ "tworzy te miniatury, czasem pozostają mimo usunięcia oryginalnych plików "
+#~ "- zajmując niepotrzebnie przestrzeń dysku. Można wyczyścić Twoje podglądy "
+#~ "plików przez usunięcie osieroconych i porzuconych miniatur."
+
+#
+# File: src/thumbremover.py, line: 58
+#~ msgid "Thumbnail directory"
+#~ msgstr "Katalog miniatur"
+
+#
+# File: src/thumbremover.py, line: 65
+#~ msgid "Total number of thumbnails"
+#~ msgstr "Całkowita ilość miniatur"
+
+#
+# File: src/thumbremover.py, line: 68
+# File: src/thumbremover.py, line: 75
+#~ msgid "Calculating..."
+#~ msgstr "Obliczanie…"
+
+#
+# File: src/thumbremover.py, line: 72
+#~ msgid "Total size of thumbnails"
+#~ msgstr "Całkowity rozmiar miniatur"
+
+#
+# File: src/thumbremover.py, line: 80
+#~ msgid "Do you want to cleanup orphaned and outdated thumbnails now?"
+#~ msgstr "Czy chcesz usunąć teraz osierocone i przedawnione miniatury?"
+
+#
+# File: src/thumbremover.py, line: 116
+#~ msgid "Removing thumbnails"
+#~ msgstr "Usuwanie miniatur"
+
+#
+# File: src/thumbremover.py, line: 135
+#~ msgid "Number of removed thumbnails"
+#~ msgstr "Ilość usuniętych miniatur"
+
+#
+# File: src/thumbremover.py, line: 142
+#~ msgid "Total size of removed thumbnails"
+#~ msgstr "Całkowita wielkość usuniętych miniatur"
+
+#
+# File: src/thumbremover.py, line: 193
+#~ msgid "Removed thumbnail for '%s'"
+#~ msgstr "Usunięta miniatura dla „%s“"
+
+#
+# File: src/ui.py, line: 126
+#~ msgid "_Thumbnail maintenance..."
+#~ msgstr "_Zarządzanie podglądem"
