@@ -12,12 +12,13 @@ import constants
 
 can_handle_pdf = False
 
-try:
-    import poppler
-    import cairo
-    can_handle_pdf = True
-except Exception:
-    can_handle_pdf = False
+#try:
+#    import poppler
+#    import cairo
+#    can_handle_pdf = True
+#except Exception:
+#    can_handle_pdf = False
+can_handle_pdf = False
 
 _rar_exec = None
 
@@ -97,15 +98,15 @@ class Extractor:
         elif self._type == constants.PDF:
             global can_handle_pdf
             
-            if can_handle_pdf:
+            #if can_handle_pdf:
 
-                self._source_pdf = poppler.document_new_from_file ('file://' + self._src, None)
-                self._num_of_pages = self._source_pdf.get_n_pages()
+            #    self._source_pdf = poppler.document_new_from_file ('file://' + self._src, None)
+            #    self._num_of_pages = self._source_pdf.get_n_pages()
     
-                self._files = [self._dst + str(n) + '.png' for n in range(0, self._num_of_pages)]
+            #    self._files = [self._dst + str(n) + '.png' for n in range(0, self._num_of_pages)]
                 
-            else:
-                return None
+            #else:
+            #    return None
 
         else:
             print _('! Non-supported archive format:'), src

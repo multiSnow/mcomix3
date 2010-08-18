@@ -6,8 +6,8 @@ import tarfile
 import process
 import archive_extractor
 import constants
-import poppler
-import cairo
+#import poppler
+#import cairo
 
 def archive_mime_type(path):
     """Return the archive type of <path> or None for non-archives."""
