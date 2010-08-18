@@ -24,7 +24,7 @@ class _EditArchiveDialog(gtk.Dialog):
         gtk.Dialog.__init__(self, _('Edit archive'), window, gtk.DIALOG_MODAL,
             (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL))
 
-        self._accept_changes_button = self.add_button(gtk.STOCK_APPLY, constants.RESPONSE_ACCEPT_CHANGES)
+        #self._accept_changes_button = self.add_button(gtk.STOCK_APPLY, constants.RESPONSE_ACCEPT_CHANGES)
 
         self.kill = False # Dialog is killed.
         self.file_handler = window.filehandler
