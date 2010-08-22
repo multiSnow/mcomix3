@@ -91,8 +91,8 @@ class _ImageArea(gtk.ScrolledWindow):
             thumb = self.render_icon(gtk.STOCK_MISSING_IMAGE,
                 gtk.ICON_SIZE_DIALOG)
         
-        thumb = image_tools.fit_in_rectangle(thumb, 67, 100)
-        thumb = image_tools.add_border(thumb, 1, 0x555555FF)
+        thumb = image_tools.fit_in_rectangle(thumb, 128, 128)
+
         self._liststore.append([thumb, os.path.basename(path), path])
 
     def get_file_listing(self):

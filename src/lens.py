@@ -20,6 +20,31 @@ class MagnifyingGlass:
 
     def __init__(self, window):
         self._window = window
+        
+    def add_lens(self, left_pixbuf, right_pixbuf=None):
+        """Add the lens to the main images"""        
+        canvas = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8,
+            prefs['lens size'], prefs['lens size'])
+        canvas.fill(0x000000bb)
+
+        if right_pixbuf == None:
+            
+            source_pixbuf = left_pixbuf
+            image_size = self._window.left_image.size_request()
+            x, y = self._window.get_layout_pointer_position()
+
+            self._add_subpixbuf(canvas, x, y, image_size, source_pixbuf)
+            canvas = image_tools.add_border(canvas, 1)
+
+            pixbuf = self._get_lens_pixbuf(400,400)
+            
+            source_pixbuf = pixbuf
+            
+            #assertion `dest_x >= 0 && dest_x + width <= dest_pixbuf->width
+            #canvas.copy_area(0, 0, prefs['lens size'], prefs['lens size'], source_pixbuf, 0,0)
+            #canvas.copy_area(0, 0, 10, 10, source_pixbuf, 0,0)
+        
+        return source_pixbuf
 
     def set_lens_cursor(self, x, y):
         """Calculate what image data to put in the lens and update the cursor
@@ -39,8 +64,9 @@ class MagnifyingGlass:
     def toggle(self, action):
         """Toggle on or off the lens depending on the state of <action>."""
         if action.get_active():
-            x, y = self._window.get_layout_pointer_position()
-            self.set_lens_cursor(x, y)
+            #x, y = self._window.get_layout_pointer_position()
+            #self.set_lens_cursor(x, y)
+            self._window.draw_image()
         else:
             self._window.cursor_handler.set_cursor_type(constants.NORMAL_CURSOR)
 

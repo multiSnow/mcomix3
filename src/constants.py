@@ -10,7 +10,7 @@ import sys
 import gettext
 _ = gettext.gettext
 
-VERSION = '0.90'
+VERSION = '0.90.3'
 
 HOME_DIR = tools.get_home_directory()
 CONFIG_DIR = tools.get_config_directory()
@@ -36,7 +36,7 @@ RESPONSE_SORT_ASCENDING = 2
 RESPONSE_REVERT_TO_DEFAULT = 3
 RESPONSE_REMOVE = 4
 RESPONSE_IMPORT = 5
-RESPONSE_ACCEPT_CHANGES = 6
+RESPONSE_APPLY_CHANGES = 6
 RESPONSE_SAVE_AS = 7
 
 ARCHIVE_DESCRIPTIONS = {
@@ -46,6 +46,8 @@ ARCHIVE_DESCRIPTIONS = {
                         BZIP2: _('Bzip2 compressed tar archive'),
                         RAR:   _('RAR archive')
                        }
+                       
+ACCEPTED_COMMENT_EXTENSIONS = ['txt', 'nfo']
 
 SUPPORTED_IMAGE_REGEX = re.compile(r'\.(jpg|jpeg|png|gif|tif|tiff|bmp|ppm|pgm|pbm)\s*$', re.I)
 SUPPORTED_ARCHIVE_REGEX = re.compile(r'\.(cbz|cbr|cbt)\s*$', re.I)

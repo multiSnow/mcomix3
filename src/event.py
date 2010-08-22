@@ -10,10 +10,14 @@ class EventHandler:
 
     def __init__(self, window):
         self._window = window
+
         self._last_pointer_pos_x = 0
         self._last_pointer_pos_y = 0
+        self._last_lens_pos_x = 0
+        self._last_lens_pos_y = 0
         self._pressed_pointer_pos_x = 0
         self._pressed_pointer_pos_y = 0
+
         self._extra_scroll_events = 0 # For scrolling "off the page".
 
     def resize_event(self, widget, event):
@@ -304,6 +308,7 @@ class EventHandler:
 
     def mouse_press_event(self, widget, event):
         """Handle mouse click events on the main layout area."""
+        
         if event.button == 1:
             self._pressed_pointer_pos_x = event.x_root
             self._pressed_pointer_pos_y = event.y_root
@@ -355,10 +360,20 @@ class EventHandler:
             self._drag_timer = event.time
             
         elif self._window.actiongroup.get_action('lens').get_active():
-            self._window.glass.set_lens_cursor(event.x, event.y)
+        
+            # this is set to check if the mouse hasn't moved but the mouse event has fired
+            # this attempts to prevent lens re-drawing in the case of a jittery mouse or
+            # extremely small mouse movements
+            if event.x != self._last_lens_pos_x or event.y != self._last_lens_pos_y:
+
+                self._window.lens.set_lens_cursor(event.x, event.y)
+                #self._window.draw_image()
             
         else:
             self._window.cursor_handler.refresh()
+
+        self._last_lens_pos_x = event.x
+        self._last_lens_pos_y = event.y
         
     def drag_n_drop_event(self, widget, context, x, y, selection, drag_id,
       eventtime):

@@ -1,0 +1,3 @@
+BUGS
+    -Lens is not properly magnifying the right area of the image
+     if a rotation has been done.

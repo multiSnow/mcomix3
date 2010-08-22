@@ -10,6 +10,8 @@ import image_tools
 import edit_image_area
 import edit_comment_area
 import constants
+import re
+from preferences import prefs
 
 _dialog = None
 
@@ -24,11 +26,13 @@ class _EditArchiveDialog(gtk.Dialog):
         gtk.Dialog.__init__(self, _('Edit archive'), window, gtk.DIALOG_MODAL,
             (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL))
 
-        #self._accept_changes_button = self.add_button(gtk.STOCK_APPLY, constants.RESPONSE_ACCEPT_CHANGES)
+        self._accept_changes_button = self.add_button(gtk.STOCK_APPLY, constants.RESPONSE_APPLY_CHANGES)
 
         self.kill = False # Dialog is killed.
         self.file_handler = window.filehandler
         self._window = window
+        self._imported_files = []
+        
         self._save_button = self.add_button(gtk.STOCK_SAVE_AS, constants.RESPONSE_SAVE_AS)
 
         self._import_button = self.add_button(_('Import'), constants.RESPONSE_IMPORT)
@@ -147,22 +151,24 @@ class _EditArchiveDialog(gtk.Dialog):
             paths = dialog.get_paths()
             dialog.destroy()
             
+            exts = '|'.join(prefs['comment extensions'])
+            comment_re = re.compile(r'\.(%s)\s*$' % exts, re.I)
+
             for path in paths:
             
                 if image_tools.is_image_file(path):
+                    self._imported_files.append( path )
                     self._image_area.add_extra_image(path)
                     
                 elif os.path.isfile(path):
-                    self._comment_area.add_extra_file(path)
+                    
+                    if comment_re.search( path ):
+                        self._imported_files.append( path )
+                        self._comment_area.add_extra_file(path)
 
-        elif response == constants.RESPONSE_ACCEPT_CHANGES:
+        elif response == constants.RESPONSE_APPLY_CHANGES:
             
-            print '---------------------------------------->'
-
-            print 'original:'
             old_image_array = self._window.imagehandler._image_files
-            print old_image_array
-            print '\n\nnew:'
 
             treeiter = self._image_area._liststore.get_iter_root()
     
@@ -172,13 +178,12 @@ class _EditArchiveDialog(gtk.Dialog):
                 path = self._image_area._liststore.get_value(treeiter, 2)
                 new_image_array.append(path)
                 treeiter = self._image_area._liststore.iter_next(treeiter)
-                  
-            print new_image_array
 
             array_to_delete = []
             new_positions = []
 
             end_index = len(old_image_array) - 1
+
             for image_path in old_image_array:
     
                 try:
@@ -189,47 +194,20 @@ class _EditArchiveDialog(gtk.Dialog):
                     new_positions.append(end_index)
                     end_index -= 1
 
-            print 'new_positions: ' + str( new_positions )
-            print 'delete from: ' + str(end_index + 1) + ' to ' + str(len(old_image_array) - 1)
-
-            print '---------------------------------------->'
-
-            thumb_reorder_array = [0] * len(new_positions)
-            i = 0
-            for pos in new_positions:
-
-                thumb_reorder_array[ pos ] = i
-                
-                i += 1                
-
-            print 'new_positions2: ' + str( thumb_reorder_array )
-
-            self._window.thumbnailsidebar._thumbnail_liststore.reorder(thumb_reorder_array)
-
-            delete_range = [i for i in range(end_index + 1, len(old_image_array))]
-            delete_range.reverse()
-
-            for i in delete_range:
-                print i
-                self._window.thumbnailsidebar.remove_thumbnail(i)
-
-            treeiter = self._window.thumbnailsidebar._thumbnail_liststore.get_iter_root()
-            i = 1
-            while treeiter is not None:
-                self._window.thumbnailsidebar._thumbnail_liststore.set_value(treeiter, 0, i)
-                treeiter = self._window.thumbnailsidebar._thumbnail_liststore.iter_next(treeiter)
-
-                i += 1
-
             self._window.imagehandler._image_files = new_image_array
             self._window.imagehandler._raw_pixbufs = {}
             self._window.imagehandler.do_cacheing()
+            
+            self._window.thumbnailsidebar.clear()
+            self._window.thumbnailsidebar.load_thumbnails()
 
-            while self._window.imagehandler.is_cacheing:
+            while self._window.imagehandler.is_cacheing and \
+                  not self._window.thumbnailsidebar._is_loading:
                 while gtk.events_pending():
                     gtk.main_iteration(False)
 
             self._window.set_page(1)
+            self._window.thumbnailsidebar._selection_is_forced = False
 
         else:
             _close_dialog()

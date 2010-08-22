@@ -116,7 +116,7 @@ def run():
 
     try:
         opts, args = getopt.gnu_getopt(sys.argv[1:], 'fhld',
-            ['fullscreen', 'help', 'library', 'debug'])
+            ['fullscreen', 'help', 'library'])
 
     except getopt.GetoptError:
         print_help()

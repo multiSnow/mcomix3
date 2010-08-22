@@ -31,8 +31,7 @@ class MainWindow(gtk.Window):
     program when closed.
     """
 
-    def __init__(self, fullscreen=False, show_library=False, open_path=None,
-            open_page=1):
+    def __init__(self, fullscreen=False, show_library=False, open_path=None, open_page=1):
         gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
 
         # ----------------------------------------------------------------
@@ -64,7 +63,7 @@ class MainWindow(gtk.Window):
         self.slideshow = slideshow.Slideshow(self)
         self.cursor_handler = cursor_handler.CursorHandler(self)
         self.enhancer = enhance_backend.ImageEnhancer(self)
-        self.glass = lens.MagnifyingGlass(self)
+        self.lens = lens.MagnifyingGlass(self)
         self.uimanager = ui.MainUI(self)
         self.menubar = self.uimanager.get_widget('/Menu')
         self.toolbar = self.uimanager.get_widget('/Tool')

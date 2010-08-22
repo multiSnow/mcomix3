@@ -172,7 +172,9 @@ class ThumbnailSidebar(gtk.HBox):
 
         if not self._loaded and len(self._window.filehandler._image_files) > 1:
             return 
-
+            
+        self._thumb_cache.pop(num_of_thumbnail)
+            
         iterator = self._thumbnail_liststore.iter_nth_child( None, num_of_thumbnail )
 
         self._thumbnail_liststore.remove( iterator )
@@ -256,8 +258,8 @@ class ThumbnailSidebar(gtk.HBox):
             else:
                 return
 
+        self._is_loading = True
         self._loaded = True
-        self._is_loading = False
         self._thumb_cache_is_complete = True
 
     def _load(self):
@@ -337,7 +339,7 @@ class ThumbnailSidebar(gtk.HBox):
                 gtk.main_iteration(False)
 
         self._loaded = True
-        self._is_loading = True        
+        self._is_loading = False
         self._stop_loading = True
         self.update_select()
         self.update_layout_size()
@@ -357,6 +359,7 @@ class ThumbnailSidebar(gtk.HBox):
             try:
                 selected_row = self._get_selected_row()
                 self._currently_selected_page = selected_row
+                
 
                 if not self._selection_is_forced:
                     self._window.set_page(selected_row + 1)
@@ -365,6 +368,7 @@ class ThumbnailSidebar(gtk.HBox):
                 pass
             
         else:
+        
             # if the window was out of focus and the user clicks on
             # the thumbbar then do not select that page because they
             # more than likely have many pages open and are simply trying

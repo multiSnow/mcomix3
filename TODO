@@ -1,0 +1,7 @@
+TODO
+    -If the archive is edited then change the title to 'Edited'.
+    -If the archive is edited and has not been saved then show 
+     dialog message to warn and ask if the user wants to save the changes.
+    
+    -Only calculate the auto-background color once and store during 
+     initial image loading. 

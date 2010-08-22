@@ -7,7 +7,7 @@ import constants
 
 # All the preferences are stored here.
 prefs = {
-    'comment extensions': ['txt', 'nfo'],
+    'comment extensions': constants.ACCEPTED_COMMENT_EXTENSIONS,
     'auto load last file': False,
     'page of last file': 1,
     'path to last file': '',

@@ -100,8 +100,8 @@ class MainUI(gtk.UIManager):
                 'k', None, window.change_keep_transformation),
             ('slideshow', gtk.STOCK_MEDIA_PLAY, _('Start _slideshow'),
                 '<Control>S', None, window.slideshow.toggle),
-            ('lens', 'mcomix-lens', _('Magnifying _glass'),
-                'g', None, window.glass.toggle)])
+            ('lens', 'mcomix-lens', _('Magnifying _lens'),
+                'g', None, window.lens.toggle)])
         
         # Note: Don't change the default value for the radio buttons unless
         # also fixing the code for setting the correct one on start-up.
@@ -332,7 +332,7 @@ class MainUI(gtk.UIManager):
         self.get_widget('/Tool/double_page').set_tooltip_text(
                                                                _('Double page mode'))
         self.get_widget('/Tool/manga_mode').set_tooltip_text(_('Manga mode'))
-        self.get_widget('/Tool/lens').set_tooltip_text(_('Magnifying glass'))
+        self.get_widget('/Tool/lens').set_tooltip_text(_('Magnifying lens'))
 
     def set_sensitivities(self):
         """Sets the main UI's widget's sensitivities appropriately."""
