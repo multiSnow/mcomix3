@@ -8,6 +8,8 @@ file_list = []
 
 if len(sys.argv) <= 2 or (sys.argv[1] != 'on' and sys.argv[1] != 'off'):
     print "Specify 'on' or 'off' then the files..."
+    print "'on' will add function debug statements"
+    print "'off' will remove all debug statements"
     sys.exit(1)
 
 TYPE_OF_RUN = sys.argv[1]
