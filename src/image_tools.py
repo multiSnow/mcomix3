@@ -9,6 +9,7 @@ import gtk
 import Image
 import ImageEnhance
 import ImageOps
+import cStringIO
 
 from preferences import prefs
 
@@ -184,11 +185,20 @@ def get_most_common_edge_colour(pixbuf):
 
 def pil_to_pixbuf(image):
     """Return a pixbuf created from the PIL <image>."""
-    imagestr = image.tostring()
-    IS_RGBA = image.mode == 'RGBA'
-    return gtk.gdk.pixbuf_new_from_data(imagestr, gtk.gdk.COLORSPACE_RGB,
-        IS_RGBA, 8, image.size[0], image.size[1],
-        (IS_RGBA and 4 or 3) * image.size[0])
+    if image.mode.startswith('RGB'):
+        imagestr = image.tostring()
+        IS_RGBA = image.mode == 'RGBA'
+        return gtk.gdk.pixbuf_new_from_data(imagestr, gtk.gdk.COLORSPACE_RGB,
+            IS_RGBA, 8, image.size[0], image.size[1],
+            (IS_RGBA and 4 or 3) * image.size[0])
+    else:
+        buffer = cStringIO.StringIO()
+        image.save(buffer, "ppm")
+        contents = buffer.getvalue()
+        loader = gtk.gdk.PixbufLoader("pnm")
+        loader.write(contents, len(contents))
+        loader.close()
+        return loader.get_pixbuf()
 
 def pixbuf_to_pil(pixbuf):
     """Return a PIL image created from <pixbuf>."""
