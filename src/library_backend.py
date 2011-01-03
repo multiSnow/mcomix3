@@ -73,7 +73,7 @@ class LibraryBackend:
         """
         try:
             path = self._con.execute('''select path from Book
-                where id = ?''', (book,)).fetchone()
+                where id = ?''', (book,)).fetchone().decode('utf-8')
         except Exception:
             print _('! Non-existant book #') + book
             return None
@@ -89,7 +89,7 @@ class LibraryBackend:
         """
         cur = self._con.execute('''select path from Book
             where id = ?''', (book,))
-        return cur.fetchone()
+        return cur.fetchone().decode('utf-8')
 
     def get_book_name(self, book):
         """Return the name of <book>, or None if <book> isn't in the
@@ -98,9 +98,10 @@ class LibraryBackend:
         cur = self._con.execute('''select name from Book
             where id = ?''', (book,))
         name = cur.fetchone()
-        if name is None:
+        if name is not None:
+            return name.decode('utf-8')
+        else:
             return None
-        return encoding.to_unicode(name)
 
     def get_book_pages(self, book):
         """Return the number of pages in <book>, or None if <book> isn't
@@ -155,9 +156,10 @@ class LibraryBackend:
         cur = self._con.execute('''select name from Collection
             where id = ?''', (collection,))
         name = cur.fetchone()
-        if name is None:
+        if name is not None:
+            return name.decode('utf-8')
+        else:
             return None
-        return unicode(name)
 
     def get_collection_by_name(self, name):
         """Return the collection called <name>, or None if no such
