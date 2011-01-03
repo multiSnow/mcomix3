@@ -101,3 +101,5 @@ class _CommentArea(gtk.VBox):
         """Handle key presses on the area."""
         if event.keyval == gtk.keysyms.Delete:
             self._remove_file()
+
+# vim: expandtab:sw=4:ts=4

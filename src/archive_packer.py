@@ -102,3 +102,5 @@ class Packer:
 
         zfile.close()
         self._packing_successful = True
+
+# vim: expandtab:sw=4:ts=4

@@ -105,3 +105,5 @@ def close_library_filechooser_dialog(*args):
         _library_filechooser_dialog.destroy()
         _library_filechooser_dialog = None
 
+
+# vim: expandtab:sw=4:ts=4

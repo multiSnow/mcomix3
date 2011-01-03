@@ -36,3 +36,5 @@ class ImageEnhancer:
         values has been made.
         """
         self._window.draw_image()
+
+# vim: expandtab:sw=4:ts=4

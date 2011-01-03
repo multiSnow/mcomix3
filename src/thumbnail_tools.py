@@ -207,3 +207,5 @@ def _guess_cover(files):
         return images[0]
         
     return None
+
+# vim: expandtab:sw=4:ts=4

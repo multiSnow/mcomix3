@@ -122,3 +122,5 @@ def _close_dialog(*args):
         _dialog.destroy()
         _dialog = None
         constants.RUN_GARBAGE_COLLECTOR
+
+# vim: expandtab:sw=4:ts=4

@@ -208,3 +208,5 @@ class _ControlArea(gtk.HBox):
         prefs['library cover size'] = int(scale.get_value())
         collection = self._library.collection_area.get_current_collection()
         gobject.idle_add(self._library.book_area.display_covers, collection)
+
+# vim: expandtab:sw=4:ts=4

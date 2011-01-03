@@ -75,3 +75,5 @@ class CursorHandler:
         color = gtk.gdk.Color()
         return gtk.gdk.Cursor(pixmap, pixmap, color, color, 0, 0)
 
+
+# vim: expandtab:sw=4:ts=4

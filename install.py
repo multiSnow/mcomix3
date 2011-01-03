@@ -413,3 +413,5 @@ elif args == ['uninstall']:
 else:
     info()
 
+
+# vim: expandtab:sw=4:ts=4

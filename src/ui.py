@@ -422,3 +422,5 @@ class MainUI(gtk.UIManager):
 
         self.bookmarks.set_sensitive(general_sensitive)
 
+
+# vim: expandtab:sw=4:ts=4

@@ -107,3 +107,5 @@ class _PropertiesDialog(gtk.Dialog):
             pass
         notebook.append_page(page, gtk.Label(_('Image')))
         self.show_all()
+
+# vim: expandtab:sw=4:ts=4

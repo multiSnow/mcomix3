@@ -75,3 +75,5 @@ def check_for_deprecated_files(window):
     if found:
         dialog = _CleanerDialog(window, found)
         dialog.show_all()
+
+# vim: expandtab:sw=4:ts=4

@@ -67,3 +67,5 @@ def number_of_digits( n ):
         num_of_digits += 1
 
     return num_of_digits
+
+# vim: expandtab:sw=4:ts=4

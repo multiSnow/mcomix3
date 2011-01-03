@@ -79,3 +79,5 @@ def _get_rar_exec():
 
     return None
 
+
+# vim: expandtab:sw=4:ts=4

@@ -55,3 +55,5 @@ class Slideshow:
             self._stop()
             self._start()
 
+
+# vim: expandtab:sw=4:ts=4

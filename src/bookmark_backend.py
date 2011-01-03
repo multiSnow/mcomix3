@@ -90,3 +90,5 @@ class _BookmarksStore:
         packs = [bookmark.pack() for bookmark in self._bookmarks]
         cPickle.dump(packs, fd, cPickle.HIGHEST_PROTOCOL)
         fd.close()
+
+# vim: expandtab:sw=4:ts=4

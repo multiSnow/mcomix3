@@ -209,3 +209,5 @@ class MagnifyingLens:
         subpixbuf.copy_area(0, 0, subpixbuf.get_width(),
             subpixbuf.get_height(), canvas, dest_x, dest_y)
 
+
+# vim: expandtab:sw=4:ts=4

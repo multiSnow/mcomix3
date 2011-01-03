@@ -64,3 +64,5 @@ class RecentFilesMenu(gtk.RecentChooserMenu):
         uri = portability.uri_prefix() + urllib.pathname2url(encoding.to_utf8(path))
         self._manager.remove_item(uri)
 
+
+# vim: expandtab:sw=4:ts=4

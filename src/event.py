@@ -464,3 +464,5 @@ def _get_latest_event_of_same_type(event):
         
     return event
 
+
+# vim: expandtab:sw=4:ts=4

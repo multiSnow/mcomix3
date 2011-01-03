@@ -457,3 +457,5 @@ class ImageHandler:
         """
         path = self.get_path_to_page(page)
         self._window.filehandler._wait_on_file(path)
+
+# vim: expandtab:sw=4:ts=4

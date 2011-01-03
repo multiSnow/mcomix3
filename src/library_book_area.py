@@ -364,3 +364,5 @@ class _BookArea(gtk.ScrolledWindow):
         collection = self._library.collection_area.get_current_collection()
         collection_name = self._library.backend.get_collection_name(collection)
         self._library.add_books(paths, collection_name)
+
+# vim: expandtab:sw=4:ts=4

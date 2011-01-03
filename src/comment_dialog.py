@@ -65,3 +65,5 @@ class _CommentsDialog(gtk.Dialog):
             notebook.insert_page(page, tab_label)
 
         self.show_all()
+
+# vim: expandtab:sw=4:ts=4

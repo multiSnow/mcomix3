@@ -43,3 +43,5 @@ class ItalicLabel(FormattedLabel):
     def __init__(self, text=''):
         FormattedLabel.__init__(self, text, style=pango.STYLE_ITALIC)
 
+
+# vim: expandtab:sw=4:ts=4

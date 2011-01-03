@@ -246,3 +246,5 @@ class Extractor:
         self._extracted[name] = True
         self._condition.notify()
         self._condition.release()
+
+# vim: expandtab:sw=4:ts=4

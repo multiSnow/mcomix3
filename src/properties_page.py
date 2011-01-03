@@ -70,3 +70,5 @@ class _Page(gtk.VBox):
             value_label = gtk.Label(value)
             value_label.set_alignment(0, 1.0)
             right_box.pack_start(value_label, True, True)
+
+# vim: expandtab:sw=4:ts=4

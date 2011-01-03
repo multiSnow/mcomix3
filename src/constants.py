@@ -93,3 +93,5 @@ CREDITS = (
             ('Roxerio Roxo Carrillo', _('Galician translation')),
             ('Victor Castillejo', _('Icon design'))
           )
+
+# vim: expandtab:sw=4:ts=4

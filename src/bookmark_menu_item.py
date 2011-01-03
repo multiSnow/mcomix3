@@ -66,3 +66,5 @@ class _Bookmark(gtk.ImageMenuItem):
         """
         return (self._name, self._path, self._page, self._numpages,
             self._archive_type)
+
+# vim: expandtab:sw=4:ts=4

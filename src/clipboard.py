@@ -36,3 +36,5 @@ class Clipboard(gtk.Clipboard):
                 del new_pix_buf
            
                 constants.RUN_GARBAGE_COLLECTOR
+
+# vim: expandtab:sw=4:ts=4

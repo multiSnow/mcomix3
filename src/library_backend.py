@@ -325,3 +325,5 @@ class LibraryBackend:
             book integer not null,
             primary key (collection, book))''')
 
+
+# vim: expandtab:sw=4:ts=4

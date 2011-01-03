@@ -35,3 +35,5 @@ def _close_dialog(action, exit_response, name_of_dialog):
         _dialog[0].destroy()
         _dialog[0] = None
 
+
+# vim: expandtab:sw=4:ts=4

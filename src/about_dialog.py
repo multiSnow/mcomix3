@@ -92,3 +92,5 @@ class _AboutDialog(gtk.Dialog):
             
         notebook.insert_page(scrolled, gtk.Label(_('Credits')))
         self.show_all()
+
+# vim: expandtab:sw=4:ts=4

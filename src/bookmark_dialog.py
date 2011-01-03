@@ -187,3 +187,5 @@ class _BookmarksDialog(gtk.Dialog):
             
         self.destroy()
 
+
+# vim: expandtab:sw=4:ts=4

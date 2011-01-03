@@ -349,3 +349,5 @@ class _CollectionArea(gtk.ScrolledWindow):
         pointer = pointer.get_from_drawable(pixmap, treeview.get_colormap(),
             0, 0, 0, 0, *pixmap.get_size())
         context.set_icon_pixbuf(pointer, -5, -5)
+
+# vim: expandtab:sw=4:ts=4

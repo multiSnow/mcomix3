@@ -35,3 +35,5 @@ class SimpleFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog):
 
     def files_chosen(self, paths):
         self._paths = paths
+
+# vim: expandtab:sw=4:ts=4

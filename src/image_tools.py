@@ -311,3 +311,5 @@ def is_image_file(path):
         return ext_index != len(_supported_formats) and _supported_formats[ext_index] == ext
     else:
         return False
+
+# vim: expandtab:sw=4:ts=4

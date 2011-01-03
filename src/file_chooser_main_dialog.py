@@ -67,3 +67,5 @@ def _close_main_filechooser_dialog(*args):
     if _main_filechooser_dialog is not None:
         _main_filechooser_dialog.destroy()
         _main_filechooser_dialog = None
+
+# vim: expandtab:sw=4:ts=4

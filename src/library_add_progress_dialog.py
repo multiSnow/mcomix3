@@ -105,3 +105,5 @@ class _AddLibraryProgressDialog(gtk.Dialog):
     def _response(self, *args):
         self._destroy = True
         self.destroy()
+
+# vim: expandtab:sw=4:ts=4

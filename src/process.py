@@ -47,3 +47,5 @@ class Process:
             raise Exception('Process not spawned.')
         return self._proc.wait()
 
+
+# vim: expandtab:sw=4:ts=4

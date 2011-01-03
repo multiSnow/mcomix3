@@ -187,3 +187,5 @@ class _BaseFileChooserDialog(gtk.Dialog):
             self._preview_image.clear()
             self._namelabel.set_text('')
             self._sizelabel.set_text('')
+
+# vim: expandtab:sw=4:ts=4

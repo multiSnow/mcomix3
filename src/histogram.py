@@ -60,3 +60,5 @@ def draw_histogram(pixbuf, height=170, fill=170, text=True):
     im = ImageOps.expand(im, 1, (0, 0, 0))
     return image_tools.pil_to_pixbuf(im)
 
+
+# vim: expandtab:sw=4:ts=4

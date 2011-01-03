@@ -40,3 +40,5 @@ class _PreferencePage(gtk.VBox):
             left_box, right_box = self._section.new_split_vboxes()
             left_box.pack_start(left_item)
             right_box.pack_start(right_item)
+
+# vim: expandtab:sw=4:ts=4

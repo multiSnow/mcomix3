@@ -1080,3 +1080,5 @@ class MainWindow(gtk.Window):
                 thread.join()
             
         sys.exit(0)
+
+# vim: expandtab:sw=4:ts=4

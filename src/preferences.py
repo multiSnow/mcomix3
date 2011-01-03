@@ -97,3 +97,5 @@ def write_preferences_file():
     cPickle.dump(constants.VERSION, config, cPickle.HIGHEST_PROTOCOL)
     cPickle.dump(prefs, config, cPickle.HIGHEST_PROTOCOL)
     config.close()
+
+# vim: expandtab:sw=4:ts=4

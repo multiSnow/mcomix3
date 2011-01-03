@@ -85,3 +85,5 @@ class Pageselector(gtk.Dialog):
         elif event == gtk.RESPONSE_CANCEL: 
             self.emit('close')
 
+
+# vim: expandtab:sw=4:ts=4

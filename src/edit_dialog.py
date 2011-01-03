@@ -228,3 +228,5 @@ def _close_dialog(*args):
     if _dialog is not None:
         _dialog.destroy()
         _dialog = None
+
+# vim: expandtab:sw=4:ts=4

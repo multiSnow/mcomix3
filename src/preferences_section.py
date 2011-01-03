@@ -44,3 +44,5 @@ class _PreferenceSection(gtk.VBox):
         hbox.pack_start(right_box, False, False)
         self.contentbox.pack_start(hbox)
         return left_box, right_box
+
+# vim: expandtab:sw=4:ts=4

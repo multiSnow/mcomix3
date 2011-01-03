@@ -59,3 +59,5 @@ class Statusbar(gtk.Statusbar):
             self.push(0, '%s      |      %s      |      %s' %
                 (self._resolution, self._root, self._filename))
 
+
+# vim: expandtab:sw=4:ts=4

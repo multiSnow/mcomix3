@@ -32,3 +32,5 @@ def to_utf8(string):
         return string.encode('utf-8')
     else:
         return string
+
+# vim: expandtab:sw=4:ts=4

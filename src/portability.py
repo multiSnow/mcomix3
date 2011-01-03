@@ -86,3 +86,5 @@ def get_commandline_args():
             return [arg.decode(locale.getpreferredencoding(), 'replace') for arg in sys.argv]
     else:
         return [arg.decode(locale.getpreferredencoding(), 'replace') for arg in sys.argv]
+
+# vim: expandtab:sw=4:ts=4

@@ -175,3 +175,5 @@ def run():
 
 if __name__ == '__main__':
     run()
+
+# vim: expandtab:sw=4:ts=4

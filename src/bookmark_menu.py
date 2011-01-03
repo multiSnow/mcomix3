@@ -96,3 +96,5 @@ class BookmarksMenu(gtk.Menu):
     def write_bookmarks_file(self):
         """Store relevant bookmark info in the mcomix directory."""
         self._bookmarks_store.write_bookmarks_file()
+
+# vim: expandtab:sw=4:ts=4

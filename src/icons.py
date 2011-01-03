@@ -65,3 +65,5 @@ def load_icons():
     factory.add_default()
 
 
+
+# vim: expandtab:sw=4:ts=4
