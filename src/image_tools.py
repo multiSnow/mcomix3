@@ -192,13 +192,10 @@ def pil_to_pixbuf(image):
             IS_RGBA, 8, image.size[0], image.size[1],
             (IS_RGBA and 4 or 3) * image.size[0])
     else:
-        buffer = cStringIO.StringIO()
-        image.save(buffer, "ppm")
-        contents = buffer.getvalue()
-        loader = gtk.gdk.PixbufLoader("pnm")
-        loader.write(contents, len(contents))
-        loader.close()
-        return loader.get_pixbuf()
+        imagestr = image.convert('RGB').tostring()
+        return gtk.gdk.pixbuf_new_from_data(imagestr, gtk.gdk.COLORSPACE_RGB,
+            False, 8, image.size[0], image.size[1],
+            3 * image.size[0])
 
 def pixbuf_to_pil(pixbuf):
     """Return a PIL image created from <pixbuf>."""
