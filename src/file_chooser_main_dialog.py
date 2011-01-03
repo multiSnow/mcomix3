@@ -47,7 +47,8 @@ class _MainFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog):
             except:
                 pass
             _close_main_filechooser_dialog()
-            self._window.filehandler.open_file(paths[0])
+            file = paths[0].decode('utf-8')
+            self._window.filehandler.open_file(file)
         else:
             _close_main_filechooser_dialog()
     
