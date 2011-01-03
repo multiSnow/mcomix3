@@ -3,6 +3,9 @@
 import urllib
 import gtk
 import preferences
+import sys
+import encoding
+import portability
 
 class RecentFilesMenu(gtk.RecentChooserMenu):
 
@@ -13,6 +16,10 @@ class RecentFilesMenu(gtk.RecentChooserMenu):
 
         self.set_sort_type(gtk.RECENT_SORT_MRU)
         self.set_show_tips(True)
+        # Missing icons crash GTK on Win32
+        if sys.platform == 'win32':
+            self.set_show_icons(False)
+            self.set_show_numbers(True)
 
         rfilter = gtk.RecentFilter()
         rfilter.add_pixbuf_formats()
@@ -25,6 +32,14 @@ class RecentFilesMenu(gtk.RecentChooserMenu):
         rfilter.add_mime_type('application/x-cbz')
         rfilter.add_mime_type('application/x-cbr')
         rfilter.add_mime_type('application/x-cbt')
+        # Win32 prefers file patterns instead of MIME types
+        rfilter.add_pattern('*.zip')
+        rfilter.add_pattern('*.rar')
+        rfilter.add_pattern('*.cbz')
+        rfilter.add_pattern('*.cbr')
+        rfilter.add_pattern('*.tar')
+        rfilter.add_pattern('*.gz')
+        rfilter.add_pattern('*.bz2')
         self.add_filter(rfilter)
 
         self.connect('item_activated', self._load)
@@ -32,20 +47,20 @@ class RecentFilesMenu(gtk.RecentChooserMenu):
     def _load(self, *args):
         uri = self.get_current_uri()
         path = urllib.url2pathname(uri[7:])
-        did_file_load = self._window.filehandler.open_file(path)
-        
+        did_file_load = self._window.filehandler.open_file(path.decode('utf-8'))
+
         if not did_file_load:
             self.remove(path)
 
     def add(self, path):
         if not preferences.prefs['store recent file info']:
             return
-        uri = 'file://' + urllib.pathname2url(path)
+        uri = portability.uri_prefix() + urllib.pathname2url(encoding.to_utf8(path))
         self._manager.add_item(uri)
 
     def remove(self, path):
         if not preferences.prefs['store recent file info']:
             return
-        uri = 'file://' + urllib.pathname2url(path)
+        uri = portability.uri_prefix() + urllib.pathname2url(encoding.to_utf8(path))
         self._manager.remove_item(uri)
 

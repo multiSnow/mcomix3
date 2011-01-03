@@ -23,3 +23,12 @@ def to_unicode(string):
 
     return u'???'
 
+def to_utf8(string):
+    """ Helper function that converts unicode objects to UTF-8 encoded
+    strings. Non-unicode strings are assumed to be already encoded
+    and returned as-is. """
+
+    if isinstance(string, unicode):
+        return string.encode('utf-8')
+    else:
+        return string

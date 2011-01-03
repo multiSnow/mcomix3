@@ -45,3 +45,11 @@ def get_data_directory():
             os.path.join(get_home_directory(), '.local/share'))
         return os.path.join(base_path, 'mcomix')
 
+def uri_prefix():
+    """ The prefix used for creating file URIs. This is 'file://' on
+    Linux, but 'file:' on Windows due to urllib using a different
+    URI creating scheme here. """
+    if sys.platform == 'win32':
+        return 'file:'
+    else:
+        return 'file://'
