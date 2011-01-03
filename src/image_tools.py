@@ -159,10 +159,10 @@ def get_most_common_edge_colour(pixbuf):
     left_edge = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8, 1, height)
     right_edge = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8, 1, height)
 
-    pixbuf.copy_area(0, height / 3, width, 1, top_edge, 0, 0)
-    pixbuf.copy_area(0, (height * 2) / 3, width, 1, bottom_edge, 0, 0)
-    pixbuf.copy_area(width / 3, 0, 1, height, left_edge, 0, 0)
-    pixbuf.copy_area((width * 2) / 3, 0, 1, height, right_edge, 0, 0)
+    pixbuf.copy_area(0, 0, width, 1, top_edge, 0, 0)
+    pixbuf.copy_area(0, height - 1, width, 1, bottom_edge, 0, 0)
+    pixbuf.copy_area(0, 0, 1, height, left_edge, 0, 0)
+    pixbuf.copy_area(width - 1, 0, 1, height, right_edge, 0, 0)
 
     total_red = 0
     total_green = 0
