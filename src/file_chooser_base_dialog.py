@@ -167,9 +167,10 @@ class _BaseFileChooserDialog(gtk.Dialog):
             self.files_chosen([])
 
     def _update_preview(self, *args):
-        path = self.filechooser.get_preview_filename().decode('utf-8')
+        if not self.filechooser.get_preview_filename(): return
 
-        if path and os.path.isfile(path):
+        path = self.filechooser.get_preview_filename().decode('utf-8')
+        if os.path.isfile(path):
             pixbuf = thumbnail_tools.get_thumbnail(path, prefs['create thumbnails'])
 
             if pixbuf is None:

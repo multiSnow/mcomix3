@@ -50,7 +50,7 @@ ARCHIVE_DESCRIPTIONS = {
 ACCEPTED_COMMENT_EXTENSIONS = ['txt', 'nfo']
 
 SUPPORTED_IMAGE_REGEX = re.compile(r'\.(jpg|jpeg|png|gif|tif|tiff|bmp|ppm|pgm|pbm)\s*$', re.I)
-SUPPORTED_ARCHIVE_REGEX = re.compile(r'\.(cbz|cbr|cbt)\s*$', re.I)
+SUPPORTED_ARCHIVE_REGEX = re.compile(r'\.(cbz|cbr|cbt|zip|rar|tar|gz|bz2|bzip2)\s*$', re.I)
 
 _missing_icon_dialog = gtk.Dialog(None,None,0,None)
 _missing_icon_pixbuf = _missing_icon_dialog.render_icon(gtk.STOCK_MISSING_IMAGE, gtk.ICON_SIZE_LARGE_TOOLBAR)

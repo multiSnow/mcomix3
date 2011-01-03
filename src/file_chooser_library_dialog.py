@@ -62,7 +62,7 @@ class _LibraryFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog)
 
     def files_chosen(self, paths):
         if paths:
-
+            paths = [ path.decode('utf-8') for path in paths ]
             if self._collection_button.get_active():
                 prefs['auto add books into collections'] = True
                 collection_name = self._comboentry.get_active_text()
