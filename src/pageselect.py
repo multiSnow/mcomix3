@@ -23,29 +23,23 @@ class Pageselector(gtk.Dialog):
 
         self._number_of_pages = self._window.imagehandler.get_number_of_pages()
 
-        if self._number_of_pages >= 70:
-            self.set_size_request(700,250)
-        else:
-            self.set_size_request(self._number_of_pages * 10,250)
-
         self._selector_adjustment = gtk.Adjustment(value=self._window.imagehandler.get_current_page(),
                               lower=1,upper=self._number_of_pages,
                               step_incr=1, page_incr=1 )
 
         self._selector_adjustment.connect( 'value-changed', self._cb_value_changed )
 
-        self._page_selector = gtk.HScale(self._selector_adjustment)
-
-        for i in range(0, self._number_of_pages + 1):
-            self._page_selector.add_mark(i,gtk.POS_BOTTOM,None)
-            self._page_selector.add_mark(i,gtk.POS_TOP,None)
+        self._page_selector = gtk.VScale(self._selector_adjustment)
+        self._page_selector.set_draw_value(False)
 
         self._page_selector.set_digits( 0 )
-        self._page_selector.set_size_request(200, 50)
 
-        self.vbox.pack_start(self._page_selector, True)
-        self.vbox.pack_start(gtk.HSeparator(), False)
-        
+        self._page_spinner = gtk.SpinButton(self._selector_adjustment)
+        self._page_spinner.connect( 'value-changed', self._cb_value_changed )
+        self._page_spinner.set_activates_default(True)
+        self._pages_label = gtk.Label(' of %s' % _(self._number_of_pages))
+        self._pages_label.set_alignment(0, 1)
+
         preview_box = gtk.HBox()
         preview_box.set_size_request(200, 150)
 
@@ -56,8 +50,21 @@ class Pageselector(gtk.Dialog):
                             int(self._selector_adjustment.value) - 1 ], 
                         1) )
         preview_box.pack_start(self._image_preview)
-        
-        self.vbox.pack_start(preview_box, True)
+
+        spinner_box = gtk.HBox()
+        spinner_box.set_border_width(5)
+        spinner_box.pack_start(self._page_spinner, True)
+        spinner_box.pack_start(self._pages_label, False)
+
+        left_box = gtk.VBox()
+        left_box.pack_start(preview_box, False)
+        left_box.pack_start(spinner_box, True)
+
+        main_box = gtk.HBox()
+        main_box.pack_start(left_box, False)
+        main_box.pack_start(self._page_selector, False, False, 5)
+
+        self.vbox.pack_start(main_box, False)
 
         self.show_all()
 
