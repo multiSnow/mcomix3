@@ -3,8 +3,10 @@
 """ Base class for unified handling of various archive formats. Used for simplifying
 extraction and adding new archive formats. """
 
+import os
 import portability
 import encoding
+import process
 
 class BaseArchive(object):
     """ Base archive interface. All filenames passed from and into archives
@@ -48,6 +50,11 @@ class BaseArchive(object):
             translation_table[ord(char)] = replacement_char
 
         return filename.translate(translation_table)
+
+    def _create_directory(self, directory):
+        """ Recursively create a directory if it doesn't exist yet. """
+        if not os.path.exists(directory):
+            os.makedirs(directory)
 
 class NonUnicodeArchive(BaseArchive):
     """ Base class for archives that manage a conversion of byte member names ->
