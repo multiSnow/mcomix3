@@ -68,12 +68,15 @@ class MainUI(gtk.UIManager):
                 None, None, window.extract_page),
             ('menu_zoom', 'mcomix-zoom', _('Manual _Zoom')),
             ('menu_recent', None, _('Open _recent')),
-            ('menu_bookmarks', None, _('_Bookmarks')),
+            ('menu_recent_popup', gtk.STOCK_DND_MULTIPLE, _('Open _recent')),
+            ('menu_bookmarks_popup', 'comix-add-bookmark', _('_Bookmarks')),
             ('menu_toolbars', None, _('T_oolbars')),
             ('menu_edit', None, _('_Edit')),
             ('menu_file', None, _('_File')),
             ('menu_view', None, _('_View')),
+            ('menu_view_popup', 'comix-image', _('_View')),
             ('menu_go', None, _('_Go')),
+            ('menu_go_popup', gtk.STOCK_GO_FORWARD, _('_Go')),
             ('menu_tools', None, _('_Tools')),
             ('menu_help', None, _('_Help')),
             ('menu_transform', 'mcomix-transform', _('_Transform image...')),
@@ -253,45 +256,73 @@ class MainUI(gtk.UIManager):
                     <menuitem action="edit_archive" />
                     <menuitem action="extract_page" />
                 </menu>
-                <menu action="menu_bookmarks">
-                </menu>
                 <menu action="menu_help">
                     <menuitem action="about" />
                 </menu>
             </menubar>
 
             <popup name="Popup">
-                <menuitem action="next_page" />
-                <menuitem action="previous_page" />
-                <separator />
-                <menuitem action="fullscreen" />
-                <menuitem action="double_page" />
-                <menuitem action="manga_mode" />
-                <separator />
-                <menuitem action="best_fit_mode" />
-                <menuitem action="fit_width_mode" />
-                <menuitem action="fit_height_mode" />
-                <menuitem action="fit_manual_mode" />
-                <separator />
-                <menu action="menu_transform">
-                    <menuitem action="rotate_90" />
-                    <menuitem action="rotate_270" />
-                    <menuitem action="rotate_180" />
+                <menu action="menu_go_popup">
+                    <menuitem action="next_page" />
+                    <menuitem action="previous_page" />
+                    <menuitem action="go_to" />
+                    <menuitem action="first_page" />
+                    <menuitem action="last_page" />
                     <separator />
-                    <menuitem action="flip_horiz" />
-                    <menuitem action="flip_vert" />
+                    <menuitem action="previous_archive" />
+                    <menuitem action="next_archive" />
                     <separator />
-                    <menuitem action="keep_transformation" />
+                    <menuitem action="slideshow" />
                 </menu>
-                <menu action="menu_toolbars">
-                    <menuitem action="menubar" />
-                    <menuitem action="toolbar" />
-                    <menuitem action="statusbar" />
-                    <menuitem action="scrollbar" />
-                    <menuitem action="thumbnails" />
+                <separator />
+                <menu action="menu_view_popup">
+                    <menuitem action="fullscreen" />
+                    <menuitem action="double_page" />
+                    <menuitem action="manga_mode" />
                     <separator />
-                    <menuitem action="hide all" />
+                    <menuitem action="best_fit_mode" />
+                    <menuitem action="fit_width_mode" />
+                    <menuitem action="fit_height_mode" />
+                    <menuitem action="fit_manual_mode" />
+                    <separator />
+                    <menuitem action="enhance_image" />
+                    <separator />
+                    <menuitem action="lens" />
+                    <separator />
+                    <menu action="menu_toolbars">
+                        <menuitem action="menubar" />
+                        <menuitem action="toolbar" />
+                        <menuitem action="statusbar" />
+                        <menuitem action="scrollbar" />
+                        <menuitem action="thumbnails" />
+                        <separator />
+                        <menuitem action="hide all" />
+                    </menu>
                 </menu>
+                <menu action="menu_zoom">
+                    <menuitem action="zoom_in" />
+                    <menuitem action="zoom_out" />
+                    <menuitem action="zoom_original" />
+                </menu>
+                <menu action="menu_bookmarks_popup">
+                </menu>
+                <separator />
+                <menuitem action="properties" />
+                <menuitem action="comments" />
+                <menuitem action="preferences" />
+                <separator />
+                <menuitem action="edit_archive" />
+                <separator />
+                <menu action="menu_recent_popup">
+                </menu>
+                <separator />
+                <menuitem action="open" />
+                <menuitem action="library" />
+                <separator />
+                <menuitem action="about" />
+                <separator />
+                <menuitem action="close" />
+                <menuitem action="quit" />
             </popup>
         </ui>
         """
@@ -300,12 +331,16 @@ class MainUI(gtk.UIManager):
         self.insert_action_group(self._actiongroup, 0)
 
         self.bookmarks = bookmark_menu.BookmarksMenu(self, window)
-        self.get_widget('/Menu/menu_bookmarks').set_submenu(self.bookmarks)
-        self.get_widget('/Menu/menu_bookmarks').show()
+        self.get_widget('/Popup/menu_bookmarks_popup').set_submenu(self.bookmarks)
+        self.get_widget('/Popup/menu_bookmarks_popup').show()
 
         self.recent = recent.RecentFilesMenu(self, window)
         self.get_widget('/Menu/menu_file/menu_recent').set_submenu(self.recent)
         self.get_widget('/Menu/menu_file/menu_recent').show()
+
+        self.recentPopup = recent.RecentFilesMenu(self, window)
+        self.get_widget('/Popup/menu_recent_popup').set_submenu(self.recentPopup)
+        self.get_widget('/Popup/menu_recent_popup').show()
 
         window.add_accel_group(self.get_accel_group())
 
