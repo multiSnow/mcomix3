@@ -11,6 +11,17 @@ MComix 0.90.3 (SVN)
       several menu items previously only available via normal menu (by
       Nephiel)
 
+    - Additional RAR handler using libunrar.so/unrar.dll
+
+      Added archive handler using Rarlab's libunrar library
+      for extracting files. Apart from being faster for sequential
+      extractions than calling unrar for each single file,
+      this library supports Unicode filenames natively and thus
+      allows Windows users to read most RAR files.
+      Libunrar can be obtained from http://www.rarlab.com/rar_add.htm
+      and can be placed either in usual system directories such as
+      /usr/lib or C:\Windows\system32, or directly in MComix' root directory.
+
 MComix 0.90 Initial Release
 
     - Changed the mechanism of page flipping.
