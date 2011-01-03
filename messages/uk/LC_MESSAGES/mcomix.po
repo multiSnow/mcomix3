@@ -899,16 +899,16 @@ msgid "Show page numbers on thumbnails."
 msgstr "Показувати номери сторінок на мініатюрах."
 
 #: preferences_dialog.py:107
-msgid "Magnifying Glass"
+msgid "Magnifying Lens"
 msgstr "Збільшуюче Скло"
 
 #: preferences_dialog.py:108
-msgid "Magnifying glass size (in pixels)"
+msgid "Magnifying lens size (in pixels)"
 msgstr "Розмір збільшуючого скла (в пікселах)"
 
 #: preferences_dialog.py:114
 msgid ""
-"Set the size of the magnifying glass. It is a square with a side of this "
+"Set the size of the magnifying lens. It is a square with a side of this "
 "many pixels."
 msgstr "Встановити розмір сторони квадратного збільшуючого скла."
 
@@ -917,7 +917,7 @@ msgid "Magnification factor"
 msgstr "Коефіцієнт збільшення"
 
 #: preferences_dialog.py:123
-msgid "Set the magnification factor of the magnifying glass."
+msgid "Set the magnification factor of the magnifying lens."
 msgstr "Встановлює коефіцієнт збільшення для збільшуючого скла."
 
 #: preferences_dialog.py:126
@@ -1505,7 +1505,7 @@ msgid "Start _slideshow"
 msgstr "Почати _слайдшоу"
 
 #: ui.py:106
-msgid "Magnifying _glass"
+msgid "Magnifying _lens"
 msgstr "Збільшуюче _скло"
 
 #: ui.py:112
@@ -1596,7 +1596,7 @@ msgid "Manga mode"
 msgstr "Режим манги"
 
 #: ui.py:338
-msgid "Magnifying glass"
+msgid "Magnifying lens"
 msgstr "Збільшуюче скло"
 
 #~ msgid "Developer"

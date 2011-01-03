@@ -104,24 +104,24 @@ class _PreferencesDialog(gtk.Dialog):
             'show page numbers on thumbnails')
         page.add_row(thumb_number_button)
         
-        page.new_section(_('Magnifying Glass'))
+        page.new_section(_('Magnifying Lens'))
         label = gtk.Label('%s:' % _('Magnifying lens size (in pixels)'))
         adjustment = gtk.Adjustment(prefs['lens size'], 50, 400, 1, 10)
         lens_size_spinner = gtk.SpinButton(adjustment)
         lens_size_spinner.connect('value_changed', self._spinner_cb,
             'lens size')
-        lens_size_spinner.set_tooltip_text(
+        glass_size_spinner.set_tooltip_text(
             _('Set the size of the magnifying lens. It is a square with a side of this many pixels.'))
-        page.add_row(label, lens_size_spinner)
+        page.add_row(label, glass_size_spinner)
         label = gtk.Label('%s:' % _('Magnification factor'))
         adjustment = gtk.Adjustment(prefs['lens magnification'], 1.1, 10.0,
             0.1, 1.0)
         lens_magnification_spinner = gtk.SpinButton(adjustment, digits=1)
         lens_magnification_spinner.connect('value_changed', self._spinner_cb,
             'lens magnification')
-        lens_magnification_spinner.set_tooltip_text(
+        glass_magnification_spinner.set_tooltip_text(
             _('Set the magnification factor of the magnifying lens.'))
-        page.add_row(label, lens_magnification_spinner)
+        page.add_row(label, glass_magnification_spinner)
 
         page.new_section(_('Image scaling'))
         stretch_button = gtk.CheckButton(_('Stretch small images.'))

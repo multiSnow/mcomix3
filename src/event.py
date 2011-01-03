@@ -367,7 +367,6 @@ class EventHandler:
             if event.x != self._last_lens_pos_x or event.y != self._last_lens_pos_y:
 
                 self._window.lens.set_lens_cursor(event.x, event.y)
-                #self._window.draw_image()
             
         else:
             self._window.cursor_handler.refresh()

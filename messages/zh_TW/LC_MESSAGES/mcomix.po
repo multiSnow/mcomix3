@@ -884,16 +884,16 @@ msgid "Show page numbers on thumbnails."
 msgstr "在縮圖上顯示頁碼。"
 
 #: preferences_dialog.py:107
-msgid "Magnifying Glass"
+msgid "Magnifying Lens"
 msgstr "放大鏡"
 
 #: preferences_dialog.py:108
-msgid "Magnifying glass size (in pixels)"
+msgid "Magnifying lens size (in pixels)"
 msgstr "放大鏡大小 (像素)"
 
 #: preferences_dialog.py:114
 msgid ""
-"Set the size of the magnifying glass. It is a square with a side of this "
+"Set the size of the magnifying lens. It is a square with a side of this "
 "many pixels."
 msgstr "設定放大鏡的大小，請填入正方形的單邊長。"
 
@@ -902,7 +902,7 @@ msgid "Magnification factor"
 msgstr "放大倍率"
 
 #: preferences_dialog.py:123
-msgid "Set the magnification factor of the magnifying glass."
+msgid "Set the magnification factor of the magnifying lens."
 msgstr "設定放大鏡的放大倍率。"
 
 #: preferences_dialog.py:126
@@ -1473,7 +1473,7 @@ msgid "Start _slideshow"
 msgstr "開始投影片放映 (_s)"
 
 #: ui.py:106
-msgid "Magnifying _glass"
+msgid "Magnifying _lens"
 msgstr "放大鏡 (_g)"
 
 #: ui.py:112
@@ -1564,7 +1564,7 @@ msgid "Manga mode"
 msgstr "漫畫模式"
 
 #: ui.py:338
-msgid "Magnifying glass"
+msgid "Magnifying lens"
 msgstr "放大鏡"
 
 #~ msgid "Developer"

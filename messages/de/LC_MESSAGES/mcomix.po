@@ -908,16 +908,16 @@ msgid "Show page numbers on thumbnails."
 msgstr "Seitennummer auf Vorschaubildern anzeigen"
 
 #: preferences_dialog.py:107
-msgid "Magnifying Glass"
+msgid "Magnifying Lens"
 msgstr "Lupe"
 
 #: preferences_dialog.py:108
-msgid "Magnifying glass size (in pixels)"
+msgid "Magnifying lens size (in pixels)"
 msgstr "Lupengröße (in Pixeln)"
 
 #: preferences_dialog.py:114
 msgid ""
-"Set the size of the magnifying glass. It is a square with a side of this "
+"Set the size of the magnifying lens. It is a square with a side of this "
 "many pixels."
 msgstr ""
 "Die Größe der Lupe setzen. Es ist ein Quadrat mit einer Seite von dieser "
@@ -928,7 +928,7 @@ msgid "Magnification factor"
 msgstr "Vergrößerungsfaktor"
 
 #: preferences_dialog.py:123
-msgid "Set the magnification factor of the magnifying glass."
+msgid "Set the magnification factor of the magnifying lens."
 msgstr "Den Vergrößerungsfaktor der Lupe setzen"
 
 #: preferences_dialog.py:126
@@ -1525,7 +1525,7 @@ msgid "Start _slideshow"
 msgstr "_Diaschau ausführen"
 
 #: ui.py:106
-msgid "Magnifying _glass"
+msgid "Magnifying _lens"
 msgstr "_Lupe"
 
 #: ui.py:112
@@ -1616,7 +1616,7 @@ msgid "Manga mode"
 msgstr "Manga-Modus"
 
 #: ui.py:338
-msgid "Magnifying glass"
+msgid "Magnifying lens"
 msgstr "Lupe"
 
 #~ msgid "Developer"

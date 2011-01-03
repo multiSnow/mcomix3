@@ -1226,20 +1226,20 @@ msgstr "Tampilkan nomor halaman di miniatur."
 #
 # File: src/preferences.py, line: 124
 #: preferences_dialog.py:107
-msgid "Magnifying Glass"
+msgid "Magnifying Lens"
 msgstr "Lensa Pembesar"
 
 #
 # File: src/preferences.py, line: 125
 #: preferences_dialog.py:108
-msgid "Magnifying glass size (in pixels)"
+msgid "Magnifying lens size (in pixels)"
 msgstr "Ukuran lensa pembesar (dalam piksel)"
 
 #
 # File: src/preferences.py, line: 131
 #: preferences_dialog.py:114
 msgid ""
-"Set the size of the magnifying glass. It is a square with a side of this "
+"Set the size of the magnifying lens. It is a square with a side of this "
 "many pixels."
 msgstr ""
 "Atur ukuran lensa pembesar. Berupa kotak dengan sisi dari sebanyak ini "
@@ -1254,7 +1254,7 @@ msgstr "Faktor pembesaran"
 #
 # File: src/preferences.py, line: 140
 #: preferences_dialog.py:123
-msgid "Set the magnification factor of the magnifying glass."
+msgid "Set the magnification factor of the magnifying lens."
 msgstr "Atur faktor pembesaran dari lensa pembesar."
 
 #
@@ -2047,7 +2047,7 @@ msgstr "Jalankan _salindia"
 #
 # File: src/ui.py, line: 97
 #: ui.py:106
-msgid "Magnifying _glass"
+msgid "Magnifying _lens"
 msgstr "Lensa _pembesar"
 
 #
@@ -2180,7 +2180,7 @@ msgstr "Mode manga"
 #
 # File: src/ui.py, line: 298
 #: ui.py:338
-msgid "Magnifying glass"
+msgid "Magnifying lens"
 msgstr "Lensa pembesar"
 
 #

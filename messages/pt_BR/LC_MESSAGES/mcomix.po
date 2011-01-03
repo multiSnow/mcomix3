@@ -898,16 +898,16 @@ msgid "Show page numbers on thumbnails."
 msgstr "Mostrar números de página nas miniaturas."
 
 #: preferences_dialog.py:107
-msgid "Magnifying Glass"
+msgid "Magnifying Lens"
 msgstr "Lente de aumento"
 
 #: preferences_dialog.py:108
-msgid "Magnifying glass size (in pixels)"
+msgid "Magnifying lens size (in pixels)"
 msgstr "Tamanho da lente de aumento (em pixels)"
 
 #: preferences_dialog.py:114
 msgid ""
-"Set the size of the magnifying glass. It is a square with a side of this "
+"Set the size of the magnifying lens. It is a square with a side of this "
 "many pixels."
 msgstr ""
 "Ajustar o tamanho da lente de aumento. É um quadrado com esse tamanho de "
@@ -918,7 +918,7 @@ msgid "Magnification factor"
 msgstr "Fator de aumento"
 
 #: preferences_dialog.py:123
-msgid "Set the magnification factor of the magnifying glass."
+msgid "Set the magnification factor of the magnifying lens."
 msgstr "Ajustar o fator de aumento da lente de aumento."
 
 #: preferences_dialog.py:126
@@ -1509,7 +1509,7 @@ msgid "Start _slideshow"
 msgstr "Rodar apresentação de slides"
 
 #: ui.py:106
-msgid "Magnifying _glass"
+msgid "Magnifying _lens"
 msgstr "Lente de aumento"
 
 #: ui.py:112
@@ -1600,7 +1600,7 @@ msgid "Manga mode"
 msgstr "Modo mangá"
 
 #: ui.py:338
-msgid "Magnifying glass"
+msgid "Magnifying lens"
 msgstr "Lente de aumento"
 
 #~ msgid "Developer"

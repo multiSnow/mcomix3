@@ -1234,20 +1234,20 @@ msgstr "Mostrar el número de página en las miniaturas."
 #
 # File: src/preferences.py, line: 124
 #: preferences_dialog.py:107
-msgid "Magnifying Glass"
+msgid "Magnifying Lens"
 msgstr "Lupa"
 
 #
 # File: src/preferences.py, line: 125
 #: preferences_dialog.py:108
-msgid "Magnifying glass size (in pixels)"
+msgid "Magnifying lens size (in pixels)"
 msgstr "Tamaño de la lupa (en píxeles)"
 
 #
 # File: src/preferences.py, line: 131
 #: preferences_dialog.py:114
 msgid ""
-"Set the size of the magnifying glass. It is a square with a side of this "
+"Set the size of the magnifying lens. It is a square with a side of this "
 "many pixels."
 msgstr ""
 "Determina el tamaño de la lupa. La lupa es un cuadrado que tiene esta "
@@ -1262,7 +1262,7 @@ msgstr "Factor de ampliación"
 #
 # File: src/preferences.py, line: 140
 #: preferences_dialog.py:123
-msgid "Set the magnification factor of the magnifying glass."
+msgid "Set the magnification factor of the magnifying lens."
 msgstr "Determina el factor de ampliación de la lupa."
 
 #
@@ -2057,7 +2057,7 @@ msgstr "Iniciar _diapositivas"
 #
 # File: src/ui.py, line: 97
 #: ui.py:106
-msgid "Magnifying _glass"
+msgid "Magnifying _lens"
 msgstr "_Lupa"
 
 #
@@ -2190,7 +2190,7 @@ msgstr "Modo manga"
 #
 # File: src/ui.py, line: 298
 #: ui.py:338
-msgid "Magnifying glass"
+msgid "Magnifying lens"
 msgstr "Lupa"
 
 #

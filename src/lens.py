@@ -1,4 +1,4 @@
-"""lens.py - Magnifying glass."""
+"""lens.py - Magnifying lens."""
 
 import math
 import gtk
@@ -6,9 +6,9 @@ from preferences import prefs
 import image_tools
 import constants
 
-class MagnifyingGlass:
+class MagnifyingLens:
 
-    """The MagnifyingGlass creates cursors from the raw pixbufs containing
+    """The MagnifyingLens creates cursors from the raw pixbufs containing
     the unscaled data for the currently displayed images. It does this by
     looking at the cursor position and calculating what image data to put
     in the "lens" cursor.

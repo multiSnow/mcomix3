@@ -1221,20 +1221,20 @@ msgstr "Visa sidonummer på miniatyrbilder."
 #
 # File: src/preferences.py, line: 124
 #: preferences_dialog.py:107
-msgid "Magnifying Glass"
+msgid "Magnifying Lens"
 msgstr "Förstoringsglas"
 
 #
 # File: src/preferences.py, line: 125
 #: preferences_dialog.py:108
-msgid "Magnifying glass size (in pixels)"
-msgstr "Förstoringsglasstorlek (i pixlar)"
+msgid "Magnifying lens size (in pixels)"
+msgstr "Förstoringslenstorlek (i pixlar)"
 
 #
 # File: src/preferences.py, line: 131
 #: preferences_dialog.py:114
 msgid ""
-"Set the size of the magnifying glass. It is a square with a side of this "
+"Set the size of the magnifying lens. It is a square with a side of this "
 "many pixels."
 msgstr ""
 "Ställ in storleken på förstoringsglaset. Det är en kvadrat vars sida är så "
@@ -1249,7 +1249,7 @@ msgstr "Förstoringsfaktor"
 #
 # File: src/preferences.py, line: 140
 #: preferences_dialog.py:123
-msgid "Set the magnification factor of the magnifying glass."
+msgid "Set the magnification factor of the magnifying lens."
 msgstr "Ställ in förstoringsfaktorn för förstoringsglaset."
 
 #
@@ -2043,7 +2043,7 @@ msgstr "Kör _bildspel"
 #
 # File: src/ui.py, line: 97
 #: ui.py:106
-msgid "Magnifying _glass"
+msgid "Magnifying _lens"
 msgstr "Förstorings_glas"
 
 #
@@ -2176,7 +2176,7 @@ msgstr "Mangaläge"
 #
 # File: src/ui.py, line: 298
 #: ui.py:338
-msgid "Magnifying glass"
+msgid "Magnifying lens"
 msgstr "Förstoringsglas"
 
 #

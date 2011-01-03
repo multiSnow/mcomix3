@@ -35,7 +35,7 @@ class MainUI(gtk.UIManager):
             ('last_page', 'mcomix-goto-last-page', _('_Last page'),
                 'End', None, window.last_page),
             ('go_to', gtk.STOCK_PAGE_SETUP, _('_Go to page...'),
-                '<control>G', None, window.page_select),
+                'G', None, window.page_select),
             ('refresh_archive', 'mcomix-refresh', _('_Refresh file'),
                 '<control><shift>R', None, window.filehandler.refresh_file),
             ('next_archive', 'mcomix-next-archive', _('_Next archive'),
@@ -101,7 +101,7 @@ class MainUI(gtk.UIManager):
             ('slideshow', gtk.STOCK_MEDIA_PLAY, _('Start _slideshow'),
                 '<Control>S', None, window.slideshow.toggle),
             ('lens', 'mcomix-lens', _('Magnifying _lens'),
-                'g', None, window.lens.toggle)])
+                'l', None, window.lens.toggle)])
         
         # Note: Don't change the default value for the radio buttons unless
         # also fixing the code for setting the correct one on start-up.

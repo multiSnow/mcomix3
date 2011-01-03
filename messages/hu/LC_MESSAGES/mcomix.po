@@ -900,16 +900,16 @@ msgid "Show page numbers on thumbnails."
 msgstr "A lapok sorszáma legyen rajta a bélyegképen."
 
 #: preferences_dialog.py:107
-msgid "Magnifying Glass"
+msgid "Magnifying Lens"
 msgstr "Nagyító"
 
 #: preferences_dialog.py:108
-msgid "Magnifying glass size (in pixels)"
+msgid "Magnifying lens size (in pixels)"
 msgstr "Nagyító mérete (pixelben)"
 
 #: preferences_dialog.py:114
 msgid ""
-"Set the size of the magnifying glass. It is a square with a side of this "
+"Set the size of the magnifying lens. It is a square with a side of this "
 "many pixels."
 msgstr ""
 "A nagyító lencse méreteinek megadása. Ez egy négyzet, aminek az oldalai "
@@ -920,7 +920,7 @@ msgid "Magnification factor"
 msgstr "Nagyítási tényező"
 
 #: preferences_dialog.py:123
-msgid "Set the magnification factor of the magnifying glass."
+msgid "Set the magnification factor of the magnifying lens."
 msgstr "A nagyító nagyítási tényezőjének beállítása."
 
 #: preferences_dialog.py:126
@@ -1517,7 +1517,7 @@ msgid "Start _slideshow"
 msgstr "Diavetítés _indítása"
 
 #: ui.py:106
-msgid "Magnifying _glass"
+msgid "Magnifying _lens"
 msgstr "N_agyító"
 
 #: ui.py:112
@@ -1608,7 +1608,7 @@ msgid "Manga mode"
 msgstr "Manga mód"
 
 #: ui.py:338
-msgid "Magnifying glass"
+msgid "Magnifying lens"
 msgstr "Nagyító"
 
 #~ msgid "Developer"

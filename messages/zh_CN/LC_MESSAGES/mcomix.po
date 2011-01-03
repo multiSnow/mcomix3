@@ -1206,20 +1206,20 @@ msgstr "在缩略图上显示页码。"
 #
 # File: src/preferences.py, line: 124
 #: preferences_dialog.py:107
-msgid "Magnifying Glass"
+msgid "Magnifying Lens"
 msgstr "放大镜"
 
 #
 # File: src/preferences.py, line: 125
 #: preferences_dialog.py:108
-msgid "Magnifying glass size (in pixels)"
+msgid "Magnifying lens size (in pixels)"
 msgstr "放大镜大小 (像素)"
 
 #
 # File: src/preferences.py, line: 131
 #: preferences_dialog.py:114
 msgid ""
-"Set the size of the magnifying glass. It is a square with a side of this "
+"Set the size of the magnifying lens. It is a square with a side of this "
 "many pixels."
 msgstr "设置放大镜的大小。将显示为指定像素数边长的正方形。"
 
@@ -1232,7 +1232,7 @@ msgstr "放大倍数"
 #
 # File: src/preferences.py, line: 140
 #: preferences_dialog.py:123
-msgid "Set the magnification factor of the magnifying glass."
+msgid "Set the magnification factor of the magnifying lens."
 msgstr "设置放大镜的放大倍数。"
 
 #
@@ -2007,7 +2007,7 @@ msgstr "放映幻灯片 (_S)"
 #
 # File: src/ui.py, line: 97
 #: ui.py:106
-msgid "Magnifying _glass"
+msgid "Magnifying _lens"
 msgstr "放大镜 (_G)"
 
 #
@@ -2140,7 +2140,7 @@ msgstr "Manga 漫画模式"
 #
 # File: src/ui.py, line: 298
 #: ui.py:338
-msgid "Magnifying glass"
+msgid "Magnifying lens"
 msgstr "放大镜"
 
 #

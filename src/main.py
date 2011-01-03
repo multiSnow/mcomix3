@@ -63,7 +63,7 @@ class MainWindow(gtk.Window):
         self.slideshow = slideshow.Slideshow(self)
         self.cursor_handler = cursor_handler.CursorHandler(self)
         self.enhancer = enhance_backend.ImageEnhancer(self)
-        self.lens = lens.MagnifyingGlass(self)
+        self.lens = lens.MagnifyingLens(self)
         self.uimanager = ui.MainUI(self)
         self.menubar = self.uimanager.get_widget('/Menu')
         self.toolbar = self.uimanager.get_widget('/Tool')
