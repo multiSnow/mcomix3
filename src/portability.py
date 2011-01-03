@@ -2,6 +2,8 @@
 
 import os
 import sys
+import locale
+import ctypes
 
 def get_home_directory():
     """On UNIX-like systems, this method will return the path of the home
@@ -53,3 +55,34 @@ def uri_prefix():
         return 'file:'
     else:
         return 'file://'
+
+def get_commandline_args():
+    """ Simply returns sys.argv, converted to Unicode objects on UNIX.
+    Does a bit more work on win32 since Python 2.x' handling of
+    command line strings is broken. It only passes ASCII characters
+    while replacing all chars that cannot be converted with the current
+    encoding to "?".
+    So we'll just bypass Python and get an unicode argument vector from
+    native win32 library functions."""
+
+    if sys.platform == 'win32':
+        # Set up function prototypes
+        ctypes.windll.kernel32.GetCommandLineW.restype = ctypes.c_wchar_p
+        ctypes.windll.shell32.CommandLineToArgvW.restype = ctypes.POINTER(ctypes.c_wchar_p)
+        args_length = ctypes.c_int(0)
+        # Convert argument string from GetCommandLineW to array
+        args_pointer = ctypes.windll.shell32.CommandLineToArgvW(
+            ctypes.windll.kernel32.GetCommandLineW(),
+            ctypes.byref(args_length))
+
+        if args_pointer:
+            args = [args_pointer[i] for i in range(args_length.value)]
+            ctypes.windll.kernel32.LocalFree(args_pointer)
+            # The first argument is the python interpreter, skip it.
+            return args[1:]
+        else:
+            # For some reason CommandLineToArgvW failed and returned NULL
+            # Fall back to sys.argv
+            return [arg.decode(locale.getpreferredencoding(), 'replace') for arg in sys.argv]
+    else:
+        return [arg.decode(locale.getpreferredencoding(), 'replace') for arg in sys.argv]

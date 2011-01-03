@@ -80,6 +80,7 @@ import locale
 import main
 import icons
 import preferences
+import portability
 
 def print_help():
     """Print the command-line help text and exit."""
@@ -115,7 +116,8 @@ def run():
     open_page = 1
 
     try:
-        opts, args = getopt.gnu_getopt(sys.argv[1:], 'fhld',
+        argv = portability.get_commandline_args()
+        opts, args = getopt.gnu_getopt(argv[1:], 'fhld',
             ['fullscreen', 'help', 'library'])
 
     except getopt.GetoptError:
