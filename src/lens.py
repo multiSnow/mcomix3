@@ -20,15 +20,15 @@ class MagnifyingLens:
 
     def __init__(self, window):
         self._window = window
-        
+
     def add_lens(self, left_pixbuf, right_pixbuf=None):
-        """Add the lens to the main images"""        
+        """Add the lens to the main images"""
         canvas = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8,
             prefs['lens size'], prefs['lens size'])
         canvas.fill(0x000000bb)
 
         if right_pixbuf == None:
-            
+
             source_pixbuf = left_pixbuf
             image_size = self._window.left_image.size_request()
             x, y = self._window.get_layout_pointer_position()
@@ -37,13 +37,13 @@ class MagnifyingLens:
             canvas = image_tools.add_border(canvas, 1)
 
             pixbuf = self._get_lens_pixbuf(400,400)
-            
+
             source_pixbuf = pixbuf
-            
+
             #assertion `dest_x >= 0 && dest_x + width <= dest_pixbuf->width
             #canvas.copy_area(0, 0, prefs['lens size'], prefs['lens size'], source_pixbuf, 0,0)
             #canvas.copy_area(0, 0, 10, 10, source_pixbuf, 0,0)
-        
+
         return source_pixbuf
 
     def set_lens_cursor(self, x, y):
@@ -53,12 +53,12 @@ class MagnifyingLens:
         """
         if not self._window.filehandler.file_loaded:
             return
-            
+
         pixbuf = self._get_lens_pixbuf(x, y)
-        
+
         cursor = gtk.gdk.Cursor(gtk.gdk.display_get_default(), pixbuf,
             prefs['lens size'] // 2, prefs['lens size'] // 2)
-            
+
         self._window.cursor_handler.set_cursor_type(cursor)
 
     def toggle(self, action):
@@ -74,30 +74,30 @@ class MagnifyingLens:
         """Get a pixbuf containing the appropiate image data for the lens
         where <x> and <y> are the positions of the cursor.
         """
-        
+
         canvas = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8,
             prefs['lens size'], prefs['lens size'])
         canvas.fill(0x000000bb)
-        
+
         if self._window.displayed_double():
-        
+
             l_source_pixbuf = self._window.left_image.get_pixbuf()
             r_source_pixbuf = self._window.right_image.get_pixbuf()
-                    
+
             l_image_size = self._window.left_image.size_request()
             r_image_size = self._window.right_image.size_request()
-            
+
             self._add_subpixbuf(canvas, x, y, l_image_size, l_source_pixbuf,
                 r_image_size[0], left=True)
             self._add_subpixbuf(canvas, x, y, r_image_size, r_source_pixbuf,
                 l_image_size[0], left=False)
         else:
-        
+
             source_pixbuf = self._window.left_image.get_pixbuf()
-            
+
             image_size = self._window.left_image.size_request()
             self._add_subpixbuf(canvas, x, y, image_size, source_pixbuf)
-            
+
         return image_tools.add_border(canvas, 1)
 
     def _add_subpixbuf(self, canvas, x, y, image_size, source_pixbuf,
@@ -127,7 +127,7 @@ class MagnifyingLens:
         x -= padding_x
         y -= padding_y
         rotation = prefs['rotation']
-        
+
         if prefs['auto rotate from exif']:
             rotation += image_tools.get_implied_rotation(source_pixbuf)
             rotation = rotation % 360

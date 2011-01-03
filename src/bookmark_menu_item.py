@@ -18,13 +18,13 @@ class _Bookmark(gtk.ImageMenuItem):
         self._file_handler = file_handler
 
         gtk.MenuItem.__init__(self, str(self), False)
-        
+
         if self._archive_type is not None:
             im = gtk.image_new_from_stock('mcomix-archive', gtk.ICON_SIZE_MENU)
 
         else:
             im = gtk.image_new_from_stock('mcomix-image', gtk.ICON_SIZE_MENU)
-            
+
         self.set_image(im)
         self.connect('activate', self._load)
 
@@ -33,12 +33,12 @@ class _Bookmark(gtk.ImageMenuItem):
 
     def _load(self, *args):
         """Open the file and page the bookmark represents."""
-        
+
         if self._file_handler._base_path != self._path:
             self._file_handler.open_file(self._path, self._page)
         else:
             self._window.set_page(self._page)
-            
+
             self._window.toolbar.hide()
             self._window.toolbar.show()
 
@@ -59,7 +59,7 @@ class _Bookmark(gtk.ImageMenuItem):
         page = '%d / %d' % (self._page, self._numpages)
 
         return (pixbuf, self._name, page, self)
-    
+
     def pack(self):
         """Return a tuple suitable for pickling. The bookmark can be fully
         re-created using the values in the tuple.

@@ -14,7 +14,7 @@ class Pageselector(gtk.Dialog):
                                      gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT)
         self.add_buttons(_('_Go'), gtk.RESPONSE_OK,
                          _('_Cancel'), gtk.RESPONSE_CANCEL,)
-        self.set_default_response(gtk.RESPONSE_OK)        
+        self.set_default_response(gtk.RESPONSE_OK)
         self.set_has_separator(False)
         self.connect('response', self._response)
         self.set_has_separator(False)
@@ -46,8 +46,8 @@ class Pageselector(gtk.Dialog):
         self._image_preview = gtk.Image()
         self._image_preview.set_from_pixbuf(
                     image_tools.add_border(
-                       self._window.thumbnailsidebar._thumb_cache[ 
-                            int(self._selector_adjustment.value) - 1 ], 
+                       self._window.thumbnailsidebar._thumb_cache[
+                            int(self._selector_adjustment.value) - 1 ],
                         1) )
         preview_box.pack_start(self._image_preview)
 
@@ -71,18 +71,18 @@ class Pageselector(gtk.Dialog):
     def _cb_value_changed(self, *args):
         self._image_preview.set_from_pixbuf(
                     image_tools.add_border(
-                       self._window.thumbnailsidebar._thumb_cache[ 
-                            int(self._selector_adjustment.value) - 1 ], 
+                       self._window.thumbnailsidebar._thumb_cache[
+                            int(self._selector_adjustment.value) - 1 ],
                         1) )
 
         while gtk.events_pending():
             gtk.main_iteration(False)
-        
+
     def _response(self, widget, event, *args):
         if event == gtk.RESPONSE_OK:
             self._window.set_page(int(self._selector_adjustment.value))
             self.emit('close')
-        elif event == gtk.RESPONSE_CANCEL: 
+        elif event == gtk.RESPONSE_CANCEL:
             self.emit('close')
 
 

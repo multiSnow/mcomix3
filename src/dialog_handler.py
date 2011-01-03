@@ -14,7 +14,7 @@ dialog_windows[ 'properties-dialog' ] = [None, properties_dialog._PropertiesDial
 
 def open_dialog(action, window, name_of_dialog):
     """Create and display the given dialog."""
-    
+
     _dialog = dialog_windows[ name_of_dialog ]
 
     # if the dialog window is not created then create the window
@@ -29,7 +29,7 @@ def open_dialog(action, window, name_of_dialog):
 def _close_dialog(action, exit_response, name_of_dialog):
 
     _dialog = dialog_windows[ name_of_dialog ]
-    
+
     # if the dialog window exists then destroy it
     if _dialog[0] is not None:
         _dialog[0].destroy()

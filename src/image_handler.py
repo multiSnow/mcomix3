@@ -43,7 +43,7 @@ class ImageHandler:
         Pixbufs not found in cache are fetched from disk first.
         """
         pixbuf = constants.MISSING_IMAGE_ICON
-        
+
         if index not in self._raw_pixbufs:
             self._wait_on_page(index + 1)
 
@@ -59,7 +59,7 @@ class ImageHandler:
                 pixbuf = self._raw_pixbufs[index]
             except Exception:
                 pass
-            
+
         return pixbuf
 
     def get_pixbufs(self, single=False):
@@ -94,7 +94,7 @@ class ImageHandler:
         """Make sure that the correct pixbufs are stored in cache. These
         are (in the current implementation) the current image(s), and
         if cacheing is enabled, also the one or two pixbufs before and
-        after the current page. All other pixbufs are deleted and garbage 
+        after the current page. All other pixbufs are deleted and garbage
         collected directly in order to save memory.
         """
         if not self._window.filehandler.file_loaded:
@@ -103,7 +103,7 @@ class ImageHandler:
         self.is_cacheing = True
 
         # Get list of wanted pixbufs.
-        first_wanted = self._current_image_index 
+        first_wanted = self._current_image_index
         last_wanted = first_wanted + 1
         last_wanted += 1
 
@@ -118,7 +118,7 @@ class ImageHandler:
                 last_wanted = self.get_number_of_pages()
 
             elif self.get_number_of_pages() > prefs['max pages to cache']:
-                
+
                 # only cache the max number of pages to cache
                 half_cache = (prefs[ 'max pages to cache' ] / 2) - 1
                 first_wanted = max(0, first_wanted - half_cache)
@@ -139,15 +139,15 @@ class ImageHandler:
         else:
             self.first_wanted = first_wanted
             self.last_wanted = last_wanted
-        
+
         wanted_pixbufs = range(first_wanted, last_wanted)
-        
+
         # Remove old pixbufs.
         for page in set(self._raw_pixbufs) - set(wanted_pixbufs):
             del self._raw_pixbufs[page]
 
         constants.RUN_GARBAGE_COLLECTOR
-            
+
         self.thread_cache_new_pixbufs(wanted_pixbufs)
 
     def thread_cache_new_pixbufs(self, wanted_pixbufs):
@@ -168,7 +168,7 @@ class ImageHandler:
                 return
 
         self.is_cacheing = False
-    
+
     def next_page(self):
         """Set up filehandler to the next page. Return True if this results
         in a new page.
@@ -181,7 +181,7 @@ class ImageHandler:
 
         if self.get_current_page() + viewed > self.get_number_of_pages():
             if self._window.filehandler.archive_type is not None:
-            
+
                 if (self._window.slideshow.is_running() and \
                     prefs['slideshow can go to next archive']) or \
                     prefs['auto open next archive']:
@@ -203,7 +203,7 @@ class ImageHandler:
         if self.get_current_page() == 1:
 
             if self._window.filehandler.archive_type is not None:
-            
+
                 if (self._window.slideshow.is_running() and \
                     prefs['slideshow can go to next archive']) or \
                     prefs['auto open next archive']:
@@ -267,7 +267,7 @@ class ImageHandler:
           not prefs['no double page for wide images'] or
           self.get_current_page() == self.get_number_of_pages()):
             return False
-        
+
         page1 = self._get_pixbuf(self._current_image_index)
         if page1.get_width() > page1.get_height():
             return True
@@ -284,7 +284,7 @@ class ImageHandler:
         if self._window.filehandler.archive_type is not None:
             return self._window.filehandler.get_path_to_base()
         return self.get_path_to_page()
-                                                                        
+
     def close(self, *args):
         """Run tasks for "closing" the currently opened file(s)."""
 
@@ -334,7 +334,7 @@ class ImageHandler:
                 return self._image_files[self._current_image_index]
             else:
                 return None
-                
+
         if page - 1 < len(self._image_files):
             return self._image_files[page - 1]
         else:
@@ -348,22 +348,22 @@ class ImageHandler:
         """
         if page is None:
             page = self._current_image_index + 1
-        
+
         first_path = self.get_path_to_page(page)
         if first_path == None:
             return None
-            
+
         if double:
             second_path = self.get_path_to_page(page + 1)
-            
+
             if second_path != None:
                 first = os.path.basename(first_path)
                 second = os.path.basename(second_path)
             else:
                 return None
-                
+
             return first, second
-            
+
         return os.path.basename(first_path)
 
     def get_pretty_current_filename(self):
@@ -384,7 +384,7 @@ class ImageHandler:
         self._wait_on_page(page)
 
         page_path = self.get_path_to_page(page)
-        
+
         if page_path != None:
             info = gtk.gdk.pixbuf_get_file_info(page_path)
         else:
@@ -401,12 +401,12 @@ class ImageHandler:
         self._wait_on_page(page)
 
         page_path = self.get_path_to_page(page)
-        
+
         if page_path != None:
             info = gtk.gdk.pixbuf_get_file_info(page_path)
         else:
             return None
-        
+
         if info is not None:
             return info[0]['name'].upper()
         return _('Unknown filetype')
@@ -421,10 +421,10 @@ class ImageHandler:
         """
         self._wait_on_page(page)
         path = self.get_path_to_page(page)
-        
+
         if path == None:
             return None
-            
+
         if width <= 128 and height <= 128:
             thumb = thumbnail_tools.get_thumbnail(path, create)
         else:

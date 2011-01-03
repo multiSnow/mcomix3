@@ -34,7 +34,7 @@ def load_icons():
               ('previous-page.png',          'mcomix-previous-page'),
               ('next-archive.png',           'mcomix-next-archive'),
               ('previous-archive.png',       'mcomix-previous-archive'))
-    
+
     icon_path = None
     # Try source directory.
     if os.path.isfile(os.path.join(constants.BASE_PATH, 'images/16x16/mcomix.png')):
@@ -47,7 +47,7 @@ def load_icons():
                 break
     if icon_path is None:
         return
-    
+
     # Load window title icon.
     pixbuf = image_tools.load_pixbuf(os.path.join(icon_path,
         '16x16/mcomix.png'))

@@ -46,7 +46,7 @@ ARCHIVE_DESCRIPTIONS = {
                         BZIP2: _('Bzip2 compressed tar archive'),
                         RAR:   _('RAR archive')
                        }
-                       
+
 ACCEPTED_COMMENT_EXTENSIONS = ['txt', 'nfo']
 
 SUPPORTED_IMAGE_REGEX = re.compile(r'\.(jpg|jpeg|png|gif|tif|tiff|bmp|ppm|pgm|pbm)\s*$', re.I)
@@ -73,7 +73,7 @@ CREDITS = (
             ('Raimondo Giammanco', _('Italian translation')),
             ('GhePeU', _('Italian translation')),
             ('Arthur Nieuwland', _('Dutch translation')),
-            ('Achraf Cherti', _('French translation')),              
+            ('Achraf Cherti', _('French translation')),
             ('Benoît H.', _('French translation')),
             ('Kamil Leduchowski', _('Polish translatin')),
             ('Darek Jakoniuk', _('Polish translation')),

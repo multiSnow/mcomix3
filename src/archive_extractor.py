@@ -48,12 +48,12 @@ class Extractor:
         """
         self._src = src
         self._dst = dst
-        
+
         if type != None:
             self._type = type
         else:
             self._type = archive_tools.archive_mime_type(src)
-            
+
         self._files = []
         self._extracted = {}
         self._stop = False
@@ -63,48 +63,48 @@ class Extractor:
         if self._type == constants.ZIP:
             self._zfile = zipfile.ZipFile(src, 'r')
             self._files = self._zfile.namelist()
-            
+
         elif self._type in (constants.TAR, constants.GZIP, constants.BZIP2):
             self._tfile = tarfile.open(src, 'r')
             self._files = self._tfile.getnames()
-            
+
         elif self._type == constants.RAR:
             global _rar_exec
-            
+
             if _rar_exec is None:
                 _rar_exec = archive_tools._get_rar_exec()
-                
+
                 if _rar_exec is None:
                     print _('! Could not find RAR file extractor.')
-                    
+
                     dialog = gtk.MessageDialog(None, 0, gtk.MESSAGE_WARNING,
                         gtk.BUTTONS_CLOSE,
                         _("Could not find RAR file extractor!"))
-                        
+
                     dialog.format_secondary_markup(
                         _("You need either the <i>rar</i> or the <i>unrar</i> program installed in order to read RAR (.cbr) files."))
-                        
+
                     dialog.run()
                     dialog.destroy()
-                    
+
                     return None
-                    
+
             proc = process.Process([_rar_exec, 'vb', '--', src])
             fd = proc.spawn()
             self._files = [name.rstrip(os.linesep) for name in fd.readlines()]
             fd.close()
             proc.wait()
-            
+
         elif self._type == constants.PDF:
             global can_handle_pdf
-            
+
             #if can_handle_pdf:
 
             #    self._source_pdf = poppler.document_new_from_file ('file://' + self._src, None)
             #    self._num_of_pages = self._source_pdf.get_n_pages()
-    
+
             #    self._files = [self._dst + str(n) + '.png' for n in range(0, self._num_of_pages)]
-                
+
             #else:
             #    return None
 
@@ -181,14 +181,14 @@ class Extractor:
 
     def _thread_extract(self):
         """Extract the files in the file list one by one."""
-        
+
         if self._type != constants.PDF:
             for name in self._files:
                 self._extract_file(name)
         else:
             for n in range(0, self._num_of_pages):
                 self._extract_file(n)
-                
+
         self.close()
 
     def _extract_file(self, name):
@@ -229,7 +229,7 @@ class Extractor:
                     proc.wait()
                 else:
                     print _('! Could not find RAR file extractor.')
-            
+
             elif self._type == constants.PDF:
                 pass
                 #page = self._source_pdf.get_page(n)
@@ -241,7 +241,7 @@ class Extractor:
             # possible infinite block. Damaged or missing files *should* be
             # handled gracefully by the main program anyway.
             pass
-            
+
         self._condition.acquire()
         self._extracted[name] = True
         self._condition.notify()

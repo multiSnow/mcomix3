@@ -5,23 +5,23 @@ import zipfile
 import threading
 
 class Packer:
-    
+
     """Packer is a threaded class for packing files into ZIP archives.
-    
+
     It would be straight-forward to add support for more archive types,
     but basically all other types are less well fitted for this particular
     task than ZIP archives are (yes, really).
     """
-    
+
     def __init__(self, image_files, other_files, archive_path, base_name):
         """Setup a Packer object to create a ZIP archive at <archive_path>.
         All files pointed to by paths in the sequences <image_files> and
         <other_files> will be included in the archive when packed.
-        
+
         The files in <image_files> will be renamed on the form
         "NN - <base_name>.ext", so that the lexical ordering of their
         filenames match that of their order in the list.
-        
+
         The files in <other_files> will be included as they are,
         assuming their filenames does not clash with other filenames in
         the archive. All files are placed in the archive root.

@@ -5,7 +5,7 @@ import gobject
 from preferences import prefs
 
 class Slideshow:
-    
+
     """Slideshow handler that manages starting and stopping of slideshows."""
 
     def __init__(self, window):
@@ -27,17 +27,17 @@ class Slideshow:
 
     def _next(self):
         if prefs['number of pixels to scroll per slideshow event'] != 0:
-        
+
             self._window.scroll_with_flipping(0, prefs['number of pixels to scroll per slideshow event'])
         else:
             self._window.next_page()
-        
+
         return True
 
     def toggle(self, action):
         """Toggle a slideshow on or off."""
         if action.get_active():
-            self._start()            
+            self._start()
             self._window.uimanager.get_widget('/Tool/slideshow').set_stock_id( gtk.STOCK_MEDIA_STOP )
             self._window.uimanager.get_widget('/Tool/slideshow').set_tooltip_text( _('Stop slideshow')  )
         else:

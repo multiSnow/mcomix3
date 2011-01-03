@@ -67,10 +67,10 @@ class _BookmarksStore:
 
         self.add_bookmark_by_values(name, path, page, numpages,
             archive_type)
-            
+
     def clear_bookmarks(self):
         """Remove all bookmarks from the store and the menu."""
-        
+
         for bookmark in self._bookmarks:
             self.remove_bookmark(bookmark)
 

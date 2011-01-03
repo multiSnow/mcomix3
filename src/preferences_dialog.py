@@ -9,21 +9,21 @@ from preferences import prefs
 _dialog = None
 
 class _PreferencesDialog(gtk.Dialog):
-    
+
     """The preferences dialog where most (but not all) settings that are
     saved between sessions are presented to the user.
     """
 
     def __init__(self, window):
         gtk.Dialog.__init__(self, _('Preferences'), window, gtk.DIALOG_MODAL,
-             (#gtk.STOCK_REFRESH, constants.RESPONSE_REVERT_TO_DEFAULT, 
+             (#gtk.STOCK_REFRESH, constants.RESPONSE_REVERT_TO_DEFAULT,
               gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE))
-        
+
         self._window = window
         self.set_has_separator(False)
         self.set_resizable(True)
         self.set_default_response(gtk.RESPONSE_CLOSE)
-        
+
         self._has_crash_time_changed = False
 
         self.connect('response', self._response)
@@ -32,7 +32,7 @@ class _PreferencesDialog(gtk.Dialog):
         self.vbox.pack_start(notebook)
         self.set_border_width(4)
         notebook.set_border_width(6)
-        
+
         # ----------------------------------------------------------------
         # The "Appearance" tab.
         # ----------------------------------------------------------------
@@ -103,7 +103,7 @@ class _PreferencesDialog(gtk.Dialog):
         thumb_number_button.connect('toggled', self._check_button_cb,
             'show page numbers on thumbnails')
         page.add_row(thumb_number_button)
-        
+
         page.new_section(_('Magnifying Lens'))
         label = gtk.Label('%s:' % _('Magnifying lens size (in pixels)'))
         adjustment = gtk.Adjustment(prefs['lens size'], 50, 400, 1, 10)
@@ -142,7 +142,7 @@ class _PreferencesDialog(gtk.Dialog):
             _('Use a grey checkered background for transparent images. If this preference is unset, the background is plain white instead.'))
         page.add_row(checkered_bg_button)
         notebook.append_page(page, gtk.Label(_('Appearance')))
-        
+
         # ----------------------------------------------------------------
         # The "Behaviour" tab.
         # ----------------------------------------------------------------
@@ -330,7 +330,7 @@ class _PreferencesDialog(gtk.Dialog):
         zoom_combo.append_text(_('Fit height mode'))
         zoom_combo.append_text(_('Manual zoom mode'))
         # Change this if the combobox entries are reordered.
-        zoom_combo.set_active(prefs['default zoom mode']) 
+        zoom_combo.set_active(prefs['default zoom mode'])
         zoom_combo.connect('changed', self._combo_box_cb)
         page.add_row(label, zoom_combo)
 
@@ -406,31 +406,31 @@ class _PreferencesDialog(gtk.Dialog):
         self.show_all()
 
     def _response(self, dialog, response):
-        
+
         if response == gtk.RESPONSE_CLOSE:
 
             # only change the crash timer once the preference window has been closed
             if prefs['crash recovery on'] and self._has_crash_time_changed:
                 self._window.idle_wait_for_crash_timer_to_expire()
-            
+
             _close_dialog()
 
         elif response == constants.RESPONSE_REVERT_TO_DEFAULT:
             # to be used to restore preferences to default
             pass
-            
+
     def _check_button_cb(self, button, preference):
         """Callback for all checkbutton-type preferences."""
 
         prefs[preference] = button.get_active()
 
         if preference == 'color box bg' and button.get_active():
-            
+
             if not prefs['smart bg'] or not self._window.filehandler.file_loaded:
                 self._window.set_bg_colour(prefs['bg colour'])
 
         elif preference == 'smart bg' and button.get_active():
-        
+
             # if the color is no longer using the smart background then return it to the chosen color
             if not prefs[preference]:
                 self._window.set_bg_colour(prefs['bg colour'])
@@ -439,15 +439,15 @@ class _PreferencesDialog(gtk.Dialog):
                 self._window.draw_image()
 
         elif preference == 'color box thumb bg' and button.get_active():
-            
+
             if prefs[preference]:
                 prefs['smart thumb bg'] = False
                 prefs['thumbnail bg uses main colour'] = False
-                
+
                 self._window.thumbnailsidebar.change_thumbnail_background_color(prefs['thumb bg colour'])
             else:
                 self._window.draw_image()
-                
+
         elif preference == 'smart thumb bg' and button.get_active():
 
             if prefs[preference]:
@@ -460,7 +460,7 @@ class _PreferencesDialog(gtk.Dialog):
             else:
                 self._window.draw_image()
 
-        
+
         #elif preference == 'thumbnail bg uses main colour' and button.get_active():
             """
             if prefs[preference]:
@@ -468,94 +468,94 @@ class _PreferencesDialog(gtk.Dialog):
                 prefs['smart thumb bg'] = False
 
                 if prefs['smart bg']:
-                    
+
                     self._window.draw_image()
                 else:
                     self._window.thumbnailsidebar.change_thumbnail_background_color(prefs['bg colour'])
             else:
                 self._window.draw_image()
-            """        
+            """
         elif preference in ('stretch', 'checkered bg for transparent images',
           'no double page for wide images', 'auto rotate from exif'):
             self._window.draw_image()
-            
+
         elif (preference == 'hide all in fullscreen' and
             self._window.is_fullscreen):
             self._window.draw_image()
-            
+
         elif preference == 'show page numbers on thumbnails':
             self._window.thumbnailsidebar.toggle_page_numbers_visible()
-            
+
         elif preference == 'show page numbers':
             self._window.update_title()
             self._window.statusbar.update()
-            
+
         elif preference == 'crash recovery on':
-        
+
             if prefs['crash recovery on']:
                 self._window.idle_wait_for_crash_timer_to_expire()
             else:
                 self._window.crash_timer_continue = False
-            
+
     def _color_button_cb(self, colorbutton, preference):
         """Callback for the background colour selection button."""
 
         colour = colorbutton.get_color()
-        
+
         if preference == 'bg colour':
             prefs['bg colour'] = colour.red, colour.green, colour.blue
-        
+
             if not prefs['smart bg'] or not self._window.filehandler.file_loaded:
                 self._window.set_bg_colour(prefs['bg colour'])
-                
+
         elif preference == 'thumb bg colour':
 
             prefs['thumb bg colour'] = colour.red, colour.green, colour.blue
-            
-            if not prefs['smart thumb bg'] or not self._window.filehandler.file_loaded:            
+
+            if not prefs['smart thumb bg'] or not self._window.filehandler.file_loaded:
                 self._window.thumbnailsidebar.change_thumbnail_background_color( prefs['thumb bg colour'] )
-            
+
     def _spinner_cb(self, spinbutton, preference):
         """Callback for spinner-type preferences."""
         value = spinbutton.get_value()
-        
+
         if preference == 'lens size':
             prefs[preference] = int(value)
-            
+
         elif preference == 'lens magnification':
             prefs[preference] = value
-            
+
         elif preference == 'slideshow delay':
             prefs[preference] = int(value * 1000)
             self._window.slideshow.update_delay()
-        
+
         elif preference == 'number of pixels to scroll per slideshow event':
             prefs[preference] = int(value)
-    
+
         elif preference == 'number of pixels to scroll per key event':
             prefs[preference] = int(value)
 
         elif preference == 'number of pixels to scroll per mouse wheel event':
             prefs[preference] = int(value)
-                    
+
         elif preference == 'thumbnail size':
             prefs[preference] = int(value)
             self._window.thumbnailsidebar.resize()
             self._window.draw_image()
-            
+
         elif preference == 'max pages to cache':
             prefs[preference] = int(value)
             self._window.imagehandler.do_cacheing()
-            
+
         elif preference == 'number of key presses before page turn':
             prefs['number of key presses before page turn'] = int(value)
             self._window._event_handler._extra_scroll_events = 0
-        
+
         elif preference == 'crash recovery seconds':
             prefs['crash recovery seconds'] = int(value)
 
             self._has_crash_time_changed = True
-            
+
     def _combo_box_cb(self, combobox):
         """Callback for combobox-type preferences."""
         zoom_mode = combobox.get_active()

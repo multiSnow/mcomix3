@@ -55,8 +55,8 @@ class FileHandler:
         self.open_file(current_file)
 
     def open_file(self, path, start_page=1):
-        """Open the file pointed to by <path>. 
-        
+        """Open the file pointed to by <path>.
+
         If <start_page> is not set we set the current
         page to 1 (first page), if it is set we set the current page to the
         value of <start_page>. If <start_page> is non-positive it means the
@@ -64,49 +64,49 @@ class FileHandler:
 
         Return True if the file is successfully loaded.
         """
-        
+
         # If the given <path> is invalid we update the statusbar.
         if os.path.isdir(path):
             self._window.statusbar.set_message(
                 _('Could not open %s: Is a directory.') % path)
             return False
-        
+
         if not os.path.isfile(path):
             self._window.statusbar.set_message(
                 _('Could not open %s: No such file.') % path)
             return False
-            
+
         if not os.access(path, os.R_OK):
             self._window.statusbar.set_message(
                 _('Could not open %s: Permission denied.') % path)
             return False
-            
+
         self.archive_type = archive_tools.archive_mime_type(path)
-        
+
         if self.archive_type is None and not image_tools.is_image_file(path):
             self._window.statusbar.set_message(
                 _('Could not open %s: Unknown file type.') % path)
             return False
-        
+
         # We close the previously opened file.
         if self.file_loaded:
             self.close_file()
-            
+
         while gtk.events_pending():
             gtk.main_iteration(False)
-        
+
         self._current_file = path
-        
+
         result = False
 
         # If <path> is an archive we create an Extractor for it and set the
         # files in it with file endings indicating image files or comments
         # as the ones to be extracted.
         if self.archive_type is not None:
-        
+
             self._base_path = path
             self._condition = self._extractor.setup(path, self._tmp_dir, self.archive_type)
-            
+
             if self._condition != None:
 
                 files = self._extractor.get_files()
@@ -121,66 +121,66 @@ class FileHandler:
                 comment_files = filter(self._comment_re.search, files)
                 self._comment_files = \
                     [os.path.join(self._tmp_dir, f) for f in comment_files]
-                    
+
                 for name, full_path in zip(image_files, self._image_files):
                     self._name_table[full_path] = name
-                    
+
                 for name, full_path in zip(comment_files, self._comment_files):
                     self._name_table[full_path] = name
-    
+
                 num_of_pages = len(self._image_files)
-    
+
                 if start_page < 0:
-                
+
                     if self._window.is_double_page:
-                        self._current_image_index = num_of_pages - 2                    
+                        self._current_image_index = num_of_pages - 2
                     else:
                         self._current_image_index = num_of_pages - 1
-                        
+
                 else:
                     self._current_image_index = start_page - 1
-                    
+
                 self._current_image_index = max(0, self._current_image_index)
-    
+
                 depth = self._window.is_double_page and 2 or 1
-                
+
                 priority_ordering = (
                     range(self._current_image_index,
                         self._current_image_index + depth * 2) +
                     range(self._current_image_index - depth,
                         self._current_image_index)[::-1])
-                        
+
                 priority_ordering = [image_files[p] for p in priority_ordering
                     if 0 <= p <= num_of_pages - 1]
-                    
+
                 for i, name in enumerate(priority_ordering):
                     image_files.remove(name)
                     image_files.insert(i, name)
-    
+
                 self._extractor.set_files(image_files + comment_files)
                 self._extractor.extract()
-                
+
         # If <path> is an image we scan its directory for more images.
         else:
-        
+
             self._base_path = os.path.dirname(path)
-            
+
             for f in os.listdir(self._base_path):
-            
+
                 fpath = os.path.join(self._base_path, f)
-                
+
                 if image_tools.is_image_file(fpath):
                     self._image_files.append(fpath)
-                    
+
             self._image_files.sort(locale.strcoll)
             self._current_image_index = self._image_files.index(path)
 
         if not self._image_files:
-        
+
             self._window.statusbar.set_message(_("No images in '%s'") %
                 os.path.basename(path))
             self.file_loaded = False
-            
+
             result = False
             self._window.uimanager.set_sensitivities()
 
@@ -191,24 +191,24 @@ class FileHandler:
             self._window.imagehandler._base_path = self._base_path
             self._window.imagehandler._current_file = path
             self._window.imagehandler._name_table = self._name_table
-            
+
             self._window.imagehandler.do_cacheing()
             self._window.scroll_to_fixed(horiz='startfirst', vert='top')
-            
+
             self._window.uimanager.set_sensitivities()
             self._window.thumbnailsidebar.load_thumbnails()
-            self._window.uimanager.set_sensitivities()            
+            self._window.uimanager.set_sensitivities()
 
             self.write_fileinfo_file()
-            
+
             result = True
-            
+
         tools.alphanumeric_sort(self._comment_files)
 
         self._window.uimanager.recent.add(path)
-        
+
         return result
-        
+
     def close_file(self, *args):
         """Run tasks for "closing" the currently opened file(s)."""
         self.file_loaded = False
@@ -271,7 +271,7 @@ class FileHandler:
                 return self._image_files[self._current_image_index]
             else:
                 return None
-                
+
         if page - 1 < len(self._image_files):
             return self._image_files[page - 1]
         else:
@@ -305,15 +305,15 @@ class FileHandler:
         archive in that archive's directory listing, sorted alphabetically.
         """
         if self.archive_type is not None:
-            
+
             arch_dir = os.path.dirname(self._base_path)
-            
+
             if arch_dir == None:
                 return
-            
+
             files = os.listdir(arch_dir)
             files.sort(locale.strcoll)
-            
+
             try:
                 current_index = files.index(os.path.basename(self._base_path))
             except ValueError:
@@ -327,25 +327,25 @@ class FileHandler:
                     self._window.scroll_to_fixed(horiz='startfirst', vert='top')
                     self.open_file(path)
                     return
-    
+
     def _open_previous_archive(self, *args):
         """Open the archive that comes directly before the currently loaded
         archive in that archive's directory listing, sorted alphabetically.
         """
         if self.archive_type is not None:
-        
+
             if self._base_path == None:
                 return
-        
+
             arch_dir = os.path.dirname(self._base_path)
             files = os.listdir(arch_dir)
             files.sort(locale.strcoll)
-            
+
             try:
                 current_index = files.index(os.path.basename(self._base_path))
             except ValueError:
                 return
-                
+
             for f in reversed(files[:current_index]):
                 path = os.path.join(arch_dir, f)
                 if archive_tools.archive_mime_type(path) is not None:
@@ -353,7 +353,7 @@ class FileHandler:
                     self._window.imagehandler.close()
                     self._window.scroll_to_fixed(horiz='endsecond', vert='bottom')
                     self.open_file(path, -1)
-                    
+
                     return
 
     def _wait_on_page(self, page):
@@ -377,13 +377,13 @@ class FileHandler:
         """
         if self.archive_type == None or path == None:
             return
-        
+
         try:
             name = self._name_table[path]
             self._condition.acquire()
             while not self._extractor.is_ready(name):
-                self._condition.wait() 
-            self._condition.release() 
+                self._condition.wait()
+            self._condition.release()
         except Exception:
             return
 
@@ -394,13 +394,13 @@ class FileHandler:
         del_thread = threading.Thread(target=shutil.rmtree, args=(path, True))
         del_thread.setDaemon(False)
         del_thread.start()
-        
+
     def write_fileinfo_file(self):
         """Write current open file information."""
 
         if self.file_loaded:
             config = open(constants.FILEINFO_PICKLE_PATH, 'wb')
-        
+
             if self.archive_type != None:
                 current_file_info = [self._current_file, self._window.imagehandler._current_image_index]
             else:
@@ -411,7 +411,7 @@ class FileHandler:
             config.close()
 
     def read_fileinfo_file(self):
-        """Read last loaded file info from disk."""        
+        """Read last loaded file info from disk."""
 
         fileinfo = None
 

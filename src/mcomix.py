@@ -133,7 +133,7 @@ def run():
 
         elif opt in ('-l', '--library'):
             show_library = True
-        
+
     if not os.path.exists(constants.DATA_DIR):
         os.makedirs(constants.DATA_DIR, 0700)
 
@@ -143,7 +143,7 @@ def run():
     deprecated.move_files_to_xdg_dirs()
     preferences.read_preferences_file()
     icons.load_icons()
-    
+
     if len(args) >= 1:
         param_path = os.path.abspath(args[0])
 
@@ -163,7 +163,7 @@ def run():
     elif preferences.prefs['auto load last file']:
         open_path = preferences.prefs['path to last file']
         open_page = preferences.prefs['page of last file']
-    
+
     window = main.MainWindow(fullscreen=fullscreen, show_library=show_library,
         open_path=open_path, open_page=open_page)
     deprecated.check_for_deprecated_files(window)

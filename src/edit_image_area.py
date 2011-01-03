@@ -7,16 +7,16 @@ import image_tools
 import thumbnail_tools
 
 class _ImageArea(gtk.ScrolledWindow):
-    
+
     """The area used for displaying and handling image files."""
-    
+
     def __init__(self, edit_dialog, window):
         gtk.ScrolledWindow.__init__(self)
-        
+
         self._window = window
         self._edit_dialog = edit_dialog
         self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        
+
         # The ListStore layout is (thumbnail, basename, full path).
         self._liststore = gtk.ListStore(gtk.gdk.Pixbuf, str, str)
         self._iconview = gtk.IconView(self._liststore)
@@ -37,9 +37,9 @@ class _ImageArea(gtk.ScrolledWindow):
             </popup>
         </ui>
         """
-        
+
         self._ui_manager.add_ui_from_string(ui_description)
-        
+
         actiongroup = gtk.ActionGroup('mcomix-edit-archive-image-area')
         actiongroup.add_actions([
             ('remove', gtk.STOCK_REMOVE, _('Remove from archive'), None, None,
@@ -48,23 +48,23 @@ class _ImageArea(gtk.ScrolledWindow):
 
     def fetch_images(self):
         """Load all the images in the archive or directory."""
-        
+
         for i in xrange(1,
           self._window.imagehandler.get_number_of_pages() + 1):
 
             if not self._window.thumbnailsidebar._thumb_cache_is_complete:
-    
+
                 # wait for the cacheing to catch up
                 while self._window.thumbnailsidebar._thumbs_in_cache < i:
-    
+
                     if self._edit_dialog.kill:
                         return
 
                     self._window.draw_image()
-    
+
                     while gtk.events_pending():
                         gtk.main_iteration(False)
-    
+
                 if self._window.thumbnailsidebar._thumb_cache == None:
                     return
 
@@ -79,18 +79,18 @@ class _ImageArea(gtk.ScrolledWindow):
 
             while gtk.events_pending():
                 gtk.main_iteration(False)
-         
+
             if self._edit_dialog.kill:
                 return
 
     def add_extra_image(self, path):
         """Add an imported image (at <path>) to the end of the image list."""
         thumb = thumbnail_tools.get_thumbnail(path, create=False)
-        
+
         if thumb is None:
             thumb = self.render_icon(gtk.STOCK_MISSING_IMAGE,
                 gtk.ICON_SIZE_DIALOG)
-        
+
         thumb = image_tools.fit_in_rectangle(thumb, 128, 128)
 
         self._liststore.append([thumb, os.path.basename(path), path])
@@ -98,33 +98,33 @@ class _ImageArea(gtk.ScrolledWindow):
     def get_file_listing(self):
         """Return a list with the full paths to all the images, in order."""
         file_list = []
-        
+
         for row in self._liststore:
             file_list.append(row[2])
-        
+
         return file_list
 
     def _remove_pages(self, *args):
         """Remove the currently selected pages from the list."""
         paths = self._iconview.get_selected_items()
-        
+
         for path in paths:
             iterator = self._liststore.get_iter(path)
             self._liststore.remove(iterator)
-    
+
     def _button_press(self, iconview, event):
         """Handle mouse button presses on the thumbnail area."""
         path = iconview.get_path_at_pos(int(event.x), int(event.y))
-        
+
         if path is None:
             return
-        
+
         if event.button == 3:
-        
+
             if not iconview.path_is_selected(path):
                 iconview.unselect_all()
                 iconview.select_path(path)
-        
+
             self._ui_manager.get_widget('/Popup').popup(None, None, None,
                 event.button, event.time)
 
@@ -140,14 +140,14 @@ class _ImageArea(gtk.ScrolledWindow):
         """
         path = iconview.get_cursor()[0]
         pixmap = iconview.create_drag_icon(path)
-        
+
         # context.set_icon_pixmap() seems to cause crashes, so we do a
         # quick and dirty conversion to pixbuf.
         pointer = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8,
             *pixmap.get_size())
         pointer = pointer.get_from_drawable(pixmap, iconview.get_colormap(),
             0, 0, 0, 0, *pixmap.get_size())
-            
+
         context.set_icon_pixbuf(pointer, -5, -5)
 
 # vim: expandtab:sw=4:ts=4

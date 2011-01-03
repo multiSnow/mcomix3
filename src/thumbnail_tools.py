@@ -63,7 +63,7 @@ def get_thumbnail(path, create=True, dst_dir=constants.THUMBNAIL_PATH):
 
 def delete_thumbnail(path, dst_dir=constants.THUMBNAIL_PATH):
     """Delete the thumbnail (if it exists) for the file at <path>.
-    
+
     If <dst_dir> is set it is the base thumbnail directory, if not we use
     the default .thumbnails/normal/.
     """
@@ -194,18 +194,18 @@ def _guess_cover(files):
     tools.alphanumeric_sort(files)
     ext_re = constants.SUPPORTED_IMAGE_REGEX
     front_re = re.compile('(cover|front)', re.I)
-    
+
     images = filter(ext_re.search, files)
-    
+
     candidates = filter(front_re.search, images)
     candidates = [c for c in candidates if 'back' not in c.lower()]
-    
+
     if candidates:
         return candidates[0]
-        
+
     if images:
         return images[0]
-        
+
     return None
 
 # vim: expandtab:sw=4:ts=4

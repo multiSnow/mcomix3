@@ -37,7 +37,7 @@ def archive_mime_type(path):
 
             if magic == 'Rar!':
                 return constants.RAR
-                
+
             #if magic == '%PDF':
             #    return constants.PDF
 
@@ -51,7 +51,7 @@ def get_archive_info(path):
     at <path>, or None if <path> doesn't point to a supported archive.
     """
     image_re = constants.SUPPORTED_IMAGE_REGEX
-    
+
     extractor = archive_extractor.Extractor()
     extractor.setup(path, None)
     mime = extractor.get_mime_type()

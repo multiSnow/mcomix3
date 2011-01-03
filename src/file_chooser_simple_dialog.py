@@ -4,13 +4,13 @@ import gtk
 import file_chooser_base_dialog
 
 class SimpleFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog):
-    
+
     """A simple filechooser dialog that is designed to be used with the
     gtk.Dialog.run() method. The <action> dictates what type of filechooser
     dialog we want (i.e. save or open). If the type is an open-dialog, we
     use multiple selection by default.
     """
-    
+
     def __init__(self, action=gtk.FILE_CHOOSER_ACTION_OPEN):
         file_chooser_base_dialog._BaseFileChooserDialog.__init__(self, action)
         if action == gtk.FILE_CHOOSER_ACTION_OPEN:

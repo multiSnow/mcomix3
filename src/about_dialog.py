@@ -11,7 +11,7 @@ class _AboutDialog(gtk.Dialog):
     def __init__(self, window):
         gtk.Dialog.__init__(self, _('About'), window, 0,
             (gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE))
-            
+
         self.set_has_separator(False)
         self.set_resizable(False)
         self.set_default_response(gtk.RESPONSE_CLOSE)
@@ -43,7 +43,7 @@ class _AboutDialog(gtk.Dialog):
             box.pack_start(icon, False, False, 10)
         except Exception:
             print _('! Could not find the icon file "mcomix.png"\n')
-            
+
         label = gtk.Label()
         label.set_markup(
         '<big><big><big><big><b><span foreground="#7E3517">MC</span>' +
@@ -59,7 +59,7 @@ class _AboutDialog(gtk.Dialog):
         '<small>Lead Developer:\n' +
         'Louis Casillas, oxaric@gmail.com\n' +
         'http://mcomix.sourceforge.net</small>\n')
-        
+
         box.pack_start(label, True, True, 0)
         label.set_justify(gtk.JUSTIFY_CENTER)
         label.set_selectable(True)
@@ -73,13 +73,13 @@ class _AboutDialog(gtk.Dialog):
         hbox = gtk.HBox(False, 5)
         hbox.set_border_width(5)
         scrolled.add_with_viewport(hbox)
-        
+
         left_box = gtk.VBox(True, 8)
         right_box = gtk.VBox(True, 8)
-        
+
         hbox.pack_start(left_box, False, False)
         hbox.pack_start(right_box, False, False)
-        
+
         for nice_person, description in constants.CREDITS:
             name_label = labels.BoldLabel('%s:' % nice_person)
             name_label.set_alignment(1.0, 1.0)
@@ -89,7 +89,7 @@ class _AboutDialog(gtk.Dialog):
             desc_label.set_alignment(0, 1.0)
 
             right_box.pack_start(desc_label, True, True)
-            
+
         notebook.insert_page(scrolled, gtk.Label(_('Credits')))
         self.show_all()
 

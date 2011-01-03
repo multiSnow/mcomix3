@@ -8,18 +8,18 @@ import file_chooser_base_dialog
 _library_filechooser_dialog = None
 
 class _LibraryFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog):
-    
+
     """The filechooser dialog used when adding books to the library."""
-    
+
     def __init__(self, library):
         file_chooser_base_dialog._BaseFileChooserDialog.__init__(self)
-        
+
         self._library = library
         self.set_transient_for(library)
         self.filechooser.set_select_multiple(True)
         self.filechooser.connect('current_folder_changed',
             self._set_collection_name)
-        
+
         self._collection_button = gtk.CheckButton(
             '%s:' % _('Automatically add the books to this collection'),
             False)
@@ -31,7 +31,7 @@ class _LibraryFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog)
         for collection in self._library.backend.get_all_collections():
             name = self._library.backend.get_collection_name(collection)
             self._comboentry.append_text(name)
-        
+
         collection_box = gtk.HBox(False, 6)
         collection_box.pack_start(self._collection_button, False, False)
         collection_box.pack_start(self._comboentry, True, True)
@@ -52,7 +52,7 @@ class _LibraryFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog)
 
         except Exception:
             self.filechooser.set_filter(filters[1])
-    
+
     def _set_collection_name(self, *args):
         """Set the text in the ComboBoxEntry to the name of the current
         directory.
@@ -73,7 +73,7 @@ class _LibraryFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog)
             else:
                 prefs['auto add books into collections'] = False
                 collection_name = None
-                
+
             try: # For some reason this fails sometimes (GTK+ bug?)
                 filter_index = self.filechooser.list_filters().index(
                     self.filechooser.get_filter())
@@ -81,7 +81,7 @@ class _LibraryFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog)
 
             except Exception:
                 pass
-                
+
             close_library_filechooser_dialog()
             self._library.add_books(paths, collection_name)
 

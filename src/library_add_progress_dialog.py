@@ -13,16 +13,16 @@ _dialog = None
 _COLLECTION_ALL = -1
 
 class _AddLibraryProgressDialog(gtk.Dialog):
-    
+
     """Dialog with a ProgressBar that adds books to the library."""
-    
+
     def __init__(self, library, window, paths, collection):
         """Adds the books at <paths> to the library, and also to the
         <collection>, unless it is None.
         """
         gtk.Dialog.__init__(self, _('Adding books'), library,
             gtk.DIALOG_MODAL, (gtk.STOCK_STOP, gtk.RESPONSE_CLOSE))
-            
+
         self._window = window
         self._destroy = False
         self.set_size_request(400, -1)
@@ -57,15 +57,15 @@ class _AddLibraryProgressDialog(gtk.Dialog):
         added_label.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
         main_box.pack_start(added_label, False, False)
         self.show_all()
-        
+
         new_paths = []
 
         number_label.set_text(_('Searching for archives...'))
 
         # go through the selected files and if folders are selected then
-        # recursively find comics        
+        # recursively find comics
         for i, path in enumerate(paths):
-        
+
             if os.path.isdir(path):
                 for root, dirs, files in os.walk(path):
                     for file in files:
@@ -76,7 +76,7 @@ class _AddLibraryProgressDialog(gtk.Dialog):
 
             while gtk.events_pending():
                 gtk.main_iteration(False)
-                
+
         new_paths = filter(constants.SUPPORTED_ARCHIVE_REGEX.search, new_paths)
 
         total_paths_int = len(new_paths)
@@ -87,19 +87,19 @@ class _AddLibraryProgressDialog(gtk.Dialog):
 
             if library.backend.add_book(path, collection):
                 total_added += 1
-                
+
                 number_label.set_text('%d / %d' % (total_added, total_paths_int))
 
             added_label.set_text(_("Adding '%s'...") %
                 encoding.to_unicode(path))
             bar.set_fraction(total_added / total_paths_float)
-            
+
             while gtk.events_pending():
                 gtk.main_iteration(False)
-                
+
             if self._destroy:
                 return
-                
+
         self._response()
 
     def _response(self, *args):

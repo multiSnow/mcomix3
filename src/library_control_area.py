@@ -1,4 +1,4 @@
-"""library_control_area.py - The window in the library that contains buttons 
+"""library_control_area.py - The window in the library that contains buttons
 and displays info."""
 
 import os
@@ -16,46 +16,46 @@ from preferences import prefs
 _COLLECTION_ALL = -1
 
 class _ControlArea(gtk.HBox):
-    
+
     """The _ControlArea is the bottom area of the library window where
     information is displayed and controls such as buttons reside.
     """
-    
+
     def __init__(self, library):
         gtk.HBox.__init__(self, False, 12)
 
         self._library = library
         self.set_border_width(10)
-        
+
         borderbox = gtk.EventBox()
         borderbox.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse('#333'))
         borderbox.set_size_request(350, -1)
-        
+
         insidebox = gtk.EventBox()
         insidebox.set_border_width(1)
         insidebox.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse('#ddb'))
-        
+
         infobox = gtk.VBox(False, 5)
         infobox.set_border_width(10)
         self.pack_start(borderbox, False, False)
         borderbox.add(insidebox)
         insidebox.add(infobox)
-        
+
         self._namelabel = labels.BoldLabel()
         self._namelabel.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
         self._namelabel.set_alignment(0, 0.5)
         infobox.pack_start(self._namelabel, False, False)
-        
+
         self._pageslabel = gtk.Label()
         self._pageslabel.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
         self._pageslabel.set_alignment(0, 0.5)
         infobox.pack_start(self._pageslabel, False, False)
-        
+
         self._filelabel = gtk.Label()
         self._filelabel.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
         self._filelabel.set_alignment(0, 0.5)
         infobox.pack_start(self._filelabel, False, False)
-        
+
         self._dirlabel = gtk.Label()
         self._dirlabel.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
         self._dirlabel.set_alignment(0, 0.5)
@@ -65,7 +65,7 @@ class _ControlArea(gtk.HBox):
         self.pack_start(vbox, True, True)
         hbox = gtk.HBox(False)
         vbox.pack_start(hbox, False, False)
-        
+
         label = gtk.Label('%s:' % _('Search'))
         hbox.pack_start(label, False, False)
         search_entry = gtk.Entry()
@@ -73,7 +73,7 @@ class _ControlArea(gtk.HBox):
         search_entry.set_tooltip_text(
             _('Display only those books that have the specified text string in their full path. The search is not case sensitive.'))
         hbox.pack_start(search_entry, True, True, 6)
-        
+
         label = gtk.Label('%s:' % _('Cover size'))
         hbox.pack_start(label, False, False, 6)
         adjustment = gtk.Adjustment(prefs['library cover size'], 20, 500, 1,
@@ -93,7 +93,7 @@ class _ControlArea(gtk.HBox):
         add_book_button.connect('clicked', self._add_books)
         add_book_button.set_tooltip_text(_('Add more books to the library.'))
         hbox.pack_start(add_book_button, False, False)
-        
+
         add_collection_button = gtk.Button(_('Add folder'))
         add_collection_button.connect('clicked', self._add_collection)
         add_collection_button.set_image(gtk.image_new_from_stock(
@@ -102,7 +102,7 @@ class _ControlArea(gtk.HBox):
             _('Add a new empty collection.'))
         hbox.pack_start(add_collection_button, False, False)
         hbox.pack_start(gtk.HBox(), True, True)
-        
+
         self._open_button = gtk.Button(None, gtk.STOCK_OPEN)
         self._open_button.connect('clicked',
             self._library.book_area.open_selected_book)
@@ -115,9 +115,9 @@ class _ControlArea(gtk.HBox):
         the _BookArea.
         """
         self._open_button.set_sensitive(False)
-        
+
         if selected:
-            
+
             book = self._library.book_area.get_book_at_path(selected[0])
             name = self._library.backend.get_book_name(book)
             dir_path = os.path.dirname(
@@ -125,18 +125,18 @@ class _ControlArea(gtk.HBox):
             format = self._library.backend.get_book_format(book)
             pages = self._library.backend.get_book_pages(book)
             size = self._library.backend.get_book_size(book)
-        
+
         else:
             name = dir_path = format = pages = size = None
-            
+
         if len(selected) == 1:
             self._open_button.set_sensitive(True)
-            
+
         if name is not None:
             self._namelabel.set_text(encoding.to_unicode(name))
         else:
             self._namelabel.set_text('')
-            
+
         if pages is not None:
             self._pageslabel.set_text(_('%d pages') % pages)
         else:
@@ -166,7 +166,7 @@ class _ControlArea(gtk.HBox):
         add_dialog.format_secondary_text(
             _('Please enter a name for the new collection.'))
         add_dialog.set_default_response(gtk.RESPONSE_OK)
-        
+
         box = gtk.HBox() # To get nice line-ups with the padding.
         add_dialog.vbox.pack_start(box)
         entry = gtk.Entry()
@@ -174,7 +174,7 @@ class _ControlArea(gtk.HBox):
         entry.set_activates_default(True)
         box.pack_start(entry, True, True, 6)
         box.show_all()
-        
+
         response = add_dialog.run()
         name = entry.get_text()
         add_dialog.destroy()

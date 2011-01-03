@@ -104,7 +104,7 @@ def fit_2_in_rectangle(src1, src2, width, height, scale_up=False,
     width -= 2              # We got a 2 px gap between images
     width = max(width, 2)   # We need at least 1 px per image
     height = max(height, 1)
-    
+
     src1_width = src1.get_width()
     src1_height = src1.get_height()
     src2_width = src2.get_width()
@@ -171,7 +171,7 @@ def get_most_common_edge_colour(pixbuf):
     total_blue = 0
 
     total_count = 0
-    
+
     for edge in (top_edge, bottom_edge, left_edge, right_edge):
         im = pixbuf_to_pil(edge)
 
@@ -180,7 +180,7 @@ def get_most_common_edge_colour(pixbuf):
             total_green += (count * colour[1])
             total_blue += (count * colour[2])
             total_count += count
-    
+
     return [(color/total_count) * 257 for color in (total_red, total_green, total_blue) ]
 
 def pil_to_pixbuf(image):

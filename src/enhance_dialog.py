@@ -13,9 +13,9 @@ class _EnhanceImageDialog(gtk.Dialog):
 
     def __init__(self, window):
         gtk.Dialog.__init__(self, _('Enhance image'), window, 0)
-        
+
         self._window = window
-        
+
         self.add_buttons(_('Defaults'), gtk.RESPONSE_NO,
             gtk.STOCK_OK, gtk.RESPONSE_OK)
         self.set_has_separator(False)
@@ -105,7 +105,7 @@ class _EnhanceImageDialog(gtk.Dialog):
         self._block = False
         self._contrast_scale.set_sensitive(
             not self._autocontrast_button.get_active())
-            
+
         self.draw_histogram(self._window.left_image)
 
         self.show_all()

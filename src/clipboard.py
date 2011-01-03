@@ -19,12 +19,12 @@ class Clipboard(gtk.Clipboard):
         copy_thread = threading.Thread(target=self.thread_copy_page, args=())
         copy_thread.setDaemon(False)
         copy_thread.start()
-        
+
     def thread_copy_page(self):
 
         if self._window.filehandler.file_loaded:
             current_page_pixbufs = self._window.imagehandler.get_pixbufs()
-            
+
             if len(current_page_pixbufs) == 1:
                 self._window.clipboard.set_image( current_page_pixbufs[ 0 ] )
 
@@ -34,7 +34,7 @@ class Clipboard(gtk.Clipboard):
                 self._window.clipboard.set_image( new_pix_buf )
 
                 del new_pix_buf
-           
+
                 constants.RUN_GARBAGE_COLLECTOR
 
 # vim: expandtab:sw=4:ts=4

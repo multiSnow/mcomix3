@@ -17,7 +17,7 @@ _dialog = None
 _COLLECTION_ALL = -1
 
 class _LibraryDialog(gtk.Window):
-    
+
     """The library window. Automatically creates and uses a new
     library_backend.LibraryBackend when opened.
     """
@@ -26,11 +26,11 @@ class _LibraryDialog(gtk.Window):
         gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
 
         self._window = window
-        
+
         self.resize(prefs['lib window width'], prefs['lib window height'])
         self.set_title(_('Library'))
         self.connect('delete_event', self.close)
-        
+
         self.filter_string = None
         self._file_handler = file_handler
         self._statusbar = gtk.Statusbar()
@@ -39,7 +39,7 @@ class _LibraryDialog(gtk.Window):
         self.book_area = library_book_area._BookArea(self)
         self.control_area = library_control_area._ControlArea(self)
         self.collection_area = library_collection_area._CollectionArea(self)
-        
+
         table = gtk.Table(2, 2, False)
         table.attach(self.collection_area, 0, 1, 0, 1, gtk.FILL,
             gtk.EXPAND|gtk.FILL)
@@ -55,13 +55,13 @@ class _LibraryDialog(gtk.Window):
     def open_book(self, book):
         """Open the book with ID <book>."""
         path = self.backend.get_book_path(book)
-        
+
         if path is None:
             return
-            
+
         self.close()
         self._file_handler.open_file(path)
-                
+
     def set_status_message(self, message):
         """Set a specific message on the statusbar, replacing whatever was
         there earlier.
@@ -86,19 +86,19 @@ class _LibraryDialog(gtk.Window):
         if collection_name is None:
             collection = None
         else:
-        
+
             collection = self.backend.get_collection_by_name(collection_name)
-            
+
             if collection is None: # Collection by that name doesn't exist.
                 self.backend.add_collection(collection_name)
                 collection = self.backend.get_collection_by_name(
                     collection_name)
-        
+
         library_add_progress_dialog._AddLibraryProgressDialog(self, self._window, paths, collection)
-        
+
         if collection is not None:
             prefs['last library collection'] = collection
-            
+
         self.collection_area.display_collections()
 
 def open_dialog(action, window):

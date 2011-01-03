@@ -7,9 +7,9 @@ import file_chooser_base_dialog
 _main_filechooser_dialog = None
 
 class _MainFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog):
-    
+
     """The normal filechooser dialog used with the "Open" menu item."""
-    
+
     def __init__(self, window):
         file_chooser_base_dialog._BaseFileChooserDialog.__init__(self)
         self._window = window
@@ -51,7 +51,7 @@ class _MainFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog):
             self._window.filehandler.open_file(file)
         else:
             _close_main_filechooser_dialog()
-    
+
 def open_main_filechooser_dialog(action, window):
     """Open the main filechooser dialog."""
     global _main_filechooser_dialog

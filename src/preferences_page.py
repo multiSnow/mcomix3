@@ -4,12 +4,12 @@ import gtk
 import preferences_section
 
 class _PreferencePage(gtk.VBox):
-    
+
     """The _PreferencePage is a conveniece class for making one "page"
     in a preferences-style dialog that contains one or more
     _PreferenceSections.
     """
-    
+
     def __init__(self, right_column_width):
         """Create a new page where any possible right columns have the
         width request <right_column_width>.
@@ -18,7 +18,7 @@ class _PreferencePage(gtk.VBox):
         self.set_border_width(12)
         self._right_column_width = right_column_width
         self._section = None
-    
+
     def new_section(self, header):
         """Start a new section in the page, with the header text from
         <header>.

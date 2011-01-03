@@ -35,30 +35,30 @@ class _CommentsDialog(gtk.Dialog):
 
             page = gtk.VBox(False)
             page.set_border_width(8)
-            
+
             scrolled = gtk.ScrolledWindow()
             scrolled.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
             page.pack_start(scrolled)
-            
+
             outbox = gtk.EventBox()
             scrolled.add_with_viewport(outbox)
-            
+
             inbox = gtk.EventBox()
             inbox.set_border_width(6)
             outbox.add(inbox)
-            
+
             name = os.path.basename(window.filehandler.get_comment_name(num))
             text = window.filehandler.get_comment_text(num)
-            
+
             if text is None:
                 text = _('Could not read %s') % name
-                
+
             text_buffer = gtk.TextBuffer(tag_table)
             text_buffer.set_text(encoding.to_unicode(text))
             text_buffer.apply_tag(tag, *text_buffer.get_bounds())
             text_view = gtk.TextView(text_buffer)
             inbox.add(text_view)
-            
+
             bg_color = text_view.get_default_attributes().bg_color
             outbox.modify_bg(gtk.STATE_NORMAL, bg_color)
             tab_label = gtk.Label(encoding.to_unicode(name))

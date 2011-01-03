@@ -17,7 +17,7 @@ class _CleanerDialog(gtk.MessageDialog):
 
         self.format_secondary_text(
             _('Some old files (that were used for storing preferences, the library, bookmarks etc. for older versions of MComix) were found on your computer. If you do not plan on using the older versions of MComix again, you should remove these files in order to save some disk space. Do you want these files to be removed for you now?'))
-    
+
     def _response(self, dialog, response):
         if response == gtk.RESPONSE_YES:
 
@@ -40,7 +40,7 @@ def move_files_to_xdg_dirs():
     to the XDG config and data directories.
     """
     old_dir = os.path.join(constants.HOME_DIR, '.mcomix')
-    
+
     to_be_moved = (
         ('preferences.pickle', constants.CONFIG_DIR),
         ('bookmarks.pickle', constants.DATA_DIR),

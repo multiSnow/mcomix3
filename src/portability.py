@@ -20,7 +20,7 @@ def get_config_directory():
     """Return the path to the MComix config directory. On UNIX, this will
     be $XDG_CONFIG_HOME/mcomix, on Windows it will be the same directory as
     get_home_directory().
-    
+
     See http://standards.freedesktop.org/basedir-spec/latest/ for more
     information on the $XDG_CONFIG_HOME environmental variable.
     """
@@ -36,7 +36,7 @@ def get_data_directory():
     """Return the path to the MComix data directory. On UNIX, this will
     be $XDG_DATA_HOME/mcomix, on Windows it will be the same directory as
     get_home_directory().
-    
+
     See http://standards.freedesktop.org/basedir-spec/latest/ for more
     information on the $XDG_DATA_HOME environmental variable.
     """

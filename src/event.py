@@ -38,7 +38,7 @@ class EventHandler:
 
     def key_press_event(self, widget, event, *args):
         """Handle key press events on the main window."""
-        
+
         # ----------------------------------------------------------------
         # Some navigation keys that work as well as the accelerators in
         # ui.py.
@@ -159,39 +159,39 @@ class EventHandler:
               event.keyval == gtk.keysyms.KP_Home):
 
                 if prefs['smart space scroll']:
-                    
+
                     if self._window.displayed_double():
-                        
+
                         if self._window.is_on_first_page():
-                            
+
                             if not self._window.scroll(-x_step, 0, 'first'):
-                                
+
                                 if not self._window.scroll(0, -y_step):
                                     self._window.previous_page()
                                 else:
                                     self._window.scroll_to_fixed(
                                         horiz='endfirst')
-                                        
+
                         else:
                             if not self._window.scroll(-x_step, 0, 'second'):
-                                
+
                                 if not self._window.scroll(0, -y_step):
-                                    
+
                                     if not self._window.scroll_to_fixed(
                                       horiz='endfirst'):
                                         self._window.previous_page()
-                                    
+
                                     else:
                                         self._window.scroll_to_fixed(
                                             vert='bottom')
-                                
+
                                 else:
                                     self._window.scroll_to_fixed(
                                         horiz='endsecond')
                     else:
 
                         if not self._window.scroll(-x_step, 0):
-                        
+
                             if not self._window.scroll(0, -y_step):
                                 self._window.previous_page()
                             else:
@@ -204,22 +204,22 @@ class EventHandler:
             else:
 
                 if prefs['smart space scroll']:
-                    
+
                     if self._window.displayed_double():
-                        
+
                         if self._window.is_on_first_page():
-                            
+
                             if not self._window.scroll(x_step, 0, 'first'):
-                            
+
                                 if not self._window.scroll(0, y_step):
-                                
+
                                     if not self._window.scroll_to_fixed(
                                       horiz='startsecond'):
                                         self._window.next_page()
                                     else:
                                         self._window.scroll_to_fixed(
                                                 vert='top')
-                                                
+
                                 else:
 
                                     self._window.scroll_to_fixed(
@@ -227,7 +227,7 @@ class EventHandler:
                         else:
 
                             if not self._window.scroll(x_step, 0, 'second'):
-                        
+
                                 if not self._window.scroll(0, y_step):
                                     self._window.next_page()
                                 else:
@@ -236,7 +236,7 @@ class EventHandler:
                     else:
 
                         if not self._window.scroll(x_step, 0):
-                            
+
                             if not self._window.scroll(0, y_step):
                                 self._window.next_page()
                             else:
@@ -308,16 +308,16 @@ class EventHandler:
 
     def mouse_press_event(self, widget, event):
         """Handle mouse click events on the main layout area."""
-        
+
         if event.button == 1:
             self._pressed_pointer_pos_x = event.x_root
             self._pressed_pointer_pos_y = event.y_root
             self._last_pointer_pos_x = event.x_root
             self._last_pointer_pos_y = event.y_root
-            
+
         elif event.button == 2:
             self._window.actiongroup.get_action('lens').set_active(True)
-            
+
         elif event.button == 3:
             self._window.cursor_handler.set_cursor_type(constants.NORMAL_CURSOR)
             self._window.popup.popup(None, None, None, event.button,
@@ -327,17 +327,17 @@ class EventHandler:
         """Handle mouse button release events on the main layout area."""
 
         self._window.cursor_handler.set_cursor_type(constants.NORMAL_CURSOR)
-        
+
         if (event.button == 1):
-        
+
             if event.x_root == self._pressed_pointer_pos_x and \
                 event.y_root == self._pressed_pointer_pos_y and \
                 (not prefs['focus protection'] or not self._window.was_out_of_focus):
                 self._window.next_page()
-                
+
             else:
                 self._window.was_out_of_focus = False
-            
+
         if event.button == 2:
             self._window.actiongroup.get_action('lens').set_active(False)
 
@@ -350,7 +350,7 @@ class EventHandler:
             self._window.was_out_of_focus = False
 
         event = _get_latest_event_of_same_type(event)
-        
+
         if 'GDK_BUTTON1_MASK' in event.state.value_names:
             self._window.cursor_handler.set_cursor_type(constants.GRAB_CURSOR)
             self._window.scroll(self._last_pointer_pos_x - event.x_root,
@@ -358,110 +358,110 @@ class EventHandler:
             self._last_pointer_pos_x = event.x_root
             self._last_pointer_pos_y = event.y_root
             self._drag_timer = event.time
-            
+
         elif self._window.actiongroup.get_action('lens').get_active():
-        
+
             # this is set to check if the mouse hasn't moved but the mouse event has fired
             # this attempts to prevent lens re-drawing in the case of a jittery mouse or
             # extremely small mouse movements
             if event.x != self._last_lens_pos_x or event.y != self._last_lens_pos_y:
 
                 self._window.lens.set_lens_cursor(event.x, event.y)
-            
+
         else:
             self._window.cursor_handler.refresh()
 
         self._last_lens_pos_x = event.x
         self._last_lens_pos_y = event.y
-        
+
     def drag_n_drop_event(self, widget, context, x, y, selection, drag_id,
       eventtime):
         """Handle drag-n-drop events on the main layout area."""
         # The drag source is inside MComix itself, so we ignore.
-        
+
         if (context.get_source_widget() is not None):
             return
-            
+
         uris = selection.get_uris()
-        
+
         if not uris:
             return
-            
+
         uri = uris[0] # Open only one file.
-        
+
         if uri.startswith('file://localhost/'):  # Correctly formatted.
             uri = uri[16:]
-        
+
         elif uri.startswith('file:///'):  # Nautilus etc.
             uri = uri[7:]
-        
+
         elif uri.startswith('file:/'):  # Xffm etc.
             uri = uri[5:]
-        
+
         path = urllib.url2pathname(uri)
         self._window.filehandler.open_file(path)
 
     def _scroll_with_flipping(self, x, y):
         """Handle scrolling with the scroll wheel or the arrow keys, for which
         the pages might be flipped depending on the preferences.  Returns True
-        if able to scroll without flipping and False if a new page was flipped 
+        if able to scroll without flipping and False if a new page was flipped
         to.
         """
 
         if self._window.scroll(x, y) or not prefs['flip with wheel']:
             self._extra_scroll_events = 0
-            
+
             return True
-            
+
         if y > 0 or (self._window.is_manga_mode and x < 0) or (
           not self._window.is_manga_mode and x > 0):
             forwards_scroll = True
-            
+
         else:
             forwards_scroll = False
-            
+
         if forwards_scroll:
             self._extra_scroll_events = max(1, self._extra_scroll_events + 1)
-            
+
             if self._extra_scroll_events >= prefs['number of key presses before page turn']:
                 self._extra_scroll_events = 0
                 self._window.next_page()
-                
+
                 return False
-            
+
             return True
         else:
             self._extra_scroll_events = min(-1, self._extra_scroll_events - 1)
-            
+
             if self._extra_scroll_events <= -prefs['number of key presses before page turn']:
                 self._extra_scroll_events = 0
 
                 self._window.previous_page()
-                
+
                 return False
 
             return True
-            
+
 def _get_latest_event_of_same_type(event):
     """Return the latest event in the event queue that is of the same type
     as <event>, or <event> itself if no such events are in the queue. All
     events of that type will be removed from the event queue.
     """
     events = []
-    
+
     while gtk.gdk.events_pending():
         queued_event = gtk.gdk.event_get()
-        
+
         if queued_event is not None:
-        
+
             if queued_event.type == event.type:
                 event = queued_event
             else:
                 events.append(queued_event)
-                
+
     for queued_event in events:
         queued_event.put()
-        
+
     return event
 
 

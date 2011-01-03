@@ -27,7 +27,7 @@ class CursorHandler:
             mode = cursor
 
         self._window.set_cursor(mode)
-        
+
         self._current_cursor = cursor
 
         if self._auto_hide:

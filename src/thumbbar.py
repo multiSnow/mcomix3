@@ -34,7 +34,7 @@ class ThumbnailSidebar(gtk.HBox):
 
         # view - responsible for laying out the columns
         self._treeview = gtk.TreeView(self._thumbnail_liststore)
-        
+
         # enable drag and dropping of images from thumbnail bar to some file
         # manager
         self._treeview.enable_model_drag_source(gtk.gdk.BUTTON1_MASK,
@@ -46,16 +46,16 @@ class ThumbnailSidebar(gtk.HBox):
         self._treeview.append_column(self._thumbnail_page_treeviewcolumn)
         self._treeview.append_column(self._thumbnail_image_treeviewcolumn)
 
-        self._text_cellrenderer = gtk.CellRendererText()        
+        self._text_cellrenderer = gtk.CellRendererText()
         self._pixbuf_cellrenderer = gtk.CellRendererPixbuf()
 
         bg_colour = prefs['thumb bg colour']
-        
+
         self._pixbuf_cellrenderer.set_property('cell-background-gdk', gtk.gdk.colormap_get_system().alloc_color(gtk.gdk.Color(
                     bg_colour[0], bg_colour[1], bg_colour[2]), False, True))
         self._text_cellrenderer.set_property('background-gdk', gtk.gdk.colormap_get_system().alloc_color(gtk.gdk.Color(
                     bg_colour[0], bg_colour[1], bg_colour[2]), False, True))
-        
+
         self._thumbnail_page_treeviewcolumn.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         self._thumbnail_page_treeviewcolumn.pack_start(self._text_cellrenderer, False)
         self._thumbnail_page_treeviewcolumn.add_attribute(self._text_cellrenderer, 'text', 0 )
@@ -70,7 +70,7 @@ class ThumbnailSidebar(gtk.HBox):
 
         self._layout = gtk.Layout()
         self._layout.put(self._treeview, 0, 0)
-        
+
         self.update_layout_size()
 
         self._treeview.set_headers_visible(False)
@@ -92,13 +92,13 @@ class ThumbnailSidebar(gtk.HBox):
         self._treeview.connect('drag_data_get', self._drag_data_get)
         self._selection.connect('changed', self._selection_event)
         self._layout.connect('scroll_event', self._scroll_event)
-        
+
         self.show_all()
-        
+
     def toggle_page_numbers_visible(self):
-    
+
         if prefs['show page numbers on thumbnails']:
-            self._thumbnail_page_treeviewcolumn.set_property('visible',True)            
+            self._thumbnail_page_treeviewcolumn.set_property('visible',True)
         else:
             self._thumbnail_page_treeviewcolumn.set_property('visible',False)
 
@@ -107,7 +107,7 @@ class ThumbnailSidebar(gtk.HBox):
     def update_layout_size(self):
 
         new_width = prefs['thumbnail size'] + 9
-        
+
         if self._window.filehandler.file_loaded and prefs['show page numbers on thumbnails']:
             new_width += tools.number_of_digits(self._window.imagehandler.get_number_of_pages()) * 10
 
@@ -131,17 +131,17 @@ class ThumbnailSidebar(gtk.HBox):
 
     def clear(self):
         """Clear the ThumbnailSidebar of any loaded thumbnails."""
-        
+
         self._stop_cacheing = True
 
         if self._cache_thread != None:
-        
+
             # try to wait until all previous threads are finished
             try:
                 self._cache_thread.join()
             except RuntimeError:
                 pass
-                
+
         self._thumbnail_liststore.clear()
 
         self._layout.set_size(0, 0)
@@ -157,7 +157,7 @@ class ThumbnailSidebar(gtk.HBox):
 
     def load_thumbnails(self):
         """Load the thumbnails, if it is appropriate to do so."""
-        
+
         if (not self._window.filehandler.file_loaded or
             self._is_loading or self._loaded or self._stop_loading):
             return
@@ -167,23 +167,23 @@ class ThumbnailSidebar(gtk.HBox):
     def refresh(self, *args):
         while gtk.events_pending():
             gtk.main_iteration(False)
-            
+
     def remove_thumbnail(self, num_of_thumbnail):
 
         if not self._loaded and len(self._window.filehandler._image_files) > 1:
-            return 
-            
+            return
+
         self._thumb_cache.pop(num_of_thumbnail)
-            
+
         iterator = self._thumbnail_liststore.iter_nth_child( None, num_of_thumbnail )
 
         self._thumbnail_liststore.remove( iterator )
 
         self._height -= self._treeview.get_background_area(num_of_thumbnail,
             self._thumbnail_image_treeviewcolumn).height
-            
+
         self._layout.set_size(0, self._height)
-        
+
     def resize(self):
         """Reload the thumbnails with the size specified by in the
         preferences.
@@ -199,7 +199,7 @@ class ThumbnailSidebar(gtk.HBox):
         """Select the thumbnail for the currently viewed page and make sure
         that the thumbbar is scrolled so that the selected thumb is in view.
         """
-        
+
         if not self._loaded:
             return
 
@@ -210,19 +210,19 @@ class ThumbnailSidebar(gtk.HBox):
         self._selection_is_forced = True
         self._selection.select_path(
             self._window.imagehandler.get_current_page() - 1)
-        
+
         rect = self._treeview.get_background_area(
             self._window.imagehandler.get_current_page() - 1, self._thumbnail_image_treeviewcolumn)
 
         if (rect.y < self._vadjust.get_value() or rect.y + rect.height >
           self._vadjust.get_value() + self._vadjust.page_size):
-          
+
             value = rect.y + (rect.height // 2) - (self._vadjust.page_size // 2)
             value = max(0, value)
             value = min(self._vadjust.upper - self._vadjust.page_size, value)
-            
+
             self._vadjust.set_value(value)
-        
+
     def thread_cache_thumbnails(self):
         """Start threaded thumb cacheing.
         """
@@ -246,7 +246,7 @@ class ThumbnailSidebar(gtk.HBox):
         self._thumbs_in_cache = 0
 
         self._stop_cacheing = False
-        
+
         for i in xrange(1, self._window.imagehandler.get_number_of_pages() + 1):
 
             pixbuf = self._window.imagehandler.get_thumbnail(i, 128, 128, create)
@@ -254,7 +254,7 @@ class ThumbnailSidebar(gtk.HBox):
             if not self._stop_cacheing and pixbuf != None and self._thumb_cache != None:
                 self._thumb_cache.append(pixbuf)
                 self._thumbs_in_cache += 1
-                
+
             else:
                 return
 
@@ -263,14 +263,14 @@ class ThumbnailSidebar(gtk.HBox):
         self._thumb_cache_is_complete = True
 
     def _load(self):
-    
+
         self.update_layout_size()
 
         self._is_loading = True
 
         if not self._thumb_cache_is_complete and self._thumbs_in_cache == 0:
             self.thread_cache_thumbnails()
-        
+
         # this is done so that the height of the images stored in the treeview
         # is actually calculated.  If the thumbnails are loaded into the treeview
         # without being exposed at least once the thumbbar scrollbar will have a
@@ -280,7 +280,7 @@ class ThumbnailSidebar(gtk.HBox):
             self.hide()
 
         if not self._stop_loading:
-        
+
             if self._window.filehandler.archive_type is not None:
                 create = False
             else:
@@ -289,10 +289,10 @@ class ThumbnailSidebar(gtk.HBox):
             for i in xrange(1, self._window.imagehandler.get_number_of_pages() + 1):
 
                 if not self._thumb_cache_is_complete:
-                
+
                     # wait for the cacheing to catch up
                     while self._thumbs_in_cache < i:
-                    
+
                         self._window.draw_image()
 
                         while gtk.events_pending():
@@ -329,10 +329,10 @@ class ThumbnailSidebar(gtk.HBox):
 
                 while gtk.events_pending():
                     gtk.main_iteration(False)
-                    
+
                 self._height += self._treeview.get_background_area(i - 1,
                     self._thumbnail_image_treeviewcolumn).height
-                    
+
                 self._layout.set_size(0, self._height)
 
             while gtk.events_pending():
@@ -343,38 +343,38 @@ class ThumbnailSidebar(gtk.HBox):
         self._stop_loading = True
         self.update_select()
         self.update_layout_size()
-    
+
     def _get_selected_row(self):
         """Return the index of the currently selected row."""
         try:
             return self._selection.get_selected_rows()[1][0][0]
-            
+
         except Exception:
             return None
 
     def _selection_event(self, tree_selection, *args):
         """Handle events due to changed thumbnail selection."""
-        
+
         if not prefs['focus protection'] or not self._window.was_out_of_focus:
             try:
                 selected_row = self._get_selected_row()
                 self._currently_selected_page = selected_row
-                
+
 
                 if not self._selection_is_forced:
                     self._window.set_page(selected_row + 1)
-            
+
             except Exception:
                 pass
-            
+
         else:
-        
+
             # if the window was out of focus and the user clicks on
             # the thumbbar then do not select that page because they
             # more than likely have many pages open and are simply trying
             # to give mcomix focus again
             self._selection.select_path(self._currently_selected_page)
-            
+
             self._window.was_out_of_focus = False
 
         self._selection_is_forced = False
@@ -384,7 +384,7 @@ class ThumbnailSidebar(gtk.HBox):
 
         if event.direction == gtk.gdk.SCROLL_UP:
             self._vadjust.set_value(self._vadjust.get_value() - 60)
-            
+
         elif event.direction == gtk.gdk.SCROLL_DOWN:
             upper = self._vadjust.upper - self._vadjust.page_size
             self._vadjust.set_value(min(self._vadjust.get_value() + 60, upper))
@@ -410,7 +410,7 @@ class ThumbnailSidebar(gtk.HBox):
         """
         path = treeview.get_cursor()[0]
         pixmap = treeview.create_row_drag_icon(path)
-        
+
         # context.set_icon_pixmap() seems to cause crashes, so we do a
         # quick and dirty conversion to pixbuf.
         pointer = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8,
@@ -418,11 +418,11 @@ class ThumbnailSidebar(gtk.HBox):
         pointer = pointer.get_from_drawable(pixmap, treeview.get_colormap(),
             0, 0, 0, 0, *pixmap.get_size())
         context.set_icon_pixbuf(pointer, -5, -5)
-        
+
     def change_thumbnail_background_color(self, colour):
-        
+
         self.set_thumbnail_background(colour)
-        
+
         # this hides or shows the HBox and quickly hides/shows it.
         # this allows the thumbnail background to update
         # when changing the color.  if there is a better
@@ -432,9 +432,9 @@ class ThumbnailSidebar(gtk.HBox):
             self.hide()
             self.show_all()
         else:
-            self.show_all()        
+            self.show_all()
             self.hide()
-        
+
         while gtk.events_pending():
             gtk.main_iteration(False)
 
@@ -442,7 +442,7 @@ class ThumbnailSidebar(gtk.HBox):
 
         self._pixbuf_cellrenderer.set_property('cell-background-gdk', gtk.gdk.colormap_get_system().alloc_color(gtk.gdk.Color(
                     colour[0], colour[1], colour[2]), False, True))
-                    
+
         self._text_cellrenderer.set_property('background-gdk', gtk.gdk.colormap_get_system().alloc_color(gtk.gdk.Color(
                     colour[0], colour[1], colour[2]), False, True))
 

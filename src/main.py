@@ -70,10 +70,10 @@ class MainWindow(gtk.Window):
         self.toolbar = self.uimanager.get_widget('/Tool')
         self.popup = self.uimanager.get_widget('/Popup')
         self.actiongroup = self.uimanager.get_action_groups()[0]
-        
+
         self.left_image = gtk.Image()
         self.right_image = gtk.Image()
-        
+
         self._image_box = gtk.HBox(False, 2)
         self._main_layout = gtk.Layout()
         self._event_handler = event.EventHandler(self)
@@ -127,22 +127,22 @@ class MainWindow(gtk.Window):
 
         if prefs['default double page']:
             self.actiongroup.get_action('double_page').activate()
-        
+
         if prefs['default fullscreen'] or fullscreen:
             self.actiongroup.get_action('fullscreen').activate()
-        
+
         if prefs['default manga mode']:
             self.actiongroup.get_action('manga_mode').activate()
-        
+
         if prefs['default zoom mode'] == constants.ZOOM_MODE_BEST:
             self.actiongroup.get_action('best_fit_mode').activate()
-        
+
         elif prefs['default zoom mode'] == constants.ZOOM_MODE_WIDTH:
             self.actiongroup.get_action('fit_width_mode').activate()
-        
+
         elif prefs['default zoom mode'] == constants.ZOOM_MODE_HEIGHT:
             self.actiongroup.get_action('fit_height_mode').activate()
-        
+
         elif prefs['default zoom mode'] == constants.ZOOM_MODE_MANUAL:
             # This little ugly hack is to get the activate call on
             # 'fit_manual_mode' to actually create an event (and callback).
@@ -151,31 +151,31 @@ class MainWindow(gtk.Window):
             # the selected one.
             self.actiongroup.get_action('best_fit_mode').activate()
             self.actiongroup.get_action('fit_manual_mode').activate()
-        
+
         if prefs['show toolbar']:
             prefs['show toolbar'] = False
             self.actiongroup.get_action('toolbar').activate()
-        
+
         if prefs['show menubar']:
             prefs['show menubar'] = False
             self.actiongroup.get_action('menubar').activate()
-        
+
         if prefs['show statusbar']:
             prefs['show statusbar'] = False
             self.actiongroup.get_action('statusbar').activate()
-        
+
         if prefs['show scrollbar']:
             prefs['show scrollbar'] = False
             self.actiongroup.get_action('scrollbar').activate()
-        
+
         if prefs['show thumbnails']:
             prefs['show thumbnails'] = False
             self.actiongroup.get_action('thumbnails').activate()
-        
+
         if prefs['hide all']:
             prefs['hide all'] = False
             self.actiongroup.get_action('hide all').activate()
-        
+
         if prefs['keep transformation']:
             prefs['keep transformation'] = False
             self.actiongroup.get_action('keep_transformation').activate()
@@ -194,7 +194,7 @@ class MainWindow(gtk.Window):
                                      gtk.gdk.BUTTON_PRESS_MASK |
                                      gtk.gdk.BUTTON_RELEASE_MASK |
                                      gtk.gdk.POINTER_MOTION_MASK)
-        
+
         self._main_layout.drag_dest_set(gtk.DEST_DEFAULT_ALL,
                                         [('text/uri-list', 0, 0)],
                                         gtk.gdk.ACTION_COPY |
@@ -205,7 +205,7 @@ class MainWindow(gtk.Window):
         self.connect('delete_event', self.close_program)
         self.connect('key_press_event', self._event_handler.key_press_event)
         self.connect('configure_event', self._event_handler.resize_event)
-        
+
         self._main_layout.connect('button_release_event',
             self._event_handler.mouse_release_event)
         self._main_layout.connect('scroll_event',
@@ -226,7 +226,7 @@ class MainWindow(gtk.Window):
             gobject.timeout_add(prefs['crash recovery seconds'] * 1000, self.write_config_files)
 
             crash_info = self.get_crash_info()
-            
+
             # check if there was a crash [0] and if it has been taken care of [1]
             if crash_info[0] and not crash_info[1]:
                 fileinfo = self.filehandler.read_fileinfo_file()
@@ -243,12 +243,12 @@ class MainWindow(gtk.Window):
 
                 open_path = fileinfo[0]
                 open_page = fileinfo[1] + 1
-        
+
         prefs['previous quit was quit and save'] = False
 
         if open_path is not None:
             self.filehandler.open_file(open_path, open_page)
-        
+
         if show_library:
             self.actiongroup.get_action('library').activate()
 
@@ -267,30 +267,30 @@ class MainWindow(gtk.Window):
             self._waiting_for_redraw = True
             gobject.idle_add(self._draw_image, at_bottom, scroll,
                 priority=gobject.PRIORITY_HIGH_IDLE)
-            
+
     def _draw_image(self, at_bottom, scroll):
         self._waiting_for_redraw = False
         self._display_active_widgets()
-        
+
         if not self.filehandler.file_loaded:
             return False
-            
+
         area_width, area_height = self.get_visible_area_size()
-        
+
         if self.zoom_mode == constants.ZOOM_MODE_HEIGHT:
             scaled_width = -1
         else:
             scaled_width = area_width
-        
+
         if self.zoom_mode == constants.ZOOM_MODE_WIDTH:
             scaled_height = -1
         else:
             scaled_height = area_height
-        
+
         scale_up = prefs['stretch']
         self.is_virtual_double_page = \
             self.imagehandler.get_virtual_double_page()
-            
+
         if self.displayed_double():
             left_pixbuf, right_pixbuf = self.imagehandler.get_pixbufs()
             if self.is_manga_mode:
@@ -302,7 +302,7 @@ class MainWindow(gtk.Window):
 
             left_rotation = prefs['rotation']
             right_rotation = prefs['rotation']
-        
+
             if prefs['auto rotate from exif']:
                 left_rotation += image_tools.get_implied_rotation(left_pixbuf)
                 left_rotation = left_rotation % 360
@@ -310,22 +310,22 @@ class MainWindow(gtk.Window):
                 right_rotation = right_rotation % 360
 
             if self.zoom_mode == constants.ZOOM_MODE_MANUAL:
-        
+
                 if left_rotation in (90, 270):
                     total_width = left_unscaled_y
                     total_height = left_unscaled_x
                 else:
                     total_width = left_unscaled_x
                     total_height = left_unscaled_y
-        
+
                 if right_rotation in (90, 270):
                     total_width += right_unscaled_y
                     total_height += right_unscaled_x
                 else:
                     total_width += right_unscaled_x
                     total_height += right_unscaled_y
-        
-                total_width += 2 # For the 2 px gap between images. 
+
+                total_width += 2 # For the 2 px gap between images.
                 scaled_width = int(self._manual_zoom * total_width / 100)
                 scaled_height = int(self._manual_zoom * total_height / 100)
                 scale_up = True
@@ -334,15 +334,15 @@ class MainWindow(gtk.Window):
                 left_pixbuf, right_pixbuf, scaled_width, scaled_height,
                 scale_up=scale_up, rotation1=left_rotation,
                 rotation2=right_rotation)
-        
+
             if prefs['horizontal flip']:
                 left_pixbuf = left_pixbuf.flip(horizontal=True)
                 right_pixbuf = right_pixbuf.flip(horizontal=True)
-        
+
             if prefs['vertical flip']:
                 left_pixbuf = left_pixbuf.flip(horizontal=False)
                 right_pixbuf = right_pixbuf.flip(horizontal=False)
-        
+
             left_pixbuf = self.enhancer.enhance(left_pixbuf)
             right_pixbuf = self.enhancer.enhance(right_pixbuf)
 
@@ -353,35 +353,35 @@ class MainWindow(gtk.Window):
                 right_pixbuf.get_width()) / 2
             y_padding = (area_height - max(left_pixbuf.get_height(),
                 right_pixbuf.get_height())) / 2
-            
+
             if left_rotation in (90, 270):
                 left_scale_percent = (100.0 * left_pixbuf.get_width() /
                     left_unscaled_y)
             else:
                 left_scale_percent = (100.0 * left_pixbuf.get_width() /
                     left_unscaled_x)
-        
+
             if right_rotation in (90, 270):
                 right_scale_percent = (100.0 * right_pixbuf.get_width() /
                     right_unscaled_y)
             else:
                 right_scale_percent = (100.0 * right_pixbuf.get_width() /
                     right_unscaled_x)
-        
+
             self.statusbar.set_page_number(
                 self.imagehandler.get_current_page(),
                 self.imagehandler.get_number_of_pages(), double_page=True)
-        
+
             self.statusbar.set_resolution(
                 (left_unscaled_x, left_unscaled_y, left_scale_percent),
                 (right_unscaled_x, right_unscaled_y, right_scale_percent))
-        
+
             left_filename, right_filename = \
                 self.imagehandler.get_page_filename(double=True)
-                
+
             if self.is_manga_mode:
                 left_filename, right_filename = right_filename, left_filename
-                
+
             self.statusbar.set_filename(left_filename + ', ' + right_filename)
 
         else:
@@ -397,15 +397,15 @@ class MainWindow(gtk.Window):
             if self.zoom_mode == constants.ZOOM_MODE_MANUAL:
                 scaled_width = int(self._manual_zoom * unscaled_x / 100)
                 scaled_height = int(self._manual_zoom * unscaled_y / 100)
-        
+
                 if rotation in (90, 270):
                     scaled_width, scaled_height = scaled_height, scaled_width
-        
+
                 scale_up = True
-            
+
             pixbuf = image_tools.fit_in_rectangle(pixbuf, scaled_width,
                 scaled_height, scale_up=scale_up, rotation=rotation)
-        
+
             if prefs['horizontal flip']:
                 pixbuf = pixbuf.flip(horizontal=True)
             if prefs['vertical flip']:
@@ -415,19 +415,19 @@ class MainWindow(gtk.Window):
 
             self.left_image.set_from_pixbuf(pixbuf)
             self.right_image.clear()
-        
+
             x_padding = (area_width - pixbuf.get_width()) / 2
             y_padding = (area_height - pixbuf.get_height()) / 2
-            
+
             if rotation in (90, 270):
                 scale_percent = 100.0 * pixbuf.get_width() / unscaled_y
             else:
                 scale_percent = 100.0 * pixbuf.get_width() / unscaled_x
-        
+
             self.statusbar.set_page_number(
                 self.imagehandler.get_current_page(),
                 self.imagehandler.get_number_of_pages())
-        
+
             self.statusbar.set_resolution((unscaled_x, unscaled_y,
                 scale_percent))
             self.statusbar.set_filename(self.imagehandler.get_page_filename())
@@ -436,13 +436,13 @@ class MainWindow(gtk.Window):
 
             bg_colour = image_tools.get_most_common_edge_colour(
                             self.left_image.get_pixbuf())
-            
+
             self.set_bg_colour(bg_colour)
-                        
+
             if prefs['smart thumb bg'] and prefs['show thumbnails']: # or prefs['thumbnail bg uses main colour']:
 
                 self.thumbnailsidebar.change_thumbnail_background_color(bg_colour)
-                
+
         elif prefs['smart thumb bg'] and prefs['show thumbnails']:
 
             bg_colour = image_tools.get_most_common_edge_colour(
@@ -451,20 +451,20 @@ class MainWindow(gtk.Window):
             self.thumbnailsidebar.change_thumbnail_background_color(bg_colour)
 
         #elif prefs['thumbnail bg uses main colour']:
-        #    self.thumbnailsidebar.set_thumbnail_background(prefs['bg colour'])            
+        #    self.thumbnailsidebar.set_thumbnail_background(prefs['bg colour'])
 
         self._image_box.window.freeze_updates()
         self._main_layout.move(self._image_box, max(0, x_padding),
             max(0, y_padding))
         self.left_image.show()
-        
+
         if self.displayed_double():
             self.right_image.show()
         else:
             self.right_image.hide()
 
         self._main_layout.set_size(*self._image_box.size_request())
-        
+
         if scroll:
             if at_bottom:
                 self.scroll_to_fixed(horiz='endsecond', vert='bottom')
@@ -477,13 +477,13 @@ class MainWindow(gtk.Window):
 
         self.statusbar.update()
 
-        self.update_title()        
+        self.update_title()
 
         while gtk.events_pending():
             gtk.main_iteration(False)
 
         return False
-        
+
     def new_page(self, at_bottom=False):
         """Draw a *new* page correctly (as opposed to redrawing the same
         image with a new size or whatever).
@@ -492,9 +492,9 @@ class MainWindow(gtk.Window):
             prefs['rotation'] = 0
             prefs['horizontal flip'] = False
             prefs['vertical flip'] = False
-    
+
         self.thumbnailsidebar.update_select()
-    
+
         self.draw_image(at_bottom=at_bottom, scroll=True)
 
     def set_page(self, num, at_bottom=False):
@@ -570,7 +570,7 @@ class MainWindow(gtk.Window):
         self.actiongroup.get_action('zoom_in').set_sensitive(sensitive)
         self.actiongroup.get_action('zoom_out').set_sensitive(sensitive)
         self.actiongroup.get_action('zoom_original').set_sensitive(sensitive)
-        
+
         if old_mode != self.zoom_mode:
             self.draw_image()
 
@@ -645,35 +645,35 @@ class MainWindow(gtk.Window):
         """
         old_hadjust = self._hadjust.get_value()
         old_vadjust = self._vadjust.get_value()
-        
+
         visible_width, visible_height = self.get_visible_area_size()
-        
+
         hadjust_upper = max(0, self._hadjust.upper - visible_width)
         vadjust_upper = max(0, self._vadjust.upper - visible_height)
         hadjust_lower = 0
-    
+
         if bound is not None and self.is_manga_mode:
             bound = {'first': 'second', 'second': 'first'}[bound]
-            
+
         if bound == 'first':
             hadjust_upper = max(0, hadjust_upper -
                 self.right_image.size_request()[0] - 2)
-                
+
         elif bound == 'second':
             hadjust_lower = self.left_image.size_request()[0] + 2
-            
+
         new_hadjust = old_hadjust + x
         new_vadjust = old_vadjust + y
-        
+
         new_hadjust = max(hadjust_lower, new_hadjust)
         new_vadjust = max(0, new_vadjust)
-        
+
         new_hadjust = min(hadjust_upper, new_hadjust)
         new_vadjust = min(vadjust_upper, new_vadjust)
-        
+
         self._vadjust.set_value(new_vadjust)
         self._hadjust.set_value(new_hadjust)
-        
+
         return old_vadjust != new_vadjust or old_hadjust != new_hadjust
 
     def scroll_to_fixed(self, horiz=None, vert=None):
@@ -727,7 +727,7 @@ class MainWindow(gtk.Window):
                      'endfirst':    'startsecond',
                      'startsecond': 'endfirst',
                      'endsecond':   'startfirst'}[horiz]
-        
+
         elif self.is_manga_mode and horiz is not None:
             horiz = {'left':        'left',
                      'middle':      'middle',
@@ -744,24 +744,24 @@ class MainWindow(gtk.Window):
         elif horiz == 'startfirst':
             new_hadjust = 0
         elif horiz == 'endfirst':
-        
+
             if self.displayed_double():
                 new_hadjust = self.left_image.size_request()[0] - visible_width
             else:
                 new_hadjust = hadjust_upper
-        
+
         elif horiz == 'startsecond':
             new_hadjust = self.left_image.size_request()[0] + 2
         elif horiz == 'endsecond':
             new_hadjust = hadjust_upper
-        
+
         new_hadjust = max(0, new_hadjust)
         new_vadjust = max(0, new_vadjust)
         new_hadjust = min(hadjust_upper, new_hadjust)
         new_vadjust = min(vadjust_upper, new_vadjust)
         self._vadjust.set_value(new_vadjust)
         self._hadjust.set_value(new_hadjust)
-        
+
         return old_vadjust != new_vadjust or old_hadjust != new_hadjust
 
     def is_on_first_page(self):
@@ -801,34 +801,34 @@ class MainWindow(gtk.Window):
         of the main layout area.
         """
         width, height = self.get_size()
-        
+
         if not prefs['hide all'] and not (self.is_fullscreen and
           prefs['hide all in fullscreen']):
-          
+
             if prefs['show toolbar']:
                 height -= self.toolbar.size_request()[1]
-                
+
             if prefs['show statusbar']:
                 height -= self.statusbar.size_request()[1]
-                
+
             if prefs['show thumbnails']:
                 width -= self.thumbnailsidebar.get_width()
-                
+
             if prefs['show menubar']:
                 height -= self.menubar.size_request()[1]
-          
+
             if prefs['show scrollbar']:
-          
+
                 if self.zoom_mode == constants.ZOOM_MODE_WIDTH:
                     width -= self._vscroll.size_request()[0]
-          
+
                 elif self.zoom_mode == constants.ZOOM_MODE_HEIGHT:
                     height -= self._hscroll.size_request()[1]
-          
+
                 elif self.zoom_mode == constants.ZOOM_MODE_MANUAL:
                     width -= self._vscroll.size_request()[0]
                     height -= self._hscroll.size_request()[1]
-                    
+
         return width, height
 
     def get_layout_pointer_position(self):
@@ -838,7 +838,7 @@ class MainWindow(gtk.Window):
         x, y = self._main_layout.get_pointer()
         x += self._hadjust.get_value()
         y += self._vadjust.get_value()
-        
+
         return (x, y)
 
     def set_cursor(self, mode):
@@ -847,7 +847,7 @@ class MainWindow(gtk.Window):
         directly.
         """
         self._main_layout.window.set_cursor(mode)
-        return False 
+        return False
 
     def update_title(self):
         """Set the title acording to current state."""
@@ -861,22 +861,22 @@ class MainWindow(gtk.Window):
             else:
                 title = encoding.to_unicode('%s - MComix' % (
                     self.imagehandler.get_pretty_current_filename()))
-              
+
         else:
-        
+
             if prefs['show page numbers']:
                 title = encoding.to_unicode('[%d / %d]  %s - MComix' % (
                     self.imagehandler.get_current_page(),
                     self.imagehandler.get_number_of_pages(),
                     self.imagehandler.get_pretty_current_filename()))
-                    
+
             else:
                 title = encoding.to_unicode('%s - MComix' % (
                     self.imagehandler.get_pretty_current_filename()))
-                
+
         if self.slideshow.is_running():
             title = '[%s] %s' % (_('SLIDESHOW'), title)
-            
+
         self.set_title(title)
 
     def set_bg_colour(self, colour):
@@ -886,7 +886,7 @@ class MainWindow(gtk.Window):
         self._main_layout.modify_bg(gtk.STATE_NORMAL,
             gtk.gdk.colormap_get_system().alloc_color(gtk.gdk.Color(
             colour[0], colour[1], colour[2]), False, True))
-            
+
         if prefs['thumbnail bg uses main colour']:
             self.thumbnailsidebar.change_thumbnail_background_color(prefs['bg colour'])
 
@@ -894,49 +894,49 @@ class MainWindow(gtk.Window):
         """Hide and/or show main window widgets depending on the current
         state.
         """
-        
+
         if not prefs['hide all'] and not (self.is_fullscreen and
           prefs['hide all in fullscreen']):
-          
+
             if prefs['show toolbar']:
                 self.toolbar.show_all()
             else:
                 self.toolbar.hide_all()
-                
+
             if prefs['show statusbar']:
                 self.statusbar.show_all()
             else:
                 self.statusbar.hide_all()
-                
+
             if prefs['show menubar']:
                 self.menubar.show_all()
             else:
                 self.menubar.hide_all()
-                
+
             if (prefs['show scrollbar'] and
               self.zoom_mode == constants.ZOOM_MODE_WIDTH):
                 self._vscroll.show_all()
                 self._hscroll.hide_all()
-                
+
             elif (prefs['show scrollbar'] and
               self.zoom_mode == constants.ZOOM_MODE_HEIGHT):
                 self._vscroll.hide_all()
                 self._hscroll.show_all()
-                
+
             elif (prefs['show scrollbar'] and
               self.zoom_mode == constants.ZOOM_MODE_MANUAL):
                 self._vscroll.show_all()
                 self._hscroll.show_all()
-                
+
             else:
                 self._vscroll.hide_all()
                 self._hscroll.hide_all()
-                
+
             if prefs['show thumbnails'] and self.filehandler.file_loaded:
                 self.thumbnailsidebar.show()
             else:
                 self.thumbnailsidebar.hide()
-                
+
         else:
             self.toolbar.hide_all()
             self.menubar.hide_all()
@@ -970,7 +970,7 @@ class MainWindow(gtk.Window):
         """Update crash status."""
 
         has_crash_been_taken_care_of = not crash_status
-        
+
         config = open(constants.CRASH_PICKLE_PATH, 'wb')
 
         cPickle.dump([crash_status, has_crash_been_taken_care_of], config, cPickle.HIGHEST_PROTOCOL)
@@ -999,7 +999,7 @@ class MainWindow(gtk.Window):
                 os.remove(constants.CRASH_PICKLE_PATH)
 
         return crash_info
-        
+
     def idle_wait_for_crash_timer_to_expire(self):
         """If a timer is already set to write the config files then
            this function creates a thread that will wait for that thread
@@ -1021,7 +1021,7 @@ class MainWindow(gtk.Window):
 
         self.crash_timer_continue = True
         gobject.timeout_add(prefs['crash recovery seconds'] * 1000, self.write_config_files)
-        
+
         self.crash_timer_idle = False
 
         return False
@@ -1041,7 +1041,7 @@ class MainWindow(gtk.Window):
         prefs['previous quit was quit and save'] = True
 
         self.terminate_program(save_current_file=True)
-    
+
     def close_program(self, *args):
         self.terminate_program(save_current_file=False)
 
@@ -1060,10 +1060,10 @@ class MainWindow(gtk.Window):
         else:
             prefs['path to last file'] = ''
             prefs['page of last file'] = 1
-            
+
         self.crash_timer_continue = False
         self.write_config_files()
-        
+
         if not save_current_file:
             self.write_crashinfo_file(False)
         else:
@@ -1078,7 +1078,7 @@ class MainWindow(gtk.Window):
         for thread in threading.enumerate():
             if thread is not threading.currentThread():
                 thread.join()
-            
+
         sys.exit(0)
 
 # vim: expandtab:sw=4:ts=4

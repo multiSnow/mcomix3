@@ -15,7 +15,7 @@ class _BaseFileChooserDialog(gtk.Dialog):
     buggy with the preview widget. The <action> argument dictates what type
     of filechooser dialog we want (i.e. it is gtk.FILE_CHOOSER_ACTION_OPEN
     or gtk.FILE_CHOOSER_ACTION_SAVE).
-    
+
     This is a base class for the _MainFileChooserDialog, the
     _LibraryFileChooserDialog and the SimpleFileChooserDialog.
 
@@ -23,7 +23,7 @@ class _BaseFileChooserDialog(gtk.Dialog):
     called once the filechooser has done its job and selected some files.
     If the dialog was closed or Cancel was pressed, <paths> is the empty list.
     """
-    
+
     _last_activated_file = None
 
     def __init__(self, action=gtk.FILE_CHOOSER_ACTION_OPEN):
@@ -63,7 +63,7 @@ class _BaseFileChooserDialog(gtk.Dialog):
             scale=pango.SCALE_SMALL)
         self._namelabel.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
         preview_box.pack_start(self._namelabel, False, False)
-        
+
         self._sizelabel = labels.FormattedLabel(scale=pango.SCALE_SMALL)
         self._sizelabel.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
         preview_box.pack_start(self._sizelabel, False, False)
@@ -80,17 +80,17 @@ class _BaseFileChooserDialog(gtk.Dialog):
             'application/zip', 'application/x-rar', 'application/x-tar',
             'application/x-gzip', 'application/x-bzip2', 'application/x-cbz',
             'application/x-cbr', 'application/x-cbt'))
-            
+
         self.add_filter(_('ZIP archives'),
             ('application/x-zip', 'application/zip', 'application/x-cbz'))
-            
+
         self.add_filter(_('RAR archives'),
             ('application/x-rar', 'application/x-cbr'))
-            
+
         self.add_filter(_('Tar archives'),
             ('application/x-tar', 'application/x-gzip',
             'application/x-bzip2', 'application/x-cbt'))
-        
+
         try:
             if (self.__class__._last_activated_file is not None
                     and os.path.isfile(self.__class__._last_activated_file)):
@@ -125,7 +125,7 @@ class _BaseFileChooserDialog(gtk.Dialog):
         self.filechooser.set_current_folder(path)
 
     def _response(self, widget, response):
-        """Return a list of the paths of the chosen files, or None if the 
+        """Return a list of the paths of the chosen files, or None if the
         event only changed the current directory.
         """
         if response == gtk.RESPONSE_OK:

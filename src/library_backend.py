@@ -17,13 +17,13 @@ import encoding
 import thumbnail_tools
 
 class LibraryBackend:
-    
+
     """The LibraryBackend handles the storing and retrieval of library
     data to and from disk.
     """
 
     def __init__(self):
-        
+
         def row_factory(cursor, row):
             """Return rows as sequences only when they have more than
             one element.
@@ -229,7 +229,7 @@ class LibraryBackend:
             pass
         except dbapi2.Error:
             print _('! Could not add book ') + book + _(' to collection ') + collection
-            
+
     def add_collection_to_collection(self, subcollection, supercollection):
         """Put <subcollection> into <supercollection>, or put
         <subcollection> in the root if <supercollection> is None.

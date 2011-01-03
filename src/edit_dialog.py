@@ -16,7 +16,7 @@ from preferences import prefs
 _dialog = None
 
 class _EditArchiveDialog(gtk.Dialog):
-    
+
     """The _EditArchiveDialog lets users edit archives (or directories) by
     reordering images and removing and adding images or comment files. The
     result can be saved as a ZIP archive.
@@ -32,7 +32,7 @@ class _EditArchiveDialog(gtk.Dialog):
         self.file_handler = window.filehandler
         self._window = window
         self._imported_files = []
-        
+
         self._save_button = self.add_button(gtk.STOCK_SAVE_AS, constants.RESPONSE_SAVE_AS)
 
         self._import_button = self.add_button(_('Import'), constants.RESPONSE_IMPORT)
@@ -45,7 +45,7 @@ class _EditArchiveDialog(gtk.Dialog):
             min(gtk.gdk.screen_get_default().get_height() - 50, 600))
 
         self.connect('response', self._response)
-        
+
         self._image_area = edit_image_area._ImageArea(self, window)
         self._comment_area = edit_comment_area._CommentArea(self)
 
@@ -112,66 +112,66 @@ class _EditArchiveDialog(gtk.Dialog):
 
         if fail:
             self.window.set_cursor(None)
-            
+
             dialog = gtk.MessageDialog(self._window, 0, gtk.MESSAGE_ERROR,
                 gtk.BUTTONS_CLOSE, _("The new archive could not be saved!"))
             dialog.format_secondary_text(
                 _("The original files have not been removed."))
             dialog.run()
             dialog.destroy()
-            
+
             self.set_sensitive(True)
 
     def _response(self, dialog, response):
-    
+
         if response == constants.RESPONSE_SAVE_AS:
-            
+
             dialog = file_chooser_simple_dialog.SimpleFileChooserDialog(
                 gtk.FILE_CHOOSER_ACTION_SAVE)
-            
+
             src_path = self.file_handler.get_path_to_base()
-            
+
             dialog.set_current_directory(os.path.dirname(src_path))
             dialog.set_save_name('%s.cbz' % os.path.splitext(
                 os.path.basename(src_path))[0])
             dialog.filechooser.set_extra_widget(gtk.Label(
                 _('Archives are stored as ZIP files.')))
             dialog.run()
-            
+
             paths = dialog.get_paths()
             dialog.destroy()
-            
+
             if paths:
                 self._pack_archive(paths[0])
-                
+
         elif response == constants.RESPONSE_IMPORT:
-        
+
             dialog = file_chooser_simple_dialog.SimpleFileChooserDialog()
             dialog.run()
             paths = dialog.get_paths()
             dialog.destroy()
-            
+
             exts = '|'.join(prefs['comment extensions'])
             comment_re = re.compile(r'\.(%s)\s*$' % exts, re.I)
 
             for path in paths:
-            
+
                 if image_tools.is_image_file(path):
                     self._imported_files.append( path )
                     self._image_area.add_extra_image(path)
-                    
+
                 elif os.path.isfile(path):
-                    
+
                     if comment_re.search( path ):
                         self._imported_files.append( path )
                         self._comment_area.add_extra_file(path)
 
         elif response == constants.RESPONSE_APPLY_CHANGES:
-            
+
             old_image_array = self._window.imagehandler._image_files
 
             treeiter = self._image_area._liststore.get_iter_root()
-    
+
             new_image_array = []
 
             while treeiter is not None:
@@ -185,7 +185,7 @@ class _EditArchiveDialog(gtk.Dialog):
             end_index = len(old_image_array) - 1
 
             for image_path in old_image_array:
-    
+
                 try:
                     new_position = new_image_array.index( image_path )
                     new_positions.append(new_position)
@@ -197,7 +197,7 @@ class _EditArchiveDialog(gtk.Dialog):
             self._window.imagehandler._image_files = new_image_array
             self._window.imagehandler._raw_pixbufs = {}
             self._window.imagehandler.do_cacheing()
-            
+
             self._window.thumbnailsidebar.clear()
             self._window.thumbnailsidebar.load_thumbnails()
 
@@ -215,7 +215,7 @@ class _EditArchiveDialog(gtk.Dialog):
 
 def open_dialog(action, window):
     global _dialog
-    
+
     if _dialog is None:
         _dialog = _EditArchiveDialog(window)
     else:
@@ -224,7 +224,7 @@ def open_dialog(action, window):
 
 def _close_dialog(*args):
     global _dialog
-    
+
     if _dialog is not None:
         _dialog.destroy()
         _dialog = None

@@ -11,23 +11,23 @@ import constants
 
 _dialog = None
 
-# The "All books" collection is not a real collection stored in the library, but is represented by this ID in the 
+# The "All books" collection is not a real collection stored in the library, but is represented by this ID in the
 # library's TreeModels.
 _COLLECTION_ALL = -1
 
 class _BookArea(gtk.ScrolledWindow):
-    
+
     """The _BookArea is the central area in the library where the book
     covers are displayed.
     """
-    
+
     def __init__(self, library):
         gtk.ScrolledWindow.__init__(self)
-        
+
         self._library = library
         self._stop_update = False
         self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        
+
         self._liststore = gtk.ListStore(gtk.gdk.Pixbuf, int) # (Cover, ID).
         self._iconview = gtk.IconView(self._liststore)
         self._iconview.set_pixbuf_column(0)
@@ -77,12 +77,12 @@ class _BookArea(gtk.ScrolledWindow):
                 _('Completey remove...'), None, None,
                 self._completely_remove_book)
                 ])
-                
+
         self._ui_manager.insert_action_group(actiongroup, 0)
 
     def close(self):
         """Run clean-up tasks for the _BookArea prior to closing."""
-        
+
         # We must unselect all or we will trigger selection_changed events
         # when closing with multiple books selected.
         self._iconview.unselect_all()
@@ -95,21 +95,21 @@ class _BookArea(gtk.ScrolledWindow):
 
         self._stop_update = False # To handle new re-entry during update.
         self._liststore.clear()
-        
+
         if collection == _COLLECTION_ALL: # The "All" collection is virtual.
             collection = None
-            
+
         for i, book in enumerate(self._library.backend.get_books_in_collection(
           collection, self._library.filter_string)):
             self._add_book(book)
             while gtk.events_pending():
                 gtk.main_iteration(False)
-                    
+
             if self._stop_update:
                 return
-              
+
         self._stop_update = True
-        
+
     def stop_update(self):
         """Signal that the updating of book covers should stop."""
         self._stop_update = True
@@ -187,7 +187,7 @@ class _BookArea(gtk.ScrolledWindow):
         """Remove the currently selected book(s) from the library, and thus
         also from the _BookArea, if the user clicks 'Yes' in a dialog.
         """
-        
+
         if request_response:
             choice_dialog = gtk.MessageDialog(self._library, 0,
                 gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
@@ -196,7 +196,7 @@ class _BookArea(gtk.ScrolledWindow):
                 _('The selected books will be removed from the library (but the original files will be untouched). Are you sure that you want to continue?'))
             response = choice_dialog.run()
             choice_dialog.destroy()
-            
+
         if not request_response or (request_response and response == gtk.RESPONSE_YES):
             selected = self._iconview.get_selected_items()
 
@@ -204,7 +204,7 @@ class _BookArea(gtk.ScrolledWindow):
                 book = self.get_book_at_path(path)
                 self._library.backend.remove_book(book)
                 self.remove_book_at_path(path)
-                
+
             self._library.set_status_message(
                 _('Removed %d book(s) from the library.') % len(selected))
 
@@ -212,9 +212,9 @@ class _BookArea(gtk.ScrolledWindow):
         """Remove the currently selected book(s) from the library and the
         hard drive, if the user clicks 'Yes' in a dialog.
         """
-        
+
         if request_response:
-    
+
             choice_dialog = gtk.MessageDialog(self._library, 0,
                 gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
                 _('Remove books from the library?'))
@@ -225,31 +225,31 @@ class _BookArea(gtk.ScrolledWindow):
 
         # if no request is needed or the user has told us they definitely want to delete the book
         if not request_response or (request_response and response == gtk.RESPONSE_YES):
-            
+
             self._remove_books_from_library(False)
-            
+
             # get the array of currently selected books in the book window
             selected_books = self._iconview.get_selected_items()
-            
+
             for book in selected_books:
 
                 # find the database id and path for each selected book
                 book_id = self._library.book_area.get_book_at_path(book)
                 book_path = self._library.backend.get_book_path(book_id)
-            
+
                 try:
                     # try to delete the book.
                     # this can throw an exception if the path points to folder instead
                     # of a single file
                     os.remove(book_path)
-                    
+
                 except Exception:
-                    
+
                     print _('! An error was thrown while attempting to delete: %s') % book_path
-                
+
                 while gtk.events_pending():
                     gtk.main_iteration(False)
-                                            
+
 
     def _button_press(self, iconview, event):
         """Handle mouse button presses on the _BookArea."""
@@ -282,15 +282,15 @@ class _BookArea(gtk.ScrolledWindow):
         """Handle key presses on the _BookArea."""
         if event.keyval == gtk.keysyms.Delete:
             self._remove_books_from_collection()
-        
+
     def _drag_begin(self, iconview, context):
         """Create a cursor image for drag-n-drop from the library.
 
-        This method relies on implementation details regarding PIL's 
+        This method relies on implementation details regarding PIL's
         drawing functions and default font to produce good looking results.
         If those are changed in a future release of PIL, this method might
         produce bad looking output (e.g. non-centered text).
-        
+
         It's also used with connect_after() to overwrite the cursor
         automatically created when using enable_model_drag_source(), so in
         essence it's a hack, but at least it works.
@@ -302,12 +302,12 @@ class _BookArea(gtk.ScrolledWindow):
         cover = self._library.backend.get_book_cover(book)
         if cover is None:
             cover = constants.MISSING_IMAGE_ICON
-            
+
         cover = cover.scale_simple(max(0, cover.get_width() // 2),
             max(0, cover.get_height() // 2), gtk.gdk.INTERP_TILES)
         cover = image_tools.add_border(cover, 1, 0xFFFFFFFF)
         cover = image_tools.add_border(cover, 1)
-        
+
         if num_books > 1:
             cover_width = cover.get_width()
             cover_height = cover.get_height()
