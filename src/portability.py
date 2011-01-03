@@ -87,4 +87,11 @@ def get_commandline_args():
     else:
         return [arg.decode(locale.getpreferredencoding(), 'replace') for arg in sys.argv]
 
+def invalid_filesystem_chars():
+    """ List of characters that cannot be used in filenames on the target platform. """
+    if sys.platform == 'win32':
+        return ur'/\:*?"<>|'
+    else:
+        return u'/'
+
 # vim: expandtab:sw=4:ts=4
