@@ -82,4 +82,71 @@ class NonUnicodeArchive(BaseArchive):
         else:
             return encoding.to_utf8(filename)
 
+class ExternalExecutableArchive(NonUnicodeArchive):
+    """ For archives that are extracted by spawning an external
+    application. """
+
+    def __init__(self, archive):
+        super(ExternalExecutableArchive, self).__init__(archive)
+        # Flag to determine if list_contents() has been called
+        # This builds the Unicode mapping and is likely required
+        # for extracting filenames that have been internally mapped.
+        self.filenames_initialized = False
+
+    def _get_executable(self):
+        """ Returns the executable's name or path. Return None if no executable
+        was found on the system. """
+        raise NotImplementedError, "Subclasses must override this method."
+
+    def _get_list_arguments(self):
+        """ Returns an array of arguments required for the executable
+        to produce a list of archive members. """
+        raise NotImplementedError, "Subclasses must override this method."
+
+    def _get_extract_arguments(self):
+        """ Returns an array of arguments required for the executable
+        to extract a file to STDOUT. """
+        raise NotImplementedError, "Subclasses must override this method."
+
+    def list_contents(self):
+        proc = process.Process([self._get_executable] +
+            self._get_list_arguments() +
+            self.archive)
+        fd = proc.spawn()
+
+        filenames = [self._unicode_filename(filename.rstrip(os.linesep))
+                for filename in fd.readlines()]
+
+        fd.close()
+        proc.wait()
+
+        self.filenames_initialized = True
+        return filenames
+
+    def extract(self, filename, destination_path):
+        """ Extract <filename> from the archive to <destination_path>.
+        This path should include the full filename. """
+        assert isinstance(filename, unicode) and isinstance(destination_path, unicode)
+
+        if not self.filenames_initialized:
+            self.list_contents()
+
+        # Create directory if it doesn't exist
+        destination_directory = os.path.split(destination_path)[0]
+        self._create_directory(destination_directory)
+
+        proc = process.Process([self._get_executable] +
+            self._get_extract_arguments() +
+            self.archive, self._original_name(filename)))
+        fd = proc.spawn()
+
+        # Create new file
+        new = open(destination_path, 'wb')
+        new.write(fd.read())
+        new.close()
+
+        # Wait for process to finish
+        fd.close()
+        proc.wait()
+
 # vim: expandtab:sw=4:ts=4
