@@ -2,6 +2,7 @@
 
 import os
 import sys
+import shutil
 import threading
 import gtk
 import gobject
@@ -943,6 +944,27 @@ class MainWindow(gtk.Window):
             self.thumbnailsidebar.hide()
             self._vscroll.hide_all()
             self._hscroll.hide_all()
+
+    def extract_page(self, *args):
+        """ Derive some sensible filename (archive name + _ + filename should do) and offer
+        the user the choice to save the current page with the selected name. """
+
+        if self.filehandler.archive_type is not None:
+            suggested_name = os.path.splitext(self.filehandler.get_pretty_current_filename())[0] + \
+                u'_' + os.path.split(self.filehandler.get_path_to_page())[-1]
+        else:
+            suggested_name = os.path.split(self.filehandler.get_path_to_page())[-1]
+
+        save_dialog = gtk.FileChooserDialog(_('Extract page...'), self,
+            gtk.FILE_CHOOSER_ACTION_SAVE, (gtk.STOCK_OK, gtk.RESPONSE_ACCEPT,
+            gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT))
+        save_dialog.set_current_name(suggested_name.encode('utf-8'))
+
+        if save_dialog.run() == gtk.RESPONSE_ACCEPT and save_dialog.get_filename():
+            shutil.copy(self.filehandler.get_path_to_page(),
+                save_dialog.get_filename().decode('utf-8'))
+
+        save_dialog.destroy()
 
     def write_crashinfo_file(self, crash_status):
         """Update crash status."""

@@ -64,6 +64,8 @@ class MainUI(gtk.UIManager):
                 None, None, window.flip_horizontally),
             ('flip_vert', 'mcomix-flip-vertical', _('Flip _vertically'),
                 None, None, window.flip_vertically),
+            ('extract_page', None, _('Extract page...'),
+                None, None, window.extract_page),
             ('menu_zoom', 'mcomix-zoom', _('Manual _Zoom')),
             ('menu_recent', None, _('Open _recent')),
             ('menu_bookmarks', None, _('_Bookmarks')),
@@ -248,7 +250,8 @@ class MainUI(gtk.UIManager):
                         <menuitem action="keep_transformation" />
                     </menu>
                     <separator />
-                    <menuitem action="edit_archive" />                    
+                    <menuitem action="edit_archive" />
+                    <menuitem action="extract_page" />
                 </menu>
                 <menu action="menu_bookmarks">
                 </menu>
@@ -338,6 +341,7 @@ class MainUI(gtk.UIManager):
         """Sets the main UI's widget's sensitivities appropriately."""
         general = ('properties',
                    'edit_archive',
+                   'extract_page',
                    'close',
                    'slideshow',
                    'rotate_90',
