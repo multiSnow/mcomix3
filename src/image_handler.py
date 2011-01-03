@@ -48,8 +48,7 @@ class ImageHandler:
             self._wait_on_page(index + 1)
 
             try:
-                self._raw_pixbufs[index] = gtk.gdk.pixbuf_new_from_file(
-                    self._image_files[index])
+                self._raw_pixbufs[index] = image_tools.load_pixbuf(self._image_files[index])
                 self._pixbuf_auto_bgs[index] = image_tools.get_most_common_edge_colour(self._raw_pixbufs[index])
                 pixbuf = self._raw_pixbufs[index]
             except Exception:
@@ -62,7 +61,7 @@ class ImageHandler:
                 pass
             
         return pixbuf
-        
+
     def get_pixbufs(self, single=False):
         """Return the pixbuf(s) for the image(s) that should be currently
         displayed, from cache. Return two pixbufs in double-page mode unless
@@ -100,7 +99,7 @@ class ImageHandler:
         """
         if not self._window.filehandler.file_loaded:
             return
-        
+
         self.is_cacheing = True
 
         # Get list of wanted pixbufs.
@@ -430,8 +429,7 @@ class ImageHandler:
             thumb = thumbnail_tools.get_thumbnail(path, create)
         else:
             try:
-                thumb = gtk.gdk.pixbuf_new_from_file_at_size(path, width,
-                    height)
+                thumb = image_tools.load_pixbuf_size(path, 128, 128)
             except Exception:
                 thumb = None
         if thumb is None:

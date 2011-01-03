@@ -19,6 +19,7 @@ import archive_extractor
 import constants
 import archive_tools
 import tools
+import image_tools
 
 def get_thumbnail(path, create=True, dst_dir=constants.THUMBNAIL_PATH):
     """Return a thumbnail pixbuf for the file at <path> by looking in the
@@ -52,7 +53,7 @@ def get_thumbnail(path, create=True, dst_dir=constants.THUMBNAIL_PATH):
         if os.stat(path).st_mtime != mtime:
             return _get_new_thumbnail(path, create, dst_dir)
 
-        return gtk.gdk.pixbuf_new_from_file(thumbpath)
+        return image_tools.load_pixbuf(thumbpath)
 
     except Exception:
         return None
@@ -86,7 +87,7 @@ def _get_new_thumbnail(path, create, dst_dir):
     if create:
         return _create_thumbnail(path, dst_dir)
 
-    return _get_pixbuf128(path)
+    return image_tools.load_pixbuf_size(path, 128, 128)
 
 
 def _get_new_archive_thumbnail(path, dst_dir):
@@ -130,7 +131,7 @@ def _create_thumbnail(path, dst_dir, image_path=None):
     if image_path is None:
         image_path = path
 
-    pixbuf = _get_pixbuf128(image_path)
+    pixbuf = image_tools.load_pixbuf_size(image_path, 128, 128)
 
     if pixbuf is None:
         return None
@@ -181,12 +182,6 @@ def _uri_to_thumbpath(uri, dst_dir):
     md5hash = md5(uri).hexdigest()
     thumbpath = os.path.join(dst_dir, md5hash + '.png')
     return thumbpath
-
-def _get_pixbuf128(path):
-    try:
-        return gtk.gdk.pixbuf_new_from_file_at_size(path, 128, 128)
-    except Exception:
-        return None
 
 def _guess_cover(files):
     """Return the filename within <files> that is the most likely to be the

@@ -1,5 +1,6 @@
 """image_tools.py - Various image manipulations."""
 
+import sys
 import os
 import operator
 import itertools
@@ -197,6 +198,23 @@ def pixbuf_to_pil(pixbuf):
     mode = pixbuf.get_has_alpha() and 'RGBA' or 'RGB'
     return Image.frombuffer(mode, dimensions, pixels, 'raw', mode, stride, 1)
 
+def load_pixbuf(path):
+    """ Loads a pixbuf from a given image file. Works around GTK's
+    slowness on Win32 by using PIL for loading instead and
+    converting it afterwards. """
+    if sys.platform == 'win32' and gtk.gtk_version > (2, 18, 2):
+        pil_img = Image.open(path)
+        return pil_to_pixbuf(pil_img)
+    else:
+        return gtk.gdk.pixbuf_new_from_file(path)
+
+def load_pixbuf_size(path, width, height):
+    """ Loads a pixbuf from a given image file and scale it to fit
+    inside (width, height). """
+    try:
+        return fit_in_rectangle(load_pixbuf(path), width, height)
+    except:
+        return None
 
 def enhance(pixbuf, brightness=1.0, contrast=1.0, saturation=1.0,
   sharpness=1.0, autocontrast=False):
