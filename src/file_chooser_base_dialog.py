@@ -69,7 +69,7 @@ class _BaseFileChooserDialog(gtk.Dialog):
         preview_box.pack_start(self._sizelabel, False, False)
         self.filechooser.set_use_preview_label(False)
         preview_box.show_all()
-        #self.filechooser.connect('update-preview', self._update_preview)
+        self.filechooser.connect('update-preview', self._update_preview)
 
         ffilter = gtk.FileFilter()
         ffilter.add_pattern('*')
@@ -167,7 +167,7 @@ class _BaseFileChooserDialog(gtk.Dialog):
             self.files_chosen([])
 
     def _update_preview(self, *args):
-        path = self.filechooser.get_preview_filename()
+        path = self.filechooser.get_preview_filename().decode('utf-8')
 
         if path and os.path.isfile(path):
             pixbuf = thumbnail_tools.get_thumbnail(path, prefs['create thumbnails'])
@@ -180,8 +180,7 @@ class _BaseFileChooserDialog(gtk.Dialog):
             else:
                 pixbuf = image_tools.add_border(pixbuf, 1)
                 self._preview_image.set_from_pixbuf(pixbuf)
-                self._namelabel.set_text(encoding.to_unicode(
-                    os.path.basename(path)))
+                self._namelabel.set_text(os.path.basename(path))
                 self._sizelabel.set_text(
                     '%.1f KiB' % (os.stat(path).st_size / 1024.0))
         else:

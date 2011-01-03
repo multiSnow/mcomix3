@@ -20,6 +20,8 @@ import constants
 import archive_tools
 import tools
 import image_tools
+import portability
+import encoding
 
 def get_thumbnail(path, create=True, dst_dir=constants.THUMBNAIL_PATH):
     """Return a thumbnail pixbuf for the file at <path> by looking in the
@@ -80,9 +82,7 @@ def _get_new_thumbnail(path, create, dst_dir):
     directory.
     """
     if archive_tools.archive_mime_type(path) is not None:
-        if create:
-            return _get_new_archive_thumbnail(path, dst_dir)
-        return None
+        return _get_new_archive_thumbnail(path, dst_dir, create)
 
     if create:
         return _create_thumbnail(path, dst_dir)
@@ -90,9 +90,10 @@ def _get_new_thumbnail(path, create, dst_dir):
     return image_tools.load_pixbuf_size(path, 128, 128)
 
 
-def _get_new_archive_thumbnail(path, dst_dir):
+def _get_new_archive_thumbnail(path, dst_dir, create=True):
     """Return a new thumbnail pixbuf for the archive at <path>, and save it
-    to disk; <dst_dir> is the base thumbnail directory.
+    to disk depending on <create> being True or False;
+    <dst_dir> is the base thumbnail directory.
     """
     extractor = archive_extractor.Extractor()
     tmpdir = tempfile.mkdtemp(prefix='mcomix_archive_thumb.')
@@ -112,9 +113,12 @@ def _get_new_archive_thumbnail(path, dst_dir):
         condition.wait()
 
     condition.release()
-    pixbuf = _create_thumbnail(path, dst_dir, image_path=image_path)
-    shutil.rmtree(tmpdir)
+    if create:
+        pixbuf = _create_thumbnail(path, dst_dir, image_path=image_path)
+    else:
+        pixbuf = image_tools.load_pixbuf_size(image_path, 128, 128)
 
+    shutil.rmtree(tmpdir)
     return pixbuf
 
 
@@ -142,7 +146,7 @@ def _create_thumbnail(path, dst_dir, image_path=None):
         return pixbuf
 
     mime = mime['mime_types'][0]
-    uri = 'file://' + pathname2url(os.path.normpath(path))
+    uri = portability.uri_prefix() + pathname2url(encoding.to_utf8(os.path.normpath(path)))
     thumbpath = _uri_to_thumbpath(uri, dst_dir)
     stat = os.stat(path)
     mtime = str(int(stat.st_mtime))
@@ -172,7 +176,7 @@ def _create_thumbnail(path, dst_dir, image_path=None):
     return pixbuf
 
 def _path_to_thumbpath(path, dst_dir):
-    uri = 'file://' + pathname2url(os.path.normpath(path))
+    uri = portability.uri_prefix() + pathname2url(encoding.to_utf8(os.path.normpath(path)))
     return _uri_to_thumbpath(uri, dst_dir)
 
 def _uri_to_thumbpath(uri, dst_dir):
