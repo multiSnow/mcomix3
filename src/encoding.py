@@ -1,8 +1,7 @@
 """encoding.py - Encoding handler."""
 
 import sys
-
-_filesystemencoding = sys.getfilesystemencoding()
+import locale
 
 def to_unicode(string):
     """Convert <string> to unicode. First try the default filesystem
@@ -12,7 +11,10 @@ def to_unicode(string):
     if isinstance(string, unicode):
         return string
 
-    for encoding in (_filesystemencoding, 'utf-8', 'latin-1'):
+    for encoding in (locale.getpreferredencoding(),
+        sys.getfilesystemencoding(),
+        'utf-8',
+        'latin-1'):
 
         try:
             ustring = unicode(string, encoding)
@@ -21,7 +23,7 @@ def to_unicode(string):
         except (UnicodeError, LookupError):
             pass
 
-    return u'???'
+    return string.decode('utf-8', 'replace')
 
 def to_utf8(string):
     """ Helper function that converts unicode objects to UTF-8 encoded
