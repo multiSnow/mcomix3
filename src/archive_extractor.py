@@ -2,25 +2,11 @@
 
 import sys
 import os
-import zipfile
-import tarfile
 import threading
 import gtk
-import process
 import archive_tools
 import constants
 
-can_handle_pdf = False
-
-#try:
-#    import poppler
-#    import cairo
-#    can_handle_pdf = True
-#except Exception:
-#    can_handle_pdf = False
-can_handle_pdf = False
-
-_rar_exec = None
 
 class Extractor:
 
@@ -48,73 +34,32 @@ class Extractor:
         """
         self._src = src
         self._dst = dst
-
-        if type != None:
-            self._type = type
-        else:
-            self._type = archive_tools.archive_mime_type(src)
-
+        self._type = type or archive_tools.archive_mime_type(src)
         self._files = []
         self._extracted = {}
         self._stop = False
         self._extract_thread = None
         self._condition = threading.Condition()
 
-        if self._type == constants.ZIP:
-            self._zfile = zipfile.ZipFile(src, 'r')
-            self._files = self._zfile.namelist()
+        self._archive = archive_tools.get_archive_handler(src)
 
-        elif self._type in (constants.TAR, constants.GZIP, constants.BZIP2):
-            self._tfile = tarfile.open(src, 'r')
-            self._files = self._tfile.getnames()
-
-        elif self._type == constants.RAR:
-            global _rar_exec
-
-            if _rar_exec is None:
-                _rar_exec = archive_tools._get_rar_exec()
-
-                if _rar_exec is None:
-                    print _('! Could not find RAR file extractor.')
-
-                    dialog = gtk.MessageDialog(None, 0, gtk.MESSAGE_WARNING,
-                        gtk.BUTTONS_CLOSE,
-                        _("Could not find RAR file extractor!"))
-
-                    dialog.format_secondary_markup(
-                        _("You need either the <i>rar</i> or the <i>unrar</i> program installed in order to read RAR (.cbr) files."))
-
-                    dialog.run()
-                    dialog.destroy()
-
-                    return None
-
-            proc = process.Process([_rar_exec, 'vb', '--', src])
-            fd = proc.spawn()
-            self._files = [name.rstrip(os.linesep) for name in fd.readlines()]
-            fd.close()
-            proc.wait()
-
-        elif self._type == constants.PDF:
-            global can_handle_pdf
-
-            #if can_handle_pdf:
-
-            #    self._source_pdf = poppler.document_new_from_file ('file://' + self._src, None)
-            #    self._num_of_pages = self._source_pdf.get_n_pages()
-
-            #    self._files = [self._dst + str(n) + '.png' for n in range(0, self._num_of_pages)]
-
-            #else:
-            #    return None
-
+        if self._archive:
+            self._files = self._archive.list_contents()
+            self._setupped = True
+            return self._condition
         else:
-            print _('! Non-supported archive format:'), src
+            print _('! Non-supported archive format:') + ' ' + \
+                os.path.splitext(src)[1][1:]
+
+            #dialog = gtk.MessageDialog(None, 0, gtk.MESSAGE_WARNING,
+            #    gtk.BUTTONS_CLOSE, _("Could not find file extractor!"))
+
+            #dialog.format_secondary_markup(
+            #    _("You need a matching extractor to read files of type ") + \
+            #    os.path.splitext(src)[1][1:].upper())
+            #dialog.run()
+            #dialog.destroy()
             return None
-
-        self._setupped = True
-
-        return self._condition
 
     def get_files(self):
         """Return a list of names of all the files the extractor is currently
@@ -174,20 +119,13 @@ class Extractor:
         """Close any open file objects, need only be called manually if the
         extract() method isn't called.
         """
-        if self._type == constants.ZIP:
-            self._zfile.close()
-        elif self._type in (constants.TAR, constants.GZIP, constants.BZIP2):
-            self._tfile.close()
+        if self._archive:
+            self._archive.close()
 
     def _thread_extract(self):
         """Extract the files in the file list one by one."""
-
-        if self._type != constants.PDF:
-            for name in self._files:
-                self._extract_file(name)
-        else:
-            for n in range(0, self._num_of_pages):
-                self._extract_file(n)
+        for name in self._files:
+            self._extract_file(name)
 
         self.close()
 
@@ -201,46 +139,15 @@ class Extractor:
             sys.exit(0)
 
         try:
-            if self._type == constants.ZIP:
-                dst_path = os.path.join(self._dst, name)
+            dst_path = os.path.join(self._dst, name)
+            self._archive.extract(name, dst_path)
 
-                if not os.path.exists(os.path.dirname(dst_path)):
-                    os.makedirs(os.path.dirname(dst_path))
-
-                new = open(dst_path, 'wb')
-                new.write(self._zfile.read(name))
-                new.close()
-
-            elif self._type in (constants.TAR, constants.GZIP, constants.BZIP2):
-
-                if os.path.normpath(os.path.join(self._dst, name)).startswith(
-                  self._dst):
-                    self._tfile.extract(name, self._dst)
-
-                else:
-                    print _('! Non-local tar member:'), name, '\n'
-
-            elif self._type == constants.RAR:
-
-                if _rar_exec is not None:
-                    proc = process.Process([_rar_exec, 'x', '-kb', '-p-',
-                        '-o-', '-inul', '--', self._src, name, self._dst])
-                    proc.spawn()
-                    proc.wait()
-                else:
-                    print _('! Could not find RAR file extractor.')
-
-            elif self._type == constants.PDF:
-                pass
-                #page = self._source_pdf.get_page(n)
-                #width, height = page.get_size()
-
-        except Exception:
+        except Exception, ex:
             # Better to ignore any failed extractions (e.g. from a corrupt
             # archive) than to crash here and leave the main thread in a
             # possible infinite block. Damaged or missing files *should* be
             # handled gracefully by the main program anyway.
-            pass
+            print _('! Extraction error: '), str(ex)
 
         self._condition.acquire()
         self._extracted[name] = True
