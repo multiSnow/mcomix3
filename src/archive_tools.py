@@ -80,7 +80,7 @@ def get_archive_handler(path):
     elif mime in (constants.TAR, constants.GZIP, constants.BZIP2):
         return archive.tar.TarArchive(path)
     elif mime == constants.RAR:
-        return archive.rar.RarExecArchive(path)
+        return archive.rar.RarArchive(path)
     else:
         return None
 
