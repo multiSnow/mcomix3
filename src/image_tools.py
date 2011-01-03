@@ -1,12 +1,22 @@
 """image_tools.py - Various image manipulations."""
 
 import os
+import operator
+import itertools
+import bisect
 import gtk
 import Image
 import ImageEnhance
 import ImageOps
 
 from preferences import prefs
+
+# File formats supported by PyGTK (sorted list of extensions)
+_supported_formats = sorted(
+    [ extension.lower() for extlist in
+        itertools.imap(operator.itemgetter("extensions"),
+                       gtk.gdk.pixbuf_get_formats())
+        for extension in extlist])
 
 def fit_in_rectangle(src, width, height, scale_up=False, rotation=0):
     """Scale (and return) a pixbuf so that it fits in a rectangle with
@@ -271,7 +281,8 @@ def is_image_file(path):
     """Return True if the file at <path> is an image file recognized by PyGTK.
     """
     if os.path.isfile(path):
-        info = gtk.gdk.pixbuf_get_file_info(path)
-        return info is not None
-
-    return False
+        ext = os.path.splitext(path)[1][1:].lower()
+        ext_index = bisect.bisect_left(_supported_formats, ext)
+        return ext_index != len(_supported_formats) and _supported_formats[ext_index] == ext
+    else:
+        return False
