@@ -5,8 +5,6 @@
 import process
 import archive_base
 
-_executable = RarExecArchive._find_unrar_executable()
-
 class RarExecArchive(archive_base.ExternalExecutableArchive):
     """ RAR file extractor using the unrar/rar executable. """
 
@@ -17,7 +15,7 @@ class RarExecArchive(archive_base.ExternalExecutableArchive):
         return [u'vb', u'--']
 
     def _get_extract_arguments(self):
-        return [u'p', u'-inul', u'--']
+        return [u'p', u'-inul', u'-p-', u'--']
 
     @staticmethod
     def _find_unrar_executable():
@@ -32,5 +30,7 @@ class RarExecArchive(archive_base.ExternalExecutableArchive):
                 return command
 
         return None
+
+_executable = RarExecArchive._find_unrar_executable()
 
 # vim: expandtab:sw=4:ts=4

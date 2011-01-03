@@ -109,9 +109,9 @@ class ExternalExecutableArchive(NonUnicodeArchive):
         raise NotImplementedError, "Subclasses must override this method."
 
     def list_contents(self):
-        proc = process.Process([self._get_executable] +
+        proc = process.Process([self._get_executable()] +
             self._get_list_arguments() +
-            self.archive)
+            [self.archive])
         fd = proc.spawn()
 
         filenames = [self._unicode_filename(filename.rstrip(os.linesep))
@@ -132,21 +132,21 @@ class ExternalExecutableArchive(NonUnicodeArchive):
             self.list_contents()
 
         # Create directory if it doesn't exist
-        destination_directory = os.path.split(destination_path)[0]
-        self._create_directory(destination_directory)
-
-        proc = process.Process([self._get_executable] +
+        destination_dir = os.path.split(destination_path)[0]
+        self._create_directory(destination_dir)
+        proc = process.Process([self._get_executable()] +
             self._get_extract_arguments() +
-            self.archive, self._original_name(filename)))
+            [self.archive, self._original_filename(filename)])
         fd = proc.spawn()
 
-        # Create new file
-        new = open(destination_path, 'wb')
-        new.write(fd.read())
-        new.close()
+        if fd:
+            # Create new file
+            new = open(destination_path, 'wb')
+            new.write(fd.read())
+            new.close()
 
-        # Wait for process to finish
-        fd.close()
-        proc.wait()
+            # Wait for process to finish
+            fd.close()
+            proc.wait()
 
 # vim: expandtab:sw=4:ts=4

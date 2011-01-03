@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 
-""" Unicode-aware wrapper for zipfile.ZipFile. """
+""" Unicode-aware wrapper for tarfile.TarFile. """
 
 import os
 import tarfile
@@ -17,7 +17,7 @@ class TarArchive(archive_base.NonUnicodeArchive):
 
     def extract(self, filename, destination_path):
         destination_dir = os.path.split(destination_path)[0]
-        self._create_directory(destination_path)
+        self._create_directory(destination_dir)
 
         new = file(destination_path, 'wb')
         file_object = self.tar.extractfile(self._original_filename(filename))
