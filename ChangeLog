@@ -1,5 +1,15 @@
-MComix 0.90.3
+MComix 0.90.3 (SVN)
     - Added ability to apply current changes in the edit archive window.
+
+    - Various usability fixes on Win32, including Unicode filenames,
+      loading speed and problems with recently opened files.
+
+    - Magnifying lens is now hotkeyed to 'L', while 'G' is Go to page. (by
+      Nephiel)
+
+    - Right-click menu is now more suitable for fullscreen reading, adding
+      several menu items previously only available via normal menu (by
+      Nephiel)
 
 MComix 0.90 Initial Release
 
