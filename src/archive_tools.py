@@ -6,6 +6,9 @@ import tarfile
 import process
 import archive_extractor
 import constants
+import archive.zip
+import archive.rar
+import archive.tar
 #import poppler
 #import cairo
 
@@ -67,17 +70,18 @@ def get_archive_info(path):
 
     return (mime, num_pages, size)
 
+def get_archive_handler(path):
+    """ Returns a fitting extractor handler for the archive passed
+    in <path>. Returns None if no matching extractor was found. """
+    mime = archive_mime_type(path)
 
-def _get_rar_exec():
-    """Return the name of the RAR file extractor executable, or None if
-    no such executable is found.
-    """
-    for command in ('unrar', 'rar'):
-
-        if process.Process([command]).spawn() is not None:
-            return command
-
-    return None
-
+    if mime == constants.ZIP:
+        return archive.zip.ZipArchive(path)
+    elif mime in (constants.TAR, constants.GZIP, constants.BZIP2):
+        return archive.tar.TarArchive(path)
+    elif mime == constants.RAR:
+        return archive.rar.RarExecArchive(path)
+    else:
+        return None
 
 # vim: expandtab:sw=4:ts=4
