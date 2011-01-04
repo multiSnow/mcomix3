@@ -25,6 +25,9 @@ MComix 0.90.3 (SVN)
     - Fixed rar/unrar failing regularly on Win32 when the archive contains
       files not matching the current locale.
 
+    - Go to Page is now enabled even when the archive is still loading (by
+      Nephiel)
+
 MComix 0.90 Initial Release
 
     - Changed the mechanism of page flipping.
