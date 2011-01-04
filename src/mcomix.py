@@ -99,7 +99,7 @@ def run():
     """Run the program."""
     # Use gettext translations as found in the source dir, otherwise based on
     # the install path.
-    exec_path = os.path.abspath(sys.argv[0])
+    exec_path = os.path.abspath(main.__file__)
     base_dir = os.path.dirname(os.path.dirname(exec_path))
 
     if os.path.isdir(os.path.join(base_dir, 'messages')):
