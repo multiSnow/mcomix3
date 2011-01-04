@@ -274,7 +274,6 @@ class MainUI(gtk.UIManager):
                     <separator />
                     <menuitem action="slideshow" />
                 </menu>
-                <separator />
                 <menu action="menu_view_popup">
                     <menuitem action="fullscreen" />
                     <menuitem action="double_page" />
@@ -288,6 +287,11 @@ class MainUI(gtk.UIManager):
                     <menuitem action="enhance_image" />
                     <separator />
                     <menuitem action="lens" />
+                        <menu action="menu_zoom">
+                        <menuitem action="zoom_in" />
+                        <menuitem action="zoom_out" />
+                        <menuitem action="zoom_original" />
+                    </menu>
                     <separator />
                     <menu action="menu_toolbars">
                         <menuitem action="menubar" />
@@ -299,26 +303,19 @@ class MainUI(gtk.UIManager):
                         <menuitem action="hide all" />
                     </menu>
                 </menu>
-                <menu action="menu_zoom">
-                    <menuitem action="zoom_in" />
-                    <menuitem action="zoom_out" />
-                    <menuitem action="zoom_original" />
-                </menu>
                 <menu action="menu_bookmarks_popup">
                 </menu>
                 <separator />
-                <menuitem action="properties" />
-                <menuitem action="comments" />
-                <menuitem action="preferences" />
-                <separator />
-                <menuitem action="edit_archive" />
-                <separator />
+                <menuitem action="open" />
                 <menu action="menu_recent_popup">
                 </menu>
-                <separator />
-                <menuitem action="open" />
                 <menuitem action="library" />
                 <separator />
+                <menuitem action="properties" />
+                <menuitem action="edit_archive" />
+                <menuitem action="comments" />
+                <separator />
+                <menuitem action="preferences" />
                 <menuitem action="about" />
                 <separator />
                 <menuitem action="close" />
