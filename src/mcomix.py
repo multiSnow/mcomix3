@@ -62,7 +62,7 @@ try:
 except AssertionError:
     print _("You don't have the required version of the Python Imaging"),
     print _('Library (PIL) installed.')
-    print _('Installed PIL version is: %s' % Image.VERSION)
+    print _('Installed PIL version is: %s') % Image.VERSION
     print _('Required PIL version is: 1.1.5 or higher')
     sys.exit(1)
 

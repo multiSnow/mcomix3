@@ -38,7 +38,7 @@ class Pageselector(gtk.Dialog):
         self._page_spinner = gtk.SpinButton(self._selector_adjustment)
         self._page_spinner.connect( 'value-changed', self._cb_value_changed )
         self._page_spinner.set_activates_default(True)
-        self._pages_label = gtk.Label(' of %s' % _(self._number_of_pages))
+        self._pages_label = gtk.Label(_(' of %s') % self._number_of_pages)
         self._pages_label.set_alignment(0, 1)
 
         preview_box = gtk.HBox()

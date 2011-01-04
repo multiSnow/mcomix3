@@ -48,8 +48,7 @@ class Extractor:
             self._setupped = True
             return self._condition
         else:
-            print _('! Non-supported archive format:') + ' ' + \
-                os.path.splitext(src)[1][1:]
+            print _('! Non-supported archive format: %s') % os.path.splitext(src)[1][1:]
 
             #dialog = gtk.MessageDialog(None, 0, gtk.MESSAGE_WARNING,
             #    gtk.BUTTONS_CLOSE, _("Could not find file extractor!"))
