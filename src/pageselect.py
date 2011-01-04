@@ -2,6 +2,7 @@
 
 import gtk
 import image_tools
+import constants
 
 class Pageselector(gtk.Dialog):
 
@@ -44,11 +45,15 @@ class Pageselector(gtk.Dialog):
         preview_box.set_size_request(200, 150)
 
         self._image_preview = gtk.Image()
-        self._image_preview.set_from_pixbuf(
-                    image_tools.add_border(
-                       self._window.thumbnailsidebar._thumb_cache[
-                            int(self._selector_adjustment.value) - 1 ],
-                        1) )
+        if self._window.thumbnailsidebar._thumb_cache_is_complete:
+            self._image_preview.set_from_pixbuf(
+                        image_tools.add_border(
+                           self._window.thumbnailsidebar._thumb_cache[
+                                int(self._selector_adjustment.value) - 1 ],
+                            1) )
+        else:
+            self._image_preview.set_from_pixbuf(constants.MISSING_IMAGE_ICON)
+
         preview_box.pack_start(self._image_preview)
 
         spinner_box = gtk.HBox()
@@ -69,11 +74,14 @@ class Pageselector(gtk.Dialog):
         self.show_all()
 
     def _cb_value_changed(self, *args):
-        self._image_preview.set_from_pixbuf(
-                    image_tools.add_border(
-                       self._window.thumbnailsidebar._thumb_cache[
-                            int(self._selector_adjustment.value) - 1 ],
-                        1) )
+        if self._window.thumbnailsidebar._thumb_cache_is_complete:
+            self._image_preview.set_from_pixbuf(
+                        image_tools.add_border(
+                           self._window.thumbnailsidebar._thumb_cache[
+                                int(self._selector_adjustment.value) - 1 ],
+                            1) )
+        else:
+            self._image_preview.set_from_pixbuf(constants.MISSING_IMAGE_ICON)
 
         while gtk.events_pending():
             gtk.main_iteration(False)

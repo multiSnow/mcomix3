@@ -388,6 +388,7 @@ class MainUI(gtk.UIManager):
                    'previous_page',
                    'first_page',
                    'last_page',
+                   'go_to',
                    'refresh_archive',
                    'next_archive',
                    'previous_archive',
@@ -396,11 +397,8 @@ class MainUI(gtk.UIManager):
 
         comment = ('comments',)
 
-        thumbnail = ('go_to',)
-
         general_sensitive = False
         comment_sensitive = False
-        thumbnail_sensitive = False
 
         if self._window.filehandler.file_loaded:
             general_sensitive = True
@@ -408,17 +406,11 @@ class MainUI(gtk.UIManager):
             if self._window.filehandler.get_number_of_comments():
                 comment_sensitive = True
 
-            if self._window.thumbnailsidebar._loaded:
-                thumbnail_sensitive = True
-
         for name in general:
             self._actiongroup.get_action(name).set_sensitive(general_sensitive)
 
         for name in comment:
             self._actiongroup.get_action(name).set_sensitive(comment_sensitive)
-
-        for name in thumbnail:
-            self._actiongroup.get_action(name).set_sensitive(thumbnail_sensitive)
 
         self.bookmarks.set_sensitive(general_sensitive)
 
