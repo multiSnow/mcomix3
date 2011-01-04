@@ -118,7 +118,7 @@ def _get_new_archive_thumbnail(path, dst_dir, create=True):
     else:
         pixbuf = image_tools.load_pixbuf_size(image_path, 128, 128)
 
-    shutil.rmtree(tmpdir)
+    shutil.rmtree(tmpdir, True)
     return pixbuf
 
 
