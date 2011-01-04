@@ -2,6 +2,7 @@
 
 import gc
 import subprocess
+import sys
 
 class Process:
 
@@ -18,7 +19,16 @@ class Process:
         """Setup a Process where <args> is a sequence of arguments that defines
         the process, e.g. ['ls', '-a'].
         """
-        self._args = args
+        # Convert argument vector to system's file encoding where necessary
+        # to prevent automatic conversion when appending Unicode strings
+        # to byte strings later on.
+        self._args = []
+        for arg in args:
+            if isinstance(arg, unicode):
+                self._args.append(arg.encode(sys.getfilesystemencoding()))
+            else:
+                self._args.append(arg)
+
         self._proc = None
 
     def _exec(self):
@@ -28,7 +38,8 @@ class Process:
         try:
             self._proc = subprocess.Popen(self._args, stdout=subprocess.PIPE)
             return self._proc.stdout
-        except Exception:
+        except Exception, ex:
+            print _("! Error spawning process"), str(ex)
             return None
 
     def spawn(self):

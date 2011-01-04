@@ -22,6 +22,9 @@ MComix 0.90.3 (SVN)
       and can be placed either in usual system directories such as
       /usr/lib or C:\Windows\system32, or directly in MComix' root directory.
 
+    - Fixed rar/unrar failing regularly on Win32 when the archive contains
+      files not matching the current locale.
+
 MComix 0.90 Initial Release
 
     - Changed the mechanism of page flipping.
