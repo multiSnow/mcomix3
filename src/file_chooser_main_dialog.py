@@ -19,11 +19,11 @@ class _MainFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog):
         ffilter.add_pixbuf_formats()
         ffilter.set_name(_('All images'))
         self.filechooser.add_filter(ffilter)
-        self.add_filter(_('JPEG images'), ('image/jpeg',))
-        self.add_filter(_('PNG images'), ('image/png',))
-        self.add_filter(_('GIF images'), ('image/gif',))
-        self.add_filter(_('TIFF images'), ('image/tiff',))
-        self.add_filter(_('BMP images'), ('image/bmp',))
+        self.add_filter(_('JPEG images'), ('image/jpeg',), ('*.jpg', '*.jpeg'))
+        self.add_filter(_('PNG images'), ('image/png',), ('*.png',))
+        self.add_filter(_('GIF images'), ('image/gif',), ('*.gif',))
+        self.add_filter(_('TIFF images'), ('image/tiff',), ('*.tiff',))
+        self.add_filter(_('BMP images'), ('image/bmp',), ('*.bmp',))
 
         filters = self.filechooser.list_filters()
         try:

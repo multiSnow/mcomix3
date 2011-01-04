@@ -79,17 +79,22 @@ class _BaseFileChooserDialog(gtk.Dialog):
         self.add_filter(_('All Archives'), ('application/x-zip',
             'application/zip', 'application/x-rar', 'application/x-tar',
             'application/x-gzip', 'application/x-bzip2', 'application/x-cbz',
-            'application/x-cbr', 'application/x-cbt'))
+            'application/x-cbr', 'application/x-cbt'), ('*.zip',
+            '*.rar', '*.tar', '*.gz', '*.bz2', '*.bzip2', '*.cbz',
+            '*.cbr', '*.cbt'))
 
         self.add_filter(_('ZIP archives'),
-            ('application/x-zip', 'application/zip', 'application/x-cbz'))
+            ('application/x-zip', 'application/zip', 'application/x-cbz'),
+            ('*.zip', '*.cbz'))
 
         self.add_filter(_('RAR archives'),
-            ('application/x-rar', 'application/x-cbr'))
+            ('application/x-rar', 'application/x-cbr'),
+            ('*.rar', '*.cbr'))
 
         self.add_filter(_('Tar archives'),
             ('application/x-tar', 'application/x-gzip',
-            'application/x-bzip2', 'application/x-cbt'))
+            'application/x-bzip2', 'application/x-cbt'),
+            ('*.tar', '*.gz', '*.bz2', '*.bzip2', '*.cbt'))
 
         try:
             if (self.__class__._last_activated_file is not None
@@ -106,14 +111,16 @@ class _BaseFileChooserDialog(gtk.Dialog):
 
         self.show_all()
 
-    def add_filter(self, name, mimes):
-        """Add a filter, called <name>, for each mime type in <mimes> to
-        the filechooser.
+    def add_filter(self, name, mimes, patterns=[]):
+        """Add a filter, called <name>, for each mime type in <mimes> and
+        each pattern in <patterns> to the filechooser.
         """
         ffilter = gtk.FileFilter()
 
         for mime in mimes:
             ffilter.add_mime_type(mime)
+        for pattern in patterns:
+            ffilter.add_pattern(pattern)
 
         ffilter.set_name(name)
         self.filechooser.add_filter(ffilter)
