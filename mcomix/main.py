@@ -1056,7 +1056,7 @@ class MainWindow(gtk.Window):
             gtk.main_quit()
 
         if prefs['auto load last file'] and self.filehandler.file_loaded:
-            prefs['path to last file'] = self.filehandler.get_real_path()
+            prefs['path to last file'] = self.imagehandler.get_real_path()
             prefs['page of last file'] = self.imagehandler.get_current_page()
 
         else:
