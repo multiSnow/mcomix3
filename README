@@ -9,29 +9,25 @@
 
 === Installation ==============================================================
 
-  Run "python install.py install" as root to install MComix in /usr/local.
-  To uninstall, simply run "python install.py uninstall".
+
+  Run "python setup.py install" as root. This will install MComix in the
+  site-packages folder of Python. An executable "mcomix" will be placed in
+  /usr/bin.
   
-  If order to install MComix in another base directory, use the --dir option.
+  If order to install MComix in another base directory, use the --prefix option.
+  The option --user explicitly installs MComix in the user's home directory,
+  which does not need root access.
   
   Example:
   
-      # python install.py --dir /usr install
-
-  If you have installed with --dir, do not forget to use the same option when
-  uninstalling.
-  
-  There is another option, --no-mime, that can be used to tell install.py that
-  it should not register new mime types for cbz, cbr and cbt archives, or
-  install the thumbnail creation script for these files that is used by some
-  file managers (such as Nautilus and Thunar).
+      # python install.py --prefix /usr install
   
   As an example of how to install MComix from the downloaded tar.gz file, run
   as the root user (via su or sudo):
   
       # tar -xzf mcomix-x.y.tar.gz
       # cd mcomix-x.y
-      # python install.py install
+      # python setup.py install
   
   If you don't want to install MComix in some system directory, you can just
   execute the file src/mcomix.py in the unpacked MComix directory to run the
@@ -40,14 +36,19 @@
   
 === Dependencies ==============================================================
   
-  MComix needs Python 2.4, PyGTK 2.12 and PIL (Python Imaging Library) 1.1.5 or
-  newer to function. 
+  MComix needs Python 2.5, Setuptools, PyGTK 2.12 and PIL (Python Imaging 
+  Library) 1.1.5 or newer to function.
   
   To use the library you need pysqlite (which is usually included in the
   standard library for Python 2.5 and later).
   
   You also need either the "unrar" or the "rar" program installed if you wish
   to read RAR (.cbr) archives.
+
+  Alternatively, MComix can use libunrar from Rarlab. Place libunrar.so (or
+  unrar.dll on Win32) either in the system's standard library path (/usr/lib
+  or C:\Windows\system32), or directly in MComix' root directory when run
+  without having first installed MComix.
   
 === Credits ===================================================================
   
