@@ -6,6 +6,8 @@ resort to calling rar/unrar manually. """
 import sys, os
 import ctypes, ctypes.util
 
+from mcomix import constants
+
 class UnrarDll(object):
     """ Wrapper class for libunrar. All string values passed to this class must be unicode objects.
     In turn, all values returned are also unicode. """
@@ -251,16 +253,11 @@ def _get_unrar_dll():
             except WindowsError:
                 pass
 
-        # The file wasn't found in PATH, try Comix' root directory
-        # Try to deduce this by going down one level from ../src/comix.py
-        src_path = os.path.dirname(os.path.abspath(__file__))
-        comix_path = os.path.split(src_path)[0]
-
-        for path in (src_path, comix_path):
-            try:
-                return ctypes.windll.LoadLibrary(os.path.join(path, "unrar.dll"))
-            except WindowsError:
-                pass
+        # The file wasn't found in PATH, try MComix' root directory
+        try:
+            return ctypes.windll.LoadLibrary(os.path.join(constants.BASE_PATH, "unrar.dll"))
+        except WindowsError:
+            pass
 
         # Last attempt, just use the current directory
         try:
