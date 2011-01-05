@@ -4,7 +4,7 @@
   
   MComix is a user-friendly, customizable image viewer. It is specifically
   designed to handle comic books, but also serves as a generic viewer. It
-  reads images in ZIP, RAR or tar archives as well as plain image files. It
+  reads images in ZIP, RAR, 7Zip or tar archives as well as plain image files. It
   is written in Python and uses GTK+ through the PyGTK bindings. 
 
 === Installation ==============================================================
@@ -49,6 +49,8 @@
   unrar.dll on Win32) either in the system's standard library path (/usr/lib
   or C:\Windows\system32), or directly in MComix' root directory when run
   without having first installed MComix.
+
+  To read 7Zip archives, you need to have the "7z" program installed.
   
 === Credits ===================================================================
   

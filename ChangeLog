@@ -38,6 +38,9 @@ MComix 0.90.3 (SVN)
       A setuptools-based setup.py replaces install.py. This should help for
       uniform installs across different operating systems.
 
+    - Added support for the 7zip archive format. As with rar/unrar, this
+      requires the "7z" executable being installed and on PATH.
+
 MComix 0.90 Initial Release
 
     - Changed the mechanism of page flipping.
