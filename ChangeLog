@@ -28,6 +28,16 @@ MComix 0.90.3 (SVN)
     - Go to Page is now enabled even when the archive is still loading (by
       Nephiel)
 
+    - MComix now uses a slightly different directory structure than before. 
+      The 'src' folder is now 'mcomix' to provide a correct package name.
+      'mcomix.py' is now 'mcomixstarter.py' to avoid confusing Python by
+      having a module with the same name as the package around.
+      Translations and images required by the GUI are now sub-packages of
+      'mcomix'. 
+
+      A setuptools-based setup.py replaces install.py. This should help for
+      uniform installs across different operating systems.
+
 MComix 0.90 Initial Release
 
     - Changed the mechanism of page flipping.
