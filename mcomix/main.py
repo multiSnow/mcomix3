@@ -502,6 +502,7 @@ class MainWindow(gtk.Window):
 
         if self.imagehandler.set_page(num):
             self.new_page(at_bottom=at_bottom)
+            self.slideshow.update_delay()
 
     def next_page(self, *args):
         new_page_number = self.imagehandler.next_page()
