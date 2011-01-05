@@ -2,9 +2,9 @@
 
 """ RAR archive extractor. """
 
-import process
-import archive_base
-import rarfile
+from mcomix import process
+from mcomix.archive import archive_base
+from mcomix.archive import rarfile
 
 class RarExecArchive(archive_base.ExternalExecutableArchive):
     """ RAR file extractor using the unrar/rar executable. """

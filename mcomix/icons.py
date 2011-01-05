@@ -5,6 +5,8 @@ import gtk
 import constants
 import image_tools
 
+from pkg_resources import resource_string
+
 def load_icons():
     _icons = (('gimp-flip-horizontal.png',   'mcomix-flip-horizontal'),
               ('gimp-flip-vertical.png',     'mcomix-flip-vertical'),
@@ -35,29 +37,16 @@ def load_icons():
               ('next-archive.png',           'mcomix-next-archive'),
               ('previous-archive.png',       'mcomix-previous-archive'))
 
-    icon_path = None
-    # Try source directory.
-    if os.path.isfile(os.path.join(constants.BASE_PATH, 'images/16x16/mcomix.png')):
-        icon_path = os.path.join(constants.BASE_PATH, 'images')
-    else: # Try system directories.
-        for prefix in [constants.BASE_PATH, '/usr', '/usr/local', '/usr/X11R6']:
-            if os.path.isfile(os.path.join(prefix,
-              'share/mcomix/images/16x16/mcomix.png')): # Try one
-                icon_path = os.path.join(prefix, 'share/mcomix/images')
-                break
-    if icon_path is None:
-        return
-
     # Load window title icon.
-    pixbuf = image_tools.load_pixbuf(os.path.join(icon_path,
-        '16x16/mcomix.png'))
+    icon_data = resource_string('mcomix.images', '16x16/mcomix.png')
+    pixbuf = image_tools.load_pixbuf_data(icon_data)
     gtk.window_set_default_icon(pixbuf)
     # Load application icons.
     factory = gtk.IconFactory()
     for filename, stockid in _icons:
         try:
-            filename = os.path.join(icon_path, filename)
-            pixbuf = image_tools.load_pixbuf(filename)
+            icon_data = resource_string('mcomix.images', filename)
+            pixbuf = image_tools.load_pixbuf_data(icon_data)
             iconset = gtk.IconSet(pixbuf)
             factory.add(stockid, iconset)
         except Exception:

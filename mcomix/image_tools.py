@@ -223,6 +223,13 @@ def load_pixbuf_size(path, width, height):
     except:
         return None
 
+def load_pixbuf_data(imgdata):
+    """ Loads a pixbuf from the data passed in <imgdata>. """
+    loader = gtk.gdk.PixbufLoader()
+    loader.write(imgdata, len(imgdata))
+    loader.close()
+    return loader.get_pixbuf()
+
 def enhance(pixbuf, brightness=1.0, contrast=1.0, saturation=1.0,
   sharpness=1.0, autocontrast=False):
     """Return a modified pixbuf from <pixbuf> where the enhancement operations

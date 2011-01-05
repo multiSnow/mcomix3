@@ -4,9 +4,9 @@
 extraction and adding new archive formats. """
 
 import os
-import portability
-import encoding
-import process
+from mcomix import portability
+from mcomix import encoding
+from mcomix import process
 
 class BaseArchive(object):
     """ Base archive interface. All filenames passed from and into archives

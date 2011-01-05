@@ -73,7 +73,20 @@ except ImportError:
 
     sys.exit(1)
 
+try:
+    import pkg_resources
+
+except ImportError:
+    print _("The package 'pkg_resources' could not be found.")
+    print _("You need to install the 'setuptools' package, which also includes pkg_resources.")
+    sys.exit(1)
+
 import constants
+
+# Add the sources' base directory to PATH to allow development without
+# explicitly installing the package.
+sys.path.append(constants.BASE_PATH)
+
 import deprecated
 import image_tools
 import locale
@@ -97,18 +110,8 @@ def print_help():
 
 def run():
     """Run the program."""
-    # Use gettext translations as found in the source dir, otherwise based on
-    # the install path.
-    exec_path = os.path.abspath(main.__file__)
-    base_dir = os.path.dirname(os.path.dirname(exec_path))
-
-    if os.path.isdir(os.path.join(base_dir, 'messages')):
-        gettext.install('mcomix', os.path.join(base_dir, 'messages'),
-            unicode=True)
-
-    else:
-        gettext.install('mcomix', os.path.join(base_dir, 'share/locale'),
-            unicode=True)
+    message_path = pkg_resources.resource_filename("mcomix.messages", "")
+    gettext.install('mcomix', message_path, unicode=True)
 
     fullscreen = False
     show_library = False
