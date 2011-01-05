@@ -262,12 +262,17 @@ class ImageHandler:
         """Return True if the current state warrants use of virtual
         double page mode (i.e. if double page mode is on, the corresponding
         preference is set, and one of the two images that should normally
-        be displayed has a width that exceeds its height).
+        be displayed has a width that exceeds its height), or if currently
+        on the first page.
         """
         if (not self._window.is_double_page or
           not prefs['no double page for wide images'] or
           self.get_current_page() == self.get_number_of_pages()):
             return False
+
+        if (self.get_current_page() == 1 and
+            self._window.filehandler.archive_type is not None):
+            return True
 
         page1 = self._get_pixbuf(self._current_image_index)
         if page1.get_width() > page1.get_height():
