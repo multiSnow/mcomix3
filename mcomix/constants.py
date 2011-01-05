@@ -27,7 +27,7 @@ FILEINFO_PICKLE_PATH = os.path.join(DATA_DIR, 'file.pickle')
 CRASH_PICKLE_PATH = os.path.join(DATA_DIR, 'crash.pickle')
 
 ZOOM_MODE_BEST, ZOOM_MODE_WIDTH, ZOOM_MODE_HEIGHT, ZOOM_MODE_MANUAL = range(4)
-ZIP, RAR, TAR, GZIP, BZIP2, PDF = range(6)
+ZIP, RAR, TAR, GZIP, BZIP2, PDF, SEVENZIP = range(7)
 NORMAL_CURSOR, GRAB_CURSOR, WAIT_CURSOR = range(3)
 LIBRARY_DRAG_EXTERNAL_ID, LIBRARY_DRAG_BOOK_ID, LIBRARY_DRAG_COLLECTION_ID = range(3)
 
@@ -44,13 +44,14 @@ ARCHIVE_DESCRIPTIONS = {
                         TAR:   _('Tar archive'),
                         GZIP:  _('Gzip compressed tar archive'),
                         BZIP2: _('Bzip2 compressed tar archive'),
-                        RAR:   _('RAR archive')
+                        RAR:   _('RAR archive'),
+                        SEVENZIP: _('7z archive')
                        }
 
 ACCEPTED_COMMENT_EXTENSIONS = ['txt', 'nfo']
 
 SUPPORTED_IMAGE_REGEX = re.compile(r'\.(jpg|jpeg|png|gif|tif|tiff|bmp|ppm|pgm|pbm)\s*$', re.I)
-SUPPORTED_ARCHIVE_REGEX = re.compile(r'\.(cbz|cbr|cbt|zip|rar|tar|gz|bz2|bzip2)\s*$', re.I)
+SUPPORTED_ARCHIVE_REGEX = re.compile(r'\.(cbz|cbr|cbt|zip|rar|tar|gz|bz2|bzip2|7z)\s*$', re.I)
 
 _missing_icon_dialog = gtk.Dialog(None,None,0,None)
 _missing_icon_pixbuf = _missing_icon_dialog.render_icon(gtk.STOCK_MISSING_IMAGE, gtk.ICON_SIZE_LARGE_TOOLBAR)
