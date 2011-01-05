@@ -79,9 +79,9 @@ class _BaseFileChooserDialog(gtk.Dialog):
         self.add_filter(_('All Archives'), ('application/x-zip',
             'application/zip', 'application/x-rar', 'application/x-tar',
             'application/x-gzip', 'application/x-bzip2', 'application/x-cbz',
-            'application/x-cbr', 'application/x-cbt'), ('*.zip',
-            '*.rar', '*.tar', '*.gz', '*.bz2', '*.bzip2', '*.cbz',
-            '*.cbr', '*.cbt'))
+            'application/x-cbr', 'application/x-cbt', 'application/x-7z-compressed'),
+            ('*.zip', '*.rar', '*.tar', '*.gz', '*.bz2', '*.bzip2', 
+             '*.cbz', '*.cbr', '*.cbt', '*.7z'))
 
         self.add_filter(_('ZIP archives'),
             ('application/x-zip', 'application/zip', 'application/x-cbz'),
@@ -95,6 +95,9 @@ class _BaseFileChooserDialog(gtk.Dialog):
             ('application/x-tar', 'application/x-gzip',
             'application/x-bzip2', 'application/x-cbt'),
             ('*.tar', '*.gz', '*.bz2', '*.bzip2', '*.cbt'))
+
+        self.add_filter(_('7z archives'),
+            ('application/x-7z-compressed',), ('*.7z',))
 
         try:
             if (self.__class__._last_activated_file is not None

@@ -32,6 +32,7 @@ class RecentFilesMenu(gtk.RecentChooserMenu):
         rfilter.add_mime_type('application/x-cbz')
         rfilter.add_mime_type('application/x-cbr')
         rfilter.add_mime_type('application/x-cbt')
+        rfilter.add_mime_type('application/x-7z-compressed')
         # Win32 prefers file patterns instead of MIME types
         rfilter.add_pattern('*.zip')
         rfilter.add_pattern('*.rar')
@@ -40,6 +41,7 @@ class RecentFilesMenu(gtk.RecentChooserMenu):
         rfilter.add_pattern('*.tar')
         rfilter.add_pattern('*.gz')
         rfilter.add_pattern('*.bz2')
+        rfilter.add_pattern('*.7z')
         self.add_filter(rfilter)
 
         self.connect('item_activated', self._load)
