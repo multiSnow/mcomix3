@@ -108,14 +108,24 @@ class ExternalExecutableArchive(NonUnicodeArchive):
         to extract a file to STDOUT. """
         raise NotImplementedError, "Subclasses must override this method."
 
+    def _parse_list_output_line(self, line):
+        """ Parses the output of the external executable's list command
+        and return either a file path relative to the archive's root,
+        or None if the current line doesn't contain any file references. """
+
+        return line
+
     def list_contents(self):
         proc = process.Process([self._get_executable()] +
             self._get_list_arguments() +
             [self.archive])
         fd = proc.spawn()
 
-        filenames = [self._unicode_filename(filename.rstrip(os.linesep))
-                for filename in fd.readlines()]
+        filenames = [
+            self._unicode_filename(
+                self._parse_list_output_line(filename.rstrip(os.linesep)))
+            for filename in fd.readlines()
+            if self._parse_list_output_line(filename) is not None ]
 
         fd.close()
         proc.wait()
