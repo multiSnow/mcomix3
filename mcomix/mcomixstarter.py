@@ -21,6 +21,7 @@
 import os
 import sys
 import getopt
+import signal
 import gettext
 
 _ = gettext.gettext
@@ -172,6 +173,7 @@ def run():
         open_path=open_path, open_page=open_page)
     deprecated.check_for_deprecated_files(window)
 
+    signal.signal(signal.SIGTERM, lambda: gobject.idle_add(window.terminate_program))
     try:
         gtk.main()
     except KeyboardInterrupt: # Will not always work because of threading.
