@@ -248,6 +248,13 @@ class EventHandler:
                       not self._window.scroll(0, y_step)):
                         self._window.next_page()
 
+        # ---------------------------------------------------------------
+        # Register CTRL for scrolling only one page instead of two
+        # pages in double page mode
+        # ---------------------------------------------------------------
+        if event.keyval in (gtk.keysyms.Control_L, gtk.keysyms.Control_R):
+            self._window.imagehandler.force_single_step = True
+
         # ----------------------------------------------------------------
         # We kill the signals here for the Up, Down, Space and Enter keys,
         # or they will start fiddling with the thumbnail selector (bad).
@@ -262,6 +269,15 @@ class EventHandler:
             self._window.emit_stop_by_name('key_press_event')
 
             return True
+
+    def key_release_event(self, widget, event, *args):
+        """ Handle release of keys for the main window. """
+
+        # ---------------------------------------------------------------
+        # Unregister CTRL for scrolling only one page in double page mode
+        # ---------------------------------------------------------------
+        if event.keyval in (gtk.keysyms.Control_L, gtk.keysyms.Control_R):
+            self._window.imagehandler.force_single_step = False
 
     def scroll_wheel_event(self, widget, event, *args):
         """Handle scroll wheel events on the main layout area. The scroll

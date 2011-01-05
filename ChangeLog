@@ -41,6 +41,10 @@ MComix 0.90.3 (SVN)
     - Added support for the 7zip archive format. As with rar/unrar, this
       requires the "7z" executable being installed and on PATH.
 
+    - When pressing CTRL while being in double page mode, stepping forwards
+      and backwards will now always only advance/go back one image instead of
+      possibly two. 
+
 MComix 0.90 Initial Release
 
     - Changed the mechanism of page flipping.

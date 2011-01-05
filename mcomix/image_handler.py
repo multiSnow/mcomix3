@@ -37,6 +37,7 @@ class ImageHandler:
         self._raw_pixbufs = {}
         self._pixbuf_auto_bgs = {}
         self._name_table = {}
+        self.force_single_step = False
 
     def _get_pixbuf(self, index):
         """Return the pixbuf indexed by <index> from cache.
@@ -439,14 +440,18 @@ class ImageHandler:
 
     def _get_forward_step_length(self):
         """Return the step length for switching pages forwards."""
-        if (prefs['double step in double page mode'] and \
+        if self.force_single_step:
+            return 1
+        elif (prefs['double step in double page mode'] and \
             self._window.displayed_double()):
             return 2
         return 1
 
     def _get_backward_step_length(self):
         """Return the step length for switching pages backwards."""
-        if (prefs['double step in double page mode'] and \
+        if self.force_single_step:
+            return 1
+        elif (prefs['double step in double page mode'] and \
             self._window.is_double_page):
             return 2
         return 1
