@@ -9,6 +9,7 @@ import constants
 import archive.zip
 import archive.rar
 import archive.tar
+import archive.sevenzip
 #import poppler
 #import cairo
 
@@ -40,6 +41,9 @@ def archive_mime_type(path):
 
             if magic == 'Rar!':
                 return constants.RAR
+
+            if magic == '7z\xBC\xAF':
+                return constants.SEVENZIP
 
             #if magic == '%PDF':
             #    return constants.PDF
@@ -81,6 +85,8 @@ def get_archive_handler(path):
         return archive.tar.TarArchive(path)
     elif mime == constants.RAR:
         return archive.rar.RarArchive(path)
+    elif mime == constants.SEVENZIP:
+        return archive.sevenzip.SevenZipArchive(path)
     else:
         return None
 
