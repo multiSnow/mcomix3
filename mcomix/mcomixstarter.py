@@ -79,6 +79,7 @@ try:
 except ImportError:
     print _("The package 'pkg_resources' could not be found.")
     print _("You need to install the 'setuptools' package, which also includes pkg_resources.")
+    print _("Note: On most distributions, 'distribute' supersedes 'setuptools'.")
     sys.exit(1)
 
 import constants
