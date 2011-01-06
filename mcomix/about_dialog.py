@@ -5,6 +5,8 @@ import os
 import gtk
 import constants
 import labels
+import pkg_resources
+import image_tools
 
 class _AboutDialog(gtk.Dialog):
 
@@ -27,22 +29,12 @@ class _AboutDialog(gtk.Dialog):
         box = gtk.VBox(False, 0)
         box.set_border_width(5)
 
-        icon_path = os.path.join(constants.BASE_PATH, 'images/mcomix.png')
-
-        if not os.path.isfile(icon_path):
-            for prefix in [constants.BASE_PATH, '/usr', '/usr/local', '/usr/X11R6']:
-                icon_path = os.path.join(prefix, 'share/mcomix/images/mcomix.png')
-
-                if os.path.isfile(icon_path):
-                    break
-
-        try:
-            pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(icon_path, 200, 200)
-            icon = gtk.Image()
-            icon.set_from_pixbuf(pixbuf)
-            box.pack_start(icon, False, False, 10)
-        except Exception:
-            print _('! Could not find the icon file "mcomix.png"\n')
+        icon_data = pkg_resources.resource_string('mcomix.images', 'mcomix.png')
+        large_pixbuf = image_tools.load_pixbuf_data(icon_data)
+        pixbuf = large_pixbuf.scale_simple(200, 180, gtk.gdk.INTERP_TILES)
+        icon = gtk.Image()
+        icon.set_from_pixbuf(pixbuf)
+        box.pack_start(icon, False, False, 10)
 
         label = gtk.Label()
         label.set_markup(

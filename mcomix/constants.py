@@ -63,8 +63,9 @@ else:
     RUN_GARBAGE_COLLECTOR = gc.collect()
 
 CREDITS = (
-            ('Louis Casillas', _('Lead developer of MComix')),
             ('Pontus Ekberg', _('Original vision/developer of Comix')),
+            ('Louis Casillas', _('Lead developer of MComix')),
+            ('Moritz Brunner', _('Current maintainer of MComix')),
             ('Emfox Zhou', _('Simplified Chinese translation')),
             ('Xie Yanbo', _('Simplified Chinese translation')),
             ('Manuel Quiñones', _('Spanish translation')),
