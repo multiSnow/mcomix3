@@ -1,17 +1,29 @@
 MComix 0.90.3 (SVN)
+
+    - MComix now uses a slightly different directory structure than before. 
+      The 'src' folder is now 'mcomix' to provide a correct package name.
+      'mcomix.py' is now 'mcomixstarter.py' to avoid confusing Python by
+      having a module with the same name as the package around.
+      Translations and images required by the GUI are now sub-packages of
+      'mcomix'. 
+
+      A setuptools-based setup.py replaces install.py. This should help for
+      uniform installs across different operating systems.
+
     - Added ability to apply current changes in the edit archive window.
 
     - Various usability fixes on Win32, including Unicode filenames,
       loading speed and problems with recently opened files.
+      Also fixes file filters in "Open" dialogs.
 
     - Magnifying lens is now hotkeyed to 'L', while 'G' is Go to page. (by
       Nephiel)
 
     - Right-click menu is now more suitable for fullscreen reading, adding
-      several menu items previously only available via normal menu (by
+      several menu items previously only available via normal menu. (by
       Nephiel)
 
-    - Additional RAR handler using libunrar.so/unrar.dll
+    - Additional RAR handler using libunrar.so/unrar.dll.
 
       Added archive handler using Rarlab's libunrar library
       for extracting files. Apart from being faster for sequential
@@ -25,18 +37,8 @@ MComix 0.90.3 (SVN)
     - Fixed rar/unrar failing regularly on Win32 when the archive contains
       files not matching the current locale.
 
-    - Go to Page is now enabled even when the archive is still loading (by
+    - Go to Page is now enabled even when the archive is still loading. (by
       Nephiel)
-
-    - MComix now uses a slightly different directory structure than before. 
-      The 'src' folder is now 'mcomix' to provide a correct package name.
-      'mcomix.py' is now 'mcomixstarter.py' to avoid confusing Python by
-      having a module with the same name as the package around.
-      Translations and images required by the GUI are now sub-packages of
-      'mcomix'. 
-
-      A setuptools-based setup.py replaces install.py. This should help for
-      uniform installs across different operating systems.
 
     - Added support for the 7zip archive format. As with rar/unrar, this
       requires the "7z" executable being installed and on PATH.
@@ -44,6 +46,16 @@ MComix 0.90.3 (SVN)
     - When pressing CTRL while being in double page mode, stepping forwards
       and backwards will now always only advance/go back one image instead of
       possibly two. 
+
+    - Graceful shutdown on SIGTERM. (by Marco Nicolini)
+
+    - Switching pages while in slideshow mode now resets the slideshow timer.
+      (by Anonymous)
+
+    - When opening an archive in double page mode, the first page (i.e. the
+      cover) is displayed as single page.
+
+    - Updated German translation.
 
 MComix 0.90 Initial Release
 
