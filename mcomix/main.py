@@ -950,12 +950,13 @@ class MainWindow(gtk.Window):
     def extract_page(self, *args):
         """ Derive some sensible filename (archive name + _ + filename should do) and offer
         the user the choice to save the current page with the selected name. """
-
         if self.filehandler.archive_type is not None:
-            suggested_name = os.path.splitext(self.filehandler.get_pretty_current_filename())[0] + \
-                u'_' + os.path.split(self.filehandler.get_path_to_page())[-1]
+            archive_name = self.filehandler.get_pretty_current_filename()
+            file_name = self.imagehandler.get_path_to_page()
+            suggested_name = os.path.splitext(archive_name)[0] + \
+                u'_' + os.path.split(file_name)[-1]
         else:
-            suggested_name = os.path.split(self.filehandler.get_path_to_page())[-1]
+            suggested_name = os.path.split(self.imagehandler.get_path_to_page())[-1]
 
         save_dialog = gtk.FileChooserDialog(_('Save page as'), self,
             gtk.FILE_CHOOSER_ACTION_SAVE, (gtk.STOCK_OK, gtk.RESPONSE_ACCEPT,
