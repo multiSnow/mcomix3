@@ -75,12 +75,12 @@ class LibraryBackend:
             path = self._con.execute('''select path from Book
                 where id = ?''', (book,)).fetchone().decode('utf-8')
         except Exception:
-            print _('! Non-existant book #') + book
+            print _('! Non-existant book #%i') % book
             return None
         thumb = thumbnail_tools.get_thumbnail(path, create=True, dst_dir=constants.LIBRARY_COVERS_PATH)
 
         if thumb is None:
-            print _('! Could not get cover for ') + path
+            print _('! Could not get cover for book "%s"') % path
         return thumb
 
     def get_book_path(self, book):
@@ -202,7 +202,7 @@ class LibraryBackend:
                     values (?, ?, ?, ?, ?)''',
                     (name, path, pages, format, size))
         except dbapi2.Error:
-            print _('! Could not add book ') + path + _(' to the library')
+            print _('! Could not add book "%s" to the library') % path
             return False
         if collection is not None:
             book = self._con.execute('''select id from Book
@@ -219,7 +219,7 @@ class LibraryBackend:
                 (name) values (?)''', (name,))
             return True
         except dbapi2.Error:
-            print _('! Could not add collection') + name
+            print _('! Could not add collection "%s"') % name
         return False
 
     def add_book_to_collection(self, book, collection):
@@ -230,7 +230,8 @@ class LibraryBackend:
         except dbapi2.DatabaseError: # E.g. book already in collection.
             pass
         except dbapi2.Error:
-            print _('! Could not add book ') + book + _(' to collection ') + collection
+            print _('! Could not add book %(book)s to collection %(collection)s') % \
+                {"book" : book, "collection" : collection}
 
     def add_collection_to_collection(self, subcollection, supercollection):
         """Put <subcollection> into <supercollection>, or put
@@ -256,7 +257,7 @@ class LibraryBackend:
         except dbapi2.DatabaseError: # E.g. name taken.
             pass
         except dbapi2.Error:
-            print _('! Could not rename collection to ') + name
+            print _('! Could not rename collection to "%s"') % name
         return False
 
     def duplicate_collection(self, collection):

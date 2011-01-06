@@ -245,7 +245,7 @@ class _BookArea(gtk.ScrolledWindow):
 
                 except Exception:
 
-                    print _('! An error was thrown while attempting to delete: %s') % book_path
+                    print _('! Could not remove file "%s"') % book_path
 
                 while gtk.events_pending():
                     gtk.main_iteration(False)

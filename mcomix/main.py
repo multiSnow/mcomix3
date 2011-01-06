@@ -995,7 +995,7 @@ class MainWindow(gtk.Window):
                 config.close()
 
             except Exception:
-                print _('! Corrupt preferences file "') + constants.CRASH_PICKLE_PATH + _('", deleting...')
+                print _('! Corrupt preferences file "%s", deleting...') % constants.CRASH_PICKLE_PATH
                 if config is not None:
                     config.close()
                 os.remove(constants.CRASH_PICKLE_PATH)

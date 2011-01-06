@@ -49,7 +49,7 @@ def archive_mime_type(path):
             #    return constants.PDF
 
     except Exception:
-        print _('! Error while reading archive "%s"') % path
+        print _('! Could not read %s') % path
 
     return None
 

@@ -146,7 +146,7 @@ class Extractor:
             # archive) than to crash here and leave the main thread in a
             # possible infinite block. Damaged or missing files *should* be
             # handled gracefully by the main program anyway.
-            print _('! Extraction error: '), str(ex)
+            print _('! Extraction error: %s') % str(ex)
 
         self._condition.acquire()
         self._extracted[name] = True

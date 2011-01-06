@@ -171,7 +171,7 @@ def _create_thumbnail(path, dst_dir, image_path=None):
         os.rename(thumbpath + '-mcomixtemp', thumbpath)
         os.chmod(thumbpath, 0600)
     except Exception:
-        print _('! thumbnail.py: Could not write'), thumbpath, '\n'
+        print _('! Could not write "%s"') % thumbpath
 
     return pixbuf
 

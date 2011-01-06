@@ -39,12 +39,11 @@ try:
     gobject.threads_init()
 
 except AssertionError:
-    print _("You don't have the required versions of GTK+ and/or PyGTK"),
-    print _('installed.')
-    print _('Installed GTK+ version is: ') + \
+    print _("You don't have the required versions of GTK+ and/or PyGTK installed.")
+    print _('Installed GTK+ version is: %s') % \
         '.'.join([str(n) for n in gtk.gtk_version])
     print _('Required GTK+ version is: 2.12.0 or higher\n')
-    print _('Installed PyGTK version is: ') + \
+    print _('Installed PyGTK version is: %s') % \
         '.'.join([str(n) for n in gtk.pygtk_version])
     print _('Required PyGTK version is: 2.12.0 or higher')
 
@@ -69,8 +68,7 @@ except AssertionError:
 
 except ImportError:
     print _('Python Imaging Library (PIL) 1.1.5 or higher is required.')
-    print _('No version of the Python Imaging Library was found on your'),
-    print _('system.')
+    print _('No version of the Python Imaging Library was found on your system.')
 
     sys.exit(1)
 
