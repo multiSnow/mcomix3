@@ -4,6 +4,7 @@
 import os
 import gtk
 import constants
+import strings
 import labels
 import pkg_resources
 import image_tools
@@ -72,7 +73,7 @@ class _AboutDialog(gtk.Dialog):
         hbox.pack_start(left_box, False, False)
         hbox.pack_start(right_box, False, False)
 
-        for nice_person, description in constants.CREDITS:
+        for nice_person, description in strings.CREDITS:
             name_label = labels.BoldLabel('%s:' % nice_person)
             name_label.set_alignment(1.0, 1.0)
 

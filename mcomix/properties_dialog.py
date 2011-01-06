@@ -6,7 +6,7 @@ import properties_page
 import os
 import time
 import stat
-import constants
+import strings
 
 try:
     import pwd
@@ -46,7 +46,7 @@ class _PropertiesDialog(gtk.Dialog):
                     _('%d pages') % window.imagehandler.get_number_of_pages(),
                     _('%d comments') %
                         window.filehandler.get_number_of_comments(),
-                    constants.ARCHIVE_DESCRIPTIONS[window.filehandler.archive_type],
+                    strings.ARCHIVE_DESCRIPTIONS[window.filehandler.archive_type],
                     '%.1f MiB' % (stats.st_size / 1048576.0))
 
                 page.set_main_info(main_info)

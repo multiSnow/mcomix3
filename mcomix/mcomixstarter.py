@@ -24,9 +24,46 @@ import getopt
 import signal
 import gettext
 
-_ = gettext.gettext
+import constants
 
-#Check for PyGTK and PIL dependencies.
+try:
+    import pkg_resources
+
+except ImportError:
+    # gettext isn't initialized yet, since pkg_resources is required to find translation files.
+    # Thus, localizing these messages is pointless.
+    print "The package 'pkg_resources' could not be found."
+    print "You need to install the 'setuptools' package, which also includes pkg_resources."
+    print "Note: On most distributions, 'distribute' supersedes 'setuptools'."
+    sys.exit(1)
+
+def install_gettext():
+    """ Initialize gettext with the correct directory that contains
+    MComix translations. This has to be done before any calls to gettext.gettext
+    have been made to ensure all strings are actually translated. """
+
+    # Add the sources' base directory to PATH to allow development without
+    # explicitly installing the package.
+    sys.path.append(constants.BASE_PATH)
+
+    message_path = pkg_resources.resource_filename("mcomix.messages", "")
+    gettext.install('mcomix', message_path, unicode=True)
+
+install_gettext()
+
+def print_help():
+    """Print the command-line help text and exit."""
+    print _('Usage:')
+    print '  mcomix ' + _('[OPTION...] [PATH]')
+    print _('\nView images and comic book archives.\n')
+    print _('Options:')
+    print _('  -h, --help              Show this help and exit.')
+    print _('  -f, --fullscreen        Start the application in fullscreen mode.')
+    print _('  -l, --library           Show the library on startup.')
+
+    sys.exit(1)
+
+# Check for PyGTK and PIL dependencies.
 try:
     import pygtk
     pygtk.require('2.0')
@@ -55,6 +92,7 @@ except ImportError:
 
     sys.exit(1)
 
+# Check PIL library
 try:
     import Image
     assert Image.VERSION >= '1.1.5'
@@ -72,21 +110,8 @@ except ImportError:
 
     sys.exit(1)
 
-try:
-    import pkg_resources
-
-except ImportError:
-    print _("The package 'pkg_resources' could not be found.")
-    print _("You need to install the 'setuptools' package, which also includes pkg_resources.")
-    print _("Note: On most distributions, 'distribute' supersedes 'setuptools'.")
-    sys.exit(1)
-
-import constants
-
-# Add the sources' base directory to PATH to allow development without
-# explicitly installing the package.
-sys.path.append(constants.BASE_PATH)
-
+# Import required mcomix modules for this script.
+# This should be done only after install_gettext() has been called.
 import deprecated
 import image_tools
 import locale
@@ -95,23 +120,8 @@ import icons
 import preferences
 import portability
 
-def print_help():
-    """Print the command-line help text and exit."""
-    print _('Usage:')
-    print '  mcomix ' + _('[OPTION...] [PATH]')
-    print _('\nView images and comic book archives.\n')
-    print _('Options:')
-    print _('  -h, --help              Show this help and exit.')
-    print _('  -f, --fullscreen        Start the application in fullscreen mode.')
-    print _('  -l, --library           Show the library on startup.')
-
-    sys.exit(1)
-
-
 def run():
     """Run the program."""
-    message_path = pkg_resources.resource_filename("mcomix.messages", "")
-    gettext.install('mcomix', message_path, unicode=True)
 
     fullscreen = False
     show_library = False

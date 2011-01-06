@@ -8,7 +8,7 @@ import pango
 import encoding
 import file_chooser_library_dialog
 import labels
-import constants
+import strings
 from preferences import prefs
 
 # The "All books" collection is not a real collection stored in the library,
@@ -143,7 +143,7 @@ class _ControlArea(gtk.HBox):
             self._pageslabel.set_text('')
 
         if format is not None and size is not None:
-            self._filelabel.set_text('%s, %s' % (constants.ARCHIVE_DESCRIPTIONS[format],
+            self._filelabel.set_text('%s, %s' % (strings.ARCHIVE_DESCRIPTIONS[format],
                 '%.1f MiB' % (size / 1048576.0)))
         else:
             self._filelabel.set_text('')
