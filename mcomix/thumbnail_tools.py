@@ -48,11 +48,11 @@ def get_thumbnail(path, create=True, dst_dir=constants.THUMBNAIL_PATH):
         info = Image.open(thumbpath).info
 
         try:
-            mtime = int(info['Thumb::MTime'])
+            mtime = long(info['Thumb::MTime'])
         except Exception:
             mtime = -1
 
-        if os.stat(path).st_mtime != mtime:
+        if long(os.stat(path).st_mtime) != mtime:
             return _get_new_thumbnail(path, create, dst_dir)
 
         return image_tools.load_pixbuf(thumbpath)
@@ -168,6 +168,9 @@ def _create_thumbnail(path, dst_dir, image_path=None):
         if not os.path.isdir(dst_dir):
             os.makedirs(dst_dir, 0700)
         pixbuf.save(thumbpath + '-mcomixtemp', 'png', tEXt_data)
+
+        # Win32: os.rename fails if destination file exists.
+        if os.path.isfile(thumbpath): os.remove(thumbpath)
         os.rename(thumbpath + '-mcomixtemp', thumbpath)
         os.chmod(thumbpath, 0600)
     except Exception:
