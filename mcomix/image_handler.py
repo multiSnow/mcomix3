@@ -328,8 +328,11 @@ class ImageHandler:
         return len(self._image_files)
 
     def get_current_page(self):
-        """Return the current page number."""
-        return self._current_image_index + 1
+        """Return the current page number (starting from 1), or 0 if no file is loaded."""
+        if self._current_image_index is not None:
+            return self._current_image_index + 1
+        else:
+            return 0
 
     def get_path_to_page(self, page=None):
         """Return the full path to the image file for <page>, or the current
