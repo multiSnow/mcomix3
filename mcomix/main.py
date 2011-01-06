@@ -957,7 +957,7 @@ class MainWindow(gtk.Window):
         else:
             suggested_name = os.path.split(self.filehandler.get_path_to_page())[-1]
 
-        save_dialog = gtk.FileChooserDialog(_('Extract page...'), self,
+        save_dialog = gtk.FileChooserDialog(_('Save page as'), self,
             gtk.FILE_CHOOSER_ACTION_SAVE, (gtk.STOCK_OK, gtk.RESPONSE_ACCEPT,
             gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT))
         save_dialog.set_current_name(suggested_name.encode('utf-8'))

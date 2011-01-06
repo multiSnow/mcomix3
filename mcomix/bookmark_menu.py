@@ -22,7 +22,7 @@ class BookmarksMenu(gtk.Menu):
                 '<Control>d', None, self._add_current_to_bookmarks),
             ('edit_bookmarks', None, _('_Edit bookmarks...'),
                 '<Control>b', None, self._edit_bookmarks),
-            ('clear_bookmarks', gtk.STOCK_CLEAR, _('_Clear bookmarks...'),
+            ('clear_bookmarks', gtk.STOCK_CLEAR, _('_Clear bookmarks'),
                 None, None, self._clear_bookmarks)])
 
         self._separator = gtk.SeparatorMenuItem()

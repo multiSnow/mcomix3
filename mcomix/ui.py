@@ -34,7 +34,7 @@ class MainUI(gtk.UIManager):
                 'Home', None, window.first_page),
             ('last_page', 'mcomix-goto-last-page', _('_Last page'),
                 'End', None, window.last_page),
-            ('go_to', gtk.STOCK_PAGE_SETUP, _('_Go to page...'),
+            ('go_to', gtk.STOCK_JUMP_TO, _('_Go to page...'),
                 'G', None, window.page_select),
             ('refresh_archive', 'mcomix-refresh', _('_Refresh file'),
                 '<control><shift>R', None, window.filehandler.refresh_file),
@@ -64,11 +64,10 @@ class MainUI(gtk.UIManager):
                 None, None, window.flip_horizontally),
             ('flip_vert', 'mcomix-flip-vertical', _('Flip _vertically'),
                 None, None, window.flip_vertically),
-            ('extract_page', None, _('Extract page...'),
-                None, None, window.extract_page),
+            ('extract_page', gtk.STOCK_SAVE_AS, _('Save _As...'),
+                '<Control><Shift>s', None, window.extract_page),
             ('menu_zoom', 'mcomix-zoom', _('Manual _Zoom')),
-            ('menu_recent', None, _('Open _recent')),
-            ('menu_recent_popup', gtk.STOCK_DND_MULTIPLE, _('Open _recent')),
+            ('menu_recent', gtk.STOCK_DND_MULTIPLE, _('_Recent')),
             ('menu_bookmarks_popup', 'comix-add-bookmark', _('_Bookmarks')),
             ('menu_toolbars', None, _('T_oolbars')),
             ('menu_edit', None, _('_Edit')),
@@ -79,7 +78,7 @@ class MainUI(gtk.UIManager):
             ('menu_go_popup', gtk.STOCK_GO_FORWARD, _('_Go')),
             ('menu_tools', None, _('_Tools')),
             ('menu_help', None, _('_Help')),
-            ('menu_transform', 'mcomix-transform', _('_Transform image...')),
+            ('menu_transform', 'mcomix-transform', _('_Transform image')),
             ('expander', None, None, None, None, None)])
 
         self._actiongroup.add_toggle_actions([
@@ -130,7 +129,7 @@ class MainUI(gtk.UIManager):
              'c', None, dialog_handler.open_dialog)], (window, 'comments-dialog'))
 
         self._actiongroup.add_actions([
-            ('properties', gtk.STOCK_PROPERTIES, _('_Properties'),
+            ('properties', gtk.STOCK_PROPERTIES, _('Proper_ties'),
                 '<Alt>Return', None, dialog_handler.open_dialog)], (window,'properties-dialog'))
 
         self._actiongroup.add_actions([
@@ -143,7 +142,7 @@ class MainUI(gtk.UIManager):
              None, None, edit_dialog.open_dialog),
             ('open', gtk.STOCK_OPEN, _('_Open...'),
                 '<Control>o', None, file_chooser_main_dialog.open_main_filechooser_dialog),
-            ('enhance_image', 'mcomix-enhance-image', _('_Enhance image...'),
+            ('enhance_image', 'mcomix-enhance-image', _('En_hance image...'),
                 'e', None, enhance_dialog.open_dialog)], window)
 
         self._actiongroup.add_actions([
@@ -179,18 +178,16 @@ class MainUI(gtk.UIManager):
             <menubar name="Menu">
                 <menu action="menu_file">
                     <menuitem action="open" />
-                    <menuitem action="refresh_archive" />
-                    <separator />
+                    <menu action="menu_recent" />
                     <menuitem action="library" />
+                    <separator />
+                    <menuitem action="extract_page" />
+                    <menuitem action="refresh_archive" />
                     <separator />
                     <menuitem action="properties" />
                     <menuitem action="comments" />
                     <separator />
-                    <menu action="menu_recent">
-                    </menu>
-                    <separator />
                     <menuitem action="close" />
-                    <separator />
                     <menuitem action="save_and_quit" />
                     <menuitem action="quit" />
                 </menu>
@@ -254,7 +251,6 @@ class MainUI(gtk.UIManager):
                     </menu>
                     <separator />
                     <menuitem action="edit_archive" />
-                    <menuitem action="extract_page" />
                 </menu>
                 <menu action="menu_help">
                     <menuitem action="about" />
@@ -287,28 +283,17 @@ class MainUI(gtk.UIManager):
                     <menuitem action="enhance_image" />
                     <separator />
                     <menuitem action="lens" />
-                        <menu action="menu_zoom">
+                    <menu action="menu_zoom">
                         <menuitem action="zoom_in" />
                         <menuitem action="zoom_out" />
                         <menuitem action="zoom_original" />
-                    </menu>
-                    <separator />
-                    <menu action="menu_toolbars">
-                        <menuitem action="menubar" />
-                        <menuitem action="toolbar" />
-                        <menuitem action="statusbar" />
-                        <menuitem action="scrollbar" />
-                        <menuitem action="thumbnails" />
-                        <separator />
-                        <menuitem action="hide all" />
                     </menu>
                 </menu>
                 <menu action="menu_bookmarks_popup">
                 </menu>
                 <separator />
                 <menuitem action="open" />
-                <menu action="menu_recent_popup">
-                </menu>
+                <menu action="menu_recent" />
                 <menuitem action="library" />
                 <separator />
                 <menuitem action="properties" />
@@ -316,7 +301,6 @@ class MainUI(gtk.UIManager):
                 <menuitem action="comments" />
                 <separator />
                 <menuitem action="preferences" />
-                <menuitem action="about" />
                 <separator />
                 <menuitem action="close" />
                 <menuitem action="quit" />
@@ -336,8 +320,8 @@ class MainUI(gtk.UIManager):
         self.get_widget('/Menu/menu_file/menu_recent').show()
 
         self.recentPopup = recent.RecentFilesMenu(self, window)
-        self.get_widget('/Popup/menu_recent_popup').set_submenu(self.recentPopup)
-        self.get_widget('/Popup/menu_recent_popup').show()
+        self.get_widget('/Popup/menu_recent').set_submenu(self.recentPopup)
+        self.get_widget('/Popup/menu_recent').show()
 
         window.add_accel_group(self.get_accel_group())
 
