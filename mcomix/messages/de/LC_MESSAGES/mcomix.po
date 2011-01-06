@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.90.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-06 11:32+CET\n"
+"POT-Creation-Date: 2011-01-06 19:40+CET\n"
 "PO-Revision-Date: 2011-01-06 11:06+GMT\n"
 "Last-Translator: Moritz Brunner <oddegamra@gmx.org>\n"
 "Language-Team: None\n"
@@ -101,8 +101,8 @@ msgid "_Edit bookmarks..."
 msgstr "Lesezeichen _bearbeiten ..."
 
 #: mcomix/bookmark_menu.py:25
-msgid "_Clear bookmarks..."
-msgstr "Lese_zeichen löschen ..."
+msgid "_Clear bookmarks"
+msgstr "Lese_zeichen löschen"
 
 #: mcomix/bookmark_menu.py:78
 msgid "Clear all bookmarks?"
@@ -452,7 +452,7 @@ msgstr "! Korrupte Options-Datei \"%s\", wird gelöscht..."
 msgid "! Could not load icon \"%s\""
 msgstr "! Icon %s kann nicht geladen werden"
 
-#: mcomix/image_handler.py:418
+#: mcomix/image_handler.py:421
 msgid "Unknown filetype"
 msgstr "Unbekannter Dateityp"
 
@@ -691,9 +691,9 @@ msgstr ""
 msgid "SLIDESHOW"
 msgstr "DIASCHAU"
 
-#: mcomix/main.py:960 mcomix/ui.py:67
-msgid "Extract page..."
-msgstr "Seite speichern..."
+#: mcomix/main.py:960
+msgid "Save page as"
+msgstr "Seite speichern als"
 
 #: mcomix/mcomixstarter.py:42
 msgid "You don't have the required versions of GTK+ and/or PyGTK installed."
@@ -800,7 +800,7 @@ msgstr "  -f, --fullscreen        Startet die Anwendung im Vollbild-Modus."
 msgid "  -l, --library           Show the library on startup."
 msgstr "  -l, --library           Zeigt die Bibliothek beim Starten an."
 
-#: mcomix/pageselect.py:16 mcomix/ui.py:78 mcomix/ui.py:79
+#: mcomix/pageselect.py:16 mcomix/ui.py:77 mcomix/ui.py:78
 msgid "_Go"
 msgstr "_Gehe"
 
@@ -1036,7 +1036,7 @@ msgstr ""
 "Seitenwechsel, aber können dazu führen, dass ein Seitenwechsel aus Versehen "
 "zu früh ausgelöst wird."
 
-#: mcomix/preferences_dialog.py:218 mcomix/ui.py:368
+#: mcomix/preferences_dialog.py:218 mcomix/ui.py:352
 msgid "Double page mode"
 msgstr "Doppelseitiger Modus"
 
@@ -1126,27 +1126,32 @@ msgstr ""
 
 #: mcomix/preferences_dialog.py:279
 msgid "Crash Recovery"
-msgstr ""
+msgstr "Automatische Wiederherstellung"
 
 #: mcomix/preferences_dialog.py:282
 msgid "Enable crash recovery."
-msgstr ""
+msgstr "Automatische Wiederherstellung aktivieren."
 
 #: mcomix/preferences_dialog.py:287
 msgid ""
 "Crash recovery saves the current configuration information every specified "
 "seconds.  In case of a crash the previous file will be re-loaded."
 msgstr ""
+"Automatische Wiederherstellung speichert die derzeitige Konfiguration in "
+"spezifizierten Abständen. Sollte MComix abstürzen, wird die zuletzt "
+"geöffnete Datei wieder geladen."
 
 #: mcomix/preferences_dialog.py:290
 msgid "Save the current configuration information every n seconds"
-msgstr ""
+msgstr "Speichere aktuelle Konfiguration alle n Sekunden"
 
 #: mcomix/preferences_dialog.py:296
 msgid ""
 "Every n seconds the current configuration will be saved to disk.  Choose a "
 "lower number if crashes are frequent on your machine. 30 seconds (default)"
 msgstr ""
+"Die aktuelle Konfiguration wird alle n Sekunden gespeichert. Wählen Sie eine "
+"niedrigere Zahl, falls Abstürze häufig auftreten. Standardwert: 30 Sekunden"
 
 #: mcomix/preferences_dialog.py:299
 msgid "Behaviour"
@@ -1172,19 +1177,19 @@ msgstr "Als Vorgabe Manga-Modus benutzen."
 msgid "Default zoom mode"
 msgstr "Standard-Vergrößerungsmodus"
 
-#: mcomix/preferences_dialog.py:328 mcomix/ui.py:360
+#: mcomix/preferences_dialog.py:328 mcomix/ui.py:344
 msgid "Best fit mode"
 msgstr "Am besten passender Modus"
 
-#: mcomix/preferences_dialog.py:329 mcomix/ui.py:362
+#: mcomix/preferences_dialog.py:329 mcomix/ui.py:346
 msgid "Fit width mode"
 msgstr "Modus mit angepasster Breite"
 
-#: mcomix/preferences_dialog.py:330 mcomix/ui.py:364
+#: mcomix/preferences_dialog.py:330 mcomix/ui.py:348
 msgid "Fit height mode"
 msgstr "Modus mit angepasster Höhe"
 
-#: mcomix/preferences_dialog.py:331 mcomix/ui.py:366
+#: mcomix/preferences_dialog.py:331 mcomix/ui.py:350
 msgid "Manual zoom mode"
 msgstr "Manueller Vergrößerungsmodus"
 
@@ -1225,11 +1230,11 @@ msgstr "Automatisch das nächste Archiv während einer Diaschau öffnen."
 #: mcomix/preferences_dialog.py:372
 msgid ""
 "While in slideshow mode allow the next archive to automatically be opened."
-msgstr ""
+msgstr "Öffnet automatisch das nächste Archiv im Diaschau-Modus."
 
 #: mcomix/preferences_dialog.py:375
 msgid "Page Numbers"
-msgstr ""
+msgstr "Seitennummern"
 
 #: mcomix/preferences_dialog.py:376
 msgid "Show page numbers."
@@ -1240,6 +1245,8 @@ msgid ""
 "Show page numbers in the Title bar and the status bar. If unset the page "
 "numbers will be hidden."
 msgstr ""
+"Zeigt Seitennummern in der Titelleiste und im Statusfeld. Wenn nicht "
+"gesetzt, werden Seitennummern versteckt."
 
 #: mcomix/preferences_dialog.py:385
 msgid "Comment extensions"
@@ -1317,7 +1324,7 @@ msgstr "Bild"
 msgid "Stop slideshow"
 msgstr "Diaschau anhalten"
 
-#: mcomix/slideshow.py:46 mcomix/ui.py:357
+#: mcomix/slideshow.py:46 mcomix/ui.py:341
 msgid "Start slideshow"
 msgstr "Diaschau starten"
 
@@ -1405,181 +1412,191 @@ msgstr "Hori_zontal blättern"
 msgid "Flip _vertically"
 msgstr "Ver_tikal blättern"
 
+#: mcomix/ui.py:67
+msgid "Save _As..."
+msgstr "Speichern _als..."
+
 #: mcomix/ui.py:69
 msgid "Manual _Zoom"
 msgstr "_Manuell Vergrößern"
 
-#: mcomix/ui.py:70 mcomix/ui.py:71
-msgid "Open _recent"
-msgstr "Aktuelles Ö_ffnen"
+#: mcomix/ui.py:70
+msgid "_Recent"
+msgstr "Zuletzt geö_ffnet"
 
-#: mcomix/ui.py:72
+#: mcomix/ui.py:71
 msgid "_Bookmarks"
 msgstr "Lesezei_chen"
 
-#: mcomix/ui.py:73
+#: mcomix/ui.py:72
 msgid "T_oolbars"
 msgstr "_Werkzeugleisten"
 
-#: mcomix/ui.py:74
+#: mcomix/ui.py:73
 msgid "_Edit"
 msgstr "Bea_rbeiten"
 
-#: mcomix/ui.py:75
+#: mcomix/ui.py:74
 msgid "_File"
 msgstr "Date_i"
 
-#: mcomix/ui.py:76 mcomix/ui.py:77
+#: mcomix/ui.py:75 mcomix/ui.py:76
 msgid "_View"
 msgstr "Ansic_ht"
 
-#: mcomix/ui.py:80
+#: mcomix/ui.py:79
 msgid "_Tools"
 msgstr "_Werkzeuge"
 
-#: mcomix/ui.py:81
+#: mcomix/ui.py:80
 msgid "_Help"
 msgstr "_Hilfe"
 
-#: mcomix/ui.py:82
-msgid "_Transform image..."
-msgstr "Bild verändern..."
+#: mcomix/ui.py:81
+msgid "_Transform image"
+msgstr "Bild ändern"
 
-#: mcomix/ui.py:86
+#: mcomix/ui.py:85
 msgid "_Fullscreen"
 msgstr "_Vollbild"
 
-#: mcomix/ui.py:88
+#: mcomix/ui.py:87
 msgid "_Double page mode"
 msgstr "_Doppelseitiger Modus"
 
-#: mcomix/ui.py:90
+#: mcomix/ui.py:89
 msgid "_Toolbar"
 msgstr "_Werkzeugleiste"
 
-#: mcomix/ui.py:92
+#: mcomix/ui.py:91
 msgid "_Menubar"
 msgstr "_Menüleiste"
 
-#: mcomix/ui.py:94
+#: mcomix/ui.py:93
 msgid "St_atusbar"
 msgstr "St_atusleiste"
 
-#: mcomix/ui.py:96
+#: mcomix/ui.py:95
 msgid "S_crollbars"
 msgstr "Ro_llleiste"
 
-#: mcomix/ui.py:98
+#: mcomix/ui.py:97
 msgid "Th_umbnails"
 msgstr "_Vorschaubilder"
 
-#: mcomix/ui.py:100
+#: mcomix/ui.py:99
 msgid "H_ide all"
 msgstr "Alle verstec_ken"
 
-#: mcomix/ui.py:102
+#: mcomix/ui.py:101
 msgid "_Manga mode"
 msgstr "_Manga-Modus"
 
-#: mcomix/ui.py:104
+#: mcomix/ui.py:103
 msgid "_Keep transformation"
 msgstr "Veränderung _behalten"
 
-#: mcomix/ui.py:106
+#: mcomix/ui.py:105
 msgid "Start _slideshow"
 msgstr "Diaschau _starten"
 
-#: mcomix/ui.py:108
+#: mcomix/ui.py:107
 msgid "Magnifying _lens"
 msgstr "_Lupe"
 
-#: mcomix/ui.py:114
+#: mcomix/ui.py:113
 msgid "_Best fit mode"
 msgstr "Am besten _passender Modus"
 
-#: mcomix/ui.py:116
+#: mcomix/ui.py:115
 msgid "Fit _width mode"
 msgstr "Modus mit angepasster Breite"
 
-#: mcomix/ui.py:118
+#: mcomix/ui.py:117
 msgid "Fit _height mode"
 msgstr "Modus mit angepasster H_öhe"
 
-#: mcomix/ui.py:120
+#: mcomix/ui.py:119
 msgid "M_anual zoom mode"
 msgstr "_Manueller Vergrößerungsmodus"
 
-#: mcomix/ui.py:125
+#: mcomix/ui.py:124
 msgid "_About"
 msgstr "_Über"
 
-#: mcomix/ui.py:129
+#: mcomix/ui.py:128
 msgid "_View comments..."
 msgstr "_Kommentare ansehen ..."
 
-#: mcomix/ui.py:133
-msgid "_Properties"
-msgstr "_Eigenschaften"
+#: mcomix/ui.py:132
+msgid "Proper_ties"
+msgstr "Eigenschaf_ten"
 
-#: mcomix/ui.py:137
+#: mcomix/ui.py:136
 msgid "Pr_eferences"
 msgstr "Einstell_ungen"
 
-#: mcomix/ui.py:142
+#: mcomix/ui.py:141
 msgid "_Edit archive..."
 msgstr "Ar_chive bearbeiten ..."
 
-#: mcomix/ui.py:144
+#: mcomix/ui.py:143
 msgid "_Open..."
 msgstr "Ö_ffnen ..."
 
-#: mcomix/ui.py:146
-msgid "_Enhance image..."
-msgstr "Bild aufbesser_n ..."
+#: mcomix/ui.py:145
+msgid "En_hance image..."
+msgstr "Bild aufbesser_n..."
 
-#: mcomix/ui.py:150
+#: mcomix/ui.py:149
 msgid "_Library..."
 msgstr "Bibliothe_k ..."
 
-#: mcomix/ui.py:348
+#: mcomix/ui.py:332
 msgid "First page"
 msgstr "Erste Seite"
 
-#: mcomix/ui.py:350
+#: mcomix/ui.py:334
 msgid "Previous page"
 msgstr "Vorherige Seite"
 
-#: mcomix/ui.py:351
+#: mcomix/ui.py:335
 msgid "Go to page..."
 msgstr "Gehe zu Seite..."
 
-#: mcomix/ui.py:352
+#: mcomix/ui.py:336
 msgid "Next page"
 msgstr "Nächste Seite"
 
-#: mcomix/ui.py:353
+#: mcomix/ui.py:337
 msgid "Last page"
 msgstr "Letzte Seite"
 
-#: mcomix/ui.py:354
+#: mcomix/ui.py:338
 msgid "Previous archive"
 msgstr "Vorheriges Archiv"
 
-#: mcomix/ui.py:355
+#: mcomix/ui.py:339
 msgid "Next archive"
 msgstr "Nächstes Archiv"
 
-#: mcomix/ui.py:356
+#: mcomix/ui.py:340
 msgid "Refresh file"
 msgstr "Datei aktualisieren"
 
-#: mcomix/ui.py:369
+#: mcomix/ui.py:353
 msgid "Manga mode"
 msgstr "Manga-Modus"
 
-#: mcomix/ui.py:370
+#: mcomix/ui.py:354
 msgid "Magnifying lens"
 msgstr "Lupe"
+
+#~ msgid "Extract page..."
+#~ msgstr "Seite speichern..."
+
+#~ msgid "_Properties"
+#~ msgstr "_Eigenschaften"
 
 #~ msgid " to the library"
 #~ msgstr "Aus dieser Bibliothek entfernen ..."
