@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 """ Glue around libunrar.so/unrar.dll to extract RAR files without having to
 resort to calling rar/unrar manually. """
