@@ -116,6 +116,9 @@ class ExternalExecutableArchive(NonUnicodeArchive):
         return line
 
     def list_contents(self):
+        if not self._get_executable():
+            return []
+
         proc = process.Process([self._get_executable()] +
             self._get_list_arguments() +
             [self.archive])
@@ -137,6 +140,9 @@ class ExternalExecutableArchive(NonUnicodeArchive):
         """ Extract <filename> from the archive to <destination_path>.
         This path should include the full filename. """
         assert isinstance(filename, unicode) and isinstance(destination_path, unicode)
+
+        if not self._get_executable():
+            return
 
         if not self.filenames_initialized:
             self.list_contents()

@@ -32,6 +32,10 @@ class RarExecArchive(archive_base.ExternalExecutableArchive):
 
         return None
 
+    @staticmethod
+    def is_available():
+        return bool(_executable)
+
 _executable = RarExecArchive._find_unrar_executable()
 
 class RarArchive(archive_base.BaseArchive):
@@ -54,5 +58,9 @@ class RarArchive(archive_base.BaseArchive):
 
     def close(self):
         return self.rar.close()
+
+    @staticmethod
+    def is_available():
+        return rarfile.UnrarDll.is_available() or RarExecArchive.is_available()
 
 # vim: expandtab:sw=4:ts=4

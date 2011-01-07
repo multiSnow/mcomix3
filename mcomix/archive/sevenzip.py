@@ -36,6 +36,10 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         else:
             return None
 
+    @staticmethod
+    def is_available():
+        return bool(_executable)
+
 _executable = SevenZipArchive._find_7z_executable()
 
 # vim: expandtab:sw=4:ts=4
