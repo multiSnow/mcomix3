@@ -113,7 +113,7 @@ class FileHandler:
                 image_files = [image for image in files
                     if self._image_re.search(image)
                     # Remove MacOS meta files from image list
-                    and not '__MACOSX' in os.path.normpath(image).split(os.sep)]
+                    and not u'__MACOSX' in os.path.normpath(image).split(os.sep)]
 
                 tools.alphanumeric_sort(image_files)
                 self._image_files = \

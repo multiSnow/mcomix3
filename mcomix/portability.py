@@ -90,8 +90,8 @@ def get_commandline_args():
 def invalid_filesystem_chars():
     """ List of characters that cannot be used in filenames on the target platform. """
     if sys.platform == 'win32':
-        return ur'/\:*?"<>|'
+        return ur':*?"<>|'
     else:
-        return u'/'
+        return u''
 
 # vim: expandtab:sw=4:ts=4
