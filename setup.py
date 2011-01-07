@@ -33,6 +33,7 @@ setuptools.setup(
         'gui_scripts' : [ 'mcomix-gui = mcomix.mcomixstarter:run' ],
         'console_scripts' : [ 'mcomix = mcomix.mcomixstarter:run' ] },
     requires = ['pygtk (>=2.12.0)', 'PIL (>=1.15)'],
+    install_requires = ['setuptools'],
     zip_safe = False,
     
     # Various MIME files that need to be copied to certain system locations on Linux.
