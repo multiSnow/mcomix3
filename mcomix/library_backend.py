@@ -42,7 +42,7 @@ class LibraryBackend:
         if not self._con.execute('pragma table_info(Contain)').fetchall():
             self._create_table_contain()
 
-    def get_books_in_collection(self, collection=None, filter_string=None):
+    def get_books_in_collection(self, collection=None, filter_string=None, order_by='path'):
         """Return a sequence with all the books in <collection>, or *ALL*
         books if <collection> is None. If <filter_string> is not None, we
         only return books where the <filter_string> occurs in the path.
@@ -50,21 +50,21 @@ class LibraryBackend:
         if collection is None:
             if filter_string is None:
                 cur = self._con.execute('''select id from Book
-                    order by path''')
+                    order by ?''', (order_by, ))
             else:
                 cur = self._con.execute('''select id from Book
                     where path like ?
-                    order by path''', ("%%%s%%" % filter_string,))
+                    order by ?''', ("%%%s%%" % filter_string, order_by))
         else:
             if filter_string is None:
                 cur = self._con.execute('''select id from Book
                     where id in (select book from Contain where collection = ?)
-                    order by path''', (collection,))
+                    order by ?''', (collection, order_by))
             else:
                 cur = self._con.execute('''select id from Book
                     where id in (select book from Contain where collection = ?)
                     and path like ?
-                    order by path''', (collection, "%%%s%%" % filter_string))
+                    order by ?''', (collection, "%%%s%%" % filter_string, order_by))
         return cur.fetchall()
 
     def get_book_cover(self, book):
