@@ -77,7 +77,13 @@ class LibraryBackend:
         except Exception:
             print _('! Non-existant book #%i') % book
             return None
-        thumb = thumbnail_tools.get_thumbnail(path, create=True, dst_dir=constants.LIBRARY_COVERS_PATH)
+
+        thumbnailer = thumbnail_tools.Thumbnailer(store_on_disk=True, 
+            dst_dir=constants.LIBRARY_COVERS_PATH)
+        # This is the maximum image size allowed by the library, so that thumbnails might be downscaled,
+        # but never need to be upscaled (and look ugly)
+        thumbnailer.set_size(constants.MAX_LIBRARY_COVER_SIZE, constants.MAX_LIBRARY_COVER_SIZE)
+        thumb = thumbnailer.thumbnail(path)
 
         if thumb is None:
             print _('! Could not get cover for book "%s"') % path
@@ -188,7 +194,10 @@ class LibraryBackend:
         if info is None:
             return False
         format, pages, size = info
-        thumbnail_tools.get_thumbnail(path, create=True, dst_dir=constants.LIBRARY_COVERS_PATH)
+        thumbnailer = thumbnail_tools.Thumbnailer(store_on_disk=True, 
+            dst_dir=constants.LIBRARY_COVERS_PATH)
+        thumbnailer.set_size(constants.MAX_LIBRARY_COVER_SIZE, constants.MAX_LIBRARY_COVER_SIZE)
+        thumbnailer.thumbnail(path)
         old = self._con.execute('''select id from Book
             where path = ?''', (path,)).fetchone()
         try:
@@ -284,7 +293,8 @@ class LibraryBackend:
         """Remove the <book> from the library."""
         path = self.get_book_path(book)
         if path is not None:
-            thumbnail_tools.delete_thumbnail(path, dst_dir=constants.LIBRARY_COVERS_PATH)
+            thumbnailer = thumbnail_tools.Thumbnailer(dst_dir=constants.LIBRARY_COVERS_PATH)
+            thumbnailer.delete(path)
         self._con.execute('delete from Book where id = ?', (book,))
         self._con.execute('delete from Contain where book = ?', (book,))
 

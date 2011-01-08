@@ -9,6 +9,7 @@ import encoding
 import file_chooser_library_dialog
 import labels
 import strings
+import constants
 from preferences import prefs
 
 # The "All books" collection is not a real collection stored in the library,
@@ -76,7 +77,7 @@ class _ControlArea(gtk.HBox):
 
         label = gtk.Label('%s:' % _('Cover size'))
         hbox.pack_start(label, False, False, 6)
-        adjustment = gtk.Adjustment(prefs['library cover size'], 20, 500, 1,
+        adjustment = gtk.Adjustment(prefs['library cover size'], 20, constants.MAX_LIBRARY_COVER_SIZE, 1,
             10, 0)
         cover_size_scale = gtk.HScale(adjustment)
         cover_size_scale.set_size_request(150, -1)
