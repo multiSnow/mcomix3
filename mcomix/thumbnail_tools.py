@@ -96,7 +96,7 @@ class Thumbnailer(object):
 
         if archive_tools.archive_mime_type(filepath) is not None:
             extractor = archive_extractor.Extractor()
-            tmpdir = tempfile.mkdtemp(prefix='mcomix_archive_thumb.')
+            tmpdir = tempfile.mkdtemp(prefix=u'mcomix_archive_thumb.')
             condition = extractor.setup(filepath, tmpdir)
             files = extractor.get_files()
             wanted = self._guess_cover(files)

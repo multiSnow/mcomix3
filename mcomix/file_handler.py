@@ -38,7 +38,7 @@ class FileHandler:
 
         self._window = window
         self._base_path = None
-        self._tmp_dir = tempfile.mkdtemp(prefix='mcomix.', suffix=os.sep)
+        self._tmp_dir = tempfile.mkdtemp(prefix=u'mcomix.', suffix=os.sep)
         self._stop_cacheing = False
         self._image_files = []
         self._current_image_index = None
@@ -223,7 +223,7 @@ class FileHandler:
         self._window.uimanager.set_sensitivities()
         self._extractor.stop()
         self.thread_delete(self._tmp_dir)
-        self._tmp_dir = tempfile.mkdtemp(prefix='mcomix.', suffix=os.sep)
+        self._tmp_dir = tempfile.mkdtemp(prefix=u'mcomix.', suffix=os.sep)
         self._window.imagehandler.close()
         self._window.thumbnailsidebar.clear()
         constants.RUN_GARBAGE_COLLECTOR
