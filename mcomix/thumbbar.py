@@ -159,6 +159,7 @@ class ThumbnailSidebar(gtk.HBox):
         """Load the thumbnails, if it is appropriate to do so."""
 
         if (not self._window.filehandler.file_loaded or
+            self._window.imagehandler.get_number_of_pages() == 0 or
             self._is_loading or self._loaded or self._stop_loading):
             return
 
