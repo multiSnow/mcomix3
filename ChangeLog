@@ -13,8 +13,10 @@ MComix 0.90.3 (SVN)
     - Added ability to apply current changes in the edit archive window.
 
     - Various usability fixes on Win32, including Unicode filenames,
-      loading speed and problems with recently opened files.
-      Also fixes file filters in "Open" dialogs.
+      loading speed, recently opened files not being displayed,
+      temporary directories not being deleted, crashing due to missing
+      icons, MIME type file filters in the "Open" dialog not working,
+      thumbnails being regenerated unnecessarily, and others.
 
     - Magnifying lens is now hotkeyed to 'L', while 'G' is Go to page. (by
       Nephiel)
