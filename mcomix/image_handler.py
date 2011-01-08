@@ -325,7 +325,10 @@ class ImageHandler:
 
     def get_number_of_pages(self):
         """Return the number of pages in the current archive/directory."""
-        return len(self._image_files)
+        if self._image_files is not None:
+            return len(self._image_files)
+        else:
+            return 0
 
     def get_current_page(self):
         """Return the current page number (starting from 1), or 0 if no file is loaded."""
