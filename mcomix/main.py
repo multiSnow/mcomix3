@@ -261,6 +261,11 @@ class MainWindow(gtk.Window):
     def lost_focus(self, *args):
         self.is_in_focus = False
 
+        # If the user presses CTRL for a keyboard shortcut, e.g. to
+        # open the library, key_release_event isn't fired and force_single_step
+        # isn't properly unset.
+        self.imagehandler.force_single_step = False
+
     def draw_image(self, at_bottom=False, scroll=False):
         """Draw the current page(s) and update the titlebar and statusbar.
         """
