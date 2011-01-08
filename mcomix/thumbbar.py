@@ -249,7 +249,7 @@ class ThumbnailSidebar(gtk.HBox):
 
         for i in xrange(1, self._window.imagehandler.get_number_of_pages() + 1):
 
-            pixbuf = self._window.imagehandler.get_thumbnail(i, 128, 128, create)
+            pixbuf = self._window.imagehandler.get_thumbnail(i, prefs['thumbnail size'], prefs['thumbnail size'], create)
 
             if not self._stop_cacheing and pixbuf != None and self._thumb_cache != None:
                 self._thumb_cache.append(pixbuf)
@@ -307,13 +307,7 @@ class ThumbnailSidebar(gtk.HBox):
                 if not (i - 1 < len(self._thumb_cache)):
                     return
 
-                if prefs['thumbnail size'] != 128:
-
-                    pixbuf = image_tools.fit_in_rectangle(self._thumb_cache[i - 1],
-                            prefs['thumbnail size'], prefs['thumbnail size'], True)
-                else:
-                    pixbuf = self._thumb_cache[i - 1]
-
+                pixbuf = self._thumb_cache[i - 1]
                 if pixbuf == None:
                     return
 

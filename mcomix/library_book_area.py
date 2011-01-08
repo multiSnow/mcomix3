@@ -150,7 +150,7 @@ class _BookArea(gtk.ScrolledWindow):
         # The ratio (0.67) is just above the normal aspect ratio for books.
         pixbuf = image_tools.fit_in_rectangle(pixbuf,
             int(0.67 * prefs['library cover size']),
-            prefs['library cover size'])
+            prefs['library cover size'], True)
         pixbuf = image_tools.add_border(pixbuf, 1, 0xFFFFFFFF)
         self._liststore.append([pixbuf, book])
 

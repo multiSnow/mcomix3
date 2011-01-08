@@ -23,6 +23,8 @@ import image_tools
 import portability
 import encoding
 
+from preferences import prefs
+
 def get_thumbnail(path, create=True, dst_dir=constants.THUMBNAIL_PATH):
     """Return a thumbnail pixbuf for the file at <path> by looking in the
     directory of stored thumbnails. If a thumbnail for the file doesn't
@@ -87,8 +89,8 @@ def _get_new_thumbnail(path, create, dst_dir):
     if create:
         return _create_thumbnail(path, dst_dir)
 
-    return image_tools.load_pixbuf_size(path, 128, 128)
-
+    return image_tools.load_pixbuf_size(path,
+        prefs['thumbnail size'], prefs['thumbnail size'])
 
 def _get_new_archive_thumbnail(path, dst_dir, create=True):
     """Return a new thumbnail pixbuf for the archive at <path>, and save it
@@ -116,7 +118,8 @@ def _get_new_archive_thumbnail(path, dst_dir, create=True):
     if create:
         pixbuf = _create_thumbnail(path, dst_dir, image_path=image_path)
     else:
-        pixbuf = image_tools.load_pixbuf_size(image_path, 128, 128)
+        pixbuf = image_tools.load_pixbuf_size(image_path,
+            prefs['thumbnail size'], prefs['thumbnail size'])
 
     shutil.rmtree(tmpdir, True)
     return pixbuf
@@ -135,7 +138,8 @@ def _create_thumbnail(path, dst_dir, image_path=None):
     if image_path is None:
         image_path = path
 
-    pixbuf = image_tools.load_pixbuf_size(image_path, 128, 128)
+    pixbuf = image_tools.load_pixbuf_size(image_path,
+        prefs['thumbnail size'], prefs['thumbnail size'])
 
     if pixbuf is None:
         return None

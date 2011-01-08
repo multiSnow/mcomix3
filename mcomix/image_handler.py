@@ -441,7 +441,7 @@ class ImageHandler:
             thumb = thumbnail_tools.get_thumbnail(path, create)
         else:
             try:
-                thumb = image_tools.load_pixbuf_size(path, 128, 128)
+                thumb = image_tools.load_pixbuf_size(path, width, height)
             except Exception:
                 thumb = None
         if thumb is None:
