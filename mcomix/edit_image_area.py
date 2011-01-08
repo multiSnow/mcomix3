@@ -85,7 +85,8 @@ class _ImageArea(gtk.ScrolledWindow):
 
     def add_extra_image(self, path):
         """Add an imported image (at <path>) to the end of the image list."""
-        thumb = thumbnail_tools.get_thumbnail(path, create=False)
+        thumbnailer = thumbnail_tools.Thumbnailer(store_on_disk=False)
+        thumb = thumbnailer.thumbnail(path)
 
         if thumb is None:
             thumb = self.render_icon(gtk.STOCK_MISSING_IMAGE,

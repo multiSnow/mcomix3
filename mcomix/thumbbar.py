@@ -189,12 +189,8 @@ class ThumbnailSidebar(gtk.HBox):
         """Reload the thumbnails with the size specified by in the
         preferences.
         """
-
-        self._height = 0
-        self._stop_loading = False
-        self.update_layout_size()
-        self._thumbnail_liststore.clear()
-        self._load()
+        self.clear()
+        self.load_thumbnails()
 
     def update_select(self):
         """Select the thumbnail for the currently viewed page and make sure
@@ -227,7 +223,6 @@ class ThumbnailSidebar(gtk.HBox):
     def thread_cache_thumbnails(self):
         """Start threaded thumb cacheing.
         """
-
         self._cache_thread = threading.Thread(target=self.cache_thumbnails, args=())
         self._cache_thread.setDaemon(False)
         self._cache_thread.start()
@@ -250,7 +245,8 @@ class ThumbnailSidebar(gtk.HBox):
 
         for i in xrange(1, self._window.imagehandler.get_number_of_pages() + 1):
 
-            pixbuf = self._window.imagehandler.get_thumbnail(i, prefs['thumbnail size'], prefs['thumbnail size'], create)
+            pixbuf = self._window.imagehandler.get_thumbnail(i, 
+                prefs['thumbnail size'], prefs['thumbnail size'])
 
             if not self._stop_cacheing and pixbuf != None and self._thumb_cache != None:
                 self._thumb_cache.append(pixbuf)
@@ -281,11 +277,6 @@ class ThumbnailSidebar(gtk.HBox):
             self.hide()
 
         if not self._stop_loading:
-
-            if self._window.filehandler.archive_type is not None:
-                create = False
-            else:
-                create = prefs['create thumbnails']
 
             for i in xrange(1, self._window.imagehandler.get_number_of_pages() + 1):
 

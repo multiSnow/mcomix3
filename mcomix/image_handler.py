@@ -435,19 +435,14 @@ class ImageHandler:
         path = self.get_path_to_page(page)
 
         if path == None:
-            return None
+            return constants.MISSING_IMAGE_ICON
 
-        if width <= 128 and height <= 128:
-            thumb = thumbnail_tools.get_thumbnail(path, create)
-        else:
-            try:
-                thumb = image_tools.load_pixbuf_size(path, width, height)
-            except Exception:
-                thumb = None
-        if thumb is None:
-            thumb = constants.MISSING_IMAGE_ICON
-        thumb = image_tools.fit_in_rectangle(thumb, width, height)
-        return thumb
+        try:
+            thumbnailer = thumbnail_tools.Thumbnailer(store_on_disk=create)
+            thumbnailer.set_size(width, height)
+            return thumbnailer.thumbnail(path)
+        except Exception:
+            return constants.MISSING_IMAGE_ICON
 
     def _get_forward_step_length(self):
         """Return the step length for switching pages forwards."""

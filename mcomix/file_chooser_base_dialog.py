@@ -181,7 +181,9 @@ class _BaseFileChooserDialog(gtk.Dialog):
 
         path = self.filechooser.get_preview_filename().decode('utf-8')
         if os.path.isfile(path):
-            pixbuf = thumbnail_tools.get_thumbnail(path, prefs['create thumbnails'])
+            thumbnailer = thumbnail_tools.Thumbnailer()
+            thumbnailer.set_size(128, 128)
+            pixbuf = thumbnailer.thumbnail(path)
 
             if pixbuf is None:
                 self._preview_image.clear()
