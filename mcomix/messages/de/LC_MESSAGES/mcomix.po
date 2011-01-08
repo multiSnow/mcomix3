@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.90.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-06 19:40+CET\n"
+"POT-Creation-Date: 2011-01-08 16:27+CET\n"
 "PO-Revision-Date: 2011-01-06 11:06+GMT\n"
 "Last-Translator: Moritz Brunner <oddegamra@gmx.org>\n"
 "Language-Team: None\n"
@@ -19,29 +19,25 @@ msgstr ""
 "X-Language: de_DE\n"
 "X-Source-Language: en\n"
 
-#: mcomix/about_dialog.py:12 mcomix/about_dialog.py:66
+#: mcomix/about_dialog.py:15 mcomix/about_dialog.py:59
 msgid "About"
 msgstr "Über"
 
-#: mcomix/about_dialog.py:45
-msgid "! Could not find the icon file \"mcomix.png\"\n"
-msgstr "! Konnte die Icon-Datei \"mcomix.png\" nicht finden\n"
-
-#: mcomix/about_dialog.py:53
+#: mcomix/about_dialog.py:46
 msgid "MComix is an image viewer specifically designed to handle comic books."
 msgstr ""
 "MComix ist ein Bildbetrachter, der extra für den Umgang mit Comicbüchern "
 "entworfen wurde."
 
-#: mcomix/about_dialog.py:55
+#: mcomix/about_dialog.py:48
 msgid "It reads ZIP, RAR and tar archives, as well as plain image files."
 msgstr "Es liest ZIP-, RAR- und Tar-Archive ebenso wie einfache Bilddateien."
 
-#: mcomix/about_dialog.py:57
+#: mcomix/about_dialog.py:50
 msgid "MComix is released to the public domain."
 msgstr "MComix ist unter der »GNU General Public License« lizenziert."
 
-#: mcomix/about_dialog.py:93
+#: mcomix/about_dialog.py:86
 msgid "Credits"
 msgstr "Danksagungen"
 
@@ -122,134 +118,6 @@ msgstr "Kommentare"
 #: mcomix/comment_dialog.py:54
 msgid "Could not read %s"
 msgstr "%s kann nicht gelesen werden"
-
-#: mcomix/constants.py:43
-msgid "ZIP archive"
-msgstr "ZIP-Archiv"
-
-#: mcomix/constants.py:44
-msgid "Tar archive"
-msgstr "Tar-Archiv"
-
-#: mcomix/constants.py:45
-msgid "Gzip compressed tar archive"
-msgstr "Gzip-komprimiertes Tar-Archiv"
-
-#: mcomix/constants.py:46
-msgid "Bzip2 compressed tar archive"
-msgstr "Bzip2-komprimiertes Tar-Archiv"
-
-#: mcomix/constants.py:47
-msgid "RAR archive"
-msgstr "RAR-Archiv"
-
-#: mcomix/constants.py:48
-msgid "7z archive"
-msgstr "7zip-Archiv"
-
-#: mcomix/constants.py:66
-msgid "Lead developer of MComix"
-msgstr "Hauptentwickler von MComix"
-
-#: mcomix/constants.py:67
-msgid "Original vision/developer of Comix"
-msgstr "Ursprüngliche Entwicklung von Comix"
-
-#: mcomix/constants.py:68 mcomix/constants.py:69
-msgid "Simplified Chinese translation"
-msgstr "Vereinfachte chinesische Übersetzung"
-
-#: mcomix/constants.py:70
-msgid "Spanish translation"
-msgstr "Spanische Übersetzung"
-
-#: mcomix/constants.py:71
-msgid "Brazilian Portuguese translation"
-msgstr "Portugiesische Übersetzung"
-
-#: mcomix/constants.py:72
-msgid "German translation and Nautilus thumbnailer"
-msgstr "Deutsche Übersetzung und Vorschaubildersteller für Nautilus"
-
-#: mcomix/constants.py:73
-msgid "German translation"
-msgstr "Deutsche Übersetzung"
-
-#: mcomix/constants.py:74 mcomix/constants.py:75
-msgid "Italian translation"
-msgstr "Italienische Übersetzung"
-
-#: mcomix/constants.py:76
-msgid "Dutch translation"
-msgstr "Holländische Übersetzung"
-
-#: mcomix/constants.py:77 mcomix/constants.py:78
-msgid "French translation"
-msgstr "Französische Übersetzung"
-
-#: mcomix/constants.py:79
-msgid "Polish translatin"
-msgstr "Polnische Übersetzung"
-
-#: mcomix/constants.py:80
-msgid "Polish translation"
-msgstr "Polnische Übersetzung"
-
-#: mcomix/constants.py:81
-msgid "Greek translation"
-msgstr "Griechische Übersetzung"
-
-#: mcomix/constants.py:82
-msgid "Catalan translation"
-msgstr "Katalanische Übersetzung"
-
-#: mcomix/constants.py:83 mcomix/constants.py:84
-msgid "Traditional Chinese translation"
-msgstr "Traditionell-chinesische Übersetzung"
-
-#: mcomix/constants.py:85
-msgid "Japanese translation"
-msgstr "Japanische Übersetzung"
-
-#: mcomix/constants.py:86
-msgid "Hungarian translation"
-msgstr "Ungarische Übersetzung"
-
-#: mcomix/constants.py:87
-msgid "Russian translation"
-msgstr "Russische Übersetzung"
-
-#: mcomix/constants.py:88
-msgid "Croatian translation"
-msgstr "Kroatische Übersetzung"
-
-#: mcomix/constants.py:89
-msgid "Korean translation"
-msgstr "Koreanische Übersetzung"
-
-#: mcomix/constants.py:90
-msgid "Persian translation"
-msgstr "Persische Übersetzung"
-
-#: mcomix/constants.py:91
-msgid "Indonesian translation"
-msgstr "Indonesische Übersetzung"
-
-#: mcomix/constants.py:92
-msgid "Czech translation"
-msgstr "Tschechische Übersetzung"
-
-#: mcomix/constants.py:93
-msgid "Ukrainian translation"
-msgstr "Ukrainische Übersetzung"
-
-#: mcomix/constants.py:94
-msgid "Galician translation"
-msgstr "Gallische Übersetzung"
-
-#: mcomix/constants.py:95
-msgid "Icon design"
-msgstr "Symbol-Design"
 
 #: mcomix/deprecated.py:13
 msgid "There are deprecated files left on your computer."
@@ -444,7 +312,7 @@ msgstr "%s kann nicht geöffnet werden: Unbekannter Dateityp."
 msgid "No images in '%s'"
 msgstr "Keine Bilder in »%s«"
 
-#: mcomix/file_handler.py:428 mcomix/main.py:998 mcomix/preferences.py:85
+#: mcomix/file_handler.py:428 mcomix/main.py:999 mcomix/preferences.py:85
 msgid "! Corrupt preferences file \"%s\", deleting..."
 msgstr "! Korrupte Options-Datei \"%s\", wird gelöscht..."
 
@@ -452,7 +320,7 @@ msgstr "! Korrupte Options-Datei \"%s\", wird gelöscht..."
 msgid "! Could not load icon \"%s\""
 msgstr "! Icon %s kann nicht geladen werden"
 
-#: mcomix/image_handler.py:421
+#: mcomix/image_handler.py:424
 msgid "Unknown filetype"
 msgstr "Unbekannter Dateityp"
 
@@ -636,7 +504,7 @@ msgstr ""
 
 #: mcomix/library_control_area.py:77
 msgid "Cover size"
-msgstr "Deckelgröße"
+msgstr "Deckblattgröße"
 
 #: mcomix/library_control_area.py:90
 msgid "Add books"
@@ -691,92 +559,19 @@ msgstr ""
 msgid "SLIDESHOW"
 msgstr "DIASCHAU"
 
-#: mcomix/main.py:960
+#: mcomix/main.py:961
 msgid "Save page as"
 msgstr "Seite speichern als"
 
-#: mcomix/mcomixstarter.py:42
-msgid "You don't have the required versions of GTK+ and/or PyGTK installed."
-msgstr ""
-"Sie haben nicht die notwendigen Versionen von GTK+ und/oder PyGTK "
-"installiert."
-
-#: mcomix/mcomixstarter.py:43
-msgid "Installed GTK+ version is: %s"
-msgstr "Installierte GTK+-Version ist: %s"
-
-#: mcomix/mcomixstarter.py:45
-msgid "Required GTK+ version is: 2.12.0 or higher\n"
-msgstr "Benötigte GTK+-Version ist: 2.12.0 oder höher\n"
-
-#: mcomix/mcomixstarter.py:46
-msgid "Installed PyGTK version is: %s"
-msgstr "Installierte PyGTK-Version ist: %s"
-
-#: mcomix/mcomixstarter.py:48
-msgid "Required PyGTK version is: 2.12.0 or higher"
-msgstr "Benötigte PyGTK-Version ist: 2.12.0 oder höher\n"
-
-#: mcomix/mcomixstarter.py:53
-msgid "PyGTK version 2.12.0 or higher is required to run MComix."
-msgstr "PyGTK-Version 2.12.0 oder höher wird benötigt, um MComix auszuführen."
-
-#: mcomix/mcomixstarter.py:54
-msgid "No version of PyGTK was found on your system."
-msgstr "Keine PyGTK-Version konnte auf Ihrem System gefunden werden."
-
-#: mcomix/mcomixstarter.py:63
-msgid "You don't have the required version of the Python Imaging"
-msgstr "Sie haben nicht die notwendigen Version der Python Imaging"
-
-#: mcomix/mcomixstarter.py:64
-msgid "Library (PIL) installed."
-msgstr "Library (PIL) installiert."
-
-#: mcomix/mcomixstarter.py:65
-msgid "Installed PIL version is: %s"
-msgstr "Installierte PIL-Version ist: %s"
-
-#: mcomix/mcomixstarter.py:66
-msgid "Required PIL version is: 1.1.5 or higher"
-msgstr "Benötigte PIL-Version ist: 1.1.5 oder höher"
-
-#: mcomix/mcomixstarter.py:70
-msgid "Python Imaging Library (PIL) 1.1.5 or higher is required."
-msgstr "Python Imaging Library (PIL) 1.1.5 oder höher wird benötigt."
-
-#: mcomix/mcomixstarter.py:71
-msgid "No version of the Python Imaging Library was found on your system."
-msgstr ""
-"Keine Python Image Library-Version konnte auf Ihrem System gefunden werden."
-
-#: mcomix/mcomixstarter.py:79
-msgid "The package 'pkg_resources' could not be found."
-msgstr "Das Modul \"pkg_resources\" konnte nicht gefunden werden."
-
-#: mcomix/mcomixstarter.py:80
-msgid ""
-"You need to install the 'setuptools' package, which also includes "
-"pkg_resources."
-msgstr ""
-"Sie benötigen die Bibliothek \"setuptools\", dke das Modul pkg_resources "
-"enthält."
-
-#: mcomix/mcomixstarter.py:81
-msgid "Note: On most distributions, 'distribute' supersedes 'setuptools'."
-msgstr ""
-"Hinweis: Auf den meisten Distributionen ersetzt \"distribute\" die "
-"Bibliothek \"setuptools\"."
-
-#: mcomix/mcomixstarter.py:100
+#: mcomix/mcomixstarter.py:56
 msgid "Usage:"
 msgstr "Verwendung:"
 
-#: mcomix/mcomixstarter.py:101
+#: mcomix/mcomixstarter.py:57
 msgid "[OPTION...] [PATH]"
 msgstr "[OPTION...] [PFAD]"
 
-#: mcomix/mcomixstarter.py:102
+#: mcomix/mcomixstarter.py:58
 msgid ""
 "\n"
 "View images and comic book archives.\n"
@@ -784,21 +579,76 @@ msgstr ""
 "\n"
 "Betrachter für Bilder und Comicbuch-Archive.\n"
 
-#: mcomix/mcomixstarter.py:103
+#: mcomix/mcomixstarter.py:59
 msgid "Options:"
 msgstr "Schalter:"
 
-#: mcomix/mcomixstarter.py:104
+#: mcomix/mcomixstarter.py:60
 msgid "  -h, --help              Show this help and exit."
 msgstr "  -h, --help              Zeigt diesen Hilfetext an."
 
-#: mcomix/mcomixstarter.py:105
+#: mcomix/mcomixstarter.py:61
 msgid "  -f, --fullscreen        Start the application in fullscreen mode."
 msgstr "  -f, --fullscreen        Startet die Anwendung im Vollbild-Modus."
 
-#: mcomix/mcomixstarter.py:106
+#: mcomix/mcomixstarter.py:62
 msgid "  -l, --library           Show the library on startup."
 msgstr "  -l, --library           Zeigt die Bibliothek beim Starten an."
+
+#: mcomix/mcomixstarter.py:79
+msgid "You don't have the required versions of GTK+ and/or PyGTK installed."
+msgstr ""
+"Sie haben nicht die notwendigen Versionen von GTK+ und/oder PyGTK "
+"installiert."
+
+#: mcomix/mcomixstarter.py:80
+msgid "Installed GTK+ version is: %s"
+msgstr "Installierte GTK+-Version ist: %s"
+
+#: mcomix/mcomixstarter.py:82
+msgid "Required GTK+ version is: 2.12.0 or higher\n"
+msgstr "Benötigte GTK+-Version ist: 2.12.0 oder höher\n"
+
+#: mcomix/mcomixstarter.py:83
+msgid "Installed PyGTK version is: %s"
+msgstr "Installierte PyGTK-Version ist: %s"
+
+#: mcomix/mcomixstarter.py:85
+msgid "Required PyGTK version is: 2.12.0 or higher"
+msgstr "Benötigte PyGTK-Version ist: 2.12.0 oder höher\n"
+
+#: mcomix/mcomixstarter.py:90
+msgid "PyGTK version 2.12.0 or higher is required to run MComix."
+msgstr "PyGTK-Version 2.12.0 oder höher wird benötigt, um MComix auszuführen."
+
+#: mcomix/mcomixstarter.py:91
+msgid "No version of PyGTK was found on your system."
+msgstr "Keine PyGTK-Version konnte auf Ihrem System gefunden werden."
+
+#: mcomix/mcomixstarter.py:101
+msgid "You don't have the required version of the Python Imaging"
+msgstr "Sie haben nicht die notwendigen Version der Python Imaging"
+
+#: mcomix/mcomixstarter.py:102
+msgid "Library (PIL) installed."
+msgstr "Library (PIL) installiert."
+
+#: mcomix/mcomixstarter.py:103
+msgid "Installed PIL version is: %s"
+msgstr "Installierte PIL-Version ist: %s"
+
+#: mcomix/mcomixstarter.py:104
+msgid "Required PIL version is: 1.1.5 or higher"
+msgstr "Benötigte PIL-Version ist: 1.1.5 oder höher"
+
+#: mcomix/mcomixstarter.py:108
+msgid "Python Imaging Library (PIL) 1.1.5 or higher is required."
+msgstr "Python Imaging Library (PIL) 1.1.5 oder höher wird benötigt."
+
+#: mcomix/mcomixstarter.py:109
+msgid "No version of the Python Imaging Library was found on your system."
+msgstr ""
+"Keine Python Image Library-Version konnte auf Ihrem System gefunden werden."
 
 #: mcomix/pageselect.py:16 mcomix/ui.py:77 mcomix/ui.py:78
 msgid "_Go"
@@ -808,7 +658,7 @@ msgstr "_Gehe"
 msgid "_Cancel"
 msgstr "_Abbrechen"
 
-#: mcomix/pageselect.py:41
+#: mcomix/pageselect.py:40
 msgid " of %s"
 msgstr " von %s"
 
@@ -1328,7 +1178,135 @@ msgstr "Diaschau anhalten"
 msgid "Start slideshow"
 msgstr "Diaschau starten"
 
-#: mcomix/thumbnail_tools.py:174
+#: mcomix/strings.py:9
+msgid "ZIP archive"
+msgstr "ZIP-Archiv"
+
+#: mcomix/strings.py:10
+msgid "Tar archive"
+msgstr "Tar-Archiv"
+
+#: mcomix/strings.py:11
+msgid "Gzip compressed tar archive"
+msgstr "Gzip-komprimiertes Tar-Archiv"
+
+#: mcomix/strings.py:12
+msgid "Bzip2 compressed tar archive"
+msgstr "Bzip2-komprimiertes Tar-Archiv"
+
+#: mcomix/strings.py:13
+msgid "RAR archive"
+msgstr "RAR-Archiv"
+
+#: mcomix/strings.py:14
+msgid "7z archive"
+msgstr "7zip-Archiv"
+
+#: mcomix/strings.py:18
+msgid "Original vision/developer of Comix"
+msgstr "Ursprüngliche Entwicklung von Comix"
+
+#: mcomix/strings.py:19
+msgid "Lead developer of MComix"
+msgstr "Hauptentwickler von MComix"
+
+#: mcomix/strings.py:20 mcomix/strings.py:21
+msgid "Simplified Chinese translation"
+msgstr "Vereinfachte chinesische Übersetzung"
+
+#: mcomix/strings.py:22
+msgid "Spanish translation"
+msgstr "Spanische Übersetzung"
+
+#: mcomix/strings.py:23
+msgid "Brazilian Portuguese translation"
+msgstr "Portugiesische Übersetzung"
+
+#: mcomix/strings.py:24
+msgid "German translation and Nautilus thumbnailer"
+msgstr "Deutsche Übersetzung und Vorschaubildersteller für Nautilus"
+
+#: mcomix/strings.py:25
+msgid "German translation"
+msgstr "Deutsche Übersetzung"
+
+#: mcomix/strings.py:26 mcomix/strings.py:27
+msgid "Italian translation"
+msgstr "Italienische Übersetzung"
+
+#: mcomix/strings.py:28
+msgid "Dutch translation"
+msgstr "Holländische Übersetzung"
+
+#: mcomix/strings.py:29 mcomix/strings.py:30
+msgid "French translation"
+msgstr "Französische Übersetzung"
+
+#: mcomix/strings.py:31
+msgid "Polish translatin"
+msgstr "Polnische Übersetzung"
+
+#: mcomix/strings.py:32
+msgid "Polish translation"
+msgstr "Polnische Übersetzung"
+
+#: mcomix/strings.py:33
+msgid "Greek translation"
+msgstr "Griechische Übersetzung"
+
+#: mcomix/strings.py:34
+msgid "Catalan translation"
+msgstr "Katalanische Übersetzung"
+
+#: mcomix/strings.py:35 mcomix/strings.py:36
+msgid "Traditional Chinese translation"
+msgstr "Traditionell-chinesische Übersetzung"
+
+#: mcomix/strings.py:37
+msgid "Japanese translation"
+msgstr "Japanische Übersetzung"
+
+#: mcomix/strings.py:38
+msgid "Hungarian translation"
+msgstr "Ungarische Übersetzung"
+
+#: mcomix/strings.py:39
+msgid "Russian translation"
+msgstr "Russische Übersetzung"
+
+#: mcomix/strings.py:40
+msgid "Croatian translation"
+msgstr "Kroatische Übersetzung"
+
+#: mcomix/strings.py:41
+msgid "Korean translation"
+msgstr "Koreanische Übersetzung"
+
+#: mcomix/strings.py:42
+msgid "Persian translation"
+msgstr "Persische Übersetzung"
+
+#: mcomix/strings.py:43
+msgid "Indonesian translation"
+msgstr "Indonesische Übersetzung"
+
+#: mcomix/strings.py:44
+msgid "Czech translation"
+msgstr "Tschechische Übersetzung"
+
+#: mcomix/strings.py:45
+msgid "Ukrainian translation"
+msgstr "Ukrainische Übersetzung"
+
+#: mcomix/strings.py:46
+msgid "Galician translation"
+msgstr "Gallische Übersetzung"
+
+#: mcomix/strings.py:47
+msgid "Icon design"
+msgstr "Symbol-Design"
+
+#: mcomix/thumbnail_tools.py:181
 msgid "! Could not write \"%s\""
 msgstr "! %s kann nicht beschrieben werden"
 
@@ -1591,104 +1569,3 @@ msgstr "Manga-Modus"
 #: mcomix/ui.py:354
 msgid "Magnifying lens"
 msgstr "Lupe"
-
-#~ msgid "Extract page..."
-#~ msgstr "Seite speichern..."
-
-#~ msgid "_Properties"
-#~ msgstr "_Eigenschaften"
-
-#~ msgid " to the library"
-#~ msgstr "Aus dieser Bibliothek entfernen ..."
-
-#~ msgid " to collection "
-#~ msgstr "Sammlung hinzufügen"
-
-#~ msgid "! Could not add file "
-#~ msgstr "%s kann nicht gelesen werden"
-
-#~ msgid "! Could not find RAR file extractor."
-#~ msgstr "Entpacker für RAR-Dateien konnte nicht gefunden werden."
-
-#~ msgid "Could not find RAR file extractor!"
-#~ msgstr "Entpacker für RAR-Dateien konnte nicht gefunden werden."
-
-#~ msgid ""
-#~ "You need either the <i>rar</i> or the <i>unrar</i> program installed in "
-#~ "order to read RAR (.cbr) files."
-#~ msgstr ""
-#~ "Sie benötigen entweder das <i>rar</i>- oder das <i>unrar</i>-Programm, um "
-#~ "RAR-Dateien (.cbr) zu lesen."
-
-#~ msgid "Developer"
-#~ msgstr "Entwickler"
-
-#~ msgid "Use a cache to speed up browsing."
-#~ msgstr ""
-#~ "Einen Zwischenspeicher benutzen, um das Durchstöbern zu beschleunigen"
-
-#~ msgid ""
-#~ "Cache the images that are next to the currently viewed image in order to "
-#~ "speed up browsing. Since the speed improvements are quite big, it is "
-#~ "recommended that you have this preference set, unless you are running "
-#~ "short on free RAM."
-#~ msgstr ""
-#~ "Die Bilder, die nahe zum aktuell betrachteten Bild sind, "
-#~ "zwischenspeichern, um das Durchstöbern zu beschleunigen. Weil die "
-#~ "Geschwindigkeit ziemlich start erhöht wird, wird empfohlen, dass Sie "
-#~ "diese Einstellung gesetzt haben, außer wenn Ihr freier Arbeitsspeicher "
-#~ "knapp ist."
-
-#~ msgid "Thumbnail maintenance"
-#~ msgstr "Vorschaubilderverwaltung"
-
-#~ msgid "Cleanup"
-#~ msgstr "Aufräumen"
-
-#~ msgid "Cleanup thumbnails"
-#~ msgstr "Vorschaubilder aufräumen"
-
-#~ msgid ""
-#~ "Thumbnails for files (such as image files and comic book archives) are "
-#~ "stored in your home directory. Many different applications use and create "
-#~ "these thumbnails, but sometimes thumbnails remain even though the "
-#~ "original files have been removed - wasting space. This dialog can cleanup "
-#~ "your stored thumbnails by removing orphaned and outdated thumbnails."
-#~ msgstr ""
-#~ "Vorschaubilder für Dateien (wie Bilddateien und Comicbucharchive) werden "
-#~ "in Ihrem Home-Verzeichnis gespeichert. Viele unterschiedliche Anwendungen "
-#~ "benutzen und erzeugen diese Vorschaubilder, aber manchmal bleiben die "
-#~ "Vorschaubilder bestehen, obwohl das Original entfernt wurde – "
-#~ "verschwendeter Speicher. Dieser Dialog kann Ihre gespeicherten "
-#~ "Vorschaubilder durch Entfernen von verwaisten und veralteten "
-#~ "Vorschaubildern aufräumen."
-
-#~ msgid "Thumbnail directory"
-#~ msgstr "Vorschaubilderverzeichnis"
-
-#~ msgid "Total number of thumbnails"
-#~ msgstr "Gesamtzahl der Vorschaubilder"
-
-#~ msgid "Calculating..."
-#~ msgstr "Wird berechnet ..."
-
-#~ msgid "Total size of thumbnails"
-#~ msgstr "Gesamtgröße der Vorschaubilder"
-
-#~ msgid "Do you want to cleanup orphaned and outdated thumbnails now?"
-#~ msgstr "Möchten Sie nun verwaiste und veraltete Vorschaubilder aufräumen?"
-
-#~ msgid "Removing thumbnails"
-#~ msgstr "Vorschaubilder werden entfernt"
-
-#~ msgid "Number of removed thumbnails"
-#~ msgstr "Anzahl der entfernten Vorschaubilder"
-
-#~ msgid "Total size of removed thumbnails"
-#~ msgstr "Gesamtgröße der entfernten Vorschaubilder"
-
-#~ msgid "Removed thumbnail for '%s'"
-#~ msgstr "Vorschaubild für »%s« wurde entfernt"
-
-#~ msgid "_Thumbnail maintenance..."
-#~ msgstr "Vorschaubilderver_waltung ..."

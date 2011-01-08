@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-01-06 19:40+CET\n"
+"POT-Creation-Date: 2011-01-08 16:27+CET\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,28 +15,23 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 
-#: mcomix/about_dialog.py:12 mcomix/about_dialog.py:66
+#: mcomix/about_dialog.py:15 mcomix/about_dialog.py:59
 msgid "About"
 msgstr ""
 
-#: mcomix/about_dialog.py:45
-msgid ""
-"! Could not find the icon file \"mcomix.png\"\n"
-msgstr ""
-
-#: mcomix/about_dialog.py:53
+#: mcomix/about_dialog.py:46
 msgid "MComix is an image viewer specifically designed to handle comic books."
 msgstr ""
 
-#: mcomix/about_dialog.py:55
+#: mcomix/about_dialog.py:48
 msgid "It reads ZIP, RAR and tar archives, as well as plain image files."
 msgstr ""
 
-#: mcomix/about_dialog.py:57
+#: mcomix/about_dialog.py:50
 msgid "MComix is released to the public domain."
 msgstr ""
 
-#: mcomix/about_dialog.py:93
+#: mcomix/about_dialog.py:86
 msgid "Credits"
 msgstr ""
 
@@ -110,134 +105,6 @@ msgstr ""
 
 #: mcomix/comment_dialog.py:54
 msgid "Could not read %s"
-msgstr ""
-
-#: mcomix/constants.py:43
-msgid "ZIP archive"
-msgstr ""
-
-#: mcomix/constants.py:44
-msgid "Tar archive"
-msgstr ""
-
-#: mcomix/constants.py:45
-msgid "Gzip compressed tar archive"
-msgstr ""
-
-#: mcomix/constants.py:46
-msgid "Bzip2 compressed tar archive"
-msgstr ""
-
-#: mcomix/constants.py:47
-msgid "RAR archive"
-msgstr ""
-
-#: mcomix/constants.py:48
-msgid "7z archive"
-msgstr ""
-
-#: mcomix/constants.py:66
-msgid "Lead developer of MComix"
-msgstr ""
-
-#: mcomix/constants.py:67
-msgid "Original vision/developer of Comix"
-msgstr ""
-
-#: mcomix/constants.py:68 mcomix/constants.py:69
-msgid "Simplified Chinese translation"
-msgstr ""
-
-#: mcomix/constants.py:70
-msgid "Spanish translation"
-msgstr ""
-
-#: mcomix/constants.py:71
-msgid "Brazilian Portuguese translation"
-msgstr ""
-
-#: mcomix/constants.py:72
-msgid "German translation and Nautilus thumbnailer"
-msgstr ""
-
-#: mcomix/constants.py:73
-msgid "German translation"
-msgstr ""
-
-#: mcomix/constants.py:74 mcomix/constants.py:75
-msgid "Italian translation"
-msgstr ""
-
-#: mcomix/constants.py:76
-msgid "Dutch translation"
-msgstr ""
-
-#: mcomix/constants.py:77 mcomix/constants.py:78
-msgid "French translation"
-msgstr ""
-
-#: mcomix/constants.py:79
-msgid "Polish translatin"
-msgstr ""
-
-#: mcomix/constants.py:80
-msgid "Polish translation"
-msgstr ""
-
-#: mcomix/constants.py:81
-msgid "Greek translation"
-msgstr ""
-
-#: mcomix/constants.py:82
-msgid "Catalan translation"
-msgstr ""
-
-#: mcomix/constants.py:83 mcomix/constants.py:84
-msgid "Traditional Chinese translation"
-msgstr ""
-
-#: mcomix/constants.py:85
-msgid "Japanese translation"
-msgstr ""
-
-#: mcomix/constants.py:86
-msgid "Hungarian translation"
-msgstr ""
-
-#: mcomix/constants.py:87
-msgid "Russian translation"
-msgstr ""
-
-#: mcomix/constants.py:88
-msgid "Croatian translation"
-msgstr ""
-
-#: mcomix/constants.py:89
-msgid "Korean translation"
-msgstr ""
-
-#: mcomix/constants.py:90
-msgid "Persian translation"
-msgstr ""
-
-#: mcomix/constants.py:91
-msgid "Indonesian translation"
-msgstr ""
-
-#: mcomix/constants.py:92
-msgid "Czech translation"
-msgstr ""
-
-#: mcomix/constants.py:93
-msgid "Ukrainian translation"
-msgstr ""
-
-#: mcomix/constants.py:94
-msgid "Galician translation"
-msgstr ""
-
-#: mcomix/constants.py:95
-msgid "Icon design"
 msgstr ""
 
 #: mcomix/deprecated.py:13
@@ -418,7 +285,7 @@ msgstr ""
 msgid "No images in '%s'"
 msgstr ""
 
-#: mcomix/file_handler.py:428 mcomix/main.py:998 mcomix/preferences.py:85
+#: mcomix/file_handler.py:428 mcomix/main.py:999 mcomix/preferences.py:85
 msgid "! Corrupt preferences file \"%s\", deleting..."
 msgstr ""
 
@@ -426,7 +293,7 @@ msgstr ""
 msgid "! Could not load icon \"%s\""
 msgstr ""
 
-#: mcomix/image_handler.py:421
+#: mcomix/image_handler.py:424
 msgid "Unknown filetype"
 msgstr ""
 
@@ -638,103 +505,91 @@ msgstr ""
 msgid "SLIDESHOW"
 msgstr ""
 
-#: mcomix/main.py:960
+#: mcomix/main.py:961
 msgid "Save page as"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:42
-msgid "You don't have the required versions of GTK+ and/or PyGTK installed."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:43
-msgid "Installed GTK+ version is: %s"
-msgstr ""
-
-#: mcomix/mcomixstarter.py:45
-msgid ""
-"Required GTK+ version is: 2.12.0 or higher\n"
-msgstr ""
-
-#: mcomix/mcomixstarter.py:46
-msgid "Installed PyGTK version is: %s"
-msgstr ""
-
-#: mcomix/mcomixstarter.py:48
-msgid "Required PyGTK version is: 2.12.0 or higher"
-msgstr ""
-
-#: mcomix/mcomixstarter.py:53
-msgid "PyGTK version 2.12.0 or higher is required to run MComix."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:54
-msgid "No version of PyGTK was found on your system."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:63
-msgid "You don't have the required version of the Python Imaging"
-msgstr ""
-
-#: mcomix/mcomixstarter.py:64
-msgid "Library (PIL) installed."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:65
-msgid "Installed PIL version is: %s"
-msgstr ""
-
-#: mcomix/mcomixstarter.py:66
-msgid "Required PIL version is: 1.1.5 or higher"
-msgstr ""
-
-#: mcomix/mcomixstarter.py:70
-msgid "Python Imaging Library (PIL) 1.1.5 or higher is required."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:71
-msgid "No version of the Python Imaging Library was found on your system."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:79
-msgid "The package 'pkg_resources' could not be found."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:80
-msgid "You need to install the 'setuptools' package, which also includes pkg_resources."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:81
-msgid "Note: On most distributions, 'distribute' supersedes 'setuptools'."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:100
+#: mcomix/mcomixstarter.py:56
 msgid "Usage:"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:101
+#: mcomix/mcomixstarter.py:57
 msgid "[OPTION...] [PATH]"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:102
+#: mcomix/mcomixstarter.py:58
 msgid ""
 "\n"
 "View images and comic book archives.\n"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:103
+#: mcomix/mcomixstarter.py:59
 msgid "Options:"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:104
+#: mcomix/mcomixstarter.py:60
 msgid "  -h, --help              Show this help and exit."
 msgstr ""
 
-#: mcomix/mcomixstarter.py:105
+#: mcomix/mcomixstarter.py:61
 msgid "  -f, --fullscreen        Start the application in fullscreen mode."
 msgstr ""
 
-#: mcomix/mcomixstarter.py:106
+#: mcomix/mcomixstarter.py:62
 msgid "  -l, --library           Show the library on startup."
+msgstr ""
+
+#: mcomix/mcomixstarter.py:79
+msgid "You don't have the required versions of GTK+ and/or PyGTK installed."
+msgstr ""
+
+#: mcomix/mcomixstarter.py:80
+msgid "Installed GTK+ version is: %s"
+msgstr ""
+
+#: mcomix/mcomixstarter.py:82
+msgid ""
+"Required GTK+ version is: 2.12.0 or higher\n"
+msgstr ""
+
+#: mcomix/mcomixstarter.py:83
+msgid "Installed PyGTK version is: %s"
+msgstr ""
+
+#: mcomix/mcomixstarter.py:85
+msgid "Required PyGTK version is: 2.12.0 or higher"
+msgstr ""
+
+#: mcomix/mcomixstarter.py:90
+msgid "PyGTK version 2.12.0 or higher is required to run MComix."
+msgstr ""
+
+#: mcomix/mcomixstarter.py:91
+msgid "No version of PyGTK was found on your system."
+msgstr ""
+
+#: mcomix/mcomixstarter.py:101
+msgid "You don't have the required version of the Python Imaging"
+msgstr ""
+
+#: mcomix/mcomixstarter.py:102
+msgid "Library (PIL) installed."
+msgstr ""
+
+#: mcomix/mcomixstarter.py:103
+msgid "Installed PIL version is: %s"
+msgstr ""
+
+#: mcomix/mcomixstarter.py:104
+msgid "Required PIL version is: 1.1.5 or higher"
+msgstr ""
+
+#: mcomix/mcomixstarter.py:108
+msgid "Python Imaging Library (PIL) 1.1.5 or higher is required."
+msgstr ""
+
+#: mcomix/mcomixstarter.py:109
+msgid "No version of the Python Imaging Library was found on your system."
 msgstr ""
 
 #: mcomix/pageselect.py:16 mcomix/ui.py:77 mcomix/ui.py:78
@@ -745,7 +600,7 @@ msgstr ""
 msgid "_Cancel"
 msgstr ""
 
-#: mcomix/pageselect.py:41
+#: mcomix/pageselect.py:40
 msgid " of %s"
 msgstr ""
 
@@ -1157,7 +1012,135 @@ msgstr ""
 msgid "Start slideshow"
 msgstr ""
 
-#: mcomix/thumbnail_tools.py:174
+#: mcomix/strings.py:9
+msgid "ZIP archive"
+msgstr ""
+
+#: mcomix/strings.py:10
+msgid "Tar archive"
+msgstr ""
+
+#: mcomix/strings.py:11
+msgid "Gzip compressed tar archive"
+msgstr ""
+
+#: mcomix/strings.py:12
+msgid "Bzip2 compressed tar archive"
+msgstr ""
+
+#: mcomix/strings.py:13
+msgid "RAR archive"
+msgstr ""
+
+#: mcomix/strings.py:14
+msgid "7z archive"
+msgstr ""
+
+#: mcomix/strings.py:18
+msgid "Original vision/developer of Comix"
+msgstr ""
+
+#: mcomix/strings.py:19
+msgid "Lead developer of MComix"
+msgstr ""
+
+#: mcomix/strings.py:20 mcomix/strings.py:21
+msgid "Simplified Chinese translation"
+msgstr ""
+
+#: mcomix/strings.py:22
+msgid "Spanish translation"
+msgstr ""
+
+#: mcomix/strings.py:23
+msgid "Brazilian Portuguese translation"
+msgstr ""
+
+#: mcomix/strings.py:24
+msgid "German translation and Nautilus thumbnailer"
+msgstr ""
+
+#: mcomix/strings.py:25
+msgid "German translation"
+msgstr ""
+
+#: mcomix/strings.py:26 mcomix/strings.py:27
+msgid "Italian translation"
+msgstr ""
+
+#: mcomix/strings.py:28
+msgid "Dutch translation"
+msgstr ""
+
+#: mcomix/strings.py:29 mcomix/strings.py:30
+msgid "French translation"
+msgstr ""
+
+#: mcomix/strings.py:31
+msgid "Polish translatin"
+msgstr ""
+
+#: mcomix/strings.py:32
+msgid "Polish translation"
+msgstr ""
+
+#: mcomix/strings.py:33
+msgid "Greek translation"
+msgstr ""
+
+#: mcomix/strings.py:34
+msgid "Catalan translation"
+msgstr ""
+
+#: mcomix/strings.py:35 mcomix/strings.py:36
+msgid "Traditional Chinese translation"
+msgstr ""
+
+#: mcomix/strings.py:37
+msgid "Japanese translation"
+msgstr ""
+
+#: mcomix/strings.py:38
+msgid "Hungarian translation"
+msgstr ""
+
+#: mcomix/strings.py:39
+msgid "Russian translation"
+msgstr ""
+
+#: mcomix/strings.py:40
+msgid "Croatian translation"
+msgstr ""
+
+#: mcomix/strings.py:41
+msgid "Korean translation"
+msgstr ""
+
+#: mcomix/strings.py:42
+msgid "Persian translation"
+msgstr ""
+
+#: mcomix/strings.py:43
+msgid "Indonesian translation"
+msgstr ""
+
+#: mcomix/strings.py:44
+msgid "Czech translation"
+msgstr ""
+
+#: mcomix/strings.py:45
+msgid "Ukrainian translation"
+msgstr ""
+
+#: mcomix/strings.py:46
+msgid "Galician translation"
+msgstr ""
+
+#: mcomix/strings.py:47
+msgid "Icon design"
+msgstr ""
+
+#: mcomix/thumbnail_tools.py:181
 msgid "! Could not write \"%s\""
 msgstr ""
 
