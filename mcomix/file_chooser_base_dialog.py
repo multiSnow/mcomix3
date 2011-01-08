@@ -80,7 +80,7 @@ class _BaseFileChooserDialog(gtk.Dialog):
             'application/zip', 'application/x-rar', 'application/x-tar',
             'application/x-gzip', 'application/x-bzip2', 'application/x-cbz',
             'application/x-cbr', 'application/x-cbt', 'application/x-7z-compressed'),
-            ('*.zip', '*.rar', '*.tar', '*.gz', '*.bz2', '*.bzip2', 
+            ('*.zip', '*.rar', '*.tar', '*.gz', '*.bz2', '*.bzip2',
              '*.cbz', '*.cbr', '*.cbt', '*.7z'))
 
         self.add_filter(_('ZIP archives'),
