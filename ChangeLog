@@ -59,6 +59,12 @@ MComix 0.90.3 (SVN)
 
     - Several strings have been reworked to ease localization.
 
+    - The currently opened file can now be extracted from archives using
+      the 'Save as...' menu item.
+
+    - Fixed thumbnail size preference not being respected, and scaling of
+      book covers in the library dialog being broken.
+
 MComix 0.90 Initial Release
 
     - Changed the mechanism of page flipping.
