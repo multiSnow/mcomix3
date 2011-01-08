@@ -32,17 +32,13 @@ class Pageselector(gtk.Dialog):
 
         self._page_selector = gtk.VScale(self._selector_adjustment)
         self._page_selector.set_draw_value(False)
-
         self._page_selector.set_digits( 0 )
 
         self._page_spinner = gtk.SpinButton(self._selector_adjustment)
         self._page_spinner.connect( 'value-changed', self._cb_value_changed )
         self._page_spinner.set_activates_default(True)
         self._pages_label = gtk.Label(_(' of %s') % self._number_of_pages)
-        self._pages_label.set_alignment(0, 1)
-
-        preview_box = gtk.HBox()
-        preview_box.set_size_request(200, 150)
+        self._pages_label.set_alignment(0, 0.5)
 
         self._image_preview = gtk.Image()
         if self._window.thumbnailsidebar._thumb_cache_is_complete:
@@ -54,23 +50,20 @@ class Pageselector(gtk.Dialog):
         else:
             self._image_preview.set_from_pixbuf(constants.MISSING_IMAGE_ICON)
 
-        preview_box.pack_start(self._image_preview)
+        # Group preview image and page selector next to each other
+        preview_box = gtk.HBox()
+        preview_box.set_border_width(5)
+        preview_box.set_spacing(5)
+        preview_box.pack_start(self._image_preview, True)
+        preview_box.pack_end(self._page_selector, False)
+        # Below them, group selection spinner and current page label
+        selection_box = gtk.HBox()
+        selection_box.set_border_width(5)
+        selection_box.pack_start(self._page_spinner, True)
+        selection_box.pack_end(self._pages_label, False)
 
-        spinner_box = gtk.HBox()
-        spinner_box.set_border_width(5)
-        spinner_box.pack_start(self._page_spinner, True)
-        spinner_box.pack_start(self._pages_label, False)
-
-        left_box = gtk.VBox()
-        left_box.pack_start(preview_box, False)
-        left_box.pack_start(spinner_box, True)
-
-        main_box = gtk.HBox()
-        main_box.pack_start(left_box, False)
-        main_box.pack_start(self._page_selector, False, False, 5)
-
-        self.vbox.pack_start(main_box, False)
-
+        self.get_content_area().pack_start(preview_box, True)
+        self.get_content_area().pack_end(selection_box, False)
         self.show_all()
 
     def _cb_value_changed(self, *args):
