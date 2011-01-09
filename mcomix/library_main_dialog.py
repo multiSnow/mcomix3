@@ -62,6 +62,7 @@ class _LibraryDialog(gtk.Window):
         if not keep_library_open:
             self.close()
 
+        self._window.present()
         self._file_handler.open_file(path)
 
     def set_status_message(self, message):
