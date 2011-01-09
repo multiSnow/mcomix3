@@ -278,8 +278,10 @@ class _BookArea(gtk.ScrolledWindow):
                 iconview.select_path(path)
             if len(iconview.get_selected_items()) > 1:
                 self._ui_manager.get_action('/Popup/open').set_sensitive(False)
+                self._ui_manager.get_action('/Popup/open_nowinclose').set_sensitive(False)
             else:
                 self._ui_manager.get_action('/Popup/open').set_sensitive(True)
+                self._ui_manager.get_action('/Popup/open_nowinclose').set_sensitive(True)
             if (self._library.collection_area.get_current_collection() ==
               _COLLECTION_ALL):
                 self._ui_manager.get_action(
