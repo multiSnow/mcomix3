@@ -64,13 +64,13 @@ install_print_function()
 
 def print_help():
     """Print the command-line help text and exit."""
-    print _('Usage:')
-    print '  mcomix ' + _('[OPTION...] [PATH]')
-    print _('\nView images and comic book archives.\n')
-    print _('Options:')
-    print _('  -h, --help              Show this help and exit.')
-    print _('  -f, --fullscreen        Start the application in fullscreen mode.')
-    print _('  -l, --library           Show the library on startup.')
+    print_( _('Usage:') )
+    print_( '  mcomix',  _('[OPTION...] [PATH]') )
+    print_( _('\nView images and comic book archives.\n') )
+    print_( _('Options:') )
+    print_( _('  -h, --help              Show this help and exit.') )
+    print_( _('  -f, --fullscreen        Start the application in fullscreen mode.') )
+    print_( _('  -l, --library           Show the library on startup.') )
 
     sys.exit(1)
 
@@ -87,19 +87,19 @@ try:
     gobject.threads_init()
 
 except AssertionError:
-    print _("You don't have the required versions of GTK+ and/or PyGTK installed.")
-    print _('Installed GTK+ version is: %s') % \
-        '.'.join([str(n) for n in gtk.gtk_version])
-    print _('Required GTK+ version is: 2.12.0 or higher\n')
-    print _('Installed PyGTK version is: %s') % \
-        '.'.join([str(n) for n in gtk.pygtk_version])
-    print _('Required PyGTK version is: 2.12.0 or higher')
+    print_( _("You don't have the required versions of GTK+ and/or PyGTK installed.") )
+    print_( _('Installed GTK+ version is: %s') % \
+        '.'.join([str(n) for n in gtk.gtk_version]) )
+    print_( _('Required GTK+ version is: 2.12.0 or higher\n') )
+    print_( _('Installed PyGTK version is: %s') % \
+        '.'.join([str(n) for n in gtk.pygtk_version]) )
+    print_( _('Required PyGTK version is: 2.12.0 or higher') )
 
     sys.exit(1)
 
 except ImportError:
-    print _('PyGTK version 2.12.0 or higher is required to run MComix.')
-    print _('No version of PyGTK was found on your system.')
+    print_( _('PyGTK version 2.12.0 or higher is required to run MComix.') )
+    print_( _('No version of PyGTK was found on your system.') )
 
     sys.exit(1)
 
@@ -109,15 +109,15 @@ try:
     assert Image.VERSION >= '1.1.5'
 
 except AssertionError:
-    print _("You don't have the required version of the Python Imaging"),
-    print _('Library (PIL) installed.')
-    print _('Installed PIL version is: %s') % Image.VERSION
-    print _('Required PIL version is: 1.1.5 or higher')
+    print_( _("You don't have the required version of the Python Imaging"), end=' ')
+    print_( _('Library (PIL) installed.') )
+    print_( _('Installed PIL version is: %s') % Image.VERSION )
+    print_( _('Required PIL version is: 1.1.5 or higher') )
     sys.exit(1)
 
 except ImportError:
-    print _('Python Imaging Library (PIL) 1.1.5 or higher is required.')
-    print _('No version of the Python Imaging Library was found on your system.')
+    print_( _('Python Imaging Library (PIL) 1.1.5 or higher is required.') )
+    print_( _('No version of the Python Imaging Library was found on your system.') )
 
     sys.exit(1)
 

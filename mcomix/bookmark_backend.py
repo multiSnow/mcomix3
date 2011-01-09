@@ -31,8 +31,8 @@ class _BookmarksStore:
                 fd.close()
 
             except Exception:
-                print _('! Could not parse bookmarks file %s') % constants.BOOKMARK_PICKLE_PATH
-                print _('! Deleting corrupt bookmarks file.')
+                print_( _('! Could not parse bookmarks file %s') % constants.BOOKMARK_PICKLE_PATH )
+                print_( _('! Deleting corrupt bookmarks file.') )
                 os.remove(constants.BOOKMARK_PICKLE_PATH)
                 self.clear_bookmarks()
 

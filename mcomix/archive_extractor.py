@@ -48,7 +48,7 @@ class Extractor:
             self._setupped = True
             return self._condition
         else:
-            print _('! Non-supported archive format: %s') % os.path.splitext(src)[1][1:]
+            print_( _('! Non-supported archive format: %s') % os.path.splitext(src)[1][1:] )
 
             #dialog = gtk.MessageDialog(None, 0, gtk.MESSAGE_WARNING,
             #    gtk.BUTTONS_CLOSE, _("Could not find file extractor!"))
@@ -146,7 +146,7 @@ class Extractor:
             # archive) than to crash here and leave the main thread in a
             # possible infinite block. Damaged or missing files *should* be
             # handled gracefully by the main program anyway.
-            print _('! Extraction error: %s') % str(ex)
+            print_( _('! Extraction error: %s') % str(ex) )
 
         self._condition.acquire()
         self._extracted[name] = True

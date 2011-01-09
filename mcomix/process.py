@@ -39,7 +39,7 @@ class Process:
             self._proc = subprocess.Popen(self._args, stdout=subprocess.PIPE)
             return self._proc.stdout
         except Exception, ex:
-            print _("! Error spawning process"), str(ex)
+            print_( _("! Error spawning process"), str(ex) )
             return None
 
     def spawn(self):

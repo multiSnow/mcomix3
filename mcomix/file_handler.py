@@ -425,7 +425,7 @@ class FileHandler:
                 config.close()
 
             except Exception:
-                print _('! Corrupt preferences file "%s", deleting...') % constants.FILEINFO_PICKLE_PATH
+                print_( _('! Corrupt preferences file "%s", deleting...') % constants.FILEINFO_PICKLE_PATH )
                 if config is not None:
                     config.close()
                 os.remove(constants.FILEINFO_PICKLE_PATH)

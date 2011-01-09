@@ -166,8 +166,8 @@ class Thumbnailer(object):
             os.chmod(thumbpath, 0600)
 
         except Exception, ex:
-            print _('! Could not save thumbnail "%(thumbpath)s": %(error)s') % \
-                { 'thumbpath' : thumbpath, 'error' : str(ex) }
+            print_( _('! Could not save thumbnail "%(thumbpath)s": %(error)s') % \
+                { 'thumbpath' : thumbpath, 'error' : str(ex) } )
 
     def _thumbnail_exists(self, filepath):
         """ Checks if the thumbnail for <filepath> already exists.
