@@ -121,11 +121,13 @@ class Thumbnailer(object):
             else:
                 return None, None
 
-        else:
+        elif image_tools.is_image_file(filepath):
             pixbuf = image_tools.load_pixbuf_size(filepath, self.width, self.height)
             tEXt_data = self._get_text_data(filepath)
 
             return pixbuf, tEXt_data
+        else:
+            return None, None
 
     def _get_text_data(self, filepath):
         """ Creates a tEXt dictionary for <filepath>. """
