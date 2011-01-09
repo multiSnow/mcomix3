@@ -135,8 +135,10 @@ class _ControlArea(gtk.HBox):
 
         if name is not None:
             self._namelabel.set_text(encoding.to_unicode(name))
+            self._namelabel.set_tooltip_text(encoding.to_unicode(name))
         else:
             self._namelabel.set_text('')
+            self._namelabel.set_has_tooltip(False)
 
         if pages is not None:
             self._pageslabel.set_text(_('%d pages') % pages)
