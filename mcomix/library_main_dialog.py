@@ -52,14 +52,16 @@ class _LibraryDialog(gtk.Window):
         self.add(table)
         self.show_all()
 
-    def open_book(self, book):
+    def open_book(self, book, keep_library_open=False):
         """Open the book with ID <book>."""
         path = self.backend.get_book_path(book)
 
         if path is None:
             return
 
-        self.close()
+        if not keep_library_open:
+            self.close()
+
         self._file_handler.open_file(path)
 
     def set_status_message(self, message):

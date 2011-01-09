@@ -54,6 +54,7 @@ class _BookArea(gtk.ScrolledWindow):
         <ui>
             <popup name="Popup">
                 <menuitem action="open" />
+                <menuitem action="open_nowinclose" />
                 <separator />
                 <menuitem action="remove from collection" />
                 <menuitem action="remove from library" />
@@ -65,16 +66,19 @@ class _BookArea(gtk.ScrolledWindow):
         self._ui_manager.add_ui_from_string(ui_description)
         actiongroup = gtk.ActionGroup('mcomix-library-book-area')
         actiongroup.add_actions([
-            ('open', gtk.STOCK_OPEN, _('Open'), None, None,
+            ('open', gtk.STOCK_OPEN, _('_Open'), None, None,
                 self.open_selected_book),
+            ('open_nowinclose', gtk.STOCK_OPEN, 
+                _('Open _without closing library'), None, None,
+                self.open_selected_book_noclose),
             ('remove from collection', gtk.STOCK_REMOVE,
-                _('Remove from this collection'), None, None,
+                _('Remove from this _collection'), None, None,
                 self._remove_books_from_collection),
             ('remove from library', gtk.STOCK_DELETE,
-                _('Remove from the library...'), None, None,
+                _('Remove from the _library'), None, None,
                 self._remove_books_from_library),
             ('completely remove', gtk.STOCK_DELETE,
-                _('Completey remove...'), None, None,
+                _('Completey _remove'), None, None,
                 self._completely_remove_book)
                 ])
 
@@ -137,7 +141,15 @@ class _BookArea(gtk.ScrolledWindow):
         if not selected:
             return
         path = selected[0]
-        self._book_activated(self._iconview, path)
+        self._book_activated(self._iconview, path, False)
+
+    def open_selected_book_noclose(self, *args):
+        """Open the currently selected book, keeping the library open."""
+        selected = self._iconview.get_selected_items()
+        if not selected:
+            return
+        path = selected[0]
+        self._book_activated(self._iconview, path, True)
 
     def _add_book(self, book):
         """Add the <book> to the ListStore (and thus to the _BookArea)."""
@@ -154,10 +166,10 @@ class _BookArea(gtk.ScrolledWindow):
         pixbuf = image_tools.add_border(pixbuf, 1, 0xFFFFFFFF)
         self._liststore.append([pixbuf, book])
 
-    def _book_activated(self, iconview, path):
+    def _book_activated(self, iconview, path, keep_library_open=False):
         """Open the book at the (liststore) <path>."""
         book = self.get_book_at_path(path)
-        self._library.open_book(book)
+        self._library.open_book(book, keep_library_open=keep_library_open)
 
     def _selection_changed(self, iconview):
         """Update the displayed info in the _ControlArea when a new book
