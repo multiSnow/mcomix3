@@ -25,6 +25,7 @@ import signal
 import gettext
 
 import constants
+import tools
 
 try:
     import pkg_resources
@@ -49,7 +50,17 @@ def install_gettext():
     message_path = pkg_resources.resource_filename("mcomix.messages", "")
     gettext.install('mcomix', message_path, unicode=True)
 
+def install_print_function():
+    """ Add tools.print_ to the built-in namespace as print_.
+    This function helps with encoding woes that the print statement has
+    by replacing problematic characters with underscore. """
+
+    import __builtin__
+    if 'print_' not in __builtin__.__dict__:
+        __builtin__.__dict__['print_'] = tools.print_
+
 install_gettext()
+install_print_function()
 
 def print_help():
     """Print the command-line help text and exit."""

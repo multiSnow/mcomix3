@@ -3,6 +3,7 @@
 import os
 import sys
 import re
+import encoding
 
 def alphanumeric_sort(filenames):
     """Do an in-place alphanumeric sort of the strings in <filenames>,
@@ -67,5 +68,50 @@ def number_of_digits( n ):
         num_of_digits += 1
 
     return num_of_digits
+
+def print_(*args, **options):
+    """ This function is supposed to replace the standard print statement.
+    Its prototype follows that of the print() function introduced in Python 2.6:
+    Prints <args>, with each argument separeted by sep=' ' and ending with
+    end='\n'.
+
+    It converts any text to the encoding used by STDOUT, and replaces problematic
+    characters with underscore. Prevents UnicodeEncodeErrors and similar when
+    using print on non-ASCII strings, on systems not using UTF-8 as default encoding.
+    """
+
+    args = [ encoding.to_unicode(val) for val in args ]
+
+    if 'sep' in options: sep = options['sep']
+    else: sep = u' '
+    if 'end' in options: end = options['end']
+    else: end = u'\n'
+
+    def print_generic(text):
+        if text:
+            sys.stdout.write(text.encode(sys.stdout.encoding, 'replace'))
+
+    def print_win32(text):
+        if not text: return
+
+        import ctypes
+        INVALID_HANDLE_VALUE, STD_OUTPUT_HANDLE = -1, -11
+        outhandle = ctypes.windll.kernel32.GetStdHandle(STD_OUTPUT_HANDLE)
+        if outhandle != INVALID_HANDLE_VALUE and outhandle:
+            chars_written = ctypes.c_int(0)
+            ctypes.windll.kernel32.WriteConsoleW(outhandle,
+                text, len(text), ctypes.byref(chars_written), None)
+        else:
+            print_generic(text)
+
+    print_function = sys.platform == 'win32' and print_win32 or print_generic
+    if len(args) > 0:
+        print_function(args[0])
+
+    for text in args[1:]:
+        print_function(sep)
+        print_function(text)
+
+    print_function(end)
 
 # vim: expandtab:sw=4:ts=4
