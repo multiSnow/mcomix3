@@ -39,7 +39,9 @@ class Process:
             self._proc = subprocess.Popen(self._args, stdout=subprocess.PIPE)
             return self._proc.stdout
         except Exception, ex:
-            print_( _("! Error spawning process"), str(ex) )
+            cmd = len(self._args) > 0 and self._args[0] or "<invalid>"
+            print_( _('! Error spawning process "%(command)s": %(error)s') %
+                { 'command' : cmd, 'error' : str(ex) } )
             return None
 
     def spawn(self):
