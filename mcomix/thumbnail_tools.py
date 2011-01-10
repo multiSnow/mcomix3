@@ -184,7 +184,8 @@ class Thumbnailer(object):
                 img = Image.open(thumbpath)
                 info = img.info
                 stored_mtime = long(info['Thumb::MTime'])
-                file_mtime = long(os.stat(filepath).st_mtime)
+                # The source file might no longer exist
+                file_mtime = os.path.isfile(filepath) and long(os.stat(filepath).st_mtime) or stored_mtime
                 return stored_mtime == file_mtime and \
                     max(*img.size) == max(self.width, self.height)
             else:
