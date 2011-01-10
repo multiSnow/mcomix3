@@ -6,6 +6,8 @@ import os
 import glob
 import setuptools
 
+from mcomix import constants
+
 def get_data_patterns(directory, *patterns):
     """ Build a list of patterns for all subdirectories of <directory>
     to be passed into package_data. """
@@ -23,8 +25,8 @@ def get_data_patterns(directory, *patterns):
     return allfiles
 
 setuptools.setup(
-    name='MComix',
-    version='0.90.3',
+    name = 'mcomix',
+    version = constants.VERSION,
     packages = ['mcomix', 'mcomix.archive', 'mcomix.messages', 'mcomix.images'],
     package_data = {
         'mcomix.messages' : get_data_patterns('mcomix/messages', '*.mo'),
