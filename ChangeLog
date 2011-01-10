@@ -10,6 +10,8 @@ MComix 0.90.3 (SVN)
       A setuptools-based setup.py replaces install.py. This should help for
       uniform installs across different operating systems.
 
+    - Several strings have been reworked to ease localization.
+
     - Added ability to apply current changes in the edit archive window.
 
     - Various usability fixes on Win32, including Unicode filenames,
@@ -57,15 +59,16 @@ MComix 0.90.3 (SVN)
     - When opening an archive in double page mode, the first page (i.e. the
       cover) is displayed as single page.
 
-    - Updated German translation.
-
-    - Several strings have been reworked to ease localization.
-
     - The currently opened file can now be extracted from archives using
       the 'Save as...' menu item.
 
     - Fixed thumbnail size preference not being respected, and scaling of
       book covers in the library dialog being broken.
+
+    - Files in the library can now be opened without closing the library
+      window using the right-click popup menu.
+
+    - Updated German translation.
 
 MComix 0.90 Initial Release
 
