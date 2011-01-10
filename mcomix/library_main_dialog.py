@@ -2,7 +2,7 @@
 
 import gtk
 import encoding
-import constants
+import tools
 import file_chooser_library_dialog
 import library_backend
 import library_book_area
@@ -124,6 +124,6 @@ def _close_dialog(*args):
     if _dialog is not None:
         _dialog.destroy()
         _dialog = None
-        constants.RUN_GARBAGE_COLLECTOR
+        tools.garbage_collect()
 
 # vim: expandtab:sw=4:ts=4

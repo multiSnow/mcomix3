@@ -3,6 +3,7 @@
 import os
 import sys
 import re
+import gc
 import encoding
 
 def alphanumeric_sort(filenames):
@@ -68,6 +69,13 @@ def number_of_digits( n ):
         num_of_digits += 1
 
     return num_of_digits
+
+def garbage_collect():
+    """ Runs the garbage collector. """
+    if sys.version_info[:3] >= (2, 5, 0):
+        gc.collect(0)
+    else:
+        gc.collect()
 
 def print_(*args, **options):
     """ This function is supposed to replace the standard print statement.

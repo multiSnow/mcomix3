@@ -1,9 +1,9 @@
 """clipboard.py - Clipboard handler"""
 
 import gtk
+import tools
 import image_tools
 import threading
-import constants
 
 class Clipboard(gtk.Clipboard):
 
@@ -35,6 +35,6 @@ class Clipboard(gtk.Clipboard):
 
                 del new_pix_buf
 
-                constants.RUN_GARBAGE_COLLECTOR
+                tools.garbage_collect()
 
 # vim: expandtab:sw=4:ts=4

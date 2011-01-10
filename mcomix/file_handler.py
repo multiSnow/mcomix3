@@ -226,7 +226,7 @@ class FileHandler:
         self._tmp_dir = tempfile.mkdtemp(prefix=u'mcomix.', suffix=os.sep)
         self._window.imagehandler.close()
         self._window.thumbnailsidebar.clear()
-        constants.RUN_GARBAGE_COLLECTOR
+        tools.garbage_collect()
 
     def cleanup(self):
         """Run clean-up tasks. Should be called prior to exit."""

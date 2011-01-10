@@ -4,6 +4,7 @@ import os
 import threading
 import gtk
 import encoding
+import tools
 import image_tools
 from preferences import prefs
 import thumbnail_tools
@@ -147,7 +148,7 @@ class ImageHandler:
         for page in set(self._raw_pixbufs) - set(wanted_pixbufs):
             del self._raw_pixbufs[page]
 
-        constants.RUN_GARBAGE_COLLECTOR
+        tools.garbage_collect()
 
         self.thread_cache_new_pixbufs(wanted_pixbufs)
 
@@ -306,7 +307,7 @@ class ImageHandler:
         self._name_table.clear()
         self.is_cacheing = False
 
-        constants.RUN_GARBAGE_COLLECTOR
+        tools.garbage_collect()
 
     def cleanup(self):
         """Run clean-up tasks. Should be called prior to exit.
