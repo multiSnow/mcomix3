@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-01-08 16:27+CET\n"
+"POT-Creation-Date: 2011-01-10 03:31+PST\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -191,7 +191,7 @@ msgstr ""
 msgid "Automatically adjust contrast (both lightness and darkness), separately for each colour band."
 msgstr ""
 
-#: mcomix/file_chooser_base_dialog.py:33 mcomix/library_book_area.py:68
+#: mcomix/file_chooser_base_dialog.py:33
 msgid "Open"
 msgstr ""
 
@@ -285,7 +285,7 @@ msgstr ""
 msgid "No images in '%s'"
 msgstr ""
 
-#: mcomix/file_handler.py:428 mcomix/main.py:999 mcomix/preferences.py:85
+#: mcomix/file_handler.py:428 mcomix/main.py:1004 mcomix/preferences.py:85
 msgid "! Corrupt preferences file \"%s\", deleting..."
 msgstr ""
 
@@ -321,63 +321,71 @@ msgstr ""
 msgid "! Non-existant book #%i"
 msgstr ""
 
-#: mcomix/library_backend.py:83
+#: mcomix/library_backend.py:89
 msgid "! Could not get cover for book \"%s\""
 msgstr ""
 
-#: mcomix/library_backend.py:205
+#: mcomix/library_backend.py:214
 msgid "! Could not add book \"%s\" to the library"
 msgstr ""
 
-#: mcomix/library_backend.py:222
+#: mcomix/library_backend.py:231
 msgid "! Could not add collection \"%s\""
 msgstr ""
 
-#: mcomix/library_backend.py:233
+#: mcomix/library_backend.py:242
 msgid "! Could not add book %(book)s to collection %(collection)s"
 msgstr ""
 
-#: mcomix/library_backend.py:260
+#: mcomix/library_backend.py:269
 msgid "! Could not rename collection to \"%s\""
 msgstr ""
 
-#: mcomix/library_backend.py:271 mcomix/library_backend.py:273
+#: mcomix/library_backend.py:280 mcomix/library_backend.py:282
 msgid "(Copy)"
 msgstr ""
 
-#: mcomix/library_book_area.py:71
-msgid "Remove from this collection"
+#: mcomix/library_book_area.py:69
+msgid "_Open"
 msgstr ""
 
-#: mcomix/library_book_area.py:74
-msgid "Remove from the library..."
+#: mcomix/library_book_area.py:72
+msgid "Open _without closing library"
 msgstr ""
 
-#: mcomix/library_book_area.py:77
-msgid "Completey remove..."
+#: mcomix/library_book_area.py:75
+msgid "Remove from this _collection"
 msgstr ""
 
-#: mcomix/library_book_area.py:183
+#: mcomix/library_book_area.py:78
+msgid "Remove from the _library"
+msgstr ""
+
+#: mcomix/library_book_area.py:81
+msgid "Completey _remove"
+msgstr ""
+
+#: mcomix/library_book_area.py:195
 msgid "Removed %(num)d book(s) from '%(collection)s'."
 msgstr ""
 
-#: mcomix/library_book_area.py:194 mcomix/library_book_area.py:220
+#: mcomix/library_book_area.py:206 mcomix/library_book_area.py:232
 msgid "Remove books from the library?"
 msgstr ""
 
-#: mcomix/library_book_area.py:196
+#: mcomix/library_book_area.py:208
 msgid "The selected books will be removed from the library (but the original files will be untouched). Are you sure that you want to continue?"
 msgstr ""
 
-#: mcomix/library_book_area.py:209
+#: mcomix/library_book_area.py:221
 msgid "Removed %d book(s) from the library."
 msgstr ""
 
-#: mcomix/library_book_area.py:222
+#: mcomix/library_book_area.py:234
 msgid "The selected books will be removed from the library and permanently deleted. Are you sure that you want to continue?"
 msgstr ""
 
-#: mcomix/library_book_area.py:248
+#: mcomix/library_book_area.py:260
 msgid "! Could not remove file \"%s\""
 msgstr ""
 
@@ -417,7 +425,7 @@ msgstr ""
 msgid "Could not change the name to '%s'."
 msgstr ""
 
-#: mcomix/library_collection_area.py:185 mcomix/library_control_area.py:192
+#: mcomix/library_collection_area.py:185 mcomix/library_control_area.py:195
 msgid "A collection by that name already exists."
 msgstr ""
 
@@ -441,55 +449,55 @@ msgstr ""
 msgid "Move books from '%(source collection)s' to '%(destination collection)s'."
 msgstr ""
 
-#: mcomix/library_control_area.py:69
+#: mcomix/library_control_area.py:70
 msgid "Search"
 msgstr ""
 
-#: mcomix/library_control_area.py:74
+#: mcomix/library_control_area.py:75
 msgid "Display only those books that have the specified text string in their full path. The search is not case sensitive."
 msgstr ""
 
-#: mcomix/library_control_area.py:77
+#: mcomix/library_control_area.py:78
 msgid "Cover size"
 msgstr ""
 
-#: mcomix/library_control_area.py:90
+#: mcomix/library_control_area.py:91
 msgid "Add books"
 msgstr ""
 
-#: mcomix/library_control_area.py:94
+#: mcomix/library_control_area.py:95
 msgid "Add more books to the library."
 msgstr ""
 
-#: mcomix/library_control_area.py:97
+#: mcomix/library_control_area.py:98
 msgid "Add folder"
 msgstr ""
 
-#: mcomix/library_control_area.py:102
+#: mcomix/library_control_area.py:103
 msgid "Add a new empty collection."
 msgstr ""
 
-#: mcomix/library_control_area.py:109
+#: mcomix/library_control_area.py:110
 msgid "Open the selected book."
 msgstr ""
 
-#: mcomix/library_control_area.py:141 mcomix/properties_dialog.py:46
+#: mcomix/library_control_area.py:144 mcomix/properties_dialog.py:46
 msgid "%d pages"
 msgstr ""
 
-#: mcomix/library_control_area.py:165
+#: mcomix/library_control_area.py:168
 msgid "Add new collection?"
 msgstr ""
 
-#: mcomix/library_control_area.py:167
+#: mcomix/library_control_area.py:170
 msgid "Please enter a name for the new collection."
 msgstr ""
 
-#: mcomix/library_control_area.py:173
+#: mcomix/library_control_area.py:176
 msgid "New collection"
 msgstr ""
 
-#: mcomix/library_control_area.py:187
+#: mcomix/library_control_area.py:190
 msgid "Could not add a new collection called '%s'."
 msgstr ""
 
@@ -497,98 +505,98 @@ msgstr ""
 msgid "Library"
 msgstr ""
 
-#: mcomix/library_main_dialog.py:110
+#: mcomix/library_main_dialog.py:113
 msgid "! You need an sqlite wrapper to use the library."
 msgstr ""
 
-#: mcomix/main.py:880
+#: mcomix/main.py:885
 msgid "SLIDESHOW"
 msgstr ""
 
-#: mcomix/main.py:961
+#: mcomix/main.py:966
 msgid "Save page as"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:56
+#: mcomix/mcomixstarter.py:67
 msgid "Usage:"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:57
+#: mcomix/mcomixstarter.py:68
 msgid "[OPTION...] [PATH]"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:58
+#: mcomix/mcomixstarter.py:69
 msgid ""
 "\n"
 "View images and comic book archives.\n"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:59
+#: mcomix/mcomixstarter.py:70
 msgid "Options:"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:60
+#: mcomix/mcomixstarter.py:71
 msgid "  -h, --help              Show this help and exit."
 msgstr ""
 
-#: mcomix/mcomixstarter.py:61
+#: mcomix/mcomixstarter.py:72
 msgid "  -f, --fullscreen        Start the application in fullscreen mode."
 msgstr ""
 
-#: mcomix/mcomixstarter.py:62
+#: mcomix/mcomixstarter.py:73
 msgid "  -l, --library           Show the library on startup."
 msgstr ""
 
-#: mcomix/mcomixstarter.py:79
+#: mcomix/mcomixstarter.py:90
 msgid "You don't have the required versions of GTK+ and/or PyGTK installed."
 msgstr ""
 
-#: mcomix/mcomixstarter.py:80
+#: mcomix/mcomixstarter.py:91
 msgid "Installed GTK+ version is: %s"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:82
+#: mcomix/mcomixstarter.py:93
 msgid ""
 "Required GTK+ version is: 2.12.0 or higher\n"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:83
+#: mcomix/mcomixstarter.py:94
 msgid "Installed PyGTK version is: %s"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:85
+#: mcomix/mcomixstarter.py:96
 msgid "Required PyGTK version is: 2.12.0 or higher"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:90
+#: mcomix/mcomixstarter.py:101
 msgid "PyGTK version 2.12.0 or higher is required to run MComix."
 msgstr ""
 
-#: mcomix/mcomixstarter.py:91
+#: mcomix/mcomixstarter.py:102
 msgid "No version of PyGTK was found on your system."
 msgstr ""
 
-#: mcomix/mcomixstarter.py:101
+#: mcomix/mcomixstarter.py:112
 msgid "You don't have the required version of the Python Imaging"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:102
+#: mcomix/mcomixstarter.py:113
 msgid "Library (PIL) installed."
 msgstr ""
 
-#: mcomix/mcomixstarter.py:103
+#: mcomix/mcomixstarter.py:114
 msgid "Installed PIL version is: %s"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:104
+#: mcomix/mcomixstarter.py:115
 msgid "Required PIL version is: 1.1.5 or higher"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:108
+#: mcomix/mcomixstarter.py:119
 msgid "Python Imaging Library (PIL) 1.1.5 or higher is required."
 msgstr ""
 
-#: mcomix/mcomixstarter.py:109
+#: mcomix/mcomixstarter.py:120
 msgid "No version of the Python Imaging Library was found on your system."
 msgstr ""
 
@@ -964,8 +972,8 @@ msgstr ""
 msgid "Display"
 msgstr ""
 
-#: mcomix/process.py:42
-msgid "! Error spawning process"
+#: mcomix/process.py:43
+msgid "! Error spawning process \"%(command)s\": %(error)s"
 msgstr ""
 
 #: mcomix/properties_dialog.py:21
@@ -1140,8 +1148,8 @@ msgstr ""
 msgid "Icon design"
 msgstr ""
 
-#: mcomix/thumbnail_tools.py:181
-msgid "! Could not write \"%s\""
+#: mcomix/thumbnail_tools.py:169
+msgid "! Could not save thumbnail \"%(thumbpath)s\": %(error)s"
 msgstr ""
 
 #: mcomix/ui.py:27
