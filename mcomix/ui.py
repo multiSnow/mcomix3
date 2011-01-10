@@ -359,6 +359,7 @@ class MainUI(gtk.UIManager):
                    'edit_archive',
                    'extract_page',
                    'close',
+                   'copy',
                    'slideshow',
                    'rotate_90',
                    'rotate_180',
