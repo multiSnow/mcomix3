@@ -19,7 +19,7 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         return [u'x', u'-so', u'--']
 
     def _parse_list_output_line(self, line):
-        if line.startswith('Path = '):
+        if line.startswith('Path = ') and not line.endswith('.7z'):
             return line[len('Path = '):]
         else:
             return None

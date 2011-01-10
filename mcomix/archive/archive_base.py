@@ -124,11 +124,11 @@ class ExternalExecutableArchive(NonUnicodeArchive):
             [self.archive])
         fd = proc.spawn()
 
-        filenames = [
-            self._unicode_filename(
-                self._parse_list_output_line(filename.rstrip(os.linesep)))
-            for filename in fd.readlines()
-            if self._parse_list_output_line(filename) is not None ]
+        filenames = [ ]
+        for line in fd.readlines():
+            filename = self._parse_list_output_line(line.rstrip(os.linesep))
+            if filename is not None:
+                filenames.append(self._unicode_filename(filename))
 
         fd.close()
         proc.wait()
