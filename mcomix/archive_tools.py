@@ -85,6 +85,8 @@ def get_archive_handler(path):
         return archive.tar.TarArchive(path)
     elif mime == constants.RAR and archive.rar.RarArchive.is_available():
         return archive.rar.RarArchive(path)
+    elif mime == constants.RAR and archive.sevenzip.SevenZipArchive.is_available():
+        return archive.sevenzip.SevenZipArchive(path)
     elif mime == constants.SEVENZIP and archive.sevenzip.SevenZipArchive.is_available():
         return archive.sevenzip.SevenZipArchive(path)
     else:
