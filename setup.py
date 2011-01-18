@@ -32,7 +32,6 @@ setuptools.setup(
         'mcomix.messages' : get_data_patterns('mcomix/messages', '*.mo'),
         'mcomix.images' : get_data_patterns('mcomix/images', '*.png') },
     entry_points = { 
-        'gui_scripts' : [ 'mcomix-gui = mcomix.mcomixstarter:run' ],
         'console_scripts' : [ 'mcomix = mcomix.mcomixstarter:run' ] },
     requires = ['pygtk (>=2.12.0)', 'PIL (>=1.15)'],
     install_requires = ['setuptools'],
