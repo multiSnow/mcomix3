@@ -374,7 +374,7 @@ class _BookArea(gtk.ScrolledWindow):
             elif uri.startswith('file:/'):  # Xffm etc.
                 uri = uri[5:]
             path = urllib.url2pathname(uri)
-            paths.append(path)
+            paths.append(path.decode('utf-8'))
         collection = self._library.collection_area.get_current_collection()
         collection_name = self._library.backend.get_collection_name(collection)
         self._library.add_books(paths, collection_name)

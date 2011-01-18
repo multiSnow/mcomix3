@@ -415,7 +415,7 @@ class EventHandler:
             uri = uri[5:]
 
         path = urllib.url2pathname(uri)
-        self._window.filehandler.open_file(path)
+        self._window.filehandler.open_file(path.decode('utf-8'))
 
     def _scroll_with_flipping(self, x, y):
         """Handle scrolling with the scroll wheel or the arrow keys, for which
