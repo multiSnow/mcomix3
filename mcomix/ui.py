@@ -230,8 +230,8 @@ class MainUI(gtk.UIManager):
                     <menuitem action="first_page" />
                     <menuitem action="last_page" />
                     <separator />
-                    <menuitem action="previous_archive" />
                     <menuitem action="next_archive" />
+                    <menuitem action="previous_archive" />
                     <separator />
                     <menuitem action="slideshow" />
                 </menu>
@@ -265,8 +265,8 @@ class MainUI(gtk.UIManager):
                     <menuitem action="first_page" />
                     <menuitem action="last_page" />
                     <separator />
-                    <menuitem action="previous_archive" />
                     <menuitem action="next_archive" />
+                    <menuitem action="previous_archive" />
                     <separator />
                     <menuitem action="slideshow" />
                 </menu>
