@@ -4,6 +4,7 @@ import os
 import sys
 import re
 import gc
+import locale
 import encoding
 
 def alphanumeric_sort(filenames):
@@ -97,7 +98,12 @@ def print_(*args, **options):
 
     def print_generic(text):
         if text:
-            sys.stdout.write(text.encode(sys.stdout.encoding, 'replace'))
+            if sys.stdout and sys.stdout.encoding:
+                encoding = sys.stdout.encoding
+            else:
+                encoding = locale.getpreferredencoding() or sys.getfilesystemencoding()
+
+            sys.stdout.write(text.encode(encoding, 'replace'))
 
     def print_win32(text):
         if not text: return
