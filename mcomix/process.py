@@ -3,6 +3,7 @@
 import gc
 import subprocess
 import sys
+import encoding
 
 class Process:
 
@@ -36,12 +37,17 @@ class Process:
         (NOTE: separate function to make python2.4 exception syntax happy)
         """
         try:
-            self._proc = subprocess.Popen(self._args, stdout=subprocess.PIPE)
+            # Cannot spawn processes with PythonW/Win32 unless stdin and
+            # stderr are redirected to a pipe as well.
+            self._proc = subprocess.Popen(self._args, stdout=subprocess.PIPE,
+                    stdin=subprocess.PIPE, stderr=subprocess.PIPE)
+            self._proc.stdin.close()
+            self._proc.stderr.close()
             return self._proc.stdout
         except Exception, ex:
             cmd = len(self._args) > 0 and self._args[0] or "<invalid>"
             print_( _('! Error spawning process "%(command)s": %(error)s') %
-                { 'command' : cmd, 'error' : str(ex) } )
+                { 'command' : cmd, 'error' : encoding.to_unicode(str(ex)) } )
             return None
 
     def spawn(self):
