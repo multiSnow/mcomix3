@@ -289,6 +289,19 @@ class LibraryBackend:
             where collection = ?''', (copy_collection, collection))
         return True
 
+    def clean_collection(self, collection=None):
+        """ Removes files from <collection> that no longer exist. If <collection>
+        is None, all collections are cleaned. Returns the number of deleted books. """
+        book_ids = self.get_books_in_collection(collection)
+        deleted = 0
+        for id in book_ids:
+            path = self.get_book_path(id)
+            if path and not os.path.isfile(path):
+                self.remove_book(id)
+                deleted += 1
+
+        return deleted
+
     def remove_book(self, book):
         """Remove the <book> from the library."""
         path = self.get_book_path(book)

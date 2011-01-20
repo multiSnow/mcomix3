@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.90.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-10 03:31+PST\n"
+"POT-Creation-Date: 2011-01-20 19:22+CET\n"
 "PO-Revision-Date: 2011-01-06 11:06+GMT\n"
 "Last-Translator: Moritz Brunner <oddegamra@gmx.org>\n"
 "Language-Team: None\n"
@@ -320,7 +320,7 @@ msgstr "! Korrupte Options-Datei \"%s\", wird gelöscht..."
 msgid "! Could not load icon \"%s\""
 msgstr "! Icon %s kann nicht geladen werden"
 
-#: mcomix/image_handler.py:424
+#: mcomix/image_handler.py:425
 msgid "Unknown filetype"
 msgstr "Unbekannter Dateityp"
 
@@ -466,7 +466,7 @@ msgstr "Bitte geben Sie einen neuen Namen für die ausgewählte Sammlung ein."
 msgid "Could not change the name to '%s'."
 msgstr "Name konnte nicht zu »%s« geändert werden."
 
-#: mcomix/library_collection_area.py:185 mcomix/library_control_area.py:195
+#: mcomix/library_collection_area.py:185 mcomix/library_control_area.py:202
 msgid "A collection by that name already exists."
 msgstr "Eine Sammlung mit diesem Namen existiert bereits."
 
@@ -530,29 +530,52 @@ msgstr "Ordner hinzufügen"
 msgid "Add a new empty collection."
 msgstr "Eine neue, leere Sammlung hinzufügen."
 
-#: mcomix/library_control_area.py:110
+#: mcomix/library_control_area.py:106
+msgid "Clean library"
+msgstr "Bibliothek säubern"
+
+#: mcomix/library_control_area.py:111
+msgid "Removes no longer existing books from the library."
+msgstr "Entfernt Bücher aus der Bibliothek, die nicht mehr existieren."
+
+#: mcomix/library_control_area.py:117
 msgid "Open the selected book."
 msgstr "Das ausgewählte Buch öffnen."
 
-#: mcomix/library_control_area.py:144 mcomix/properties_dialog.py:46
+#: mcomix/library_control_area.py:151 mcomix/properties_dialog.py:46
 msgid "%d pages"
 msgstr "%d Seiten"
 
-#: mcomix/library_control_area.py:168
+#: mcomix/library_control_area.py:175
 msgid "Add new collection?"
 msgstr "Neue Sammlung hinzufügen?"
 
-#: mcomix/library_control_area.py:170
+#: mcomix/library_control_area.py:177
 msgid "Please enter a name for the new collection."
 msgstr "Bitte geben Sie einen Namen für die neue Sammlung ein."
 
-#: mcomix/library_control_area.py:176
+#: mcomix/library_control_area.py:183
 msgid "New collection"
 msgstr "Neue Sammlung"
 
-#: mcomix/library_control_area.py:190
+#: mcomix/library_control_area.py:197
 msgid "Could not add a new collection called '%s'."
 msgstr "Eine neue Sammlung mit Namen »%s« konnte nicht hinzugefügt werden."
+
+#: mcomix/library_control_area.py:209
+msgid "Do you want to remove non-existent books from the library?"
+msgstr ""
+"Wollen Sie Bücher aus der Bibliothek entfernen, die nicht mehr existieren?"
+
+#: mcomix/library_control_area.py:211
+msgid ""
+"Books that appear in your library, but no longer exist at their original "
+"path, will be removed from the library. This clears books that have been "
+"moved or deleted outside of MComix."
+msgstr ""
+"Bücher, die sich noch in der Bibliothek befinden, aber nicht mehr auf dem "
+"ursprünglichen Datenträger gefunden werden, werden entfernt. Dies säubert "
+"Bücher, die außerhalb von MComix verschoben oder gelöscht wurden."
 
 #: mcomix/library_main_dialog.py:31
 msgid "Library"
@@ -1138,7 +1161,7 @@ msgstr ""
 msgid "Display"
 msgstr "Anzeige"
 
-#: mcomix/process.py:43
+#: mcomix/process.py:49
 msgid "! Error spawning process \"%(command)s\": %(error)s"
 msgstr "! Prozess \"%(command)s\" konnte nicht gestartet werden: %(error)s"
 

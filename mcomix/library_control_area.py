@@ -102,14 +102,21 @@ class _ControlArea(gtk.HBox):
         add_collection_button.set_tooltip_text(
             _('Add a new empty collection.'))
         hbox.pack_start(add_collection_button, False, False)
-        hbox.pack_start(gtk.HBox(), True, True)
+
+        clean_button = gtk.Button(_('Clean library'))
+        clean_button.connect('clicked', self._clean_library)
+        clean_button.set_image(gtk.image_new_from_stock(
+            gtk.STOCK_CLEAR, gtk.ICON_SIZE_BUTTON))
+        clean_button.set_tooltip_text(
+            _('Removes no longer existing books from the library.'))
+        hbox.pack_start(clean_button, False, False)
 
         self._open_button = gtk.Button(None, gtk.STOCK_OPEN)
         self._open_button.connect('clicked',
             self._library.book_area.open_selected_book)
         self._open_button.set_tooltip_text(_('Open the selected book.'))
         self._open_button.set_sensitive(False)
-        hbox.pack_start(self._open_button, False, False)
+        hbox.pack_end(self._open_button, False, False)
 
     def update_info(self, selected):
         """Update the info box using the currently <selected> books from
@@ -194,6 +201,23 @@ class _ControlArea(gtk.HBox):
                     message = '%s %s' % (message,
                         _('A collection by that name already exists.'))
                 self._library.set_status_message(message)
+
+    def _clean_library(self, *args):
+        """ Check all books in the library, removing those that no longer exist. """
+        dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL,
+            gtk.MESSAGE_WARNING, gtk.BUTTONS_OK_CANCEL,
+            _("Do you want to remove non-existent books from the library?"))
+        dialog.format_secondary_text(
+            _("Books that appear in your library, but no longer exist at their original path, will be removed from the library. This clears books that have been moved or deleted outside of MComix."))
+        response = dialog.run()
+        dialog.destroy()
+
+        if response == gtk.RESPONSE_OK:
+            removed = self._library.backend.clean_collection()
+
+            if removed > 0:
+                collection = self._library.collection_area.get_current_collection()
+                gobject.idle_add(self._library.book_area.display_covers, collection)
 
     def _filter_books(self, entry, *args):
         """Display only the books in the current collection whose paths

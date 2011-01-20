@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-01-10 03:31+PST\n"
+"POT-Creation-Date: 2011-01-20 19:22+CET\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -293,7 +293,7 @@ msgstr ""
 msgid "! Could not load icon \"%s\""
 msgstr ""
 
-#: mcomix/image_handler.py:424
+#: mcomix/image_handler.py:425
 msgid "Unknown filetype"
 msgstr ""
 
@@ -425,7 +425,7 @@ msgstr ""
 msgid "Could not change the name to '%s'."
 msgstr ""
 
-#: mcomix/library_collection_area.py:185 mcomix/library_control_area.py:195
+#: mcomix/library_collection_area.py:185 mcomix/library_control_area.py:202
 msgid "A collection by that name already exists."
 msgstr ""
 
@@ -477,28 +477,44 @@ msgstr ""
 msgid "Add a new empty collection."
 msgstr ""
 
-#: mcomix/library_control_area.py:110
+#: mcomix/library_control_area.py:106
+msgid "Clean library"
+msgstr ""
+
+#: mcomix/library_control_area.py:111
+msgid "Removes no longer existing books from the library."
+msgstr ""
+
+#: mcomix/library_control_area.py:117
 msgid "Open the selected book."
 msgstr ""
 
-#: mcomix/library_control_area.py:144 mcomix/properties_dialog.py:46
+#: mcomix/library_control_area.py:151 mcomix/properties_dialog.py:46
 msgid "%d pages"
 msgstr ""
 
-#: mcomix/library_control_area.py:168
+#: mcomix/library_control_area.py:175
 msgid "Add new collection?"
 msgstr ""
 
-#: mcomix/library_control_area.py:170
+#: mcomix/library_control_area.py:177
 msgid "Please enter a name for the new collection."
 msgstr ""
 
-#: mcomix/library_control_area.py:176
+#: mcomix/library_control_area.py:183
 msgid "New collection"
 msgstr ""
 
-#: mcomix/library_control_area.py:190
+#: mcomix/library_control_area.py:197
 msgid "Could not add a new collection called '%s'."
+msgstr ""
+
+#: mcomix/library_control_area.py:209
+msgid "Do you want to remove non-existent books from the library?"
+msgstr ""
+
+#: mcomix/library_control_area.py:211
+msgid "Books that appear in your library, but no longer exist at their original path, will be removed from the library. This clears books that have been moved or deleted outside of MComix."
 msgstr ""
 
 #: mcomix/library_main_dialog.py:31
@@ -972,7 +988,7 @@ msgstr ""
 msgid "Display"
 msgstr ""
 
-#: mcomix/process.py:43
+#: mcomix/process.py:49
 msgid "! Error spawning process \"%(command)s\": %(error)s"
 msgstr ""
 
