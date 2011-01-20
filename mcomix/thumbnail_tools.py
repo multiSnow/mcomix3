@@ -137,9 +137,12 @@ class Thumbnailer(object):
         # MTime could be floating point number, so convert to long first to have a fixed point number
         mtime = str(long(stat.st_mtime))
         size = str(stat.st_size)
-        img = Image.open(filepath)
-        width = str(img.size[0])
-        height = str(img.size[1])
+        try:
+            img = Image.open(filepath)
+            width = str(img.size[0])
+            height = str(img.size[1])
+        except IOError:
+            width = height = 0
 
         return {
             'tEXt::Thumb::URI':           uri,
