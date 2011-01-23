@@ -6,11 +6,14 @@ from mcomix import process
 from mcomix.archive import archive_base
 from mcomix.archive import rarfile
 
+# Filled on-demand by RarExecArchive
+_rar_executable = -1
+
 class RarExecArchive(archive_base.ExternalExecutableArchive):
     """ RAR file extractor using the unrar/rar executable. """
 
     def _get_executable(self):
-        return _executable
+        return RarExecArchive._find_unrar_executable()
 
     def _get_list_arguments(self):
         return [u'vb', u'--']
@@ -23,20 +26,24 @@ class RarExecArchive(archive_base.ExternalExecutableArchive):
         """ Tries to start rar/unrar, and returns either 'rar' or 'unrar' if
         one of them was started successfully.
         Returns None if neither could be started. """
-        for command in (u'rar', u'unrar'):
-            proc = process.Process([command])
-            fd = proc.spawn()
-            if fd is not None:
-                fd.close()
-                return command
+        global _rar_executable
+        if _rar_executable != -1:
+            return _rar_executable
+        else:
+            for command in (u'rar', u'unrar'):
+                proc = process.Process([command])
+                fd = proc.spawn()
+                if fd is not None:
+                    fd.close()
+                    _rar_executable = command
+                    return command
 
-        return None
+            _rar_executable = None
+            return None
 
     @staticmethod
     def is_available():
-        return bool(_executable)
-
-_executable = RarExecArchive._find_unrar_executable()
+        return bool(RarExecArchive._find_unrar_executable())
 
 class RarArchive(archive_base.BaseArchive):
     """ RAR file extractor using libunrar.so/unrar.dll.

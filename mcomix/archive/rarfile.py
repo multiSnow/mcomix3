@@ -77,12 +77,12 @@ class UnrarDll(object):
     @staticmethod
     def is_available():
         """ Returns True if unrar.dll can be found, False otherwise. """
-        return bool(_unrar_dll)
+        return bool(_get_unrar_dll())
 
     def __init__(self, archive):
         """ Initialize Unrar.dll. """
         assert isinstance(archive, unicode), "Archive must be Unicode string"
-        self._unrar = _unrar_dll
+        self._unrar = _get_unrar_dll()
         self._archive = archive
         self._handle = None
         self._callback_function = None
@@ -239,9 +239,16 @@ class UnrarException(Exception):
         else:
             return "Unkown error"
 
+# Filled on-demand by _get_unrar_dll
+_unrar_dll = -1
+
 def _get_unrar_dll():
     """ Tries to load libunrar and will return a handle of it.
     Returns None if an error occured or the library couldn't be found. """
+    global _unrar_dll
+    if _unrar_dll != -1:
+        return _unrar_dll
+
     # Load unrar.dll on win32
     if sys.platform == 'win32':
 
@@ -261,9 +268,11 @@ def _get_unrar_dll():
 
         # Last attempt, just use the current directory
         try:
-            return ctypes.windll.LoadLibrary("unrar.dll")
+            _unrar_dll = ctypes.windll.LoadLibrary("unrar.dll")
         except WindowsError:
-            return None
+            _unrar_dll = None
+
+        return _unrar_dll
 
     # Load libunrar.so on UNIX
     else:
@@ -275,17 +284,17 @@ def _get_unrar_dll():
 
         if unrar_path:
             try:
-                return ctypes.cdll.LoadLibrary(unrar_path)
+                _unrar_dll = ctypes.cdll.LoadLibrary(unrar_path)
+                return _unrar_dll
             except OSError:
                 pass
 
         # Last attempt, try the current directory
         try:
-            return ctypes.cdll.LoadLibrary(os.path.join(os.getcwd(), "libunrar.so"))
+            _unrar_dll = ctypes.cdll.LoadLibrary(os.path.join(os.getcwd(), "libunrar.so"))
         except OSError:
-            return None
+            _unrar_dll = None
 
-# Module-globale variables that point to the unrar.dll handle
-_unrar_dll = _get_unrar_dll()
+        return _unrar_dll
 
 # vim: expandtab:sw=4:ts=4

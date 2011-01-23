@@ -6,11 +6,14 @@ from mcomix import process
 from mcomix import encoding
 from mcomix.archive import archive_base
 
+# Filled on-demand by SevenZipArchive
+_7z_executable = -1
+
 class SevenZipArchive(archive_base.ExternalExecutableArchive):
     """ 7z file extractor using the 7z executable. """
 
     def _get_executable(self):
-        return _executable
+        return SevenZipArchive._find_7z_executable()
 
     def _get_list_arguments(self):
         return [u'l', u'-slt', u'--']
@@ -28,18 +31,23 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
     def _find_7z_executable():
         """ Tries to start 7z, and returns either '7z' if
         it was started successfully or None otherwise. """
-        proc = process.Process([u'7z'])
-        fd = proc.spawn()
-        if fd is not None:
-            fd.close()
-            return u'7z'
+        global _7z_executable
+        if _7z_executable != -1:
+            return _7z_executable
         else:
-            return None
+            proc = process.Process([u'7z'])
+            fd = proc.spawn()
+            if fd is not None:
+                fd.close()
+                _7z_executable = u'7z'
+                return u'7z'
+            else:
+                _7z_executable = None
+                return None
 
     @staticmethod
     def is_available():
-        return bool(_executable)
+        return bool(SevenZipArchive._find_7z_executable())
 
-_executable = SevenZipArchive._find_7z_executable()
 
 # vim: expandtab:sw=4:ts=4
