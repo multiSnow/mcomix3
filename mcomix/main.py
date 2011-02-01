@@ -969,7 +969,7 @@ class MainWindow(gtk.Window):
         save_dialog.set_current_name(suggested_name.encode('utf-8'))
 
         if save_dialog.run() == gtk.RESPONSE_ACCEPT and save_dialog.get_filename():
-            shutil.copy(self.filehandler.get_path_to_page(),
+            shutil.copy(self.imagehandler.get_path_to_page(),
                 save_dialog.get_filename().decode('utf-8'))
 
         save_dialog.destroy()
