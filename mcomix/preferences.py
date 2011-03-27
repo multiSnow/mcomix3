@@ -61,7 +61,7 @@ prefs = {
     'horizontal flip': False,
     'focus protection': True,
     'keep transformation': False,
-    'max pages to cache': 5,
+    'max pages to cache': 7,
     'window height': gtk.gdk.screen_get_default().get_height() * 3 // 4,
     'window width': min(gtk.gdk.screen_get_default().get_width() * 3 // 4,
                         gtk.gdk.screen_get_default().get_height() * 5 // 8),
