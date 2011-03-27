@@ -41,14 +41,7 @@ class Pageselector(gtk.Dialog):
         self._pages_label.set_alignment(0, 0.5)
 
         self._image_preview = gtk.Image()
-        if self._window.thumbnailsidebar._thumb_cache_is_complete:
-            self._image_preview.set_from_pixbuf(
-                        image_tools.add_border(
-                           self._window.thumbnailsidebar._thumb_cache[
-                                int(self._selector_adjustment.value) - 1 ],
-                            1) )
-        else:
-            self._image_preview.set_from_pixbuf(constants.MISSING_IMAGE_ICON)
+        self._set_thumbnail(int(self._selector_adjustment.value) - 1)
 
         # Group preview image and page selector next to each other
         preview_box = gtk.HBox()
@@ -67,14 +60,7 @@ class Pageselector(gtk.Dialog):
         self.show_all()
 
     def _cb_value_changed(self, *args):
-        if self._window.thumbnailsidebar._thumb_cache_is_complete:
-            self._image_preview.set_from_pixbuf(
-                        image_tools.add_border(
-                           self._window.thumbnailsidebar._thumb_cache[
-                                int(self._selector_adjustment.value) - 1 ],
-                            1) )
-        else:
-            self._image_preview.set_from_pixbuf(constants.MISSING_IMAGE_ICON)
+        self._set_thumbnail(int(self._selector_adjustment.value) - 1)
 
         while gtk.events_pending():
             gtk.main_iteration(False)
@@ -85,6 +71,17 @@ class Pageselector(gtk.Dialog):
             self.emit('close')
         elif event == gtk.RESPONSE_CANCEL:
             self.emit('close')
+
+    def _set_thumbnail(self, page):
+        """ Set the preview thumbnail for the page selector.
+        If a thumbnail isn't cached yet, use MISSING_IMAGE_ICON. """
+
+        if len(self._window.thumbnailsidebar._thumb_cache) >= page:
+            pixbuf = self._window.thumbnailsidebar._thumb_cache[page]
+        else:
+            pixbuf = constants.MISSING_IMAGE_ICON
+        bordered_pixbuf = image_tools.add_border(pixbuf, 1)
+        self._image_preview.set_from_pixbuf(bordered_pixbuf)
 
 
 # vim: expandtab:sw=4:ts=4
