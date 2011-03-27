@@ -7,7 +7,7 @@ import tools
 import os
 import sys
 
-VERSION = '0.90.3'
+VERSION = '0.90.4'
 
 HOME_DIR = tools.get_home_directory()
 CONFIG_DIR = tools.get_config_directory()
