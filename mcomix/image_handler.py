@@ -50,9 +50,9 @@ class ImageHandler:
             self._wait_on_page(index + 1)
 
             try:
-                self._raw_pixbufs[index] = image_tools.load_pixbuf(self._image_files[index])
+                pixbuf = image_tools.load_pixbuf(self._image_files[index])
+                self._raw_pixbufs[index] = pixbuf
                 self._pixbuf_auto_bgs[index] = image_tools.get_most_common_edge_colour(self._raw_pixbufs[index])
-                pixbuf = self._raw_pixbufs[index]
             except Exception:
                 self._raw_pixbufs[index] = constants.MISSING_IMAGE_ICON
                 self._pixbuf_auto_bgs[index] = [0,0,0]
@@ -147,8 +147,6 @@ class ImageHandler:
         # Remove old pixbufs.
         for page in set(self._raw_pixbufs) - set(wanted_pixbufs):
             del self._raw_pixbufs[page]
-
-        tools.garbage_collect()
 
         self.thread_cache_new_pixbufs(wanted_pixbufs)
 
@@ -256,6 +254,7 @@ class ImageHandler:
 
         old_page = self.get_current_page()
         self._current_image_index = page_num - 1
+        self.do_cacheing()
 
         return self.get_current_page()
 
