@@ -76,7 +76,7 @@ class Pageselector(gtk.Dialog):
         """ Set the preview thumbnail for the page selector.
         If a thumbnail isn't cached yet, use MISSING_IMAGE_ICON. """
 
-        if len(self._window.thumbnailsidebar._thumb_cache) >= page:
+        if len(self._window.thumbnailsidebar._thumb_cache) > page:
             pixbuf = self._window.thumbnailsidebar._thumb_cache[page]
         else:
             pixbuf = constants.MISSING_IMAGE_ICON
