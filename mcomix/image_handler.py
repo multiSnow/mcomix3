@@ -99,7 +99,7 @@ class ImageHandler:
         after the current page. All other pixbufs are deleted and garbage
         collected directly in order to save memory.
         """
-        if not self._window.filehandler.file_loaded:
+        if not self._window.filehandler.file_loaded or self.is_cacheing:
             return
 
         self.is_cacheing = True
@@ -138,6 +138,7 @@ class ImageHandler:
         # if the pages to be put into cache have not changed then there is nothing
         # to do and no pages would be released
         if ((self.first_wanted == first_wanted) and (self.last_wanted == last_wanted)):
+            self.is_cacheing = False
             return
         else:
             self.first_wanted = first_wanted
