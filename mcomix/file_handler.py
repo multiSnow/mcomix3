@@ -96,6 +96,7 @@ class FileHandler:
             gtk.main_iteration(False)
 
         self._current_file = path
+        self._stop_cacheing = False
 
         result = False
 
@@ -222,6 +223,9 @@ class FileHandler:
         self._window.clear()
         self._window.uimanager.set_sensitivities()
         self._extractor.stop()
+        self._condition.acquire()
+        self._condition.notifyAll()
+        self._condition.release()
         self.thread_delete(self._tmp_dir)
         self._tmp_dir = tempfile.mkdtemp(prefix=u'mcomix.', suffix=os.sep)
         self._window.imagehandler.close()
@@ -230,9 +234,12 @@ class FileHandler:
 
     def cleanup(self):
         """Run clean-up tasks. Should be called prior to exit."""
-        self._extractor.stop()
-        self.thread_delete(self._tmp_dir)
         self._stop_cacheing = True
+        self._extractor.stop()
+        self._condition.acquire()
+        self._condition.notifyAll()
+        self._condition.release()
+        self.thread_delete(self._tmp_dir)
 
     def get_number_of_comments(self):
         """Return the number of comments in the current archive."""
@@ -381,7 +388,7 @@ class FileHandler:
         try:
             name = self._name_table[path]
             self._condition.acquire()
-            while not self._extractor.is_ready(name):
+            while not self._extractor.is_ready(name) and not self._stop_cacheing:
                 self._condition.wait()
             self._condition.release()
         except Exception:

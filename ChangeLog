@@ -3,6 +3,9 @@ MComix 0.90.4
     - Fixed excessive memory consumption due to cached pixmaps not being
       properly evicted.
 
+    - Fixed certain wait conditions that prevented MComix from exiting
+      on Win32.
+
 MComix 0.90.3
 
     - MComix now uses a slightly different directory structure than before. 

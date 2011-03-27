@@ -103,6 +103,7 @@ class ImageHandler:
             return
 
         self.is_cacheing = True
+        self._stop_cacheing = False
 
         # Get list of wanted pixbufs.
         first_wanted = self._current_image_index
@@ -165,7 +166,7 @@ class ImageHandler:
             if not self._stop_cacheing:
                 self._get_pixbuf(wanted)
             else:
-                return
+                break
 
         self.is_cacheing = False
 
@@ -309,12 +310,8 @@ class ImageHandler:
         tools.garbage_collect()
 
     def cleanup(self):
-        """Run clean-up tasks. Should be called prior to exit.
-        self._extractor.stop()
-        self.thread_delete(self._tmp_dir)
+        """Run clean-up tasks. Should be called prior to exit."""
         self._stop_cacheing = True
-        """
-        pass
 
     def is_last_page(self):
         """Return True if at the last page."""

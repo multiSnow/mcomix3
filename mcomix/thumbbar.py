@@ -245,15 +245,15 @@ class ThumbnailSidebar(gtk.HBox):
 
         for i in xrange(1, self._window.imagehandler.get_number_of_pages() + 1):
 
-            pixbuf = self._window.imagehandler.get_thumbnail(i, 
-                prefs['thumbnail size'], prefs['thumbnail size'])
+            if not self._stop_cacheing:
+                pixbuf = self._window.imagehandler.get_thumbnail(i,
+                    prefs['thumbnail size'], prefs['thumbnail size'])
 
-            if not self._stop_cacheing and pixbuf != None and self._thumb_cache != None:
-                self._thumb_cache.append(pixbuf)
-                self._thumbs_in_cache += 1
-
+                if pixbuf != None and self._thumb_cache != None:
+                    self._thumb_cache.append(pixbuf)
+                    self._thumbs_in_cache += 1
             else:
-                return
+                break
 
         self._is_loading = True
         self._loaded = True
@@ -264,6 +264,7 @@ class ThumbnailSidebar(gtk.HBox):
         self.update_layout_size()
 
         self._is_loading = True
+        self._stop_cacheing = False
 
         if not self._thumb_cache_is_complete and self._thumbs_in_cache == 0:
             self.thread_cache_thumbnails()
