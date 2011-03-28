@@ -14,13 +14,13 @@
   site-packages folder of Python. An executable "mcomix" will be placed in
   /usr/bin.
   
-  If order to install MComix in another base directory, use the --prefix option.
+  In order to install MComix in another base directory, use the --prefix option.
   The option --user explicitly installs MComix in the user's home directory,
   which does not need root access.
   
   Example:
   
-      # python install.py --prefix /usr install
+      # python setup.py --prefix /usr install
   
   As an example of how to install MComix from the downloaded tar.gz file, run
   as the root user (via su or sudo):
