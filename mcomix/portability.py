@@ -90,7 +90,7 @@ def get_commandline_args():
 def invalid_filesystem_chars():
     """ List of characters that cannot be used in filenames on the target platform. """
     if sys.platform == 'win32':
-        return ur':*?"<>|'
+        return ur':*?"<>|' + u"".join([unichr(i) for i in range(0, 32)])
     else:
         return u''
 
