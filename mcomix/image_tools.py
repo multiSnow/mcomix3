@@ -208,9 +208,8 @@ def pixbuf_to_pil(pixbuf):
 def load_pixbuf(path):
     """ Loads a pixbuf from a given image file. Works around GTK's
     slowness on Win32 by using PIL for loading instead and
-    converting it afterwards. This bug appears to be fixed
-    starting with 2.22.0. """
-    if sys.platform == 'win32' and gtk.gtk_version > (2, 18, 2) and gtk.gtk_version < (2, 22, 0):
+    converting it afterwards. """
+    if sys.platform == 'win32' and gtk.gtk_version > (2, 18, 2):
         pil_img = Image.open(path)
         return pil_to_pixbuf(pil_img)
     else:
