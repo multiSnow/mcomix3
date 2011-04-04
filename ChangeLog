@@ -9,6 +9,8 @@ MComix 0.90.4
     - The "Go to page" dialog now shows thumbnails when they are available, 
       not only after all thumbnails have been loaded.
 
+    - Fix "Automatically open next archive" with empty archives.
+
 MComix 0.90.3
 
     - MComix now uses a slightly different directory structure than before. 
