@@ -11,6 +11,10 @@ MComix 0.90.4
 
     - Fix "Automatically open next archive" with empty archives.
 
+    - Speed up thumbnail generation by parallelizing load tasks. Mainly
+      notable on slower systems. (inspired by David Zaragoza, who originally
+      suggested to use processes instead of threads)
+
 MComix 0.90.3
 
     - MComix now uses a slightly different directory structure than before. 

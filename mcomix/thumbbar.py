@@ -1,10 +1,12 @@
 """thumbbar.py - Thumbnail sidebar for main window."""
 
 import urllib
+import Queue
 import gtk
 import gobject
 import image_tools
 import tools
+import constants
 from preferences import prefs
 import threading
 
@@ -16,16 +18,13 @@ class ThumbnailSidebar(gtk.HBox):
         gtk.HBox.__init__(self, False, 0)
 
         self._window = window
+        # Cache/thumbnail load status
         self._loaded = False
         self._is_loading = False
-        self._load_task = None
-        self._height = 0
-        self._cache_thread = None
         self._stop_cacheing = False
-        self._stop_loading = False
-        self._thumb_cache = None
-        self._thumbs_in_cache = 0
-        self._thumb_cache_is_complete = False
+        # Caching threads
+        self._cache_threads = None
+
         self._currently_selected_page = 0
         self._selection_is_forced = False
 
@@ -133,26 +132,17 @@ class ThumbnailSidebar(gtk.HBox):
         """Clear the ThumbnailSidebar of any loaded thumbnails."""
 
         self._stop_cacheing = True
-
-        if self._cache_thread != None:
-
-            # try to wait until all previous threads are finished
-            try:
-                self._cache_thread.join()
-            except RuntimeError:
-                pass
+        if self._cache_threads is not None:
+            for thread in self._cache_threads:
+                thread.join()
 
         self._thumbnail_liststore.clear()
-
         self._layout.set_size(0, 0)
-        self._height = 0
+        self.hide()
         self._loaded = False
         self._is_loading = False
-        self._stop_cacheing = True
-        self._stop_loading = False
-        self._thumb_cache = None
-        self._thumbs_in_cache = 0
-        self._thumb_cache_is_complete = False
+        self._stop_cacheing = False
+        self._cache_threads = None
         self._currently_selected_page = 0
 
     def load_thumbnails(self):
@@ -160,7 +150,7 @@ class ThumbnailSidebar(gtk.HBox):
 
         if (not self._window.filehandler.file_loaded or
             self._window.imagehandler.get_number_of_pages() == 0 or
-            self._is_loading or self._loaded or self._stop_loading):
+            self._is_loading or self._loaded or self._stop_cacheing):
             return
 
         self._load()
@@ -174,16 +164,13 @@ class ThumbnailSidebar(gtk.HBox):
         if not self._loaded and len(self._window.filehandler._image_files) > 1:
             return
 
-        self._thumb_cache.pop(num_of_thumbnail)
-
         iterator = self._thumbnail_liststore.iter_nth_child( None, num_of_thumbnail )
-
         self._thumbnail_liststore.remove( iterator )
 
-        self._height -= self._treeview.get_background_area(num_of_thumbnail,
-            self._thumbnail_image_treeviewcolumn).height
+        image_height = self._treeview.get_background_area(num_of_thumbnail,
+            self._thumbnail_image_treeviewcolumn).height + 2
 
-        self._layout.set_size(0, self._height)
+        self._layout.set_size(0, self._layout.get_size()[1] - image_height)
 
     def resize(self):
         """Reload the thumbnails with the size specified by in the
@@ -196,9 +183,6 @@ class ThumbnailSidebar(gtk.HBox):
         """Select the thumbnail for the currently viewed page and make sure
         that the thumbbar is scrolled so that the selected thumb is in view.
         """
-
-        if not self._loaded:
-            return
 
         # this is set to True so that when the event 'scroll-event' is triggered
         # the function _scroll_event will not automatically jump to that page.
@@ -223,11 +207,63 @@ class ThumbnailSidebar(gtk.HBox):
     def thread_cache_thumbnails(self):
         """Start threaded thumb cacheing.
         """
-        self._cache_thread = threading.Thread(target=self.cache_thumbnails, args=())
-        self._cache_thread.setDaemon(False)
-        self._cache_thread.start()
 
-    def cache_thumbnails(self):
+        # Get numbers of pages that need to be cached.
+        thumbnails_needed = Queue.Queue()
+        page_count = self._window.imagehandler.get_number_of_pages()
+        for page in xrange(1, page_count + 1):
+            thumbnails_needed.put(page)
+
+        # Start worker threads
+        thread_count = 3
+        self._cache_threads = [
+            threading.Thread(target=self.cache_thumbnails, args=(thumbnails_needed,))
+            for _ in range(thread_count) ]
+
+        for thread in self._cache_threads:
+            thread.setDaemon(True)
+            thread.start()
+
+    def cache_thumbnails(self, pages):
+        """ Done by worker threads to create pixbufs for the
+        pages passed into <pages>. """
+        while not self._stop_cacheing and not pages.empty():
+            try:
+                page = pages.get_nowait()
+            except Queue.Empty:
+                return
+            pixbuf = self._window.imagehandler.get_thumbnail(page,
+                prefs['thumbnail size'], prefs['thumbnail size']) or \
+                    constants.MISSING_IMAGE_ICON
+            pixbuf = image_tools.add_border(pixbuf, 1)
+            pages.task_done()
+
+            if not self._stop_cacheing:
+                gobject.idle_add(self.new_pixbuf_ready, (page, pixbuf))
+
+        self._loaded = True
+        self._is_loading = False
+
+    def new_pixbuf_ready(self, pixbuf_info):
+        """ Callback when a new thumbnail has been created.
+        <pixbuf_info> is a tuple of (page, pixbuf). """
+
+        page, pixbuf = pixbuf_info
+        iter = self._thumbnail_liststore.iter_nth_child(None, page - 1)
+        if iter and self._thumbnail_liststore.iter_is_valid(iter):
+            self._thumbnail_liststore.set(iter, 0, page, 1, pixbuf)
+            self._thumbnail_liststore.row_changed(page - 1, iter)
+
+            # Update height
+            image_height = self._treeview.get_background_area(page - 1,
+                self._thumbnail_image_treeviewcolumn).height + 2
+            self._layout.set_size(0, image_height * self._window.imagehandler.get_number_of_pages())
+
+        # Remove this callback from the idle queue
+        return 0
+
+    def cache_thumbnails_old(self):
+        import time; starttime = time.time()
 
         if self._thumb_cache != None:
             return
@@ -259,77 +295,35 @@ class ThumbnailSidebar(gtk.HBox):
         self._loaded = True
         self._thumb_cache_is_complete = True
 
+        print time.time() - starttime, "seconds for %i thumbnails" % len(self._thumb_cache)
+
     def _load(self):
+        # Create empty preview thumbnails.
+        filler = self.get_empty_thumbnail()
+        for page in range(1, self._window.imagehandler.get_number_of_pages() + 1):
+            self._thumbnail_liststore.append([page, filler])
 
-        self.update_layout_size()
-
+        # Start threads for thumbnailing.
+        self._loaded = False
         self._is_loading = True
         self._stop_cacheing = False
+        self.thread_cache_thumbnails()
 
-        if not self._thumb_cache_is_complete and self._thumbs_in_cache == 0:
-            self.thread_cache_thumbnails()
+        # Update layout and current image selection in the thumb bar.
+        self.update_layout_size()
+        self.update_select()
 
-        # this is done so that the height of the images stored in the treeview
-        # is actually calculated.  If the thumbnails are loaded into the treeview
-        # without being exposed at least once the thumbbar scrollbar will have a
-        # height of 0.
         if not prefs['show thumbnails']:
+            # this is done so that the height of the images stored in the treeview
+            # is actually calculated.  If the thumbnails are loaded into the treevi
+            # without being exposed at least once the thumbbar scrollbar will have 
+            # height of 0.
             self.show()
             self.hide()
+        else:
+            self.show()
 
-        if not self._stop_loading:
-
-            for i in xrange(1, self._window.imagehandler.get_number_of_pages() + 1):
-
-                if not self._thumb_cache_is_complete:
-
-                    # wait for the cacheing to catch up
-                    while self._thumbs_in_cache < i:
-
-                        self._window.draw_image()
-
-                        while gtk.events_pending():
-                            gtk.main_iteration(False)
-
-                            if self._stop_loading:
-                                return
-
-                if self._thumb_cache == None:
-                    return
-
-                if not (i - 1 < len(self._thumb_cache)):
-                    return
-
-                pixbuf = self._thumb_cache[i - 1]
-                if pixbuf == None:
-                    return
-
-                pixbuf = image_tools.add_border(pixbuf, 1)
-
-                if pixbuf != None:
-                    self._thumbnail_liststore.append([i, pixbuf])
-                else:
-                    return
-
-                if self._stop_loading:
-                    return
-
-                while gtk.events_pending():
-                    gtk.main_iteration(False)
-
-                self._height += self._treeview.get_background_area(i - 1,
-                    self._thumbnail_image_treeviewcolumn).height
-
-                self._layout.set_size(0, self._height)
-
-            while gtk.events_pending():
-                gtk.main_iteration(False)
-
-        self._loaded = True
-        self._is_loading = False
-        self._stop_loading = True
-        self.update_select()
-        self.update_layout_size()
+        self._window.draw_image()
 
     def _get_selected_row(self):
         """Return the index of the currently selected row."""
@@ -347,7 +341,6 @@ class ThumbnailSidebar(gtk.HBox):
                 selected_row = self._get_selected_row()
                 self._currently_selected_page = selected_row
 
-
                 if not self._selection_is_forced:
                     self._window.set_page(selected_row + 1)
 
@@ -361,7 +354,6 @@ class ThumbnailSidebar(gtk.HBox):
             # more than likely have many pages open and are simply trying
             # to give mcomix focus again
             self._selection.select_path(self._currently_selected_page)
-
             self._window.was_out_of_focus = False
 
         self._selection_is_forced = False
@@ -417,20 +409,38 @@ class ThumbnailSidebar(gtk.HBox):
 
         if prefs['show thumbnails'] and not (self._window.is_fullscreen and prefs['hide all in fullscreen']):
             self.hide()
-            self.show_all()
+            self.show()
         else:
-            self.show_all()
+            self.show()
             self.hide()
 
         while gtk.events_pending():
             gtk.main_iteration(False)
 
+    def get_empty_thumbnail(self):
+        """ Create an empty filler pixmap. """
+        pixbuf = gtk.gdk.Pixbuf(colorspace=gtk.gdk.COLORSPACE_RGB,
+                has_alpha=True,
+                bits_per_sample=8,
+                width=prefs['thumbnail size'], height=prefs['thumbnail size'])
+
+        # Make the pixbuf transparent.
+        pixbuf.fill(0)
+
+        return pixbuf
+
     def set_thumbnail_background(self, colour):
 
-        self._pixbuf_cellrenderer.set_property('cell-background-gdk', gtk.gdk.colormap_get_system().alloc_color(gtk.gdk.Color(
-                    colour[0], colour[1], colour[2]), False, True))
+        self._pixbuf_cellrenderer.set_property(
+                'cell-background-gdk',
+                gtk.gdk.colormap_get_system().alloc_color(
+                    gtk.gdk.Color(colour[0], colour[1], colour[2]),
+                    False, True))
 
-        self._text_cellrenderer.set_property('background-gdk', gtk.gdk.colormap_get_system().alloc_color(gtk.gdk.Color(
-                    colour[0], colour[1], colour[2]), False, True))
+        self._text_cellrenderer.set_property(
+                'background-gdk',
+                gtk.gdk.colormap_get_system().alloc_color(
+                    gtk.gdk.Color(colour[0], colour[1], colour[2]),
+                    False, True))
 
 # vim: expandtab:sw=4:ts=4
