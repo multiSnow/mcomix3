@@ -175,7 +175,7 @@ class ImageHandler:
         """Set up filehandler to the next page. Return True if this results
         in a new page.
         """
-        if not self._window.filehandler.file_loaded:
+        if not self._window.filehandler.file_loaded and self._window.filehandler.archive_type is None:
             return False
 
         old_page = self.get_current_page()
@@ -199,7 +199,7 @@ class ImageHandler:
         """Set up filehandler to the previous page. Return True if this
         results in a new page.
         """
-        if not self._window.filehandler.file_loaded:
+        if not self._window.filehandler.file_loaded and self._window.filehandler.archive_type is None:
             return False
 
         if self.get_current_page() == 1:
