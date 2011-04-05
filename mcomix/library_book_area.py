@@ -190,7 +190,6 @@ class _BookArea(gtk.ScrolledWindow):
     def _pixbuf_worker(self, books):
         """ Run by a worker thread to generate the thumbnail for a list
         of books. """
-        import time; s=time.time()
         while not self._stop_update and not books.empty():
             try:
                 index, path = books.get_nowait()
@@ -199,7 +198,6 @@ class _BookArea(gtk.ScrolledWindow):
 
             pixbuf = self._get_pixbuf(path)
             gobject.idle_add(self._pixbuf_finished, (index, pixbuf))
-        print time.time() - s
 
     def _pixbuf_finished(self, pixbuf_info):
         """ Executed when a pixbuf was created, to actually insert the pixbuf
