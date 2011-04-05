@@ -11,13 +11,15 @@ MComix 0.90.4
 
     - Fix "Automatically open next archive" with empty archives.
 
-    - Speed up thumbnail generation by parallelizing load tasks. Mainly
-      notable on slower systems. (inspired by David Zaragoza, who originally
-      suggested to use processes instead of threads)
+    - Speed up thumbnail generation by parallelizing load tasks.
+      (inspired by David Zaragoza, who originally suggested to use
+      processes instead of threads)
 
     - New option to delay loading of thumbnails. This way, thumbnails will
       only be generated when they are actually needed, i.e. the thumbnail
       sidebar is open or "Go to page" is used.
+
+    - Library cover generation is now parallelized as well.
 
     - MComix' configuration files are now stored in ~/.config/mcomix instead
       of in ~/.local/share/mcomix, as originally intended.

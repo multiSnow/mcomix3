@@ -78,24 +78,34 @@ class LibraryBackend:
             print_( _('! Non-existant book #%i') % book )
             return None
 
-        thumbnailer = thumbnail_tools.Thumbnailer(store_on_disk=True, 
+        return self.get_book_thumbnail(path)
+
+    def get_book_path(self, book):
+        """Return the filesystem path to <book>, or None if <book> isn't
+        in the library.
+        """
+        try:
+            path = self._con.execute('''select path from Book
+                where id = ?''', (book,)).fetchone().decode('utf-8')
+        except Exception:
+            print_( _('! Non-existant book #%i') % book )
+            return None
+
+        return path
+
+    def get_book_thumbnail(self, path):
+        """ Returns a pixbuf with a thumbnail of the cover of the book at <path>,
+        or None, if no thumbnail could be generated. """
+
+        thumbnailer = thumbnail_tools.Thumbnailer(store_on_disk=True,
             dst_dir=constants.LIBRARY_COVERS_PATH)
         # This is the maximum image size allowed by the library, so that thumbnails might be downscaled,
         # but never need to be upscaled (and look ugly)
         thumbnailer.set_size(constants.MAX_LIBRARY_COVER_SIZE, constants.MAX_LIBRARY_COVER_SIZE)
         thumb = thumbnailer.thumbnail(path)
 
-        if thumb is None:
-            print_( _('! Could not get cover for book "%s"') % path )
+        if thumb is None: print_( _('! Could not get cover for book "%s"') % path )
         return thumb
-
-    def get_book_path(self, book):
-        """Return the filesystem path to <book>, or None if <book> isn't
-        in the library.
-        """
-        cur = self._con.execute('''select path from Book
-            where id = ?''', (book,))
-        return cur.fetchone().decode('utf-8')
 
     def get_book_name(self, book):
         """Return the name of <book>, or None if <book> isn't in the
@@ -194,7 +204,7 @@ class LibraryBackend:
         if info is None:
             return False
         format, pages, size = info
-        thumbnailer = thumbnail_tools.Thumbnailer(store_on_disk=True, 
+        thumbnailer = thumbnail_tools.Thumbnailer(store_on_disk=True,
             dst_dir=constants.LIBRARY_COVERS_PATH)
         thumbnailer.set_size(constants.MAX_LIBRARY_COVER_SIZE, constants.MAX_LIBRARY_COVER_SIZE)
         thumbnailer.thumbnail(path)
@@ -239,7 +249,7 @@ class LibraryBackend:
         except dbapi2.DatabaseError: # E.g. book already in collection.
             pass
         except dbapi2.Error:
-            print_( _('! Could not add book %(book)s to collection %(collection)s') % 
+            print_( _('! Could not add book %(book)s to collection %(collection)s') %
                 {"book" : book, "collection" : collection} )
 
     def add_collection_to_collection(self, subcollection, supercollection):

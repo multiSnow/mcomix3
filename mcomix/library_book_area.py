@@ -2,7 +2,11 @@
 
 import os
 import urllib
+import Queue
+import threading
+import itertools
 import gtk
+import gobject
 import Image
 import ImageDraw
 from preferences import prefs
@@ -26,6 +30,8 @@ class _BookArea(gtk.ScrolledWindow):
 
         self._library = library
         self._stop_update = False
+        self._thumbnail_threads = None
+
         self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
 
         self._liststore = gtk.ListStore(gtk.gdk.Pixbuf, int) # (Cover, ID).
@@ -68,7 +74,7 @@ class _BookArea(gtk.ScrolledWindow):
         actiongroup.add_actions([
             ('open', gtk.STOCK_OPEN, _('_Open'), None, None,
                 self.open_selected_book),
-            ('open_nowinclose', gtk.STOCK_OPEN, 
+            ('open_nowinclose', gtk.STOCK_OPEN,
                 _('Open _without closing library'), None, None,
                 self.open_selected_book_noclose),
             ('remove from collection', gtk.STOCK_REMOVE,
@@ -87,6 +93,8 @@ class _BookArea(gtk.ScrolledWindow):
     def close(self):
         """Run clean-up tasks for the _BookArea prior to closing."""
 
+        self.stop_update()
+
         # We must unselect all or we will trigger selection_changed events
         # when closing with multiple books selected.
         self._iconview.unselect_all()
@@ -97,26 +105,46 @@ class _BookArea(gtk.ScrolledWindow):
     def display_covers(self, collection):
         """Display the books in <collection> in the IconView."""
 
-        self._stop_update = False # To handle new re-entry during update.
+        self.stop_update()
         self._liststore.clear()
 
         if collection == _COLLECTION_ALL: # The "All" collection is virtual.
             collection = None
 
-        for i, book in enumerate(self._library.backend.get_books_in_collection(
-          collection, self._library.filter_string)):
-            self._add_book(book)
-            while gtk.events_pending():
-                gtk.main_iteration(False)
+        # Get all books that need to be added.
+        # This cannot be executed threaded due to SQLite connections
+        # being bound to the thread that created them.
+        books = self._library.backend.get_books_in_collection(
+          collection, self._library.filter_string)
+        book_paths = [ self._library.backend.get_book_path(book)
+            for book in books ]
+        book_queue = Queue.Queue()
 
-            if self._stop_update:
-                return
+        filler = self._get_empty_thumbnail()
+        for index, book_info in enumerate(itertools.izip(books, book_paths)):
+            book, path = book_info
+            book_queue.put((index, path))
 
-        self._stop_update = True
+            # Fill the liststore with a filler pixbuf.
+            self._liststore.append([filler, book])
+
+        # Start the thumbnail threads.
+        self._thumbnail_threads = [ threading.Thread(target=self._pixbuf_worker,
+            args=(book_queue,)) for _ in range(3) ]
+        for thread in self._thumbnail_threads:
+            thread.setDaemon(True)
+            thread.start()
 
     def stop_update(self):
         """Signal that the updating of book covers should stop."""
         self._stop_update = True
+
+        if self._thumbnail_threads:
+            for thread in self._thumbnail_threads:
+                thread.join()
+
+        # All update threads should have finished now.
+        self._stop_update = False
 
     def remove_book_at_path(self, path):
         """Remove the book at <path> from the ListStore (and thus from
@@ -153,18 +181,63 @@ class _BookArea(gtk.ScrolledWindow):
 
     def _add_book(self, book):
         """Add the <book> to the ListStore (and thus to the _BookArea)."""
+        path = self._library.backend.get_book_path(book)
 
-        pixbuf = self._library.backend.get_book_cover(book)
+        if path:
+            pixbuf = self._get_pixbuf(path)
+            self._liststore.append([pixbuf, book])
 
-        if pixbuf is None:
-            pixbuf = constants.MISSING_IMAGE_ICON
+    def _pixbuf_worker(self, books):
+        """ Run by a worker thread to generate the thumbnail for a list
+        of books. """
+        import time; s=time.time()
+        while not self._stop_update and not books.empty():
+            try:
+                index, path = books.get_nowait()
+            except Queue.Empty:
+                break
 
+            pixbuf = self._get_pixbuf(path)
+            gobject.idle_add(self._pixbuf_finished, (index, pixbuf))
+        print time.time() - s
+
+    def _pixbuf_finished(self, pixbuf_info):
+        """ Executed when a pixbuf was created, to actually insert the pixbuf
+        into the view store. <pixbuf_info> is a tuple containing (index, pixbuf). """
+
+        index, pixbuf = pixbuf_info
+
+        iter = self._liststore.iter_nth_child(None, index)
+        if iter and self._liststore.iter_is_valid(iter):
+            self._liststore.set(iter, 0, pixbuf)
+            self._liststore.row_changed(index, iter)
+
+        # Remove this idle handler.
+        return 0
+
+    def _get_pixbuf(self, path):
+        """ Get or create the thumbnail for the selected book at <path>. """
+
+        pixbuf = self._library.backend.get_book_thumbnail(path) or constants.MISSING_IMAGE_ICON
         # The ratio (0.67) is just above the normal aspect ratio for books.
         pixbuf = image_tools.fit_in_rectangle(pixbuf,
             int(0.67 * prefs['library cover size']),
             prefs['library cover size'], True)
         pixbuf = image_tools.add_border(pixbuf, 1, 0xFFFFFFFF)
-        self._liststore.append([pixbuf, book])
+
+        return pixbuf
+
+    def _get_empty_thumbnail(self):
+        """ Create an empty filler pixmap. """
+        pixbuf = gtk.gdk.Pixbuf(colorspace=gtk.gdk.COLORSPACE_RGB,
+                has_alpha=True,
+                bits_per_sample=8,
+                width=int(0.67 * prefs['library cover size']), height=prefs['library cover size'])
+
+        # Make the pixbuf transparent.
+        pixbuf.fill(0)
+
+        return pixbuf
 
     def _book_activated(self, iconview, path, keep_library_open=False):
         """Open the book at the (liststore) <path>."""
