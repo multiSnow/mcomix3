@@ -224,9 +224,10 @@ class FileHandler:
         self._window.clear()
         self._window.uimanager.set_sensitivities()
         self._extractor.stop()
-        self._condition.acquire()
-        self._condition.notifyAll()
-        self._condition.release()
+        if self._condition:
+            self._condition.acquire()
+            self._condition.notifyAll()
+            self._condition.release()
         self.thread_delete(self._tmp_dir)
         self._tmp_dir = tempfile.mkdtemp(prefix=u'mcomix.', suffix=os.sep)
         self._window.imagehandler.close()
