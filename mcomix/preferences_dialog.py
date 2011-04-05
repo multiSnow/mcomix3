@@ -265,6 +265,15 @@ class _PreferencesDialog(gtk.Dialog):
             _('Store thumbnails for opened files according to the freedesktop.org specification. These thumbnails are shared by many other applications, such as most file managers.'))
         page.add_row(create_thumbs_button)
 
+        delay_thumbs_button = gtk.CheckButton(
+            _('Delay thumbnail generation.'))
+        delay_thumbs_button.set_tooltip_text(
+            _('Thumbnails are generated only when required, instead of directly after opening a new file.'))
+        delay_thumbs_button.set_active(prefs['delay thumbnails'])
+        delay_thumbs_button.connect('toggled', self._check_button_cb,
+            'delay thumbnails')
+        page.add_row(delay_thumbs_button)
+
         page.new_section(_('Cache'))
 
         label = gtk.Label('%s:' % _('Maximum number of pages to store in the cache'))
