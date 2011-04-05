@@ -207,6 +207,7 @@ class FileHandler:
         tools.alphanumeric_sort(self._comment_files)
 
         self._window.uimanager.recent.add(path)
+        self._window.draw_image()
 
         return result
 
