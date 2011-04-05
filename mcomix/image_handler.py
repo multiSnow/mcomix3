@@ -202,7 +202,7 @@ class ImageHandler:
         if not self._window.filehandler.file_loaded and self._window.filehandler.archive_type is None:
             return False
 
-        if self.get_current_page() == 1:
+        if self.get_current_page() <= 1:
 
             if self._window.filehandler.archive_type is not None:
 
