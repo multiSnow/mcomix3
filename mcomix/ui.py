@@ -288,6 +288,16 @@ class MainUI(gtk.UIManager):
                         <menuitem action="zoom_out" />
                         <menuitem action="zoom_original" />
                     </menu>
+                    <separator />
+                    <menu action="menu_toolbars">
+                        <menuitem action="menubar" />
+                        <menuitem action="toolbar" />
+                        <menuitem action="statusbar" />
+                        <menuitem action="scrollbar" />
+                        <menuitem action="thumbnails" />
+                        <separator />
+                        <menuitem action="hide all" />
+                    </menu>
                 </menu>
                 <menu action="menu_bookmarks_popup">
                 </menu>
