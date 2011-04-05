@@ -15,6 +15,13 @@ MComix 0.90.4
       notable on slower systems. (inspired by David Zaragoza, who originally
       suggested to use processes instead of threads)
 
+    - New option to delay loading of thumbnails. This way, thumbnails will
+      only be generated when they are actually needed, i.e. the thumbnail
+      sidebar is open or "Go to page" is used.
+
+    - MComix' configuration files are now stored in ~/.config/mcomix instead
+      of in ~/.local/share/mcomix, as originally intended.
+
 MComix 0.90.3
 
     - MComix now uses a slightly different directory structure than before. 
