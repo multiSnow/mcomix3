@@ -2,7 +2,6 @@
 
 import gtk
 import image_tools
-import constants
 
 class Pageselector(gtk.Dialog):
 
@@ -21,6 +20,9 @@ class Pageselector(gtk.Dialog):
         self.set_has_separator(False)
         self.set_resizable(True)
         self.set_default_response(gtk.RESPONSE_CLOSE)
+
+        # Start thumbnail generation in case it has been delayed
+        self._window.thumbnailsidebar.load_thumbnails(True)
 
         self._number_of_pages = self._window.imagehandler.get_number_of_pages()
 
@@ -76,10 +78,7 @@ class Pageselector(gtk.Dialog):
         """ Set the preview thumbnail for the page selector.
         If a thumbnail isn't cached yet, use MISSING_IMAGE_ICON. """
 
-        if len(self._window.thumbnailsidebar._thumb_cache) > page:
-            pixbuf = self._window.thumbnailsidebar._thumb_cache[page]
-        else:
-            pixbuf = constants.MISSING_IMAGE_ICON
+        pixbuf = self._window.thumbnailsidebar.get_thumbnail(page + 1)
         bordered_pixbuf = image_tools.add_border(pixbuf, 1)
         self._image_preview.set_from_pixbuf(bordered_pixbuf)
 
