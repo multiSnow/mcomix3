@@ -232,7 +232,7 @@ class ThumbnailSidebar(gtk.HBox):
             try:
                 page = pages.get_nowait()
             except Queue.Empty:
-                return
+                break
             pixbuf = self._window.imagehandler.get_thumbnail(page,
                 prefs['thumbnail size'], prefs['thumbnail size']) or \
                     constants.MISSING_IMAGE_ICON
@@ -243,7 +243,9 @@ class ThumbnailSidebar(gtk.HBox):
                 gobject.idle_add(self.new_pixbuf_ready, (page, pixbuf))
 
         if not self._stop_cacheing:
+            pages.join()
             self._loaded = True
+
         self._is_loading = False
 
     def new_pixbuf_ready(self, pixbuf_info):
@@ -256,10 +258,9 @@ class ThumbnailSidebar(gtk.HBox):
             self._thumbnail_liststore.set(iter, 0, page, 1, pixbuf)
             self._thumbnail_liststore.row_changed(page - 1, iter)
 
+        if self._loaded:
             # Update height
-            image_height = self._treeview.get_background_area(page - 1,
-                self._thumbnail_image_treeviewcolumn).height + 2
-            self._layout.set_size(0, image_height * self._window.imagehandler.get_number_of_pages())
+            self._layout.set_size(0, self.get_needed_thumbnail_height())
 
         # Remove this callback from the idle queue
         return 0
@@ -267,7 +268,8 @@ class ThumbnailSidebar(gtk.HBox):
     def _load(self, force_load=False):
         # Create empty preview thumbnails.
         filler = self.get_empty_thumbnail()
-        for page in range(1, self._window.imagehandler.get_number_of_pages() + 1):
+        page_count = self._window.imagehandler.get_number_of_pages()
+        for page in xrange(1, page_count + 1):
             self._thumbnail_liststore.append([page, filler])
 
         if not prefs['show thumbnails']:
@@ -288,6 +290,7 @@ class ThumbnailSidebar(gtk.HBox):
         # Update layout and current image selection in the thumb bar.
         self.update_layout_size()
         self.update_select()
+        self._layout.set_size(0, filler.get_height() * page_count + 2 * page_count)
 
     def get_thumbnail(self, page):
         """ Gets the thumbnail pixbuf for the selected <page>.
@@ -298,6 +301,15 @@ class ThumbnailSidebar(gtk.HBox):
             return self._thumbnail_liststore.get_value(iter, 1)
         else:
             return get_empty_thumbnail()
+
+    def get_needed_thumbnail_height(self):
+        """ Gets the height for all thumbnails, as indicated by the treeview. """
+        pages = len(self._thumbnail_liststore)
+        height = 0
+        for page in xrange(pages):
+            height += self._treeview.get_background_area(page,
+                self._thumbnail_image_treeviewcolumn).height
+        return height
 
     def _get_selected_row(self):
         """Return the index of the currently selected row."""
