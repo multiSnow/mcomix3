@@ -235,12 +235,13 @@ class FileHandler:
 
     def cleanup(self):
         """Run clean-up tasks. Should be called prior to exit."""
+        self.thread_delete(self._tmp_dir)
         self._stop_cacheing = True
         self._extractor.stop()
-        self._condition.acquire()
-        self._condition.notifyAll()
-        self._condition.release()
-        self.thread_delete(self._tmp_dir)
+        if self._condition:
+            self._condition.acquire()
+            self._condition.notifyAll()
+            self._condition.release()
 
     def get_number_of_comments(self):
         """Return the number of comments in the current archive."""
