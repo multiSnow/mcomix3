@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-01-20 19:22+CET\n"
+"POT-Creation-Date: 2011-04-05 16:03+CEST\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -99,7 +99,7 @@ msgstr ""
 msgid "All stored bookmarks will be removed. Are you sure that you want to continue?"
 msgstr ""
 
-#: mcomix/comment_dialog.py:10 mcomix/preferences_dialog.py:384
+#: mcomix/comment_dialog.py:10 mcomix/preferences_dialog.py:393
 msgid "Comments"
 msgstr ""
 
@@ -281,11 +281,11 @@ msgstr ""
 msgid "Could not open %s: Unknown file type."
 msgstr ""
 
-#: mcomix/file_handler.py:180
+#: mcomix/file_handler.py:181
 msgid "No images in '%s'"
 msgstr ""
 
-#: mcomix/file_handler.py:428 mcomix/main.py:1004 mcomix/preferences.py:85
+#: mcomix/file_handler.py:437 mcomix/main.py:1004 mcomix/preferences.py:86
 msgid "! Corrupt preferences file \"%s\", deleting..."
 msgstr ""
 
@@ -293,7 +293,7 @@ msgstr ""
 msgid "! Could not load icon \"%s\""
 msgstr ""
 
-#: mcomix/image_handler.py:425
+#: mcomix/image_handler.py:422
 msgid "Unknown filetype"
 msgstr ""
 
@@ -616,15 +616,15 @@ msgstr ""
 msgid "No version of the Python Imaging Library was found on your system."
 msgstr ""
 
-#: mcomix/pageselect.py:16 mcomix/ui.py:77 mcomix/ui.py:78
+#: mcomix/pageselect.py:15 mcomix/ui.py:77 mcomix/ui.py:78
 msgid "_Go"
 msgstr ""
 
-#: mcomix/pageselect.py:17
+#: mcomix/pageselect.py:16
 msgid "_Cancel"
 msgstr ""
 
-#: mcomix/pageselect.py:40
+#: mcomix/pageselect.py:42
 msgid " of %s"
 msgstr ""
 
@@ -848,143 +848,151 @@ msgstr ""
 msgid "Store thumbnails for opened files according to the freedesktop.org specification. These thumbnails are shared by many other applications, such as most file managers."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:268
+#: mcomix/preferences_dialog.py:269
+msgid "Delay thumbnail generation."
+msgstr ""
+
+#: mcomix/preferences_dialog.py:271
+msgid "Thumbnails are generated only when required, instead of directly after opening a new file."
+msgstr ""
+
+#: mcomix/preferences_dialog.py:277
 msgid "Cache"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:270
+#: mcomix/preferences_dialog.py:279
 msgid "Maximum number of pages to store in the cache"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:276
+#: mcomix/preferences_dialog.py:285
 msgid "Set the max number of pages to cache. A value of -1 will cache the entire archive."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:279
+#: mcomix/preferences_dialog.py:288
 msgid "Crash Recovery"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:282
+#: mcomix/preferences_dialog.py:291
 msgid "Enable crash recovery."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:287
+#: mcomix/preferences_dialog.py:296
 msgid "Crash recovery saves the current configuration information every specified seconds.  In case of a crash the previous file will be re-loaded."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:290
+#: mcomix/preferences_dialog.py:299
 msgid "Save the current configuration information every n seconds"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:296
+#: mcomix/preferences_dialog.py:305
 msgid "Every n seconds the current configuration will be saved to disk.  Choose a lower number if crashes are frequent on your machine. 30 seconds (default)"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:299
+#: mcomix/preferences_dialog.py:308
 msgid "Behaviour"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:305
+#: mcomix/preferences_dialog.py:314
 msgid "Default modes"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:307
+#: mcomix/preferences_dialog.py:316
 msgid "Use double page mode by default."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:313
+#: mcomix/preferences_dialog.py:322
 msgid "Use fullscreen by default."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:319
+#: mcomix/preferences_dialog.py:328
 msgid "Use manga mode by default."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:325
+#: mcomix/preferences_dialog.py:334
 msgid "Default zoom mode"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:328 mcomix/ui.py:344
+#: mcomix/preferences_dialog.py:337 mcomix/ui.py:344
 msgid "Best fit mode"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:329 mcomix/ui.py:346
+#: mcomix/preferences_dialog.py:338 mcomix/ui.py:346
 msgid "Fit width mode"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:330 mcomix/ui.py:348
+#: mcomix/preferences_dialog.py:339 mcomix/ui.py:348
 msgid "Fit height mode"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:331 mcomix/ui.py:350
+#: mcomix/preferences_dialog.py:340 mcomix/ui.py:350
 msgid "Manual zoom mode"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:337
+#: mcomix/preferences_dialog.py:346
 msgid "Fullscreen"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:339
+#: mcomix/preferences_dialog.py:348
 msgid "Automatically hide all toolbars in fullscreen."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:345
+#: mcomix/preferences_dialog.py:354
 msgid "Slideshow"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:346
+#: mcomix/preferences_dialog.py:355
 msgid "Slideshow delay (in seconds)"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:355
+#: mcomix/preferences_dialog.py:364
 msgid "Slideshow step (in pixels)"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:363
+#: mcomix/preferences_dialog.py:372
 msgid "Specify the number of pixels to scroll while in slideshow mode. A positive value will scroll forward, a negative value will scroll backwards, and a value of 0 will cause the slideshow to always flip to a new page."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:367
+#: mcomix/preferences_dialog.py:376
 msgid "During a slideshow automatically open the next archive."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:372
+#: mcomix/preferences_dialog.py:381
 msgid "While in slideshow mode allow the next archive to automatically be opened."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:375
+#: mcomix/preferences_dialog.py:384
 msgid "Page Numbers"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:376
+#: mcomix/preferences_dialog.py:385
 msgid "Show page numbers."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:381
+#: mcomix/preferences_dialog.py:390
 msgid "Show page numbers in the Title bar and the status bar. If unset the page numbers will be hidden."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:385
+#: mcomix/preferences_dialog.py:394
 msgid "Comment extensions"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:392
+#: mcomix/preferences_dialog.py:401
 msgid "Treat all files found within archives, that have one of these file endings, as comments."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:395
+#: mcomix/preferences_dialog.py:404
 msgid "Rotation"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:397
+#: mcomix/preferences_dialog.py:406
 msgid "Automatically rotate images according to their metadata."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:402
+#: mcomix/preferences_dialog.py:411
 msgid "Automatically rotate images when an orientation is specified in the image metadata, such as in an Exif tag."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:404
+#: mcomix/preferences_dialog.py:413
 msgid "Display"
 msgstr ""
 
@@ -1164,7 +1172,7 @@ msgstr ""
 msgid "Icon design"
 msgstr ""
 
-#: mcomix/thumbnail_tools.py:169
+#: mcomix/thumbnail_tools.py:172
 msgid "! Could not save thumbnail \"%(thumbpath)s\": %(error)s"
 msgstr ""
 
