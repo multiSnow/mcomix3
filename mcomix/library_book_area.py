@@ -198,6 +198,7 @@ class _BookArea(gtk.ScrolledWindow):
 
             pixbuf = self._get_pixbuf(path)
             gobject.idle_add(self._pixbuf_finished, (index, pixbuf))
+            books.task_done()
 
     def _pixbuf_finished(self, pixbuf_info):
         """ Executed when a pixbuf was created, to actually insert the pixbuf
