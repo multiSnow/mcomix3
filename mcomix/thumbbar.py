@@ -269,16 +269,8 @@ class ThumbnailSidebar(gtk.HBox):
         # Create empty preview thumbnails.
         filler = self.get_empty_thumbnail()
         page_count = self._window.imagehandler.get_number_of_pages()
-        for page in xrange(1, page_count + 1):
-            self._thumbnail_liststore.append([page, filler])
-
-        if not prefs['show thumbnails']:
-            # this is done so that the height of the images stored in the treeview
-            # is actually calculated.  If the thumbnails are loaded into the treevi
-            # without being exposed at least once the thumbbar scrollbar will have
-            # height of 0.
-            self.show_all()
-            self.hide_all()
+        while len(self._thumbnail_liststore) < page_count:
+            self._thumbnail_liststore.append([len(self._thumbnail_liststore) + 1, filler])
 
         if force_load or prefs['show thumbnails'] or not prefs['delay thumbnails']:
             # Start threads for thumbnailing.
@@ -290,7 +282,10 @@ class ThumbnailSidebar(gtk.HBox):
         # Update layout and current image selection in the thumb bar.
         self.update_layout_size()
         self.update_select()
-        self._layout.set_size(0, filler.get_height() * page_count + 2 * page_count)
+        pixbuf_padding = 2
+        self._layout.set_size(0,
+            filler.get_height() * page_count +
+            pixbuf_padding * page_count)
 
     def get_thumbnail(self, page):
         """ Gets the thumbnail pixbuf for the selected <page>.
