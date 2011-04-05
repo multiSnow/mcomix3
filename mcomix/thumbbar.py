@@ -123,6 +123,7 @@ class ThumbnailSidebar(gtk.HBox):
     def show(self, *args):
         """Show the ThumbnailSidebar."""
         self.show_all()
+        self.load_thumbnails(True)
 
     def hide(self):
         """Hide the ThumbnailSidebar."""
@@ -145,7 +146,7 @@ class ThumbnailSidebar(gtk.HBox):
         self._cache_threads = None
         self._currently_selected_page = 0
 
-    def load_thumbnails(self):
+    def load_thumbnails(self, force_load=False):
         """Load the thumbnails, if it is appropriate to do so."""
 
         if (not self._window.filehandler.file_loaded or
@@ -153,7 +154,7 @@ class ThumbnailSidebar(gtk.HBox):
             self._is_loading or self._loaded or self._stop_cacheing):
             return
 
-        self._load()
+        self._load(force_load)
 
     def refresh(self, *args):
         while gtk.events_pending():
@@ -241,7 +242,8 @@ class ThumbnailSidebar(gtk.HBox):
             if not self._stop_cacheing:
                 gobject.idle_add(self.new_pixbuf_ready, (page, pixbuf))
 
-        self._loaded = True
+        if not self._stop_cacheing:
+            self._loaded = True
         self._is_loading = False
 
     def new_pixbuf_ready(self, pixbuf_info):
@@ -262,68 +264,40 @@ class ThumbnailSidebar(gtk.HBox):
         # Remove this callback from the idle queue
         return 0
 
-    def cache_thumbnails_old(self):
-        import time; starttime = time.time()
-
-        if self._thumb_cache != None:
-            return
-
-        self._thumb_cache = []
-
-        if self._window.filehandler.archive_type is not None:
-            create = False
-        else:
-            create = prefs['create thumbnails']
-
-        self._thumbs_in_cache = 0
-
-        self._stop_cacheing = False
-
-        for i in xrange(1, self._window.imagehandler.get_number_of_pages() + 1):
-
-            if not self._stop_cacheing:
-                pixbuf = self._window.imagehandler.get_thumbnail(i,
-                    prefs['thumbnail size'], prefs['thumbnail size'])
-
-                if pixbuf != None and self._thumb_cache != None:
-                    self._thumb_cache.append(pixbuf)
-                    self._thumbs_in_cache += 1
-            else:
-                break
-
-        self._is_loading = True
-        self._loaded = True
-        self._thumb_cache_is_complete = True
-
-        print time.time() - starttime, "seconds for %i thumbnails" % len(self._thumb_cache)
-
-    def _load(self):
+    def _load(self, force_load=False):
         # Create empty preview thumbnails.
         filler = self.get_empty_thumbnail()
         for page in range(1, self._window.imagehandler.get_number_of_pages() + 1):
             self._thumbnail_liststore.append([page, filler])
 
-        # Start threads for thumbnailing.
-        self._loaded = False
-        self._is_loading = True
-        self._stop_cacheing = False
-        self.thread_cache_thumbnails()
+        if not prefs['show thumbnails']:
+            # this is done so that the height of the images stored in the treeview
+            # is actually calculated.  If the thumbnails are loaded into the treevi
+            # without being exposed at least once the thumbbar scrollbar will have
+            # height of 0.
+            self.show_all()
+            self.hide_all()
+
+        if force_load or prefs['show thumbnails'] or not prefs['delay thumbnails']:
+            # Start threads for thumbnailing.
+            self._loaded = False
+            self._is_loading = True
+            self._stop_cacheing = False
+            self.thread_cache_thumbnails()
 
         # Update layout and current image selection in the thumb bar.
         self.update_layout_size()
         self.update_select()
 
-        if not prefs['show thumbnails']:
-            # this is done so that the height of the images stored in the treeview
-            # is actually calculated.  If the thumbnails are loaded into the treevi
-            # without being exposed at least once the thumbbar scrollbar will have 
-            # height of 0.
-            self.show()
-            self.hide()
-        else:
-            self.show()
+    def get_thumbnail(self, page):
+        """ Gets the thumbnail pixbuf for the selected <page>.
+        Numbering of <page> starts with 1. """
 
-        self._window.draw_image()
+        iter = self._thumbnail_liststore.iter_nth_child(None, page - 1)
+        if iter and self._thumbnail_liststore.iter_is_valid(iter):
+            return self._thumbnail_liststore.get_value(iter, 1)
+        else:
+            return get_empty_thumbnail()
 
     def _get_selected_row(self):
         """Return the index of the currently selected row."""
@@ -408,11 +382,11 @@ class ThumbnailSidebar(gtk.HBox):
         # or easier way to force a refresh I have not found it.
 
         if prefs['show thumbnails'] and not (self._window.is_fullscreen and prefs['hide all in fullscreen']):
-            self.hide()
-            self.show()
+            self.hide_all()
+            self.show_all()
         else:
-            self.show()
-            self.hide()
+            self.show_all()
+            self.hide_all()
 
         while gtk.events_pending():
             gtk.main_iteration(False)
