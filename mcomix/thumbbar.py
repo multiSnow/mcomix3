@@ -279,13 +279,21 @@ class ThumbnailSidebar(gtk.HBox):
             self._stop_cacheing = False
             self.thread_cache_thumbnails()
 
+        if not prefs['show thumbnails']:
+            # The control needs to be exposed at least once to enable height
+            # calculation.
+            self.show_all()
+            self.hide_all()
+
         # Update layout and current image selection in the thumb bar.
         self.update_layout_size()
         self.update_select()
-        pixbuf_padding = 2
-        self._layout.set_size(0,
-            filler.get_height() * page_count +
-            pixbuf_padding * page_count)
+        # Set height appropriate for dummy pixbufs.
+        if not self._loaded:
+            pixbuf_padding = 2
+            self._layout.set_size(0,
+                filler.get_height() * page_count +
+                pixbuf_padding * page_count)
 
     def get_thumbnail(self, page):
         """ Gets the thumbnail pixbuf for the selected <page>.
