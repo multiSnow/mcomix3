@@ -157,8 +157,8 @@ class ThumbnailSidebar(gtk.HBox):
         self._load(force_load)
 
     def refresh(self, *args):
-        while gtk.events_pending():
-            gtk.main_iteration(False)
+        if not self._is_loading:
+            self._layout.set_size(0, self.get_needed_thumbnail_height())
 
     def remove_thumbnail(self, num_of_thumbnail):
 
