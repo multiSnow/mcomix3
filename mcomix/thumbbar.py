@@ -9,6 +9,7 @@ import tools
 import constants
 from preferences import prefs
 import threading
+import callback
 
 class ThumbnailSidebar(gtk.HBox):
 
@@ -240,7 +241,7 @@ class ThumbnailSidebar(gtk.HBox):
             pages.task_done()
 
             if not self._stop_cacheing:
-                gobject.idle_add(self.new_pixbuf_ready, (page, pixbuf))
+                self.thumbnail_loaded(page, pixbuf)
 
         if not self._stop_cacheing:
             pages.join()
@@ -248,11 +249,10 @@ class ThumbnailSidebar(gtk.HBox):
 
         self._is_loading = False
 
-    def new_pixbuf_ready(self, pixbuf_info):
+    @callback.Callback
+    def thumbnail_loaded(self, page, pixbuf):
         """ Callback when a new thumbnail has been created.
         <pixbuf_info> is a tuple of (page, pixbuf). """
-
-        page, pixbuf = pixbuf_info
         iter = self._thumbnail_liststore.iter_nth_child(None, page - 1)
         if iter and self._thumbnail_liststore.iter_is_valid(iter):
             self._thumbnail_liststore.set(iter, 0, page, 1, pixbuf)
@@ -261,9 +261,6 @@ class ThumbnailSidebar(gtk.HBox):
         if self._loaded:
             # Update height
             self._layout.set_size(0, self.get_needed_thumbnail_height())
-
-        # Remove this callback from the idle queue
-        return 0
 
     def _load(self, force_load=False):
         # Create empty preview thumbnails.
