@@ -23,6 +23,7 @@ class Pageselector(gtk.Dialog):
 
         # Start thumbnail generation in case it has been delayed
         self._window.thumbnailsidebar.load_thumbnails(True)
+        self._window.thumbnailsidebar.thumbnail_loaded += self._thumbnail_loaded
 
         self._number_of_pages = self._window.imagehandler.get_number_of_pages()
 
@@ -78,5 +79,12 @@ class Pageselector(gtk.Dialog):
         pixbuf = self._window.thumbnailsidebar.get_thumbnail(page + 1)
         self._image_preview.set_from_pixbuf(pixbuf)
 
+    def _thumbnail_loaded(self, page, pixbuf):
+        """ Since it cannot be guaranteed that thumbnails have already
+        been loaded for the currently selected page, this callback
+        re-loads the current thumbnail when it becomes available. """
+
+        if page == int(self._selector_adjustment.value):
+            self._set_thumbnail(page - 1)
 
 # vim: expandtab:sw=4:ts=4
