@@ -64,9 +64,6 @@ class Pageselector(gtk.Dialog):
     def _cb_value_changed(self, *args):
         self._set_thumbnail(int(self._selector_adjustment.value) - 1)
 
-        while gtk.events_pending():
-            gtk.main_iteration(False)
-
     def _response(self, widget, event, *args):
         if event == gtk.RESPONSE_OK:
             self._window.set_page(int(self._selector_adjustment.value))
@@ -79,8 +76,7 @@ class Pageselector(gtk.Dialog):
         If a thumbnail isn't cached yet, use MISSING_IMAGE_ICON. """
 
         pixbuf = self._window.thumbnailsidebar.get_thumbnail(page + 1)
-        bordered_pixbuf = image_tools.add_border(pixbuf, 1)
-        self._image_preview.set_from_pixbuf(bordered_pixbuf)
+        self._image_preview.set_from_pixbuf(pixbuf)
 
 
 # vim: expandtab:sw=4:ts=4
