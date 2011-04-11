@@ -28,6 +28,8 @@ MComix 0.90.4
       if the menu bar had been disabled using the normal menu, there was no
       way to get it back.
 
+    - Required Python version is now 2.5 or newer.
+
 MComix 0.90.3
 
     - MComix now uses a slightly different directory structure than before. 
