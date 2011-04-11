@@ -2,7 +2,6 @@
 
 import weakref
 import threading
-import functools
 import gobject
 
 class Callback(object):
