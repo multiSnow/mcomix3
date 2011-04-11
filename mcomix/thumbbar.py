@@ -256,7 +256,6 @@ class ThumbnailSidebar(gtk.HBox):
         iter = self._thumbnail_liststore.iter_nth_child(None, page - 1)
         if iter and self._thumbnail_liststore.iter_is_valid(iter):
             self._thumbnail_liststore.set(iter, 0, page, 1, pixbuf)
-            self._thumbnail_liststore.row_changed(page - 1, iter)
 
         if self._loaded:
             # Update height

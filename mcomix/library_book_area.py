@@ -209,7 +209,6 @@ class _BookArea(gtk.ScrolledWindow):
         iter = self._liststore.iter_nth_child(None, index)
         if iter and self._liststore.iter_is_valid(iter):
             self._liststore.set(iter, 0, pixbuf)
-            self._liststore.row_changed(index, iter)
 
         # Remove this idle handler.
         return 0
