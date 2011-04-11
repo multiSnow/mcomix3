@@ -24,6 +24,10 @@ MComix 0.90.4
     - MComix' configuration files are now stored in ~/.config/mcomix instead
       of in ~/.local/share/mcomix, as originally intended.
 
+    - Added the toolbar show/hide menu to the right-click popup. Previously,
+      if the menu bar had been disabled using the normal menu, there was no
+      way to get it back.
+
 MComix 0.90.3
 
     - MComix now uses a slightly different directory structure than before. 
