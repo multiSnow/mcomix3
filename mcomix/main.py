@@ -128,9 +128,6 @@ class MainWindow(gtk.Window):
         if prefs['default double page']:
             self.actiongroup.get_action('double_page').activate()
 
-        if prefs['default fullscreen'] or fullscreen:
-            self.actiongroup.get_action('fullscreen').activate()
-
         if prefs['default manga mode']:
             self.actiongroup.get_action('manga_mode').activate()
 
@@ -220,6 +217,12 @@ class MainWindow(gtk.Window):
 
         self.uimanager.set_sensitivities()
         self.show()
+
+        # If MComix is set to start in fullscreen mode, it
+        # cannot switch to windowed mode on Win32 unless this
+        # condition is set to trigger after normal show().
+        if prefs['default fullscreen'] or fullscreen:
+            self.actiongroup.get_action('fullscreen').activate()
 
         if prefs['crash recovery on']:
 

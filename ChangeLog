@@ -28,6 +28,9 @@ MComix 0.90.4
       if the menu bar had been disabled using the normal menu, there was no
       way to get it back.
 
+    - MComix could not switch back to windowed mode when started in fullscreen
+      mode on Win32.
+
     - Required Python version is now 2.5 or newer.
 
 MComix 0.90.3
