@@ -7,7 +7,10 @@ MComix 0.90.4
       on Win32.
 
     - The "Go to page" dialog now shows thumbnails when they are available, 
-      not only after all thumbnails have been loaded.
+      not only after all thumbnails have been loaded. Additionally,
+      some usability improvements have been done to the dialog, such as
+      instantly updating the thumbnail when editing the page box, and setting
+      focus to the page box when the dialog is opened.
 
     - Fix "Automatically open next archive" with empty archives.
 
