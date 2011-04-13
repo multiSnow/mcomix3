@@ -36,9 +36,9 @@ class Pageselector(gtk.Dialog):
         self._page_selector.set_digits( 0 )
 
         self._page_spinner = gtk.SpinButton(self._selector_adjustment)
-        self._page_spinner.connect( 'insert-text', self._page_text_insert )
         self._page_spinner.connect( 'changed', self._page_text_changed )
         self._page_spinner.set_activates_default(True)
+        self._page_spinner.set_numeric(True)
         self._pages_label = gtk.Label(_(' of %s') % self._number_of_pages)
         self._pages_label.set_alignment(0, 0.5)
 
@@ -68,12 +68,6 @@ class Pageselector(gtk.Dialog):
     def _cb_value_changed(self, *args):
         """ Called whenever the spinbox value changes. Updates the preview thumbnail. """
         self._set_thumbnail(int(self._selector_adjustment.value) - 1)
-
-    def _page_text_insert(self, control, new_text, new_text_length, position, *args):
-        """ Called whenever a new string is being inserted into the page selector entry.
-            Used to prevent entering non-digits. """
-        if not new_text.isdigit():
-            control.stop_emission('insert-text')
 
     def _page_text_changed(self, control, *args):
         """ Called when the page selector has been changed. Used to instantly update
