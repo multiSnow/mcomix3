@@ -44,6 +44,7 @@ CREDITS = (
             ('Jan Nekvasil', _('Czech translation')),
             ('Олександр Заяц', _('Ukrainian translation')),
             ('Roxerio Roxo Carrillo', _('Galician translation')),
+            ('Martin Karlsson', _('Swedish tranlation')),
             ('Victor Castillejo', _('Icon design'))
           )
 
