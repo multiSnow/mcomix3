@@ -415,9 +415,7 @@ class _PreferencesDialog(gtk.Dialog):
         self.show_all()
 
     def _response(self, dialog, response):
-
         if response == gtk.RESPONSE_CLOSE:
-
             # only change the crash timer once the preference window has been closed
             if prefs['crash recovery on'] and self._has_crash_time_changed:
                 self._window.idle_wait_for_crash_timer_to_expire()
@@ -427,6 +425,10 @@ class _PreferencesDialog(gtk.Dialog):
         elif response == constants.RESPONSE_REVERT_TO_DEFAULT:
             # to be used to restore preferences to default
             pass
+
+        else:
+            # Other responses close the dialog, e.g. clicking the X icon on the dialog.
+            _close_dialog()
 
     def _check_button_cb(self, button, preference):
         """Callback for all checkbutton-type preferences."""
