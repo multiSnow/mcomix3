@@ -29,6 +29,9 @@ class _ImageArea(gtk.ScrolledWindow):
         self._iconview.connect_after('drag_begin', self._drag_begin)
         self.add(self._iconview)
 
+        self._window.thumbnailsidebar.load_thumbnails(True)
+        self._window.thumbnailsidebar.thumbnail_loaded += self._thumbnail_loaded
+
         self._ui_manager = gtk.UIManager()
         ui_description = """
         <ui>
@@ -49,39 +52,21 @@ class _ImageArea(gtk.ScrolledWindow):
     def fetch_images(self):
         """Load all the images in the archive or directory."""
 
-        for i in xrange(1,
-          self._window.imagehandler.get_number_of_pages() + 1):
+        for page in xrange(1, self._window.imagehandler.get_number_of_pages() + 1):
+            thumb = self._window.thumbnailsidebar.get_thumbnail(page)
 
-            if not self._window.thumbnailsidebar._thumb_cache_is_complete:
-
-                # wait for the cacheing to catch up
-                while self._window.thumbnailsidebar._thumbs_in_cache < i:
-
-                    if self._edit_dialog.kill:
-                        return
-
-                    self._window.draw_image()
-
-                    while gtk.events_pending():
-                        gtk.main_iteration(False)
-
-                if self._window.thumbnailsidebar._thumb_cache == None:
-                    return
-
-            thumb = self._window.thumbnailsidebar._thumb_cache[i - 1]
-
-            path = self._window.imagehandler.get_path_to_page(i)
-
+            path = self._window.imagehandler.get_path_to_page(page)
             encoded_path = encoding.to_unicode(os.path.basename(path))
             encoded_path = encoded_path.replace('&', '&amp;')
 
             self._liststore.append([thumb, encoded_path, path])
 
-            while gtk.events_pending():
-                gtk.main_iteration(False)
+    def _thumbnail_loaded(self, page, pixbuf):
+        """ Callback executed each time a new thumbnail pixbuf
+        has been loaded. """
 
-            if self._edit_dialog.kill:
-                return
+        iter = self._liststore.iter_nth_child(None, page - 1)
+        self._liststore.set_value(iter, 0, pixbuf)
 
     def add_extra_image(self, path):
         """Add an imported image (at <path>) to the end of the image list."""
