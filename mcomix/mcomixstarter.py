@@ -32,7 +32,7 @@ def wait_and_exit():
     the user find possibly missing dependencies when starting MComix, since the
     Python window won't close down immediately after the error. """
 
-    if not sys.stdin.closed and not sys.stdout.closed:
+    if sys.platform == 'win32' and not sys.stdin.closed and not sys.stdout.closed:
         print
         raw_input("Press ENTER to continue...")
 
