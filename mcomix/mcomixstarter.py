@@ -27,6 +27,17 @@ import gettext
 import constants
 import tools
 
+def wait_and_exit():
+    """ Wait for the user pressing ENTER before closing MComix. This should help
+    the user find possibly missing dependencies when starting MComix, since the
+    Python window won't close down immediately after the error. """
+
+    if not sys.stdin.closed and not sys.stdout.closed:
+        print
+        raw_input("Press ENTER to continue...")
+
+    sys.exit(1)
+
 try:
     import pkg_resources
 
@@ -36,7 +47,7 @@ except ImportError:
     print "The package 'pkg_resources' could not be found."
     print "You need to install the 'setuptools' package, which also includes pkg_resources."
     print "Note: On most distributions, 'distribute' supersedes 'setuptools'."
-    sys.exit(1)
+    wait_and_exit()
 
 def install_gettext():
     """ Initialize gettext with the correct directory that contains
@@ -94,14 +105,12 @@ except AssertionError:
     print_( _('Installed PyGTK version is: %s') % \
         '.'.join([str(n) for n in gtk.pygtk_version]) )
     print_( _('Required PyGTK version is: 2.12.0 or higher') )
-
-    sys.exit(1)
+    wait_and_exit()
 
 except ImportError:
     print_( _('PyGTK version 2.12.0 or higher is required to run MComix.') )
     print_( _('No version of PyGTK was found on your system.') )
-
-    sys.exit(1)
+    wait_and_exit()
 
 # Check PIL library
 try:
@@ -113,13 +122,12 @@ except AssertionError:
     print_( _('Library (PIL) installed.') )
     print_( _('Installed PIL version is: %s') % Image.VERSION )
     print_( _('Required PIL version is: 1.1.5 or higher') )
-    sys.exit(1)
+    wait_and_exit()
 
 except ImportError:
     print_( _('Python Imaging Library (PIL) 1.1.5 or higher is required.') )
     print_( _('No version of the Python Imaging Library was found on your system.') )
-
-    sys.exit(1)
+    wait_and_exit()
 
 # Import required mcomix modules for this script.
 # This should be done only after install_gettext() has been called.
