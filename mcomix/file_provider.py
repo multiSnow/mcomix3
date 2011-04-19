@@ -4,6 +4,7 @@
 
 import os
 import re
+import locale
 
 from mcomix import image_tools
 from mcomix import archive_tools
@@ -106,7 +107,7 @@ class OrderedFileProvider(FileProvider):
                   if os.path.isfile(os.path.join(self.base_dir, filename))
                   and should_accept(os.path.join(self.base_dir, filename)) ]
 
-        tools.alphanumeric_sort(files)
+        files.sort(locale.strcoll)
 
         return files
 
