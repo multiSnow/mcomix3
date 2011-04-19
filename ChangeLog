@@ -34,6 +34,9 @@ MComix 0.90.4
     - MComix could not switch back to windowed mode when started in fullscreen
       mode on Win32.
 
+    - The MComix window will no longer close instantly after starting up when
+      reporting an error due to unsatisfied dependencies on Win32.
+
     - Fixed the settings dialog window no longer opening when it has been
       closed with the X icon on the dialog before.
 
