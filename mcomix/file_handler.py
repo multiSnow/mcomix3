@@ -69,7 +69,7 @@ class FileHandler:
 
         if isinstance(path, list) and len(path) == 0:
             # This is a programming error and does not need translation.
-            raise ValueError("Tried to open an empty list of files.")
+            assert False, "Tried to open an empty list of files."
 
         elif isinstance(path, list) and len(path) > 0:
             # A list of files was passed - open only these files.
@@ -93,10 +93,14 @@ class FileHandler:
                 _('Could not open %s: Permission denied.') % path)
             return False
 
+        filelist = self._file_provider.list_files()
         self.archive_type = archive_tools.archive_mime_type(path)
 
-        if self.archive_type is None and not image_tools.is_image_file(path) \
-                and len(self._file_provider.list_files()) == 0:
+        if self.archive_type is None and len(filelist) == 0:
+            self._window.statusbar.set_message(_("No images in '%s'") % path)
+            return False
+
+        if self.archive_type is None and not image_tools.is_image_file(path) and len(filelist) == 0:
             self._window.statusbar.set_message(
                 _('Could not open %s: Unknown file type.') % path)
             return False
@@ -178,15 +182,14 @@ class FileHandler:
         # If <path> is an image we scan its directory for more images.
         else:
 
-            if self._file_provider:
-                self._base_path = self._file_provider.get_directory()
-                self._image_files = self._file_provider.list_files()
-                # Paths in file provider's list are always absolute
-                absolute_path = os.path.abspath(path)
-                if absolute_path in self._image_files:
-                    self._current_image_index = self._image_files.index(absolute_path)
-                else:
-                    self._current_image_index = 0
+            self._base_path = self._file_provider.get_directory()
+            self._image_files = filelist
+            # Paths in file provider's list are always absolute
+            absolute_path = os.path.abspath(path)
+            if absolute_path in self._image_files:
+                self._current_image_index = self._image_files.index(absolute_path)
+            else:
+                self._current_image_index = 0
 
         if not self._image_files:
 
@@ -376,6 +379,7 @@ class FileHandler:
         else:
             listmode = file_provider.FileProvider.IMAGES
 
+        current_dir = self._file_provider.get_directory()
         while self._file_provider.next_directory():
             files = self._file_provider.list_files(listmode)
 
@@ -386,6 +390,8 @@ class FileHandler:
                 self.open_file(files[0], keep_fileprovider=True)
                 return True
 
+        # Restore current directory if no files were found
+        self._file_provider.set_directory(current_dir)
         return False
 
     def open_previous_directory(self):
@@ -397,6 +403,7 @@ class FileHandler:
         else:
             listmode = file_provider.FileProvider.IMAGES
 
+        current_dir = self._file_provider.get_directory()
         while self._file_provider.previous_directory():
             files = self._file_provider.list_files(listmode)
 
@@ -407,6 +414,8 @@ class FileHandler:
                 self.open_file(files[-1], -1, keep_fileprovider=True)
                 return True
 
+        # Restore current directory if no files were found
+        self._file_provider.set_directory(current_dir)
         return False
 
     def _wait_on_page(self, page):

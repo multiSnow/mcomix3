@@ -102,14 +102,16 @@ class OrderedFileProvider(FileProvider):
         else:
             should_accept = lambda file: True
 
-        files = [ os.path.join(self.base_dir, filename)
-                  for filename in os.listdir(self.base_dir)
-                  if os.path.isfile(os.path.join(self.base_dir, filename))
-                  and should_accept(os.path.join(self.base_dir, filename)) ]
+        try:
+            files = [ os.path.join(self.base_dir, filename)
+                      for filename in os.listdir(self.base_dir)
+                      if should_accept(os.path.join(self.base_dir, filename)) ]
+            files.sort(locale.strcoll)
 
-        files.sort(locale.strcoll)
-
-        return files
+            return files
+        except OSError:
+            print_( u'! ' + _('Could not open %s: Permission denied.') % self.base_dir )
+            return []
 
     def next_directory(self):
         """ Switches to the next sibling directory. Next call to
@@ -165,12 +167,13 @@ class PreDefinedFileProvider(FileProvider):
         self.__files = [ ]
 
         for file in files:
-            if os.path.isfile(file) and should_accept(file):
-                self.__files.append(os.path.abspath(file))
-
             if os.path.isdir(file):
                 provider = OrderedFileProvider(file)
                 self.__files.extend(provider.list_files())
+
+            elif should_accept(file):
+                self.__files.append(os.path.abspath(file))
+
 
     def list_files(self, mode=FileProvider.IMAGES):
         """ Returns the files as passed to the constructor. """
