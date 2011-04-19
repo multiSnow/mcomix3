@@ -177,21 +177,10 @@ def run():
     preferences.read_preferences_file()
     icons.load_icons()
 
-    if len(args) >= 1:
-        param_path = os.path.abspath(args[0])
-
-        if os.path.isdir(param_path):
-            dir_files = os.listdir(param_path)
-            dir_files.sort(locale.strcoll)
-
-            for filename in dir_files:
-                full_path = os.path.join(param_path, filename)
-
-                if image_tools.is_image_file(full_path):
-                    open_path = full_path
-                    break
-        else:
-            open_path = param_path
+    if len(args) == 1:
+        open_path = args[0]
+    elif len(args) > 1:
+        open_path = args
 
     elif preferences.prefs['auto load last file']:
         open_path = preferences.prefs['path to last file']
