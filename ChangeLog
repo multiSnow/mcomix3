@@ -12,6 +12,14 @@ MComix 0.90.4
       instantly updating the thumbnail when editing the page box, and setting
       focus to the page box when the dialog is opened.
 
+    - When passing more than one file to MComix at startup, only those files
+      will be opened. This differs from the traditional behavior, where
+      MComix would only consider the first file and open all remaining
+      files in the same directory.
+      If the passed files are archives, MComix will only open these archives
+      when "Automatically open next archive" is enabled. If only a single file
+      is passed, MComix will keep opening all files in that directory.
+
     - Fix "Automatically open next archive" with empty archives.
 
     - Speed up thumbnail generation by parallelizing load tasks.
