@@ -15,6 +15,7 @@ import tools
 from preferences import prefs
 import constants
 import cPickle
+import file_provider
 
 class FileHandler:
 
@@ -48,13 +49,14 @@ class FileHandler:
         self._extractor = archive_extractor.Extractor()
         self._condition = None
         self._image_re = constants.SUPPORTED_IMAGE_REGEX
+        self._file_provider = None
         self.update_comment_extensions()
 
     def refresh_file(self, start_page=1):
         current_file = self._current_file
         self.open_file(current_file)
 
-    def open_file(self, path, start_page=1):
+    def open_file(self, path, start_page=1, keep_fileprovider=False):
         """Open the file pointed to by <path>.
 
         If <start_page> is not set we set the current
@@ -65,13 +67,23 @@ class FileHandler:
         Return True if the file is successfully loaded.
         """
 
-        # If the given <path> is invalid we update the statusbar.
-        if os.path.isdir(path):
-            self._window.statusbar.set_message(
-                _('Could not open %s: Is a directory.') % path)
-            return False
+        if isinstance(path, list) and len(path) == 0:
+            # This is a programming error and does not need translation.
+            raise ValueError("Tried to open an empty list of files.")
 
-        if not os.path.isfile(path):
+        elif isinstance(path, list) and len(path) > 0:
+            # A list of files was passed - open only these files.
+            if self._file_provider is None or not keep_fileprovider:
+                self._file_provider = file_provider.get_file_provider(path)
+
+            path = path[0]
+        else:
+            # A single file was passed - use Comix' classic open mode
+            # and open all files in its directory.
+            if self._file_provider is None or not keep_fileprovider:
+                self._file_provider = file_provider.get_file_provider([ path ])
+
+        if not os.path.exists(path):
             self._window.statusbar.set_message(
                 _('Could not open %s: No such file.') % path)
             return False
@@ -83,7 +95,8 @@ class FileHandler:
 
         self.archive_type = archive_tools.archive_mime_type(path)
 
-        if self.archive_type is None and not image_tools.is_image_file(path):
+        if self.archive_type is None and not image_tools.is_image_file(path) \
+                and len(self._file_provider.list_files()) == 0:
             self._window.statusbar.set_message(
                 _('Could not open %s: Unknown file type.') % path)
             return False
@@ -92,6 +105,7 @@ class FileHandler:
         if self.file_loaded:
             self.close_file()
 
+        # Catch up on UI events before actually starting to open the file(s).
         while gtk.events_pending():
             gtk.main_iteration(False)
 
@@ -164,17 +178,15 @@ class FileHandler:
         # If <path> is an image we scan its directory for more images.
         else:
 
-            self._base_path = os.path.dirname(path)
-
-            for f in os.listdir(self._base_path):
-
-                fpath = os.path.join(self._base_path, f)
-
-                if image_tools.is_image_file(fpath):
-                    self._image_files.append(fpath)
-
-            self._image_files.sort(locale.strcoll)
-            self._current_image_index = self._image_files.index(path)
+            if self._file_provider:
+                self._base_path = self._file_provider.get_directory()
+                self._image_files = self._file_provider.list_files()
+                # Paths in file provider's list are always absolute
+                absolute_path = os.path.abspath(path)
+                if absolute_path in self._image_files:
+                    self._current_image_index = self._image_files.index(absolute_path)
+                else:
+                    self._current_image_index = 0
 
         if not self._image_files:
 
@@ -316,27 +328,18 @@ class FileHandler:
         """
         if self.archive_type is not None:
 
-            arch_dir = os.path.dirname(self._base_path)
+            files = self._file_provider.list_files(file_provider.FileProvider.ARCHIVES)
+            absolute_path = os.path.abspath(self._base_path)
+            if absolute_path not in files: return
+            current_index = files.index(absolute_path)
 
-            if arch_dir == None:
-                return
-
-            files = os.listdir(arch_dir)
-            files.sort(locale.strcoll)
-
-            try:
-                current_index = files.index(os.path.basename(self._base_path))
-            except ValueError:
-                return
-
-            for f in files[current_index + 1:]:
-                path = os.path.join(arch_dir, f)
+            for path in files[current_index + 1:]:
                 if archive_tools.archive_mime_type(path) is not None:
                     self.close_file()
                     self._window.imagehandler.close()
                     self._window.scroll_to_fixed(horiz='startfirst', vert='top')
-                    self.open_file(path)
-                    return
+                    self.open_file(path, keep_fileprovider=True)
+                    break
 
     def _open_previous_archive(self, *args):
         """Open the archive that comes directly before the currently loaded
@@ -344,27 +347,18 @@ class FileHandler:
         """
         if self.archive_type is not None:
 
-            if self._base_path == None:
-                return
+            files = self._file_provider.list_files(file_provider.FileProvider.ARCHIVES)
+            absolute_path = os.path.abspath(self._base_path)
+            if absolute_path not in files: return
+            current_index = files.index(absolute_path)
 
-            arch_dir = os.path.dirname(self._base_path)
-            files = os.listdir(arch_dir)
-            files.sort(locale.strcoll)
-
-            try:
-                current_index = files.index(os.path.basename(self._base_path))
-            except ValueError:
-                return
-
-            for f in reversed(files[:current_index]):
-                path = os.path.join(arch_dir, f)
+            for path in reversed(files[:current_index]):
                 if archive_tools.archive_mime_type(path) is not None:
                     self.close_file()
                     self._window.imagehandler.close()
                     self._window.scroll_to_fixed(horiz='endsecond', vert='bottom')
-                    self.open_file(path, -1)
-
-                    return
+                    self.open_file(files, -1, keep_fileprovider=True)
+                    break
 
     def _wait_on_page(self, page):
         """Block the running (main) thread until the file corresponding to
