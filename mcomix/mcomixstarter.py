@@ -96,7 +96,6 @@ try:
 
     import gobject
     gobject.threads_init()
-    raise ImportError()
 
 except AssertionError:
     print_( _("You don't have the required versions of GTK+ and/or PyGTK installed.") )
