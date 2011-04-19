@@ -161,10 +161,15 @@ class PreDefinedFileProvider(FileProvider):
 
         should_accept = self.__get_file_filter(files)
 
-        self.__files = [ os.path.abspath(file)
-                for file in files
-                if os.path.isfile(file)
-                and should_accept(file) ]
+        self.__files = [ ]
+
+        for file in files:
+            if os.path.isfile(file) and should_accept(file):
+                self.__files.append(os.path.abspath(file))
+
+            if os.path.isdir(file):
+                provider = OrderedFileProvider(file)
+                self.__files.extend(provider.list_files())
 
     def list_files(self, mode=FileProvider.IMAGES):
         """ Returns the files as passed to the constructor. """
