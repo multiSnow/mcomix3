@@ -96,6 +96,7 @@ try:
 
     import gobject
     gobject.threads_init()
+    raise ImportError()
 
 except AssertionError:
     print_( _("You don't have the required versions of GTK+ and/or PyGTK installed.") )
@@ -110,6 +111,7 @@ except AssertionError:
 except ImportError:
     print_( _('PyGTK version 2.12.0 or higher is required to run MComix.') )
     print_( _('No version of PyGTK was found on your system.') )
+    print_( _('This error might be caused by missing GTK+ libraries.') )
     wait_and_exit()
 
 # Check PIL library
