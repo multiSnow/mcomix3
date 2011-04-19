@@ -119,6 +119,7 @@ class Thumbnailer(object):
                 shutil.rmtree(tmpdir, True)
                 return pixbuf, tEXt_data
             else:
+                shutil.rmtree(tmpdir, True)
                 return None, None
 
         elif image_tools.is_image_file(filepath):
