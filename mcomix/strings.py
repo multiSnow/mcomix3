@@ -37,6 +37,7 @@ CREDITS = (
             ('Mamoru Tasaka', _('Japanese translation')),
             ('Ernő Drabik', _('Hungarian translation')),
             ('Artyom Smirnov', _('Russian translation')),
+            ('Евгений Лежнин', _('Russian translation')),
             ('Adrian C.', _('Croatian translation')),
             ('김민기', _('Korean translation')),
             ('Maryam Sanaat', _('Persian translation')),
