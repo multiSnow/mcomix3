@@ -14,6 +14,7 @@ class _MainFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog):
         file_chooser_base_dialog._BaseFileChooserDialog.__init__(self)
         self._window = window
         self.set_transient_for(window)
+        self.filechooser.set_select_multiple(True)
 
         ffilter = gtk.FileFilter()
         ffilter.add_pixbuf_formats()
@@ -47,8 +48,15 @@ class _MainFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog):
             except:
                 pass
             _close_main_filechooser_dialog()
-            file = paths[0].decode('utf-8')
-            self._window.filehandler.open_file(file)
+
+            # If more than one file is selected, restrict opening
+            # further files to the selection.
+            if len(paths) > 1:
+                files = [ path.decode('utf-8') for path in paths ]
+            else:
+                files = paths[0].decode('utf-8')
+
+            self._window.filehandler.open_file(files)
         else:
             _close_main_filechooser_dialog()
 
