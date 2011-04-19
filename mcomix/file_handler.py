@@ -326,6 +326,7 @@ class FileHandler:
     def _open_next_archive(self, *args):
         """Open the archive that comes directly after the currently loaded
         archive in that archive's directory listing, sorted alphabetically.
+        Returns True if a new archive was opened, False otherwise.
         """
         if self.archive_type is not None:
 
@@ -340,11 +341,14 @@ class FileHandler:
                     self._window.imagehandler.close()
                     self._window.scroll_to_fixed(horiz='startfirst', vert='top')
                     self.open_file(path, keep_fileprovider=True)
-                    break
+                    return True
+
+        return False
 
     def _open_previous_archive(self, *args):
         """Open the archive that comes directly before the currently loaded
         archive in that archive's directory listing, sorted alphabetically.
+        Returns True if a new archive was opened, False otherwise.
         """
         if self.archive_type is not None:
 
@@ -358,8 +362,52 @@ class FileHandler:
                     self.close_file()
                     self._window.imagehandler.close()
                     self._window.scroll_to_fixed(horiz='endsecond', vert='bottom')
-                    self.open_file(files, -1, keep_fileprovider=True)
-                    break
+                    self.open_file(path, -1, keep_fileprovider=True)
+                    return True
+
+        return False
+
+    def open_next_directory(self):
+        """ Opens the next sibling directory of the current file, as specified by
+        file provider. Returns True if a new directory was opened and files found. """
+
+        if self.archive_type is not None:
+            listmode = file_provider.FileProvider.ARCHIVES
+        else:
+            listmode = file_provider.FileProvider.IMAGES
+
+        while self._file_provider.next_directory():
+            files = self._file_provider.list_files(listmode)
+
+            if len(files) > 0:
+                self.close_file()
+                self._window.imagehandler.close()
+                self._window.scroll_to_fixed(horiz='startfirst', vert='top')
+                self.open_file(files[0], keep_fileprovider=True)
+                return True
+
+        return False
+
+    def open_previous_directory(self):
+        """ Opens the previous sibling directory of the current file, as specified by
+        file provider. Returns True if a new directory was opened and files found. """
+
+        if self.archive_type is not None:
+            listmode = file_provider.FileProvider.ARCHIVES
+        else:
+            listmode = file_provider.FileProvider.IMAGES
+
+        while self._file_provider.previous_directory():
+            files = self._file_provider.list_files(listmode)
+
+            if len(files) > 0:
+                self.close_file()
+                self._window.imagehandler.close()
+                self._window.scroll_to_fixed(horiz='endsecond', vert='bottom')
+                self.open_file(files[-1], -1, keep_fileprovider=True)
+                return True
+
+        return False
 
     def _wait_on_page(self, page):
         """Block the running (main) thread until the file corresponding to

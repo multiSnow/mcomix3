@@ -20,6 +20,12 @@ MComix 0.90.4
       when "Automatically open next archive" is enabled. If only a single file
       is passed, MComix will keep opening all files in that directory.
 
+    - When the first/last file of a directory is open, pressing CTRL and
+      advancing to the previous/next page (e.g. by pressing CTRL+Space),
+      files in the previous/next sibling directory will be opened.
+      Note that this feature is disabled by intent when MComix has been
+      opened with a list of more than one file.
+
     - Fix "Automatically open next archive" with empty archives.
 
     - Speed up thumbnail generation by parallelizing load tasks.
