@@ -109,7 +109,7 @@ class FileHandler:
         while gtk.events_pending():
             gtk.main_iteration(False)
 
-        self._current_file = path
+        self._current_file = os.path.abspath(path)
         self._stop_cacheing = False
 
         result = False
@@ -119,8 +119,8 @@ class FileHandler:
         # as the ones to be extracted.
         if self.archive_type is not None:
 
-            self._base_path = path
-            self._condition = self._extractor.setup(path, self._tmp_dir, self.archive_type)
+            self._base_path = self._current_file
+            self._condition = self._extractor.setup(self._base_path, self._tmp_dir, self.archive_type)
 
             if self._condition != None:
 
@@ -202,7 +202,7 @@ class FileHandler:
             self._window.imagehandler._image_files = self._image_files
             self._window.imagehandler._current_image_index = self._current_image_index
             self._window.imagehandler._base_path = self._base_path
-            self._window.imagehandler._current_file = path
+            self._window.imagehandler._current_file = self._current_file
             self._window.imagehandler._name_table = self._name_table
 
             self._window.imagehandler.do_cacheing()
@@ -218,7 +218,7 @@ class FileHandler:
 
         tools.alphanumeric_sort(self._comment_files)
 
-        self._window.uimanager.recent.add(path)
+        self._window.uimanager.recent.add(self._current_file)
         self._window.draw_image()
 
         return result
