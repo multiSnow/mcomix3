@@ -383,8 +383,11 @@ class ImageHandler:
         if self._window.filehandler.archive_type is not None:
             name = os.path.basename(self._base_path)
         else:
-            name = os.path.join(os.path.basename(self._base_path),
-                os.path.basename(self._image_files[self._current_image_index]))
+            img_file = os.path.abspath(self._image_files[self._current_image_index])
+            name = os.path.join(
+                os.path.basename(os.path.dirname(img_file)),
+                os.path.basename(img_file)
+            )
         return encoding.to_unicode(name)
 
     def get_size(self, page=None):

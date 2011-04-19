@@ -303,7 +303,12 @@ class FileHandler:
         """Return the full path to the current base (path to archive or
         image directory.)
         """
-        return self._base_path
+        if self.archive_type is not None:
+            return self._base_path
+        else:
+            img_index = self._window.imagehandler._current_image_index
+            file = self._window.imagehandler._image_files[img_index]
+            return os.path.dirname(file)
 
     def get_base_filename(self):
         """Return the filename of the current base (archive filename or
@@ -315,12 +320,8 @@ class FileHandler:
         """Return a string with the name of the currently viewed file that is
         suitable for printing.
         """
-        if self.archive_type is not None:
-            name = os.path.basename(self._base_path)
-        else:
-            name = os.path.join(os.path.basename(self._base_path),
-                os.path.basename(self._image_files[self._current_image_index]))
-        return encoding.to_unicode(name)
+
+        return self._window.imagehandler.get_pretty_current_filename()
 
     def _open_next_archive(self, *args):
         """Open the archive that comes directly after the currently loaded
