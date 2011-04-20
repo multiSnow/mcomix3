@@ -47,7 +47,7 @@ class _AboutDialog(gtk.Dialog):
         '\n' +
         _('It reads ZIP, RAR and tar archives, as well as plain image files.') +
         '\n\n' +
-        _('MComix is released to the public domain.') +
+        _('MComix is licensed under the terms of the GNU General Public License.') +
         '\n\n' +
         '<small>Lead Developer:\n' +
         'Louis Casillas, oxaric@gmail.com\n' +

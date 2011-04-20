@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-04-05 16:03+CEST\n"
+"POT-Creation-Date: 2011-04-20 17:05+CEST\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgid "It reads ZIP, RAR and tar archives, as well as plain image files."
 msgstr ""
 
 #: mcomix/about_dialog.py:50
-msgid "MComix is released to the public domain."
+msgid "MComix is licensed under the terms of the GNU General Public License."
 msgstr ""
 
 #: mcomix/about_dialog.py:86
@@ -99,6 +99,10 @@ msgstr ""
 msgid "All stored bookmarks will be removed. Are you sure that you want to continue?"
 msgstr ""
 
+#: mcomix/callback.py:94
+msgid "! Callback %(function)r failed: %(error)s"
+msgstr ""
+
 #: mcomix/comment_dialog.py:10 mcomix/preferences_dialog.py:393
 msgid "Comments"
 msgstr ""
@@ -127,7 +131,7 @@ msgstr ""
 msgid "Size"
 msgstr ""
 
-#: mcomix/edit_comment_area.py:52 mcomix/edit_image_area.py:45
+#: mcomix/edit_comment_area.py:52 mcomix/edit_image_area.py:48
 msgid "Remove from archive"
 msgstr ""
 
@@ -235,65 +239,65 @@ msgstr ""
 msgid "Automatically add the books to this collection"
 msgstr ""
 
-#: mcomix/file_chooser_main_dialog.py:20
+#: mcomix/file_chooser_main_dialog.py:21
 #: mcomix/file_chooser_simple_dialog.py:22
 msgid "All images"
 msgstr ""
 
-#: mcomix/file_chooser_main_dialog.py:22
+#: mcomix/file_chooser_main_dialog.py:23
 #: mcomix/file_chooser_simple_dialog.py:24
 msgid "JPEG images"
 msgstr ""
 
-#: mcomix/file_chooser_main_dialog.py:23
+#: mcomix/file_chooser_main_dialog.py:24
 #: mcomix/file_chooser_simple_dialog.py:25
 msgid "PNG images"
 msgstr ""
 
-#: mcomix/file_chooser_main_dialog.py:24
+#: mcomix/file_chooser_main_dialog.py:25
 #: mcomix/file_chooser_simple_dialog.py:26
 msgid "GIF images"
 msgstr ""
 
-#: mcomix/file_chooser_main_dialog.py:25
+#: mcomix/file_chooser_main_dialog.py:26
 #: mcomix/file_chooser_simple_dialog.py:27
 msgid "TIFF images"
 msgstr ""
 
-#: mcomix/file_chooser_main_dialog.py:26
+#: mcomix/file_chooser_main_dialog.py:27
 #: mcomix/file_chooser_simple_dialog.py:28
 msgid "BMP images"
 msgstr ""
 
-#: mcomix/file_handler.py:71
-msgid "Could not open %s: Is a directory."
-msgstr ""
-
-#: mcomix/file_handler.py:76
+#: mcomix/file_handler.py:88
 msgid "Could not open %s: No such file."
 msgstr ""
 
-#: mcomix/file_handler.py:81
+#: mcomix/file_handler.py:93 mcomix/file_provider.py:113
 msgid "Could not open %s: Permission denied."
 msgstr ""
 
-#: mcomix/file_handler.py:88
-msgid "Could not open %s: Unknown file type."
-msgstr ""
-
-#: mcomix/file_handler.py:181
+#: mcomix/file_handler.py:100 mcomix/file_handler.py:196
 msgid "No images in '%s'"
 msgstr ""
 
-#: mcomix/file_handler.py:437 mcomix/main.py:1004 mcomix/preferences.py:86
+#: mcomix/file_handler.py:105
+msgid "Could not open %s: Unknown file type."
+msgstr ""
+
+#: mcomix/file_handler.py:490 mcomix/main.py:1007 mcomix/preferences.py:86
 msgid "! Corrupt preferences file \"%s\", deleting..."
+msgstr ""
+
+#: mcomix/file_provider.py:88
+msgid "Invalid path: '%s'"
 msgstr ""
 
 #: mcomix/icons.py:53
 msgid "! Could not load icon \"%s\""
 msgstr ""
 
-#: mcomix/image_handler.py:422
+#: mcomix/image_handler.py:430
 msgid "Unknown filetype"
 msgstr ""
 
@@ -317,75 +321,75 @@ msgstr ""
 msgid "! Could neither find pysqlite2 nor sqlite3."
 msgstr ""
 
-#: mcomix/library_backend.py:78
+#: mcomix/library_backend.py:78 mcomix/library_backend.py:91
 msgid "! Non-existant book #%i"
 msgstr ""
 
-#: mcomix/library_backend.py:89
+#: mcomix/library_backend.py:107
 msgid "! Could not get cover for book \"%s\""
 msgstr ""
 
-#: mcomix/library_backend.py:214
+#: mcomix/library_backend.py:224
 msgid "! Could not add book \"%s\" to the library"
 msgstr ""
 
-#: mcomix/library_backend.py:231
+#: mcomix/library_backend.py:241
 msgid "! Could not add collection \"%s\""
 msgstr ""
 
-#: mcomix/library_backend.py:242
+#: mcomix/library_backend.py:252
 msgid "! Could not add book %(book)s to collection %(collection)s"
 msgstr ""
 
-#: mcomix/library_backend.py:269
+#: mcomix/library_backend.py:279
 msgid "! Could not rename collection to \"%s\""
 msgstr ""
 
-#: mcomix/library_backend.py:280 mcomix/library_backend.py:282
+#: mcomix/library_backend.py:290 mcomix/library_backend.py:292
 msgid "(Copy)"
 msgstr ""
 
-#: mcomix/library_book_area.py:69
+#: mcomix/library_book_area.py:75
 msgid "_Open"
 msgstr ""
 
-#: mcomix/library_book_area.py:72
+#: mcomix/library_book_area.py:78
 msgid "Open _without closing library"
 msgstr ""
 
-#: mcomix/library_book_area.py:75
+#: mcomix/library_book_area.py:81
 msgid "Remove from this _collection"
 msgstr ""
 
-#: mcomix/library_book_area.py:78
+#: mcomix/library_book_area.py:84
 msgid "Remove from the _library"
 msgstr ""
 
-#: mcomix/library_book_area.py:81
+#: mcomix/library_book_area.py:87
 msgid "Completey _remove"
 msgstr ""
 
-#: mcomix/library_book_area.py:195
+#: mcomix/library_book_area.py:266
 msgid "Removed %(num)d book(s) from '%(collection)s'."
 msgstr ""
 
-#: mcomix/library_book_area.py:206 mcomix/library_book_area.py:232
+#: mcomix/library_book_area.py:277 mcomix/library_book_area.py:303
 msgid "Remove books from the library?"
 msgstr ""
 
-#: mcomix/library_book_area.py:208
+#: mcomix/library_book_area.py:279
 msgid "The selected books will be removed from the library (but the original files will be untouched). Are you sure that you want to continue?"
 msgstr ""
 
-#: mcomix/library_book_area.py:221
+#: mcomix/library_book_area.py:292
 msgid "Removed %d book(s) from the library."
 msgstr ""
 
-#: mcomix/library_book_area.py:234
+#: mcomix/library_book_area.py:305
 msgid "The selected books will be removed from the library and permanently deleted. Are you sure that you want to continue?"
 msgstr ""
 
-#: mcomix/library_book_area.py:260
+#: mcomix/library_book_area.py:331
 msgid "! Could not remove file \"%s\""
 msgstr ""
 
@@ -525,94 +529,98 @@ msgstr ""
 msgid "! You need an sqlite wrapper to use the library."
 msgstr ""
 
-#: mcomix/main.py:885
+#: mcomix/main.py:888
 msgid "SLIDESHOW"
 msgstr ""
 
-#: mcomix/main.py:966
+#: mcomix/main.py:969
 msgid "Save page as"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:67
+#: mcomix/mcomixstarter.py:78
 msgid "Usage:"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:68
+#: mcomix/mcomixstarter.py:79
 msgid "[OPTION...] [PATH]"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:69
+#: mcomix/mcomixstarter.py:80
 msgid ""
 "\n"
 "View images and comic book archives.\n"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:70
+#: mcomix/mcomixstarter.py:81
 msgid "Options:"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:71
+#: mcomix/mcomixstarter.py:82
 msgid "  -h, --help              Show this help and exit."
 msgstr ""
 
-#: mcomix/mcomixstarter.py:72
+#: mcomix/mcomixstarter.py:83
 msgid "  -f, --fullscreen        Start the application in fullscreen mode."
 msgstr ""
 
-#: mcomix/mcomixstarter.py:73
+#: mcomix/mcomixstarter.py:84
 msgid "  -l, --library           Show the library on startup."
 msgstr ""
 
-#: mcomix/mcomixstarter.py:90
+#: mcomix/mcomixstarter.py:101
 msgid "You don't have the required versions of GTK+ and/or PyGTK installed."
 msgstr ""
 
-#: mcomix/mcomixstarter.py:91
+#: mcomix/mcomixstarter.py:102
 msgid "Installed GTK+ version is: %s"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:93
+#: mcomix/mcomixstarter.py:104
 msgid ""
 "Required GTK+ version is: 2.12.0 or higher\n"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:94
+#: mcomix/mcomixstarter.py:105
 msgid "Installed PyGTK version is: %s"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:96
+#: mcomix/mcomixstarter.py:107
 msgid "Required PyGTK version is: 2.12.0 or higher"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:101
+#: mcomix/mcomixstarter.py:111
 msgid "PyGTK version 2.12.0 or higher is required to run MComix."
 msgstr ""
 
-#: mcomix/mcomixstarter.py:102
+#: mcomix/mcomixstarter.py:112
 msgid "No version of PyGTK was found on your system."
 msgstr ""
 
-#: mcomix/mcomixstarter.py:112
+#: mcomix/mcomixstarter.py:113
+msgid "This error might be caused by missing GTK+ libraries."
+msgstr ""
+
+#: mcomix/mcomixstarter.py:122
 msgid "You don't have the required version of the Python Imaging"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:113
+#: mcomix/mcomixstarter.py:123
 msgid "Library (PIL) installed."
 msgstr ""
 
-#: mcomix/mcomixstarter.py:114
+#: mcomix/mcomixstarter.py:124
 msgid "Installed PIL version is: %s"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:115
+#: mcomix/mcomixstarter.py:125
 msgid "Required PIL version is: 1.1.5 or higher"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:119
+#: mcomix/mcomixstarter.py:129
 msgid "Python Imaging Library (PIL) 1.1.5 or higher is required."
 msgstr ""
 
-#: mcomix/mcomixstarter.py:120
+#: mcomix/mcomixstarter.py:130
 msgid "No version of the Python Imaging Library was found on your system."
 msgstr ""
 
@@ -800,7 +808,7 @@ msgstr ""
 msgid "Set the number of \"steps\" needed to flip to the next or previous page.  Less steps will allow for very fast page turning but you might find yourself accidentally turning pages."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:218 mcomix/ui.py:352
+#: mcomix/preferences_dialog.py:218 mcomix/ui.py:362
 msgid "Double page mode"
 msgstr ""
 
@@ -912,19 +920,19 @@ msgstr ""
 msgid "Default zoom mode"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:337 mcomix/ui.py:344
+#: mcomix/preferences_dialog.py:337 mcomix/ui.py:354
 msgid "Best fit mode"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:338 mcomix/ui.py:346
+#: mcomix/preferences_dialog.py:338 mcomix/ui.py:356
 msgid "Fit width mode"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:339 mcomix/ui.py:348
+#: mcomix/preferences_dialog.py:339 mcomix/ui.py:358
 msgid "Fit height mode"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:340 mcomix/ui.py:350
+#: mcomix/preferences_dialog.py:340 mcomix/ui.py:360
 msgid "Manual zoom mode"
 msgstr ""
 
@@ -1040,7 +1048,7 @@ msgstr ""
 msgid "Stop slideshow"
 msgstr ""
 
-#: mcomix/slideshow.py:46 mcomix/ui.py:341
+#: mcomix/slideshow.py:46 mcomix/ui.py:351
 msgid "Start slideshow"
 msgstr ""
 
@@ -1136,43 +1144,47 @@ msgstr ""
 msgid "Hungarian translation"
 msgstr ""
 
-#: mcomix/strings.py:39
+#: mcomix/strings.py:39 mcomix/strings.py:40
 msgid "Russian translation"
 msgstr ""
 
-#: mcomix/strings.py:40
+#: mcomix/strings.py:41
 msgid "Croatian translation"
 msgstr ""
 
-#: mcomix/strings.py:41
+#: mcomix/strings.py:42
 msgid "Korean translation"
 msgstr ""
 
-#: mcomix/strings.py:42
+#: mcomix/strings.py:43
 msgid "Persian translation"
 msgstr ""
 
-#: mcomix/strings.py:43
+#: mcomix/strings.py:44
 msgid "Indonesian translation"
 msgstr ""
 
-#: mcomix/strings.py:44
+#: mcomix/strings.py:45
 msgid "Czech translation"
 msgstr ""
 
-#: mcomix/strings.py:45
+#: mcomix/strings.py:46
 msgid "Ukrainian translation"
 msgstr ""
 
-#: mcomix/strings.py:46
+#: mcomix/strings.py:47
 msgid "Galician translation"
 msgstr ""
 
-#: mcomix/strings.py:47
+#: mcomix/strings.py:48
+msgid "Swedish tranlation"
+msgstr ""
+
+#: mcomix/strings.py:49
 msgid "Icon design"
 msgstr ""
 
-#: mcomix/thumbnail_tools.py:172
+#: mcomix/thumbnail_tools.py:173
 msgid "! Could not save thumbnail \"%(thumbpath)s\": %(error)s"
 msgstr ""
 
@@ -1396,43 +1408,43 @@ msgstr ""
 msgid "_Library..."
 msgstr ""
 
-#: mcomix/ui.py:332
+#: mcomix/ui.py:342
 msgid "First page"
 msgstr ""
 
-#: mcomix/ui.py:334
+#: mcomix/ui.py:344
 msgid "Previous page"
 msgstr ""
 
-#: mcomix/ui.py:335
+#: mcomix/ui.py:345
 msgid "Go to page..."
 msgstr ""
 
-#: mcomix/ui.py:336
+#: mcomix/ui.py:346
 msgid "Next page"
 msgstr ""
 
-#: mcomix/ui.py:337
+#: mcomix/ui.py:347
 msgid "Last page"
 msgstr ""
 
-#: mcomix/ui.py:338
+#: mcomix/ui.py:348
 msgid "Previous archive"
 msgstr ""
 
-#: mcomix/ui.py:339
+#: mcomix/ui.py:349
 msgid "Next archive"
 msgstr ""
 
-#: mcomix/ui.py:340
+#: mcomix/ui.py:350
 msgid "Refresh file"
 msgstr ""
 
-#: mcomix/ui.py:353
+#: mcomix/ui.py:363
 msgid "Manga mode"
 msgstr ""
 
-#: mcomix/ui.py:354
+#: mcomix/ui.py:364
 msgid "Magnifying lens"
 msgstr ""
 
