@@ -28,7 +28,7 @@ import pageselect
 
 class MainWindow(gtk.Window):
 
-    """The MComix main window, is created at start and terminates the
+    """The main window, is created at start and terminates the
     program when closed.
     """
 
@@ -85,7 +85,7 @@ class MainWindow(gtk.Window):
         # ----------------------------------------------------------------
         # Setup
         # ----------------------------------------------------------------
-        self.set_title('MComix')
+        self.set_title(constants.APPNAME)
         self.set_size_request(300, 300)  # Avoid making the window *too* small
         self.resize(prefs['window width'], prefs['window height'])
 
@@ -795,7 +795,7 @@ class MainWindow(gtk.Window):
         """Clear the currently displayed data (i.e. "close" the file)."""
         self.left_image.clear()
         self.right_image.clear()
-        self.set_title('MComix')
+        self.set_title(constants.APPNAME)
         self.statusbar.set_message('')
         self.set_bg_colour(prefs['bg colour'])
         enhance_dialog.clear_histogram()

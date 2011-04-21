@@ -25,7 +25,7 @@ def get_data_patterns(directory, *patterns):
     return allfiles
 
 setuptools.setup(
-    name = 'mcomix',
+    name = constants.APPNAME
     version = constants.VERSION,
     packages = ['mcomix', 'mcomix.archive', 'mcomix.messages', 'mcomix.images'],
     package_data = {

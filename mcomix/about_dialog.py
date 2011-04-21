@@ -12,7 +12,7 @@ import image_tools
 class _AboutDialog(gtk.Dialog):
 
     def __init__(self, window):
-        gtk.Dialog.__init__(self, _('About'), window, 0,
+        gtk.Dialog.__init__(self, _('About ' + constants.APPNAME), window, 0,
             (gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE))
 
         self.set_has_separator(False)
@@ -43,11 +43,11 @@ class _AboutDialog(gtk.Dialog):
         '<span foreground="#79941b">omix</span> <span foreground="#333333">' +
         constants.VERSION +
         '</span></b></big></big></big></big>\n\n' +
-        _('MComix is an image viewer specifically designed to handle comic books.') +
+        _(constants.APPNAME + ' is an image viewer specifically designed to handle comic books.') +
         '\n' +
         _('It reads ZIP, RAR and tar archives, as well as plain image files.') +
         '\n\n' +
-        _('MComix is licensed under the terms of the GNU General Public License.') +
+        _(constants.APPNAME + ' is licensed under the terms of the GNU General Public License.') +
         '\n\n' +
         '<small>Lead Developer:\n' +
         'Louis Casillas, oxaric@gmail.com\n' +

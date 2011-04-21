@@ -28,9 +28,9 @@ import constants
 import tools
 
 def wait_and_exit():
-    """ Wait for the user pressing ENTER before closing MComix. This should help
-    the user find possibly missing dependencies when starting MComix, since the
-    Python window won't close down immediately after the error. """
+    """ Wait for the user pressing ENTER before closing. This should help
+    the user find possibly missing dependencies when starting, since the
+    Python window will not close down immediately after the error. """
 
     if sys.platform == 'win32' and not sys.stdin.closed and not sys.stdout.closed:
         print

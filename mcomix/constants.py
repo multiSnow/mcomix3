@@ -7,6 +7,7 @@ import tools
 import os
 import sys
 
+APPNAME = 'MComix'
 VERSION = '0.90.4'
 
 HOME_DIR = tools.get_home_directory()
