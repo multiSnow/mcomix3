@@ -47,6 +47,9 @@ MComix 0.90.4
       if the menu bar had been disabled using the normal menu, there was no
       way to get it back.
 
+    - The menu bar can now be shown/hidden using CTRL+M.
+      (by Alan Horkan)
+
     - MComix could not switch back to windowed mode when started in fullscreen
       mode on Win32.
 

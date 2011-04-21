@@ -93,7 +93,7 @@ class MainUI(gtk.UIManager):
             ('toolbar', None, _('_Toolbar'),
                 None, None, window.change_toolbar_visibility),
             ('menubar', None, _('_Menubar'),
-                None, None, window.change_menubar_visibility),
+                '<Control>M', None, window.change_menubar_visibility),
             ('statusbar', None, _('St_atusbar'),
                 None, None, window.change_statusbar_visibility),
             ('scrollbar', None, _('S_crollbars'),
