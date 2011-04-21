@@ -82,6 +82,13 @@ def print_help():
     print_( _('  -h, --help              Show this help and exit.') )
     print_( _('  -f, --fullscreen        Start the application in fullscreen mode.') )
     print_( _('  -l, --library           Show the library on startup.') )
+    print_( _('  -v, --version           Show the version number and exit.') )
+
+    sys.exit(1)
+
+def print_version():
+    """Print the version number and exit."""
+    print_(constants.APPNAME + ' ' + constants.VERSION)
 
     sys.exit(1)
 
@@ -98,7 +105,7 @@ try:
     gobject.threads_init()
 
 except AssertionError:
-    print_( _("You don't have the required versions of GTK+ and/or PyGTK installed.") )
+    print_( _("You do not have the required versions of GTK+ and PyGTK installed.") )
     print_( _('Installed GTK+ version is: %s') % \
         '.'.join([str(n) for n in gtk.gtk_version]) )
     print_( _('Required GTK+ version is: 2.12.0 or higher\n') )
@@ -108,7 +115,7 @@ except AssertionError:
     wait_and_exit()
 
 except ImportError:
-    print_( _('PyGTK version 2.12.0 or higher is required to run MComix.') )
+    print_( _('Required PyGTK version is: 2.12.0 or higher') )
     print_( _('No version of PyGTK was found on your system.') )
     print_( _('This error might be caused by missing GTK+ libraries.') )
     wait_and_exit()
@@ -150,8 +157,8 @@ def run():
 
     try:
         argv = portability.get_commandline_args()
-        opts, args = getopt.gnu_getopt(argv[1:], 'fhld',
-            ['fullscreen', 'help', 'library'])
+        opts, args = getopt.gnu_getopt(argv[1:], 'fhlvd',
+            ['fullscreen', 'help', 'library', 'version'])
 
     except getopt.GetoptError:
         print_help()
@@ -166,6 +173,8 @@ def run():
 
         elif opt in ('-l', '--library'):
             show_library = True
+        elif opt in ('-v', '--version'):
+            print_version()
 
     if not os.path.exists(constants.DATA_DIR):
         os.makedirs(constants.DATA_DIR, 0700)
