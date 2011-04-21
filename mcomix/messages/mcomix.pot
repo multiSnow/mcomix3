@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-04-20 17:05+CEST\n"
+"POT-Creation-Date: 2011-04-21 21:25+CEST\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,12 +15,12 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 
-#: mcomix/about_dialog.py:15 mcomix/about_dialog.py:59
-msgid "About"
+#: mcomix/about_dialog.py:15
+msgid "About %s"
 msgstr ""
 
 #: mcomix/about_dialog.py:46
-msgid "MComix is an image viewer specifically designed to handle comic books."
+msgid "%s is an image viewer specifically designed to handle comic books."
 msgstr ""
 
 #: mcomix/about_dialog.py:48
@@ -28,7 +28,11 @@ msgid "It reads ZIP, RAR and tar archives, as well as plain image files."
 msgstr ""
 
 #: mcomix/about_dialog.py:50
-msgid "MComix is licensed under the terms of the GNU General Public License."
+msgid "%s is licensed under the terms of the GNU General Public License."
+msgstr ""
+
+#: mcomix/about_dialog.py:59
+msgid "About"
 msgstr ""
 
 #: mcomix/about_dialog.py:86
@@ -293,7 +297,7 @@ msgstr ""
 msgid "Invalid path: '%s'"
 msgstr ""
 
-#: mcomix/icons.py:53
+#: mcomix/icons.py:55
 msgid "! Could not load icon \"%s\""
 msgstr ""
 
@@ -567,64 +571,64 @@ msgstr ""
 msgid "  -l, --library           Show the library on startup."
 msgstr ""
 
-#: mcomix/mcomixstarter.py:101
-msgid "You don't have the required versions of GTK+ and/or PyGTK installed."
+#: mcomix/mcomixstarter.py:85
+msgid "  -v, --version           Show the version number and exit."
 msgstr ""
 
-#: mcomix/mcomixstarter.py:102
+#: mcomix/mcomixstarter.py:108
+msgid "You do not have the required versions of GTK+ and PyGTK installed."
+msgstr ""
+
+#: mcomix/mcomixstarter.py:109
 msgid "Installed GTK+ version is: %s"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:104
+#: mcomix/mcomixstarter.py:111
 msgid ""
 "Required GTK+ version is: 2.12.0 or higher\n"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:105
+#: mcomix/mcomixstarter.py:112
 msgid "Installed PyGTK version is: %s"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:107
+#: mcomix/mcomixstarter.py:114 mcomix/mcomixstarter.py:118
 msgid "Required PyGTK version is: 2.12.0 or higher"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:111
-msgid "PyGTK version 2.12.0 or higher is required to run MComix."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:112
+#: mcomix/mcomixstarter.py:119
 msgid "No version of PyGTK was found on your system."
 msgstr ""
 
-#: mcomix/mcomixstarter.py:113
+#: mcomix/mcomixstarter.py:120
 msgid "This error might be caused by missing GTK+ libraries."
 msgstr ""
 
-#: mcomix/mcomixstarter.py:122
+#: mcomix/mcomixstarter.py:129
 msgid "You don't have the required version of the Python Imaging"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:123
+#: mcomix/mcomixstarter.py:130
 msgid "Library (PIL) installed."
 msgstr ""
 
-#: mcomix/mcomixstarter.py:124
+#: mcomix/mcomixstarter.py:131
 msgid "Installed PIL version is: %s"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:125
+#: mcomix/mcomixstarter.py:132
 msgid "Required PIL version is: 1.1.5 or higher"
 msgstr ""
 
-#: mcomix/mcomixstarter.py:129
+#: mcomix/mcomixstarter.py:136
 msgid "Python Imaging Library (PIL) 1.1.5 or higher is required."
 msgstr ""
 
-#: mcomix/mcomixstarter.py:130
+#: mcomix/mcomixstarter.py:137
 msgid "No version of the Python Imaging Library was found on your system."
 msgstr ""
 
-#: mcomix/pageselect.py:15 mcomix/ui.py:77 mcomix/ui.py:78
+#: mcomix/pageselect.py:15 mcomix/ui.py:81 mcomix/ui.py:82
 msgid "_Go"
 msgstr ""
 
@@ -808,7 +812,7 @@ msgstr ""
 msgid "Set the number of \"steps\" needed to flip to the next or previous page.  Less steps will allow for very fast page turning but you might find yourself accidentally turning pages."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:218 mcomix/ui.py:362
+#: mcomix/preferences_dialog.py:218 mcomix/ui.py:92
 msgid "Double page mode"
 msgstr ""
 
@@ -920,19 +924,19 @@ msgstr ""
 msgid "Default zoom mode"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:337 mcomix/ui.py:354
+#: mcomix/preferences_dialog.py:337 mcomix/ui.py:118
 msgid "Best fit mode"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:338 mcomix/ui.py:356
+#: mcomix/preferences_dialog.py:338 mcomix/ui.py:120
 msgid "Fit width mode"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:339 mcomix/ui.py:358
+#: mcomix/preferences_dialog.py:339 mcomix/ui.py:122
 msgid "Fit height mode"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:340 mcomix/ui.py:360
+#: mcomix/preferences_dialog.py:340 mcomix/ui.py:124
 msgid "Manual zoom mode"
 msgstr ""
 
@@ -1048,7 +1052,7 @@ msgstr ""
 msgid "Stop slideshow"
 msgstr ""
 
-#: mcomix/slideshow.py:46 mcomix/ui.py:351
+#: mcomix/slideshow.py:46 mcomix/ui.py:110
 msgid "Start slideshow"
 msgstr ""
 
@@ -1196,255 +1200,263 @@ msgstr ""
 msgid "_Next page"
 msgstr ""
 
+#: mcomix/ui.py:30
+msgid "Next page"
+msgstr ""
+
 #: mcomix/ui.py:31
 msgid "_Previous page"
+msgstr ""
+
+#: mcomix/ui.py:32
+msgid "Previous page"
 msgstr ""
 
 #: mcomix/ui.py:33
 msgid "_First page"
 msgstr ""
 
+#: mcomix/ui.py:34
+msgid "First page"
+msgstr ""
+
 #: mcomix/ui.py:35
 msgid "_Last page"
+msgstr ""
+
+#: mcomix/ui.py:36
+msgid "Last page"
 msgstr ""
 
 #: mcomix/ui.py:37
 msgid "_Go to page..."
 msgstr ""
 
+#: mcomix/ui.py:38
+msgid "Go to page..."
+msgstr ""
+
 #: mcomix/ui.py:39
 msgid "_Refresh file"
+msgstr ""
+
+#: mcomix/ui.py:40
+msgid "Refresh file"
 msgstr ""
 
 #: mcomix/ui.py:41
 msgid "_Next archive"
 msgstr ""
 
+#: mcomix/ui.py:42
+msgid "Next archive"
+msgstr ""
+
 #: mcomix/ui.py:43
 msgid "_Previous archive"
 msgstr ""
 
-#: mcomix/ui.py:45
-msgid "_Zoom in"
-msgstr ""
-
-#: mcomix/ui.py:47
-msgid "Zoom _out"
-msgstr ""
-
-#: mcomix/ui.py:49
-msgid "O_riginal size"
-msgstr ""
-
-#: mcomix/ui.py:51
-msgid "_Close"
-msgstr ""
-
-#: mcomix/ui.py:53
-msgid "_Quit"
-msgstr ""
-
-#: mcomix/ui.py:55
-msgid "_Save and quit"
-msgstr ""
-
-#: mcomix/ui.py:57
-msgid "_Rotate 90 degrees CW"
-msgstr ""
-
-#: mcomix/ui.py:59
-msgid "Rotate 180 de_grees"
-msgstr ""
-
-#: mcomix/ui.py:61
-msgid "Rotat_e 90 degrees CCW"
-msgstr ""
-
-#: mcomix/ui.py:63
-msgid "Fli_p horizontally"
-msgstr ""
-
-#: mcomix/ui.py:65
-msgid "Flip _vertically"
-msgstr ""
-
-#: mcomix/ui.py:67
-msgid "Save _As..."
-msgstr ""
-
-#: mcomix/ui.py:69
-msgid "Manual _Zoom"
-msgstr ""
-
-#: mcomix/ui.py:70
-msgid "_Recent"
-msgstr ""
-
-#: mcomix/ui.py:71
-msgid "_Bookmarks"
-msgstr ""
-
-#: mcomix/ui.py:72
-msgid "T_oolbars"
-msgstr ""
-
-#: mcomix/ui.py:73
-msgid "_Edit"
-msgstr ""
-
-#: mcomix/ui.py:74
-msgid "_File"
-msgstr ""
-
-#: mcomix/ui.py:75 mcomix/ui.py:76
-msgid "_View"
-msgstr ""
-
-#: mcomix/ui.py:79
-msgid "_Tools"
-msgstr ""
-
-#: mcomix/ui.py:80
-msgid "_Help"
-msgstr ""
-
-#: mcomix/ui.py:81
-msgid "_Transform image"
-msgstr ""
-
-#: mcomix/ui.py:85
-msgid "_Fullscreen"
-msgstr ""
-
-#: mcomix/ui.py:87
-msgid "_Double page mode"
-msgstr ""
-
-#: mcomix/ui.py:89
-msgid "_Toolbar"
-msgstr ""
-
-#: mcomix/ui.py:91
-msgid "_Menubar"
-msgstr ""
-
-#: mcomix/ui.py:93
-msgid "St_atusbar"
-msgstr ""
-
-#: mcomix/ui.py:95
-msgid "S_crollbars"
-msgstr ""
-
-#: mcomix/ui.py:97
-msgid "Th_umbnails"
-msgstr ""
-
-#: mcomix/ui.py:99
-msgid "H_ide all"
-msgstr ""
-
-#: mcomix/ui.py:101
-msgid "_Manga mode"
-msgstr ""
-
-#: mcomix/ui.py:103
-msgid "_Keep transformation"
-msgstr ""
-
-#: mcomix/ui.py:105
-msgid "Start _slideshow"
-msgstr ""
-
-#: mcomix/ui.py:107
-msgid "Magnifying _lens"
-msgstr ""
-
-#: mcomix/ui.py:113
-msgid "_Best fit mode"
-msgstr ""
-
-#: mcomix/ui.py:115
-msgid "Fit _width mode"
-msgstr ""
-
-#: mcomix/ui.py:117
-msgid "Fit _height mode"
-msgstr ""
-
-#: mcomix/ui.py:119
-msgid "M_anual zoom mode"
-msgstr ""
-
-#: mcomix/ui.py:124
-msgid "_About"
-msgstr ""
-
-#: mcomix/ui.py:128
-msgid "_View comments..."
-msgstr ""
-
-#: mcomix/ui.py:132
-msgid "Proper_ties"
-msgstr ""
-
-#: mcomix/ui.py:136
-msgid "Pr_eferences"
-msgstr ""
-
-#: mcomix/ui.py:141
-msgid "_Edit archive..."
-msgstr ""
-
-#: mcomix/ui.py:143
-msgid "_Open..."
-msgstr ""
-
-#: mcomix/ui.py:145
-msgid "En_hance image..."
-msgstr ""
-
-#: mcomix/ui.py:149
-msgid "_Library..."
-msgstr ""
-
-#: mcomix/ui.py:342
-msgid "First page"
-msgstr ""
-
-#: mcomix/ui.py:344
-msgid "Previous page"
-msgstr ""
-
-#: mcomix/ui.py:345
-msgid "Go to page..."
-msgstr ""
-
-#: mcomix/ui.py:346
-msgid "Next page"
-msgstr ""
-
-#: mcomix/ui.py:347
-msgid "Last page"
-msgstr ""
-
-#: mcomix/ui.py:348
+#: mcomix/ui.py:44
 msgid "Previous archive"
 msgstr ""
 
-#: mcomix/ui.py:349
-msgid "Next archive"
+#: mcomix/ui.py:45 mcomix/ui.py:46
+msgid "Next directory"
 msgstr ""
 
-#: mcomix/ui.py:350
-msgid "Refresh file"
+#: mcomix/ui.py:47 mcomix/ui.py:48
+msgid "Previous directory"
 msgstr ""
 
-#: mcomix/ui.py:363
+#: mcomix/ui.py:49
+msgid "_Zoom in"
+msgstr ""
+
+#: mcomix/ui.py:51
+msgid "Zoom _out"
+msgstr ""
+
+#: mcomix/ui.py:53
+msgid "O_riginal size"
+msgstr ""
+
+#: mcomix/ui.py:55
+msgid "_Close"
+msgstr ""
+
+#: mcomix/ui.py:57
+msgid "_Quit"
+msgstr ""
+
+#: mcomix/ui.py:59
+msgid "_Save and quit"
+msgstr ""
+
+#: mcomix/ui.py:61
+msgid "_Rotate 90 degrees CW"
+msgstr ""
+
+#: mcomix/ui.py:63
+msgid "Rotate 180 de_grees"
+msgstr ""
+
+#: mcomix/ui.py:65
+msgid "Rotat_e 90 degrees CCW"
+msgstr ""
+
+#: mcomix/ui.py:67
+msgid "Fli_p horizontally"
+msgstr ""
+
+#: mcomix/ui.py:69
+msgid "Flip _vertically"
+msgstr ""
+
+#: mcomix/ui.py:71
+msgid "Save _As..."
+msgstr ""
+
+#: mcomix/ui.py:73
+msgid "Manual _Zoom"
+msgstr ""
+
+#: mcomix/ui.py:74
+msgid "_Recent"
+msgstr ""
+
+#: mcomix/ui.py:75
+msgid "_Bookmarks"
+msgstr ""
+
+#: mcomix/ui.py:76
+msgid "T_oolbars"
+msgstr ""
+
+#: mcomix/ui.py:77
+msgid "_Edit"
+msgstr ""
+
+#: mcomix/ui.py:78
+msgid "_File"
+msgstr ""
+
+#: mcomix/ui.py:79 mcomix/ui.py:80
+msgid "_View"
+msgstr ""
+
+#: mcomix/ui.py:83
+msgid "_Tools"
+msgstr ""
+
+#: mcomix/ui.py:84
+msgid "_Help"
+msgstr ""
+
+#: mcomix/ui.py:85
+msgid "_Transform image"
+msgstr ""
+
+#: mcomix/ui.py:89
+msgid "_Fullscreen"
+msgstr ""
+
+#: mcomix/ui.py:91
+msgid "_Double page mode"
+msgstr ""
+
+#: mcomix/ui.py:93
+msgid "_Toolbar"
+msgstr ""
+
+#: mcomix/ui.py:95
+msgid "_Menubar"
+msgstr ""
+
+#: mcomix/ui.py:97
+msgid "St_atusbar"
+msgstr ""
+
+#: mcomix/ui.py:99
+msgid "S_crollbars"
+msgstr ""
+
+#: mcomix/ui.py:101
+msgid "Th_umbnails"
+msgstr ""
+
+#: mcomix/ui.py:103
+msgid "H_ide all"
+msgstr ""
+
+#: mcomix/ui.py:105
+msgid "_Manga mode"
+msgstr ""
+
+#: mcomix/ui.py:106
 msgid "Manga mode"
 msgstr ""
 
-#: mcomix/ui.py:364
+#: mcomix/ui.py:107
+msgid "_Keep transformation"
+msgstr ""
+
+#: mcomix/ui.py:109
+msgid "Start _slideshow"
+msgstr ""
+
+#: mcomix/ui.py:111
+msgid "Magnifying _lens"
+msgstr ""
+
+#: mcomix/ui.py:112
 msgid "Magnifying lens"
+msgstr ""
+
+#: mcomix/ui.py:117
+msgid "_Best fit mode"
+msgstr ""
+
+#: mcomix/ui.py:119
+msgid "Fit _width mode"
+msgstr ""
+
+#: mcomix/ui.py:121
+msgid "Fit _height mode"
+msgstr ""
+
+#: mcomix/ui.py:123
+msgid "M_anual zoom mode"
+msgstr ""
+
+#: mcomix/ui.py:128
+msgid "_About"
+msgstr ""
+
+#: mcomix/ui.py:132
+msgid "_View comments..."
+msgstr ""
+
+#: mcomix/ui.py:136
+msgid "Proper_ties"
+msgstr ""
+
+#: mcomix/ui.py:140
+msgid "Pr_eferences"
+msgstr ""
+
+#: mcomix/ui.py:145
+msgid "_Edit archive..."
+msgstr ""
+
+#: mcomix/ui.py:147
+msgid "_Open..."
+msgstr ""
+
+#: mcomix/ui.py:149
+msgid "En_hance image..."
+msgstr ""
+
+#: mcomix/ui.py:153
+msgid "_Library..."
 msgstr ""
 
