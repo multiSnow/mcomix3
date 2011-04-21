@@ -26,6 +26,8 @@ MComix 0.90.4
       Note that this feature is disabled by intent when MComix has been
       opened with a list of more than one file.
 
+      This feature is also available via CTRL+N/CTRL+P, or the menu bar.
+
     - Fix "Automatically open next archive" with empty archives.
 
     - Speed up thumbnail generation by parallelizing load tasks.

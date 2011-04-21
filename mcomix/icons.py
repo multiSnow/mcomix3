@@ -35,7 +35,9 @@ def load_icons():
               ('next-page.png',              'mcomix-next-page'),
               ('previous-page.png',          'mcomix-previous-page'),
               ('next-archive.png',           'mcomix-next-archive'),
-              ('previous-archive.png',       'mcomix-previous-archive'))
+              ('previous-archive.png',       'mcomix-previous-archive'),
+              ('next-directory.png',         'mcomix-next-directory'),
+              ('previous-directory.png',     'mcomix-previous-directory'))
 
     # Load window title icon.
     icon_data = resource_string('mcomix.images', '16x16/mcomix.png')

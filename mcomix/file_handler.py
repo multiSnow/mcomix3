@@ -370,7 +370,7 @@ class FileHandler:
 
         return False
 
-    def open_next_directory(self):
+    def open_next_directory(self, *args):
         """ Opens the next sibling directory of the current file, as specified by
         file provider. Returns True if a new directory was opened and files found. """
 
@@ -394,7 +394,7 @@ class FileHandler:
         self._file_provider.set_directory(current_dir)
         return False
 
-    def open_previous_directory(self):
+    def open_previous_directory(self, *args):
         """ Opens the previous sibling directory of the current file, as specified by
         file provider. Returns True if a new directory was opened and files found. """
 

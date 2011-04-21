@@ -41,7 +41,11 @@ class MainUI(gtk.UIManager):
             ('next_archive', 'mcomix-next-archive', _('_Next archive'),
                 '<control><shift>N', _('Next archive'), window.filehandler._open_next_archive),
             ('previous_archive', 'mcomix-previous-archive', _('_Previous archive'),
-                '<control><shift>P', None, window.filehandler._open_previous_archive),
+                '<control><shift>P', _('Previous archive'), window.filehandler._open_previous_archive),
+            ('next_directory', 'mcomix-next-directory', _('Next directory'),
+                '<control>N', _('Next directory'), window.filehandler.open_next_directory),
+            ('previous_directory', 'mcomix-previous-directory', _('Previous directory'),
+                '<control>P', _('Previous directory'), window.filehandler.open_previous_directory),
             ('zoom_in', gtk.STOCK_ZOOM_IN, _('_Zoom in'),
                 'KP_Add', None, window.manual_zoom_in),
             ('zoom_out', gtk.STOCK_ZOOM_OUT, _('Zoom _out'),
@@ -233,6 +237,9 @@ class MainUI(gtk.UIManager):
                     <menuitem action="next_archive" />
                     <menuitem action="previous_archive" />
                     <separator />
+                    <menuitem action="next_directory" />
+                    <menuitem action="previous_directory" />
+                    <separator />
                     <menuitem action="slideshow" />
                 </menu>
                 <menu action="menu_tools">
@@ -267,6 +274,9 @@ class MainUI(gtk.UIManager):
                     <separator />
                     <menuitem action="next_archive" />
                     <menuitem action="previous_archive" />
+                    <separator />
+                    <menuitem action="next_directory" />
+                    <menuitem action="previous_directory" />
                     <separator />
                     <menuitem action="slideshow" />
                 </menu>
@@ -360,6 +370,8 @@ class MainUI(gtk.UIManager):
                    'refresh_archive',
                    'next_archive',
                    'previous_archive',
+                   'next_directory',
+                   'previous_directory',
                    'keep_transformation',
                    'enhance_image')
 
