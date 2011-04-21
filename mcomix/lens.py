@@ -40,10 +40,6 @@ class MagnifyingLens:
 
             source_pixbuf = pixbuf
 
-            #assertion `dest_x >= 0 && dest_x + width <= dest_pixbuf->width
-            #canvas.copy_area(0, 0, prefs['lens size'], prefs['lens size'], source_pixbuf, 0,0)
-            #canvas.copy_area(0, 0, 10, 10, source_pixbuf, 0,0)
-
         return source_pixbuf
 
     def set_lens_cursor(self, x, y):
@@ -64,8 +60,6 @@ class MagnifyingLens:
     def toggle(self, action):
         """Toggle on or off the lens depending on the state of <action>."""
         if action.get_active():
-            #x, y = self._window.get_layout_pointer_position()
-            #self.set_lens_cursor(x, y)
             self._window.draw_image()
         else:
             self._window.cursor_handler.set_cursor_type(constants.NORMAL_CURSOR)
@@ -126,43 +120,20 @@ class MagnifyingLens:
         padding_y = max(0, (area_y - image_size[1]) // 2)
         x -= padding_x
         y -= padding_y
-        rotation = prefs['rotation']
 
-        if prefs['auto rotate from exif']:
-            rotation += image_tools.get_implied_rotation(source_pixbuf)
-            rotation = rotation % 360
-
-        if rotation in [90, 270]:
-            scale = float(source_pixbuf.get_height()) / image_size[0]
-        else:
-            scale = float(source_pixbuf.get_width()) / image_size[0]
+        # Determine pixbuf scaling
+        larger_size = max(source_pixbuf.get_height(), source_pixbuf.get_width())
+        scale = larger_size / image_size[0]
         x *= scale
         y *= scale
         source_mag = prefs['lens magnification'] / scale
         width = prefs['lens size'] / source_mag
         height = width
+
         paste_left = x > width / 2
         paste_top = y > height / 2
         dest_x = max(0, int(math.ceil((width / 2 - x) * source_mag)))
         dest_y = max(0, int(math.ceil((height / 2 - y) * source_mag)))
-
-        if rotation == 90:
-            x, y = y, source_pixbuf.get_height() - x
-        elif rotation == 180:
-            x = source_pixbuf.get_width() - x
-            y = source_pixbuf.get_height() - y
-        elif rotation == 270:
-            x, y = source_pixbuf.get_width() - y, x
-        if prefs['horizontal flip']:
-            if rotation in (90, 270):
-                y = source_pixbuf.get_height() - y
-            else:
-                x = source_pixbuf.get_width() - x
-        if prefs['vertical flip']:
-            if rotation in (90, 270):
-                x = source_pixbuf.get_width() - x
-            else:
-                y = source_pixbuf.get_height() - y
 
         src_x = x - width / 2
         src_y = y - height / 2
@@ -184,19 +155,6 @@ class MagnifyingLens:
             int(math.ceil(source_mag * subpixbuf.get_height())),
             gtk.gdk.INTERP_TILES)
 
-        if rotation == 90:
-            subpixbuf = subpixbuf.rotate_simple(
-                gtk.gdk.PIXBUF_ROTATE_CLOCKWISE)
-        elif rotation == 180:
-            subpixbuf = subpixbuf.rotate_simple(
-                gtk.gdk.PIXBUF_ROTATE_UPSIDEDOWN)
-        elif rotation == 270:
-            subpixbuf = subpixbuf.rotate_simple(
-                gtk.gdk.PIXBUF_ROTATE_COUNTERCLOCKWISE)
-        if prefs['horizontal flip']:
-            subpixbuf = subpixbuf.flip(horizontal=True)
-        if prefs['vertical flip']:
-            subpixbuf = subpixbuf.flip(horizontal=False)
         if paste_left:
             dest_x = 0
         else:
@@ -208,6 +166,5 @@ class MagnifyingLens:
 
         subpixbuf.copy_area(0, 0, subpixbuf.get_width(),
             subpixbuf.get_height(), canvas, dest_x, dest_y)
-
 
 # vim: expandtab:sw=4:ts=4

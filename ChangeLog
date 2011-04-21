@@ -54,6 +54,9 @@ MComix 0.90.4
     - Fixed the settings dialog window no longer opening when it has been
       closed with the X icon on the dialog before.
 
+    - Fixed magnifiying lens being broken when the page was rotated in any
+      way.
+
     - Required Python version is now 2.5 or newer.
 
     - Updated Swedish translation. (by Martin Karlsson)
