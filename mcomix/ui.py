@@ -27,19 +27,19 @@ class MainUI(gtk.UIManager):
             ('copy', gtk.STOCK_COPY, _('_Copy'),
                 '<control>C', None, window.clipboard.copy_page),
             ('next_page', 'mcomix-next-page', _('_Next page'),
-                'Page_Down', None, window.next_page),
+                'Page_Down', _('Next page'), window.next_page),
             ('previous_page', 'mcomix-previous-page', _('_Previous page'),
-                'Page_Up', None, window.previous_page),
+                'Page_Up', _('Previous page'), window.previous_page),
             ('first_page', 'mcomix-goto-first-page', _('_First page'),
-                'Home', None, window.first_page),
+                'Home', _('First page'), window.first_page),
             ('last_page', 'mcomix-goto-last-page', _('_Last page'),
-                'End', None, window.last_page),
+                'End', _('Last page'), window.last_page),
             ('go_to', gtk.STOCK_JUMP_TO, _('_Go to page...'),
-                'G', None, window.page_select),
+                'G', _('Go to page...'), window.page_select),
             ('refresh_archive', 'mcomix-refresh', _('_Refresh file'),
-                '<control><shift>R', None, window.filehandler.refresh_file),
+                '<control><shift>R', _('Refresh file'), window.filehandler.refresh_file),
             ('next_archive', 'mcomix-next-archive', _('_Next archive'),
-                '<control><shift>N', None, window.filehandler._open_next_archive),
+                '<control><shift>N', _('Next archive'), window.filehandler._open_next_archive),
             ('previous_archive', 'mcomix-previous-archive', _('_Previous archive'),
                 '<control><shift>P', None, window.filehandler._open_previous_archive),
             ('zoom_in', gtk.STOCK_ZOOM_IN, _('_Zoom in'),
@@ -85,7 +85,7 @@ class MainUI(gtk.UIManager):
             ('fullscreen', None, _('_Fullscreen'),
                 'f', None, window.change_fullscreen),
             ('double_page', 'mcomix-double-page', _('_Double page mode'),
-                'd', None, window.change_double_page),
+                'd', _('Double page mode'), window.change_double_page),
             ('toolbar', None, _('_Toolbar'),
                 None, None, window.change_toolbar_visibility),
             ('menubar', None, _('_Menubar'),
@@ -99,25 +99,25 @@ class MainUI(gtk.UIManager):
             ('hide all', None, _('H_ide all'),
                 'i', None, window.change_hide_all),
             ('manga_mode', 'mcomix-manga', _('_Manga mode'),
-                'm', None, window.change_manga_mode),
+                'm', _('Manga mode'), window.change_manga_mode),
             ('keep_transformation', None, _('_Keep transformation'),
                 'k', None, window.change_keep_transformation),
             ('slideshow', gtk.STOCK_MEDIA_PLAY, _('Start _slideshow'),
-                '<Control>S', None, window.slideshow.toggle),
+                '<Control>S', _('Start slideshow'), window.slideshow.toggle),
             ('lens', 'mcomix-lens', _('Magnifying _lens'),
-                'l', None, window.lens.toggle)])
+                'l', _('Magnifying lens'), window.lens.toggle)])
 
         # Note: Don't change the default value for the radio buttons unless
         # also fixing the code for setting the correct one on start-up.
         self._actiongroup.add_radio_actions([
             ('best_fit_mode', 'mcomix-fitbest', _('_Best fit mode'),
-                'b', None, constants.ZOOM_MODE_BEST),
+                'b', _('Best fit mode'), constants.ZOOM_MODE_BEST),
             ('fit_width_mode', 'mcomix-fitwidth', _('Fit _width mode'),
-                'w', None, constants.ZOOM_MODE_WIDTH),
+                'w', _('Fit width mode'), constants.ZOOM_MODE_WIDTH),
             ('fit_height_mode', 'mcomix-fitheight', _('Fit _height mode'),
-                'h', None, constants.ZOOM_MODE_HEIGHT),
+                'h', _('Fit height mode'), constants.ZOOM_MODE_HEIGHT),
             ('fit_manual_mode', 'mcomix-fitmanual', _('M_anual zoom mode'),
-                'a', None, constants.ZOOM_MODE_MANUAL)],
+                'a', _('Manual zoom mode'), constants.ZOOM_MODE_MANUAL)],
             3, window.change_zoom_mode)
 
         self._actiongroup.add_actions([
@@ -338,30 +338,6 @@ class MainUI(gtk.UIManager):
         # Is there no built-in way to do this?
         self.get_widget('/Tool/expander').set_expand(True)
         self.get_widget('/Tool/expander').set_sensitive(False)
-
-        self.get_widget('/Tool/first_page').set_tooltip_text(_('First page'))
-        self.get_widget('/Tool/previous_page').set_tooltip_text(
-                                                               _('Previous page'))
-        self.get_widget('/Tool/go_to').set_tooltip_text(_('Go to page...'))
-        self.get_widget('/Tool/next_page').set_tooltip_text(_('Next page'))
-        self.get_widget('/Tool/last_page').set_tooltip_text(_('Last page'))
-        self.get_widget('/Tool/previous_archive').set_tooltip_text(_('Previous archive'))
-        self.get_widget('/Tool/next_archive').set_tooltip_text(_('Next archive'))
-        self.get_widget('/Tool/refresh_archive').set_tooltip_text(_('Refresh file'))
-        self.get_widget('/Tool/slideshow').set_tooltip_text(_('Start slideshow'))
-
-        self.get_widget('/Tool/best_fit_mode').set_tooltip_text(
-                                                               _('Best fit mode'))
-        self.get_widget('/Tool/fit_width_mode').set_tooltip_text(
-                                                               _('Fit width mode'))
-        self.get_widget('/Tool/fit_height_mode').set_tooltip_text(
-                                                               _('Fit height mode'))
-        self.get_widget('/Tool/fit_manual_mode').set_tooltip_text(
-                                                               _('Manual zoom mode'))
-        self.get_widget('/Tool/double_page').set_tooltip_text(
-                                                               _('Double page mode'))
-        self.get_widget('/Tool/manga_mode').set_tooltip_text(_('Manga mode'))
-        self.get_widget('/Tool/lens').set_tooltip_text(_('Magnifying lens'))
 
     def set_sensitivities(self):
         """Sets the main UI's widget's sensitivities appropriately."""
