@@ -210,6 +210,8 @@ class MainUI(gtk.UIManager):
                     <menuitem action="fit_height_mode" />
                     <menuitem action="fit_manual_mode" />
                     <separator />
+                    <menuitem action="slideshow" />
+                    <separator />
                     <menuitem action="lens" />
                     <menu action="menu_zoom">
                         <menuitem action="zoom_in" />
@@ -239,8 +241,6 @@ class MainUI(gtk.UIManager):
                     <separator />
                     <menuitem action="next_directory" />
                     <menuitem action="previous_directory" />
-                    <separator />
-                    <menuitem action="slideshow" />
                 </menu>
                 <menu action="menu_tools">
                     <menuitem action="enhance_image" />
@@ -251,8 +251,6 @@ class MainUI(gtk.UIManager):
                         <separator />
                         <menuitem action="flip_horiz" />
                         <menuitem action="flip_vert" />
-                        <separator />
-                        <separator />
                         <separator />
                         <menuitem action="keep_transformation" />
                     </menu>
@@ -277,8 +275,6 @@ class MainUI(gtk.UIManager):
                     <separator />
                     <menuitem action="next_directory" />
                     <menuitem action="previous_directory" />
-                    <separator />
-                    <menuitem action="slideshow" />
                 </menu>
                 <menu action="menu_view_popup">
                     <menuitem action="fullscreen" />
@@ -289,6 +285,8 @@ class MainUI(gtk.UIManager):
                     <menuitem action="fit_width_mode" />
                     <menuitem action="fit_height_mode" />
                     <menuitem action="fit_manual_mode" />
+                    <separator />
+                    <menuitem action="slideshow" />
                     <separator />
                     <menuitem action="enhance_image" />
                     <separator />
