@@ -309,30 +309,23 @@ class _BookArea(gtk.ScrolledWindow):
         # if no request is needed or the user has told us they definitely want to delete the book
         if not request_response or (request_response and response == gtk.RESPONSE_YES):
 
-            self._remove_books_from_library(False)
-
             # get the array of currently selected books in the book window
             selected_books = self._iconview.get_selected_items()
+            book_ids = [ self.get_book_at_path(book) for book in selected_books ]
+            paths = [ self._library.backend.get_book_path(book_id) for book_id in book_ids ]
 
-            for book in selected_books:
+            # Remove books from library
+            self._remove_books_from_library(False)
 
-                # find the database id and path for each selected book
-                book_id = self._library.book_area.get_book_at_path(book)
-                book_path = self._library.backend.get_book_path(book_id)
-
+            # Remove from the harddisk
+            for book_path in paths:
                 try:
                     # try to delete the book.
                     # this can throw an exception if the path points to folder instead
                     # of a single file
                     os.remove(book_path)
-
                 except Exception:
-
                     print _('! Could not remove file "%s"') % book_path
-
-                while gtk.events_pending():
-                    gtk.main_iteration(False)
-
 
     def _button_press(self, iconview, event):
         """Handle mouse button presses on the _BookArea."""

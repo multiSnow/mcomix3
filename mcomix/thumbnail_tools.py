@@ -87,8 +87,9 @@ class Thumbnailer(object):
 
     def delete(self, filepath):
         """ Deletes the thumbnail for <filepath> (if it exists) """
-        if os.path.isfile(filepath):
-            os.remove(filepath)
+        thumbpath = self._path_to_thumbpath(filepath)
+        if os.path.isfile(thumbpath):
+            os.remove(thumbpath)
 
     def _create_thumbnail(self, filepath):
         """ Creates a thumbnail pixbuf from <filepath>, and returns it as a

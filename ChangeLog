@@ -6,6 +6,9 @@ MComix 0.90.4
     - Fixed certain wait conditions that prevented MComix from exiting
       on Win32.
 
+    - Fixed "Remove from the library" deleting the actual book instead of
+      it's library thumbnail.
+
     - The "Go to page" dialog now shows thumbnails when they are available, 
       not only after all thumbnails have been loaded. Additionally,
       some usability improvements have been done to the dialog, such as
