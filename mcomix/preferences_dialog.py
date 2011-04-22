@@ -33,6 +33,18 @@ class _PreferencesDialog(gtk.Dialog):
         self.set_border_width(4)
         notebook.set_border_width(6)
 
+        appearance = self._init_appearance_tab()
+        notebook.append_page(appearance, gtk.Label(_('Appearance')))
+        behaviour = self._init_behaviour_tab()
+        notebook.append_page(behaviour, gtk.Label(_('Behaviour')))
+        display = self._init_display_tab()
+        notebook.append_page(display, gtk.Label(_('Display')))
+        advanced = self._init_advanced_tab()
+        notebook.append_page(advanced, gtk.Label(_('Advanced')))
+
+        self.show_all()
+
+    def _init_appearance_tab(self):
         # ----------------------------------------------------------------
         # The "Appearance" tab.
         # ----------------------------------------------------------------
@@ -141,8 +153,10 @@ class _PreferencesDialog(gtk.Dialog):
         checkered_bg_button.set_tooltip_text(
             _('Use a grey checkered background for transparent images. If this preference is unset, the background is plain white instead.'))
         page.add_row(checkered_bg_button)
-        notebook.append_page(page, gtk.Label(_('Appearance')))
+        
+        return page
 
+    def _init_behaviour_tab(self):
         # ----------------------------------------------------------------
         # The "Behaviour" tab.
         # ----------------------------------------------------------------
@@ -265,48 +279,9 @@ class _PreferencesDialog(gtk.Dialog):
             _('Store thumbnails for opened files according to the freedesktop.org specification. These thumbnails are shared by many other applications, such as most file managers.'))
         page.add_row(create_thumbs_button)
 
-        delay_thumbs_button = gtk.CheckButton(
-            _('Delay thumbnail generation.'))
-        delay_thumbs_button.set_tooltip_text(
-            _('Thumbnails are generated only when required, instead of directly after opening a new file.'))
-        delay_thumbs_button.set_active(prefs['delay thumbnails'])
-        delay_thumbs_button.connect('toggled', self._check_button_cb,
-            'delay thumbnails')
-        page.add_row(delay_thumbs_button)
+        return page
 
-        page.new_section(_('Cache'))
-
-        label = gtk.Label('%s:' % _('Maximum number of pages to store in the cache'))
-        adjustment = gtk.Adjustment(prefs['max pages to cache'], -1, 500, 1, 3)
-        cache_spinner = gtk.SpinButton(adjustment, digits=0)
-        cache_spinner.connect('value-changed', self._spinner_cb,
-                                            'max pages to cache')
-        cache_spinner.set_tooltip_text(
-            _('Set the max number of pages to cache. A value of -1 will cache the entire archive.'))
-        page.add_row(label, cache_spinner)
-
-        page.new_section(_('Crash Recovery'))
-
-        crash_recovery_button = gtk.CheckButton(
-            _('Enable crash recovery.'))
-        crash_recovery_button.set_active(prefs['crash recovery on'])
-        crash_recovery_button.connect('toggled', self._check_button_cb,
-            'crash recovery on')
-        crash_recovery_button.set_tooltip_text(
-            _('Crash recovery saves the current configuration information every specified seconds.  In case of a crash the previous file will be re-loaded.'))
-        page.add_row(crash_recovery_button)
-
-        label = gtk.Label('%s:' % _('Save the current configuration information every n seconds'))
-        adjustment = gtk.Adjustment(prefs['crash recovery seconds'], 1, 3600, 1, 3)
-        recovery_spinner = gtk.SpinButton(adjustment, digits=0)
-        recovery_spinner.connect('value-changed', self._spinner_cb,
-                                            'crash recovery seconds')
-        recovery_spinner.set_tooltip_text(
-            _('Every n seconds the current configuration will be saved to disk.  Choose a lower number if crashes are frequent on your machine. 30 seconds (default)'))
-        page.add_row(label, recovery_spinner)
-
-        notebook.append_page(page, gtk.Label(_('Behaviour')))
-
+    def _init_display_tab(self):
         # ----------------------------------------------------------------
         # The "Display" tab.
         # ----------------------------------------------------------------
@@ -390,6 +365,66 @@ class _PreferencesDialog(gtk.Dialog):
             _('Show page numbers in the Title bar and the status bar. If unset the page numbers will be hidden.'))
         page.add_row(page_numbers_button)
 
+        
+
+        page.new_section(_('Rotation'))
+        auto_rotate_button = gtk.CheckButton(
+            _('Automatically rotate images according to their metadata.'))
+        auto_rotate_button.set_active(prefs['auto rotate from exif'])
+        auto_rotate_button.connect('toggled', self._check_button_cb,
+            'auto rotate from exif')
+        auto_rotate_button.set_tooltip_text(
+            _('Automatically rotate images when an orientation is specified in the image metadata, such as in an Exif tag.'))
+        page.add_row(auto_rotate_button)
+        
+        return page
+
+    def _init_advanced_tab(self):
+        # ----------------------------------------------------------------
+        # The "Advanced" tab.
+        # ----------------------------------------------------------------
+        page = preferences_page._PreferencePage(None)
+
+        page.new_section(_('Cache'))
+
+        label = gtk.Label('%s:' % _('Maximum number of pages to store in the cache'))
+        adjustment = gtk.Adjustment(prefs['max pages to cache'], -1, 500, 1, 3)
+        cache_spinner = gtk.SpinButton(adjustment, digits=0)
+        cache_spinner.connect('value-changed', self._spinner_cb,
+                                            'max pages to cache')
+        cache_spinner.set_tooltip_text(
+            _('Set the max number of pages to cache. A value of -1 will cache the entire archive.'))
+        page.add_row(label, cache_spinner)
+
+        delay_thumbs_button = gtk.CheckButton(
+            _('Delay thumbnail generation.'))
+        delay_thumbs_button.set_tooltip_text(
+            _('Thumbnails are generated only when required, instead of directly after opening a new file.'))
+        delay_thumbs_button.set_active(prefs['delay thumbnails'])
+        delay_thumbs_button.connect('toggled', self._check_button_cb,
+            'delay thumbnails')
+        page.add_row(delay_thumbs_button)
+
+        page.new_section(_('Crash Recovery'))
+
+        crash_recovery_button = gtk.CheckButton(
+            _('Enable crash recovery.'))
+        crash_recovery_button.set_active(prefs['crash recovery on'])
+        crash_recovery_button.connect('toggled', self._check_button_cb,
+            'crash recovery on')
+        crash_recovery_button.set_tooltip_text(
+            _('Crash recovery saves the current configuration information every specified seconds.  In case of a crash the previous file will be re-loaded.'))
+        page.add_row(crash_recovery_button)
+
+        label = gtk.Label('%s:' % _('Save the current configuration information every n seconds'))
+        adjustment = gtk.Adjustment(prefs['crash recovery seconds'], 1, 3600, 1, 3)
+        recovery_spinner = gtk.SpinButton(adjustment, digits=0)
+        recovery_spinner.connect('value-changed', self._spinner_cb,
+                                            'crash recovery seconds')
+        recovery_spinner.set_tooltip_text(
+            _('Every n seconds the current configuration will be saved to disk.  Choose a lower number if crashes are frequent on your machine. 30 seconds (default)'))
+        page.add_row(label, recovery_spinner)
+
         page.new_section(_('Comments'))
         label = gtk.Label('%s:' % _('Comment extensions'))
         extensions_entry = gtk.Entry()
@@ -401,18 +436,7 @@ class _PreferencesDialog(gtk.Dialog):
             _('Treat all files found within archives, that have one of these file endings, as comments.'))
         page.add_row(label, extensions_entry)
 
-        page.new_section(_('Rotation'))
-        auto_rotate_button = gtk.CheckButton(
-            _('Automatically rotate images according to their metadata.'))
-        auto_rotate_button.set_active(prefs['auto rotate from exif'])
-        auto_rotate_button.connect('toggled', self._check_button_cb,
-            'auto rotate from exif')
-        auto_rotate_button.set_tooltip_text(
-            _('Automatically rotate images when an orientation is specified in the image metadata, such as in an Exif tag.'))
-        page.add_row(auto_rotate_button)
-        notebook.append_page(page, gtk.Label(_('Display')))
-
-        self.show_all()
+        return page
 
     def _response(self, dialog, response):
         if response == gtk.RESPONSE_CLOSE:
