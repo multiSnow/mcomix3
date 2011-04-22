@@ -56,6 +56,19 @@ def uri_prefix():
     else:
         return 'file://'
 
+def normalize_uri(uri):
+    """ Normalize URIs passed into the program by different applications,
+    normally via drag-and-drop. """
+
+    if uri.startswith('file://localhost/'):  # Correctly formatted.
+        return uri[16:]
+    elif uri.startswith('file:///'):  # Nautilus etc.
+        return uri[7:]
+    elif uri.startswith('file:/'):  # Xffm etc.
+        return uri[5:]
+    else:
+        return uri
+
 def get_commandline_args():
     """ Simply returns sys.argv, converted to Unicode objects on UNIX.
     Does a bit more work on win32 since Python 2.x' handling of

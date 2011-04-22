@@ -12,6 +12,7 @@ import ImageDraw
 from preferences import prefs
 import image_tools
 import constants
+import portability
 
 _dialog = None
 
@@ -429,16 +430,10 @@ class _BookArea(gtk.ScrolledWindow):
         uris = data.get_uris()
         if not uris:
             return
-        paths = []
-        for uri in uris:
-            if uri.startswith('file://localhost/'):  # Correctly formatted.
-                uri = uri[16:]
-            elif uri.startswith('file:///'):  # Nautilus etc.
-                uri = uri[7:]
-            elif uri.startswith('file:/'):  # Xffm etc.
-                uri = uri[5:]
-            path = urllib.url2pathname(uri)
-            paths.append(path.decode('utf-8'))
+
+        uris = [ portability.normalize_uri(uri) for uri in uris ]
+        paths = [ urllib.url2pathname(uri).decode('utf-8') for uri in uris ]
+
         collection = self._library.collection_area.get_current_collection()
         collection_name = self._library.backend.get_collection_name(collection)
         self._library.add_books(paths, collection_name)

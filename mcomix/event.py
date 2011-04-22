@@ -4,6 +4,7 @@
 import constants
 import urllib
 import gtk
+import portability
 from preferences import prefs
 
 class EventHandler:
@@ -403,19 +404,14 @@ class EventHandler:
         if not uris:
             return
 
-        uri = uris[0] # Open only one file.
+        # Normalize URIs
+        uris = [ portability.normalize_uri(uri) for uri in uris ]
+        paths = [ urllib.url2pathname(uri).decode('utf-8') for uri in uris ]
 
-        if uri.startswith('file://localhost/'):  # Correctly formatted.
-            uri = uri[16:]
-
-        elif uri.startswith('file:///'):  # Nautilus etc.
-            uri = uri[7:]
-
-        elif uri.startswith('file:/'):  # Xffm etc.
-            uri = uri[5:]
-
-        path = urllib.url2pathname(uri)
-        self._window.filehandler.open_file(path.decode('utf-8'))
+        if len(paths) > 1:
+            self._window.filehandler.open_file(paths)
+        else:
+            self._window.filehandler.open_file(paths[0])
 
     def _scroll_with_flipping(self, x, y):
         """Handle scrolling with the scroll wheel or the arrow keys, for which
