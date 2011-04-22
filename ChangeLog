@@ -7,7 +7,7 @@ MComix 0.90.4
       on Win32.
 
     - Fixed "Remove from the library" deleting the actual book instead of
-      it's library thumbnail.
+      its library thumbnail.
 
     - The "Go to page" dialog now shows thumbnails when they are available, 
       not only after all thumbnails have been loaded. Additionally,
@@ -37,11 +37,13 @@ MComix 0.90.4
       (inspired by David Zaragoza, who originally suggested to use
       processes instead of threads)
 
+    - Library cover generation is now parallelized as well.
+
     - New option to delay loading of thumbnails. This way, thumbnails will
       only be generated when they are actually needed, i.e. the thumbnail
       sidebar is open or "Go to page" is used.
 
-    - Library cover generation is now parallelized as well.
+    - Minor options have been moved into a new tab in the preferences dialog.
 
     - MComix' configuration files are now stored in ~/.config/mcomix instead
       of in ~/.local/share/mcomix, as originally intended.
