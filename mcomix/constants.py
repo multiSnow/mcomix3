@@ -43,7 +43,9 @@ SUPPORTED_ARCHIVE_REGEX = re.compile(r'\.(cbz|cbr|cbt|zip|rar|tar|gz|bz2|bzip2|7
 
 _missing_icon_dialog = gtk.Dialog(None,None,0,None)
 _missing_icon_pixbuf = _missing_icon_dialog.render_icon(gtk.STOCK_MISSING_IMAGE, gtk.ICON_SIZE_LARGE_TOOLBAR)
-MISSING_IMAGE_ICON = _missing_icon_pixbuf.scale_simple( 128, 128, gtk.gdk.INTERP_TILES )
+# Pixbuf is None when running without X server. Setup.py could fail because of this.
+if _missing_icon_pixbuf:
+    MISSING_IMAGE_ICON = _missing_icon_pixbuf.scale_simple( 128, 128, gtk.gdk.INTERP_TILES )
 
 MAX_LIBRARY_COVER_SIZE = 500
 
