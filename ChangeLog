@@ -1,4 +1,4 @@
-MComix 0.90.4
+MComix 0.91
 
     - Fixed excessive memory consumption due to cached pixmaps not being
       properly evicted.
