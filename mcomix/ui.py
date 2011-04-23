@@ -70,7 +70,7 @@ class MainUI(gtk.UIManager):
                 None, None, window.flip_vertically),
             ('extract_page', gtk.STOCK_SAVE_AS, _('Save _As...'),
                 '<Control><Shift>s', None, window.extract_page),
-            ('menu_zoom', 'mcomix-zoom', _('Manual _Zoom')),
+            ('menu_zoom', 'mcomix-zoom', _('_Zoom')),
             ('menu_recent', gtk.STOCK_DND_MULTIPLE, _('_Recent')),
             ('menu_bookmarks_popup', 'comix-add-bookmark', _('_Bookmarks')),
             ('menu_toolbars', None, _('T_oolbars')),
