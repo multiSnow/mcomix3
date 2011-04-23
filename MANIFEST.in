@@ -1,6 +1,7 @@
-recursive-include mcomix/images *.png *.py
-recursive-include mcomix/messages *.po *.mo *.pot *.py
+recursive-include mcomix/images *.png
+recursive-include mcomix/messages *.po *.mo *.pot
 recursive-include mime *.*
 include mcomix/images/__init__.py mcomix/messages/__init__.py
 include mime/comicthumb
-include mcomix.1.gz ChangeLog
+include mcomix.1.gz ChangeLog COPYING
+exclude mcomix/images/screenshot-monkey.png mcomix/images/screenshot-original.png mcomix/images/mcomix-large.png
