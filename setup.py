@@ -13,7 +13,7 @@ def get_data_patterns(directory, *patterns):
     to be passed into package_data. """
 
     olddir = os.getcwd()
-    os.chdir(directory)
+    os.chdir(os.path.join(constants.BASE_PATH, directory))
     allfiles = []
     for dirpath, subdirs, files in os.walk("."):
         for pattern in patterns:
@@ -24,13 +24,22 @@ def get_data_patterns(directory, *patterns):
     os.chdir(olddir)
     return allfiles
 
+
+# Filter unnecessary image files. Replace wildcard pattern with actual files.
+images = get_data_patterns('mcomix/images', '*.png')
+images.remove('*.png')
+images.extend([ os.path.basename(img) 
+    for img in glob.glob(os.path.join(constants.BASE_PATH, 'mcomix/images', '*.png'))
+    if os.path.basename(img) not in 
+        ('mcomix-large.png', 'screenshot-monkey.png', 'screenshot-original.png')])
+
 setuptools.setup(
     name = constants.APPNAME.lower(),
     version = constants.VERSION,
     packages = ['mcomix', 'mcomix.archive', 'mcomix.messages', 'mcomix.images'],
     package_data = {
         'mcomix.messages' : get_data_patterns('mcomix/messages', '*.mo', '*.po'),
-        'mcomix.images' : get_data_patterns('mcomix/images', '*.png') },
+        'mcomix.images' : images },
     entry_points = { 
         'console_scripts' : [ 'mcomix = mcomix.mcomixstarter:run' ] },
     requires = ['pygtk (>=2.12.0)', 'PIL (>=1.15)'],
