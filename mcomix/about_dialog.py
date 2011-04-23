@@ -31,8 +31,7 @@ class _AboutDialog(gtk.Dialog):
         box.set_border_width(5)
 
         icon_data = pkg_resources.resource_string('mcomix.images', 'mcomix.png')
-        large_pixbuf = image_tools.load_pixbuf_data(icon_data)
-        pixbuf = large_pixbuf.scale_simple(200, 180, gtk.gdk.INTERP_TILES)
+        pixbuf = image_tools.load_pixbuf_data(icon_data)
         icon = gtk.Image()
         icon.set_from_pixbuf(pixbuf)
         box.pack_start(icon, False, False, 10)
