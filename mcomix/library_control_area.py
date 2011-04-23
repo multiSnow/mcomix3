@@ -122,7 +122,6 @@ class _ControlArea(gtk.HBox):
         """Update the info box using the currently <selected> books from
         the _BookArea.
         """
-        self._open_button.set_sensitive(False)
 
         if selected:
 
@@ -137,8 +136,10 @@ class _ControlArea(gtk.HBox):
         else:
             name = dir_path = format = pages = size = None
 
-        if len(selected) == 1:
+        if len(selected) > 0:
             self._open_button.set_sensitive(True)
+        else:
+            self._open_button.set_sensitive(False)
 
         if name is not None:
             self._namelabel.set_text(encoding.to_unicode(name))

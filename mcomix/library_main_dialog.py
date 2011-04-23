@@ -52,18 +52,20 @@ class _LibraryDialog(gtk.Window):
         self.add(table)
         self.show_all()
 
-    def open_book(self, book, keep_library_open=False):
+    def open_book(self, books, keep_library_open=False):
         """Open the book with ID <book>."""
-        path = self.backend.get_book_path(book)
 
-        if path is None:
-            return
+        paths = [ self.backend.get_book_path(book) for book in books ]
 
         if not keep_library_open:
             self.close()
 
         self._window.present()
-        self._file_handler.open_file(path)
+
+        if len(paths) > 1:
+            self._file_handler.open_file(paths)
+        elif len(paths) == 1:
+            self._file_handler.open_file(paths[0])
 
     def set_status_message(self, message):
         """Set a specific message on the statusbar, replacing whatever was

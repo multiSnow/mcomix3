@@ -169,16 +169,14 @@ class _BookArea(gtk.ScrolledWindow):
         selected = self._iconview.get_selected_items()
         if not selected:
             return
-        path = selected[0]
-        self._book_activated(self._iconview, path, False)
+        self._book_activated(self._iconview, selected, False)
 
     def open_selected_book_noclose(self, *args):
         """Open the currently selected book, keeping the library open."""
         selected = self._iconview.get_selected_items()
         if not selected:
             return
-        path = selected[0]
-        self._book_activated(self._iconview, path, True)
+        self._book_activated(self._iconview, selected, True)
 
     def _add_book(self, book):
         """Add the <book> to the ListStore (and thus to the _BookArea)."""
@@ -238,10 +236,13 @@ class _BookArea(gtk.ScrolledWindow):
 
         return pixbuf
 
-    def _book_activated(self, iconview, path, keep_library_open=False):
+    def _book_activated(self, iconview, paths, keep_library_open=False):
         """Open the book at the (liststore) <path>."""
-        book = self.get_book_at_path(path)
-        self._library.open_book(book, keep_library_open=keep_library_open)
+        if not isinstance(paths, list):
+            paths = [ paths ]
+
+        books = [ self.get_book_at_path(path) for path in paths ]
+        self._library.open_book(books, keep_library_open=keep_library_open)
 
     def _selection_changed(self, iconview):
         """Update the displayed info in the _ControlArea when a new book
@@ -341,12 +342,12 @@ class _BookArea(gtk.ScrolledWindow):
             if not iconview.path_is_selected(path):
                 iconview.unselect_all()
                 iconview.select_path(path)
-            if len(iconview.get_selected_items()) > 1:
-                self._ui_manager.get_action('/Popup/open').set_sensitive(False)
-                self._ui_manager.get_action('/Popup/open_nowinclose').set_sensitive(False)
-            else:
+            if len(iconview.get_selected_items()) > 0:
                 self._ui_manager.get_action('/Popup/open').set_sensitive(True)
                 self._ui_manager.get_action('/Popup/open_nowinclose').set_sensitive(True)
+            else:
+                self._ui_manager.get_action('/Popup/open').set_sensitive(False)
+                self._ui_manager.get_action('/Popup/open_nowinclose').set_sensitive(False)
             if (self._library.collection_area.get_current_collection() ==
               _COLLECTION_ALL):
                 self._ui_manager.get_action(
