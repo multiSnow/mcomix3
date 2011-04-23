@@ -23,9 +23,11 @@ import sys
 import getopt
 import signal
 import gettext
+import locale
 
 import constants
 import tools
+import portability
 
 def wait_and_exit():
     """ Wait for the user pressing ENTER before closing. This should help
@@ -58,8 +60,22 @@ def install_gettext():
     # explicitly installing the package.
     sys.path.append(constants.BASE_PATH)
 
-    message_path = pkg_resources.resource_filename("mcomix.messages", "")
-    gettext.install('mcomix', message_path, unicode=True)
+    # Get the user's current locale
+    code = portability.get_default_locale()
+    domain = constants.APPNAME.lower()
+    lang_identifiers = gettext._expand_lang(code)
+
+    # Search for .mo files manually, since gettext doesn't support setuptools/pkg_resources.
+    for lang in lang_identifiers:
+        resource = os.path.join(lang, 'LC_MESSAGES', '%s.mo' % domain)
+        if pkg_resources.resource_exists('mcomix.messages', resource):
+            translation = gettext.GNUTranslations(pkg_resources.resource_stream('mcomix.messages', resource))
+            translation.install(unicode=True)
+            return
+
+    # If nothing was found yet, install an empty translation object.
+    translation = gettext.NullTranslations()
+    translation.install(unicode=True)
 
 def install_print_function():
     """ Add tools.print_ to the built-in namespace as print_.
@@ -141,11 +157,9 @@ except ImportError:
 # This should be done only after install_gettext() has been called.
 import deprecated
 import image_tools
-import locale
 import main
 import icons
 import preferences
-import portability
 
 def run():
     """Run the program."""

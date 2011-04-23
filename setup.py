@@ -6,6 +6,11 @@ import os
 import glob
 import setuptools
 
+try:
+    import py2exe
+except ImportError:
+    pass
+
 from mcomix import constants
 
 def get_data_patterns(directory, *patterns):
@@ -24,11 +29,10 @@ def get_data_patterns(directory, *patterns):
     os.chdir(olddir)
     return allfiles
 
-
 # Filter unnecessary image files. Replace wildcard pattern with actual files.
 images = get_data_patterns('mcomix/images', '*.png')
 images.remove('*.png')
-images.extend([ os.path.basename(img) 
+images.extend([ os.path.basename(img)
     for img in glob.glob(os.path.join(constants.BASE_PATH, 'mcomix/images', '*.png'))
     if os.path.basename(img) not in 
         ('mcomix-large.png', 'screenshot-monkey.png', 'screenshot-original.png')])
@@ -87,7 +91,17 @@ setuptools.setup(
     url = 'http://www.sourceforge.net/projects/mcomix',
     description = 'MComix is a fork of Comix and is a user-friendly, customizable image viewer. '
         'It is specifically designed to handle comic books.',
-    platforms = ['GNU/Linux', 'Win32']
+    platforms = ['GNU/Linux', 'Win32'],
+
+    # Py2Exe options
+    windows = [{ 'script' : 'mcomix_py2exe.py', 'icon_resources' : [(1, "mcomix/images/mcomix.ico")]  }],
+    options = {
+        'py2exe' : {
+            'packages' : 'mcomix.messages, mcomix.images, encodings',
+            'includes' : 'cairo, pango, pangocairo, atk, gobject, gio, gtk.keysyms',
+            'dist_dir' : 'dist_py2exe'
+        }
+    }
 )
 
 # vim: expandtab:sw=4:ts=4

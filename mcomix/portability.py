@@ -107,4 +107,27 @@ def invalid_filesystem_chars():
     else:
         return u''
 
+def get_default_locale():
+    """ Gets the user's default locale. """
+    if sys.platform == 'win32':
+        LOCALE_USER_DEFAULT = 0x0400
+        LOCALE_SISO639LANGNAME = 0x0059
+        LOCALE_SISO3166CTRYNAME = 0x005a
+
+        buffer = ctypes.create_unicode_buffer(9)
+        success = ctypes.windll.kernel32.GetLocaleInfoW(LOCALE_USER_DEFAULT, LOCALE_SISO639LANGNAME, buffer, 9)
+        if not success: return u"C"
+        lang = unicode(buffer.value)
+        success = ctypes.windll.kernel32.GetLocaleInfoW(LOCALE_USER_DEFAULT, LOCALE_SISO3166CTRYNAME, buffer, 9)
+        if not success: return u"C"
+        country = unicode(buffer.value)
+
+        return u"%s_%s" % (lang, country)
+    else:
+        lang, _ = locale.getdefaultlocale(['LANGUAGE', 'LC_ALL', 'LC_CTYPE', 'LANG'])
+        if lang:
+            return unicode(lang)
+        else:
+            return u"C"
+
 # vim: expandtab:sw=4:ts=4
