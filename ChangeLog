@@ -31,8 +31,6 @@ MComix 0.90.4
 
       This feature is also available via CTRL+N/CTRL+P, or the menu bar.
 
-    - Fix "Automatically open next archive" with empty archives.
-
     - Speed up thumbnail generation by parallelizing load tasks.
       (inspired by David Zaragoza, who originally suggested to use
       processes instead of threads)
@@ -52,7 +50,7 @@ MComix 0.90.4
       if the menu bar had been disabled using the normal menu, there was no
       way to get it back.
 
-    - The menu bar can now be shown/hidden using CTRL+M.
+    - The menu bar can now also be shown/hidden using CTRL+M.
       (by Alan Horkan)
 
     - MComix could not switch back to windowed mode when started in fullscreen
@@ -64,8 +62,12 @@ MComix 0.90.4
     - Fixed the settings dialog window no longer opening when it has been
       closed with the X icon on the dialog before.
 
+    - Fix "Automatically open next archive" with empty archives.
+
     - Fixed magnifiying lens being broken when the page was rotated in any
       way.
+
+    - Fixed setup.py failing when no X session was started.
 
     - Required Python version is now 2.5 or newer.
 
