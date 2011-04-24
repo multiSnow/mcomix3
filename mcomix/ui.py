@@ -352,6 +352,7 @@ class MainUI(gtk.UIManager):
         general = ('properties',
                    'edit_archive',
                    'extract_page',
+                   'save_and_quit',
                    'close',
                    'copy',
                    'slideshow',
