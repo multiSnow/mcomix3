@@ -24,7 +24,7 @@ def get_data_patterns(directory, *patterns):
         for pattern in patterns:
             current_pattern = os.path.normpath(os.path.join(dirpath, pattern))
             if glob.glob(current_pattern):
-                # Forward slashes only for distutils. 
+                # Forward slashes only for distutils.
                 allfiles.append(current_pattern.replace('\\', '/'))
     os.chdir(olddir)
     return allfiles
@@ -34,7 +34,7 @@ images = get_data_patterns('mcomix/images', '*.png')
 images.remove('*.png')
 images.extend([ os.path.basename(img)
     for img in glob.glob(os.path.join(constants.BASE_PATH, 'mcomix/images', '*.png'))
-    if os.path.basename(img) not in 
+    if os.path.basename(img) not in
         ('mcomix-large.png', 'screenshot-monkey.png', 'screenshot-original.png')])
 
 setuptools.setup(
@@ -44,12 +44,12 @@ setuptools.setup(
     package_data = {
         'mcomix.messages' : get_data_patterns('mcomix/messages', '*.mo', '*.po'),
         'mcomix.images' : images },
-    entry_points = { 
+    entry_points = {
         'console_scripts' : [ 'mcomix = mcomix.mcomixstarter:run' ] },
     requires = ['pygtk (>=2.12.0)', 'PIL (>=1.15)'],
     install_requires = ['setuptools'],
     zip_safe = False,
-    
+
     # Various MIME files that need to be copied to certain system locations on Linux.
     # Note that these files are only installed correctly if
     # --single-version-externally-managed is used as argument to "setup.py install".
@@ -64,24 +64,24 @@ setuptools.setup(
         ('share/icons/hicolor/24x24/apps', ['mcomix/images/24x24/mcomix.png']),
         ('share/icons/hicolor/32x32/apps', ['mcomix/images/32x32/mcomix.png']),
         ('share/icons/hicolor/48x48/apps', ['mcomix/images/48x48/mcomix.png']),
-        ('share/icons/hicolor/16x16/mimetypes', 
-            ['mime/icons/16x16/application-x-cbz.png', 
+        ('share/icons/hicolor/16x16/mimetypes',
+            ['mime/icons/16x16/application-x-cbz.png',
              'mime/icons/16x16/application-x-cbr.png',
              'mime/icons/16x16/application-x-cbt.png']),
-        ('share/icons/hicolor/22x22/mimetypes', 
-            ['mime/icons/22x22/application-x-cbz.png', 
+        ('share/icons/hicolor/22x22/mimetypes',
+            ['mime/icons/22x22/application-x-cbz.png',
              'mime/icons/22x22/application-x-cbr.png',
              'mime/icons/22x22/application-x-cbt.png']),
-        ('share/icons/hicolor/24x24/mimetypes', 
-            ['mime/icons/24x24/application-x-cbz.png', 
+        ('share/icons/hicolor/24x24/mimetypes',
+            ['mime/icons/24x24/application-x-cbz.png',
              'mime/icons/24x24/application-x-cbr.png',
              'mime/icons/24x24/application-x-cbt.png']),
-        ('share/icons/hicolor/32x32/mimetypes', 
-            ['mime/icons/32x32/application-x-cbz.png', 
+        ('share/icons/hicolor/32x32/mimetypes',
+            ['mime/icons/32x32/application-x-cbz.png',
              'mime/icons/32x32/application-x-cbr.png',
              'mime/icons/32x32/application-x-cbt.png']),
-        ('share/icons/hicolor/48x48/mimetypes', 
-            ['mime/icons/48x48/application-x-cbz.png', 
+        ('share/icons/hicolor/48x48/mimetypes',
+            ['mime/icons/48x48/application-x-cbz.png',
              'mime/icons/48x48/application-x-cbr.png',
              'mime/icons/48x48/application-x-cbt.png'])],
 
@@ -94,7 +94,8 @@ setuptools.setup(
     platforms = ['GNU/Linux', 'Win32'],
 
     # Py2Exe options
-    windows = [{ 'script' : 'mcomix_py2exe.py', 'icon_resources' : [(1, "mcomix/images/mcomix.ico")]  }],
+    console = [{ 'script' : 'win32/mcomix_py2exe.py',
+        'icon_resources' : [(1, "mcomix/images/mcomix.ico")]  }],
     options = {
         'py2exe' : {
             'packages' : 'mcomix.messages, mcomix.images, encodings',
