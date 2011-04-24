@@ -14,9 +14,12 @@ ARCHIVE_DESCRIPTIONS = {
                         SEVENZIP: _('7z archive')
                        }
 
-CREDITS = (
+AUTHORS = (
             ('Pontus Ekberg', _('Original vision/developer of Comix')),
             ('Louis Casillas', _('Lead developer of MComix')),
+            ('Moritz Brunner', _('MComix developer'))
+          )
+TRANSLATORS = (
             ('Emfox Zhou', _('Simplified Chinese translation')),
             ('Xie Yanbo', _('Simplified Chinese translation')),
             ('Manuel Quiñones', _('Spanish translation')),
@@ -45,8 +48,10 @@ CREDITS = (
             ('Jan Nekvasil', _('Czech translation')),
             ('Олександр Заяц', _('Ukrainian translation')),
             ('Roxerio Roxo Carrillo', _('Galician translation')),
-            ('Martin Karlsson', _('Swedish tranlation')),
-            ('Victor Castillejo', _('Icon design'))
+            ('Martin Karlsson', _('Swedish tranlation'))
+          )
+ARTISTS = (
+            ('Victor Castillejo', _('Icon design')),
           )
 
 # vim: expandtab:sw=4:ts=4

@@ -1,88 +1,50 @@
 # -*- coding: utf-8 -*-
 """about_dialog.py - About dialog."""
 
-import os
 import gtk
 import constants
 import strings
-import labels
 import pkg_resources
 import image_tools
 
-class _AboutDialog(gtk.Dialog):
+class _AboutDialog(gtk.AboutDialog):
 
     def __init__(self, window):
-        gtk.Dialog.__init__(self, _('About %s') % constants.APPNAME, window, 0,
-            (gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE))
+        gtk.AboutDialog.__init__(self)
 
-        self.set_has_separator(False)
-        self.set_resizable(False)
-        self.set_default_response(gtk.RESPONSE_CLOSE)
-
-        notebook = gtk.Notebook()
-        self.vbox.pack_start(notebook, False, False, 0)
-        self.set_border_width(4)
-        notebook.set_border_width(6)
-
-        # ----------------------------------------------------------------
-        # About tab.
-        # ----------------------------------------------------------------
-        box = gtk.VBox(False, 0)
-        box.set_border_width(5)
+        self.set_name(constants.APPNAME)
+        self.set_program_name(constants.APPNAME)
+        self.set_version(constants.VERSION)
+        self.set_website('http://mcomix.sourceforge.net')
+        self.set_copyright('Copyright © 2005-2011')
 
         icon_data = pkg_resources.resource_string('mcomix.images', 'mcomix.png')
         pixbuf = image_tools.load_pixbuf_data(icon_data)
-        icon = gtk.Image()
-        icon.set_from_pixbuf(pixbuf)
-        box.pack_start(icon, False, False, 10)
+        self.set_logo(pixbuf)
 
-        label = gtk.Label()
-        label.set_markup(
-        '<big><big><big><big><b><span foreground="#7E3517">MC</span>' +
-        '<span foreground="#79941b">omix</span> <span foreground="#333333">' +
-        constants.VERSION +
-        '</span></b></big></big></big></big>\n\n' +
-        _('%s is an image viewer specifically designed to handle comic books.') % constants.APPNAME +
-        '\n' +
-        _('It reads ZIP, RAR and tar archives, as well as plain image files.') +
-        '\n\n' +
-        _('%s is licensed under the terms of the GNU General Public License.') % constants.APPNAME +
-        '\n\n' +
-        '<small>Lead Developer:\n' +
-        'Louis Casillas, oxaric@gmail.com\n' +
-        'http://mcomix.sourceforge.net</small>\n')
+        comment = \
+            _('%s is an image viewer specifically designed to handle comic books.') % \
+            constants.APPNAME + u' ' + \
+            _('It reads ZIP, RAR and tar archives, as well as plain image files.')
+        self.set_comments(comment)
 
-        box.pack_start(label, True, True, 0)
-        label.set_justify(gtk.JUSTIFY_CENTER)
-        label.set_selectable(True)
-        notebook.insert_page(box, gtk.Label(_('About')))
+        license = \
+            _('%s is licensed under the terms of the GNU General Public License.') % constants.APPNAME + \
+            ' ' + \
+            _('A copy of this license can be obtained from %s') % \
+            'http://www.gnu.org/licenses/gpl-2.0.html'
+        self.set_wrap_license(True)
+        self.set_license(license)
 
-        # ----------------------------------------------------------------
-        # Credits tab.
-        # ----------------------------------------------------------------
-        scrolled = gtk.ScrolledWindow()
-        scrolled.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
-        hbox = gtk.HBox(False, 5)
-        hbox.set_border_width(5)
-        scrolled.add_with_viewport(hbox)
+        authors = [ u'%s: %s' % (name, description) for name, description in strings.AUTHORS ]
+        self.set_authors(authors)
 
-        left_box = gtk.VBox(True, 8)
-        right_box = gtk.VBox(True, 8)
+        translators = [ u'%s: %s' % (name, description) for name, description in strings.TRANSLATORS ]
+        self.set_translator_credits("\n".join(translators))
 
-        hbox.pack_start(left_box, False, False)
-        hbox.pack_start(right_box, False, False)
+        artists = [ u'%s: %s' % (name, description) for name, description in strings.ARTISTS ]
+        self.set_artists(artists)
 
-        for nice_person, description in strings.CREDITS:
-            name_label = labels.BoldLabel('%s:' % nice_person)
-            name_label.set_alignment(1.0, 1.0)
-
-            left_box.pack_start(name_label, True, True)
-            desc_label = gtk.Label(description)
-            desc_label.set_alignment(0, 1.0)
-
-            right_box.pack_start(desc_label, True, True)
-
-        notebook.insert_page(scrolled, gtk.Label(_('Credits')))
         self.show_all()
 
 # vim: expandtab:sw=4:ts=4
