@@ -489,9 +489,10 @@ class _PreferencesDialog(gtk.Dialog):
                 prefs['color box thumb bg'] = False
                 prefs['thumbnail bg uses main colour'] = False
 
-                bg_color = image_tools.get_most_common_edge_colour(
-                                self._window.left_image.get_pixbuf())
-                self._window.thumbnailsidebar.change_thumbnail_background_color(bg_color)
+                pixbuf = self._window.left_image.get_pixbuf()
+                if pixbuf:
+                    bg_color = image_tools.get_most_common_edge_colour(pixbuf)
+                    self._window.thumbnailsidebar.change_thumbnail_background_color(bg_color)
             else:
                 self._window.draw_image()
 
