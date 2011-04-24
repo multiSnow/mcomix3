@@ -71,11 +71,19 @@ def complete_library_zip():
 	library.close()
 
 def rename_executable():
+	""" Rename the executable into something reasonable. """
 	print 'Renaming executable...'
 	if os.path.isfile('dist_py2exe/MComix.exe'):
 		os.unlink('dist_py2exe/MComix.exe')
 	if os.path.isfile('dist_py2exe/mcomix_py2exe.exe'):
 		shutil.move('dist_py2exe/mcomix_py2exe.exe', 'dist_py2exe/MComix.exe')
+
+def copy_other_files():
+	""" Copy other relevant files into dist directory. """
+	print "Copying misc files into dist directory..."
+	shutil.copy('ChangeLog', 'dist_py2exe/ChangeLog.txt')
+	shutil.copy('README', 'dist_py2exe/README.txt')
+	shutil.copy('COPYING', 'dist_py2exe/COPYING.txt')
 
 if __name__ == '__main__':
 	clear_distdir('dist_py2exe')
@@ -87,3 +95,5 @@ if __name__ == '__main__':
 	complete_library_zip()
 
 	rename_executable()
+
+	copy_other_files()
