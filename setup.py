@@ -42,7 +42,7 @@ setuptools.setup(
     version = constants.VERSION,
     packages = ['mcomix', 'mcomix.archive', 'mcomix.messages', 'mcomix.images'],
     package_data = {
-        'mcomix.messages' : get_data_patterns('mcomix/messages', '*.mo', '*.po'),
+        'mcomix.messages' : get_data_patterns('mcomix/messages', '*.mo'),
         'mcomix.images' : images },
     entry_points = {
         'console_scripts' : [ 'mcomix = mcomix.mcomixstarter:run' ] },
