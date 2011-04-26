@@ -36,7 +36,7 @@ class MainUI(gtk.UIManager):
                 'End', _('Last page'), window.last_page),
             ('go_to', gtk.STOCK_JUMP_TO, _('_Go to page...'),
                 'G', _('Go to page...'), window.page_select),
-            ('refresh_archive', 'mcomix-refresh', _('_Refresh file'),
+            ('refresh_archive', gtk.STOCK_REFRESH, None,
                 '<control><shift>R', _('Refresh file'), window.filehandler.refresh_file),
             ('next_archive', 'mcomix-next-archive', _('_Next archive'),
                 '<control><shift>N', _('Next archive'), window.filehandler._open_next_archive),
@@ -46,11 +46,11 @@ class MainUI(gtk.UIManager):
                 '<control>N', _('Next directory'), window.filehandler.open_next_directory),
             ('previous_directory', 'mcomix-previous-directory', _('Previous directory'),
                 '<control>P', _('Previous directory'), window.filehandler.open_previous_directory),
-            ('zoom_in', gtk.STOCK_ZOOM_IN, _('_Zoom in'),
+            ('zoom_in', gtk.STOCK_ZOOM_IN, None,
                 'KP_Add', None, window.manual_zoom_in),
             ('zoom_out', gtk.STOCK_ZOOM_OUT, None,
                 'KP_Subtract', None, window.manual_zoom_out),
-            ('zoom_original', gtk.STOCK_ZOOM_100, _('O_riginal size'),
+            ('zoom_original', gtk.STOCK_ZOOM_100, None,
                 '<Control>0', None, window.manual_zoom_original),
             ('close', gtk.STOCK_CLOSE, None,
                 None, None, window.filehandler.close_file),
@@ -68,7 +68,7 @@ class MainUI(gtk.UIManager):
                 None, None, window.flip_horizontally),
             ('flip_vert', 'mcomix-flip-vertical', _('Flip _vertically'),
                 None, None, window.flip_vertically),
-            ('extract_page', gtk.STOCK_SAVE_AS, _('Save _As...'),
+            ('extract_page', gtk.STOCK_SAVE_AS, None,
                 '<Control><Shift>s', None, window.extract_page),
             ('menu_zoom', 'mcomix-zoom', _('_Zoom')),
             ('menu_recent', gtk.STOCK_DND_MULTIPLE, _('_Recent')),
@@ -87,7 +87,7 @@ class MainUI(gtk.UIManager):
             ('expander', None, None, None, None, None)])
 
         self._actiongroup.add_toggle_actions([
-            ('fullscreen', None, _('_Fullscreen'),
+            ('fullscreen', gtk.STOCK_FULLSCREEN, None,
                 'f', None, window.change_fullscreen),
             ('double_page', 'mcomix-double-page', _('_Double page mode'),
                 'd', _('Double page mode'), window.change_double_page),
@@ -134,7 +134,7 @@ class MainUI(gtk.UIManager):
              'c', None, dialog_handler.open_dialog)], (window, 'comments-dialog'))
 
         self._actiongroup.add_actions([
-            ('properties', gtk.STOCK_PROPERTIES, _('Proper_ties'),
+            ('properties', gtk.STOCK_PROPERTIES, None,
                 '<Alt>Return', None, dialog_handler.open_dialog)], (window,'properties-dialog'))
 
         self._actiongroup.add_actions([
