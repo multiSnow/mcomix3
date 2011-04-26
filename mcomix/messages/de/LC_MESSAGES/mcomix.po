@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.90.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-24 15:51+CEST\n"
+"POT-Creation-Date: 2011-04-26 13:53+CEST\n"
 "PO-Revision-Date: 2011-04-23 07:45+GMT\n"
 "Last-Translator: Moritz Brunner <oddegamra@gmx.org>\n"
 "Language-Team: \n"
@@ -60,11 +60,11 @@ msgstr ""
 msgid "! Could not read %s"
 msgstr "! %s kann nicht gelesen werden"
 
-#: mcomix/bookmark_backend.py:34
+#: mcomix/bookmark_backend.py:35
 msgid "! Could not parse bookmarks file %s"
 msgstr "! Lesezeichen-Speicher %s kann nicht gelesen werden"
 
-#: mcomix/bookmark_backend.py:35
+#: mcomix/bookmark_backend.py:36
 msgid "! Deleting corrupt bookmarks file."
 msgstr "! Korrupter Lesezeichen-Speicher wird gelöscht."
 
@@ -84,23 +84,23 @@ msgstr "Name"
 msgid "Page"
 msgstr "Seite"
 
-#: mcomix/bookmark_menu.py:21
+#: mcomix/bookmark_menu.py:23
 msgid "_Add bookmark"
 msgstr "_Lesezeichen hinzufügen"
 
-#: mcomix/bookmark_menu.py:23
+#: mcomix/bookmark_menu.py:25
 msgid "_Edit bookmarks..."
 msgstr "Lesezeichen _bearbeiten ..."
 
-#: mcomix/bookmark_menu.py:25
+#: mcomix/bookmark_menu.py:27
 msgid "_Clear bookmarks"
 msgstr "Lese_zeichen löschen"
 
-#: mcomix/bookmark_menu.py:78
+#: mcomix/bookmark_menu.py:83
 msgid "Clear all bookmarks?"
 msgstr "Alle Lesezeichen löschen?"
 
-#: mcomix/bookmark_menu.py:81
+#: mcomix/bookmark_menu.py:86
 msgid ""
 "All stored bookmarks will be removed. Are you sure that you want to continue?"
 msgstr ""
@@ -315,7 +315,7 @@ msgstr "! Korrupte Options-Datei \"%s\", wird gelöscht..."
 msgid "Invalid path: '%s'"
 msgstr "Ungültiger Pfad: '%s'"
 
-#: mcomix/icons.py:55
+#: mcomix/icons.py:54
 msgid "! Could not load icon \"%s\""
 msgstr "! Icon %s kann nicht geladen werden"
 
@@ -685,7 +685,7 @@ msgid "No version of the Python Imaging Library was found on your system."
 msgstr ""
 "Keine Python Image Library-Version konnte auf Ihrem System gefunden werden."
 
-#: mcomix/pageselect.py:15 mcomix/ui.py:81 mcomix/ui.py:82
+#: mcomix/pageselect.py:15 mcomix/ui.py:82 mcomix/ui.py:83
 msgid "_Go"
 msgstr "_Gehe"
 
@@ -933,7 +933,7 @@ msgstr ""
 "Seitenwechsel, aber können dazu führen, dass ein Seitenwechsel aus Versehen "
 "zu früh ausgelöst wird."
 
-#: mcomix/preferences_dialog.py:232 mcomix/ui.py:92
+#: mcomix/preferences_dialog.py:232 mcomix/ui.py:93
 msgid "Double page mode"
 msgstr "Doppelseitiger Modus"
 
@@ -1025,19 +1025,19 @@ msgstr "Als Vorgabe Manga-Modus benutzen."
 msgid "Default zoom mode"
 msgstr "Standard-Vergrößerungsmodus"
 
-#: mcomix/preferences_dialog.py:312 mcomix/ui.py:118
+#: mcomix/preferences_dialog.py:312 mcomix/ui.py:119
 msgid "Best fit mode"
 msgstr "Am besten passender Modus"
 
-#: mcomix/preferences_dialog.py:313 mcomix/ui.py:120
+#: mcomix/preferences_dialog.py:313 mcomix/ui.py:121
 msgid "Fit width mode"
 msgstr "Modus mit angepasster Breite"
 
-#: mcomix/preferences_dialog.py:314 mcomix/ui.py:122
+#: mcomix/preferences_dialog.py:314 mcomix/ui.py:123
 msgid "Fit height mode"
 msgstr "Modus mit angepasster Höhe"
 
-#: mcomix/preferences_dialog.py:315 mcomix/ui.py:124
+#: mcomix/preferences_dialog.py:315 mcomix/ui.py:125
 msgid "Manual zoom mode"
 msgstr "Manueller Vergrößerungsmodus"
 
@@ -1182,14 +1182,14 @@ msgstr ""
 "haben, werden als Kommentare behandelt."
 
 #: mcomix/process.py:49
-msgid "! Error spawning process \"%(command)s\": %(error)s"
-msgstr "! Prozess \"%(command)s\" konnte nicht gestartet werden: %(error)s"
+msgid "! Error spawning process \"%(command)s\": %(error)s."
+msgstr "! Prozess \"%(command)s\" konnte nicht gestartet werden: %(error)s."
 
 #: mcomix/process.py:51
-msgid "! \"%s\" must be on your system PATH to be found."
+msgid "\"%s\" must be on your system PATH to be found."
 msgstr ""
-"! \"%s\" muss sich in einem Verzeichnis befinden, welches in PATH "
-"registriert ist."
+"\"%s\" muss sich in einem Verzeichnis befinden, welches in PATH eingetragen "
+"ist."
 
 #: mcomix/properties_dialog.py:21
 msgid "Properties"
@@ -1231,7 +1231,7 @@ msgstr "Bild"
 msgid "Stop slideshow"
 msgstr "Diaschau anhalten"
 
-#: mcomix/slideshow.py:46 mcomix/ui.py:110
+#: mcomix/slideshow.py:46 mcomix/ui.py:111
 msgid "Start slideshow"
 msgstr "Diaschau starten"
 
@@ -1375,10 +1375,6 @@ msgstr "Symbol-Design"
 msgid "! Could not save thumbnail \"%(thumbpath)s\": %(error)s"
 msgstr "! Konnte Vorschaubild \"%(thumbpath)s\" nicht speichern: %(error)s"
 
-#: mcomix/ui.py:27
-msgid "_Copy"
-msgstr "Kopieren"
-
 #: mcomix/ui.py:29
 msgid "_Next page"
 msgstr "_Nächste Seite"
@@ -1419,10 +1415,6 @@ msgstr "_Gehe zu Seite..."
 msgid "Go to page..."
 msgstr "Gehe zu Seite..."
 
-#: mcomix/ui.py:39
-msgid "_Refresh file"
-msgstr "Datei aktualisie_ren"
-
 #: mcomix/ui.py:40
 msgid "Refresh file"
 msgstr "Datei aktualisieren"
@@ -1451,26 +1443,6 @@ msgstr "Nächstes Verzeichnis"
 msgid "Previous directory"
 msgstr "Vorheriges Verzeichnis"
 
-#: mcomix/ui.py:49
-msgid "_Zoom in"
-msgstr "Ver_größern"
-
-#: mcomix/ui.py:51
-msgid "Zoom _out"
-msgstr "Ver_kleinern"
-
-#: mcomix/ui.py:53
-msgid "O_riginal size"
-msgstr "_Originalgröße"
-
-#: mcomix/ui.py:55
-msgid "_Close"
-msgstr "_Schließen"
-
-#: mcomix/ui.py:57
-msgid "_Quit"
-msgstr "_Beenden"
-
 #: mcomix/ui.py:59
 msgid "_Save and quit"
 msgstr "_Speichern und beenden"
@@ -1495,10 +1467,6 @@ msgstr "Hori_zontal blättern"
 msgid "Flip _vertically"
 msgstr "Ver_tikal blättern"
 
-#: mcomix/ui.py:71
-msgid "Save _As..."
-msgstr "Speichern _als..."
-
 #: mcomix/ui.py:73
 msgid "_Zoom"
 msgstr "Ver_größern"
@@ -1507,141 +1475,164 @@ msgstr "Ver_größern"
 msgid "_Recent"
 msgstr "Zuletzt geö_ffnet"
 
-#: mcomix/ui.py:75
+#: mcomix/ui.py:75 mcomix/ui.py:76
 msgid "_Bookmarks"
 msgstr "Lesezei_chen"
 
-#: mcomix/ui.py:76
+#: mcomix/ui.py:77
 msgid "T_oolbars"
 msgstr "_Werkzeugleisten"
 
-#: mcomix/ui.py:77
+#: mcomix/ui.py:78
 msgid "_Edit"
 msgstr "Bea_rbeiten"
 
-#: mcomix/ui.py:78
+#: mcomix/ui.py:79
 msgid "_File"
 msgstr "Date_i"
 
-#: mcomix/ui.py:79 mcomix/ui.py:80
+#: mcomix/ui.py:80 mcomix/ui.py:81
 msgid "_View"
 msgstr "Ansic_ht"
 
-#: mcomix/ui.py:83
+#: mcomix/ui.py:84
 msgid "_Tools"
 msgstr "_Werkzeuge"
 
-#: mcomix/ui.py:84
+#: mcomix/ui.py:85
 msgid "_Help"
 msgstr "_Hilfe"
 
-#: mcomix/ui.py:85
+#: mcomix/ui.py:86
 msgid "_Transform image"
 msgstr "Bild ändern"
 
-#: mcomix/ui.py:89
-msgid "_Fullscreen"
-msgstr "_Vollbild"
-
-#: mcomix/ui.py:91
+#: mcomix/ui.py:92
 msgid "_Double page mode"
 msgstr "_Doppelseitiger Modus"
 
-#: mcomix/ui.py:93
+#: mcomix/ui.py:94
 msgid "_Toolbar"
 msgstr "_Werkzeugleiste"
 
-#: mcomix/ui.py:95
+#: mcomix/ui.py:96
 msgid "_Menubar"
 msgstr "_Menüleiste"
 
-#: mcomix/ui.py:97
+#: mcomix/ui.py:98
 msgid "St_atusbar"
 msgstr "St_atusleiste"
 
-#: mcomix/ui.py:99
+#: mcomix/ui.py:100
 msgid "S_crollbars"
 msgstr "Ro_llleiste"
 
-#: mcomix/ui.py:101
+#: mcomix/ui.py:102
 msgid "Th_umbnails"
 msgstr "_Vorschaubilder"
 
-#: mcomix/ui.py:103
+#: mcomix/ui.py:104
 msgid "H_ide all"
 msgstr "Alle verstec_ken"
 
-#: mcomix/ui.py:105
+#: mcomix/ui.py:106
 msgid "_Manga mode"
 msgstr "_Manga-Modus"
 
-#: mcomix/ui.py:106
+#: mcomix/ui.py:107
 msgid "Manga mode"
 msgstr "Manga-Modus"
 
-#: mcomix/ui.py:107
+#: mcomix/ui.py:108
 msgid "_Keep transformation"
 msgstr "Veränderung _behalten"
 
-#: mcomix/ui.py:109
+#: mcomix/ui.py:110
 msgid "Start _slideshow"
 msgstr "Diaschau _starten"
 
-#: mcomix/ui.py:111
+#: mcomix/ui.py:112
 msgid "Magnifying _lens"
 msgstr "_Lupe"
 
-#: mcomix/ui.py:112
+#: mcomix/ui.py:113
 msgid "Magnifying lens"
 msgstr "Lupe"
 
-#: mcomix/ui.py:117
+#: mcomix/ui.py:118
 msgid "_Best fit mode"
 msgstr "Am besten _passender Modus"
 
-#: mcomix/ui.py:119
+#: mcomix/ui.py:120
 msgid "Fit _width mode"
 msgstr "Modus mit angepasster Breite"
 
-#: mcomix/ui.py:121
+#: mcomix/ui.py:122
 msgid "Fit _height mode"
 msgstr "Modus mit angepasster H_öhe"
 
-#: mcomix/ui.py:123
+#: mcomix/ui.py:124
 msgid "M_anual zoom mode"
 msgstr "_Manueller Vergrößerungsmodus"
 
-#: mcomix/ui.py:128
-msgid "_About"
-msgstr "_Über"
+#: mcomix/ui.py:133
+msgid "_Comments..."
+msgstr "_Kommentare..."
 
-#: mcomix/ui.py:132
-msgid "_View comments..."
-msgstr "_Kommentare ansehen ..."
-
-#: mcomix/ui.py:136
-msgid "Proper_ties"
-msgstr "Eigenschaf_ten"
-
-#: mcomix/ui.py:140
-msgid "Pr_eferences"
-msgstr "Einstell_ungen"
-
-#: mcomix/ui.py:145
+#: mcomix/ui.py:146
 msgid "_Edit archive..."
 msgstr "Ar_chive bearbeiten ..."
 
-#: mcomix/ui.py:147
+#: mcomix/ui.py:148
 msgid "_Open..."
 msgstr "Ö_ffnen ..."
 
-#: mcomix/ui.py:149
+#: mcomix/ui.py:150
 msgid "En_hance image..."
 msgstr "Bild aufbesser_n..."
 
-#: mcomix/ui.py:153
+#: mcomix/ui.py:154
 msgid "_Library..."
 msgstr "Bibliothe_k ..."
+
+#~ msgid "_Copy"
+#~ msgstr "Kopieren"
+
+#~ msgid "_Refresh file"
+#~ msgstr "Datei aktualisie_ren"
+
+#~ msgid "_Zoom in"
+#~ msgstr "Ver_größern"
+
+#~ msgid "Zoom _out"
+#~ msgstr "Ver_kleinern"
+
+#~ msgid "O_riginal size"
+#~ msgstr "_Originalgröße"
+
+#~ msgid "_Close"
+#~ msgstr "_Schließen"
+
+#~ msgid "_Quit"
+#~ msgstr "_Beenden"
+
+#~ msgid "Save _As..."
+#~ msgstr "Speichern _als..."
+
+#~ msgid "_Fullscreen"
+#~ msgstr "_Vollbild"
+
+#~ msgid "_About"
+#~ msgstr "_Über"
+
+#~ msgid "_View comments..."
+#~ msgstr "_Kommentare ansehen ..."
+
+#~ msgid "Proper_ties"
+#~ msgstr "Eigenschaf_ten"
+
+#~ msgid "Pr_eferences"
+#~ msgstr "Einstell_ungen"
 
 #~ msgid "About %s"
 #~ msgstr "Über %s"
