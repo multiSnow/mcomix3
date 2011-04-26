@@ -138,7 +138,7 @@ class MainUI(gtk.UIManager):
                 '<Alt>Return', None, dialog_handler.open_dialog)], (window,'properties-dialog'))
 
         self._actiongroup.add_actions([
-            ('preferences', gtk.STOCK_PREFERENCES, _('Pr_eferences'),
+            ('preferences', gtk.STOCK_PREFERENCES, None,
                 None, None, preferences_dialog.open_dialog)], (window))
 
         # Some actions added separately since they need extra arguments.
