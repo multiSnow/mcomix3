@@ -46,9 +46,9 @@ class Process:
             return self._proc.stdout
         except Exception, ex:
             cmd = len(self._args) > 0 and self._args[0] or "<invalid>"
-            print_( _('! Error spawning process "%(command)s": %(error)s') %
-                { 'command' : cmd, 'error' : encoding.to_unicode(str(ex)) } )
-            print_( _('! "%s" must be on your system PATH to be found.') % cmd )
+            print_( _('! Error spawning process "%(command)s": %(error)s.') %
+                { 'command' : cmd, 'error' : encoding.to_unicode(str(ex)) } + ' ' +
+                _('"%s" must be on your system PATH to be found.') % cmd )
             return None
 
     def spawn(self):
