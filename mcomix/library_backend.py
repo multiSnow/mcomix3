@@ -55,17 +55,23 @@ class LibraryBackend:
                 cur = self._con.execute('''select id from Book
                     where path like ?
                     order by ?''', ("%%%s%%" % filter_string, order_by))
+
+            return cur.fetchall()
         else:
-            if filter_string is None:
-                cur = self._con.execute('''select id from Book
-                    where id in (select book from Contain where collection = ?)
-                    order by ?''', (collection, order_by))
-            else:
-                cur = self._con.execute('''select id from Book
-                    where id in (select book from Contain where collection = ?)
-                    and path like ?
-                    order by ?''', (collection, "%%%s%%" % filter_string, order_by))
-        return cur.fetchall()
+            books = []
+            subcollections = self.get_all_collections_in_collection(collection)
+            for coll in [ collection ] + subcollections:
+                if filter_string is None:
+                    cur = self._con.execute('''select id from Book
+                        where id in (select book from Contain where collection = ?)
+                        order by ?''', (coll, order_by))
+                else:
+                    cur = self._con.execute('''select id from Book
+                        where id in (select book from Contain where collection = ?)
+                        and path like ?
+                        order by ?''', (coll, "%%%s%%" % filter_string, order_by))
+                books.extend(cur.fetchall())
+            return books
 
     def get_book_cover(self, book):
         """Return a pixbuf with a thumbnail of the cover of <book>, or
@@ -156,6 +162,24 @@ class LibraryBackend:
                 where supercollection = ?
                 order by name''', (collection,))
         return cur.fetchall()
+
+    def get_all_collections_in_collection(self, collection):
+        """ Returns a sequence of <all> subcollections in <collection>,
+        that is, even subcollections that are again a subcollection of one 
+        of the previous subcollections. """
+
+        if collection is None: raise ValueError("Collection must not be <None>")
+
+        to_search = [ collection ]
+        collections = [ ]
+        # This assumes that the library is built like a tree, so no circular references.
+        while len(to_search) > 0:
+            collection = to_search.pop()
+            subcollections = self.get_collections_in_collection(collection)
+            collections.extend(subcollections)
+            to_search.extend(subcollections)
+
+        return collections
 
     def get_all_collections(self):
         """Return a sequence with all collections (flattened hierarchy).

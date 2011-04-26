@@ -1,5 +1,8 @@
 MComix 0.92 (4.0.5)
 
+    - If a library collection has sub-collections, the books from these
+      sub-collections will be shown as well when the collection is opened.
+
     - The "Bookmarks" menu can be accessed via the normal menu bar again.
       (by Alan Horkan)
 
