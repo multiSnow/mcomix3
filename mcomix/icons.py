@@ -29,7 +29,6 @@ def load_icons():
               ('fitwidth.png',               'mcomix-fitwidth'),
               ('fitheight.png',              'mcomix-fitheight'),
               ('fitmanual.png',              'mcomix-fitmanual'),
-              ('gtk-refresh.png',            'mcomix-refresh'),
               ('goto-first-page.png',        'mcomix-goto-first-page'),
               ('goto-last-page.png',         'mcomix-goto-last-page'),
               ('next-page.png',              'mcomix-next-page'),
