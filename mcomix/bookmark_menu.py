@@ -15,6 +15,7 @@ class BookmarksMenu(gtk.Menu):
         gtk.Menu.__init__(self)
 
         self._window = window
+        self._bookmarks_store = bookmark_backend._BookmarksStore(self, window, window.filehandler, window.imagehandler)
 
         self._actiongroup = gtk.ActionGroup('mcomix-bookmarks')
         self._actiongroup.add_actions([
@@ -44,9 +45,11 @@ class BookmarksMenu(gtk.Menu):
         self.append(action.create_menu_item())
 
         self.show_all()
-        self._separator.hide()
 
-        self._bookmarks_store = bookmark_backend._BookmarksStore(self, window, window.filehandler, window.imagehandler)
+        # Prevent calls to show_all accidentally showing the hidden separator.
+        self.set_no_show_all(True)
+        if self._bookmarks_store.is_empty():
+            self._separator.hide()
 
     def add_bookmark(self, bookmark):
         """Add <bookmark> to the menu."""

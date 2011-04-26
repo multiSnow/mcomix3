@@ -24,8 +24,8 @@ class MainUI(gtk.UIManager):
         # ----------------------------------------------------------------
         self._actiongroup = gtk.ActionGroup('mcomix-main')
         self._actiongroup.add_actions([
-            ('copy', gtk.STOCK_COPY, _('_Copy'),
-                '<control>C', None, window.clipboard.copy_page),
+            ('copy', gtk.STOCK_COPY, None,
+                None, None, window.clipboard.copy_page),
             ('next_page', 'mcomix-next-page', _('_Next page'),
                 'Page_Down', _('Next page'), window.next_page),
             ('previous_page', 'mcomix-previous-page', _('_Previous page'),
@@ -48,14 +48,14 @@ class MainUI(gtk.UIManager):
                 '<control>P', _('Previous directory'), window.filehandler.open_previous_directory),
             ('zoom_in', gtk.STOCK_ZOOM_IN, _('_Zoom in'),
                 'KP_Add', None, window.manual_zoom_in),
-            ('zoom_out', gtk.STOCK_ZOOM_OUT, _('Zoom _out'),
+            ('zoom_out', gtk.STOCK_ZOOM_OUT, None,
                 'KP_Subtract', None, window.manual_zoom_out),
             ('zoom_original', gtk.STOCK_ZOOM_100, _('O_riginal size'),
                 '<Control>0', None, window.manual_zoom_original),
-            ('close', gtk.STOCK_CLOSE, _('_Close'),
-                '<Control>w', None, window.filehandler.close_file),
-            ('quit', gtk.STOCK_QUIT, _('_Quit'),
-                '<Control>q', None, window.close_program),
+            ('close', gtk.STOCK_CLOSE, None,
+                None, None, window.filehandler.close_file),
+            ('quit', gtk.STOCK_QUIT, None,
+                None, None, window.close_program),
             ('save_and_quit', gtk.STOCK_QUIT, _('_Save and quit'),
                 '<Control><shift>q', None, window.save_and_terminate_program),
             ('rotate_90', 'mcomix-rotate-90', _('_Rotate 90 degrees CW'),
@@ -73,6 +73,7 @@ class MainUI(gtk.UIManager):
             ('menu_zoom', 'mcomix-zoom', _('_Zoom')),
             ('menu_recent', gtk.STOCK_DND_MULTIPLE, _('_Recent')),
             ('menu_bookmarks_popup', 'comix-add-bookmark', _('_Bookmarks')),
+            ('menu_bookmarks', None, _('_Bookmarks')),
             ('menu_toolbars', None, _('T_oolbars')),
             ('menu_edit', None, _('_Edit')),
             ('menu_file', None, _('_File')),
@@ -125,11 +126,11 @@ class MainUI(gtk.UIManager):
             3, window.change_zoom_mode)
 
         self._actiongroup.add_actions([
-            ('about', gtk.STOCK_ABOUT, _('_About'),
+            ('about', gtk.STOCK_ABOUT, None,
              None, None, dialog_handler.open_dialog)], (window, 'about-dialog'))
 
         self._actiongroup.add_actions([
-            ('comments', 'mcomix-comments', _('_View comments...'),
+            ('comments', 'mcomix-comments', _('_Comments...'),
              'c', None, dialog_handler.open_dialog)], (window, 'comments-dialog'))
 
         self._actiongroup.add_actions([
@@ -145,13 +146,13 @@ class MainUI(gtk.UIManager):
             ('edit_archive', gtk.STOCK_EDIT, _('_Edit archive...'),
              None, None, edit_dialog.open_dialog),
             ('open', gtk.STOCK_OPEN, _('_Open...'),
-                '<Control>o', None, file_chooser_main_dialog.open_main_filechooser_dialog),
+                None, None, file_chooser_main_dialog.open_main_filechooser_dialog),
             ('enhance_image', 'mcomix-enhance-image', _('En_hance image...'),
                 'e', None, enhance_dialog.open_dialog)], window)
 
         self._actiongroup.add_actions([
             ('library', 'mcomix-library', _('_Library...'),
-                '<Control>l', None, library_main_dialog.open_dialog)], window)
+                '<Control>L', None, library_main_dialog.open_dialog)], window)
 
         ui_description = """
         <ui>
@@ -242,6 +243,8 @@ class MainUI(gtk.UIManager):
                     <menuitem action="next_directory" />
                     <menuitem action="previous_directory" />
                 </menu>
+                <menu action="menu_bookmarks">
+                </menu>
                 <menu action="menu_tools">
                     <menuitem action="enhance_image" />
                     <menu action="menu_transform">
@@ -330,7 +333,11 @@ class MainUI(gtk.UIManager):
         self.insert_action_group(self._actiongroup, 0)
 
         self.bookmarks = bookmark_menu.BookmarksMenu(self, window)
-        self.get_widget('/Popup/menu_bookmarks_popup').set_submenu(self.bookmarks)
+        self.get_widget('/Menu/menu_bookmarks').set_submenu(self.bookmarks)
+        self.get_widget('/Menu/menu_bookmarks').show()
+
+        self.bookmarks_popup = bookmark_menu.BookmarksMenu(self, window)
+        self.get_widget('/Popup/menu_bookmarks_popup').set_submenu(self.bookmarks_popup)
         self.get_widget('/Popup/menu_bookmarks_popup').show()
 
         self.recent = recent.RecentFilesMenu(self, window)
@@ -392,6 +399,7 @@ class MainUI(gtk.UIManager):
             self._actiongroup.get_action(name).set_sensitive(comment_sensitive)
 
         self.bookmarks.set_sensitive(general_sensitive)
+        self.bookmarks_popup.set_sensitive(general_sensitive)
 
 
 # vim: expandtab:sw=4:ts=4
