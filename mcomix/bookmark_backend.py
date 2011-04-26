@@ -4,6 +4,7 @@ import os
 import cPickle
 import constants
 import bookmark_menu_item
+import callback
 
 class _BookmarksStore:
 
@@ -46,11 +47,13 @@ class _BookmarksStore:
         """Add the <bookmark> to the store and the menu."""
         self._bookmarks.append(bookmark)
         self._menu.add_bookmark(bookmark)
+        self.bookmark_count_changed()
 
     def remove_bookmark(self, bookmark):
         """Remove the <bookmark> from the store and the menu."""
         self._bookmarks.remove(bookmark)
         self._menu.remove_bookmark(bookmark)
+        self.bookmark_count_changed()
 
     def add_current_to_bookmarks(self):
         """Add the currently viewed file to the store and the menu."""
@@ -73,6 +76,11 @@ class _BookmarksStore:
 
         for bookmark in self._bookmarks:
             self.remove_bookmark(bookmark)
+
+    @callback.Callback
+    def bookmark_count_changed(self):
+        """ Raised every time the bookmark count was changed. """
+        pass
 
     def get_bookmarks(self):
         """Return all the bookmarks in the store."""

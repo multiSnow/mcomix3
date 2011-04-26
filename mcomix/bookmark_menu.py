@@ -16,6 +16,7 @@ class BookmarksMenu(gtk.Menu):
 
         self._window = window
         self._bookmarks_store = bookmark_backend._BookmarksStore(self, window, window.filehandler, window.imagehandler)
+        self._bookmarks_store.bookmark_count_changed += self._update_clear_bookmarks_sensitivity
 
         self._actiongroup = gtk.ActionGroup('mcomix-bookmarks')
         self._actiongroup.add_actions([
@@ -44,6 +45,7 @@ class BookmarksMenu(gtk.Menu):
         action.set_accel_group(ui.get_accel_group())
         self.append(action.create_menu_item())
 
+        self._update_clear_bookmarks_sensitivity()
         self.show_all()
 
         # Prevent calls to show_all accidentally showing the hidden separator.
@@ -88,6 +90,13 @@ class BookmarksMenu(gtk.Menu):
 
         if response == gtk.RESPONSE_YES:
             self._bookmarks_store.clear_bookmarks()
+
+    def _update_clear_bookmarks_sensitivity(self):
+        """ Enables or disables the "Clear bookmarks" menu item based on how many
+        bookmarks are actually available. """
+
+        enabled = not self._bookmarks_store.is_empty()
+        self._actiongroup.get_action('clear_bookmarks').set_sensitive(enabled)
 
     def set_sensitive(self, loaded):
         """Set the sensitivities of menu items as appropriate if <loaded>
