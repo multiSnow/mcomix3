@@ -54,7 +54,7 @@ class FileHandler:
 
     def refresh_file(self, start_page=1):
         current_file = self._current_file
-        self.open_file(current_file)
+        self.open_file(current_file, start_page, keep_fileprovider=True)
 
     def open_file(self, path, start_page=1, keep_fileprovider=False):
         """Open the file pointed to by <path>.
