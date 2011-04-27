@@ -134,11 +134,11 @@ class MainUI(gtk.UIManager):
              'c', None, dialog_handler.open_dialog)], (window, 'comments-dialog'))
 
         self._actiongroup.add_actions([
-            ('properties', gtk.STOCK_PROPERTIES, None,
+            ('properties', gtk.STOCK_PROPERTIES, _('Proper_ties'),
                 '<Alt>Return', None, dialog_handler.open_dialog)], (window,'properties-dialog'))
 
         self._actiongroup.add_actions([
-            ('preferences', gtk.STOCK_PREFERENCES, None,
+            ('preferences', gtk.STOCK_PREFERENCES, _('Pr_eferences'),
                 None, None, preferences_dialog.open_dialog)], (window))
 
         # Some actions added separately since they need extra arguments.
