@@ -6,17 +6,17 @@ import constants
 import bookmark_menu_item
 import callback
 
-class _BookmarksStore:
+class __BookmarksStore:
 
     """The _BookmarksStore is a backend for both the bookmarks menu and dialog.
     Changes in the _BookmarksStore are mirrored in both.
     """
 
-    def __init__(self, menu, window, file_handler, image_handler):
-        self._menu = menu
-        self._window = window
-        self._file_handler = file_handler
-        self._image_handler = image_handler
+    def __init__(self):
+        self._initialized = False
+        self._window = None
+        self._file_handler = None
+        self._image_handler = None
         self._bookmarks = []
 
         if os.path.isfile(constants.BOOKMARK_PICKLE_PATH):
@@ -37,26 +37,37 @@ class _BookmarksStore:
                 os.remove(constants.BOOKMARK_PICKLE_PATH)
                 self.clear_bookmarks()
 
+    def initialize(self, window):
+        """ Initializes references to the main window and file/image handlers. """
+        if not self._initialized:
+            self._window = window
+            self._file_handler = window.filehandler
+            self._image_handler = window.imagehandler
+            self._initialized = True
+
+            # Update already loaded bookmarks with window and file handler information
+            for bookmark in self._bookmarks:
+                bookmark._window = window
+                bookmark._file_handler = window.filehandler
+
     def add_bookmark_by_values(self, name, path, page, numpages, archive_type):
-        """Create a bookmark and add it to the store and the menu."""
+        """Create a bookmark and add it to the store."""
         bookmark = bookmark_menu_item._Bookmark(self._window, self._file_handler, name, path, page, numpages,
             archive_type)
         self.add_bookmark(bookmark)
 
+    @callback.Callback
     def add_bookmark(self, bookmark):
-        """Add the <bookmark> to the store and the menu."""
+        """Add the <bookmark> to the store."""
         self._bookmarks.append(bookmark)
-        self._menu.add_bookmark(bookmark)
-        self.bookmark_count_changed()
 
+    @callback.Callback
     def remove_bookmark(self, bookmark):
-        """Remove the <bookmark> from the store and the menu."""
+        """Remove the <bookmark> from the store."""
         self._bookmarks.remove(bookmark)
-        self._menu.remove_bookmark(bookmark)
-        self.bookmark_count_changed()
 
     def add_current_to_bookmarks(self):
-        """Add the currently viewed file to the store and the menu."""
+        """Add the currently viewed file to the store."""
         name = self._image_handler.get_pretty_current_filename()
         path = self._image_handler.get_real_path()
         page = self._image_handler.get_current_page()
@@ -72,15 +83,10 @@ class _BookmarksStore:
             archive_type)
 
     def clear_bookmarks(self):
-        """Remove all bookmarks from the store and the menu."""
+        """Remove all bookmarks from the store."""
 
-        for bookmark in self._bookmarks:
-            self.remove_bookmark(bookmark)
-
-    @callback.Callback
-    def bookmark_count_changed(self):
-        """ Raised every time the bookmark count was changed. """
-        pass
+        while not self.is_empty():
+            self.remove_bookmark(self._bookmarks[-1])
 
     def get_bookmarks(self):
         """Return all the bookmarks in the store."""
@@ -98,5 +104,8 @@ class _BookmarksStore:
         packs = [bookmark.pack() for bookmark in self._bookmarks]
         cPickle.dump(packs, fd, cPickle.HIGHEST_PROTOCOL)
         fd.close()
+
+# Singleton instance of the bookmarks store.
+BookmarksStore = __BookmarksStore()
 
 # vim: expandtab:sw=4:ts=4

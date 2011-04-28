@@ -15,8 +15,12 @@ class BookmarksMenu(gtk.Menu):
         gtk.Menu.__init__(self)
 
         self._window = window
-        self._bookmarks_store = bookmark_backend._BookmarksStore(self, window, window.filehandler, window.imagehandler)
-        self._bookmarks_store.bookmark_count_changed += self._update_clear_bookmarks_sensitivity
+        self._bookmarks_store = bookmark_backend.BookmarksStore
+        self._bookmarks_store.initialize(window)
+        self._bookmarks_store.add_bookmark += self.add_bookmark
+        self._bookmarks_store.remove_bookmark += self.remove_bookmark
+
+        self._separator = gtk.SeparatorMenuItem()
 
         self._actiongroup = gtk.ActionGroup('mcomix-bookmarks')
         self._actiongroup.add_actions([
@@ -26,8 +30,6 @@ class BookmarksMenu(gtk.Menu):
                 '<Control>b', None, self._edit_bookmarks),
             ('clear_bookmarks', gtk.STOCK_CLEAR, _('_Clear bookmarks'),
                 None, None, self._clear_bookmarks)])
-
-        self._separator = gtk.SeparatorMenuItem()
 
         action = self._actiongroup.get_action('add_bookmark')
         action.set_accel_group(ui.get_accel_group())
@@ -45,26 +47,39 @@ class BookmarksMenu(gtk.Menu):
         action.set_accel_group(ui.get_accel_group())
         self.append(action.create_menu_item())
 
+        # Load initial bookmarks from the backend.
+        for bookmark in self._bookmarks_store.get_bookmarks():
+            self.add_bookmark(bookmark)
         self._update_clear_bookmarks_sensitivity()
-        self.show_all()
 
         # Prevent calls to show_all accidentally showing the hidden separator.
+        self.show_all()
         self.set_no_show_all(True)
         if self._bookmarks_store.is_empty():
             self._separator.hide()
 
     def add_bookmark(self, bookmark):
         """Add <bookmark> to the menu."""
+        bookmark = bookmark.clone()
         self.insert(bookmark, 3)
         bookmark.show()
         self._separator.show()
 
+        self._update_clear_bookmarks_sensitivity()
+
     def remove_bookmark(self, bookmark):
         """Remove <bookmark> from the menu."""
-        self.remove(bookmark)
+
+        # Find the bookmark item corresponding to the passed bookmark
+        for menu_bookmark in self.get_children():
+            if bookmark == menu_bookmark:
+                self.remove(menu_bookmark)
+                break
 
         if self._bookmarks_store.is_empty():
             self._separator.hide()
+
+        self._update_clear_bookmarks_sensitivity()
 
     def _add_current_to_bookmarks(self, *args):
         """Add the currently viewed file to the bookmarks."""

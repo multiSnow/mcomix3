@@ -67,4 +67,24 @@ class _Bookmark(gtk.ImageMenuItem):
         return (self._name, self._path, self._page, self._numpages,
             self._archive_type)
 
+    def clone(self):
+        """ Creates a copy of the provided Bookmark menu item. This is necessary
+        since one bookmark item cannot be anchored in more than one menu. There are,
+        however, at least two: The main menu and the popup menu. """
+        return _Bookmark(
+            self._window,
+            self._file_handler,
+            self._name,
+            self._path,
+            self._page,
+            self._numpages,
+            self._archive_type)
+
+    def __eq__(self, other):
+        """ Equality comparison for Bookmark items. """
+        if isinstance(other, _Bookmark):
+            return self._path == other._path and self._page == other._page
+        else:
+            return False
+
 # vim: expandtab:sw=4:ts=4
