@@ -26,6 +26,8 @@ class MainUI(gtk.UIManager):
         self._actiongroup.add_actions([
             ('copy_page', gtk.STOCK_PASTE, _('Copy to c_lipboard'),
                 '<Control><Shift>C', None, window.clipboard.copy_page),
+            ('delete', gtk.STOCK_DELETE, None,
+                'F8', None, window.delete),
             ('next_page', 'mcomix-next-page', _('_Next page'),
                 'Page_Down', _('Next page'), window.next_page),
             ('previous_page', 'mcomix-previous-page', _('_Previous page'),
@@ -189,8 +191,7 @@ class MainUI(gtk.UIManager):
                     <menuitem action="extract_page" />
                     <menuitem action="refresh_archive" />
                     <separator />
-                    <menuitem action="properties" />
-                    <menuitem action="comments" />
+                    <menuitem action="delete" />
                     <separator />
                     <menuitem action="close" />
                     <menuitem action="save_and_quit" />
@@ -198,6 +199,11 @@ class MainUI(gtk.UIManager):
                 </menu>
                 <menu action="menu_edit">
                     <menuitem action="copy_page" />
+                    <separator />
+                    <menuitem action="edit_archive" />
+                    <menuitem action="comments" />
+                    <separator />
+                    <menuitem action="properties" />
                     <separator />
                     <menuitem action="preferences" />
                 </menu>
@@ -257,8 +263,6 @@ class MainUI(gtk.UIManager):
                         <separator />
                         <menuitem action="keep_transformation" />
                     </menu>
-                    <separator />
-                    <menuitem action="edit_archive" />
                 </menu>
                 <menu action="menu_help">
                     <menuitem action="about" />
@@ -318,8 +322,6 @@ class MainUI(gtk.UIManager):
                 <menuitem action="library" />
                 <separator />
                 <menuitem action="properties" />
-                <menuitem action="edit_archive" />
-                <menuitem action="comments" />
                 <separator />
                 <menuitem action="preferences" />
                 <separator />
@@ -361,6 +363,7 @@ class MainUI(gtk.UIManager):
                    'extract_page',
                    'save_and_quit',
                    'close',
+                   'delete',
                    'copy_page',
                    'slideshow',
                    'rotate_90',
