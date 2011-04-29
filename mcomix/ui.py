@@ -24,8 +24,8 @@ class MainUI(gtk.UIManager):
         # ----------------------------------------------------------------
         self._actiongroup = gtk.ActionGroup('mcomix-main')
         self._actiongroup.add_actions([
-            ('copy_page', gtk.STOCK_PASTE, _('Copy to c_lipboard'),
-                '<Control><Shift>C', None, window.clipboard.copy_page),
+            ('copy_page', gtk.STOCK_COPY, _('Copy to c_lipboard'),
+                None, None, window.clipboard.copy_page),
             ('delete', gtk.STOCK_DELETE, None,
                 'F8', None, window.delete),
             ('next_page', 'mcomix-next-page', _('_Next page'),

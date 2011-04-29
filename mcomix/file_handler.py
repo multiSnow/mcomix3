@@ -53,7 +53,7 @@ class FileHandler:
         self.update_comment_extensions()
 
     def refresh_file(self, start_page=1):
-        current_file = self._current_file
+        current_file = os.path.abspath(self._window.imagehandler.get_real_path())
         self.open_file(current_file, start_page, keep_fileprovider=True)
 
     def open_file(self, path, start_page=1, keep_fileprovider=False):
@@ -94,13 +94,13 @@ class FileHandler:
             return False
 
         filelist = self._file_provider.list_files()
-        self.archive_type = archive_tools.archive_mime_type(path)
+        archive_type = archive_tools.archive_mime_type(path)
 
-        if self.archive_type is None and len(filelist) == 0:
+        if archive_type is None and len(filelist) == 0:
             self._window.statusbar.set_message(_("No images in '%s'") % path)
             return False
 
-        if self.archive_type is None and not image_tools.is_image_file(path) and len(filelist) == 0:
+        if archive_type is None and not image_tools.is_image_file(path) and len(filelist) == 0:
             self._window.statusbar.set_message(
                 _('Could not open %s: Unknown file type.') % path)
             return False
@@ -114,6 +114,7 @@ class FileHandler:
             gtk.main_iteration(False)
 
         self._current_file = os.path.abspath(path)
+        self.archive_type = archive_type
         self._stop_cacheing = False
 
         result = False
@@ -229,6 +230,7 @@ class FileHandler:
     def close_file(self, *args):
         """Run tasks for "closing" the currently opened file(s)."""
         self.file_loaded = False
+        self.archive_type = None
         self._current_file = None
         self._base_path = None
         self._stop_cacheing = True
