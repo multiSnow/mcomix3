@@ -6,6 +6,8 @@ MComix 0.92 (4.0.5)
     - The "Bookmarks" menu can be accessed via the normal menu bar again.
       (by Alan Horkan)
 
+    - Updated Japanese translation (by Keita Haga)
+
 MComix 0.91
 
     - Fixed excessive memory consumption due to cached pixmaps not being

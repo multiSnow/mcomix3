@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-04-26 13:53+CEST\n"
+"POT-Creation-Date: 2011-04-29 06:42+CEST\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -75,23 +75,23 @@ msgstr ""
 msgid "Page"
 msgstr ""
 
-#: mcomix/bookmark_menu.py:23
+#: mcomix/bookmark_menu.py:27
 msgid "_Add bookmark"
 msgstr ""
 
-#: mcomix/bookmark_menu.py:25
+#: mcomix/bookmark_menu.py:29
 msgid "_Edit bookmarks..."
 msgstr ""
 
-#: mcomix/bookmark_menu.py:27
+#: mcomix/bookmark_menu.py:31
 msgid "_Clear bookmarks"
 msgstr ""
 
-#: mcomix/bookmark_menu.py:83
+#: mcomix/bookmark_menu.py:98
 msgid "Clear all bookmarks?"
 msgstr ""
 
-#: mcomix/bookmark_menu.py:86
+#: mcomix/bookmark_menu.py:101
 msgid "All stored bookmarks will be removed. Are you sure that you want to continue?"
 msgstr ""
 
@@ -317,31 +317,31 @@ msgstr ""
 msgid "! Could neither find pysqlite2 nor sqlite3."
 msgstr ""
 
-#: mcomix/library_backend.py:78 mcomix/library_backend.py:91
+#: mcomix/library_backend.py:84 mcomix/library_backend.py:97
 msgid "! Non-existant book #%i"
 msgstr ""
 
-#: mcomix/library_backend.py:107
+#: mcomix/library_backend.py:113
 msgid "! Could not get cover for book \"%s\""
 msgstr ""
 
-#: mcomix/library_backend.py:224
+#: mcomix/library_backend.py:248
 msgid "! Could not add book \"%s\" to the library"
 msgstr ""
 
-#: mcomix/library_backend.py:241
+#: mcomix/library_backend.py:265
 msgid "! Could not add collection \"%s\""
 msgstr ""
 
-#: mcomix/library_backend.py:252
+#: mcomix/library_backend.py:276
 msgid "! Could not add book %(book)s to collection %(collection)s"
 msgstr ""
 
-#: mcomix/library_backend.py:279
+#: mcomix/library_backend.py:303
 msgid "! Could not rename collection to \"%s\""
 msgstr ""
 
-#: mcomix/library_backend.py:290 mcomix/library_backend.py:292
+#: mcomix/library_backend.py:314 mcomix/library_backend.py:316
 msgid "(Copy)"
 msgstr ""
 
@@ -1398,6 +1398,14 @@ msgstr ""
 
 #: mcomix/ui.py:133
 msgid "_Comments..."
+msgstr ""
+
+#: mcomix/ui.py:137
+msgid "Proper_ties"
+msgstr ""
+
+#: mcomix/ui.py:141
+msgid "Pr_eferences"
 msgstr ""
 
 #: mcomix/ui.py:146
