@@ -1,7 +1,6 @@
 """clipboard.py - Clipboard handler"""
 
 import gtk
-import tools
 import image_tools
 import threading
 
@@ -12,29 +11,47 @@ class Clipboard(gtk.Clipboard):
 
     def __init__(self, window):
         self._window = window
-        self.clipboard = gtk.Clipboard.__init__(self, display=gtk.gdk.display_get_default(),
+        gtk.Clipboard.__init__(self, display=gtk.gdk.display_get_default(),
             selection="CLIPBOARD")
 
     def copy_page(self, *args):
-        copy_thread = threading.Thread(target=self.thread_copy_page, args=())
-        copy_thread.setDaemon(False)
-        copy_thread.start()
-
-    def thread_copy_page(self):
 
         if self._window.filehandler.file_loaded:
+            # Get pixbuf for current page
             current_page_pixbufs = self._window.imagehandler.get_pixbufs()
 
             if len(current_page_pixbufs) == 1:
-                self._window.clipboard.set_image( current_page_pixbufs[ 0 ] )
-
+                pixbuf = current_page_pixbufs[ 0 ]
             else:
-                new_pix_buf = image_tools.combine_pixbufs( current_page_pixbufs[ 0 ], current_page_pixbufs[ 1 ], self._window.is_manga_mode )
+                pixbuf = image_tools.combine_pixbufs(
+                        current_page_pixbufs[ 0 ],
+                        current_page_pixbufs[ 1 ],
+                        self._window.is_manga_mode )
 
-                self._window.clipboard.set_image( new_pix_buf )
+            # Get path for current page
+            path = self._window.imagehandler.get_path_to_page().encode('utf-8')
 
-                del new_pix_buf
+            # Register various clipboard formats for either the text or the pixbuf.
+            clipboard_targets = ("image/bmp", "text/plain", "STRING", "UTF8_STRING")
+            self.set_with_data(
+                [ (target, 0, 0) for target in clipboard_targets ],
+                self._get_clipboard_content,
+                self._clear_clipboard_content,
+                (pixbuf, path))
 
-                tools.garbage_collect()
+    def _get_clipboard_content(self, clipboard, selectiondata, info, data):
+        """ Called whenever an application requests the content of the clipboard.
+        selectiondata.target will contain one of the targets that have previously been
+        registered. Currently, only "image/bmp" provides pixbuf data, while all
+        other types point to the currently opened file as UTF-8 string. """
+
+        if selectiondata.target == "image/bmp":
+            selectiondata.set_pixbuf(data[0])
+        else:
+            selectiondata.set_text(data[1])
+
+    def _clear_clipboard_content(self, clipboard, data):
+        """ Called when clipboard ownership changes. """
+        pass
 
 # vim: expandtab:sw=4:ts=4
