@@ -24,8 +24,8 @@ class MainUI(gtk.UIManager):
         # ----------------------------------------------------------------
         self._actiongroup = gtk.ActionGroup('mcomix-main')
         self._actiongroup.add_actions([
-            ('copy', gtk.STOCK_COPY, None,
-                None, None, window.clipboard.copy_page),
+            ('copy_page', gtk.STOCK_PASTE, _('Copy to c_lipboard'),
+                '<Control><Shift>C', None, window.clipboard.copy_page),
             ('next_page', 'mcomix-next-page', _('_Next page'),
                 'Page_Down', _('Next page'), window.next_page),
             ('previous_page', 'mcomix-previous-page', _('_Previous page'),
@@ -197,7 +197,7 @@ class MainUI(gtk.UIManager):
                     <menuitem action="quit" />
                 </menu>
                 <menu action="menu_edit">
-                    <menuitem action="copy" />
+                    <menuitem action="copy_page" />
                     <separator />
                     <menuitem action="preferences" />
                 </menu>
@@ -361,7 +361,7 @@ class MainUI(gtk.UIManager):
                    'extract_page',
                    'save_and_quit',
                    'close',
-                   'copy',
+                   'copy_page',
                    'slideshow',
                    'rotate_90',
                    'rotate_180',
