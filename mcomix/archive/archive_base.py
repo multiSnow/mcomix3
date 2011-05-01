@@ -7,6 +7,8 @@ import os
 from mcomix import portability
 from mcomix import encoding
 from mcomix import process
+from mcomix import callback
+from mcomix import archive
 
 class BaseArchive(object):
     """ Base archive interface. All filenames passed from and into archives
@@ -17,6 +19,7 @@ class BaseArchive(object):
         assert isinstance(archive, unicode), "File should be an Unicode string."
 
         self.archive = archive
+        self._password = None
 
     def list_contents(self):
         """ Returns a list of unicode filenames relative to the archive root.
@@ -55,6 +58,20 @@ class BaseArchive(object):
         """ Recursively create a directory if it doesn't exist yet. """
         if not os.path.exists(directory):
             os.makedirs(directory)
+
+    @callback.Callback
+    def _password_required(self, event):
+        """ Asks the user for a password and sets <self._password>.
+        If <self._password> is None, no password has been requested yet.
+        If an empty string is set, assume that the user did not provide
+        a password. """
+
+        password = archive.ask_for_password()
+        if password is None:
+            password = ""
+
+        self._password = password
+        event.set()
 
 class NonUnicodeArchive(BaseArchive):
     """ Base class for archives that manage a conversion of byte member names ->
