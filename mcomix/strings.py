@@ -49,7 +49,7 @@ TRANSLATORS = (
             ('Jan Nekvasil', _('Czech translation')),
             ('Олександр Заяц', _('Ukrainian translation')),
             ('Roxerio Roxo Carrillo', _('Galician translation')),
-            ('Martin Karlsson', _('Swedish tranlation'))
+            ('Martin Karlsson', _('Swedish translation'))
           )
 ARTISTS = (
             ('Victor Castillejo', _('Icon design')),

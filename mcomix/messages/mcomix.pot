@@ -1193,7 +1193,7 @@ msgid "Galician translation"
 msgstr ""
 
 #: mcomix/strings.py:52
-msgid "Swedish tranlation"
+msgid "Swedish translation"
 msgstr ""
 
 #: mcomix/strings.py:55
