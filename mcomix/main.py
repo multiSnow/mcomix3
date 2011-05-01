@@ -57,6 +57,7 @@ class MainWindow(gtk.Window):
 
         self.filehandler = file_handler.FileHandler(self)
         self.imagehandler = image_handler.ImageHandler(self)
+        self.imagehandler.page_available += self._page_available
         self.thumbnailsidebar = thumbbar.ThumbnailSidebar(self)
 
         self.statusbar = status.Statusbar()
@@ -278,10 +279,13 @@ class MainWindow(gtk.Window):
                 priority=gobject.PRIORITY_HIGH_IDLE)
 
     def _draw_image(self, at_bottom, scroll):
-        self._waiting_for_redraw = False
         self._display_active_widgets()
 
+        while gtk.events_pending():
+            gtk.main_iteration(False)
+
         if not self.filehandler.file_loaded:
+            self._waiting_for_redraw = False
             return False
 
         area_width, area_height = self.get_visible_area_size()
@@ -300,7 +304,9 @@ class MainWindow(gtk.Window):
         self.is_virtual_double_page = \
             self.imagehandler.get_virtual_double_page()
 
-        if self.displayed_double():
+        skip_pixbuf = not self.imagehandler.page_is_available()
+
+        if self.displayed_double() and not skip_pixbuf:
             left_pixbuf, right_pixbuf = self.imagehandler.get_pixbufs()
             if self.is_manga_mode:
                 right_pixbuf, left_pixbuf = left_pixbuf, right_pixbuf
@@ -377,23 +383,11 @@ class MainWindow(gtk.Window):
                 right_scale_percent = (100.0 * right_pixbuf.get_width() /
                     right_unscaled_x)
 
-            self.statusbar.set_page_number(
-                self.imagehandler.get_current_page(),
-                self.imagehandler.get_number_of_pages(), double_page=True)
-
             self.statusbar.set_resolution(
                 (left_unscaled_x, left_unscaled_y, left_scale_percent),
                 (right_unscaled_x, right_unscaled_y, right_scale_percent))
 
-            left_filename, right_filename = \
-                self.imagehandler.get_page_filename(double=True)
-
-            if self.is_manga_mode:
-                left_filename, right_filename = right_filename, left_filename
-
-            self.statusbar.set_filename(left_filename + ', ' + right_filename)
-
-        else:
+        elif not skip_pixbuf:
             pixbuf = self.imagehandler.get_pixbufs(single=True)[ 0 ]
             unscaled_x = pixbuf.get_width()
             unscaled_y = pixbuf.get_height()
@@ -433,13 +427,8 @@ class MainWindow(gtk.Window):
             else:
                 scale_percent = 100.0 * pixbuf.get_width() / unscaled_x
 
-            self.statusbar.set_page_number(
-                self.imagehandler.get_current_page(),
-                self.imagehandler.get_number_of_pages())
-
             self.statusbar.set_resolution((unscaled_x, unscaled_y,
                 scale_percent))
-            self.statusbar.set_filename(self.imagehandler.get_page_filename())
 
         if prefs['smart bg']:
 
@@ -462,36 +451,74 @@ class MainWindow(gtk.Window):
         #elif prefs['thumbnail bg uses main colour']:
         #    self.thumbnailsidebar.set_thumbnail_background(prefs['bg colour'])
 
-        self._image_box.window.freeze_updates()
-        self._main_layout.move(self._image_box, max(0, x_padding),
-            max(0, y_padding))
-        self.left_image.show()
+        if not skip_pixbuf:
+            self._image_box.window.freeze_updates()
+            self._main_layout.move(self._image_box, max(0, x_padding),
+                max(0, y_padding))
 
-        if self.displayed_double():
-            self.right_image.show()
+            self.left_image.show()
+
+            if self.displayed_double():
+                self.right_image.show()
+            else:
+                self.right_image.hide()
+
+            self._main_layout.set_size(*self._image_box.size_request())
+
+            if scroll:
+                if at_bottom:
+                    self.scroll_to_fixed(horiz='endsecond', vert='bottom')
+                else:
+                    self.scroll_to_fixed(horiz='startfirst', vert='top')
+
+            self._image_box.window.thaw_updates()
         else:
+            # If the pixbuf for the current page(s) isn't available,
+            # hide both images to clear any old pixbufs.
+            self.left_image.hide()
             self.right_image.hide()
 
-        self._main_layout.set_size(*self._image_box.size_request())
-
-        if scroll:
-            if at_bottom:
-                self.scroll_to_fixed(horiz='endsecond', vert='bottom')
-            else:
-                self.scroll_to_fixed(horiz='startfirst', vert='top')
-
-        self._image_box.window.thaw_updates()
-
-        self.statusbar.set_root(self.filehandler.get_base_filename())
-
-        self.statusbar.update()
-
-        self.update_title()
+        self._update_page_information()
+        self._waiting_for_redraw = False
 
         while gtk.events_pending():
             gtk.main_iteration(False)
 
         return False
+
+    def _update_page_information(self):
+        """ Updates the window with information that can be gathered
+        even when the page pixbuf(s) aren't ready yet. """
+
+        if self.displayed_double():
+            self.statusbar.set_page_number(
+                self.imagehandler.get_current_page(),
+                self.imagehandler.get_number_of_pages(), double_page=True)
+
+            left_filename, right_filename = \
+                self.imagehandler.get_page_filename(double=True)
+
+            if self.is_manga_mode:
+                left_filename, right_filename = right_filename, left_filename
+
+            self.statusbar.set_filename(left_filename + ', ' + right_filename)
+        else:
+            self.statusbar.set_page_number(
+                self.imagehandler.get_current_page(),
+                self.imagehandler.get_number_of_pages())
+
+            self.statusbar.set_filename(self.imagehandler.get_page_filename())
+
+        self.statusbar.set_root(self.filehandler.get_base_filename())
+        self.statusbar.update()
+        self.update_title()
+
+    def _page_available(self, page):
+        """ Called whenever a new page is ready for displaying. """
+        if page == self.imagehandler.get_current_page() \
+            or self.displayed_double() and page == self.imagehandler.get_current_page() + 1:
+
+            self.draw_image()
 
     def new_page(self, at_bottom=False):
         """Draw a *new* page correctly (as opposed to redrawing the same

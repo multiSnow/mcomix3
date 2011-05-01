@@ -5,7 +5,7 @@ import os
 import threading
 import archive_tools
 import constants
-
+import callback
 
 class Extractor:
 
@@ -104,6 +104,11 @@ class Extractor:
         self._extract_thread.setDaemon(False)
         self._extract_thread.start()
 
+    @callback.Callback
+    def file_extracted(self, filename):
+        """ Called whenever a new file is extracted and ready. """
+        pass
+
     def close(self):
         """Close any open file objects, need only be called manually if the
         extract() method isn't called.
@@ -142,5 +147,6 @@ class Extractor:
         self._extracted[name] = True
         self._condition.notifyAll()
         self._condition.release()
+        self.file_extracted(name)
 
 # vim: expandtab:sw=4:ts=4

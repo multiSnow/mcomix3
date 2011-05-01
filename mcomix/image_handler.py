@@ -9,6 +9,7 @@ import image_tools
 from preferences import prefs
 import thumbnail_tools
 import constants
+import callback
 
 class ImageHandler:
 
@@ -39,6 +40,8 @@ class ImageHandler:
         self._pixbuf_auto_bgs = {}
         self._name_table = {}
         self.force_single_step = False
+
+        self._window.filehandler.file_available += self._file_available
 
     def _get_pixbuf(self, index):
         """Return the pixbuf indexed by <index> from cache.
@@ -318,6 +321,43 @@ class ImageHandler:
     def cleanup(self):
         """Run clean-up tasks. Should be called prior to exit."""
         self._stop_cacheing = True
+
+    def page_is_available(self, page=None):
+        """ Returns True if <page> is available and calls to get_pixbufs
+        would not block. If <page> is None, the current page(s) are assumed. """
+
+        if page is None:
+            current_page = self.get_current_page()
+            if self._window.displayed_double():
+                pages = [ current_page, current_page + 1 ]
+            else:
+                pages = [ current_page ]
+        else:
+            pages = [ page ]
+
+        for page in pages:
+            path = self.get_path_to_page(page)
+            if not self._window.filehandler.file_is_available(path):
+                return False
+
+        return True
+
+    @callback.Callback
+    def page_available(self, page):
+        """ Called whenever a new page becomes available, i.e. the corresponding
+        file has been extracted. """
+        pass
+
+    def _file_available(self, filepath):
+        """ Called by the filehandler when a new file becomes available. """
+        # Find the page that corresponds to <filepath>
+        if not self._image_files:
+            return
+
+        for i, imgpath in enumerate(self._image_files):
+            if filepath == imgpath:
+                self.page_available(i + 1)
+                break
 
     def is_last_page(self):
         """Return True if at the last page."""

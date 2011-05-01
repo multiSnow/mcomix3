@@ -14,6 +14,7 @@ from preferences import prefs
 import constants
 import cPickle
 import file_provider
+import callback
 
 class FileHandler:
 
@@ -176,6 +177,7 @@ class FileHandler:
                     image_files.insert(i, name)
 
                 self._extractor.set_files(image_files + comment_files)
+                self._extractor.file_extracted += self._extracted_file
                 self._extractor.extract()
 
         # If <path> is an image we scan its directory for more images.
@@ -215,6 +217,11 @@ class FileHandler:
             self._window.uimanager.set_sensitivities()
 
             self.write_fileinfo_file()
+
+            # If no extraction is required, mark all files as available instantly.
+            if self.archive_type is None:
+                for path in filelist:
+                    self.file_available(path)
 
             result = True
 
@@ -417,6 +424,38 @@ class FileHandler:
         # Restore current directory if no files were found
         self._file_provider.set_directory(current_dir)
         return False
+
+    def file_is_available(self, filepath):
+        """ Returns True if the file specified by "filepath" is available
+        for reading, i.e. extracted to harddisk. """
+
+        if self.archive_type is not None:
+            self._condition.acquire()
+            ready = self._extractor.is_ready(self._name_table[filepath])
+            self._condition.release()
+            return ready
+
+        elif filepath is None:
+            return False
+
+        elif os.path.isfile(filepath):
+            return True
+
+        else:
+            return False
+
+    @callback.Callback
+    def file_available(self, filepath):
+        """ Called every time a new file from the Filehandler's opened
+        files becomes available. <filepath> is the now available file. """
+        pass
+
+    def _extracted_file(self, name):
+        """ Called when the extractor finishes extracting the file at
+        <name>. This name is relative to the temporary directory
+        the files were extracted to. """
+        filepath = os.path.join(self._tmp_dir, name)
+        self.file_available(filepath)
 
     def _wait_on_page(self, page):
         """Block the running (main) thread until the file corresponding to
