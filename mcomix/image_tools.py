@@ -9,7 +9,6 @@ import gtk
 import Image
 import ImageEnhance
 import ImageOps
-import cStringIO
 
 from preferences import prefs
 

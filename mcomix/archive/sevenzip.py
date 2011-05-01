@@ -3,7 +3,6 @@
 """ 7z archive extractor. """
 
 from mcomix import process
-from mcomix import encoding
 from mcomix.archive import archive_base
 
 # Filled on-demand by SevenZipArchive

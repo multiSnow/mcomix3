@@ -23,7 +23,6 @@ import sys
 import getopt
 import signal
 import gettext
-import locale
 
 import constants
 import tools
@@ -156,7 +155,6 @@ except ImportError:
 # Import required mcomix modules for this script.
 # This should be done only after install_gettext() has been called.
 import deprecated
-import image_tools
 import main
 import icons
 import preferences

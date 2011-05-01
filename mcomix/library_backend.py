@@ -13,7 +13,6 @@ except ImportError:
 
 import archive_tools
 import constants
-import encoding
 import thumbnail_tools
 
 class LibraryBackend:

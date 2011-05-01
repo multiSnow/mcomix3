@@ -1,8 +1,6 @@
 """icons.py - Load MComix specific icons."""
 
-import os
 import gtk
-import constants
 import image_tools
 
 from pkg_resources import resource_string

@@ -3,7 +3,7 @@ freedesktop.org "standard" at http://jens.triq.net/thumbnail-spec/
 """
 
 import os
-from urllib import pathname2url, url2pathname
+from urllib import pathname2url
 
 try: # The md5 module is deprecated as of Python 2.5, replaced by hashlib.
     from hashlib import md5

@@ -1,7 +1,6 @@
 """pageselect.py - The dialog window for the page selector."""
 
 import gtk
-import image_tools
 
 class Pageselector(gtk.Dialog):
 

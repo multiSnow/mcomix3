@@ -2,7 +2,6 @@
 
 import gtk
 import image_tools
-import threading
 
 class Clipboard(gtk.Clipboard):
 

@@ -3,7 +3,6 @@
 import os
 import gtk
 import pango
-import encoding
 import image_tools
 import labels
 from preferences import prefs

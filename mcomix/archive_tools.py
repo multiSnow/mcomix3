@@ -3,7 +3,6 @@
 import os
 import zipfile
 import tarfile
-import process
 import archive_extractor
 import constants
 import archive.zip

@@ -1,6 +1,5 @@
 """Portability functions for MComix."""
 
-import os
 import sys
 import locale
 import ctypes

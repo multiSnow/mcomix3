@@ -5,7 +5,6 @@ import gtk
 import re
 import tools
 import os
-import sys
 
 APPNAME = 'MComix'
 VERSION = '0.91'

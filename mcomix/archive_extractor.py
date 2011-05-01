@@ -3,7 +3,6 @@
 import sys
 import os
 import threading
-import gtk
 import archive_tools
 import constants
 
@@ -49,15 +48,6 @@ class Extractor:
             return self._condition
         else:
             print_( _('! Non-supported archive format: %s') % os.path.splitext(src)[1][1:] )
-
-            #dialog = gtk.MessageDialog(None, 0, gtk.MESSAGE_WARNING,
-            #    gtk.BUTTONS_CLOSE, _("Could not find file extractor!"))
-
-            #dialog.format_secondary_markup(
-            #    _("You need a matching extractor to read files of type ") + \
-            #    os.path.splitext(src)[1][1:].upper())
-            #dialog.run()
-            #dialog.destroy()
             return None
 
     def get_files(self):

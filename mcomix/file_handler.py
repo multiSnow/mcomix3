@@ -2,14 +2,12 @@
 
 import os
 import shutil
-import locale
 import tempfile
 import threading
 import re
 import gtk
 import archive_extractor
 import archive_tools
-import encoding
 import image_tools
 import tools
 from preferences import prefs
