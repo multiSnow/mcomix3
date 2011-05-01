@@ -92,7 +92,8 @@ class Extractor:
         self._stop = True
 
         if self._setupped:
-            self._extract_thread.join()
+            if self._extract_thread:
+                self._extract_thread.join()
             self.setupped = False
 
     def extract(self):

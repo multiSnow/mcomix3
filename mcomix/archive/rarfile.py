@@ -5,8 +5,11 @@ resort to calling rar/unrar manually. """
 
 import sys, os
 import ctypes, ctypes.util
+import threading
 
 from mcomix import constants
+from mcomix import callback
+from mcomix import archive
 
 class UnrarDll(object):
     """ Wrapper class for libunrar. All string values passed to this class must be unicode objects.
@@ -86,6 +89,7 @@ class UnrarDll(object):
         self._archive = archive
         self._handle = None
         self._callback_function = None
+        self._password = None
 
         # Set up function prototypes
         self._unrar.RAROpenArchiveEx.restype = ctypes.c_void_p
@@ -207,11 +211,35 @@ class UnrarDll(object):
     def _password_callback(self, msg, userdata, buffer_address, buffer_size):
         """ Called by the unrar library in case of missing password. """
         if msg == 2: # UCM_NEEDPASSWORD
-            # Abort extraction
-            return -1
+            if self._password is None:
+                event = threading.Event()
+                self._password_required(event)
+                event.wait()
+            elif len(self._password) == 0:
+                # Abort extraction
+                return -1
+
+            password = ctypes.create_unicode_buffer(self._password)
+            copy_size = min(buffer_size, len(password))
+            ctypes.memmove(buffer_address, password, copy_size)
+            return 0
         else:
             # Continue operation
             return 1
+
+    @callback.Callback
+    def _password_required(self, event):
+        """ Asks the user for a password and sets <self._password>.
+        If <self._password> is None, no password has been requested yet.
+        If an empty string is set, assume that the user did not provide
+        a password. """
+
+        password = archive.ask_for_password()
+        if password is None:
+            password = ""
+
+        self._password = password
+        event.set()
 
 class UnrarException(Exception):
     """ Exception class for UnrarDll. """

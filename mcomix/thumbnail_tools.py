@@ -125,6 +125,9 @@ class Thumbnailer(object):
                     condition.wait()
                 condition.release()
 
+                if not os.path.isfile(image_path):
+                    return None, None
+
                 pixbuf = image_tools.load_pixbuf_size(image_path, self.width, self.height)
                 tEXt_data = self._get_text_data(image_path)
                 # Use the archive's mTime instead of the extracted file's mtime
