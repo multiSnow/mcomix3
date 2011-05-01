@@ -44,6 +44,8 @@ class _BaseFileChooserDialog(gtk.Dialog):
 
         self.filechooser = gtk.FileChooserWidget(action=action)
         self.filechooser.set_size_request(680, 420)
+        self.filechooser.connect('destroy-event', self._window_destroyed)
+        self._destroyed = False
         self.vbox.pack_start(self.filechooser)
         self.set_border_width(4)
         self.filechooser.set_border_width(6)
@@ -182,7 +184,22 @@ class _BaseFileChooserDialog(gtk.Dialog):
         if os.path.isfile(path):
             thumbnailer = thumbnail_tools.Thumbnailer()
             thumbnailer.set_size(128, 128)
-            pixbuf = thumbnailer.thumbnail(path)
+            thumbnailer.thumbnail_finished += self._preview_thumbnail_finished
+            pixbuf = thumbnailer.thumbnail(path, async=True)
+        else:
+            self._preview_image.clear()
+            self._namelabel.set_text('')
+            self._sizelabel.set_text('')
+
+    def _preview_thumbnail_finished(self, filepath, pixbuf):
+        """ Called when the thumbnailer has finished creating
+        the thumbnail for <filepath>. """
+
+        if self._destroyed:
+            return
+
+        current_path = self.filechooser.get_preview_filename()
+        if current_path and current_path.decode('utf-8') == filepath:
 
             if pixbuf is None:
                 self._preview_image.clear()
@@ -192,12 +209,12 @@ class _BaseFileChooserDialog(gtk.Dialog):
             else:
                 pixbuf = image_tools.add_border(pixbuf, 1)
                 self._preview_image.set_from_pixbuf(pixbuf)
-                self._namelabel.set_text(os.path.basename(path))
+                self._namelabel.set_text(os.path.basename(filepath))
                 self._sizelabel.set_text(
-                    '%.1f KiB' % (os.stat(path).st_size / 1024.0))
-        else:
-            self._preview_image.clear()
-            self._namelabel.set_text('')
-            self._sizelabel.set_text('')
+                    '%.1f KiB' % (os.stat(filepath).st_size / 1024.0))
+
+    def _window_destroyed(self, *args):
+        """ Called when the dialog is being destroyed. """
+        self._destroyed = True
 
 # vim: expandtab:sw=4:ts=4

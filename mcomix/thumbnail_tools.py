@@ -14,6 +14,7 @@ import re
 import shutil
 import tempfile
 import mimetypes
+import threading
 import Image
 import archive_extractor
 import constants
@@ -22,6 +23,7 @@ import tools
 import image_tools
 import portability
 import encoding
+import callback
 
 from preferences import prefs
 
@@ -60,12 +62,13 @@ class Thumbnailer(object):
         """ Changes the Thumbnailer's storage directory. """
         self.dst_dir = dst_dir
 
-    def thumbnail(self, filepath):
+    def thumbnail(self, filepath, async=False):
         """ Returns a thumbnail pixbuf for <filepath>, transparently handling
         both normal image files and archives. If a thumbnail file already exists,
         it is re-used. Otherwise, a new thumbnail is created from <filepath>.
 
-        Returns None if thumbnail creation failed. """
+        Returns None if thumbnail creation failed, or if the thumbnail creation
+        is run asynchrounosly. """
 
         # Update width and height from preferences if they haven't been set explicitly
         if self.default_sizes:
@@ -74,14 +77,26 @@ class Thumbnailer(object):
 
         thumbpath = self._path_to_thumbpath(filepath)
         if self._thumbnail_exists(filepath):
-            return image_tools.load_pixbuf(thumbpath)
-        else:
-            pixbuf, tEXt_data = self._create_thumbnail(filepath)
-
-            if pixbuf and self.store_on_disk:
-                self._save_thumbnail(pixbuf, thumbpath, tEXt_data)
-
+            pixbuf = image_tools.load_pixbuf(thumbpath)
+            self.thumbnail_finished(filepath, pixbuf)
             return pixbuf
+
+        else:
+            if async:
+                thread = threading.Thread(target=self._create_thumbnail, args=(filepath,))
+                thread.setDaemon(True)
+                thread.start()
+                return None
+            else:
+                return self._create_thumbnail(filepath)
+
+    @callback.Callback
+    def thumbnail_finished(self, filepath, pixbuf):
+        """ Called every time a thumbnail has been completed.
+        <filepath> is the file that was used as source, <pixbuf> is the
+        resulting thumbnail. """
+
+        pass
 
     def delete(self, filepath):
         """ Deletes the thumbnail for <filepath> (if it exists) """
@@ -89,7 +104,7 @@ class Thumbnailer(object):
         if os.path.isfile(thumbpath):
             os.remove(thumbpath)
 
-    def _create_thumbnail(self, filepath):
+    def _create_thumbnail_pixbuf(self, filepath):
         """ Creates a thumbnail pixbuf from <filepath>, and returns it as a
         tuple along with a file metadata dictionary: (pixbuf, tEXt_data) """
 
@@ -128,6 +143,19 @@ class Thumbnailer(object):
             return pixbuf, tEXt_data
         else:
             return None, None
+
+    def _create_thumbnail(self, filepath):
+        """ Creates the thumbnail pixbuf for <filepath>, and saves the pixbuf
+        to disk if necessary. Returns the created pixbuf, or None, if creation failed. """
+
+        pixbuf, tEXt_data = self._create_thumbnail_pixbuf(filepath)
+        self.thumbnail_finished(filepath, pixbuf)
+
+        if pixbuf and self.store_on_disk:
+            thumbpath = self._path_to_thumbpath(filepath)
+            self._save_thumbnail(pixbuf, thumbpath, tEXt_data)
+
+        return pixbuf
 
     def _get_text_data(self, filepath):
         """ Creates a tEXt dictionary for <filepath>. """
