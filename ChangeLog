@@ -1,5 +1,8 @@
 MComix 0.92 (4.0.5)
 
+    - Fixed a bug that made MComix save preview thumbnails to disk
+      even if this behaviour was disabled in the preferences window.
+
     - If a library collection has sub-collections, the books from these
       sub-collections will be shown as well when the collection is opened.
 

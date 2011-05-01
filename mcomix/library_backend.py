@@ -102,8 +102,8 @@ class LibraryBackend:
         """ Returns a pixbuf with a thumbnail of the cover of the book at <path>,
         or None, if no thumbnail could be generated. """
 
-        thumbnailer = thumbnail_tools.Thumbnailer(store_on_disk=True,
-            dst_dir=constants.LIBRARY_COVERS_PATH)
+        thumbnailer = thumbnail_tools.Thumbnailer(dst_dir=constants.LIBRARY_COVERS_PATH)
+        thumbnailer.set_store_on_disk(True)
         # This is the maximum image size allowed by the library, so that thumbnails might be downscaled,
         # but never need to be upscaled (and look ugly)
         thumbnailer.set_size(constants.MAX_LIBRARY_COVER_SIZE, constants.MAX_LIBRARY_COVER_SIZE)
@@ -227,8 +227,8 @@ class LibraryBackend:
         if info is None:
             return False
         format, pages, size = info
-        thumbnailer = thumbnail_tools.Thumbnailer(store_on_disk=True,
-            dst_dir=constants.LIBRARY_COVERS_PATH)
+        thumbnailer = thumbnail_tools.Thumbnailer(dst_dir=constants.LIBRARY_COVERS_PATH)
+        thumbnailer.set_store_on_disk(True)
         thumbnailer.set_size(constants.MAX_LIBRARY_COVER_SIZE, constants.MAX_LIBRARY_COVER_SIZE)
         thumbnailer.thumbnail(path)
         old = self._con.execute('''select id from Book

@@ -31,11 +31,9 @@ class Thumbnailer(object):
     it either stores thumbnails on disk and retrieves them later,
     or simply creates new thumbnails each time it is called. """
 
-    def __init__(self,
-            store_on_disk=prefs['create thumbnails'],
-            dst_dir=constants.THUMBNAIL_PATH):
+    def __init__(self, dst_dir=constants.THUMBNAIL_PATH):
 
-        self.store_on_disk = store_on_disk
+        self.store_on_disk = prefs['create thumbnails']
         self.dst_dir = dst_dir
         self.width = prefs['thumbnail size']
         self.height = prefs['thumbnail size']

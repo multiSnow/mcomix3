@@ -444,7 +444,8 @@ class ImageHandler:
             return constants.MISSING_IMAGE_ICON
 
         try:
-            thumbnailer = thumbnail_tools.Thumbnailer(store_on_disk=create)
+            thumbnailer = thumbnail_tools.Thumbnailer()
+            thumbnailer.set_store_on_disk(create)
             thumbnailer.set_size(width, height)
             return thumbnailer.thumbnail(path)
         except Exception:
