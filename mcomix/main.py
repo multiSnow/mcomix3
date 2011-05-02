@@ -1163,6 +1163,6 @@ class MainWindow(gtk.Window):
             if thread is not threading.currentThread():
                 thread.join()
 
-        sys.exit(0)
+        gtk.main_quit()
 
 # vim: expandtab:sw=4:ts=4
