@@ -20,6 +20,10 @@ MComix 0.92 (4.0.5)
     - The currently opened file or archive can now be deleted using
       File -> Delete, or by pressing F8.
 
+    - Added an option to use the first page of an archive as application
+      icon instead of the standard MComix icon. (inspired by Alexandr
+      Domrachev)
+
     - Updated Japanese translation. (by Keita Haga)
 
     - Updated French translation. (by Joseph M. Sleiman)

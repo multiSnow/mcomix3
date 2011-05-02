@@ -116,6 +116,16 @@ class _PreferencesDialog(gtk.Dialog):
             'show page numbers on thumbnails')
         page.add_row(thumb_number_button)
 
+        thumb_as_preview_icon = gtk.CheckButton(
+            _('Use archive thumbnail as application icon.'))
+        thumb_as_preview_icon.set_tooltip_text(
+            _('By enabling this setting, the first page of a book will be used as application icon instead of the standard icon.'))
+        thumb_as_preview_icon.set_active(
+            prefs['archive thumbnail as icon'])
+        thumb_as_preview_icon.connect('toggled', self._check_button_cb,
+            'archive thumbnail as icon')
+        page.add_row(thumb_as_preview_icon)
+
         page.new_section(_('Magnifying Lens'))
         label = gtk.Label('%s:' % _('Magnifying lens size (in pixels)'))
         adjustment = gtk.Adjustment(prefs['lens size'], 50, 400, 1, 10)

@@ -34,6 +34,7 @@ prefs = {
     'thumbnail size': 80,
     'create thumbnails': True,
     'delay thumbnails': False,
+    'archive thumbnail as icon' : False,
     'number of pixels to scroll per key event': 50,
     'number of pixels to scroll per mouse wheel event': 50,
     'slideshow delay': 3000,

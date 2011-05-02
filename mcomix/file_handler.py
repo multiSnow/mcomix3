@@ -9,6 +9,7 @@ import gtk
 import archive_extractor
 import archive_tools
 import image_tools
+import icons
 import tools
 from preferences import prefs
 import constants
@@ -254,6 +255,7 @@ class FileHandler:
         self._tmp_dir = tempfile.mkdtemp(prefix=u'mcomix.', suffix=os.sep)
         self._window.imagehandler.close()
         self._window.thumbnailsidebar.clear()
+        self._window.set_icon_list(*icons.mcomix_icons())
         tools.garbage_collect()
 
     def cleanup(self):

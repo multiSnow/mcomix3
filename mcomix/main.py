@@ -515,10 +515,18 @@ class MainWindow(gtk.Window):
 
     def _page_available(self, page):
         """ Called whenever a new page is ready for displaying. """
+        # Refresh display when currently opened page becomes available.
         if page == self.imagehandler.get_current_page() \
             or self.displayed_double() and page == self.imagehandler.get_current_page() + 1:
 
             self.draw_image()
+
+        # Use first page as application icon when opening archives.
+        if (page == 1
+            and self.filehandler.archive_type is not None
+            and prefs['archive thumbnail as icon']):
+            pixbuf = self.imagehandler.get_thumbnail(page, 48, 48)
+            self.set_icon(pixbuf)
 
     def new_page(self, at_bottom=False):
         """Draw a *new* page correctly (as opposed to redrawing the same

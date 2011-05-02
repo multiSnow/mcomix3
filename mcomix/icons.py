@@ -5,6 +5,19 @@ import image_tools
 
 from pkg_resources import resource_string
 
+def mcomix_icons():
+    """ Returns a list of differently sized pixbufs for the
+    application icon. """
+
+    sizes = ('16x16', '32x32', '48x48')
+    pixbufs = [ 
+        image_tools.load_pixbuf_data(
+            resource_string('mcomix.images', size + '/mcomix.png')
+        ) for size in sizes
+    ]
+
+    return pixbufs
+
 def load_icons():
     _icons = (('gimp-flip-horizontal.png',   'mcomix-flip-horizontal'),
               ('gimp-flip-vertical.png',     'mcomix-flip-vertical'),
@@ -37,12 +50,7 @@ def load_icons():
               ('previous-directory.png',     'mcomix-previous-directory'))
 
     # Load window title icons.
-    sizes = ('16x16', '32x32', '48x48')
-    pixbufs = [ 
-        image_tools.load_pixbuf_data(
-            resource_string('mcomix.images', size + '/mcomix.png')
-        ) for size in sizes
-    ]
+    pixbufs = mcomix_icons()
     gtk.window_set_default_icon_list(*pixbufs)
     # Load application icons.
     factory = gtk.IconFactory()
