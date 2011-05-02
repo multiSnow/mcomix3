@@ -188,19 +188,6 @@ class _PreferencesDialog(gtk.Dialog):
             _('Flip pages when scrolling "off the page" with the scroll wheel or with the arrow keys. It takes n consecutive "steps" with the scroll wheel or the arrow keys for the pages to be flipped.'))
         page.add_row(flip_with_wheel_button)
 
-        focus_protection_button = gtk.CheckButton(
-            _('Avoid possibly unintentional page flips.'))
-        focus_protection_button.set_active(prefs['focus protection'])
-        focus_protection_button.connect('toggled', self._check_button_cb,
-            'focus protection')
-        temp = _('Only flip to a new page if MComix is the top window. ')
-        temp += _('This prevents the possibility of "accidental" page flips when ')
-        temp += _('clicking on the MComix window surface while trying to make MComix the ')
-        temp += _('top window.')
-
-        focus_protection_button.set_tooltip_text(temp)
-        page.add_row(focus_protection_button)
-
         auto_open_next_button = gtk.CheckButton(
             _('Automatically open the next archive.'))
         auto_open_next_button.set_active(prefs['auto open next archive'])

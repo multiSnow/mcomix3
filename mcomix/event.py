@@ -349,7 +349,7 @@ class EventHandler:
 
             if event.x_root == self._pressed_pointer_pos_x and \
                 event.y_root == self._pressed_pointer_pos_y and \
-                (not prefs['focus protection'] or not self._window.was_out_of_focus):
+                not self._window.was_out_of_focus:
                 self._window.next_page()
 
             else:

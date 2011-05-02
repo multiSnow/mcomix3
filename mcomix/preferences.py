@@ -59,7 +59,6 @@ prefs = {
     'auto rotate from exif': True,
     'vertical flip': False,
     'horizontal flip': False,
-    'focus protection': True,
     'keep transformation': False,
     'max pages to cache': 7,
     'window height': gtk.gdk.screen_get_default().get_height() * 3 // 4,
