@@ -370,7 +370,7 @@ msgid "Remove from the _library"
 msgstr ""
 
 #: mcomix/library_book_area.py:88
-msgid "Completey _remove"
+msgid "Completely _remove"
 msgstr ""
 
 #: mcomix/library_book_area.py:268

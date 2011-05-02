@@ -85,7 +85,7 @@ class _BookArea(gtk.ScrolledWindow):
                 _('Remove from the _library'), None, None,
                 self._remove_books_from_library),
             ('completely remove', gtk.STOCK_DELETE,
-                _('Completey _remove'), None, None,
+                _('Completely _remove'), None, None,
                 self._completely_remove_book)
                 ])
 
