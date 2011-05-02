@@ -36,10 +36,14 @@ def load_icons():
               ('next-directory.png',         'mcomix-next-directory'),
               ('previous-directory.png',     'mcomix-previous-directory'))
 
-    # Load window title icon.
-    icon_data = resource_string('mcomix.images', '16x16/mcomix.png')
-    pixbuf = image_tools.load_pixbuf_data(icon_data)
-    gtk.window_set_default_icon(pixbuf)
+    # Load window title icons.
+    sizes = ('16x16', '32x32', '48x48')
+    pixbufs = [ 
+        image_tools.load_pixbuf_data(
+            resource_string('mcomix.images', size + '/mcomix.png')
+        ) for size in sizes
+    ]
+    gtk.window_set_default_icon_list(*pixbufs)
     # Load application icons.
     factory = gtk.IconFactory()
     for filename, stockid in _icons:
