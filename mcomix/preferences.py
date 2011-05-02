@@ -29,7 +29,6 @@ prefs = {
     'lens size': 200,
     'no double page for wide images': False,
     'double step in double page mode': True,
-    'show page numbers': True,
     'show page numbers on thumbnails': True,
     'thumbnail size': 80,
     'create thumbnails': True,

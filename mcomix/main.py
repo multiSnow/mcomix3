@@ -875,27 +875,16 @@ class MainWindow(gtk.Window):
     def update_title(self):
         """Set the title acording to current state."""
         if self.displayed_double():
-            if prefs['show page numbers']:
-                title = encoding.to_unicode('[%d,%d / %d]  %s' % (
-                    self.imagehandler.get_current_page(),
-                    self.imagehandler.get_current_page() + 1,
-                    self.imagehandler.get_number_of_pages(),
-                    self.imagehandler.get_pretty_current_filename()))
-            else:
-                title = encoding.to_unicode('%s' % (
-                    self.imagehandler.get_pretty_current_filename()))
-
+            title = encoding.to_unicode('[%d,%d / %d]  %s' % (
+                self.imagehandler.get_current_page(),
+                self.imagehandler.get_current_page() + 1,
+                self.imagehandler.get_number_of_pages(),
+                self.imagehandler.get_pretty_current_filename()))
         else:
-
-            if prefs['show page numbers']:
-                title = encoding.to_unicode('[%d / %d]  %s' % (
-                    self.imagehandler.get_current_page(),
-                    self.imagehandler.get_number_of_pages(),
-                    self.imagehandler.get_pretty_current_filename()))
-
-            else:
-                title = encoding.to_unicode('%s' % (
-                    self.imagehandler.get_pretty_current_filename()))
+            title = encoding.to_unicode('[%d / %d]  %s' % (
+                self.imagehandler.get_current_page(),
+                self.imagehandler.get_number_of_pages(),
+                self.imagehandler.get_pretty_current_filename()))
 
         if self.slideshow.is_running():
             title = '[%s] %s' % (_('SLIDESHOW'), title)

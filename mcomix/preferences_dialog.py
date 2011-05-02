@@ -342,17 +342,6 @@ class _PreferencesDialog(gtk.Dialog):
             _('While in slideshow mode allow the next archive to automatically be opened.'))
         page.add_row(slideshow_auto_open_button)
 
-        page.new_section(_('Page Numbers'))
-        page_numbers_button = gtk.CheckButton(_('Show page numbers.'))
-        page_numbers_button.set_active(prefs['show page numbers'])
-        page_numbers_button.connect('toggled', self._check_button_cb,
-            'show page numbers')
-        page_numbers_button.set_tooltip_text(
-            _('Show page numbers in the Title bar and the status bar. If unset the page numbers will be hidden.'))
-        page.add_row(page_numbers_button)
-
-
-
         page.new_section(_('Rotation'))
         auto_rotate_button = gtk.CheckButton(
             _('Automatically rotate images according to their metadata.'))
@@ -492,10 +481,6 @@ class _PreferencesDialog(gtk.Dialog):
 
         elif preference == 'show page numbers on thumbnails':
             self._window.thumbnailsidebar.toggle_page_numbers_visible()
-
-        elif preference == 'show page numbers':
-            self._window.update_title()
-            self._window.statusbar.update()
 
     def _color_button_cb(self, colorbutton, preference):
         """Callback for the background colour selection button."""

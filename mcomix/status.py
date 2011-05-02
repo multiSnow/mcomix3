@@ -51,13 +51,8 @@ class Statusbar(gtk.Statusbar):
     def update(self):
         """Set the statusbar to display the current state."""
         self.pop(0)
-
-        if prefs['show page numbers']:
-            self.push(0, ' %s      |      %s      |      %s      |      %s' %
-                (self._page_info, self._resolution, self._root, self._filename))
-        else:
-            self.push(0, '%s      |      %s      |      %s' %
-                (self._resolution, self._root, self._filename))
+        self.push(0, ' %s      |      %s      |      %s      |      %s' %
+            (self._page_info, self._resolution, self._root, self._filename))
 
 
 # vim: expandtab:sw=4:ts=4
