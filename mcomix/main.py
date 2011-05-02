@@ -146,6 +146,9 @@ class MainWindow(gtk.Window):
             self.actiongroup.get_action('best_fit_mode').activate()
             self.actiongroup.get_action('fit_manual_mode').activate()
 
+        if prefs['stretch']:
+            self.actiongroup.get_action('stretch').activate()
+
         if prefs['show toolbar']:
             prefs['show toolbar'] = False
             self.actiongroup.get_action('toolbar').activate()
@@ -596,6 +599,11 @@ class MainWindow(gtk.Window):
 
         if old_mode != self.zoom_mode:
             self.draw_image()
+
+    def change_stretch(self, toggleaction, *args):
+        """ Toggles stretching small images. """
+        prefs['stretch'] = toggleaction.get_active()
+        self.draw_image()
 
     def change_toolbar_visibility(self, *args):
         prefs['show toolbar'] = not prefs['show toolbar']

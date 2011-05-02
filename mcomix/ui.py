@@ -112,10 +112,14 @@ class MainUI(gtk.UIManager):
             ('slideshow', gtk.STOCK_MEDIA_PLAY, _('Start _slideshow'),
                 '<Control>S', _('Start slideshow'), window.slideshow.toggle),
             ('lens', 'mcomix-lens', _('Magnifying _lens'),
-                'l', _('Magnifying lens'), window.lens.toggle)])
+                'l', _('Magnifying lens'), window.lens.toggle),
+            ('stretch', None, _('Stretch small images'),
+                None,
+                _('Stretch images to a size that is larger than their original size if the current zoom mode requests it. If this preference is unset, images are never scaled to be larger than their original size.'),
+                window.change_stretch)])
 
         # Note: Don't change the default value for the radio buttons unless
-        # also fixing the code for setting the correct one on start-up.
+        # also fixing the code for setting the correct one on start-up in main.py.
         self._actiongroup.add_radio_actions([
             ('best_fit_mode', 'mcomix-fitbest', _('_Best fit mode'),
                 'b', _('Best fit mode'), constants.ZOOM_MODE_BEST),
@@ -219,6 +223,7 @@ class MainUI(gtk.UIManager):
                     <separator />
                     <menuitem action="slideshow" />
                     <separator />
+                    <menuitem action="stretch" />
                     <menuitem action="lens" />
                     <menu action="menu_zoom">
                         <menuitem action="zoom_in" />
@@ -403,6 +408,5 @@ class MainUI(gtk.UIManager):
 
         self.bookmarks.set_sensitive(general_sensitive)
         self.bookmarks_popup.set_sensitive(general_sensitive)
-
 
 # vim: expandtab:sw=4:ts=4

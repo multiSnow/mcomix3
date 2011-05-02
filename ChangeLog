@@ -29,6 +29,7 @@ MComix 0.92 (4.0.5)
       "Automated crash recovery": No longer necessary.
       "Show page numbers": Enabled by default.
       "Avoid unintentional page flips": Enabled by default.
+      "Stretch small images": Now in Menu->View->Stretch small images.
 
     - Updated Japanese translation. (by Keita Haga)
 

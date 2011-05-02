@@ -143,14 +143,6 @@ class _PreferencesDialog(gtk.Dialog):
             _('Set the magnification factor of the magnifying lens.'))
         page.add_row(label, lens_magnification_spinner)
 
-        page.new_section(_('Image scaling'))
-        stretch_button = gtk.CheckButton(_('Stretch small images.'))
-        stretch_button.set_active(prefs['stretch'])
-        stretch_button.connect('toggled', self._check_button_cb, 'stretch')
-        stretch_button.set_tooltip_text(
-            _('Stretch images to a size that is larger than their original size if the current zoom mode requests it. If this preference is unset, images are never scaled to be larger than their original size.'))
-        page.add_row(stretch_button)
-
         page.new_section(_('Transparency'))
         checkered_bg_button = gtk.CheckButton(
             _('Use checkered background for transparent images.'))
@@ -471,7 +463,7 @@ class _PreferencesDialog(gtk.Dialog):
             else:
                 self._window.draw_image()
             """
-        elif preference in ('stretch', 'checkered bg for transparent images',
+        elif preference in ('checkered bg for transparent images',
           'no double page for wide images', 'auto rotate from exif'):
             self._window.draw_image()
 
