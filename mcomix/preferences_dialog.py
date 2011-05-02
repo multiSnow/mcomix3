@@ -416,7 +416,7 @@ class _PreferencesDialog(gtk.Dialog):
         page.new_section(_('Comments'))
         label = gtk.Label('%s:' % _('Comment extensions'))
         extensions_entry = gtk.Entry()
-        extensions_entry.set_size_request(80, -1)
+        extensions_entry.set_size_request(200, -1)
         extensions_entry.set_text(', '.join(prefs['comment extensions']))
         extensions_entry.connect('activate', self._entry_cb)
         extensions_entry.connect('focus_out_event', self._entry_cb)
