@@ -31,6 +31,7 @@ TRANSLATORS = (
             ('Arthur Nieuwland', _('Dutch translation')),
             ('Achraf Cherti', _('French translation')),
             ('Benoît H.', _('French translation')),
+            ('Joseph M. Sleiman', _('French translation')),
             ('Kamil Leduchowski', _('Polish translatin')),
             ('Darek Jakoniuk', _('Polish translation')),
             ('Paul Chatzidimitriou', _('Greek translation')),
