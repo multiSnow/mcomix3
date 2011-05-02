@@ -161,7 +161,7 @@ class _PreferencesDialog(gtk.Dialog):
         checkered_bg_button.set_tooltip_text(
             _('Use a grey checkered background for transparent images. If this preference is unset, the background is plain white instead.'))
         page.add_row(checkered_bg_button)
-        
+
         return page
 
     def _init_behaviour_tab(self):
@@ -278,15 +278,6 @@ class _PreferencesDialog(gtk.Dialog):
             _('Add information about all files opened from within MComix to the shared recent files list.'))
         page.add_row(store_recent_button)
 
-        create_thumbs_button = gtk.CheckButton(
-            _('Store thumbnails for opened files.'))
-        create_thumbs_button.set_active(prefs['create thumbnails'])
-        create_thumbs_button.connect('toggled', self._check_button_cb,
-            'create thumbnails')
-        create_thumbs_button.set_tooltip_text(
-            _('Store thumbnails for opened files according to the freedesktop.org specification. These thumbnails are shared by many other applications, such as most file managers.'))
-        page.add_row(create_thumbs_button)
-
         return page
 
     def _init_display_tab(self):
@@ -373,7 +364,7 @@ class _PreferencesDialog(gtk.Dialog):
             _('Show page numbers in the Title bar and the status bar. If unset the page numbers will be hidden.'))
         page.add_row(page_numbers_button)
 
-        
+
 
         page.new_section(_('Rotation'))
         auto_rotate_button = gtk.CheckButton(
@@ -384,7 +375,7 @@ class _PreferencesDialog(gtk.Dialog):
         auto_rotate_button.set_tooltip_text(
             _('Automatically rotate images when an orientation is specified in the image metadata, such as in an Exif tag.'))
         page.add_row(auto_rotate_button)
-        
+
         return page
 
     def _init_advanced_tab(self):
@@ -395,14 +386,14 @@ class _PreferencesDialog(gtk.Dialog):
 
         page.new_section(_('Cache'))
 
-        label = gtk.Label('%s:' % _('Maximum number of pages to store in the cache'))
-        adjustment = gtk.Adjustment(prefs['max pages to cache'], -1, 500, 1, 3)
-        cache_spinner = gtk.SpinButton(adjustment, digits=0)
-        cache_spinner.connect('value-changed', self._spinner_cb,
-                                            'max pages to cache')
-        cache_spinner.set_tooltip_text(
-            _('Set the max number of pages to cache. A value of -1 will cache the entire archive.'))
-        page.add_row(label, cache_spinner)
+        create_thumbs_button = gtk.CheckButton(
+            _('Store thumbnails for opened files.'))
+        create_thumbs_button.set_active(prefs['create thumbnails'])
+        create_thumbs_button.connect('toggled', self._check_button_cb,
+            'create thumbnails')
+        create_thumbs_button.set_tooltip_text(
+            _('Store thumbnails for opened files according to the freedesktop.org specification. These thumbnails are shared by many other applications, such as most file managers.'))
+        page.add_row(create_thumbs_button)
 
         delay_thumbs_button = gtk.CheckButton(
             _('Delay thumbnail generation.'))
@@ -412,6 +403,15 @@ class _PreferencesDialog(gtk.Dialog):
         delay_thumbs_button.connect('toggled', self._check_button_cb,
             'delay thumbnails')
         page.add_row(delay_thumbs_button)
+
+        label = gtk.Label('%s:' % _('Maximum number of pages to store in the cache'))
+        adjustment = gtk.Adjustment(prefs['max pages to cache'], -1, 500, 1, 3)
+        cache_spinner = gtk.SpinButton(adjustment, digits=0)
+        cache_spinner.connect('value-changed', self._spinner_cb,
+                                            'max pages to cache')
+        cache_spinner.set_tooltip_text(
+            _('Set the max number of pages to cache. A value of -1 will cache the entire archive.'))
+        page.add_row(label, cache_spinner)
 
         page.new_section(_('Comments'))
         label = gtk.Label('%s:' % _('Comment extensions'))
