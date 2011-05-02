@@ -24,6 +24,9 @@ MComix 0.92 (4.0.5)
       icon instead of the standard MComix icon. (inspired by Alexandr
       Domrachev)
 
+    - Removed "Automated crash recovery". This debug feature should no longer
+      be needed.
+
     - Updated Japanese translation. (by Keita Haga)
 
     - Updated French translation. (by Joseph M. Sleiman)

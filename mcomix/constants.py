@@ -21,7 +21,6 @@ LIBRARY_COVERS_PATH = os.path.join(DATA_DIR, 'library_covers')
 BOOKMARK_PICKLE_PATH = os.path.join(DATA_DIR, 'bookmarks.pickle')
 PREFERENCE_PICKLE_PATH = os.path.join(CONFIG_DIR, 'preferences.pickle')
 FILEINFO_PICKLE_PATH = os.path.join(DATA_DIR, 'file.pickle')
-CRASH_PICKLE_PATH = os.path.join(CONFIG_DIR, 'crash.pickle')
 
 ZOOM_MODE_BEST, ZOOM_MODE_WIDTH, ZOOM_MODE_HEIGHT, ZOOM_MODE_MANUAL = range(4)
 ZIP, RAR, TAR, GZIP, BZIP2, PDF, SEVENZIP = range(7)

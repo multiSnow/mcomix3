@@ -48,10 +48,6 @@ class MainWindow(gtk.Window):
         self.height = None
         self.was_out_of_focus = False
 
-        self.crash_timer_continue = False
-        self.crash_timer_has_expired = False
-        self.crash_timer_idle = False
-
         self._manual_zoom = 100 # In percent of original image size
         self._waiting_for_redraw = False
 
@@ -225,22 +221,6 @@ class MainWindow(gtk.Window):
         if prefs['default fullscreen'] or fullscreen:
             self.actiongroup.get_action('fullscreen').activate()
 
-        if prefs['crash recovery on']:
-
-            self.crash_timer_continue = True
-            gobject.timeout_add(prefs['crash recovery seconds'] * 1000, self.write_config_files)
-
-            crash_info = self.get_crash_info()
-
-            # check if there was a crash [0] and if it has been taken care of [1]
-            if crash_info[0] and not crash_info[1]:
-                fileinfo = self.filehandler.read_fileinfo_file()
-
-                if fileinfo != None:
-
-                    open_path = fileinfo[0]
-                    open_page = fileinfo[1] + 1
-
         if prefs['previous quit was quit and save']:
             fileinfo = self.filehandler.read_fileinfo_file()
 
@@ -256,8 +236,6 @@ class MainWindow(gtk.Window):
 
         if show_library:
             self.actiongroup.get_action('library').activate()
-
-        self.write_crashinfo_file(True)
 
     def gained_focus(self, *args):
         self.is_in_focus = True
@@ -1058,76 +1036,11 @@ class MainWindow(gtk.Window):
                     if os.path.isfile(current_file):
                         os.unlink(current_file)
 
-    def write_crashinfo_file(self, crash_status):
-        """Update crash status."""
-
-        has_crash_been_taken_care_of = not crash_status
-
-        config = open(constants.CRASH_PICKLE_PATH, 'wb')
-
-        cPickle.dump([crash_status, has_crash_been_taken_care_of], config, cPickle.HIGHEST_PROTOCOL)
-
-        config.close()
-
-    def get_crash_info(self):
-        """Read the crash status."""
-
-        crash_info = [False, True]
-
-        if os.path.isfile(constants.CRASH_PICKLE_PATH):
-
-            config = None
-
-            try:
-                config = open(constants.CRASH_PICKLE_PATH, 'rb')
-
-                crash_info = cPickle.load(config)
-                config.close()
-
-            except Exception:
-                print_( _('! Corrupt preferences file "%s", deleting...') % constants.CRASH_PICKLE_PATH )
-                if config is not None:
-                    config.close()
-                os.remove(constants.CRASH_PICKLE_PATH)
-
-        return crash_info
-
-    def idle_wait_for_crash_timer_to_expire(self):
-        """If a timer is already set to write the config files then
-           this function creates a thread that will wait for that thread
-           to end.
-        """
-        if not self.crash_timer_idle:
-
-            self.crash_timer_idle = True
-            self.crash_timer_continue = False
-
-            gobject.idle_add(self.wait_for_crash_timer_to_expire)
-
-    def wait_for_crash_timer_to_expire(self):
-        """Wait for the crash timer to expire and start a new one.
-        """
-
-        if not self.crash_timer_has_expired:
-            return True
-
-        self.crash_timer_continue = True
-        gobject.timeout_add(prefs['crash recovery seconds'] * 1000, self.write_config_files)
-
-        self.crash_timer_idle = False
-
-        return False
-
     def write_config_files(self):
 
         self.filehandler.write_fileinfo_file()
         preferences.write_preferences_file()
         self.uimanager.bookmarks.write_bookmarks_file()
-
-        if not self.crash_timer_continue:
-            self.crash_timer_has_expired = True
-
-        return self.crash_timer_continue
 
     def save_and_terminate_program(self, *args):
         prefs['previous quit was quit and save'] = True
@@ -1153,13 +1066,7 @@ class MainWindow(gtk.Window):
             prefs['path to last file'] = ''
             prefs['page of last file'] = 1
 
-        self.crash_timer_continue = False
         self.write_config_files()
-
-        if not save_current_file:
-            self.write_crashinfo_file(False)
-        else:
-            self.write_crashinfo_file(True)
 
         self.filehandler.cleanup()
         self.imagehandler.cleanup()

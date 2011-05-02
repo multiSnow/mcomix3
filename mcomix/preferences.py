@@ -50,8 +50,6 @@ prefs = {
     'last filter in main filechooser': 0,
     'last filter in library filechooser': 1,
     'show menubar': True,
-    'crash recovery on': False,
-    'crash recovery seconds': 30,
     'previous quit was quit and save': False,
     'show scrollbar': True,
     'show statusbar': True,

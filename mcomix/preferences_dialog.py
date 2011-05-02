@@ -24,8 +24,6 @@ class _PreferencesDialog(gtk.Dialog):
         self.set_resizable(True)
         self.set_default_response(gtk.RESPONSE_CLOSE)
 
-        self._has_crash_time_changed = False
-
         self.connect('response', self._response)
 
         notebook = gtk.Notebook()
@@ -415,26 +413,6 @@ class _PreferencesDialog(gtk.Dialog):
             'delay thumbnails')
         page.add_row(delay_thumbs_button)
 
-        page.new_section(_('Crash Recovery'))
-
-        crash_recovery_button = gtk.CheckButton(
-            _('Enable crash recovery.'))
-        crash_recovery_button.set_active(prefs['crash recovery on'])
-        crash_recovery_button.connect('toggled', self._check_button_cb,
-            'crash recovery on')
-        crash_recovery_button.set_tooltip_text(
-            _('Crash recovery saves the current configuration information every specified seconds.  In case of a crash the previous file will be re-loaded.'))
-        page.add_row(crash_recovery_button)
-
-        label = gtk.Label('%s:' % _('Save the current configuration information every n seconds'))
-        adjustment = gtk.Adjustment(prefs['crash recovery seconds'], 1, 3600, 1, 3)
-        recovery_spinner = gtk.SpinButton(adjustment, digits=0)
-        recovery_spinner.connect('value-changed', self._spinner_cb,
-                                            'crash recovery seconds')
-        recovery_spinner.set_tooltip_text(
-            _('Every n seconds the current configuration will be saved to disk.  Choose a lower number if crashes are frequent on your machine. 30 seconds (default)'))
-        page.add_row(label, recovery_spinner)
-
         page.new_section(_('Comments'))
         label = gtk.Label('%s:' % _('Comment extensions'))
         extensions_entry = gtk.Entry()
@@ -450,10 +428,6 @@ class _PreferencesDialog(gtk.Dialog):
 
     def _response(self, dialog, response):
         if response == gtk.RESPONSE_CLOSE:
-            # only change the crash timer once the preference window has been closed
-            if prefs['crash recovery on'] and self._has_crash_time_changed:
-                self._window.idle_wait_for_crash_timer_to_expire()
-
             _close_dialog()
 
         elif response == constants.RESPONSE_REVERT_TO_DEFAULT:
@@ -536,13 +510,6 @@ class _PreferencesDialog(gtk.Dialog):
             self._window.update_title()
             self._window.statusbar.update()
 
-        elif preference == 'crash recovery on':
-
-            if prefs['crash recovery on']:
-                self._window.idle_wait_for_crash_timer_to_expire()
-            else:
-                self._window.crash_timer_continue = False
-
     def _color_button_cb(self, colorbutton, preference):
         """Callback for the background colour selection button."""
 
@@ -596,11 +563,6 @@ class _PreferencesDialog(gtk.Dialog):
         elif preference == 'number of key presses before page turn':
             prefs['number of key presses before page turn'] = int(value)
             self._window._event_handler._extra_scroll_events = 0
-
-        elif preference == 'crash recovery seconds':
-            prefs['crash recovery seconds'] = int(value)
-
-            self._has_crash_time_changed = True
 
     def _combo_box_cb(self, combobox):
         """Callback for combobox-type preferences."""
