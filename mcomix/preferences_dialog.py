@@ -284,18 +284,6 @@ class _PreferencesDialog(gtk.Dialog):
             'default manga mode')
         page.add_row(manga_button)
 
-        label = gtk.Label('%s:' % _('Default zoom mode'))
-        zoom_combo = gtk.combo_box_new_text()
-        zoom_combo.set_size_request(170, -1)
-        zoom_combo.append_text(_('Best fit mode'))
-        zoom_combo.append_text(_('Fit width mode'))
-        zoom_combo.append_text(_('Fit height mode'))
-        zoom_combo.append_text(_('Manual zoom mode'))
-        # Change this if the combobox entries are reordered.
-        zoom_combo.set_active(prefs['default zoom mode'])
-        zoom_combo.connect('changed', self._combo_box_cb)
-        page.add_row(label, zoom_combo)
-
         page.new_section(_('Fullscreen'))
         hide_in_fullscreen_button = gtk.CheckButton(
             _('Automatically hide all toolbars in fullscreen.'))
@@ -527,11 +515,6 @@ class _PreferencesDialog(gtk.Dialog):
         elif preference == 'number of key presses before page turn':
             prefs['number of key presses before page turn'] = int(value)
             self._window._event_handler._extra_scroll_events = 0
-
-    def _combo_box_cb(self, combobox):
-        """Callback for combobox-type preferences."""
-        zoom_mode = combobox.get_active()
-        prefs['default zoom mode'] = zoom_mode
 
     def _entry_cb(self, entry, event=None):
         """Callback for entry-type preferences."""

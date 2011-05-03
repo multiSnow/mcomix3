@@ -43,7 +43,6 @@ class MainWindow(gtk.Window):
         self.is_double_page = False
         self.is_manga_mode = False
         self.is_virtual_double_page = False # I.e. a wide image is displayed
-        self.zoom_mode = constants.ZOOM_MODE_BEST
         self.width = None
         self.height = None
         self.was_out_of_focus = False
@@ -128,16 +127,16 @@ class MainWindow(gtk.Window):
         if prefs['default manga mode']:
             self.actiongroup.get_action('manga_mode').activate()
 
-        if prefs['default zoom mode'] == constants.ZOOM_MODE_BEST:
+        if prefs['zoom mode'] == constants.ZOOM_MODE_BEST:
             self.actiongroup.get_action('best_fit_mode').activate()
 
-        elif prefs['default zoom mode'] == constants.ZOOM_MODE_WIDTH:
+        elif prefs['zoom mode'] == constants.ZOOM_MODE_WIDTH:
             self.actiongroup.get_action('fit_width_mode').activate()
 
-        elif prefs['default zoom mode'] == constants.ZOOM_MODE_HEIGHT:
+        elif prefs['zoom mode'] == constants.ZOOM_MODE_HEIGHT:
             self.actiongroup.get_action('fit_height_mode').activate()
 
-        elif prefs['default zoom mode'] == constants.ZOOM_MODE_MANUAL:
+        elif prefs['zoom mode'] == constants.ZOOM_MODE_MANUAL:
             # This little ugly hack is to get the activate call on
             # 'fit_manual_mode' to actually create an event (and callback).
             # Since manual mode is the default selected radio button action
@@ -271,12 +270,12 @@ class MainWindow(gtk.Window):
 
         area_width, area_height = self.get_visible_area_size()
 
-        if self.zoom_mode == constants.ZOOM_MODE_HEIGHT:
+        if prefs['zoom mode'] == constants.ZOOM_MODE_HEIGHT:
             scaled_width = -1
         else:
             scaled_width = area_width
 
-        if self.zoom_mode == constants.ZOOM_MODE_WIDTH:
+        if prefs['zoom mode'] == constants.ZOOM_MODE_WIDTH:
             scaled_height = -1
         else:
             scaled_height = area_height
@@ -305,7 +304,7 @@ class MainWindow(gtk.Window):
                 right_rotation += image_tools.get_implied_rotation(right_pixbuf)
                 right_rotation = right_rotation % 360
 
-            if self.zoom_mode == constants.ZOOM_MODE_MANUAL:
+            if prefs['zoom mode'] == constants.ZOOM_MODE_MANUAL:
 
                 if left_rotation in (90, 270):
                     total_width = left_unscaled_y
@@ -378,7 +377,7 @@ class MainWindow(gtk.Window):
                 rotation += image_tools.get_implied_rotation(pixbuf)
                 rotation = rotation % 360
 
-            if self.zoom_mode == constants.ZOOM_MODE_MANUAL:
+            if prefs['zoom mode'] == constants.ZOOM_MODE_MANUAL:
                 scaled_width = int(self._manual_zoom * unscaled_x / 100)
                 scaled_height = int(self._manual_zoom * unscaled_y / 100)
 
@@ -590,14 +589,14 @@ class MainWindow(gtk.Window):
             self.cursor_handler.auto_hide_off()
 
     def change_zoom_mode(self, radioaction, *args):
-        old_mode = self.zoom_mode
-        self.zoom_mode = radioaction.get_current_value()
-        sensitive = (self.zoom_mode == constants.ZOOM_MODE_MANUAL)
+        old_mode = prefs['zoom mode']
+        prefs['zoom mode'] = radioaction.get_current_value()
+        sensitive = (prefs['zoom mode'] == constants.ZOOM_MODE_MANUAL)
         self.actiongroup.get_action('zoom_in').set_sensitive(sensitive)
         self.actiongroup.get_action('zoom_out').set_sensitive(sensitive)
         self.actiongroup.get_action('zoom_original').set_sensitive(sensitive)
 
-        if old_mode != self.zoom_mode:
+        if old_mode != prefs['zoom mode']:
             self.draw_image()
 
     def change_stretch(self, toggleaction, *args):
@@ -850,13 +849,13 @@ class MainWindow(gtk.Window):
 
             if prefs['show scrollbar']:
 
-                if self.zoom_mode == constants.ZOOM_MODE_WIDTH:
+                if prefs['zoom mode'] == constants.ZOOM_MODE_WIDTH:
                     width -= self._vscroll.size_request()[0]
 
-                elif self.zoom_mode == constants.ZOOM_MODE_HEIGHT:
+                elif prefs['zoom mode'] == constants.ZOOM_MODE_HEIGHT:
                     height -= self._hscroll.size_request()[1]
 
-                elif self.zoom_mode == constants.ZOOM_MODE_MANUAL:
+                elif prefs['zoom mode'] == constants.ZOOM_MODE_MANUAL:
                     width -= self._vscroll.size_request()[0]
                     height -= self._hscroll.size_request()[1]
 
@@ -934,17 +933,17 @@ class MainWindow(gtk.Window):
                 self.menubar.hide_all()
 
             if (prefs['show scrollbar'] and
-              self.zoom_mode == constants.ZOOM_MODE_WIDTH):
+              prefs['zoom mode'] == constants.ZOOM_MODE_WIDTH):
                 self._vscroll.show_all()
                 self._hscroll.hide_all()
 
             elif (prefs['show scrollbar'] and
-              self.zoom_mode == constants.ZOOM_MODE_HEIGHT):
+              prefs['zoom mode'] == constants.ZOOM_MODE_HEIGHT):
                 self._vscroll.hide_all()
                 self._hscroll.show_all()
 
             elif (prefs['show scrollbar'] and
-              self.zoom_mode == constants.ZOOM_MODE_MANUAL):
+              prefs['zoom mode'] == constants.ZOOM_MODE_MANUAL):
                 self._vscroll.show_all()
                 self._hscroll.show_all()
 

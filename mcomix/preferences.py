@@ -23,7 +23,7 @@ prefs = {
     'stretch': False,
     'default double page': False,
     'default fullscreen': False,
-    'default zoom mode': constants.ZOOM_MODE_BEST,
+    'zoom mode': constants.ZOOM_MODE_BEST,
     'default manga mode': False,
     'lens magnification': 2,
     'lens size': 200,

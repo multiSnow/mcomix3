@@ -110,28 +110,28 @@ class EventHandler:
         # ----------------------------------------------------------------
         elif event.keyval in (gtk.keysyms.Down, gtk.keysyms.KP_Down):
 
-            if not self._window.zoom_mode == constants.ZOOM_MODE_BEST:
+            if not prefs['zoom mode'] == constants.ZOOM_MODE_BEST:
                 self._scroll_with_flipping(0, prefs['number of pixels to scroll per key event'])
             else:
                 self._window.next_page()
 
         elif event.keyval in (gtk.keysyms.Up, gtk.keysyms.KP_Up):
 
-            if not self._window.zoom_mode == constants.ZOOM_MODE_BEST:
+            if not prefs['zoom mode'] == constants.ZOOM_MODE_BEST:
                 self._scroll_with_flipping(0, -prefs['number of pixels to scroll per key event'])
             else:
                 self._window.previous_page()
 
         elif event.keyval in (gtk.keysyms.Right, gtk.keysyms.KP_Right):
 
-            if not self._window.zoom_mode == constants.ZOOM_MODE_BEST:
+            if not prefs['zoom mode'] == constants.ZOOM_MODE_BEST:
                 self._scroll_with_flipping(prefs['number of pixels to scroll per key event'], 0)
             else:
                 self._window.next_page()
 
         elif event.keyval in (gtk.keysyms.Left, gtk.keysyms.KP_Left):
 
-            if not self._window.zoom_mode == constants.ZOOM_MODE_BEST:
+            if not prefs['zoom mode'] == constants.ZOOM_MODE_BEST:
                 self._scroll_with_flipping(-prefs['number of pixels to scroll per key event'], 0)
             else:
                 self._window.previous_page()
@@ -199,7 +199,7 @@ class EventHandler:
                                 self._window.scroll_to_fixed(horiz='endfirst')
                 else:
 
-                    if (self._window.zoom_mode == constants.ZOOM_MODE_BEST or
+                    if (prefs['zoom mode'] == constants.ZOOM_MODE_BEST or
                       not self._window.scroll(0, -y_step)):
                         self._window.previous_page()
             else:
@@ -245,7 +245,7 @@ class EventHandler:
                                     horiz='startfirst')
                 else:
 
-                    if (self._window.zoom_mode == constants.ZOOM_MODE_BEST or
+                    if (prefs['zoom mode'] == constants.ZOOM_MODE_BEST or
                       not self._window.scroll(0, y_step)):
                         self._window.next_page()
 
@@ -290,10 +290,10 @@ class EventHandler:
 
         if event.direction == gtk.gdk.SCROLL_UP:
 
-            if self._window.zoom_mode == constants.ZOOM_MODE_BEST:
+            if prefs['zoom mode'] == constants.ZOOM_MODE_BEST:
                 self._window.previous_page()
 
-            elif self._window.zoom_mode == constants.ZOOM_MODE_HEIGHT:
+            elif prefs['zoom mode'] == constants.ZOOM_MODE_HEIGHT:
 
                 if self._window.is_manga_mode:
                     self._scroll_with_flipping(prefs['number of pixels to scroll per mouse wheel event'], 0)
@@ -305,10 +305,10 @@ class EventHandler:
 
         elif event.direction == gtk.gdk.SCROLL_DOWN:
 
-            if self._window.zoom_mode == constants.ZOOM_MODE_BEST:
+            if prefs['zoom mode'] == constants.ZOOM_MODE_BEST:
                 self._window.next_page()
 
-            elif self._window.zoom_mode == constants.ZOOM_MODE_HEIGHT:
+            elif prefs['zoom mode'] == constants.ZOOM_MODE_HEIGHT:
 
                 if self._window.is_manga_mode:
                     self._scroll_with_flipping(-prefs['number of pixels to scroll per mouse wheel event'], 0)
