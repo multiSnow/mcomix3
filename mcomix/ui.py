@@ -326,8 +326,6 @@ class MainUI(gtk.UIManager):
                 <menu action="menu_recent" />
                 <menuitem action="library" />
                 <separator />
-                <menuitem action="properties" />
-                <separator />
                 <menuitem action="preferences" />
                 <separator />
                 <menuitem action="close" />
