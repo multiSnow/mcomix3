@@ -161,19 +161,6 @@ class ThumbnailSidebar(gtk.HBox):
         if not self._is_loading:
             self._layout.set_size(0, self.get_needed_thumbnail_height())
 
-    def remove_thumbnail(self, num_of_thumbnail):
-
-        if not self._loaded and len(self._window.filehandler._image_files) > 1:
-            return
-
-        iterator = self._thumbnail_liststore.iter_nth_child( None, num_of_thumbnail )
-        self._thumbnail_liststore.remove( iterator )
-
-        image_height = self._treeview.get_background_area(num_of_thumbnail,
-            self._thumbnail_image_treeviewcolumn).height + 2
-
-        self._layout.set_size(0, self._layout.get_size()[1] - image_height)
-
     def resize(self):
         """Reload the thumbnails with the size specified by in the
         preferences.
