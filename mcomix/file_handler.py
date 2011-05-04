@@ -5,54 +5,64 @@ import shutil
 import tempfile
 import threading
 import re
+import cPickle
 import gtk
+
 import archive_extractor
 import archive_tools
 import image_tools
 import icons
 import tools
-from preferences import prefs
 import constants
-import cPickle
 import file_provider
 import callback
 
-class FileHandler:
+from preferences import prefs
 
-    """The FileHandler keeps track of images, pages, caches and reads files.
+class FileHandler(object):
 
-    When the Filehandler's methods refer to pages, they are indexed from 1,
-    i.e. the first page is page 1 etc.
+    """The FileHandler keeps track of the actual files/archives opened.
 
-    Other modules should *never* read directly from the files pointed to by
-    paths given by the FileHandler's methods. The files are not even
-    guaranteed to exist at all times since the extraction of archives is
-    threaded.
+    While ImageHandler takes care of pages/images, this class provides
+    the raw file names for archive members and image files, extracts
+    archives, and lists directories for image files.
     """
 
     def __init__(self, window):
+        #: Indicates if files/archives are currently loaded.
         self.file_loaded = False
+        #: None if current file is not an archive, or unrecognized format.
         self.archive_type = None
-        self.first_wanted = 0
-        self.last_wanted = 1
-        self._current_file = None
 
+        #: Either path to the current archive, or first file in image list.
+        #: This is B{not} the path to the currently open page.
+        self._current_file = None
+        #: Reference to L{MainWindow}.
         self._window = window
+        #: Path to opened archive file, or directory containing current images.
         self._base_path = None
+        #: Temporary directory used for extracting archives.
         self._tmp_dir = tempfile.mkdtemp(prefix=u'mcomix.', suffix=os.sep)
-        self._stop_cacheing = False
-        self._image_files = []
-        self._current_image_index = None
+        #: If C{True}, no longer wait for files to get extracted.
+        self._stop_waiting = False
+        #: List of comment files inside of the currently opened archive.
         self._comment_files = []
-        self._raw_pixbufs = {}
+        #: Mapping of absolute paths to archive path names.
         self._name_table = {}
+        #: Archive extractor.
         self._extractor = archive_extractor.Extractor()
+        #: Condition to wait on when extracting archives and waiting on files.
         self._condition = None
-        self._image_re = constants.SUPPORTED_IMAGE_REGEX
+        #: Provides a list of available files/archives in the open directory.
         self._file_provider = None
+        #: Regexp used for determining which archive files are images.
+        self._image_re = constants.SUPPORTED_IMAGE_REGEX
+        #: Regexp used for determining which archive files are comment files.
+        self._comment_re = None
         self.update_comment_extensions()
 
     def refresh_file(self, *args, **kwargs):
+        """ Closes the current file(s)/archive and reloads them. """
         current_file = os.path.abspath(self._window.imagehandler.get_real_path())
         self.open_file(current_file, keep_fileprovider=True)
 
@@ -67,42 +77,18 @@ class FileHandler:
         Return True if the file is successfully loaded.
         """
 
-        if isinstance(path, list) and len(path) == 0:
-            # This is a programming error and does not need translation.
-            assert False, "Tried to open an empty list of files."
+        path = self._initialize_fileprovider(path, keep_fileprovider)
 
-        elif isinstance(path, list) and len(path) > 0:
-            # A list of files was passed - open only these files.
-            if self._file_provider is None or not keep_fileprovider:
-                self._file_provider = file_provider.get_file_provider(path)
-
-            path = path[0]
+        if os.path.exists(path) and os.access(path, os.R_OK):
+            filelist = self._file_provider.list_files()
+            archive_type = archive_tools.archive_mime_type(path)
         else:
-            # A single file was passed - use Comix' classic open mode
-            # and open all files in its directory.
-            if self._file_provider is None or not keep_fileprovider:
-                self._file_provider = file_provider.get_file_provider([ path ])
+            filelist = []
+            archive_type = None
 
-        if not os.path.exists(path):
-            self._window.statusbar.set_message(
-                _('Could not open %s: No such file.') % path)
-            return False
-
-        if not os.access(path, os.R_OK):
-            self._window.statusbar.set_message(
-                _('Could not open %s: Permission denied.') % path)
-            return False
-
-        filelist = self._file_provider.list_files()
-        archive_type = archive_tools.archive_mime_type(path)
-
-        if archive_type is None and len(filelist) == 0:
-            self._window.statusbar.set_message(_("No images in '%s'") % path)
-            return False
-
-        if archive_type is None and not image_tools.is_image_file(path) and len(filelist) == 0:
-            self._window.statusbar.set_message(
-                _('Could not open %s: Unknown file type.') % path)
+        error_message = self._check_for_error_message(path, filelist, archive_type)
+        if error_message:
+            self._window.statusbar.set_message(error_message)
             return False
 
         # We close the previously opened file.
@@ -113,99 +99,34 @@ class FileHandler:
         while gtk.events_pending():
             gtk.main_iteration(False)
 
-        self._current_file = os.path.abspath(path)
         self.archive_type = archive_type
-        self._stop_cacheing = False
+        self._current_file = os.path.abspath(path)
+        self._stop_waiting = False
 
         result = False
+        image_files = []
+        current_image_index = 0
 
-        # If <path> is an archive we create an Extractor for it and set the
-        # files in it with file endings indicating image files or comments
-        # as the ones to be extracted.
+        # Actually open the file(s)/archive passed in path.
         if self.archive_type is not None:
-
-            self._base_path = self._current_file
-            self._condition = self._extractor.setup(self._base_path, self._tmp_dir, self.archive_type)
-
-            if self._condition != None:
-
-                files = self._extractor.get_files()
-                image_files = [image for image in files
-                    if self._image_re.search(image)
-                    # Remove MacOS meta files from image list
-                    and not u'__MACOSX' in os.path.normpath(image).split(os.sep)]
-
-                tools.alphanumeric_sort(image_files)
-                self._image_files = \
-                    [os.path.join(self._tmp_dir, f) for f in image_files]
-                comment_files = filter(self._comment_re.search, files)
-                self._comment_files = \
-                    [os.path.join(self._tmp_dir, f) for f in comment_files]
-
-                for name, full_path in zip(image_files, self._image_files):
-                    self._name_table[full_path] = name
-
-                for name, full_path in zip(comment_files, self._comment_files):
-                    self._name_table[full_path] = name
-
-                num_of_pages = len(self._image_files)
-
-                if start_page < 0:
-
-                    if self._window.is_double_page:
-                        self._current_image_index = num_of_pages - 2
-                    else:
-                        self._current_image_index = num_of_pages - 1
-
-                else:
-                    self._current_image_index = start_page - 1
-
-                self._current_image_index = max(0, self._current_image_index)
-
-                depth = self._window.is_double_page and 2 or 1
-
-                priority_ordering = (
-                    range(self._current_image_index,
-                        self._current_image_index + depth * 2) +
-                    range(self._current_image_index - depth,
-                        self._current_image_index)[::-1])
-
-                priority_ordering = [image_files[p] for p in priority_ordering
-                    if 0 <= p <= num_of_pages - 1]
-
-                for i, name in enumerate(priority_ordering):
-                    image_files.remove(name)
-                    image_files.insert(i, name)
-
-                self._extractor.set_files(image_files + comment_files)
-                self._extractor.file_extracted += self._extracted_file
-                self._extractor.extract()
-
-        # If <path> is an image we scan its directory for more images.
+            image_files, current_image_index = \
+                    self._open_archive(self._current_file, start_page)
         else:
+            image_files, current_image_index = \
+                    self._open_image_files(filelist, self._current_file)
 
-            self._base_path = self._file_provider.get_directory()
-            self._image_files = filelist
-            # Paths in file provider's list are always absolute
-            absolute_path = os.path.abspath(path)
-            if absolute_path in self._image_files:
-                self._current_image_index = self._image_files.index(absolute_path)
-            else:
-                self._current_image_index = 0
-
-        if not self._image_files:
-
+        if not image_files:
+            self.file_loaded = False
             self._window.statusbar.set_message(_("No images in '%s'") %
                 os.path.basename(path))
-            self.file_loaded = False
 
             result = False
             self._window.uimanager.set_sensitivities()
 
         else:
             self.file_loaded = True
-            self._window.imagehandler._image_files = self._image_files
-            self._window.imagehandler._current_image_index = self._current_image_index
+            self._window.imagehandler._image_files = image_files
+            self._window.imagehandler._current_image_index = current_image_index
             self._window.imagehandler._base_path = self._base_path
             self._window.imagehandler._current_file = self._current_file
             self._window.imagehandler._name_table = self._name_table
@@ -239,9 +160,7 @@ class FileHandler:
         self.archive_type = None
         self._current_file = None
         self._base_path = None
-        self._stop_cacheing = True
-        self._image_files = []
-        self._current_image_index = None
+        self._stop_waiting = True
         self._comment_files = []
         self._name_table.clear()
         self._window.clear()
@@ -258,10 +177,165 @@ class FileHandler:
         self._window.set_icon_list(*icons.mcomix_icons())
         tools.garbage_collect()
 
+    def _initialize_fileprovider(self, path, keep_fileprovider):
+        """ Creates the L{file_provider.FileProvider} for C{path}.
+
+        If C{path} is a list, assumes that only the files in the list
+        should be available. If C{path} is a string, assume that it is
+        either a directory or an image file, and all files in that directory
+        should be opened.
+
+        @param path: List of file names, or single file/directory as string.
+        @param keep_fileprovider: If C{True}, no new provider is constructed.
+        @return: If C{path} was a list, returns the first list element.
+            Otherwise, C{path} is not modified."""
+
+        if isinstance(path, list) and len(path) == 0:
+            # This is a programming error and does not need translation.
+            assert False, "Tried to open an empty list of files."
+
+        elif isinstance(path, list) and len(path) > 0:
+            # A list of files was passed - open only these files.
+            if self._file_provider is None or not keep_fileprovider:
+                self._file_provider = file_provider.get_file_provider(path)
+
+            return path[0]
+        else:
+            # A single file was passed - use Comix' classic open mode
+            # and open all files in its directory.
+            if self._file_provider is None or not keep_fileprovider:
+                self._file_provider = file_provider.get_file_provider([ path ])
+
+            return path
+
+    def _check_for_error_message(self, path, filelist, archive_type):
+        """ Checks for various error that could occur when opening C{path}.
+
+        @param path: Path to file that should be opened.
+        @param filelist: List of files in the directory of C{path}.
+        @param archive_type: Archive type, if C{path} is an archive.
+        @return: An appropriate error string, or C{None} if no error was found.
+        """
+        if not os.path.exists(path):
+            return _('Could not open %s: No such file.') % path
+
+        elif not os.access(path, os.R_OK):
+            return _('Could not open %s: Permission denied.') % path
+
+        elif archive_type is None and len(filelist) == 0:
+            return _("No images in '%s'") % path
+
+        elif (archive_type is None and
+            not image_tools.is_image_file(path) and
+            len(filelist) == 0):
+            return _('Could not open %s: Unknown file type.') % path
+
+        else:
+            return None
+
+    def _open_archive(self, path, start_page):
+        """ Opens the archive passed in C{path}.
+
+        Creates an L{archive_extractor.Extractor} and extracts all images
+        found within the archive.
+
+        @return: A tuple containing C{(image_files, image_index)}. """
+
+
+        self._base_path = path
+        self._condition = self._extractor.setup(self._base_path,
+                                                self._tmp_dir,
+                                                self.archive_type)
+
+        if self._condition != None:
+
+            files = self._extractor.get_files()
+            archive_images = [image for image in files
+                if self._image_re.search(image)
+                # Remove MacOS meta files from image list
+                and not u'__MACOSX' in os.path.normpath(image).split(os.sep)]
+
+            tools.alphanumeric_sort(archive_images)
+            image_files = [ os.path.join(self._tmp_dir, f)
+                            for f in archive_images ]
+
+            comment_files = filter(self._comment_re.search, files)
+            self._comment_files = [ os.path.join(self._tmp_dir, f)
+                                    for f in comment_files ]
+
+            for name, full_path in zip(archive_images, image_files):
+                self._name_table[full_path] = name
+
+            for name, full_path in zip(comment_files, self._comment_files):
+                self._name_table[full_path] = name
+
+            # Determine current archive image index.
+            num_of_pages = len(image_files)
+            if start_page < 0:
+                if self._window.is_double_page:
+                    current_image_index = num_of_pages - 2
+                else:
+                    current_image_index = num_of_pages - 1
+            else:
+                current_image_index = start_page - 1
+
+            current_image_index = max(0, current_image_index)
+
+            # Sort files to determine extraction order.
+            self._sort_archive_files(archive_images, current_image_index)
+
+            self._extractor.set_files(archive_images + comment_files)
+            self._extractor.file_extracted += self._extracted_file
+            self._extractor.extract()
+
+            return image_files, current_image_index
+
+        else:
+            # No condition was returned from the Extractor, i.e. invalid archive.
+            return [], 0
+
+    def _sort_archive_files(self, archive_images, current_image_index):
+        """ Sorts the list C{archive_images} in place based on a priority order
+        algorithm. """
+
+        depth = self._window.is_double_page and 2 or 1
+
+        priority_ordering = (
+            range(current_image_index,
+                current_image_index + depth * 2) +
+            range(current_image_index - depth,
+                current_image_index)[::-1])
+
+        priority_ordering = [archive_images[p] for p in priority_ordering
+            if 0 <= p <= len(archive_images) - 1]
+
+        for i, name in enumerate(priority_ordering):
+            archive_images.remove(name)
+            archive_images.insert(i, name)
+
+
+    def _open_image_files(self, filelist, image_path):
+        """ Opens all files passed in C{filelist}.
+
+        If C{image_path} is found in C{filelist}, the current page will be set
+        to its index within C{filelist}.
+
+        @return: Tuple of C{(image_files, image_index)}
+        """
+
+        self._base_path = self._file_provider.get_directory()
+
+        if image_path in filelist:
+            current_image_index = filelist.index(image_path)
+        else:
+            current_image_index = 0
+
+        return filelist, current_image_index
+
     def cleanup(self):
         """Run clean-up tasks. Should be called prior to exit."""
         self.thread_delete(self._tmp_dir)
-        self._stop_cacheing = True
+        self._stop_waiting = True
         self._extractor.stop()
         if self._condition:
             self._condition.acquire()
@@ -304,8 +378,8 @@ class FileHandler:
             return self._base_path
         else:
             img_index = self._window.imagehandler._current_image_index
-            file = self._window.imagehandler._image_files[img_index]
-            return os.path.dirname(file)
+            filename = self._window.imagehandler._image_files[img_index]
+            return os.path.dirname(filename)
 
     def get_base_filename(self):
         """Return the filename of the current base (archive filename or
@@ -469,7 +543,7 @@ class FileHandler:
         try:
             name = self._name_table[path]
             self._condition.acquire()
-            while not self._extractor.is_ready(name) and not self._stop_cacheing:
+            while not self._extractor.is_ready(name) and not self._stop_waiting:
                 self._condition.wait()
             self._condition.release()
         except Exception:
@@ -489,13 +563,11 @@ class FileHandler:
         if self.file_loaded:
             config = open(constants.FILEINFO_PICKLE_PATH, 'wb')
 
-            if self.archive_type != None:
-                current_file_info = [self._current_file, self._window.imagehandler._current_image_index]
-            else:
-                current_file_info = [self._image_files[self._window.imagehandler._current_image_index], 0]
+            path = self._window.imagehandler.get_real_path()
+            page_index = self._window.imagehandler.get_current_page() - 1
+            current_file_info = [ path, page_index ]
 
             cPickle.dump(current_file_info, config, cPickle.HIGHEST_PROTOCOL)
-
             config.close()
 
     def read_fileinfo_file(self):
