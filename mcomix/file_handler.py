@@ -296,21 +296,6 @@ class FileHandler:
         exts = '|'.join(prefs['comment extensions'])
         self._comment_re = re.compile(r'\.(%s)\s*$' % exts, re.I)
 
-    def get_path_to_page(self, page=None):
-        """Return the full path to the image file for <page>, or the current
-        page if <page> is None.
-        """
-        if page is None:
-            if self._current_image_index < len(self._image_files):
-                return self._image_files[self._current_image_index]
-            else:
-                return None
-
-        if page - 1 < len(self._image_files):
-            return self._image_files[page - 1]
-        else:
-            return None
-
     def get_path_to_base(self):
         """Return the full path to the current base (path to archive or
         image directory.)

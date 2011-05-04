@@ -76,7 +76,7 @@ class _PropertiesDialog(gtk.Dialog):
         # ----------------------------------------------------------------
         # Image tab
         # ----------------------------------------------------------------
-        path = window.filehandler.get_path_to_page()
+        path = window.imagehandler.get_path_to_page()
         page = properties_page._Page()
         thumb = window.imagehandler.get_thumbnail(width=200, height=128)
         page.set_thumbnail(thumb)
