@@ -124,25 +124,6 @@ class _PreferencesDialog(gtk.Dialog):
             'archive thumbnail as icon')
         page.add_row(thumb_as_preview_icon)
 
-        page.new_section(_('Magnifying Lens'))
-        label = gtk.Label('%s:' % _('Magnifying lens size (in pixels)'))
-        adjustment = gtk.Adjustment(prefs['lens size'], 50, 400, 1, 10)
-        lens_size_spinner = gtk.SpinButton(adjustment)
-        lens_size_spinner.connect('value_changed', self._spinner_cb,
-            'lens size')
-        lens_size_spinner.set_tooltip_text(
-            _('Set the size of the magnifying lens. It is a square with a side of this many pixels.'))
-        page.add_row(label, lens_size_spinner)
-        label = gtk.Label('%s:' % _('Magnification factor'))
-        adjustment = gtk.Adjustment(prefs['lens magnification'], 1.1, 10.0,
-            0.1, 1.0)
-        lens_magnification_spinner = gtk.SpinButton(adjustment, digits=1)
-        lens_magnification_spinner.connect('value_changed', self._spinner_cb,
-            'lens magnification')
-        lens_magnification_spinner.set_tooltip_text(
-            _('Set the magnification factor of the magnifying lens.'))
-        page.add_row(label, lens_magnification_spinner)
-
         page.new_section(_('Transparency'))
         checkered_bg_button = gtk.CheckButton(
             _('Use checkered background for transparent images.'))
@@ -368,6 +349,26 @@ class _PreferencesDialog(gtk.Dialog):
         cache_spinner.set_tooltip_text(
             _('Set the max number of pages to cache. A value of -1 will cache the entire archive.'))
         page.add_row(label, cache_spinner)
+
+        page.new_section(_('Magnifying Lens'))
+
+        label = gtk.Label('%s:' % _('Magnifying lens size (in pixels)'))
+        adjustment = gtk.Adjustment(prefs['lens size'], 50, 400, 1, 10)
+        lens_size_spinner = gtk.SpinButton(adjustment)
+        lens_size_spinner.connect('value_changed', self._spinner_cb,
+            'lens size')
+        lens_size_spinner.set_tooltip_text(
+            _('Set the size of the magnifying lens. It is a square with a side of this many pixels.'))
+        page.add_row(label, lens_size_spinner)
+        label = gtk.Label('%s:' % _('Magnification factor'))
+        adjustment = gtk.Adjustment(prefs['lens magnification'], 1.1, 10.0,
+            0.1, 1.0)
+        lens_magnification_spinner = gtk.SpinButton(adjustment, digits=1)
+        lens_magnification_spinner.connect('value_changed', self._spinner_cb,
+            'lens magnification')
+        lens_magnification_spinner.set_tooltip_text(
+            _('Set the magnification factor of the magnifying lens.'))
+        page.add_row(label, lens_magnification_spinner)
 
         page.new_section(_('Comments'))
         label = gtk.Label('%s:' % _('Comment extensions'))
