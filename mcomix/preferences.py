@@ -2,6 +2,7 @@
 
 import os
 import cPickle
+import logging
 import gtk
 import constants
 
@@ -67,7 +68,8 @@ prefs = {
     'auto add books into collections': True,
     'last library collection': None,
     'lib window height': gtk.gdk.screen_get_default().get_height() * 3 // 4,
-    'lib window width': gtk.gdk.screen_get_default().get_width() * 3 // 4
+    'lib window width': gtk.gdk.screen_get_default().get_width() * 3 // 4,
+    'log level': logging.WARNING
 }
 
 def read_preferences_file():
