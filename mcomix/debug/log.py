@@ -9,7 +9,6 @@ import logging
 from logging import DEBUG, INFO, WARNING, ERROR
 
 from mcomix import tools
-from mcomix import preferences
 
 __all__ = ['debug', 'info', 'warning', 'error', 'setLevel',
            'DEBUG', 'INFO', 'WARNING', 'ERROR']
@@ -31,7 +30,6 @@ if not __logger.handlers:
         '%(asctime)s: %(levelname)s: %(message)s',
         '%H:%M:%S'))
     __logger.handlers = [ __handler ]
-    __logger.setLevel(preferences.prefs['log level'])
 
 # The following functions direct all input to __logger.
 

@@ -3,9 +3,11 @@
 import sys
 import os
 import threading
+
 import archive_tools
 import constants
 import callback
+import debug.log as log
 
 class Extractor:
 
@@ -47,7 +49,8 @@ class Extractor:
             self._setupped = True
             return self._condition
         else:
-            print_( _('! Non-supported archive format: %s') % os.path.splitext(src)[1][1:] )
+            log.warning(_('! Non-supported archive format: %s'),
+                os.path.splitext(src)[1][1:])
             return None
 
     def get_files(self):
@@ -135,6 +138,7 @@ class Extractor:
 
         try:
             dst_path = os.path.join(self._dst, name)
+            log.debug(u'Extracting "%s" to "%s"', name, dst_path)
             self._archive.extract(name, dst_path)
 
         except Exception, ex:
@@ -142,7 +146,7 @@ class Extractor:
             # archive) than to crash here and leave the main thread in a
             # possible infinite block. Damaged or missing files *should* be
             # handled gracefully by the main program anyway.
-            print_( _('! Extraction error: %s') % str(ex) )
+            log.error(_('! Extraction error: %s'), ex)
 
         self._condition.acquire()
         self._extracted[name] = True

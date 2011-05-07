@@ -18,6 +18,7 @@ import file_provider
 import callback
 
 from preferences import prefs
+from debug import log
 
 class FileHandler(object):
 
@@ -124,6 +125,7 @@ class FileHandler(object):
             self._window.uimanager.set_sensitivities()
 
         else:
+            log.debug(u'Loading image files: %s', u', '.join(image_files))
             self.file_loaded = True
             self._window.imagehandler._image_files = image_files
             self._window.imagehandler._current_image_index = current_image_index
@@ -546,7 +548,8 @@ class FileHandler(object):
             while not self._extractor.is_ready(name) and not self._stop_waiting:
                 self._condition.wait()
             self._condition.release()
-        except Exception:
+        except Exception, ex:
+            log.error(u'Waiting on extraction of "%s" failed: %s', path, ex)
             return
 
     def thread_delete(self, path):
@@ -584,8 +587,10 @@ class FileHandler(object):
 
                 config.close()
 
-            except Exception:
-                print_( _('! Corrupt preferences file "%s", deleting...') % constants.FILEINFO_PICKLE_PATH )
+            except Exception, ex:
+                log.error(_('! Corrupt preferences file "%s", deleting...'),
+                        constants.FILEINFO_PICKLE_PATH )
+                log.info(u'Error was: %s', ex)
                 if config is not None:
                     config.close()
                 os.remove(constants.FILEINFO_PICKLE_PATH)
