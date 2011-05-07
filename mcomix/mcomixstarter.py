@@ -101,8 +101,8 @@ def print_help():
     print_( _('  -m, --manga             Start the application in manga mode.') )
     print_( _('  -d, --double-page       Start the application in double page mode.') )
     print_( _('  -B, --zoom-best         Start the application with zoom set to best fit mode.') )
-    print_( _('  -W, --zoom-width        Start the application with zoom set to fit height.') )
-    print_( _('  -H, --zoom-height       Start the application with zoom set to fit width.') )
+    print_( _('  -W, --zoom-width        Start the application with zoom set to fit width.') )
+    print_( _('  -H, --zoom-height       Start the application with zoom set to fit height.') )
     print_( _('  -v, --version           Show the version number and exit.') )
 
     sys.exit(1)
