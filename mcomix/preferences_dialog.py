@@ -406,8 +406,8 @@ class _PreferencesDialog(gtk.Dialog):
         """ Creates and returns the combobox for log level selection. """
         model = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_INT)
         model.append((_('All debug messages'), log.DEBUG))
-        model.append((_('Informations, warnings and errors'), log.INFO))
-        model.append((_('Warnings and errors'), log.WARNING))
+        model.append((_('Notices, warnings and errors'), log.INFO))
+        model.append((_('Warnings and errors (Default)'), log.WARNING))
         model.append((_('Only errors'), log.ERROR))
         loglevel_box = gtk.ComboBox(model)
 

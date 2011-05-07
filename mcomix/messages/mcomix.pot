@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-05-07 16:21+CEST\n"
+"POT-Creation-Date: 2011-05-07 16:37+CEST\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -596,11 +596,11 @@ msgid "  -B, --zoom-best         Start the application with zoom set to best fit
 msgstr ""
 
 #: mcomix/mcomixstarter.py:104
-msgid "  -W, --zoom-width        Start the application with zoom set to fit height."
+msgid "  -W, --zoom-width        Start the application with zoom set to fit width."
 msgstr ""
 
 #: mcomix/mcomixstarter.py:105
-msgid "  -H, --zoom-height       Start the application with zoom set to fit width."
+msgid "  -H, --zoom-height       Start the application with zoom set to fit height."
 msgstr ""
 
 #: mcomix/mcomixstarter.py:106
@@ -977,11 +977,11 @@ msgid "All debug messages"
 msgstr ""
 
 #: mcomix/preferences_dialog.py:409
-msgid "Informations, warnings and errors"
+msgid "Notices, warnings and errors"
 msgstr ""
 
 #: mcomix/preferences_dialog.py:410
-msgid "Warnings and errors"
+msgid "Warnings and errors (Default)"
 msgstr ""
 
 #: mcomix/preferences_dialog.py:411
