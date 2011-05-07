@@ -33,7 +33,9 @@ class MainWindow(gtk.Window):
     program when closed.
     """
 
-    def __init__(self, fullscreen=False, show_library=False, open_path=None, open_page=1):
+    def __init__(self, fullscreen=False, is_slideshow=slideshow,
+            show_library=False, manga_mode=False, double_page=False,
+            zoom_mode=None, open_path=None, open_page=1):
         gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
 
         # ----------------------------------------------------------------
@@ -124,29 +126,33 @@ class MainWindow(gtk.Window):
 
         log.setLevel(prefs['log level'])
 
-        if prefs['default double page']:
+        if prefs['default double page'] or double_page:
             self.actiongroup.get_action('double_page').activate()
 
-        if prefs['default manga mode']:
+        if prefs['default manga mode'] or manga_mode:
             self.actiongroup.get_action('manga_mode').activate()
 
-        if prefs['zoom mode'] == constants.ZOOM_MODE_BEST:
-            self.actiongroup.get_action('best_fit_mode').activate()
+        # Determine zoom mode. If zoom_mode is passed, it overrides
+        # the zoom mode preference.
+        zoom_actions = { constants.ZOOM_MODE_BEST : 'best_fit_mode',
+                constants.ZOOM_MODE_WIDTH : 'fit_width_mode',
+                constants.ZOOM_MODE_HEIGHT : 'fit_height_mode',
+                constants.ZOOM_MODE_MANUAL : 'fit_manual_mode' }
 
-        elif prefs['zoom mode'] == constants.ZOOM_MODE_WIDTH:
-            self.actiongroup.get_action('fit_width_mode').activate()
+        if zoom_mode is not None:
+            zoom_action = zoom_actions[zoom_mode]
+        else:
+            zoom_action = zoom_actions[prefs['zoom mode']]
 
-        elif prefs['zoom mode'] == constants.ZOOM_MODE_HEIGHT:
-            self.actiongroup.get_action('fit_height_mode').activate()
-
-        elif prefs['zoom mode'] == constants.ZOOM_MODE_MANUAL:
+        if zoom_action == 'fit_manual_mode':
             # This little ugly hack is to get the activate call on
             # 'fit_manual_mode' to actually create an event (and callback).
             # Since manual mode is the default selected radio button action
             # it won't send an event if we activate it when it is already
             # the selected one.
             self.actiongroup.get_action('best_fit_mode').activate()
-            self.actiongroup.get_action('fit_manual_mode').activate()
+
+        self.actiongroup.get_action(zoom_action).activate()
 
         if prefs['stretch']:
             self.actiongroup.get_action('stretch').activate()
@@ -239,6 +245,9 @@ class MainWindow(gtk.Window):
         if open_path is not None:
             self.filehandler.open_file(open_path, open_page)
 
+        if is_slideshow:
+            self.actiongroup.get_action('slideshow').activate()
+
         if show_library:
             self.actiongroup.get_action('library').activate()
 
@@ -254,7 +263,7 @@ class MainWindow(gtk.Window):
         self.imagehandler.force_single_step = False
 
     def draw_image(self, at_bottom=False, scroll=False):
-        """Draw the current page(s) and update the titlebar and statusbar.
+        """Draw the current pages and update the titlebar and statusbar.
         """
         if not self._waiting_for_redraw: # Don't stack up redraws.
             self._waiting_for_redraw = True
