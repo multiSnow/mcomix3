@@ -125,7 +125,6 @@ class FileHandler(object):
             self._window.uimanager.set_sensitivities()
 
         else:
-            log.debug(u'Loading image files: %s', u', '.join(image_files))
             self.file_loaded = True
             self._window.imagehandler._image_files = image_files
             self._window.imagehandler._current_image_index = current_image_index
