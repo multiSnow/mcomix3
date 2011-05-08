@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 """constants.py - Miscellaneous constants."""
 
-import gtk
 import re
-import tools
 import os
+import tools
 
 APPNAME = 'MComix'
 VERSION = '0.92'
@@ -39,12 +38,25 @@ ACCEPTED_COMMENT_EXTENSIONS = ['txt', 'nfo']
 SUPPORTED_IMAGE_REGEX = re.compile(r'\.(jpg|jpeg|png|gif|tif|tiff|bmp|ppm|pgm|pbm)\s*$', re.I)
 SUPPORTED_ARCHIVE_REGEX = re.compile(r'\.(cbz|cbr|cbt|zip|rar|tar|gz|bz2|bzip2|7z)\s*$', re.I)
 
-_missing_icon_dialog = gtk.Dialog(None,None,0,None)
-_missing_icon_pixbuf = _missing_icon_dialog.render_icon(gtk.STOCK_MISSING_IMAGE, gtk.ICON_SIZE_LARGE_TOOLBAR)
-# Pixbuf is None when running without X server. Setup.py could fail because of this.
-if _missing_icon_pixbuf:
-    MISSING_IMAGE_ICON = _missing_icon_pixbuf.scale_simple( 128, 128, gtk.gdk.INTERP_TILES )
-
 MAX_LIBRARY_COVER_SIZE = 500
+
+MISSING_IMAGE_ICON = None
+try:
+    import gtk
+
+    _missing_icon_dialog = gtk.Dialog(None,None,0,None)
+    _missing_icon_pixbuf = _missing_icon_dialog.render_icon(
+            gtk.STOCK_MISSING_IMAGE, gtk.ICON_SIZE_LARGE_TOOLBAR)
+
+    # Pixbuf is None when running without X server. 
+    # Setup.py could fail because of this.
+    if _missing_icon_pixbuf:
+        MISSING_IMAGE_ICON = _missing_icon_pixbuf.scale_simple(
+                128, 128, gtk.gdk.INTERP_TILES)
+except ImportError:
+    # Missing GTK is already handled in mcomixstarter.py,
+    # but this file is imported first, so ignore exceptions here.
+    pass
+
 
 # vim: expandtab:sw=4:ts=4
