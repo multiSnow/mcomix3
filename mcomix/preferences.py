@@ -3,7 +3,6 @@
 import os
 import cPickle
 import logging
-import gtk
 import constants
 
 # All the preferences are stored here.
@@ -61,14 +60,13 @@ prefs = {
     'horizontal flip': False,
     'keep transformation': False,
     'max pages to cache': 7,
-    'window height': gtk.gdk.screen_get_default().get_height() * 3 // 4,
-    'window width': min(gtk.gdk.screen_get_default().get_width() * 3 // 4,
-                        gtk.gdk.screen_get_default().get_height() * 5 // 8),
+    'window height': 600,
+    'window width': 500,
     'library cover size': 128,
     'auto add books into collections': True,
     'last library collection': None,
-    'lib window height': gtk.gdk.screen_get_default().get_height() * 3 // 4,
-    'lib window width': gtk.gdk.screen_get_default().get_width() * 3 // 4,
+    'lib window height': 600,
+    'lib window width': 500,
     'log level': logging.WARNING
 }
 
