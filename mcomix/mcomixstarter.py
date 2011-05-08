@@ -24,9 +24,12 @@ import getopt
 import signal
 import gettext
 
+# These modules must not depend on GTK, pkg_resources, PIL,
+# or any other optional libraries.
 import constants
 import tools
 import portability
+import preferences
 
 def wait_and_exit():
     """ Wait for the user pressing ENTER before closing. This should help
@@ -59,16 +62,21 @@ def install_gettext():
     # explicitly installing the package.
     sys.path.append(constants.BASE_PATH)
 
-    # Get the user's current locale
-    code = portability.get_default_locale()
+    if preferences.prefs['language'] != 'auto':
+        lang_identifiers = [ preferences.prefs['language'] ]
+    else:
+        # Get the user's current locale
+        code = portability.get_default_locale()
+        lang_identifiers = gettext._expand_lang(code)
+
     domain = constants.APPNAME.lower()
-    lang_identifiers = gettext._expand_lang(code)
 
     # Search for .mo files manually, since gettext doesn't support setuptools/pkg_resources.
     for lang in lang_identifiers:
         resource = os.path.join(lang, 'LC_MESSAGES', '%s.mo' % domain)
         if pkg_resources.resource_exists('mcomix.messages', resource):
-            translation = gettext.GNUTranslations(pkg_resources.resource_stream('mcomix.messages', resource))
+            translation = gettext.GNUTranslations(
+                    pkg_resources.resource_stream('mcomix.messages', resource))
             translation.install(unicode=True)
             return
 
@@ -84,9 +92,6 @@ def install_print_function():
     import __builtin__
     if 'print_' not in __builtin__.__dict__:
         __builtin__.__dict__['print_'] = tools.print_
-
-install_gettext()
-install_print_function()
 
 def print_help():
     """Print the command-line help text and exit."""
@@ -112,6 +117,10 @@ def print_version():
     print_(constants.APPNAME + ' ' + constants.VERSION)
 
     sys.exit(1)
+
+preferences.read_preferences_file()
+install_gettext()
+install_print_function()
 
 # Check for PyGTK and PIL dependencies.
 try:
@@ -163,7 +172,6 @@ except ImportError:
 import deprecated
 import main
 import icons
-import preferences
 
 def run():
     """Run the program."""
@@ -225,7 +233,6 @@ def run():
         os.makedirs(constants.CONFIG_DIR, 0700)
 
     deprecated.move_files_to_xdg_dirs()
-    preferences.read_preferences_file()
     icons.load_icons()
 
     if len(args) == 1:

@@ -67,7 +67,8 @@ prefs = {
     'last library collection': None,
     'lib window height': 600,
     'lib window width': 500,
-    'log level': logging.WARNING
+    'log level': logging.WARNING,
+    'language': 'auto'
 }
 
 def read_preferences_file():
@@ -80,7 +81,9 @@ def read_preferences_file():
             old_prefs = cPickle.load(config)
             config.close()
         except Exception:
-            print_( _('! Corrupt preferences file "%s", deleting...') % constants.PREFERENCE_PICKLE_PATH)
+            # Gettext might not be installed yet at this point.
+            print ('! Corrupt preferences file "%s", deleting...' %
+                   constants.PREFERENCE_PICKLE_PATH)
             if config is not None:
                 config.close()
             os.remove(constants.PREFERENCE_PICKLE_PATH)

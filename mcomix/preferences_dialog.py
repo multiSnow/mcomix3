@@ -1,5 +1,6 @@
 """preferences_dialog.py - Preferences dialog."""
 
+import operator
 import gtk
 import gobject
 import preferences_page
@@ -323,6 +324,11 @@ class _PreferencesDialog(gtk.Dialog):
         # ----------------------------------------------------------------
         page = preferences_page._PreferencePage(None)
 
+        page.new_section(_('User interface language'))
+        label = gtk.Label('%s:' % _('Language (needs restart)'))
+        language_box = self._create_language_control()
+        page.add_row(label, language_box)
+
         page.new_section(_('Cache'))
 
         create_thumbs_button = gtk.CheckButton(
@@ -437,6 +443,66 @@ class _PreferencesDialog(gtk.Dialog):
             text, level = combobox.get_model().get(iter, 0, 1)
             log.setLevel(level)
             prefs['log level'] = level
+
+    def _create_language_control(self):
+        """ Creates and returns the combobox for language selection. """
+        languages = [
+            (_('Auto-detect (Default)'), 'auto'),
+            (_('Catalan'), 'ca'),
+            (_('Czech'), 'cs'),
+            (_('German'), 'de'),
+            (_('Greek'), 'el'),
+            (_('Spanish'), 'es'),
+            (_('Persian'), 'fa'),
+            (_('French'), 'fr'),
+            (_('Galician'), 'gl'),
+            (_('Croatian'), 'hr'),
+            (_('Hungarian'), 'hu'),
+            (_('Indonesian'), 'id'),
+            (_('Italian'), 'it'),
+            (_('Japanese'), 'jp'),
+            (_('Korean'), 'ko'),
+            (_('Dutch'), 'nl'),
+            (_('Polish'), 'pl'),
+            (_('Portuguese'), 'pt_BR'),
+            (_('Russian'), 'ru'),
+            (_('Swedish'), 'sv'),
+            (_('Ukrainian'), 'uk'),
+            (_('Chinese (simplified)'), 'zh_CN'),
+            (_('Chinese (traditional)'), 'zh_TW')]
+        languages.sort(key=operator.itemgetter(0))
+
+        model = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING)
+        for name, lang_code in languages:
+            model.append((name, lang_code))
+
+        box = gtk.ComboBox(model)
+
+        # Determine current log level
+        iter = model.get_iter_first()
+        index = 0
+        while iter:
+            if model.get_value(iter, 1) == prefs['language']:
+                box.set_active(index)
+                break
+            else:
+                iter = model.iter_next(iter)
+                index += 1
+
+        cell = gtk.CellRendererText()
+        box.pack_start(cell, True)
+        box.add_attribute(cell, 'text', 0)
+        box.connect('changed', self._language_changed_cb)
+
+        return box
+
+    def _language_changed_cb(self, combobox, *args):
+        """ Called whenever the language was changed. """
+        model_index = combobox.get_active()
+        if model_index > -1:
+            iter = combobox.get_model().iter_nth_child(None, model_index)
+            text, lang_code = combobox.get_model().get(iter, 0, 1)
+            prefs['language'] = lang_code
 
     def _check_button_cb(self, button, preference):
         """Callback for all checkbutton-type preferences."""

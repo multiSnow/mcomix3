@@ -24,6 +24,10 @@ MComix 0.92 (4.0.5)
       icon instead of the standard MComix icon. (inspired by Alexandr
       Domrachev)
 
+    - Added an option to manually change the user interface language
+      used by MComix. Changes to the language require an application
+      restart to take effect.
+
     - Added the following new command line switches:
       -m           Manga mode
       -s           Slideshow
