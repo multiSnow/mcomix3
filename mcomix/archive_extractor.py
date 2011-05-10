@@ -7,7 +7,7 @@ import threading
 import archive_tools
 import constants
 import callback
-import debug.log as log
+import log
 
 class Extractor:
 

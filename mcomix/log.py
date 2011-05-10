@@ -8,7 +8,7 @@ import threading
 import logging
 from logging import DEBUG, INFO, WARNING, ERROR
 
-from mcomix import tools
+import tools
 
 __all__ = ['debug', 'info', 'warning', 'error', 'setLevel',
            'DEBUG', 'INFO', 'WARNING', 'ERROR']

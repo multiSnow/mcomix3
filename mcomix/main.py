@@ -19,7 +19,7 @@ import image_tools
 import lens
 import preferences
 from preferences import prefs
-from debug import log
+import log
 import ui
 import slideshow
 import status

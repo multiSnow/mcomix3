@@ -16,9 +16,9 @@ import tools
 import constants
 import file_provider
 import callback
+import log
 
 from preferences import prefs
-from debug import log
 
 class FileHandler(object):
 
