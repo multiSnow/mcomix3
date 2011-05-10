@@ -3,14 +3,14 @@
 import os
 import zipfile
 import tarfile
+
 import archive_extractor
 import constants
+import log
 import archive.zip
 import archive.rar
 import archive.tar
 import archive.sevenzip
-#import poppler
-#import cairo
 
 def archive_mime_type(path):
     """Return the archive type of <path> or None for non-archives."""
@@ -48,7 +48,7 @@ def archive_mime_type(path):
             #    return constants.PDF
 
     except Exception:
-        print_( _('! Could not read %s') % path )
+        log.warning(_('! Could not read %s'), path)
 
     return None
 

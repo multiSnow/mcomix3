@@ -11,6 +11,7 @@ from mcomix import archive_tools
 from mcomix import tools
 from mcomix import constants
 from mcomix import preferences
+from mcomix import log
 
 def get_file_provider(filelist):
     """ Initialize a FileProvider with the files in <filelist>.
@@ -110,7 +111,7 @@ class OrderedFileProvider(FileProvider):
 
             return files
         except OSError:
-            print_( u'! ' + _('Could not open %s: Permission denied.') % self.base_dir )
+            log.warning(u'! ' + _('Could not open %s: Permission denied.'), self.base_dir)
             return []
 
     def next_directory(self):

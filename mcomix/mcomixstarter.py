@@ -27,9 +27,10 @@ import gettext
 # These modules must not depend on GTK, pkg_resources, PIL,
 # or any other optional libraries.
 import constants
-import tools
 import portability
 import preferences
+
+from tools import print_
 
 def wait_and_exit():
     """ Wait for the user pressing ENTER before closing. This should help
@@ -84,15 +85,6 @@ def install_gettext():
     translation = gettext.NullTranslations()
     translation.install(unicode=True)
 
-def install_print_function():
-    """ Add tools.print_ to the built-in namespace as print_.
-    This function helps with encoding woes that the print statement has
-    by replacing problematic characters with underscore. """
-
-    import __builtin__
-    if 'print_' not in __builtin__.__dict__:
-        __builtin__.__dict__['print_'] = tools.print_
-
 def print_help():
     """Print the command-line help text and exit."""
     print_( _('Usage:') )
@@ -120,7 +112,6 @@ def print_version():
 
 preferences.read_preferences_file()
 install_gettext()
-install_print_function()
 
 # Check for PyGTK and PIL dependencies.
 try:

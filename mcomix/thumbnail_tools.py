@@ -24,6 +24,7 @@ import image_tools
 import portability
 import encoding
 import callback
+import log
 
 from preferences import prefs
 
@@ -200,8 +201,8 @@ class Thumbnailer(object):
             os.chmod(thumbpath, 0600)
 
         except Exception, ex:
-            print_( _('! Could not save thumbnail "%(thumbpath)s": %(error)s') % \
-                { 'thumbpath' : thumbpath, 'error' : str(ex) } )
+            log.warning( _('! Could not save thumbnail "%(thumbpath)s": %(error)s'),
+                { 'thumbpath' : thumbpath, 'error' : ex } )
 
     def _thumbnail_exists(self, filepath):
         """ Checks if the thumbnail for <filepath> already exists.

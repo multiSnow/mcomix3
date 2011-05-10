@@ -15,7 +15,7 @@ def MeasureTime(function):
 		result = function(*args, **kwargs)
 		end = time.time()
 
-		print_( "Execution time of %s: %f sec" % (function.__name__, end - start) )
+		print "Execution time of %s: %f sec" % (function.__name__, end - start)
 		return result
 	
 	return wrapper

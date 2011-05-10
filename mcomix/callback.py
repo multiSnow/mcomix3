@@ -4,6 +4,8 @@ import weakref
 import threading
 import gobject
 
+import log
+
 class Callback(object):
     """ Decorator class for implementing callbacks within the main thread.
     Add listeners to method calls with method += callback_function. """
@@ -91,8 +93,8 @@ class Callback(object):
                 try:
                     callback(*args, **kwargs)
                 except Exception, e:
-                    print_( _('! Callback %(function)r failed: %(error)s') % \
-                        { 'function' : callback, 'error' : e } )
+                    log.error(_('! Callback %(function)r failed: %(error)s'),
+                              { 'function' : callback, 'error' : e })
 
     def __callback_deleted(self, obj_ref):
         """ Called whenever one of the callback objects is collected by gc.

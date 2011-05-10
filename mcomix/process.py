@@ -3,6 +3,8 @@
 import gc
 import subprocess
 import sys
+
+import log
 import encoding
 
 class Process:
@@ -46,9 +48,9 @@ class Process:
             return self._proc.stdout
         except Exception, ex:
             cmd = len(self._args) > 0 and self._args[0] or "<invalid>"
-            print_( _('! Error spawning process "%(command)s": %(error)s.') %
-                { 'command' : cmd, 'error' : encoding.to_unicode(str(ex)) } + ' ' +
-                _('"%s" must be on your system PATH to be found.') % cmd )
+            log.error(_('! Error spawning process "%(command)s": %(error)s.')
+                      + ' ' + _('"%(command)s" must be on your system PATH to be found.'),
+                      { 'command' : cmd, 'error' : ex })
             return None
 
     def spawn(self):

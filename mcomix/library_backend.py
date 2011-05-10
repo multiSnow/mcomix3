@@ -2,18 +2,19 @@
 
 import os
 
+import archive_tools
+import constants
+import thumbnail_tools
+import log
+
 try:
     from sqlite3 import dbapi2
 except ImportError:
     try:
         from pysqlite2 import dbapi2
     except ImportError:
-        print_( _('! Could neither find pysqlite2 nor sqlite3.') )
+        log.warning( _('! Could neither find pysqlite2 nor sqlite3.') )
         dbapi2 = None
-
-import archive_tools
-import constants
-import thumbnail_tools
 
 class LibraryBackend:
 
@@ -80,7 +81,7 @@ class LibraryBackend:
             path = self._con.execute('''select path from Book
                 where id = ?''', (book,)).fetchone().decode('utf-8')
         except Exception:
-            print_( _('! Non-existant book #%i') % book )
+            log.error( _('! Non-existant book #%i'), book )
             return None
 
         return self.get_book_thumbnail(path)
@@ -93,7 +94,7 @@ class LibraryBackend:
             path = self._con.execute('''select path from Book
                 where id = ?''', (book,)).fetchone().decode('utf-8')
         except Exception:
-            print_( _('! Non-existant book #%i') % book )
+            log.error( _('! Non-existant book #%i'), book )
             return None
 
         return path
@@ -109,7 +110,7 @@ class LibraryBackend:
         thumbnailer.set_size(constants.MAX_LIBRARY_COVER_SIZE, constants.MAX_LIBRARY_COVER_SIZE)
         thumb = thumbnailer.thumbnail(path)
 
-        if thumb is None: print_( _('! Could not get cover for book "%s"') % path )
+        if thumb is None: log.warning( _('! Could not get cover for book "%s"'), path )
         return thumb
 
     def get_book_name(self, book):
@@ -244,7 +245,7 @@ class LibraryBackend:
                     values (?, ?, ?, ?, ?)''',
                     (name, path, pages, format, size))
         except dbapi2.Error:
-            print_( _('! Could not add book "%s" to the library') % path )
+            log.error( _('! Could not add book "%s" to the library'), path )
             return False
         if collection is not None:
             book = self._con.execute('''select id from Book
@@ -261,7 +262,7 @@ class LibraryBackend:
                 (name) values (?)''', (name,))
             return True
         except dbapi2.Error:
-            print_( _('! Could not add collection "%s"') % name )
+            log.error( _('! Could not add collection "%s"'), name )
         return False
 
     def add_book_to_collection(self, book, collection):
@@ -272,7 +273,7 @@ class LibraryBackend:
         except dbapi2.DatabaseError: # E.g. book already in collection.
             pass
         except dbapi2.Error:
-            print_( _('! Could not add book %(book)s to collection %(collection)s') %
+            log.error( _('! Could not add book %(book)s to collection %(collection)s'),
                 {"book" : book, "collection" : collection} )
 
     def add_collection_to_collection(self, subcollection, supercollection):
@@ -299,7 +300,7 @@ class LibraryBackend:
         except dbapi2.DatabaseError: # E.g. name taken.
             pass
         except dbapi2.Error:
-            print_( _('! Could not rename collection to "%s"') % name )
+            log.error( _('! Could not rename collection to "%s"'), name )
         return False
 
     def duplicate_collection(self, collection):

@@ -1,7 +1,9 @@
 """icons.py - Load MComix specific icons."""
 
 import gtk
+
 import image_tools
+import log
 
 from pkg_resources import resource_string
 
@@ -61,7 +63,7 @@ def load_icons():
             iconset = gtk.IconSet(pixbuf)
             factory.add(stockid, iconset)
         except Exception:
-            print_( _('! Could not load icon "%s"') % filename )
+            log.warning(_('! Could not load icon "%s"'), filename)
     factory.add_default()
 
 

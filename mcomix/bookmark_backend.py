@@ -2,7 +2,9 @@
 
 import os
 import cPickle
+
 import constants
+import log
 import bookmark_menu_item
 import callback
 
@@ -32,8 +34,9 @@ class __BookmarksStore:
                 fd.close()
 
             except Exception:
-                print_( _('! Could not parse bookmarks file %s') % constants.BOOKMARK_PICKLE_PATH )
-                print_( _('! Deleting corrupt bookmarks file.') )
+                log.error(_('! Could not parse bookmarks file %s'),
+                          constants.BOOKMARK_PICKLE_PATH)
+                log.error(_('! Deleting corrupt bookmarks file.'))
                 os.remove(constants.BOOKMARK_PICKLE_PATH)
                 self.clear_bookmarks()
 
