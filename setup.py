@@ -1,5 +1,15 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
+
+""" MComix installation routines.
+
+Example usage:
+    Normal installation (all files are copied into a directory in python/lib/site-packages/mcomix)
+    $ ./setup.py install
+
+    For distribution packaging (All files are installed relative to /tmp/mcomix)
+    $ ./setup.py install --single-version-externally-managed --root /tmp/mcomix --prefix /usr
+"""
 
 import sys
 import os
@@ -53,7 +63,7 @@ setuptools.setup(
     # Various MIME files that need to be copied to certain system locations on Linux.
     # Note that these files are only installed correctly if
     # --single-version-externally-managed is used as argument to "setup.py install".
-    # Otherwise, these files ends up in an MComix egg directory in site-packages.
+    # Otherwise, these files end up in a MComix egg directory in site-packages.
     # (Thank you, setuptools!)
     data_files = [
         ('share/man/man1', ['mcomix.1.gz', 'mime/comicthumb.1.gz']),
@@ -88,9 +98,11 @@ setuptools.setup(
     # Package metadata
     maintainer = 'Oddegamra',
     maintainer_email = 'oddegamra@gmx.org',
-    url = 'http://www.sourceforge.net/projects/mcomix',
+    url = 'http://mcomix.sourceforge.net',
     description = 'MComix is a fork of Comix and is a user-friendly, customizable image viewer. '
         'It is specifically designed to handle comic books.',
+    license = "License :: OSI Approved :: GNU General Public License (GPL)",
+    download_url = "http://sourceforge.net/projects/mcomix/files",
     platforms = ['GNU/Linux', 'Win32'],
 
     # Py2Exe options
