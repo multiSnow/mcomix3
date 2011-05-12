@@ -389,11 +389,6 @@ class _PreferencesDialog(gtk.Dialog):
             _('Treat all files found within archives, that have one of these file endings, as comments.'))
         page.add_row(label, extensions_entry)
 
-        page.new_section(_('Logging output'))
-        label = gtk.Label('%s:' % _('Logging output'))
-        loglevel_box = self._create_log_control()
-        page.add_row(label, loglevel_box)
-
         return page
 
     def _response(self, dialog, response):
@@ -407,42 +402,6 @@ class _PreferencesDialog(gtk.Dialog):
         else:
             # Other responses close the dialog, e.g. clicking the X icon on the dialog.
             _close_dialog()
-
-    def _create_log_control(self):
-        """ Creates and returns the combobox for log level selection. """
-        model = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_INT)
-        model.append((_('All debug messages'), log.DEBUG))
-        model.append((_('Notices, warnings and errors'), log.INFO))
-        model.append((_('Warnings and errors (Default)'), log.WARNING))
-        model.append((_('Only errors'), log.ERROR))
-        loglevel_box = gtk.ComboBox(model)
-
-        # Determine current log level
-        iter = model.get_iter_first()
-        index = 0
-        while iter:
-            if model.get_value(iter, 1) == prefs['log level']:
-                loglevel_box.set_active(index)
-                break
-            else:
-                iter = model.iter_next(iter)
-                index += 1
-
-        cell = gtk.CellRendererText()
-        loglevel_box.pack_start(cell, True)
-        loglevel_box.add_attribute(cell, 'text', 0)
-        loglevel_box.connect('changed', self._loglevel_changed_cb)
-
-        return loglevel_box
-
-    def _loglevel_changed_cb(self, combobox, *args):
-        """ Callback for log level settings. """
-        model_index = combobox.get_active()
-        if model_index > -1:
-            iter = combobox.get_model().iter_nth_child(None, model_index)
-            text, level = combobox.get_model().get(iter, 0, 1)
-            log.setLevel(level)
-            prefs['log level'] = level
 
     def _create_language_control(self):
         """ Creates and returns the combobox for language selection. """

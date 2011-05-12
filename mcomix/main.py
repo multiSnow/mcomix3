@@ -19,7 +19,6 @@ import image_tools
 import lens
 import preferences
 from preferences import prefs
-import log
 import ui
 import slideshow
 import status
@@ -123,8 +122,6 @@ class MainWindow(gtk.Window):
             gtk.FILL, 0, 0)
         table.attach(self.statusbar, 0, 3, 5, 6, gtk.FILL|gtk.SHRINK,
             gtk.FILL, 0, 0)
-
-        log.setLevel(prefs['log level'])
 
         if prefs['default double page'] or double_page:
             self.actiongroup.get_action('double_page').activate()

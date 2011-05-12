@@ -67,7 +67,6 @@ prefs = {
     'last library collection': None,
     'lib window height': 600,
     'lib window width': 500,
-    'log level': logging.WARNING,
     'language': 'auto'
 }
 

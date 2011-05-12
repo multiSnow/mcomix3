@@ -20,7 +20,7 @@
 
 import os
 import sys
-import getopt
+import optparse
 import signal
 import gettext
 
@@ -42,17 +42,6 @@ def wait_and_exit():
         raw_input("Press ENTER to continue...")
 
     sys.exit(1)
-
-try:
-    import pkg_resources
-
-except ImportError:
-    # gettext isn't initialized yet, since pkg_resources is required to find translation files.
-    # Thus, localizing these messages is pointless.
-    print "The package 'pkg_resources' could not be found."
-    print "You need to install the 'setuptools' package, which also includes pkg_resources."
-    print "Note: On most distributions, 'distribute' supersedes 'setuptools'."
-    wait_and_exit()
 
 def install_gettext():
     """ Initialize gettext with the correct directory that contains
@@ -85,30 +74,79 @@ def install_gettext():
     translation = gettext.NullTranslations()
     translation.install(unicode=True)
 
-def print_help():
-    """Print the command-line help text and exit."""
-    print_( _('Usage:') )
-    print_( '  mcomix',  _('[OPTION...] [PATH]') )
-    print_( _('\nView images and comic book archives.\n') )
-    print_( _('Options:') )
-    print_( _('  -h, --help              Show this help and exit.') )
-    print_( _('  -f, --fullscreen        Start the application in fullscreen mode.') )
-    print_( _('  -s, --slideshow         Start the application in slideshow mode.') )
-    print_( _('  -l, --library           Show the library on startup.') )
-    print_( _('  -m, --manga             Start the application in manga mode.') )
-    print_( _('  -d, --double-page       Start the application in double page mode.') )
-    print_( _('  -B, --zoom-best         Start the application with zoom set to best fit mode.') )
-    print_( _('  -W, --zoom-width        Start the application with zoom set to fit width.') )
-    print_( _('  -H, --zoom-height       Start the application with zoom set to fit height.') )
-    print_( _('  -v, --version           Show the version number and exit.') )
-
-    sys.exit(1)
-
-def print_version():
+def print_version(opt, value, parser, *args, **kwargs):
     """Print the version number and exit."""
     print_(constants.APPNAME + ' ' + constants.VERSION)
-
     sys.exit(1)
+
+def parse_arguments(argv):
+    """ Parse the command line passed in <argv>. Returns a tuple containing
+    (options, arguments). Errors parsing the command line are handled in
+    this function. """
+
+    parser = optparse.OptionParser(
+            usage="%s %%prog %s" % (_('Usage:'), _('[OPTION...] [PATH]')),
+            description=_('View images and comic book archives.'),
+            add_help_option=False)
+    parser.add_option('--help', action='help',
+            help=_('Show this help and exit.'))
+    parser.add_option('-s', '--slideshow', dest='slideshow', action='store_true',
+            help=_('Start the application in slideshow mode.'))
+    parser.add_option('-l', '--library', dest='library', action='store_true',
+            help=_('Show the library on startup.'))
+    parser.add_option('-v', '--version', action='callback', callback=print_version,
+            help=_('Show the version number and exit.'))
+
+    viewmodes = optparse.OptionGroup(parser, _('View modes'))
+    viewmodes.add_option('-f', '--fullscreen', dest='fullscreen', action='store_true',
+            help=_('Start the application in fullscreen mode.'))
+    viewmodes.add_option('-m', '--manga', dest='manga', action='store_true',
+            help=_('Start the application in manga mode.'))
+    viewmodes.add_option('-d', '--double-page', dest='doublepage', action='store_true',
+            help=_('Start the application in double page mode.'))
+    parser.add_option_group(viewmodes)
+
+    fitmodes = optparse.OptionGroup(parser, _('Zoom modes'))
+    fitmodes.add_option('-b', '--zoom-best', dest='zoommode', action='store_const',
+            const=constants.ZOOM_MODE_BEST,
+            help=_('Start the application with zoom set to best fit mode.'))
+    fitmodes.add_option('-w', '--zoom-width', dest='zoommode', action='store_const',
+            const=constants.ZOOM_MODE_WIDTH,
+            help=_('Start the application with zoom set to fit width.'))
+    fitmodes.add_option('-h', '--zoom-height', dest='zoommode', action='store_const',
+            const=constants.ZOOM_MODE_HEIGHT,
+            help=_('Start the application with zoom set to fit height.'))
+    parser.add_option_group(fitmodes)
+
+    debugopts = optparse.OptionGroup(parser, _('Debug options'))
+    debugopts.add_option('-W', dest='loglevel', action='store',
+            choices=('all', 'warn', 'error'), default='warn',
+            metavar='[ all | warn | error ]',
+            help=_('Sets the desired output log level.'))
+    parser.add_option_group(debugopts)
+
+    opts, args = parser.parse_args(argv)
+
+    # Fix up log level to use constants from log.
+    if opts.loglevel == 'all':
+        opts.loglevel = log.DEBUG
+    elif opts.loglevel == 'warn':
+        opts.loglevel = log.WARNING
+    elif opts.loglevel == 'error':
+        opts.loglevel = log.ERROR
+
+    return opts, args
+
+try:
+    import pkg_resources
+
+except ImportError:
+    # gettext isn't initialized yet, since pkg_resources is required to find translation files.
+    # Thus, localizing these messages is pointless.
+    print "The package 'pkg_resources' could not be found."
+    print "You need to install the 'setuptools' package, which also includes pkg_resources."
+    print "Note: On most distributions, 'distribute' supersedes 'setuptools'."
+    wait_and_exit()
 
 preferences.read_preferences_file()
 install_gettext()
@@ -163,59 +201,16 @@ except ImportError:
 import deprecated
 import main
 import icons
+import log
 
 def run():
     """Run the program."""
 
-    fullscreen = False
-    slideshow = False
-    show_library = False
-    manga_mode = False
-    double_page = False
-    zoom_mode = None
     open_path = None
     open_page = 1
 
-    try:
-        argv = portability.get_commandline_args()
-        opts, args = getopt.gnu_getopt(argv[1:], 'fsmdBWHhlv',
-            ['fullscreen', 'slideshow', 'manga', 'doublepage', 'zoom-best',
-            'zoom-width', 'zoom-height', 'help', 'library', 'version'])
-
-    except getopt.GetoptError:
-        print_help()
-
-    for opt, value in opts:
-
-        if opt in ('-h', '--help'):
-            print_help()
-
-        elif opt in ('-v', '--version'):
-            print_version()
-
-        elif opt in ('-l', '--library'):
-            show_library = True
-
-        elif opt in ('-f', '--fullscreen'):
-            fullscreen = True
-
-        elif opt in ('-s', '--slideshow'):
-            slideshow = True
-
-        elif opt in ('-m', '--manga'):
-            manga_mode = True
-
-        elif opt in ('-d', '--double-page'):
-            double_page = True
-
-        elif opt in ('-B', '--zoom-best'):
-            zoom_mode = constants.ZOOM_MODE_BEST
-
-        elif opt in ('-W', '--zoom-width'):
-            zoom_mode = constants.ZOOM_MODE_WIDTH
-
-        elif opt in ('-H', '--zoom-height'):
-            zoom_mode = constants.ZOOM_MODE_HEIGHT
+    argv = portability.get_commandline_args()
+    opts, args = parse_arguments(argv[1:])
 
     if not os.path.exists(constants.DATA_DIR):
         os.makedirs(constants.DATA_DIR, 0700)
@@ -235,9 +230,11 @@ def run():
         open_path = preferences.prefs['path to last file']
         open_page = preferences.prefs['page of last file']
 
-    window = main.MainWindow(fullscreen = fullscreen, is_slideshow = slideshow,
-            show_library = show_library, manga_mode = manga_mode,
-            double_page = double_page, zoom_mode = zoom_mode,
+    log.setLevel(opts.loglevel)
+
+    window = main.MainWindow(fullscreen = opts.fullscreen, is_slideshow = opts.slideshow,
+            show_library = opts.library, manga_mode = opts.manga,
+            double_page = opts.doublepage, zoom_mode = opts.zoommode,
             open_path = open_path, open_page = open_page)
     deprecated.check_for_deprecated_files(window)
 

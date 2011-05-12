@@ -29,11 +29,12 @@ MComix 0.92 (4.0.5)
       restart to take effect.
 
     - Added the following new command line switches:
-      -m           Manga mode
-      -s           Slideshow
-      -d           Double-page mode
-      -B, -W, -H   Fit best/width/height, respectively.
+      -m                  Manga mode
+      -s                  Slideshow
+      -d                  Double-page mode
+      -b, -w, -h          Fit best/width/height, respectively.
       (suggested by Anonymous on the Comix tracker, adapted by Alan Horkan)
+      -W[all|warn|error]  Set log level (default is 'warn')
 
     - The following preference items have been removed: 
 
