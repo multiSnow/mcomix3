@@ -85,7 +85,7 @@ def parse_arguments(argv):
     this function. """
 
     parser = optparse.OptionParser(
-            usage="%s %%prog %s" % (_('Usage:'), _('[OPTION...] [PATH]')),
+            usage="%%prog %s" % _('[OPTION...] [PATH]'),
             description=_('View images and comic book archives.'),
             add_help_option=False)
     parser.add_option('--help', action='help',
