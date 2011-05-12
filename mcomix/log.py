@@ -27,7 +27,7 @@ __logger = logging.getLogger('mcomix')
 if not __logger.handlers:
     __handler = PrintHandler()
     __handler.setFormatter(logging.Formatter(
-        '%(asctime)s: %(levelname)s: %(message)s',
+        '%(asctime)s %(levelname)s: %(message)s',
         '%H:%M:%S'))
     __logger.handlers = [ __handler ]
 
