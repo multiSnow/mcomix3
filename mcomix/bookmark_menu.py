@@ -24,12 +24,10 @@ class BookmarksMenu(gtk.Menu):
 
         self._actiongroup = gtk.ActionGroup('mcomix-bookmarks')
         self._actiongroup.add_actions([
-            ('add_bookmark', 'mcomix-add-bookmark', _('_Add bookmark'),
-                '<Control>d', None, self._add_current_to_bookmarks),
-            ('edit_bookmarks', None, _('_Edit bookmarks...'),
-                '<Control>b', None, self._edit_bookmarks),
-            ('clear_bookmarks', gtk.STOCK_CLEAR, _('_Clear bookmarks'),
-                None, None, self._clear_bookmarks)])
+            ('add_bookmark', 'mcomix-add-bookmark', _('Add _Bookmark'),
+                '<Control>D', None, self._add_current_to_bookmarks),
+            ('edit_bookmarks', None, _('_Edit Bookmarks...'),
+                '<Control>B', None, self._edit_bookmarks)])
 
         action = self._actiongroup.get_action('add_bookmark')
         action.set_accel_group(ui.get_accel_group())
@@ -41,16 +39,10 @@ class BookmarksMenu(gtk.Menu):
 
         self.append(action.create_menu_item())
         self.append(self._separator)
-        self.append(gtk.SeparatorMenuItem())
-
-        action = self._actiongroup.get_action('clear_bookmarks')
-        action.set_accel_group(ui.get_accel_group())
-        self.append(action.create_menu_item())
 
         # Load initial bookmarks from the backend.
         for bookmark in self._bookmarks_store.get_bookmarks():
             self.add_bookmark(bookmark)
-        self._update_clear_bookmarks_sensitivity()
 
         # Prevent calls to show_all accidentally showing the hidden separator.
         self.show_all()
@@ -65,8 +57,6 @@ class BookmarksMenu(gtk.Menu):
         bookmark.show()
         self._separator.show()
 
-        self._update_clear_bookmarks_sensitivity()
-
     def remove_bookmark(self, bookmark):
         """Remove <bookmark> from the menu."""
 
@@ -79,39 +69,13 @@ class BookmarksMenu(gtk.Menu):
         if self._bookmarks_store.is_empty():
             self._separator.hide()
 
-        self._update_clear_bookmarks_sensitivity()
-
     def _add_current_to_bookmarks(self, *args):
-        """Add the currently viewed file to the bookmarks."""
+        """Add the current page to the bookmarks list."""
         self._bookmarks_store.add_current_to_bookmarks()
 
     def _edit_bookmarks(self, *args):
         """Open the bookmarks dialog."""
         bookmark_dialog._BookmarksDialog(self._window, self._bookmarks_store)
-
-    def _clear_bookmarks(self, *args):
-        """Remove all bookmarks, if the user presses 'Yes' in a confirmation
-        dialog.
-        """
-        choice_dialog = gtk.MessageDialog(self._window, 0,
-            gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-            _('Clear all bookmarks?'))
-
-        choice_dialog.format_secondary_text(
-            _('All stored bookmarks will be removed. Are you sure that you want to continue?'))
-
-        response = choice_dialog.run()
-        choice_dialog.destroy()
-
-        if response == gtk.RESPONSE_YES:
-            self._bookmarks_store.clear_bookmarks()
-
-    def _update_clear_bookmarks_sensitivity(self):
-        """ Enables or disables the "Clear bookmarks" menu item based on how many
-        bookmarks are actually available. """
-
-        enabled = not self._bookmarks_store.is_empty()
-        self._actiongroup.get_action('clear_bookmarks').set_sensitive(enabled)
 
     def set_sensitive(self, loaded):
         """Set the sensitivities of menu items as appropriate if <loaded>

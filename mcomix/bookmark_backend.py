@@ -7,6 +7,7 @@ import constants
 import log
 import bookmark_menu_item
 import callback
+import datetime
 
 class __BookmarksStore:
 
@@ -53,29 +54,31 @@ class __BookmarksStore:
                 bookmark._window = window
                 bookmark._file_handler = window.filehandler
 
-    def add_bookmark_by_values(self, name, path, page, numpages, archive_type):
-        """Create a bookmark and add it to the store."""
-        bookmark = bookmark_menu_item._Bookmark(self._window, self._file_handler, name, path, page, numpages,
-            archive_type)
+    def add_bookmark_by_values(self, name, path, page, numpages, archive_type, date_added):
+        """Create a bookmark and add it to the list."""
+        bookmark = bookmark_menu_item._Bookmark(self._window, self._file_handler,
+            name, path, page, numpages, archive_type, date_added)
+
         self.add_bookmark(bookmark)
 
     @callback.Callback
     def add_bookmark(self, bookmark):
-        """Add the <bookmark> to the store."""
+        """Add the <bookmark> to the list."""
         self._bookmarks.append(bookmark)
 
     @callback.Callback
     def remove_bookmark(self, bookmark):
-        """Remove the <bookmark> from the store."""
+        """Remove the <bookmark> from the list."""
         self._bookmarks.remove(bookmark)
 
     def add_current_to_bookmarks(self):
-        """Add the currently viewed file to the store."""
+        """Add the currently viewed page to the list."""
         name = self._image_handler.get_pretty_current_filename()
         path = self._image_handler.get_real_path()
         page = self._image_handler.get_current_page()
         numpages = self._image_handler.get_number_of_pages()
         archive_type = self._file_handler.archive_type
+        date_added = datetime.datetime.now()
 
         for bookmark in self._bookmarks:
 
@@ -83,20 +86,20 @@ class __BookmarksStore:
                 return
 
         self.add_bookmark_by_values(name, path, page, numpages,
-            archive_type)
+            archive_type, date_added)
 
     def clear_bookmarks(self):
-        """Remove all bookmarks from the store."""
+        """Remove all bookmarks from the list."""
 
         while not self.is_empty():
             self.remove_bookmark(self._bookmarks[-1])
 
     def get_bookmarks(self):
-        """Return all the bookmarks in the store."""
+        """Return all the bookmarks in the list."""
         return self._bookmarks
 
     def is_empty(self):
-        """Return True if the store is currently empty."""
+        """Return True if the bookmark list is empty."""
         return len(self._bookmarks) == 0
 
     def write_bookmarks_file(self):
