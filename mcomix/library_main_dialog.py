@@ -47,7 +47,10 @@ class _LibraryDialog(gtk.Window):
             gtk.EXPAND|gtk.FILL)
         table.attach(self.control_area, 0, 2, 1, 2, gtk.EXPAND|gtk.FILL,
             gtk.FILL)
-        table.attach(self._statusbar, 0, 2, 2, 3, gtk.FILL, gtk.FILL)
+
+        if prefs['show statusbar']:
+            prefs['show statusbar'] = True
+            table.attach(self._statusbar, 0, 2, 2, 3, gtk.FILL, gtk.FILL)
 
         self.add(table)
         self.show_all()
