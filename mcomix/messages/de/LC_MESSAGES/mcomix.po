@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.92\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-12 16:48+CEST\n"
+"POT-Creation-Date: 2011-05-13 16:01+CEST\n"
 "PO-Revision-Date: 2011-05-07 16:40+GMT\n"
 "Last-Translator: Moritz Brunner <oddegamra@gmx.org>\n"
 "Language-Team: \n"
@@ -19,7 +19,7 @@ msgstr ""
 "X-Language: de_DE\n"
 "X-Source-Language: en\n"
 
-#: mcomix/__main__.py:105 mcomix/mcomixstarter.py:88
+#: mcomix/__main__.py:105
 msgid "Usage:"
 msgstr "Verwendung:"
 
@@ -1503,6 +1503,10 @@ msgstr "! Konnte Vorschaubild \"%(thumbpath)s\" nicht speichern: %(error)s"
 msgid "Copy to c_lipboard"
 msgstr "In Zwischenab_lage kopieren"
 
+#: mcomix/ui.py:29
+msgid "_Delete"
+msgstr "_Löschen"
+
 #: mcomix/ui.py:31
 msgid "_Next page"
 msgstr "_Nächste Seite"
@@ -1543,21 +1547,25 @@ msgstr "_Gehe zu Seite..."
 msgid "Go to page..."
 msgstr "Gehe zu Seite..."
 
+#: mcomix/ui.py:41
+msgid "Re_fresh"
+msgstr "_Aktualisieren"
+
 #: mcomix/ui.py:42
 msgid "Refresh file"
 msgstr "Datei aktualisieren"
 
 #: mcomix/ui.py:43
-msgid "_Next archive"
-msgstr "_Nächstes Archiv"
+msgid "Next _archive"
+msgstr "Nächstes _Archiv"
 
 #: mcomix/ui.py:44
 msgid "Next archive"
 msgstr "Nächstes Archiv"
 
 #: mcomix/ui.py:45
-msgid "_Previous archive"
-msgstr "_Vorheriges Archiv"
+msgid "Previous a_rchive"
+msgstr "Vorheriges A_rchiv"
 
 #: mcomix/ui.py:46
 msgid "Previous archive"
@@ -1570,6 +1578,26 @@ msgstr "Nächstes Verzeichnis"
 #: mcomix/ui.py:49 mcomix/ui.py:50
 msgid "Previous directory"
 msgstr "Vorheriges Verzeichnis"
+
+#: mcomix/ui.py:51
+msgid "Zoom _In"
+msgstr "_Heranzoomen"
+
+#: mcomix/ui.py:53
+msgid "Zoom _Out"
+msgstr "_Wegzoomen"
+
+#: mcomix/ui.py:55
+msgid "_Normal Size"
+msgstr "_Normale Größe"
+
+#: mcomix/ui.py:57
+msgid "_Close"
+msgstr "S_chließen"
+
+#: mcomix/ui.py:59
+msgid "_Quit"
+msgstr "_Beenden"
 
 #: mcomix/ui.py:61
 msgid "_Save and quit"
@@ -1589,11 +1617,15 @@ msgstr "90 Grad gegen den Uhr_zeigersinn drehen"
 
 #: mcomix/ui.py:69
 msgid "Fli_p horizontally"
-msgstr "Hori_zontal blättern"
+msgstr "_Horizontal blättern"
 
 #: mcomix/ui.py:71
 msgid "Flip _vertically"
-msgstr "Ver_tikal blättern"
+msgstr "_Vertikal blättern"
+
+#: mcomix/ui.py:73
+msgid "Save _As"
+msgstr "Speichern _unter"
 
 #: mcomix/ui.py:75
 msgid "_Zoom"
@@ -1601,7 +1633,7 @@ msgstr "Ver_größern"
 
 #: mcomix/ui.py:76
 msgid "_Recent"
-msgstr "Zuletzt geö_ffnet"
+msgstr "_Zuletzt geöffnet"
 
 #: mcomix/ui.py:77 mcomix/ui.py:78
 msgid "_Bookmarks"
@@ -1634,6 +1666,10 @@ msgstr "_Hilfe"
 #: mcomix/ui.py:88
 msgid "_Transform image"
 msgstr "Bild ändern"
+
+#: mcomix/ui.py:92
+msgid "_Fullscreen"
+msgstr "_Vollbild"
 
 #: mcomix/ui.py:94
 msgid "_Double page mode"
@@ -1712,7 +1748,7 @@ msgstr "Am besten passender Modus"
 
 #: mcomix/ui.py:126
 msgid "Fit _width mode"
-msgstr "Modus mit angepasster Breite"
+msgstr "Modus mit angepasster _Breite"
 
 #: mcomix/ui.py:127
 msgid "Fit width mode"
@@ -1720,7 +1756,7 @@ msgstr "Modus mit angepasster Breite"
 
 #: mcomix/ui.py:128
 msgid "Fit _height mode"
-msgstr "Modus mit angepasster H_öhe"
+msgstr "Modus mit angepasster _Höhe"
 
 #: mcomix/ui.py:129
 msgid "Fit height mode"
@@ -1728,11 +1764,15 @@ msgstr "Modus mit angepasster Höhe"
 
 #: mcomix/ui.py:130
 msgid "M_anual zoom mode"
-msgstr "_Manueller Vergrößerungsmodus"
+msgstr "M_anueller Vergrößerungsmodus"
 
 #: mcomix/ui.py:131
 msgid "Manual zoom mode"
 msgstr "Manueller Vergrößerungsmodus"
+
+#: mcomix/ui.py:135
+msgid "_About"
+msgstr "_Über"
 
 #: mcomix/ui.py:139
 msgid "_Comments..."
@@ -1761,6 +1801,12 @@ msgstr "Bild aufbesser_n..."
 #: mcomix/ui.py:160
 msgid "_Library..."
 msgstr "Bibliothe_k ..."
+
+#~ msgid "_Next archive"
+#~ msgstr "Nächstes _Archiv"
+
+#~ msgid "_Previous archive"
+#~ msgstr "Vorheriges A_rchiv"
 
 #~ msgid "Logging output"
 #~ msgstr "Ereignisprotokollierung"
@@ -1842,29 +1888,8 @@ msgstr "Bibliothe_k ..."
 #~ msgid "_Copy"
 #~ msgstr "Kopieren"
 
-#~ msgid "_Refresh file"
-#~ msgstr "Datei aktualisie_ren"
-
-#~ msgid "_Zoom in"
-#~ msgstr "Ver_größern"
-
 #~ msgid "O_riginal size"
 #~ msgstr "_Originalgröße"
-
-#~ msgid "_Close"
-#~ msgstr "_Schließen"
-
-#~ msgid "_Quit"
-#~ msgstr "_Beenden"
-
-#~ msgid "Save _As..."
-#~ msgstr "Speichern _als..."
-
-#~ msgid "_Fullscreen"
-#~ msgstr "_Vollbild"
-
-#~ msgid "_About"
-#~ msgstr "_Über"
 
 #~ msgid "_View comments..."
 #~ msgstr "_Kommentare ansehen ..."
