@@ -26,7 +26,7 @@ class MainUI(gtk.UIManager):
         self._actiongroup.add_actions([
             ('copy_page', gtk.STOCK_COPY, _('Copy to c_lipboard'),
                 None, None, window.clipboard.copy_page),
-            ('delete', gtk.STOCK_DELETE, None,
+            ('delete', gtk.STOCK_DELETE, _('_Delete'),
                 'F8', None, window.delete),
             ('next_page', 'mcomix-next-page', _('_Next page'),
                 'Page_Down', _('Next page'), window.next_page),
@@ -38,7 +38,7 @@ class MainUI(gtk.UIManager):
                 'End', _('Last page'), window.last_page),
             ('go_to', gtk.STOCK_JUMP_TO, _('_Go to page...'),
                 'G', _('Go to page...'), window.page_select),
-            ('refresh_archive', gtk.STOCK_REFRESH, None,
+            ('refresh_archive', gtk.STOCK_REFRESH, _('_Refresh'),
                 '<control><shift>R', _('Refresh file'), window.filehandler.refresh_file),
             ('next_archive', 'mcomix-next-archive', _('_Next archive'),
                 '<control><shift>N', _('Next archive'), window.filehandler._open_next_archive),
@@ -48,15 +48,15 @@ class MainUI(gtk.UIManager):
                 '<control>N', _('Next directory'), window.filehandler.open_next_directory),
             ('previous_directory', 'mcomix-previous-directory', _('Previous directory'),
                 '<control>P', _('Previous directory'), window.filehandler.open_previous_directory),
-            ('zoom_in', gtk.STOCK_ZOOM_IN, None,
+            ('zoom_in', gtk.STOCK_ZOOM_IN, _('Zoom _In'),
                 'KP_Add', None, window.manual_zoom_in),
-            ('zoom_out', gtk.STOCK_ZOOM_OUT, None,
+            ('zoom_out', gtk.STOCK_ZOOM_OUT, _('Zoom _Out'),
                 'KP_Subtract', None, window.manual_zoom_out),
-            ('zoom_original', gtk.STOCK_ZOOM_100, None,
+            ('zoom_original', gtk.STOCK_ZOOM_100, _('_Normal Size'),
                 '<Control>0', None, window.manual_zoom_original),
-            ('close', gtk.STOCK_CLOSE, None,
+            ('close', gtk.STOCK_CLOSE, _('_Close'),
                 None, None, window.filehandler.close_file),
-            ('quit', gtk.STOCK_QUIT, None,
+            ('quit', gtk.STOCK_QUIT, _('_Quit'),
                 None, None, window.close_program),
             ('save_and_quit', gtk.STOCK_QUIT, _('_Save and quit'),
                 '<Control><shift>q', None, window.save_and_terminate_program),
@@ -70,7 +70,7 @@ class MainUI(gtk.UIManager):
                 None, None, window.flip_horizontally),
             ('flip_vert', 'mcomix-flip-vertical', _('Flip _vertically'),
                 None, None, window.flip_vertically),
-            ('extract_page', gtk.STOCK_SAVE_AS, None,
+            ('extract_page', gtk.STOCK_SAVE_AS, _('Save _As'),
                 '<Control><Shift>s', None, window.extract_page),
             ('menu_zoom', 'mcomix-zoom', _('_Zoom')),
             ('menu_recent', gtk.STOCK_DND_MULTIPLE, _('_Recent')),
@@ -89,7 +89,7 @@ class MainUI(gtk.UIManager):
             ('expander', None, None, None, None, None)])
 
         self._actiongroup.add_toggle_actions([
-            ('fullscreen', gtk.STOCK_FULLSCREEN, None,
+            ('fullscreen', gtk.STOCK_FULLSCREEN, _('_Fullscreen'),
                 'f', None, window.change_fullscreen),
             ('double_page', 'mcomix-double-page', _('_Double page mode'),
                 'd', _('Double page mode'), window.change_double_page),
@@ -132,7 +132,7 @@ class MainUI(gtk.UIManager):
             3, window.change_zoom_mode)
 
         self._actiongroup.add_actions([
-            ('about', gtk.STOCK_ABOUT, None,
+            ('about', gtk.STOCK_ABOUT, _('_About'),
              None, None, dialog_handler.open_dialog)], (window, 'about-dialog'))
 
         self._actiongroup.add_actions([

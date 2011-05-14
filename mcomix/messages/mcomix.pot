@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-05-12 16:48+CEST\n"
+"POT-Creation-Date: 2011-05-13 15:40+CEST\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 
-#: mcomix/__main__.py:105 mcomix/mcomixstarter.py:88
+#: mcomix/__main__.py:105
 msgid "Usage:"
 msgstr ""
 
@@ -1329,6 +1329,10 @@ msgstr ""
 msgid "Copy to c_lipboard"
 msgstr ""
 
+#: mcomix/ui.py:29
+msgid "_Delete"
+msgstr ""
+
 #: mcomix/ui.py:31
 msgid "_Next page"
 msgstr ""
@@ -1369,6 +1373,10 @@ msgstr ""
 msgid "Go to page..."
 msgstr ""
 
+#: mcomix/ui.py:41
+msgid "_Refresh"
+msgstr ""
+
 #: mcomix/ui.py:42
 msgid "Refresh file"
 msgstr ""
@@ -1397,6 +1405,26 @@ msgstr ""
 msgid "Previous directory"
 msgstr ""
 
+#: mcomix/ui.py:51
+msgid "Zoom _In"
+msgstr ""
+
+#: mcomix/ui.py:53
+msgid "Zoom _Out"
+msgstr ""
+
+#: mcomix/ui.py:55
+msgid "_Normal Size"
+msgstr ""
+
+#: mcomix/ui.py:57
+msgid "_Close"
+msgstr ""
+
+#: mcomix/ui.py:59
+msgid "_Quit"
+msgstr ""
+
 #: mcomix/ui.py:61
 msgid "_Save and quit"
 msgstr ""
@@ -1419,6 +1447,10 @@ msgstr ""
 
 #: mcomix/ui.py:71
 msgid "Flip _vertically"
+msgstr ""
+
+#: mcomix/ui.py:73
+msgid "Save _As"
 msgstr ""
 
 #: mcomix/ui.py:75
@@ -1459,6 +1491,10 @@ msgstr ""
 
 #: mcomix/ui.py:88
 msgid "_Transform image"
+msgstr ""
+
+#: mcomix/ui.py:92
+msgid "_Fullscreen"
 msgstr ""
 
 #: mcomix/ui.py:94
@@ -1551,6 +1587,10 @@ msgstr ""
 
 #: mcomix/ui.py:131
 msgid "Manual zoom mode"
+msgstr ""
+
+#: mcomix/ui.py:135
+msgid "_About"
 msgstr ""
 
 #: mcomix/ui.py:139
