@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.92\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-13 16:01+CEST\n"
+"Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
+"POT-Creation-Date: 2011-05-14 09:36+0200\n"
 "PO-Revision-Date: 2011-05-07 16:40+GMT\n"
 "Last-Translator: Moritz Brunner <oddegamra@gmx.org>\n"
 "Language-Team: \n"
@@ -19,135 +19,8 @@ msgstr ""
 "X-Language: de_DE\n"
 "X-Source-Language: en\n"
 
-#: mcomix/__main__.py:105
-msgid "Usage:"
-msgstr "Verwendung:"
-
-#: mcomix/__main__.py:106 mcomix/mcomixstarter.py:88
-msgid "[OPTION...] [PATH]"
-msgstr "[OPTION...] [PFAD]"
-
-#: mcomix/__main__.py:107
-msgid ""
-"\n"
-"View images and comic book archives.\n"
-msgstr ""
-"\n"
-"Betrachter für Bilder und Comicbuch-Archive.\n"
-
-#: mcomix/__main__.py:108
-msgid "Options:"
-msgstr "Schalter:"
-
-#: mcomix/__main__.py:109
-msgid "  -h, --help              Show this help and exit."
-msgstr "  -h, --help              Zeigt diesen Hilfetext an."
-
-#: mcomix/__main__.py:110
-msgid "  -f, --fullscreen        Start the application in fullscreen mode."
-msgstr "  -f, --fullscreen        Startet die Anwendung im Vollbild-Modus."
-
-#: mcomix/__main__.py:111
-msgid "  -s, --slideshow         Start the application in slideshow mode."
-msgstr "  -s, --slideshow        Startet die Anwendung im Diaschau-Modus."
-
-#: mcomix/__main__.py:112
-msgid "  -l, --library           Show the library on startup."
-msgstr "  -l, --library           Zeigt die Bibliothek beim Starten an."
-
-#: mcomix/__main__.py:113
-msgid "  -m, --manga             Start the application in manga mode."
-msgstr "  -m, --manga        Startet die Anwendung im Manga-Modus."
-
-#: mcomix/__main__.py:114
-msgid "  -d, --double-page       Start the application in double page mode."
-msgstr ""
-"  -d, --double-page        Startet die Anwendung im Doppelseiten-Modus."
-
-#: mcomix/__main__.py:115
-msgid ""
-"  -B, --zoom-best         Start the application with zoom set to best fit "
-"mode."
-msgstr ""
-"  -B, --zoom-best        Startet die Anwendung im automatisch angepassten "
-"Zoom-Modus."
-
-#: mcomix/__main__.py:116
-msgid ""
-"  -W, --zoom-width        Start the application with zoom set to fit width."
-msgstr ""
-"  -W, --zoom-width        Startet die Anwendung im Zoom-Modus mit "
-"angepasster Breite."
-
-#: mcomix/__main__.py:117
-msgid ""
-"  -H, --zoom-height       Start the application with zoom set to fit height."
-msgstr ""
-"  -H, --zoom-height        Startet die Anwendung im Zoom-Modus mit "
-"angepasster Höhe."
-
-#: mcomix/__main__.py:118
-msgid "  -v, --version           Show the version number and exit."
-msgstr ""
-"  -v, --version              Zeigt die Versionsnummer an und beendet das "
-"Programm."
-
-#: mcomix/__main__.py:144 mcomix/mcomixstarter.py:167
-msgid "You do not have the required versions of GTK+ and PyGTK installed."
-msgstr ""
-"Sie haben nicht die notwendigen Versionen von GTK+ und PyGTK installiert."
-
-#: mcomix/__main__.py:145 mcomix/mcomixstarter.py:168
-msgid "Installed GTK+ version is: %s"
-msgstr "Installierte GTK+-Version ist: %s"
-
-#: mcomix/__main__.py:147 mcomix/mcomixstarter.py:170
-msgid "Required GTK+ version is: 2.12.0 or higher\n"
-msgstr "Benötigte GTK+-Version ist: 2.12.0 oder höher\n"
-
-#: mcomix/__main__.py:148 mcomix/mcomixstarter.py:171
-msgid "Installed PyGTK version is: %s"
-msgstr "Installierte PyGTK-Version ist: %s"
-
-#: mcomix/__main__.py:150 mcomix/__main__.py:154 mcomix/mcomixstarter.py:173
-#: mcomix/mcomixstarter.py:177
-msgid "Required PyGTK version is: 2.12.0 or higher"
-msgstr "Benötigte PyGTK-Version ist: 2.12.0 oder höher"
-
-#: mcomix/__main__.py:155 mcomix/mcomixstarter.py:178
-msgid "No version of PyGTK was found on your system."
-msgstr "Keine PyGTK-Version konnte auf Ihrem System gefunden werden."
-
-#: mcomix/__main__.py:156 mcomix/mcomixstarter.py:179
-msgid "This error might be caused by missing GTK+ libraries."
-msgstr "Dieser Fehler kann durch fehlende GTL+-Bibliotheken verursacht werden."
-
-#: mcomix/__main__.py:167 mcomix/mcomixstarter.py:188
-msgid "You don't have the required version of the Python Imaging"
-msgstr "Sie haben nicht die notwendigen Version der Python Imaging"
-
-#: mcomix/__main__.py:168 mcomix/mcomixstarter.py:189
-msgid "Library (PIL) installed."
-msgstr "Library (PIL) installiert."
-
-#: mcomix/__main__.py:169 mcomix/mcomixstarter.py:190
-msgid "Installed PIL version is: %s"
-msgstr "Installierte PIL-Version ist: %s"
-
-#: mcomix/__main__.py:170 mcomix/mcomixstarter.py:191
-msgid "Required PIL version is: 1.1.5 or higher"
-msgstr "Benötigte PIL-Version ist: 1.1.5 oder höher"
-
-#: mcomix/__main__.py:174 mcomix/mcomixstarter.py:195
-msgid "Python Imaging Library (PIL) 1.1.5 or higher is required."
-msgstr "Python Imaging Library (PIL) 1.1.5 oder höher wird benötigt."
-
-#: mcomix/__main__.py:175 mcomix/mcomixstarter.py:196
-msgid "No version of the Python Imaging Library was found on your system."
-msgstr ""
-"Keine Python Image Library-Version konnte auf Ihrem System gefunden werden."
-
 #: mcomix/about_dialog.py:26
+#, python-format
 msgid "%s is an image viewer specifically designed to handle comic books."
 msgstr ""
 "%s ist ein Bildbetrachter, der extra für den Umgang mit Comicbüchern "
@@ -158,34 +31,32 @@ msgid "It reads ZIP, RAR and tar archives, as well as plain image files."
 msgstr "Es liest ZIP-, RAR- und Tar-Archive ebenso wie einfache Bilddateien."
 
 #: mcomix/about_dialog.py:32
+#, python-format
 msgid "%s is licensed under the terms of the GNU General Public License."
 msgstr "%s ist unter der \"GNU General Public License\" lizensiert."
 
 #: mcomix/about_dialog.py:34
+#, python-format
 msgid "A copy of this license can be obtained from %s"
 msgstr "Eine Kopie dieser Lizenz kann unter %s bezogen werden."
 
-#: mcomix/archive/__init__.py:11
-msgid "The archive is password-protected."
-msgstr "Das Archiv ist passwortgeschützt."
-
-#: mcomix/archive/__init__.py:13
-msgid "Please enter the password to continue:"
-msgstr "Bitte geben Sie das Passwort ein, um fortzufahren:"
-
 #: mcomix/archive_extractor.py:52
+#, python-format
 msgid "! Non-supported archive format: %s"
 msgstr "! Nicht unterstütztes Archiv-Format: %s"
 
 #: mcomix/archive_extractor.py:149
+#, python-format
 msgid "! Extraction error: %s"
 msgstr "! Extraktions-Fehler: %s"
 
 #: mcomix/archive_packer.py:57
+#, python-format
 msgid "! Could not create archive at path \"%s\""
 msgstr "! Konnte Archiv \"%s\" nicht erstellen"
 
 #: mcomix/archive_packer.py:71 mcomix/archive_packer.py:96
+#, python-format
 msgid ""
 "! Could not add file %(sourcefile)s to archive %(archivefile)s, aborting..."
 msgstr ""
@@ -193,57 +64,55 @@ msgstr ""
 "breche ab..."
 
 #: mcomix/archive_tools.py:51
+#, python-format
 msgid "! Could not read %s"
 msgstr "! %s kann nicht gelesen werden"
 
-#: mcomix/bookmark_backend.py:37
+#: mcomix/bookmark_backend.py:38
+#, python-format
 msgid "! Could not parse bookmarks file %s"
 msgstr "! Lesezeichen-Speicher %s kann nicht gelesen werden"
 
-#: mcomix/bookmark_backend.py:39
+#: mcomix/bookmark_backend.py:40
 msgid "! Deleting corrupt bookmarks file."
 msgstr "! Korrupter Lesezeichen-Speicher wird gelöscht."
 
 #: mcomix/bookmark_dialog.py:13
-msgid "Edit bookmarks"
+msgid "Edit Bookmarks"
 msgstr "Lesezeichen bearbeiten"
 
-#: mcomix/bookmark_dialog.py:45
+#: mcomix/bookmark_dialog.py:50
 msgid "Type"
 msgstr "Typ"
 
-#: mcomix/bookmark_dialog.py:46 mcomix/edit_comment_area.py:31
+#: mcomix/bookmark_dialog.py:51 mcomix/edit_comment_area.py:31
 msgid "Name"
 msgstr "Name"
 
-#: mcomix/bookmark_dialog.py:47
+#: mcomix/bookmark_dialog.py:52
 msgid "Page"
 msgstr "Seite"
 
+#: mcomix/bookmark_dialog.py:53 mcomix/properties_dialog.py:60
+#: mcomix/properties_dialog.py:98
+msgid "Location"
+msgstr "Ort"
+
+#. TRANSLATORS: "Added" as in "Date Added"
+#: mcomix/bookmark_dialog.py:55
+msgid "Added"
+msgstr "Hinzugefügt"
+
 #: mcomix/bookmark_menu.py:27
-msgid "_Add bookmark"
+msgid "Add _Bookmark"
 msgstr "_Lesezeichen hinzufügen"
 
 #: mcomix/bookmark_menu.py:29
-msgid "_Edit bookmarks..."
-msgstr "Lesezeichen _bearbeiten ..."
-
-#: mcomix/bookmark_menu.py:31
-msgid "_Clear bookmarks"
-msgstr "Lese_zeichen löschen"
-
-#: mcomix/bookmark_menu.py:98
-msgid "Clear all bookmarks?"
-msgstr "Alle Lesezeichen löschen?"
-
-#: mcomix/bookmark_menu.py:101
-msgid ""
-"All stored bookmarks will be removed. Are you sure that you want to continue?"
-msgstr ""
-"Alle gespeicherten Lesezeichen werden entfernt. Sind Sie sicher, dass Sie "
-"fortfahren möchten?"
+msgid "_Edit Bookmarks..."
+msgstr "Lesezeichen _bearbeiten..."
 
 #: mcomix/callback.py:96
+#, python-format
 msgid "! Callback %(function)r failed: %(error)s"
 msgstr "! Callback-Funktion %(function)r fehlgeschlagen: %(error)s"
 
@@ -252,6 +121,7 @@ msgid "Comments"
 msgstr "Kommentare"
 
 #: mcomix/comment_dialog.py:54
+#, python-format
 msgid "Could not read %s"
 msgstr "%s kann nicht gelesen werden"
 
@@ -275,6 +145,7 @@ msgstr ""
 "entfernt werden?"
 
 #: mcomix/deprecated.py:35
+#, python-format
 msgid "! Could not remove %s"
 msgstr "! Konnte %s nicht entfernen"
 
@@ -391,6 +262,7 @@ msgid "7z archives"
 msgstr "7zip-Archive"
 
 #: mcomix/file_chooser_base_dialog.py:160
+#, python-format
 msgid "A file named '%s' already exists. Do you want to replace it?"
 msgstr ""
 "Eine Datei mit dem Namen »%s« existiert bereits. Möchten Sie sie ersetzen?"
@@ -428,30 +300,37 @@ msgid "BMP images"
 msgstr "BMP-Bilder"
 
 #: mcomix/file_handler.py:121 mcomix/file_handler.py:227
+#, python-format
 msgid "No images in '%s'"
 msgstr "Keine Bilder in »%s«"
 
 #: mcomix/file_handler.py:221
+#, python-format
 msgid "Could not open %s: No such file."
 msgstr "%s kann nicht geöffnet werden: Datei nicht gefunden."
 
 #: mcomix/file_handler.py:224 mcomix/file_provider.py:114
+#, python-format
 msgid "Could not open %s: Permission denied."
 msgstr "%s kann nicht geöffnet werden: Zugriff verweigert."
 
 #: mcomix/file_handler.py:232
+#, python-format
 msgid "Could not open %s: Unknown file type."
 msgstr "%s kann nicht geöffnet werden: Unbekannter Dateityp."
 
 #: mcomix/file_handler.py:590
+#, python-format
 msgid "! Corrupt preferences file \"%s\", deleting..."
 msgstr "! Korrupte Options-Datei \"%s\", wird gelöscht..."
 
 #: mcomix/file_provider.py:89
+#, python-format
 msgid "Invalid path: '%s'"
 msgstr "Ungültiger Pfad: '%s'"
 
 #: mcomix/icons.py:66
+#, python-format
 msgid "! Could not load icon \"%s\""
 msgstr "! Icon %s kann nicht geladen werden"
 
@@ -472,6 +351,7 @@ msgid "Searching for archives..."
 msgstr "Suche nach Archiven..."
 
 #: mcomix/library_add_progress_dialog.py:93
+#, python-format
 msgid "Adding '%s'..."
 msgstr "Füge »%s« hinzu ..."
 
@@ -480,26 +360,32 @@ msgid "! Could neither find pysqlite2 nor sqlite3."
 msgstr "! Weder pysqlite2 noch sqlite3 konnten gefunden werden."
 
 #: mcomix/library_backend.py:84 mcomix/library_backend.py:97
+#, python-format
 msgid "! Non-existant book #%i"
 msgstr "! Nicht vorhandenes Buch #%i"
 
 #: mcomix/library_backend.py:113
+#, python-format
 msgid "! Could not get cover for book \"%s\""
 msgstr "! Konnte Deckblatt für Buch \"%s\" nicht laden"
 
 #: mcomix/library_backend.py:248
+#, python-format
 msgid "! Could not add book \"%s\" to the library"
 msgstr "! Buch %s konnte nicht zur Bibliothek hinzugefügt werden"
 
 #: mcomix/library_backend.py:265
+#, python-format
 msgid "! Could not add collection \"%s\""
 msgstr "! Sammlung \"%s\" konnte nicht hinzugefügt werden"
 
 #: mcomix/library_backend.py:276
+#, python-format
 msgid "! Could not add book %(book)s to collection %(collection)s"
 msgstr "! Konnte Buch %(book)s nicht zur Sammlung %(collection)s hinzufügen"
 
 #: mcomix/library_backend.py:303
+#, python-format
 msgid "! Could not rename collection to \"%s\""
 msgstr "! Sammlung konnte nicht zu \"%s\" umbenannt werden"
 
@@ -528,6 +414,7 @@ msgid "Completely _remove"
 msgstr "Komplett _entfernen"
 
 #: mcomix/library_book_area.py:268
+#, python-format
 msgid "Removed %(num)d book(s) from '%(collection)s'."
 msgstr "%(num)d Buch(Bücher) wurden aus »%(collection)s« entfernt."
 
@@ -545,6 +432,7 @@ msgstr ""
 "fortfahren möchten?"
 
 #: mcomix/library_book_area.py:294
+#, python-format
 msgid "Removed %d book(s) from the library."
 msgstr "%d Buch(Bücher) wurden aus der Bibliothek entfernt."
 
@@ -557,6 +445,7 @@ msgstr ""
 "Originaldatei wird gelöscht. Sind Sie sicher, dass Sie fortfahren möchten?"
 
 #: mcomix/library_book_area.py:330
+#, python-format
 msgid "! Could not remove file \"%s\""
 msgstr "! Konnte %s nicht entfernen"
 
@@ -598,6 +487,7 @@ msgid "Please enter a new name for the selected collection."
 msgstr "Bitte geben Sie einen neuen Namen für die ausgewählte Sammlung ein."
 
 #: mcomix/library_collection_area.py:181
+#, python-format
 msgid "Could not change the name to '%s'."
 msgstr "Name konnte nicht zu »%s« geändert werden."
 
@@ -614,6 +504,7 @@ msgid "Root"
 msgstr "Wurzel"
 
 #: mcomix/library_collection_area.py:296
+#, python-format
 msgid ""
 "Put the collection '%(subcollection)s' in the collection "
 "'%(supercollection)s'."
@@ -622,10 +513,12 @@ msgstr ""
 "stellen."
 
 #: mcomix/library_collection_area.py:317
+#, python-format
 msgid "Add books to '%s'."
 msgstr "Bücher zu »%s« hinzufügen."
 
 #: mcomix/library_collection_area.py:321
+#, python-format
 msgid ""
 "Move books from '%(source collection)s' to '%(destination collection)s'."
 msgstr ""
@@ -678,6 +571,7 @@ msgid "Open the selected book."
 msgstr "Das ausgewählte Buch öffnen."
 
 #: mcomix/library_control_area.py:152 mcomix/properties_dialog.py:46
+#, python-format
 msgid "%d pages"
 msgstr "%d Seiten"
 
@@ -694,6 +588,7 @@ msgid "New collection"
 msgstr "Neue Sammlung"
 
 #: mcomix/library_control_area.py:198
+#, python-format
 msgid "Could not add a new collection called '%s'."
 msgstr "Eine neue Sammlung mit Namen »%s« konnte nicht hinzugefügt werden."
 
@@ -716,7 +611,7 @@ msgstr ""
 msgid "Library"
 msgstr "Bibliothek"
 
-#: mcomix/library_main_dialog.py:115
+#: mcomix/library_main_dialog.py:118
 msgid "! You need an sqlite wrapper to use the library."
 msgstr ""
 "! Sie benötigen ein sqlite-Modul, um die Bibliothek benutzen zu können."
@@ -730,12 +625,17 @@ msgid "Save page as"
 msgstr "Seite speichern als"
 
 #: mcomix/main.py:1006
+#, python-format
 msgid "Delete \"%s\"?"
 msgstr "\"%s\" löschen?"
 
 #: mcomix/main.py:1008
 msgid "The file will be deleted from your harddisk."
 msgstr "Die Datei wird von Ihrer Festplatte gelöscht."
+
+#: mcomix/mcomixstarter.py:88
+msgid "[OPTION...] [PATH]"
+msgstr "[OPTION...] [PFAD]"
 
 #: mcomix/mcomixstarter.py:89
 msgid "View images and comic book archives."
@@ -797,6 +697,63 @@ msgstr "Debug-Einstellungen"
 msgid "Sets the desired output log level."
 msgstr "Setzt den gewünschten Log-Level."
 
+#: mcomix/mcomixstarter.py:167
+msgid "You do not have the required versions of GTK+ and PyGTK installed."
+msgstr ""
+"Sie haben nicht die notwendigen Versionen von GTK+ und PyGTK installiert."
+
+#: mcomix/mcomixstarter.py:168
+#, python-format
+msgid "Installed GTK+ version is: %s"
+msgstr "Installierte GTK+-Version ist: %s"
+
+#: mcomix/mcomixstarter.py:170
+msgid "Required GTK+ version is: 2.12.0 or higher\n"
+msgstr "Benötigte GTK+-Version ist: 2.12.0 oder höher\n"
+
+#: mcomix/mcomixstarter.py:171
+#, python-format
+msgid "Installed PyGTK version is: %s"
+msgstr "Installierte PyGTK-Version ist: %s"
+
+#: mcomix/mcomixstarter.py:173 mcomix/mcomixstarter.py:177
+msgid "Required PyGTK version is: 2.12.0 or higher"
+msgstr "Benötigte PyGTK-Version ist: 2.12.0 oder höher"
+
+#: mcomix/mcomixstarter.py:178
+msgid "No version of PyGTK was found on your system."
+msgstr "Keine PyGTK-Version konnte auf Ihrem System gefunden werden."
+
+#: mcomix/mcomixstarter.py:179
+msgid "This error might be caused by missing GTK+ libraries."
+msgstr "Dieser Fehler kann durch fehlende GTL+-Bibliotheken verursacht werden."
+
+#: mcomix/mcomixstarter.py:188
+msgid "You don't have the required version of the Python Imaging"
+msgstr "Sie haben nicht die notwendigen Version der Python Imaging"
+
+#: mcomix/mcomixstarter.py:189
+msgid "Library (PIL) installed."
+msgstr "Library (PIL) installiert."
+
+#: mcomix/mcomixstarter.py:190
+#, python-format
+msgid "Installed PIL version is: %s"
+msgstr "Installierte PIL-Version ist: %s"
+
+#: mcomix/mcomixstarter.py:191
+msgid "Required PIL version is: 1.1.5 or higher"
+msgstr "Benötigte PIL-Version ist: 1.1.5 oder höher"
+
+#: mcomix/mcomixstarter.py:195
+msgid "Python Imaging Library (PIL) 1.1.5 or higher is required."
+msgstr "Python Imaging Library (PIL) 1.1.5 oder höher wird benötigt."
+
+#: mcomix/mcomixstarter.py:196
+msgid "No version of the Python Imaging Library was found on your system."
+msgstr ""
+"Keine Python Image Library-Version konnte auf Ihrem System gefunden werden."
+
 #: mcomix/pageselect.py:14 mcomix/ui.py:84 mcomix/ui.py:85
 msgid "_Go"
 msgstr "_Gehe"
@@ -806,6 +763,7 @@ msgid "_Cancel"
 msgstr "_Abbrechen"
 
 #: mcomix/pageselect.py:41
+#, python-format
 msgid " of %s"
 msgstr " von %s"
 
@@ -1306,10 +1264,12 @@ msgid "Chinese (traditional)"
 msgstr "Chinesisch (traditionell)"
 
 #: mcomix/process.py:51
+#, python-format
 msgid "! Error spawning process \"%(command)s\": %(error)s."
 msgstr "! Prozess \"%(command)s\" konnte nicht gestartet werden: %(error)s."
 
 #: mcomix/process.py:52
+#, python-format
 msgid "\"%(command)s\" must be on your system PATH to be found."
 msgstr ""
 "\"%(command)s\" muss sich in einem Verzeichnis befinden, welches in PATH "
@@ -1320,12 +1280,9 @@ msgid "Properties"
 msgstr "Eigenschaften"
 
 #: mcomix/properties_dialog.py:47
+#, python-format
 msgid "%d comments"
 msgstr "%d Kommentare"
-
-#: mcomix/properties_dialog.py:60 mcomix/properties_dialog.py:98
-msgid "Location"
-msgstr "Ort"
 
 #: mcomix/properties_dialog.py:62 mcomix/properties_dialog.py:99
 msgid "Accessed"
@@ -1496,6 +1453,7 @@ msgid "Icon design"
 msgstr "Symbol-Design"
 
 #: mcomix/thumbnail_tools.py:204
+#, python-format
 msgid "! Could not save thumbnail \"%(thumbpath)s\": %(error)s"
 msgstr "! Konnte Vorschaubild \"%(thumbpath)s\" nicht speichern: %(error)s"
 
@@ -1801,6 +1759,85 @@ msgstr "Bild aufbesser_n..."
 #: mcomix/ui.py:160
 msgid "_Library..."
 msgstr "Bibliothe_k ..."
+
+#: mcomix/archive/__init__.py:11
+msgid "The archive is password-protected."
+msgstr "Das Archiv ist passwortgeschützt."
+
+#: mcomix/archive/__init__.py:13
+msgid "Please enter the password to continue:"
+msgstr "Bitte geben Sie das Passwort ein, um fortzufahren:"
+
+#~ msgid "Usage:"
+#~ msgstr "Verwendung:"
+
+#~ msgid ""
+#~ "\n"
+#~ "View images and comic book archives.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Betrachter für Bilder und Comicbuch-Archive.\n"
+
+#~ msgid "Options:"
+#~ msgstr "Schalter:"
+
+#~ msgid "  -h, --help              Show this help and exit."
+#~ msgstr "  -h, --help              Zeigt diesen Hilfetext an."
+
+#~ msgid "  -f, --fullscreen        Start the application in fullscreen mode."
+#~ msgstr "  -f, --fullscreen        Startet die Anwendung im Vollbild-Modus."
+
+#~ msgid "  -s, --slideshow         Start the application in slideshow mode."
+#~ msgstr "  -s, --slideshow        Startet die Anwendung im Diaschau-Modus."
+
+#~ msgid "  -l, --library           Show the library on startup."
+#~ msgstr "  -l, --library           Zeigt die Bibliothek beim Starten an."
+
+#~ msgid "  -m, --manga             Start the application in manga mode."
+#~ msgstr "  -m, --manga        Startet die Anwendung im Manga-Modus."
+
+#~ msgid "  -d, --double-page       Start the application in double page mode."
+#~ msgstr ""
+#~ "  -d, --double-page        Startet die Anwendung im Doppelseiten-Modus."
+
+#~ msgid ""
+#~ "  -B, --zoom-best         Start the application with zoom set to best fit "
+#~ "mode."
+#~ msgstr ""
+#~ "  -B, --zoom-best        Startet die Anwendung im automatisch angepassten "
+#~ "Zoom-Modus."
+
+#~ msgid ""
+#~ "  -W, --zoom-width        Start the application with zoom set to fit "
+#~ "width."
+#~ msgstr ""
+#~ "  -W, --zoom-width        Startet die Anwendung im Zoom-Modus mit "
+#~ "angepasster Breite."
+
+#~ msgid ""
+#~ "  -H, --zoom-height       Start the application with zoom set to fit "
+#~ "height."
+#~ msgstr ""
+#~ "  -H, --zoom-height        Startet die Anwendung im Zoom-Modus mit "
+#~ "angepasster Höhe."
+
+#~ msgid "  -v, --version           Show the version number and exit."
+#~ msgstr ""
+#~ "  -v, --version              Zeigt die Versionsnummer an und beendet das "
+#~ "Programm."
+
+#~ msgid "_Clear bookmarks"
+#~ msgstr "Lese_zeichen löschen"
+
+#~ msgid "Clear all bookmarks?"
+#~ msgstr "Alle Lesezeichen löschen?"
+
+#~ msgid ""
+#~ "All stored bookmarks will be removed. Are you sure that you want to "
+#~ "continue?"
+#~ msgstr ""
+#~ "Alle gespeicherten Lesezeichen werden entfernt. Sind Sie sicher, dass Sie "
+#~ "fortfahren möchten?"
 
 #~ msgid "_Next archive"
 #~ msgstr "Nächstes _Archiv"
