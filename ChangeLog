@@ -13,9 +13,8 @@ MComix 0.92 (4.0.5)
     - The "Bookmarks" menu can be accessed via the normal menu bar again.
       (by Alan Horkan)
 
-    - The "Copy" menu item has been renamed to "Copy to clipboard". In
-      addition to the currently opened page as bitmap, the path to the
-      current file will be copied to the clipboard as well.
+    - The "Copy" menu item will now copy the current file name to the
+      clipboard, in addition to the currently opened page as bitmap.
 
     - The currently opened file or archive can now be deleted using
       File -> Delete, or by pressing F8.

@@ -24,7 +24,7 @@ class MainUI(gtk.UIManager):
         # ----------------------------------------------------------------
         self._actiongroup = gtk.ActionGroup('mcomix-main')
         self._actiongroup.add_actions([
-            ('copy_page', gtk.STOCK_COPY, _('Copy to c_lipboard'),
+            ('copy_page', gtk.STOCK_COPY, _('_Copy'),
                 None, None, window.clipboard.copy_page),
             ('delete', gtk.STOCK_DELETE, _('_Delete'),
                 'F8', None, window.delete),
@@ -136,7 +136,7 @@ class MainUI(gtk.UIManager):
              None, None, dialog_handler.open_dialog)], (window, 'about-dialog'))
 
         self._actiongroup.add_actions([
-            ('comments', 'mcomix-comments', _('_Comments...'),
+            ('comments', 'mcomix-comments', _('Co_mments...'),
              'c', None, dialog_handler.open_dialog)], (window, 'comments-dialog'))
 
         self._actiongroup.add_actions([
@@ -194,6 +194,7 @@ class MainUI(gtk.UIManager):
                     <separator />
                     <menuitem action="extract_page" />
                     <menuitem action="refresh_archive" />
+                    <menuitem action="properties" />
                     <separator />
                     <menuitem action="delete" />
                     <separator />
@@ -206,8 +207,6 @@ class MainUI(gtk.UIManager):
                     <separator />
                     <menuitem action="edit_archive" />
                     <menuitem action="comments" />
-                    <separator />
-                    <menuitem action="properties" />
                     <separator />
                     <menuitem action="preferences" />
                 </menu>
