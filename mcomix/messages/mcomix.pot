@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-05-13 15:40+CEST\n"
+"POT-Creation-Date: 2011-05-13 16:01+CEST\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1374,7 +1374,7 @@ msgid "Go to page..."
 msgstr ""
 
 #: mcomix/ui.py:41
-msgid "_Refresh"
+msgid "Re_fresh"
 msgstr ""
 
 #: mcomix/ui.py:42
@@ -1382,7 +1382,7 @@ msgid "Refresh file"
 msgstr ""
 
 #: mcomix/ui.py:43
-msgid "_Next archive"
+msgid "Next _archive"
 msgstr ""
 
 #: mcomix/ui.py:44
@@ -1390,7 +1390,7 @@ msgid "Next archive"
 msgstr ""
 
 #: mcomix/ui.py:45
-msgid "_Previous archive"
+msgid "Previous a_rchive"
 msgstr ""
 
 #: mcomix/ui.py:46
