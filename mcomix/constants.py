@@ -38,6 +38,27 @@ ACCEPTED_COMMENT_EXTENSIONS = ['txt', 'nfo']
 SUPPORTED_IMAGE_REGEX = re.compile(r'\.(jpg|jpeg|png|gif|tif|tiff|bmp|ppm|pgm|pbm)\s*$', re.I)
 SUPPORTED_ARCHIVE_REGEX = re.compile(r'\.(cbz|cbr|cbt|zip|rar|tar|gz|bz2|bzip2|7z)\s*$', re.I)
 
+ZIP_FORMATS = (
+        ('application/x-zip', 'application/zip', 'application/x-cbz'),
+        ('*.zip', '*.cbz'))
+RAR_FORMATS = (
+        ('application/x-rar', 'application/x-cbr'),
+        ('*.rar', '*.cbr'))
+TAR_FORMATS = (
+        ('application/x-tar', 'application/x-gzip', 'application/x-bzip2', 'application/x-cbt'),
+        ('*.tar', '*.gz', '*.bz2', '*.bzip2', '*.cbt'))
+SZIP_FORMATS = (
+        ('application/x-7z-compressed', 'application/x-cb7'),
+        ('*.7z', '*.cb7'))
+
+def SZIP_AVAILABLE():
+    import archive.sevenzip
+    return archive.sevenzip.SevenZipArchive.is_available()
+
+def RAR_AVAILABLE():
+    import archive.rar
+    return archive.rar.RarArchive.is_available() or SZIP_AVAILABLE()
+
 MAX_LIBRARY_COVER_SIZE = 500
 
 MISSING_IMAGE_ICON = None
@@ -48,7 +69,7 @@ try:
     _missing_icon_pixbuf = _missing_icon_dialog.render_icon(
             gtk.STOCK_MISSING_IMAGE, gtk.ICON_SIZE_LARGE_TOOLBAR)
 
-    # Pixbuf is None when running without X server. 
+    # Pixbuf is None when running without X server.
     # Setup.py could fail because of this.
     if _missing_icon_pixbuf:
         MISSING_IMAGE_ICON = _missing_icon_pixbuf.scale_simple(

@@ -1,11 +1,13 @@
 """recent.py - Recent files handler."""
 
 import urllib
+import itertools
 import gtk
 import preferences
 import sys
 import encoding
 import portability
+import constants
 
 class RecentFilesMenu(gtk.RecentChooserMenu):
 
@@ -23,27 +25,19 @@ class RecentFilesMenu(gtk.RecentChooserMenu):
 
         rfilter = gtk.RecentFilter()
         rfilter.add_pixbuf_formats()
-        rfilter.add_mime_type('application/x-zip')
-        rfilter.add_mime_type('application/zip')
-        rfilter.add_mime_type('application/x-rar')
-        rfilter.add_mime_type('application/x-tar')
-        rfilter.add_mime_type('application/x-gzip')
-        rfilter.add_mime_type('application/x-bzip2')
-        rfilter.add_mime_type('application/x-cbz')
-        rfilter.add_mime_type('application/x-cbr')
-        rfilter.add_mime_type('application/x-cbt')
-        rfilter.add_mime_type('application/x-7z-compressed')
-        # Win32 prefers file patterns instead of MIME types
-        rfilter.add_pattern('*.zip')
-        rfilter.add_pattern('*.rar')
-        rfilter.add_pattern('*.cbz')
-        rfilter.add_pattern('*.cbr')
-        rfilter.add_pattern('*.tar')
-        rfilter.add_pattern('*.gz')
-        rfilter.add_pattern('*.bz2')
-        rfilter.add_pattern('*.7z')
-        self.add_filter(rfilter)
 
+        mimetypes, patterns = itertools.izip(constants.ZIP_FORMATS,
+                constants.RAR_FORMATS, constants.TAR_FORMATS,
+                constants.SZIP_FORMATS)
+
+        for mimetype in itertools.chain.from_iterable(mimetypes):
+            rfilter.add_mime_type(mimetype)
+
+        # Win32 prefers file patterns instead of MIME types
+        for pattern in itertools.chain.from_iterable(patterns):
+            rfilter.add_pattern(pattern)
+
+        self.add_filter(rfilter)
         self.connect('item_activated', self._load)
 
     def _load(self, *args):

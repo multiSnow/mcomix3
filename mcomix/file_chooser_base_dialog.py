@@ -3,8 +3,10 @@
 import os
 import gtk
 import pango
+
 import image_tools
 import labels
+import constants
 from preferences import prefs
 import thumbnail_tools
 
@@ -77,28 +79,33 @@ class _BaseFileChooserDialog(gtk.Dialog):
         ffilter.set_name(_('All files'))
         self.filechooser.add_filter(ffilter)
 
-        self.add_filter(_('All Archives'), ('application/x-zip',
-            'application/zip', 'application/x-rar', 'application/x-tar',
-            'application/x-gzip', 'application/x-bzip2', 'application/x-cbz',
-            'application/x-cbr', 'application/x-cbt', 'application/x-7z-compressed'),
-            ('*.zip', '*.rar', '*.tar', '*.gz', '*.bz2', '*.bzip2',
-             '*.cbz', '*.cbr', '*.cbt', '*.7z'))
+        # Determine which types should go into 'All archives' based on
+        # extractor availability.
+        mimetypes = constants.ZIP_FORMATS[0] + constants.TAR_FORMATS[0]
+        patterns = constants.ZIP_FORMATS[1] + constants.TAR_FORMATS[1]
+        if constants.RAR_AVAILABLE():
+            mimetypes += constants.RAR_FORMATS[0]
+            patterns += constants.RAR_FORMATS[1]
+        if constants.SZIP_AVAILABLE():
+            mimetypes += constants.SZIP_FORMATS[0]
+            patterns += constants.SZIP_FORMATS[1]
+
+        self.add_filter(_('All Archives'),
+            mimetypes, patterns)
 
         self.add_filter(_('ZIP archives'),
-            ('application/x-zip', 'application/zip', 'application/x-cbz'),
-            ('*.zip', '*.cbz'))
-
-        self.add_filter(_('RAR archives'),
-            ('application/x-rar', 'application/x-cbr'),
-            ('*.rar', '*.cbr'))
+                *constants.ZIP_FORMATS)
 
         self.add_filter(_('Tar archives'),
-            ('application/x-tar', 'application/x-gzip',
-            'application/x-bzip2', 'application/x-cbt'),
-            ('*.tar', '*.gz', '*.bz2', '*.bzip2', '*.cbt'))
+            *constants.TAR_FORMATS)
 
-        self.add_filter(_('7z archives'),
-            ('application/x-7z-compressed',), ('*.7z',))
+        if constants.RAR_AVAILABLE():
+            self.add_filter(_('RAR archives'),
+                *constants.RAR_FORMATS)
+
+        if constants.SZIP_AVAILABLE():
+            self.add_filter(_('7z archives'),
+                *constants.SZIP_FORMATS)
 
         try:
             if (self.__class__._last_activated_file is not None

@@ -13,6 +13,11 @@ MComix 0.92 (4.0.5)
     - The "Bookmarks" menu can be accessed via the normal menu bar again.
       (by Alan Horkan)
 
+    - If applications for extracting RAR or 7Z archives aren't found on
+      start-up, MComix will no longer allow selecting the corresponding file
+      types in the "Open" dialog.
+      (suggested by Alan Horkan)
+
     - The "Copy" menu item will now copy the current file name to the
       clipboard, in addition to the currently opened page as bitmap.
 
