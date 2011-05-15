@@ -30,6 +30,10 @@ class __BookmarksStore:
                 packs = cPickle.load(fd)
 
                 for pack in packs:
+                    # Handle old bookmarks without date_added attribute
+                    if len(pack) == 5:
+                        pack = pack + (datetime.datetime.now(),)
+
                     self.add_bookmark_by_values(*pack)
 
                 fd.close()
@@ -38,6 +42,7 @@ class __BookmarksStore:
                 log.error(_('! Could not parse bookmarks file %s'),
                           constants.BOOKMARK_PICKLE_PATH)
                 log.error(_('! Deleting corrupt bookmarks file.'))
+                fd.close()
                 os.remove(constants.BOOKMARK_PICKLE_PATH)
                 self.clear_bookmarks()
 
