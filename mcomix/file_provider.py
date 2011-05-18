@@ -6,12 +6,12 @@ import os
 import re
 import locale
 
-from mcomix import image_tools
-from mcomix import archive_tools
-from mcomix import tools
-from mcomix import constants
-from mcomix import preferences
-from mcomix import log
+import image_tools
+import archive_tools
+import tools
+import constants
+import preferences
+import log
 
 def get_file_provider(filelist):
     """ Initialize a FileProvider with the files in <filelist>.
