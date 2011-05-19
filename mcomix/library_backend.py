@@ -22,6 +22,9 @@ class LibraryBackend:
     data to and from disk.
     """
 
+    #: Current version of the library database structure.
+    DB_VERSION = 1
+
     def __init__(self):
 
         def row_factory(cursor, row):
@@ -34,12 +37,9 @@ class LibraryBackend:
 
         self._con = dbapi2.connect(constants.LIBRARY_DATABASE_PATH)
         self._con.row_factory = row_factory
-        if not self._con.execute('pragma table_info(Book)').fetchall():
-            self._create_table_book()
-        if not self._con.execute('pragma table_info(Collection)').fetchall():
-            self._create_table_collection()
-        if not self._con.execute('pragma table_info(Contain)').fetchall():
-            self._create_table_contain()
+
+        version = self._library_version()
+        self._upgrade_database(version, LibraryBackend.DB_VERSION)
 
     def get_books_in_collection(self, collection=None, filter_string=None, order_by='path'):
         """Return a sequence with all the books in <collection>, or *ALL*
@@ -164,7 +164,7 @@ class LibraryBackend:
 
     def get_all_collections_in_collection(self, collection):
         """ Returns a sequence of <all> subcollections in <collection>,
-        that is, even subcollections that are again a subcollection of one 
+        that is, even subcollections that are again a subcollection of one
         of the previous subcollections. """
 
         if collection is None: raise ValueError("Collection must not be <None>")
@@ -362,8 +362,76 @@ class LibraryBackend:
         self._con.commit()
         self._con.close()
 
+    def _table_exists(self, table):
+        """ Checks if C{table} exists in the database. """
+        cursor = self._con.cursor()
+        exists = cursor.execute('pragma table_info(%s)' % table).fetchone() is not None
+        cursor.close()
+        return exists
+
+    def _library_version(self):
+        """ Examines the library database structure to determine
+        which version of MComix created it.
+
+        @return C{version} from the table C{Info} if available,
+        C{0} otherwise. C{-1} if the database has not been created yet."""
+
+        # Check if Comix' tables exist
+        tables = ('book', 'collection', 'contain')
+        for table in tables:
+            if not self._table_exists(table):
+                return -1
+
+        if self._table_exists('info'):
+            cursor = self._con.cursor()
+            version = cursor.execute('''select value from info
+                where key = 'version' ''').fetchone()
+            cursor.close()
+
+            if not version:
+                log.warning(_('Could not determine library database version!'))
+                return -1
+            else:
+                return int(version)
+        else:
+            # Comix database format
+            return 0
+
+    def _create_tables(self):
+        """ Creates all required tables in the database. """
+        self._create_table_book()
+        self._create_table_collection()
+        self._create_table_contain()
+        self._create_table_info()
+
+    def _upgrade_database(self, from_version, to_version):
+        """ Performs sequential upgrades to the database, bringing
+        it from C{from_version} to C{to_version}. If C{from_version}
+        is -1, the database structure will simply be re-created at the
+        current version. """
+
+        if from_version == -1:
+            self._create_tables()
+            return
+
+        if from_version != to_version:
+            upgrades = range(from_version, to_version)
+
+            if 0 in upgrades:
+                # Upgrade from Comix database structure to DB version 1
+                # (Added table 'info')
+                log.info(_("Upgrading library database version from %(from)d to %(to)d."),
+                    { "from" : from_version, "to" : to_version })
+                self._create_table_info()
+
+            if 1 in upgrades:
+                # Upgrade to database structure version 2.
+                # (No changes yet, but for me to remember that this if statement
+                # must not be 'elif' to preserve sequential upgrade bahaviour.)
+                pass
+
     def _create_table_book(self):
-        self._con.execute('''create table book (
+        self._con.execute('''create table if not exists book (
             id integer primary key,
             name string,
             path string unique,
@@ -373,16 +441,24 @@ class LibraryBackend:
             added date default current_date)''')
 
     def _create_table_collection(self):
-        self._con.execute('''create table collection (
+        self._con.execute('''create table if not exists collection (
             id integer primary key,
             name string unique,
             supercollection integer)''')
 
     def _create_table_contain(self):
-        self._con.execute('''create table contain (
+        self._con.execute('''create table if not exists contain (
             collection integer not null,
             book integer not null,
             primary key (collection, book))''')
+
+    def _create_table_info(self):
+        self._con.execute('''create table if not exists info (
+            key text primary key,
+            value text)''')
+        self._con.execute('''insert into info
+            (key, value) values ('version', ?)''',
+            str(LibraryBackend.DB_VERSION))
 
 
 # vim: expandtab:sw=4:ts=4
