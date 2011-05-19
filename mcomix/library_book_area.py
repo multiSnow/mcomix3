@@ -35,7 +35,12 @@ class _BookArea(gtk.ScrolledWindow):
 
         self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
 
-        self._liststore = gtk.ListStore(gtk.gdk.Pixbuf, int) # (Cover, ID).
+        # Store Cover, book ID, book path, book size
+        # The SORT_ constants must correspond to the correct column here,
+        # i.e. SORT_SIZE must be 3, since 3 is the size column in the ListStore.
+        self._liststore = gtk.ListStore(gtk.gdk.Pixbuf,
+                gobject.TYPE_INT, gobject.TYPE_STRING, gobject.TYPE_INT)
+        self._liststore.set_sort_func(constants.SORT_NAME, self._sort_by_name, None)
         self._iconview = gtk.IconView(self._liststore)
         self._iconview.set_pixbuf_column(0)
         self._iconview.connect('item_activated', self._book_activated)
@@ -119,15 +124,30 @@ class _BookArea(gtk.ScrolledWindow):
           collection, self._library.filter_string)
         book_paths = [ self._library.backend.get_book_path(book)
             for book in books ]
-        book_queue = Queue.Queue()
+        book_sizes = [ self._library.backend.get_book_size(book)
+            for book in books ]
 
         filler = self._get_empty_thumbnail()
-        for index, book_info in enumerate(itertools.izip(books, book_paths)):
-            book, path = book_info
-            book_queue.put((index, path))
+        for book, path, size in itertools.izip(books, book_paths, book_sizes):
 
             # Fill the liststore with a filler pixbuf.
-            self._liststore.append([filler, book])
+            iter = self._liststore.append([filler, book, path, size])
+
+        # Sort the list store based on preferences.
+        if prefs['lib sort order'] == constants.RESPONSE_SORT_ASCENDING:
+            sortorder = gtk.SORT_ASCENDING
+        else:
+            sortorder = gtk.SORT_DESCENDING
+        self.sort_books(prefs['lib sort key'], sortorder)
+
+        # Queue thumbnail loading
+        book_queue = Queue.Queue()
+        iter = self._liststore.get_iter_first()
+        while iter:
+            path = self._liststore.get_value(iter, 2)
+            book_queue.put((iter, path.decode('utf-8')))
+
+            iter = self._liststore.iter_next(iter)
 
         # Start the thumbnail threads.
         self._thumbnail_threads = [ threading.Thread(target=self._pixbuf_worker,
@@ -178,6 +198,35 @@ class _BookArea(gtk.ScrolledWindow):
             return
         self._book_activated(self._iconview, selected, True)
 
+    def sort_books(self, sort_key, sort_order=gtk.SORT_ASCENDING):
+        """ Orders the list store based on the key passed in C{sort_key}.
+        Should be one of the C{SORT_} constants from L{library_book_area}.
+        """
+        self._liststore.set_sort_column_id(sort_key, sort_order)
+
+    def _sort_by_name(self, treemodel, iter1, iter2, user_data):
+        """ Compares two books based on their file name without the
+        path component. """
+        path1 = self._liststore.get_value(iter1, 2)
+        path2 = self._liststore.get_value(iter2, 2)
+
+        # Catch None values from liststore
+        if path1 is None:
+            return 1
+        elif path2 is None:
+            return -1
+
+        name1 = os.path.split(path1)[1].lower()
+        name2 = os.path.split(path2)[1].lower()
+
+        if name1 == name2:
+            return 0
+        else:
+            if name1 < name2:
+                return -1
+            else:
+                return 1
+
     def _add_book(self, book):
         """Add the <book> to the ListStore (and thus to the _BookArea)."""
         path = self._library.backend.get_book_path(book)
@@ -191,21 +240,20 @@ class _BookArea(gtk.ScrolledWindow):
         of books. """
         while not self._stop_update and not books.empty():
             try:
-                index, path = books.get_nowait()
+                iter, path = books.get_nowait()
             except Queue.Empty:
                 break
 
             pixbuf = self._get_pixbuf(path)
-            gobject.idle_add(self._pixbuf_finished, (index, pixbuf))
+            gobject.idle_add(self._pixbuf_finished, (iter, pixbuf))
             books.task_done()
 
     def _pixbuf_finished(self, pixbuf_info):
         """ Executed when a pixbuf was created, to actually insert the pixbuf
         into the view store. <pixbuf_info> is a tuple containing (index, pixbuf). """
 
-        index, pixbuf = pixbuf_info
+        iter, pixbuf = pixbuf_info
 
-        iter = self._liststore.iter_nth_child(None, index)
         if iter and self._liststore.iter_is_valid(iter):
             self._liststore.set(iter, 0, pixbuf)
 

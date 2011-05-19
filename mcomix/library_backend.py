@@ -41,19 +41,17 @@ class LibraryBackend:
         version = self._library_version()
         self._upgrade_database(version, LibraryBackend.DB_VERSION)
 
-    def get_books_in_collection(self, collection=None, filter_string=None, order_by='path'):
+    def get_books_in_collection(self, collection=None, filter_string=None):
         """Return a sequence with all the books in <collection>, or *ALL*
         books if <collection> is None. If <filter_string> is not None, we
         only return books where the <filter_string> occurs in the path.
         """
         if collection is None:
             if filter_string is None:
-                cur = self._con.execute('''select id from Book
-                    order by ?''', (order_by, ))
+                cur = self._con.execute('''select id from Book''')
             else:
                 cur = self._con.execute('''select id from Book
-                    where path like ?
-                    order by ?''', ("%%%s%%" % filter_string, order_by))
+                    where path like ?''', ("%%%s%%" % filter_string, ))
 
             return cur.fetchall()
         else:
@@ -63,12 +61,11 @@ class LibraryBackend:
                 if filter_string is None:
                     cur = self._con.execute('''select id from Book
                         where id in (select book from Contain where collection = ?)
-                        order by ?''', (coll, order_by))
+                        ''', (coll,))
                 else:
                     cur = self._con.execute('''select id from Book
                         where id in (select book from Contain where collection = ?)
-                        and path like ?
-                        order by ?''', (coll, "%%%s%%" % filter_string, order_by))
+                        and path like ?''', (coll, "%%%s%%" % filter_string))
                 books.extend(cur.fetchall())
             return books
 

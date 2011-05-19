@@ -67,6 +67,8 @@ prefs = {
     'last library collection': None,
     'lib window height': 600,
     'lib window width': 500,
+    'lib sort key': constants.SORT_PATH,
+    'lib sort order': constants.RESPONSE_SORT_ASCENDING,
     'language': 'auto'
 }
 
