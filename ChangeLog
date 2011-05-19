@@ -14,6 +14,8 @@ MComix 0.92 (4.0.5)
       sub-collections will be shown as well when the collection is opened.
 
     - The "Bookmarks" menu can be accessed via the normal menu bar again.
+      "Clear bookmarks" has been removed in favour of using the "Edit
+      bookmarks" dialog.
       (by Alan Horkan)
 
     - If applications for extracting RAR or 7Z archives aren't found on
