@@ -34,7 +34,6 @@ class LibraryBackend:
 
         self._con = dbapi2.connect(constants.LIBRARY_DATABASE_PATH)
         self._con.row_factory = row_factory
-        self._con.text_factory = str
         if not self._con.execute('pragma table_info(Book)').fetchall():
             self._create_table_book()
         if not self._con.execute('pragma table_info(Collection)').fetchall():
@@ -79,7 +78,7 @@ class LibraryBackend:
         """
         try:
             path = self._con.execute('''select path from Book
-                where id = ?''', (book,)).fetchone().decode('utf-8')
+                where id = ?''', (book,)).fetchone()
         except Exception:
             log.error( _('! Non-existant book #%i'), book )
             return None
@@ -92,7 +91,7 @@ class LibraryBackend:
         """
         try:
             path = self._con.execute('''select path from Book
-                where id = ?''', (book,)).fetchone().decode('utf-8')
+                where id = ?''', (book,)).fetchone()
         except Exception:
             log.error( _('! Non-existant book #%i'), book )
             return None
@@ -121,7 +120,7 @@ class LibraryBackend:
             where id = ?''', (book,))
         name = cur.fetchone()
         if name is not None:
-            return name.decode('utf-8')
+            return name
         else:
             return None
 
@@ -197,7 +196,7 @@ class LibraryBackend:
             where id = ?''', (collection,))
         name = cur.fetchone()
         if name is not None:
-            return name.decode('utf-8')
+            return name
         else:
             return None
 
