@@ -455,7 +455,7 @@ class LibraryBackend:
             value text)''')
         self._con.execute('''insert into info
             (key, value) values ('version', ?)''',
-            str(LibraryBackend.DB_VERSION))
+            (str(LibraryBackend.DB_VERSION),))
 
 
 # vim: expandtab:sw=4:ts=4
