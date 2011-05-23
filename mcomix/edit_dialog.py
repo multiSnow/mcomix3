@@ -90,9 +90,11 @@ class _EditArchiveDialog(gtk.Dialog):
         comment_files = self._comment_area.get_file_listing()
 
         try:
-            tmp_path = tempfile.mkstemp(
+            fd, tmp_path = tempfile.mkstemp(
                 suffix='.%s' % os.path.basename(archive_path),
-                prefix='tmp.', dir=os.path.dirname(archive_path))[1]
+                prefix='tmp.', dir=os.path.dirname(archive_path))
+            # Close open tempfile handle (writing is handled by the packer)
+            os.close(fd)
             fail = False
 
         except:
@@ -105,6 +107,10 @@ class _EditArchiveDialog(gtk.Dialog):
             packing_success = packer.wait()
 
             if packing_success:
+                # Remove existing file (Win32 fails on rename otherwise)
+                if os.path.exists(archive_path):
+                    os.unlink(archive_path)
+
                 os.rename(tmp_path, archive_path)
                 _close_dialog()
             else:
