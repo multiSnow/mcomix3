@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.92\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2011-05-19 21:16+0200\n"
+"POT-Creation-Date: 2011-05-24 15:43+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -156,7 +156,7 @@ msgid "Edit archive"
 msgstr ""
 
 #: mcomix/edit_dialog.py:38
-msgid "Import"
+msgid "_Import"
 msgstr ""
 
 #: mcomix/edit_dialog.py:54
@@ -167,15 +167,15 @@ msgstr ""
 msgid "Comment files"
 msgstr ""
 
-#: mcomix/edit_dialog.py:117
+#: mcomix/edit_dialog.py:123
 msgid "The new archive could not be saved!"
 msgstr ""
 
-#: mcomix/edit_dialog.py:119
+#: mcomix/edit_dialog.py:125
 msgid "The original files have not been removed."
 msgstr ""
 
-#: mcomix/edit_dialog.py:138
+#: mcomix/edit_dialog.py:144
 msgid "Archives are stored as ZIP files."
 msgstr ""
 
@@ -184,30 +184,34 @@ msgid "Enhance image"
 msgstr ""
 
 #: mcomix/enhance_dialog.py:19
-msgid "Defaults"
+msgid "_Reset"
 msgstr ""
 
-#: mcomix/enhance_dialog.py:46
-msgid "Brightness"
+#: mcomix/enhance_dialog.py:24
+msgid "Reset to defaults."
 msgstr ""
 
-#: mcomix/enhance_dialog.py:57
-msgid "Contrast"
+#: mcomix/enhance_dialog.py:47
+msgid "_Brightness"
 msgstr ""
 
-#: mcomix/enhance_dialog.py:68
-msgid "Saturation"
+#: mcomix/enhance_dialog.py:60
+msgid "_Contrast"
 msgstr ""
 
-#: mcomix/enhance_dialog.py:79
-msgid "Sharpness"
+#: mcomix/enhance_dialog.py:73
+msgid "_Saturation"
 msgstr ""
 
-#: mcomix/enhance_dialog.py:93
-msgid "Automatically adjust contrast."
+#: mcomix/enhance_dialog.py:86
+msgid "S_harpness"
 msgstr ""
 
-#: mcomix/enhance_dialog.py:95
+#: mcomix/enhance_dialog.py:102
+msgid "_Automatically adjust contrast."
+msgstr ""
+
+#: mcomix/enhance_dialog.py:104
 msgid ""
 "Automatically adjust contrast (both lightness and darkness), separately for "
 "each colour band."
@@ -416,7 +420,7 @@ msgstr ""
 msgid "Removed %(num)d book(s) from '%(collection)s'."
 msgstr ""
 
-#: mcomix/library_book_area.py:327 mcomix/library_book_area.py:353
+#: mcomix/library_book_area.py:327 mcomix/library_book_area.py:356
 msgid "Remove books from the library?"
 msgstr ""
 
@@ -426,18 +430,18 @@ msgid ""
 "will be untouched). Are you sure that you want to continue?"
 msgstr ""
 
-#: mcomix/library_book_area.py:342
+#: mcomix/library_book_area.py:345
 #, python-format
 msgid "Removed %d book(s) from the library."
 msgstr ""
 
-#: mcomix/library_book_area.py:355
+#: mcomix/library_book_area.py:358
 msgid ""
 "The selected books will be removed from the library and permanently deleted. "
 "Are you sure that you want to continue?"
 msgstr ""
 
-#: mcomix/library_book_area.py:378
+#: mcomix/library_book_area.py:381
 #, python-format
 msgid "! Could not remove file \"%s\""
 msgstr ""
@@ -481,7 +485,7 @@ msgstr ""
 msgid "Could not change the name to '%s'."
 msgstr ""
 
-#: mcomix/library_collection_area.py:185 mcomix/library_control_area.py:263
+#: mcomix/library_collection_area.py:185 mcomix/library_control_area.py:269
 msgid "A collection by that name already exists."
 msgstr ""
 
@@ -512,98 +516,98 @@ msgid ""
 msgstr ""
 
 #: mcomix/library_control_area.py:72
-msgid "Search"
+msgid "_Search"
 msgstr ""
 
-#: mcomix/library_control_area.py:77
+#: mcomix/library_control_area.py:78
 msgid ""
 "Display only those books that have the specified text string in their full "
 "path. The search is not case sensitive."
 msgstr ""
 
-#: mcomix/library_control_area.py:80
-msgid "Cover size"
-msgstr ""
-
-#: mcomix/library_control_area.py:93
-msgid "Sort order"
-msgstr ""
-
-#: mcomix/library_control_area.py:98
-msgid "Book name"
+#: mcomix/library_control_area.py:83
+msgid "Cover si_ze"
 msgstr ""
 
 #: mcomix/library_control_area.py:99
+msgid "Sort order"
+msgstr ""
+
+#: mcomix/library_control_area.py:104
+msgid "Book name"
+msgstr ""
+
+#: mcomix/library_control_area.py:105
 msgid "Full path"
 msgstr ""
 
-#: mcomix/library_control_area.py:100
+#: mcomix/library_control_area.py:106
 msgid "File size"
 msgstr ""
 
-#: mcomix/library_control_area.py:123
+#: mcomix/library_control_area.py:129
 msgid "Ascending"
 msgstr ""
 
-#: mcomix/library_control_area.py:124
+#: mcomix/library_control_area.py:130
 msgid "Descending"
 msgstr ""
 
-#: mcomix/library_control_area.py:151
-msgid "Add books"
+#: mcomix/library_control_area.py:157
+msgid "_Add books"
 msgstr ""
 
-#: mcomix/library_control_area.py:155
+#: mcomix/library_control_area.py:161
 msgid "Add more books to the library."
 msgstr ""
 
-#: mcomix/library_control_area.py:158
-msgid "Add folder"
+#: mcomix/library_control_area.py:164
+msgid "Add _folder"
 msgstr ""
 
-#: mcomix/library_control_area.py:163
+#: mcomix/library_control_area.py:169
 msgid "Add a new empty collection."
 msgstr ""
 
-#: mcomix/library_control_area.py:166
-msgid "Clean library"
-msgstr ""
-
-#: mcomix/library_control_area.py:171
-msgid "Removes no longer existing books from the library."
+#: mcomix/library_control_area.py:172
+msgid "_Clean library"
 msgstr ""
 
 #: mcomix/library_control_area.py:177
+msgid "Removes no longer existing books from the library."
+msgstr ""
+
+#: mcomix/library_control_area.py:183
 msgid "Open the selected book."
 msgstr ""
 
-#: mcomix/library_control_area.py:212 mcomix/properties_dialog.py:46
+#: mcomix/library_control_area.py:218 mcomix/properties_dialog.py:46
 #, python-format
 msgid "%d pages"
 msgstr ""
 
-#: mcomix/library_control_area.py:236
+#: mcomix/library_control_area.py:242
 msgid "Add new collection?"
 msgstr ""
 
-#: mcomix/library_control_area.py:238
+#: mcomix/library_control_area.py:244
 msgid "Please enter a name for the new collection."
 msgstr ""
 
-#: mcomix/library_control_area.py:244
+#: mcomix/library_control_area.py:250
 msgid "New collection"
 msgstr ""
 
-#: mcomix/library_control_area.py:258
+#: mcomix/library_control_area.py:264
 #, python-format
 msgid "Could not add a new collection called '%s'."
 msgstr ""
 
-#: mcomix/library_control_area.py:270
+#: mcomix/library_control_area.py:276
 msgid "Do you want to remove non-existent books from the library?"
 msgstr ""
 
-#: mcomix/library_control_area.py:272
+#: mcomix/library_control_area.py:278
 msgid ""
 "Books that appear in your library, but no longer exist at their original "
 "path, will be removed from the library. This clears books that have been "

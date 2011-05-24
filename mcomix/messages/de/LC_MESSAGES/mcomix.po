@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.92\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2011-05-19 21:16+0200\n"
+"POT-Creation-Date: 2011-05-24 15:43+0200\n"
 "PO-Revision-Date: 2011-05-07 16:40+GMT\n"
 "Last-Translator: Moritz Brunner <oddegamra@gmx.org>\n"
 "Language-Team: \n"
@@ -170,8 +170,8 @@ msgid "Edit archive"
 msgstr "Archiv bearbeiten"
 
 #: mcomix/edit_dialog.py:38
-msgid "Import"
-msgstr "Import"
+msgid "_Import"
+msgstr "_Import"
 
 #: mcomix/edit_dialog.py:54
 msgid "Images"
@@ -181,15 +181,15 @@ msgstr "Bilder"
 msgid "Comment files"
 msgstr "Kommentare"
 
-#: mcomix/edit_dialog.py:117
+#: mcomix/edit_dialog.py:123
 msgid "The new archive could not be saved!"
 msgstr "Das neue Archiv konnte nicht gespeichert werden!"
 
-#: mcomix/edit_dialog.py:119
+#: mcomix/edit_dialog.py:125
 msgid "The original files have not been removed."
 msgstr "Die Originaldateien wurden nicht entfernt."
 
-#: mcomix/edit_dialog.py:138
+#: mcomix/edit_dialog.py:144
 msgid "Archives are stored as ZIP files."
 msgstr "Archive sind als ZIP-Dateien gespeichert."
 
@@ -198,30 +198,34 @@ msgid "Enhance image"
 msgstr "Bild aufbessern"
 
 #: mcomix/enhance_dialog.py:19
-msgid "Defaults"
-msgstr "Vorgaben"
+msgid "_Reset"
+msgstr "_Zurücksetzen"
 
-#: mcomix/enhance_dialog.py:46
-msgid "Brightness"
-msgstr "Helligkeit"
+#: mcomix/enhance_dialog.py:24
+msgid "Reset to defaults."
+msgstr "Auf Voreinstellung zurücksetzen."
 
-#: mcomix/enhance_dialog.py:57
-msgid "Contrast"
-msgstr "Kontrast"
+#: mcomix/enhance_dialog.py:47
+msgid "_Brightness"
+msgstr "_Helligkeit"
 
-#: mcomix/enhance_dialog.py:68
-msgid "Saturation"
-msgstr "Sättigung"
+#: mcomix/enhance_dialog.py:60
+msgid "_Contrast"
+msgstr "_Kontrast"
 
-#: mcomix/enhance_dialog.py:79
-msgid "Sharpness"
-msgstr "Schärfe"
+#: mcomix/enhance_dialog.py:73
+msgid "_Saturation"
+msgstr "_Sättigung"
 
-#: mcomix/enhance_dialog.py:93
-msgid "Automatically adjust contrast."
-msgstr "Kontrast automatisch einstellen."
+#: mcomix/enhance_dialog.py:86
+msgid "S_harpness"
+msgstr "S_chärfe"
 
-#: mcomix/enhance_dialog.py:95
+#: mcomix/enhance_dialog.py:102
+msgid "_Automatically adjust contrast."
+msgstr "Kontrast _automatisch einstellen."
+
+#: mcomix/enhance_dialog.py:104
 msgid ""
 "Automatically adjust contrast (both lightness and darkness), separately for "
 "each colour band."
@@ -427,7 +431,7 @@ msgstr "Komplett _entfernen"
 msgid "Removed %(num)d book(s) from '%(collection)s'."
 msgstr "%(num)d Buch(Bücher) wurden aus »%(collection)s« entfernt."
 
-#: mcomix/library_book_area.py:327 mcomix/library_book_area.py:353
+#: mcomix/library_book_area.py:327 mcomix/library_book_area.py:356
 msgid "Remove books from the library?"
 msgstr "Bücher aus der Bibliothek entfernen?"
 
@@ -440,12 +444,12 @@ msgstr ""
 "Originaldateien werden nicht angerührt). Sind Sie sicher, dass Sie "
 "fortfahren möchten?"
 
-#: mcomix/library_book_area.py:342
+#: mcomix/library_book_area.py:345
 #, python-format
 msgid "Removed %d book(s) from the library."
 msgstr "%d Buch(Bücher) wurden aus der Bibliothek entfernt."
 
-#: mcomix/library_book_area.py:355
+#: mcomix/library_book_area.py:358
 msgid ""
 "The selected books will be removed from the library and permanently deleted. "
 "Are you sure that you want to continue?"
@@ -453,7 +457,7 @@ msgstr ""
 "Die ausgewählten Bücher werden aus der Bibliothek entfernt und die "
 "Originaldatei wird gelöscht. Sind Sie sicher, dass Sie fortfahren möchten?"
 
-#: mcomix/library_book_area.py:378
+#: mcomix/library_book_area.py:381
 #, python-format
 msgid "! Could not remove file \"%s\""
 msgstr "! Konnte %s nicht entfernen"
@@ -500,7 +504,7 @@ msgstr "Bitte geben Sie einen neuen Namen für die ausgewählte Sammlung ein."
 msgid "Could not change the name to '%s'."
 msgstr "Name konnte nicht zu »%s« geändert werden."
 
-#: mcomix/library_collection_area.py:185 mcomix/library_control_area.py:263
+#: mcomix/library_collection_area.py:185 mcomix/library_control_area.py:269
 msgid "A collection by that name already exists."
 msgstr "Eine Sammlung mit diesem Namen existiert bereits."
 
@@ -535,10 +539,10 @@ msgstr ""
 "verschieben."
 
 #: mcomix/library_control_area.py:72
-msgid "Search"
-msgstr "Suche"
+msgid "_Search"
+msgstr "_Suche"
 
-#: mcomix/library_control_area.py:77
+#: mcomix/library_control_area.py:78
 msgid ""
 "Display only those books that have the specified text string in their full "
 "path. The search is not case sensitive."
@@ -547,90 +551,90 @@ msgstr ""
 "vollständigen Pfad haben. Die Suche ist unabhängig von Groß- und "
 "Kleinschreibung."
 
-#: mcomix/library_control_area.py:80
-msgid "Cover size"
-msgstr "Deckblattgröße"
+#: mcomix/library_control_area.py:83
+msgid "Cover si_ze"
+msgstr "Deckblatt_größe"
 
-#: mcomix/library_control_area.py:93
+#: mcomix/library_control_area.py:99
 msgid "Sort order"
 msgstr "Sortierung"
 
-#: mcomix/library_control_area.py:98
+#: mcomix/library_control_area.py:104
 msgid "Book name"
 msgstr "Buch-Name"
 
-#: mcomix/library_control_area.py:99
+#: mcomix/library_control_area.py:105
 msgid "Full path"
 msgstr "Voller Pfad"
 
-#: mcomix/library_control_area.py:100
+#: mcomix/library_control_area.py:106
 msgid "File size"
 msgstr "Dateigröße"
 
-#: mcomix/library_control_area.py:123
+#: mcomix/library_control_area.py:129
 msgid "Ascending"
 msgstr "Aufsteigend"
 
-#: mcomix/library_control_area.py:124
+#: mcomix/library_control_area.py:130
 msgid "Descending"
 msgstr "Absteigend"
 
-#: mcomix/library_control_area.py:151
-msgid "Add books"
-msgstr "Bücher hinzufügen"
+#: mcomix/library_control_area.py:157
+msgid "_Add books"
+msgstr "Bücher _hinzufügen"
 
-#: mcomix/library_control_area.py:155
+#: mcomix/library_control_area.py:161
 msgid "Add more books to the library."
 msgstr "Weitere Bücher zu der Bibliothek hinzufügen."
 
-#: mcomix/library_control_area.py:158
-msgid "Add folder"
-msgstr "Ordner hinzufügen"
+#: mcomix/library_control_area.py:164
+msgid "Add _folder"
+msgstr "_Ordner hinzufügen"
 
-#: mcomix/library_control_area.py:163
+#: mcomix/library_control_area.py:169
 msgid "Add a new empty collection."
 msgstr "Eine neue, leere Sammlung hinzufügen."
 
-#: mcomix/library_control_area.py:166
-msgid "Clean library"
-msgstr "Bibliothek säubern"
+#: mcomix/library_control_area.py:172
+msgid "_Clean library"
+msgstr "Bibliothek _säubern"
 
-#: mcomix/library_control_area.py:171
+#: mcomix/library_control_area.py:177
 msgid "Removes no longer existing books from the library."
 msgstr "Entfernt Bücher aus der Bibliothek, die nicht mehr existieren."
 
-#: mcomix/library_control_area.py:177
+#: mcomix/library_control_area.py:183
 msgid "Open the selected book."
 msgstr "Das ausgewählte Buch öffnen."
 
-#: mcomix/library_control_area.py:212 mcomix/properties_dialog.py:46
+#: mcomix/library_control_area.py:218 mcomix/properties_dialog.py:46
 #, python-format
 msgid "%d pages"
 msgstr "%d Seiten"
 
-#: mcomix/library_control_area.py:236
+#: mcomix/library_control_area.py:242
 msgid "Add new collection?"
 msgstr "Neue Sammlung hinzufügen?"
 
-#: mcomix/library_control_area.py:238
+#: mcomix/library_control_area.py:244
 msgid "Please enter a name for the new collection."
 msgstr "Bitte geben Sie einen Namen für die neue Sammlung ein."
 
-#: mcomix/library_control_area.py:244
+#: mcomix/library_control_area.py:250
 msgid "New collection"
 msgstr "Neue Sammlung"
 
-#: mcomix/library_control_area.py:258
+#: mcomix/library_control_area.py:264
 #, python-format
 msgid "Could not add a new collection called '%s'."
 msgstr "Eine neue Sammlung mit Namen »%s« konnte nicht hinzugefügt werden."
 
-#: mcomix/library_control_area.py:270
+#: mcomix/library_control_area.py:276
 msgid "Do you want to remove non-existent books from the library?"
 msgstr ""
 "Wollen Sie Bücher aus der Bibliothek entfernen, die nicht mehr existieren?"
 
-#: mcomix/library_control_area.py:272
+#: mcomix/library_control_area.py:278
 msgid ""
 "Books that appear in your library, but no longer exist at their original "
 "path, will be removed from the library. This clears books that have been "
@@ -892,14 +896,14 @@ msgstr "Transparenz"
 
 #: mcomix/preferences_dialog.py:132
 msgid "Use checkered background for transparent images."
-msgstr "Für transparente Bilder einen gepunkteten Hintergrund verwenden."
+msgstr "Für transparente Bilder einen karierten Hintergrund verwenden."
 
 #: mcomix/preferences_dialog.py:138
 msgid ""
 "Use a grey checkered background for transparent images. If this preference "
 "is unset, the background is plain white instead."
 msgstr ""
-"Einen grauen, gepunkteten Hintergrund für transparente Bilder benutzen. Wenn "
+"Einen grauen, karierten Hintergrund für transparente Bilder benutzen. Wenn "
 "diese Einstellung nicht gesetzt ist, ist der Hintergrund stattdessen einfach "
 "weiß."
 
@@ -1033,15 +1037,15 @@ msgstr ""
 
 #: mcomix/preferences_dialog.py:236
 msgid "Store information about recently opened files."
-msgstr "Informationen über aktuell geöffnete Dateien speichern."
+msgstr "Zuletzt geöffnete Dateien speichern."
 
 #: mcomix/preferences_dialog.py:241
 msgid ""
 "Add information about all files opened from within MComix to the shared "
 "recent files list."
 msgstr ""
-"Informationen über alle innerhalb von MComix geöffneten Dateien in der zur "
-"Liste der zuletzt geöffneten Dateien hinzufügen."
+"Die zuletzt innerhalb von MComix geöffneten Dateien merken, um sie später "
+"über das Menü schnell wieder öffnen zu können."
 
 #: mcomix/preferences_dialog.py:251
 msgid "Default modes"
@@ -1800,6 +1804,9 @@ msgstr "Das Archiv ist passwortgeschützt."
 #: mcomix/archive/__init__.py:13
 msgid "Please enter the password to continue:"
 msgstr "Bitte geben Sie das Passwort ein, um fortzufahren:"
+
+#~ msgid "Defaults"
+#~ msgstr "Vorgaben"
 
 #~ msgid "Copy to c_lipboard"
 #~ msgstr "In Zwischenab_lage kopieren"
