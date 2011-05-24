@@ -48,7 +48,7 @@ class Process:
             return self._proc.stdout
         except Exception, ex:
             cmd = len(self._args) > 0 and self._args[0] or "<invalid>"
-            log.error(_('! Error spawning process "%(command)s": %(error)s.')
+            log.warning(_('! Error spawning process "%(command)s": %(error)s.')
                       + ' ' + _('"%(command)s" must be on your system PATH to be found.'),
                       { 'command' : cmd, 'error' : ex })
             return None
