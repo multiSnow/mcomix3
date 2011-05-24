@@ -69,15 +69,20 @@ class _ControlArea(gtk.HBox):
         hbox = gtk.HBox(False)
         vbox.pack_start(hbox, False, False)
 
-        label = gtk.Label('%s:' % _('Search'))
+        label = gtk.Label('%s:' % _('_Search'))
+        label.set_use_underline(True)
         hbox.pack_start(label, False, False)
         search_entry = gtk.Entry()
         search_entry.connect('activate', self._filter_books)
         search_entry.set_tooltip_text(
             _('Display only those books that have the specified text string in their full path. The search is not case sensitive.'))
         hbox.pack_start(search_entry, True, True, 6)
+        label.set_mnemonic_widget(search_entry)
 
-        label = gtk.Label('%s:' % _('Cover size'))
+        # TODO enable generic consistent kebindings for zoom in/zoom out/zoom 100. 
+        label = gtk.Label('%s:' % _('Cover si_ze'))
+        label.set_use_underline(True)
+
         hbox.pack_start(label, False, False, 6)
         adjustment = gtk.Adjustment(prefs['library cover size'], 20, constants.MAX_LIBRARY_COVER_SIZE, 1,
             10, 0)
@@ -85,6 +90,7 @@ class _ControlArea(gtk.HBox):
         cover_size_scale.set_size_request(150, -1)
         cover_size_scale.set_draw_value(False)
         cover_size_scale.connect('value_changed', self._change_cover_size)
+        label.set_mnemonic_widget(cover_size_scale)
         hbox.pack_start(cover_size_scale, False, False)
 
         # Second line of controls, containing book sort order.
@@ -148,14 +154,14 @@ class _ControlArea(gtk.HBox):
         # Last line of controls, containing buttons like 'Add' and 'Open'
         hbox = gtk.HBox(False, 10)
         vbox.pack_start(hbox, False, False)
-        add_book_button = gtk.Button(_('Add books'))
+        add_book_button = gtk.Button(_('_Add books'))
         add_book_button.set_image(gtk.image_new_from_stock(
             gtk.STOCK_ADD, gtk.ICON_SIZE_BUTTON))
         add_book_button.connect('clicked', self._add_books)
         add_book_button.set_tooltip_text(_('Add more books to the library.'))
         hbox.pack_start(add_book_button, False, False)
 
-        add_collection_button = gtk.Button(_('Add folder'))
+        add_collection_button = gtk.Button(_('Add _folder'))
         add_collection_button.connect('clicked', self._add_collection)
         add_collection_button.set_image(gtk.image_new_from_stock(
             gtk.STOCK_ADD, gtk.ICON_SIZE_BUTTON))
@@ -163,7 +169,7 @@ class _ControlArea(gtk.HBox):
             _('Add a new empty collection.'))
         hbox.pack_start(add_collection_button, False, False)
 
-        clean_button = gtk.Button(_('Clean library'))
+        clean_button = gtk.Button(_('_Clean library'))
         clean_button.connect('clicked', self._clean_library)
         clean_button.set_image(gtk.image_new_from_stock(
             gtk.STOCK_CLEAR, gtk.ICON_SIZE_BUTTON))

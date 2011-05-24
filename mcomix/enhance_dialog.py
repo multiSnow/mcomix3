@@ -16,11 +16,12 @@ class _EnhanceImageDialog(gtk.Dialog):
 
         self._window = window
 
-        self.add_buttons(_('Defaults'), gtk.RESPONSE_NO,
+        self.add_buttons(_('_Reset'), gtk.RESPONSE_NO,
             gtk.STOCK_OK, gtk.RESPONSE_OK)
         self.set_has_separator(False)
         self.set_resizable(False)
         self.connect('response', self._response)
+        self.set_tooltip_text(_('Reset to defaults.'))
         self.set_default_response(gtk.RESPONSE_OK)
 
         self._enhancer = window.enhancer
@@ -43,8 +44,9 @@ class _EnhanceImageDialog(gtk.Dialog):
         hbox.pack_start(vbox_left, False, False, 2)
         hbox.pack_start(vbox_right, True, True, 2)
 
-        label = gtk.Label(_('Brightness') + ':')
+        label = gtk.Label(_('_Brightness') + ':')
         label.set_alignment(1, 0.5)
+        label.set_use_underline(True)
         vbox_left.pack_start(label, True, False, 2)
         adj = gtk.Adjustment(0.0, -1.0, 1.0, 0.01, 0.1)
         self._brightness_scale = gtk.HScale(adj)
@@ -52,10 +54,12 @@ class _EnhanceImageDialog(gtk.Dialog):
         self._brightness_scale.set_value_pos(gtk.POS_RIGHT)
         self._brightness_scale.connect('value-changed', self._change_values)
         self._brightness_scale.set_update_policy(gtk.UPDATE_DELAYED)
+        label.set_mnemonic_widget(self._brightness_scale)
         vbox_right.pack_start(self._brightness_scale, True, False, 2)
 
-        label = gtk.Label(_('Contrast') + ':')
+        label = gtk.Label(_('_Contrast') + ':')
         label.set_alignment(1, 0.5)
+        label.set_use_underline(True)
         vbox_left.pack_start(label, True, False, 2)
         adj = gtk.Adjustment(0.0, -1.0, 1.0, 0.01, 0.1)
         self._contrast_scale = gtk.HScale(adj)
@@ -63,10 +67,12 @@ class _EnhanceImageDialog(gtk.Dialog):
         self._contrast_scale.set_value_pos(gtk.POS_RIGHT)
         self._contrast_scale.connect('value-changed', self._change_values)
         self._contrast_scale.set_update_policy(gtk.UPDATE_DELAYED)
+        label.set_mnemonic_widget(self._contrast_scale)
         vbox_right.pack_start(self._contrast_scale, True, False, 2)
 
-        label = gtk.Label(_('Saturation') + ':')
+        label = gtk.Label(_('_Saturation') + ':')
         label.set_alignment(1, 0.5)
+        label.set_use_underline(True)
         vbox_left.pack_start(label, True, False, 2)
         adj = gtk.Adjustment(0.0, -1.0, 1.0, 0.01, 0.1)
         self._saturation_scale = gtk.HScale(adj)
@@ -74,10 +80,12 @@ class _EnhanceImageDialog(gtk.Dialog):
         self._saturation_scale.set_value_pos(gtk.POS_RIGHT)
         self._saturation_scale.connect('value-changed', self._change_values)
         self._saturation_scale.set_update_policy(gtk.UPDATE_DELAYED)
+        label.set_mnemonic_widget(self._saturation_scale)
         vbox_right.pack_start(self._saturation_scale, True, False, 2)
 
-        label = gtk.Label(_('Sharpness') + ':')
+        label = gtk.Label(_('S_harpness') + ':')
         label.set_alignment(1, 0.5)
+        label.set_use_underline(True)
         vbox_left.pack_start(label, True, False, 2)
         adj = gtk.Adjustment(0.0, -1.0, 1.0, 0.01, 0.1)
         self._sharpness_scale = gtk.HScale(adj)
@@ -85,12 +93,13 @@ class _EnhanceImageDialog(gtk.Dialog):
         self._sharpness_scale.set_value_pos(gtk.POS_RIGHT)
         self._sharpness_scale.connect('value-changed', self._change_values)
         self._sharpness_scale.set_update_policy(gtk.UPDATE_DELAYED)
+        label.set_mnemonic_widget(self._sharpness_scale)
         vbox_right.pack_start(self._sharpness_scale, True, False, 2)
 
         vbox.pack_start(gtk.HSeparator())
 
         self._autocontrast_button = \
-            gtk.CheckButton(_('Automatically adjust contrast.'))
+            gtk.CheckButton(_('_Automatically adjust contrast.'))
         self._autocontrast_button.set_tooltip_text(
             _('Automatically adjust contrast (both lightness and darkness), separately for each colour band.'))
         vbox.pack_start(self._autocontrast_button, False, False, 2)

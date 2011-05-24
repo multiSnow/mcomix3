@@ -35,7 +35,7 @@ class _EditArchiveDialog(gtk.Dialog):
 
         self._save_button = self.add_button(gtk.STOCK_SAVE_AS, constants.RESPONSE_SAVE_AS)
 
-        self._import_button = self.add_button(_('Import'), constants.RESPONSE_IMPORT)
+        self._import_button = self.add_button(_('_Import'), constants.RESPONSE_IMPORT)
         self._import_button.set_image(gtk.image_new_from_stock(gtk.STOCK_ADD,
             gtk.ICON_SIZE_BUTTON))
 
