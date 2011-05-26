@@ -78,12 +78,24 @@ def rename_executable():
 	if os.path.isfile('dist_py2exe/mcomix_py2exe.exe'):
 		shutil.move('dist_py2exe/mcomix_py2exe.exe', 'dist_py2exe/MComix.exe')
 
+def win32_newline(source, dest):
+	""" Converts Unix newlines to Windows newlines. """
+	from_fp = file(source, "r")
+	to_fp = file(dest, "w")
+
+	for line in from_fp:
+		to_fp.write(line.rstrip())
+		to_fp.write("\r\n")
+	
+	from_fp.close()
+	to_fp.close()
+
 def copy_other_files():
 	""" Copy other relevant files into dist directory. """
 	print "Copying misc files into dist directory..."
-	shutil.copy('ChangeLog', 'dist_py2exe/ChangeLog.txt')
-	shutil.copy('README', 'dist_py2exe/README.txt')
-	shutil.copy('COPYING', 'dist_py2exe/COPYING.txt')
+	win32_newline('ChangeLog', 'dist_py2exe/ChangeLog.txt')
+	win32_newline('README', 'dist_py2exe/README.txt')
+	win32_newline('COPYING', 'dist_py2exe/COPYING.txt')
 
 if __name__ == '__main__':
 	clear_distdir('dist_py2exe')
