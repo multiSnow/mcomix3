@@ -1,4 +1,5 @@
-MComix 0.92 (4.0.5)
+MComix 0.92
+Release date:
 
     - Fixed a bug that made MComix save preview thumbnails to disk
       even if this behaviour was disabled in the preferences window.
@@ -61,6 +62,7 @@ MComix 0.92 (4.0.5)
     - Updated French translation. (by Joseph M. Sleiman)
 
 MComix 0.91
+Release date: 24.04.2011
 
     - Fixed excessive memory consumption due to cached pixmaps not being
       properly evicted.
@@ -138,6 +140,7 @@ MComix 0.91
     - Updated Russian translation. (by Евгений Лежнин)
 
 MComix 0.90.3
+Release date: 13.03.2011
 
     - MComix now uses a slightly different directory structure than before. 
       The 'src' folder is now 'mcomix' to provide a correct package name.
@@ -215,6 +218,7 @@ MComix 0.90.3
     - Updated German translation.
 
 MComix 0.90 Initial Release
+Release date: 15.08.2010
 
     - Changed the mechanism of page flipping.
 
