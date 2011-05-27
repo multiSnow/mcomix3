@@ -185,13 +185,12 @@ class _BaseFileChooserDialog(gtk.Dialog):
             self.files_chosen([])
 
     def _update_preview(self, *args):
-        if not self.filechooser.get_preview_filename():
-            self._preview_image.clear()
-            self._namelabel.set_text('')
-            self._sizelabel.set_text('')
+        if self.filechooser.get_preview_filename():
+            path = self.filechooser.get_preview_filename().decode('utf-8')
+        else:
+            path = None
 
-        path = self.filechooser.get_preview_filename().decode('utf-8')
-        if os.path.isfile(path):
+        if path and os.path.isfile(path):
             thumbnailer = thumbnail_tools.Thumbnailer()
             thumbnailer.set_size(128, 128)
             thumbnailer.thumbnail_finished += self._preview_thumbnail_finished
