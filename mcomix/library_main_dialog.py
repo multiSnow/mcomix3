@@ -3,6 +3,7 @@
 import gtk
 import encoding
 import tools
+import log
 import file_chooser_library_dialog
 import library_backend
 import library_book_area
@@ -115,7 +116,7 @@ def open_dialog(action, window):
     if _dialog is None:
 
         if library_backend.dbapi2 is None:
-            print _('! You need an sqlite wrapper to use the library.')
+            log.error( _('! You need an sqlite wrapper to use the library.') )
 
         else:
             _dialog = _LibraryDialog(window, window.filehandler)
