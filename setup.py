@@ -103,7 +103,9 @@ setuptools.setup(
         'It is specifically designed to handle comic books.',
     license = "License :: OSI Approved :: GNU General Public License (GPL)",
     download_url = "http://sourceforge.net/projects/mcomix/files",
-    platforms = ['GNU/Linux', 'Win32'],
+    platforms = ['Operating System :: POSIX :: Linux',
+        'Operating System :: Microsoft :: Windows',
+        'Operating System :: POSIX :: BSD'],
 
     # Py2Exe options
     console = [{ 'script' : 'win32/mcomix_py2exe.py',
