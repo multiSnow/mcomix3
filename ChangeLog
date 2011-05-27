@@ -1,5 +1,5 @@
 MComix 0.92
-Release date:
+Release date: 27.05.2011
 
     - Fixed a bug that made MComix save preview thumbnails to disk
       even if this behaviour was disabled in the preferences window.
@@ -20,6 +20,10 @@ Release date:
     - The "Bookmarks" menu can be accessed via the normal menu bar again.
       "Clear bookmarks" has been removed in favour of using the "Edit
       bookmarks" dialog.
+      (by Alan Horkan)
+
+    - Several usability improvements were done to the Enhance, Edit and
+      Library dialogs.
       (by Alan Horkan)
 
     - If applications for extracting RAR or 7Z archives aren't found on
@@ -50,7 +54,6 @@ Release date:
       -W[all|warn|error]  Set log level (default is 'warn')
 
     - The following preference items have been removed: 
-
       "Automated crash recovery": No longer necessary.
       "Show page numbers": Enabled by default.
       "Avoid unintentional page flips": Enabled by default.
