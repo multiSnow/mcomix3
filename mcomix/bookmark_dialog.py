@@ -9,6 +9,8 @@ class _BookmarksDialog(gtk.Dialog):
 
     """_BookmarksDialog lets the user remove or rearrange bookmarks."""
 
+    _SORT_TYPE, _SORT_NAME, _SORT_PAGE, _SORT_ADDED = 100, 101, 102, 103
+
     def __init__(self, window, bookmarks_store):
         gtk.Dialog.__init__(self, _('Edit Bookmarks'), window, gtk.DIALOG_DESTROY_WITH_PARENT,
             (gtk.STOCK_SORT_ASCENDING, constants.RESPONSE_SORT_ASCENDING,
@@ -67,11 +69,20 @@ class _BookmarksDialog(gtk.Dialog):
         self._date_add_col.set_attributes(cellrenderer_text, text=4)
         self._name_col.set_expand(True)
 
-        self._icon_col.set_sort_column_id(1)
-        self._name_col.set_sort_column_id(2)
-        self._page_col.set_sort_column_id(3)
-        self._path_col.set_sort_column_id(4)
-        self._date_add_col.set_sort_column_id(5)
+        self._liststore.set_sort_func(_BookmarksDialog._SORT_TYPE,
+            self._sort_model, ('_archive_type',))
+        self._liststore.set_sort_func(_BookmarksDialog._SORT_NAME,
+            self._sort_model, ('_name', '_page'))
+        self._liststore.set_sort_func(_BookmarksDialog._SORT_PAGE,
+            self._sort_model, ('_page', '_numpages', '_name'))
+        self._liststore.set_sort_func(_BookmarksDialog._SORT_ADDED,
+            self._sort_model, ('_date_added',))
+
+        self._icon_col.set_sort_column_id(_BookmarksDialog._SORT_TYPE)
+        self._name_col.set_sort_column_id(_BookmarksDialog._SORT_NAME)
+        self._page_col.set_sort_column_id(_BookmarksDialog._SORT_PAGE)
+        self._path_col.set_sort_column_id(3)
+        self._date_add_col.set_sort_column_id(_BookmarksDialog._SORT_ADDED)
 
         self._icon_col.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         self._name_col.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
@@ -81,7 +92,6 @@ class _BookmarksDialog(gtk.Dialog):
 
         # FIXME Hide extra columns. Needs UI controls to enable these.
         self._path_col.set_visible(False)
-        # self._date_add_col.set_visible(False)
 
         self.resize(600, 450)
 
@@ -110,6 +120,29 @@ class _BookmarksDialog(gtk.Dialog):
             bookmark = self._liststore.get_value(treeiter, 5)
             self._liststore.remove(treeiter)
             self._bookmarks_store.remove_bookmark(bookmark)
+
+    def _sort_model(self, treemodel, iter1, iter2, user_data):
+        """ Custom sort function to sort to model entries based on the
+        BookmarkMenuItem's fields specified in @C{user_data}. This is a list
+        of field names. """
+        if iter1 == iter2:
+            return 0
+        if iter1 is None:
+            return 1
+        elif iter2 is None:
+            return -1
+
+        bookmark1 = treemodel.get_value(iter1, 5)
+        bookmark2 = treemodel.get_value(iter2, 5)
+
+        for field in user_data:
+            result = cmp(getattr(bookmark1, field),
+                getattr(bookmark2, field))
+            if result != 0:
+                return result
+
+        # If the loop didn't return, both entries are equal.
+        return 0
 
     def _sort(self, sort_ascending):
 
