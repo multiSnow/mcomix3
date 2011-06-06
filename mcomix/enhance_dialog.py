@@ -18,11 +18,11 @@ class _EnhanceImageDialog(gtk.Dialog):
 
         self._window = window
 
-        reset = gtk.Button(_('_Reset'), gtk.STOCK_REVERT_TO_SAVED)
+        reset = gtk.Button(None, gtk.STOCK_REVERT_TO_SAVED)
         reset.set_tooltip_text(_('Reset to defaults.'))
         self.add_action_widget(reset, gtk.RESPONSE_REJECT)
-        save = gtk.Button(_('_Save'), gtk.STOCK_SAVE)
-        save.set_tooltip_text(_('Save the selected enhancement values as default.'))
+        save = gtk.Button(None, gtk.STOCK_SAVE)
+        save.set_tooltip_text(_('Save the selected values as default for future files.'))
         self.add_action_widget(save, gtk.RESPONSE_APPLY)
         ok = self.add_button(gtk.STOCK_OK, gtk.RESPONSE_OK)
 
