@@ -3,6 +3,8 @@
 import gtk
 import histogram
 
+from preferences import prefs
+
 _dialog = None
 
 class _EnhanceImageDialog(gtk.Dialog):
@@ -16,12 +18,17 @@ class _EnhanceImageDialog(gtk.Dialog):
 
         self._window = window
 
-        self.add_buttons(_('_Reset'), gtk.RESPONSE_NO,
-            gtk.STOCK_OK, gtk.RESPONSE_OK)
+        reset = gtk.Button(_('_Reset'), gtk.STOCK_REVERT_TO_SAVED)
+        reset.set_tooltip_text(_('Reset to defaults.'))
+        self.add_action_widget(reset, gtk.RESPONSE_REJECT)
+        save = gtk.Button(_('_Save'), gtk.STOCK_SAVE)
+        save.set_tooltip_text(_('Save the selected enhancement values as default.'))
+        self.add_action_widget(save, gtk.RESPONSE_APPLY)
+        ok = self.add_button(gtk.STOCK_OK, gtk.RESPONSE_OK)
+
         self.set_has_separator(False)
         self.set_resizable(False)
         self.connect('response', self._response)
-        self.set_tooltip_text(_('Reset to defaults.'))
         self.set_default_response(gtk.RESPONSE_OK)
 
         self._enhancer = window.enhancer
@@ -70,7 +77,7 @@ class _EnhanceImageDialog(gtk.Dialog):
         label.set_mnemonic_widget(self._contrast_scale)
         vbox_right.pack_start(self._contrast_scale, True, False, 2)
 
-        label = gtk.Label(_('_Saturation') + ':')
+        label = gtk.Label(_('S_aturation') + ':')
         label.set_alignment(1, 0.5)
         label.set_use_underline(True)
         vbox_left.pack_start(label, True, False, 2)
@@ -149,13 +156,21 @@ class _EnhanceImageDialog(gtk.Dialog):
         if response in [gtk.RESPONSE_OK, gtk.RESPONSE_DELETE_EVENT]:
             _close_dialog()
 
-        elif response == gtk.RESPONSE_NO:
+        elif response == gtk.RESPONSE_APPLY:
+            self._change_values(self)
+            prefs['brightness'] = self._enhancer.brightness
+            prefs['contrast'] = self._enhancer.contrast
+            prefs['saturation'] = self._enhancer.saturation
+            prefs['sharpness'] = self._enhancer.sharpness
+            prefs['auto contrast'] = self._enhancer.autocontrast
+
+        elif response == gtk.RESPONSE_REJECT:
             self._block = True
-            self._brightness_scale.set_value(0.0)
-            self._contrast_scale.set_value(0.0)
-            self._saturation_scale.set_value(0.0)
-            self._sharpness_scale.set_value(0.0)
-            self._autocontrast_button.set_active(False)
+            self._brightness_scale.set_value(prefs['brightness'] - 1.0)
+            self._contrast_scale.set_value(prefs['contrast'] - 1.0)
+            self._saturation_scale.set_value(prefs['saturation'] - 1.0)
+            self._sharpness_scale.set_value(prefs['sharpness'] - 1.0)
+            self._autocontrast_button.set_active(prefs['auto contrast'])
             self._block = False
             self._change_values(self)
 

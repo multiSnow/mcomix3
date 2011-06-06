@@ -4,6 +4,8 @@ brightness etc.)
 
 import image_tools
 
+from preferences import prefs
+
 class ImageEnhancer:
 
     """The ImageEnhancer keeps track of the "enhancement" values and performs
@@ -13,11 +15,11 @@ class ImageEnhancer:
 
     def __init__(self, window):
         self._window = window
-        self.brightness = 1.0
-        self.contrast = 1.0
-        self.saturation = 1.0
-        self.sharpness = 1.0
-        self.autocontrast = False
+        self.brightness = prefs['brightness']
+        self.contrast = prefs['contrast']
+        self.saturation = prefs['saturation']
+        self.sharpness = prefs['sharpness']
+        self.autocontrast = prefs['auto contrast']
 
     def enhance(self, pixbuf):
         """Return an "enhanced" version of <pixbuf>."""

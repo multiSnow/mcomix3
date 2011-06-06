@@ -2,6 +2,9 @@ MComix 0.93
 
     - Fixed sorting in the bookmark edit dialog not working as expected.
 
+    - Settings in the Enhance dialog can now be remembered using the "Save"
+      button.
+
 MComix 0.92
 Release date: 27.05.2011
 
