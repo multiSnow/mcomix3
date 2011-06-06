@@ -48,6 +48,8 @@ class MainWindow(gtk.Window):
         self.width = None
         self.height = None
         self.was_out_of_focus = False
+        #: Used to remember if changing to fullscreen enabled 'Hide all'
+        self.hide_all_forced = False
 
         self._manual_zoom = 100 # In percent of original image size
         self._waiting_for_redraw = False
@@ -593,9 +595,23 @@ class MainWindow(gtk.Window):
         if self.is_fullscreen:
             self.fullscreen()
             self.cursor_handler.auto_hide_on()
+
+            if (prefs['hide all in fullscreen'] and
+                not prefs['hide all']):
+
+                self.hide_all_forced = True
+                self.change_hide_all()
         else:
             self.unfullscreen()
             self.cursor_handler.auto_hide_off()
+
+            if (prefs['hide all in fullscreen'] and
+                prefs['hide all'] and
+                self.hide_all_forced):
+
+                self.change_hide_all()
+
+            self.hide_all_forced = False
 
     def change_zoom_mode(self, radioaction, *args):
         old_mode = prefs['zoom mode']
@@ -923,8 +939,7 @@ class MainWindow(gtk.Window):
         state.
         """
 
-        if not prefs['hide all'] and not (self.is_fullscreen and
-          prefs['hide all in fullscreen']):
+        if not prefs['hide all']:
 
             if prefs['show toolbar']:
                 self.toolbar.show_all()

@@ -5,6 +5,10 @@ MComix 0.93
       they did the same as clicking on the "Name" header of the bookmarks
       table.
 
+    - Fixed a bug that made it impossible to show toolbar/menu controls in
+      fullscreen mode if "Automatically hide all toolbars in fullscreen" was
+      enabled.
+
     - Settings in the Enhance dialog can now be remembered using the "Save"
       button.
 
