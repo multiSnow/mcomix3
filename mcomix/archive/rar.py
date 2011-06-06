@@ -30,7 +30,7 @@ class RarExecArchive(archive_base.ExternalExecutableArchive):
         if _rar_executable != -1:
             return _rar_executable
         else:
-            for command in (u'rar', u'unrar'):
+            for command in (u'unrar', u'rar'):
                 proc = process.Process([command])
                 fd = proc.spawn()
                 if fd is not None:
