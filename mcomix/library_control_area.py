@@ -253,7 +253,7 @@ class _ControlArea(gtk.HBox):
         box.show_all()
 
         response = add_dialog.run()
-        name = entry.get_text()
+        name = entry.get_text().decode('utf-8')
         add_dialog.destroy()
         if response == gtk.RESPONSE_OK and name:
             if self._library.backend.add_collection(name):
@@ -291,7 +291,7 @@ class _ControlArea(gtk.HBox):
         contain the string in the gtk.Entry. The string is not
         case-sensitive.
         """
-        self._library.filter_string = entry.get_text()
+        self._library.filter_string = entry.get_text().decode('utf-8')
         if not self._library.filter_string:
             self._library.filter_string = None
         collection = self._library.collection_area.get_current_collection()

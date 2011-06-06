@@ -9,6 +9,9 @@ MComix 0.93
       fullscreen mode if "Automatically hide all toolbars in fullscreen" was
       enabled.
 
+    - Library collection names did not accept non-ASCII characters. This has
+      been fixed.
+
     - ALT+Left mouse button and ALT+Right now advance one page, while ALT+Right
       mouse button/ALT+Left go back one page.
 

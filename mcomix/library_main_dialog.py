@@ -93,9 +93,8 @@ class _LibraryDialog(gtk.Window):
         books should be put in.
         """
         if collection_name is None:
-            collection = None
+            collection = self.collection_area.get_current_collection()
         else:
-
             collection = self.backend.get_collection_by_name(collection_name)
 
             if collection is None: # Collection by that name doesn't exist.
