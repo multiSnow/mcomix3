@@ -2,6 +2,8 @@
 
 import os
 import cPickle
+import gtk
+import operator
 
 import constants
 import log
@@ -85,13 +87,60 @@ class __BookmarksStore:
         archive_type = self._file_handler.archive_type
         date_added = datetime.datetime.now()
 
-        for bookmark in self._bookmarks:
+        same_file_bookmarks = []
 
-            if bookmark.same_path(path) and bookmark.same_page(page):
+        for bookmark in self._bookmarks:
+            if bookmark.same_path(path):
+                if bookmark.same_page(page):
+                    # Do not create identical bookmarks
+                    return
+                else:
+                    same_file_bookmarks.append(bookmark)
+
+        # If the same file was already bookmarked, ask to replace
+        # the existing bookmarks before deleting them.
+        if len(same_file_bookmarks) > 0:
+            response = self._should_replace_bookmarks(same_file_bookmarks, page)
+
+            # Delete old bookmarks
+            if response == gtk.RESPONSE_YES:
+                for bookmark in same_file_bookmarks:
+                    self.remove_bookmark(bookmark)
+            # Perform no action
+            elif response == gtk.RESPONSE_CANCEL:
                 return
 
         self.add_bookmark_by_values(name, path, page, numpages,
             archive_type, date_added)
+
+    def _should_replace_bookmarks(self, old_bookmarks, new_page):
+        """ Present a confirmation dialog to replace old bookmarks.
+
+        @return RESPONSE_YES to create replace bookmarks,
+            RESPONSE_NO to create a new bookmark, RESPONSE_CANCEL to abort creating
+            a new bookmark.
+        """
+
+        dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL, gtk.MESSAGE_INFO,
+                gtk.BUTTONS_YES_NO)
+        dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
+        dialog.set_default_response(gtk.RESPONSE_YES)
+
+        pages = map(str, sorted(map(operator.attrgetter('_page'), old_bookmarks)))
+        dialog.set_markup('<span weight="bold" size="larger">' +
+            _('Replace existing bookmarks on page %s?') % ", ".join(pages) +
+            '</span>')
+        dialog.format_secondary_markup(
+            _('The current book already contains marked pages. '
+              'Do you want to replace them with a new bookmark on page %d? ') % new_page +
+            '\n\n' +
+            _('Selecting "No" will create a new bookmark without affecting the other bookmarks.')
+        )
+        dialog.show_all()
+        result = dialog.run()
+        dialog.destroy()
+
+        return result
 
     def clear_bookmarks(self):
         """Remove all bookmarks from the list."""

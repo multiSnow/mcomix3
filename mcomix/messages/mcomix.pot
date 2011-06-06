@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.93\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2011-06-06 14:28+0200\n"
+"POT-Creation-Date: 2011-06-06 17:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,13 +62,31 @@ msgstr ""
 msgid "! Could not read %s"
 msgstr ""
 
-#: mcomix/bookmark_backend.py:42
+#: mcomix/bookmark_backend.py:44
 #, python-format
 msgid "! Could not parse bookmarks file %s"
 msgstr ""
 
-#: mcomix/bookmark_backend.py:44
+#: mcomix/bookmark_backend.py:46
 msgid "! Deleting corrupt bookmarks file."
+msgstr ""
+
+#: mcomix/bookmark_backend.py:131
+#, python-format
+msgid "Replace existing bookmarks on page %s?"
+msgstr ""
+
+#: mcomix/bookmark_backend.py:134
+#, python-format
+msgid ""
+"The current book already contains marked pages. Do you want to replace them "
+"with a new bookmark on page %d? "
+msgstr ""
+
+#: mcomix/bookmark_backend.py:137
+msgid ""
+"Selecting \"No\" will create a new bookmark without affecting the other "
+"bookmarks."
 msgstr ""
 
 #: mcomix/bookmark_dialog.py:15

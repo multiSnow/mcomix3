@@ -12,6 +12,11 @@ MComix 0.93
     - Library collection names did not accept non-ASCII characters. This has
       been fixed.
 
+    - MComix will now ask for confirmation when creating a new bookmark in an
+      archive that was already bookmarked before. This allows the user to
+      either create a new bookmark, or replace the old one with the current
+      page.
+
     - ALT+Left mouse button and ALT+Right now advance one page, while ALT+Right
       mouse button/ALT+Left go back one page.
 
