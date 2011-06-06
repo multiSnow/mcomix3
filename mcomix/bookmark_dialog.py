@@ -13,9 +13,7 @@ class _BookmarksDialog(gtk.Dialog):
 
     def __init__(self, window, bookmarks_store):
         gtk.Dialog.__init__(self, _('Edit Bookmarks'), window, gtk.DIALOG_DESTROY_WITH_PARENT,
-            (gtk.STOCK_SORT_ASCENDING, constants.RESPONSE_SORT_ASCENDING,
-             gtk.STOCK_SORT_DESCENDING, constants.RESPONSE_SORT_DESCENDING,
-             gtk.STOCK_REMOVE, constants.RESPONSE_REMOVE,
+            (gtk.STOCK_REMOVE, constants.RESPONSE_REMOVE,
              gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE))
 
         self._bookmarks_store = bookmarks_store
@@ -70,9 +68,9 @@ class _BookmarksDialog(gtk.Dialog):
         self._name_col.set_expand(True)
 
         self._liststore.set_sort_func(_BookmarksDialog._SORT_TYPE,
-            self._sort_model, ('_archive_type',))
+            self._sort_model, ('_archive_type', '_name', '_page'))
         self._liststore.set_sort_func(_BookmarksDialog._SORT_NAME,
-            self._sort_model, ('_name', '_page'))
+            self._sort_model, ('_name', '_page', '_path'))
         self._liststore.set_sort_func(_BookmarksDialog._SORT_PAGE,
             self._sort_model, ('_page', '_numpages', '_name'))
         self._liststore.set_sort_func(_BookmarksDialog._SORT_ADDED,
@@ -144,69 +142,6 @@ class _BookmarksDialog(gtk.Dialog):
         # If the loop didn't return, both entries are equal.
         return 0
 
-    def _sort(self, sort_ascending):
-
-        model_row_array = []
-        i = 0
-        for model_row in self._liststore:
-            model_row_array.append( (i, model_row) )
-            i += 1
-
-        if sort_ascending:
-            sorted_model_rows = sorted( model_row_array, cmp=self._asc_sort_comparator )
-        else:
-            sorted_model_rows = sorted( model_row_array, cmp=self._desc_sort_comparator )
-
-        new_order = []
-        for sorted_model_row in sorted_model_rows:
-            new_order.append(sorted_model_row[0])
-
-        self._liststore.reorder(new_order)
-
-    def _asc_sort_comparator(self, x, y):
-
-        x_menuitem = x[1][5]
-        y_menuitem = y[1][5]
-
-        if x_menuitem._name < y_menuitem._name:
-            return -1
-        elif x_menuitem._name > y_menuitem._name:
-            return 1
-        else:
-            if x_menuitem._page < y_menuitem._page:
-                return -1
-            elif x_menuitem._page > y_menuitem._page:
-                return 1
-            else:
-                if x_menuitem._path < y_menuitem._path:
-                    return -1
-                elif x_menuitem._path > y_menuitem._path:
-                    return 1
-                else:
-                    return 0
-
-    def _desc_sort_comparator(self, x, y):
-
-        x_menuitem = x[1][5]
-        y_menuitem = y[1][5]
-
-        if x_menuitem._name < y_menuitem._name:
-            return 1
-        elif x_menuitem._name > y_menuitem._name:
-            return -1
-        else:
-            if x_menuitem._page < y_menuitem._page:
-                return 1
-            elif x_menuitem._page > y_menuitem._page:
-                return -1
-            else:
-                if x_menuitem._path < y_menuitem._path:
-                    return 1
-                elif x_menuitem._path > y_menuitem._path:
-                    return -1
-                else:
-                    return 0
-
     def _response(self, dialog, response):
 
         if response == gtk.RESPONSE_CLOSE:
@@ -215,11 +150,8 @@ class _BookmarksDialog(gtk.Dialog):
         elif response == constants.RESPONSE_REMOVE:
             self._remove_selected()
 
-        elif response == constants.RESPONSE_SORT_ASCENDING:
-            self._sort(True)
-
-        elif response == constants.RESPONSE_SORT_DESCENDING:
-            self._sort(False)
+        else:
+            self.destroy()
 
     def _key_press_event(self, dialog, event, *args):
 
