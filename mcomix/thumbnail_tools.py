@@ -15,6 +15,7 @@ import shutil
 import tempfile
 import mimetypes
 import threading
+import itertools
 import Image
 import archive_extractor
 import constants
@@ -244,12 +245,17 @@ class Thumbnailer(object):
         """Return the filename within <files> that is the most likely to be the
         cover of an archive using some simple heuristics.
         """
-        tools.alphanumeric_sort(files)
+        # Ignore MacOSX meta files.
+        files = itertools.ifilter(lambda filename:
+                u'__MACOSX' not in os.path.normpath(filename).split(os.sep),
+                files)
+
         ext_re = constants.SUPPORTED_IMAGE_REGEX
+        images = list(itertools.ifilter(constants.SUPPORTED_IMAGE_REGEX.search, files))
+
+        tools.alphanumeric_sort(images)
+
         front_re = re.compile('(cover|front)', re.I)
-
-        images = filter(ext_re.search, files)
-
         candidates = filter(front_re.search, images)
         candidates = [c for c in candidates if 'back' not in c.lower()]
 
