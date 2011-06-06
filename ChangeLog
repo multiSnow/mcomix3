@@ -1,6 +1,9 @@
 MComix 0.93
 
-    - Fixed sorting in the bookmark edit dialog not working as expected.
+    - Fixed sorting in the bookmark edit dialog not working as expected. The
+      buttons "Sort ascending" and "Sort descending" have been removed, as
+      they did the same as clicking on the "Name" header of the bookmarks
+      table.
 
     - Settings in the Enhance dialog can now be remembered using the "Save"
       button.
