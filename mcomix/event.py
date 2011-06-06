@@ -4,6 +4,7 @@
 import constants
 import urllib
 import gtk
+import gtk.gdk
 import portability
 from preferences import prefs
 
@@ -44,10 +45,12 @@ class EventHandler:
         # Some navigation keys that work as well as the accelerators in
         # ui.py.
         # ----------------------------------------------------------------
-        if event.keyval in (gtk.keysyms.KP_Page_Up, gtk.keysyms.BackSpace):
+        if event.keyval in (gtk.keysyms.KP_Page_Up, gtk.keysyms.BackSpace) or \
+           (event.keyval == gtk.keysyms.Left and event.state & gtk.gdk.MOD1_MASK):
             self._window.previous_page()
 
-        elif event.keyval == gtk.keysyms.KP_Page_Down:
+        elif event.keyval == gtk.keysyms.KP_Page_Down or \
+             (event.keyval == gtk.keysyms.Right and event.state & gtk.gdk.MOD1_MASK):
             self._window.next_page()
 
         # ----------------------------------------------------------------
@@ -335,7 +338,7 @@ class EventHandler:
         elif event.button == 2:
             self._window.actiongroup.get_action('lens').set_active(True)
 
-        elif event.button == 3:
+        elif event.button == 3 and not event.state & gtk.gdk.MOD1_MASK:
             self._window.cursor_handler.set_cursor_type(constants.NORMAL_CURSOR)
             self._window.popup.popup(None, None, None, event.button,
                 event.time)
@@ -355,8 +358,11 @@ class EventHandler:
             else:
                 self._window.was_out_of_focus = False
 
-        if event.button == 2:
+        elif event.button == 2:
             self._window.actiongroup.get_action('lens').set_active(False)
+
+        elif event.button == 3 and event.state & gtk.gdk.MOD1_MASK:
+            self._window.previous_page()
 
     def mouse_move_event(self, widget, event):
         """Handle mouse pointer movement events."""

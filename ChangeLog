@@ -9,6 +9,9 @@ MComix 0.93
       fullscreen mode if "Automatically hide all toolbars in fullscreen" was
       enabled.
 
+    - ALT+Left mouse button and ALT+Right now advance one page, while ALT+Right
+      mouse button/ALT+Left go back one page.
+
     - Settings in the Enhance dialog can now be remembered using the "Save"
       button.
 
