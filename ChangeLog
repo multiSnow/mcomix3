@@ -12,6 +12,10 @@ MComix 0.93
     - Library collection names did not accept non-ASCII characters. This has
       been fixed.
 
+    - By selecting a folder instead of a file in the library's "Add book"
+      dialog, all archives within the selected directory will be added to the
+      library recursively.
+
     - MComix will now ask for confirmation when creating a new bookmark in an
       archive that was already bookmarked before. This allows the user to
       either create a new bookmark, or replace the old one with the current

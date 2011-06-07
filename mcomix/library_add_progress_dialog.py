@@ -60,22 +60,24 @@ class _AddLibraryProgressDialog(gtk.Dialog):
 
         new_paths = []
 
+        # Wait for UI to catch up before searching for files
         number_label.set_text(_('Searching for archives...'))
+        while gtk.events_pending():
+            gtk.main_iteration(False)
+
 
         # go through the selected files and if folders are selected then
         # recursively find comics
         for i, path in enumerate(paths):
 
             if os.path.isdir(path):
-                for root, dirs, files in os.walk(path):
-                    for file in files:
-                        new_paths.append(root + '/' + file)
+                while gtk.events_pending():
+                    gtk.main_iteration(False)
 
+                for root, dirs, files in os.walk(path):
+                    new_paths.extend([ os.path.join(root, file) for file in files ])
             else:
                 new_paths.append(path)
-
-            while gtk.events_pending():
-                gtk.main_iteration(False)
 
         new_paths = filter(constants.SUPPORTED_ARCHIVE_REGEX.search, new_paths)
 

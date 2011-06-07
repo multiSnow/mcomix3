@@ -2,8 +2,10 @@
 
 import os
 import gtk
-from preferences import prefs
+
 import file_chooser_base_dialog
+
+from preferences import prefs
 
 _library_filechooser_dialog = None
 
@@ -13,9 +15,10 @@ class _LibraryFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog)
 
     def __init__(self, library):
         file_chooser_base_dialog._BaseFileChooserDialog.__init__(self)
+        self.set_transient_for(library)
 
         self._library = library
-        self.set_transient_for(library)
+
         self.filechooser.set_select_multiple(True)
         self.filechooser.connect('current_folder_changed',
             self._set_collection_name)
@@ -53,12 +56,32 @@ class _LibraryFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog)
         except Exception:
             self.filechooser.set_filter(filters[1])
 
+        # Remove default buttons and add buttons that make more sense
+        for widget in self.get_action_area().get_children():
+            self.get_action_area().remove(widget)
+
+        self.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
+        self.add_button(gtk.STOCK_ADD, gtk.RESPONSE_OK)
+        self.set_default_response(gtk.RESPONSE_OK)
+
     def _set_collection_name(self, *args):
         """Set the text in the ComboBoxEntry to the name of the current
         directory.
         """
         name = os.path.basename(self.filechooser.get_current_folder())
         self._comboentry.child.set_text(name)
+
+    def _response(self, widget, response):
+        """ Overrides the base class' response handling to allow selecting
+        one or more folders in addition to normal archives. """
+        if response == gtk.RESPONSE_OK:
+
+            # Collect files, if necessary also from subdirectories
+            files = [ path.decode('utf-8') for path in self.filechooser.get_filenames() ]
+            self.files_chosen(files)
+
+        else:
+            self.files_chosen([])
 
     def files_chosen(self, paths):
         if paths:

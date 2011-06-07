@@ -224,10 +224,9 @@ class LibraryBackend:
         if info is None:
             return False
         format, pages, size = info
-        thumbnailer = thumbnail_tools.Thumbnailer(dst_dir=constants.LIBRARY_COVERS_PATH)
-        thumbnailer.set_store_on_disk(True)
-        thumbnailer.set_size(constants.MAX_LIBRARY_COVER_SIZE, constants.MAX_LIBRARY_COVER_SIZE)
-        thumbnailer.thumbnail(path)
+
+        # Thumbnail for the newly added book will be generated once it
+        # is actually needed with get_book_thumbnail().
         old = self._con.execute('''select id from Book
             where path = ?''', (path,)).fetchone()
         try:
