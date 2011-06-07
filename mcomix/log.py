@@ -6,6 +6,8 @@ this default logger. """
 
 import threading
 import logging
+import sys
+import locale
 from logging import DEBUG, INFO, WARNING, ERROR
 
 import i18n
@@ -64,13 +66,13 @@ def print_(*args, **options):
     print_function(end)
 
 class PrintHandler(logging.Handler):
-    """ Handler using L{tools.print_} to output messages. """
+    """ Handler using L{print_} to output messages. """
 
     def __init__(self):
         logging.Handler.__init__(self)
 
     def emit(self, record):
-        tools.print_(self.format(record))
+        print_(self.format(record))
 
 # Set up default logger.
 __logger = logging.getLogger('mcomix')
