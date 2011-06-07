@@ -10,6 +10,7 @@ import log
 import bookmark_menu_item
 import callback
 import datetime
+import i18n
 
 from preferences import prefs
 
@@ -133,7 +134,11 @@ class __BookmarksStore:
 
         pages = map(str, sorted(map(operator.attrgetter('_page'), old_bookmarks)))
         dialog.set_markup('<span weight="bold" size="larger">' +
-            _('Replace existing bookmarks on page %s?') % ", ".join(pages) +
+            i18n.get_translation().ungettext(
+                'Replace existing bookmark on page %s?',
+                'Replace existing bookmarks on pages %s?',
+                len(pages)
+            ) % ", ".join(pages) +
             '</span>')
         dialog.format_secondary_markup(
             _('The current book already contains marked pages. '
