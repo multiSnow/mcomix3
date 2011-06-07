@@ -26,7 +26,7 @@ class _EditArchiveDialog(gtk.Dialog):
         gtk.Dialog.__init__(self, _('Edit archive'), window, gtk.DIALOG_MODAL,
             (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL))
 
-        self._accept_changes_button = self.add_button(gtk.STOCK_APPLY, constants.RESPONSE_APPLY_CHANGES)
+        self._accept_changes_button = self.add_button(gtk.STOCK_APPLY, gtk.RESPONSE_APPLY)
 
         self.kill = False # Dialog is killed.
         self.file_handler = window.filehandler
@@ -172,7 +172,7 @@ class _EditArchiveDialog(gtk.Dialog):
                         self._imported_files.append( path )
                         self._comment_area.add_extra_file(path)
 
-        elif response == constants.RESPONSE_APPLY_CHANGES:
+        elif response == gtk.RESPONSE_APPLY:
 
             old_image_array = self._window.imagehandler._image_files
 
