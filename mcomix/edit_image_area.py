@@ -2,7 +2,7 @@
 
 import os
 import gtk
-import encoding
+import i18n
 import image_tools
 import thumbnail_tools
 
@@ -56,7 +56,7 @@ class _ImageArea(gtk.ScrolledWindow):
             thumb = self._window.thumbnailsidebar.get_thumbnail(page)
 
             path = self._window.imagehandler.get_path_to_page(page)
-            encoded_path = encoding.to_unicode(os.path.basename(path))
+            encoded_path = i18n.to_unicode(os.path.basename(path))
             encoded_path = encoded_path.replace('&', '&amp;')
 
             self._liststore.append([thumb, encoded_path, path])

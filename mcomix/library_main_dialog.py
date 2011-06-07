@@ -1,7 +1,7 @@
 """library_main_dialog.py - The library dialog window."""
 
 import gtk
-import encoding
+import i18n
 import tools
 import log
 import file_chooser_library_dialog
@@ -76,7 +76,7 @@ class _LibraryDialog(gtk.Window):
         there earlier.
         """
         self._statusbar.pop(0)
-        self._statusbar.push(0, ' %s' % encoding.to_unicode(message))
+        self._statusbar.push(0, ' %s' % i18n.to_unicode(message))
 
     def close(self, *args):
         """Close the library and do required cleanup tasks."""

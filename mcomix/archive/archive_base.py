@@ -5,7 +5,7 @@ extraction and adding new archive formats. """
 
 import os
 from mcomix import portability
-from mcomix import encoding
+from mcomix import i18n
 from mcomix import process
 from mcomix import callback
 from mcomix import archive
@@ -83,7 +83,7 @@ class NonUnicodeArchive(BaseArchive):
         # Maps Unicode names to regular names as expected by the original archive format
         self.unicode_mapping = {}
 
-    def _unicode_filename(self, filename, conversion_func=encoding.to_unicode):
+    def _unicode_filename(self, filename, conversion_func=i18n.to_unicode):
         """ Instead of returning archive members directly, map each filename through
         this function first to convert them to Unicode. """
 
@@ -97,7 +97,7 @@ class NonUnicodeArchive(BaseArchive):
         if filename in self.unicode_mapping:
             return self.unicode_mapping[filename]
         else:
-            return encoding.to_utf8(filename)
+            return i18n.to_utf8(filename)
 
 class ExternalExecutableArchive(NonUnicodeArchive):
     """ For archives that are extracted by spawning an external

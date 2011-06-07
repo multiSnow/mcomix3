@@ -1,7 +1,7 @@
 """properties_dialog.py - Properties dialog that displays information about the archive/file."""
 
 import gtk
-import encoding
+import i18n
 import properties_page
 import os
 import time
@@ -57,7 +57,7 @@ class _PropertiesDialog(gtk.Dialog):
                     uid = str(stats.st_uid)
 
                 secondary_info = (
-                    (_('Location'), encoding.to_unicode(os.path.dirname(
+                    (_('Location'), i18n.to_unicode(os.path.dirname(
                     window.filehandler.get_path_to_base()))),
                     (_('Accessed'), time.strftime('%Y-%m-%d, %H:%M:%S',
                     time.localtime(stats.st_atime))),
@@ -95,7 +95,7 @@ class _PropertiesDialog(gtk.Dialog):
             except Exception:
                 uid = str(stats.st_uid)
             secondary_info = (
-                (_('Location'), encoding.to_unicode(os.path.dirname(path))),
+                (_('Location'), i18n.to_unicode(os.path.dirname(path))),
                 (_('Accessed'), time.strftime('%Y-%m-%d, %H:%M:%S',
                 time.localtime(stats.st_atime))),
                 (_('Modified'), time.strftime('%Y-%m-%d, %H:%M:%S',

@@ -3,7 +3,7 @@
 import gtk
 import os
 import pango
-import encoding
+import i18n
 import labels
 import constants
 
@@ -91,7 +91,7 @@ class _AddLibraryProgressDialog(gtk.Dialog):
                 number_label.set_text('%d / %d' % (total_added, total_paths_int))
 
             added_label.set_text(_("Adding '%s'...") %
-                encoding.to_unicode(path))
+                i18n.to_unicode(path))
             bar.set_fraction(total_added / total_paths_float)
 
             while gtk.events_pending():

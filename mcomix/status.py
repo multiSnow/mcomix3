@@ -1,7 +1,7 @@
 """status.py - Statusbar for main window."""
 
 import gtk
-import encoding
+import i18n
 from preferences import prefs
 
 class Statusbar(gtk.Statusbar):
@@ -19,7 +19,7 @@ class Statusbar(gtk.Statusbar):
         replacing whatever was there earlier.
         """
         self.pop(0)
-        self.push(0, ' %s' % encoding.to_unicode(message))
+        self.push(0, ' %s' % i18n.to_unicode(message))
 
     def set_page_number(self, page, total, double_page=False):
         """Update the page number."""
@@ -42,11 +42,11 @@ class Statusbar(gtk.Statusbar):
 
     def set_root(self, root):
         """Set the name of the root (directory or archive)."""
-        self._root = encoding.to_unicode(root)
+        self._root = i18n.to_unicode(root)
 
     def set_filename(self, filename):
         """Update the filename."""
-        self._filename = encoding.to_unicode(filename)
+        self._filename = i18n.to_unicode(filename)
 
     def update(self):
         """Set the statusbar to display the current state."""

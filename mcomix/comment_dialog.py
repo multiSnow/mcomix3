@@ -2,7 +2,7 @@
 
 import os
 import gtk
-import encoding
+import i18n
 
 class _CommentsDialog(gtk.Dialog):
 
@@ -54,14 +54,14 @@ class _CommentsDialog(gtk.Dialog):
                 text = _('Could not read %s') % name
 
             text_buffer = gtk.TextBuffer(tag_table)
-            text_buffer.set_text(encoding.to_unicode(text))
+            text_buffer.set_text(i18n.to_unicode(text))
             text_buffer.apply_tag(tag, *text_buffer.get_bounds())
             text_view = gtk.TextView(text_buffer)
             inbox.add(text_view)
 
             bg_color = text_view.get_default_attributes().bg_color
             outbox.modify_bg(gtk.STATE_NORMAL, bg_color)
-            tab_label = gtk.Label(encoding.to_unicode(name))
+            tab_label = gtk.Label(i18n.to_unicode(name))
             notebook.insert_page(page, tab_label)
 
         self.show_all()

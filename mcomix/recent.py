@@ -5,7 +5,7 @@ import itertools
 import gtk
 import preferences
 import sys
-import encoding
+import i18n
 import portability
 import constants
 
@@ -51,13 +51,13 @@ class RecentFilesMenu(gtk.RecentChooserMenu):
     def add(self, path):
         if not preferences.prefs['store recent file info']:
             return
-        uri = portability.uri_prefix() + urllib.pathname2url(encoding.to_utf8(path))
+        uri = portability.uri_prefix() + urllib.pathname2url(i18n.to_utf8(path))
         self._manager.add_item(uri)
 
     def remove(self, path):
         if not preferences.prefs['store recent file info']:
             return
-        uri = portability.uri_prefix() + urllib.pathname2url(encoding.to_utf8(path))
+        uri = portability.uri_prefix() + urllib.pathname2url(i18n.to_utf8(path))
         self._manager.remove_item(uri)
 
 

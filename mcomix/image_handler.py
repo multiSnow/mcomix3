@@ -3,7 +3,7 @@
 import os
 import threading
 import gtk
-import encoding
+import i18n
 import tools
 import image_tools
 from preferences import prefs
@@ -433,7 +433,7 @@ class ImageHandler:
                 os.path.basename(os.path.dirname(img_file)),
                 os.path.basename(img_file)
             )
-        return encoding.to_unicode(name)
+        return i18n.to_unicode(name)
 
     def get_size(self, page=None):
         """Return a tuple (width, height) with the size of <page>. If <page>

@@ -1,7 +1,7 @@
 """properties_page.py - A page to put in the properties dialog window."""
 
 import gtk
-import encoding
+import i18n
 import image_tools
 import labels
 
@@ -39,7 +39,7 @@ class _Page(gtk.VBox):
         """Set the filename to be displayed to <filename>. Call this before
         set_main_info().
         """
-        label = labels.BoldLabel(encoding.to_unicode(filename))
+        label = labels.BoldLabel(i18n.to_unicode(filename))
         label.set_alignment(0, 0.5)
         self._mainbox.pack_start(label, False, False)
         self._mainbox.pack_start(gtk.VBox()) # Just to add space (better way?)

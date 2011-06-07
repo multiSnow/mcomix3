@@ -22,15 +22,12 @@ import os
 import sys
 import optparse
 import signal
-import gettext
 
 # These modules must not depend on GTK, pkg_resources, PIL,
 # or any other optional libraries.
 import constants
 import portability
 import preferences
-
-from tools import print_
 
 def wait_and_exit():
     """ Wait for the user pressing ENTER before closing. This should help
@@ -43,36 +40,6 @@ def wait_and_exit():
 
     sys.exit(1)
 
-def install_gettext():
-    """ Initialize gettext with the correct directory that contains
-    MComix translations. This has to be done before any calls to gettext.gettext
-    have been made to ensure all strings are actually translated. """
-
-    # Add the sources' base directory to PATH to allow development without
-    # explicitly installing the package.
-    sys.path.append(constants.BASE_PATH)
-
-    if preferences.prefs['language'] != 'auto':
-        lang_identifiers = [ preferences.prefs['language'] ]
-    else:
-        # Get the user's current locale
-        code = portability.get_default_locale()
-        lang_identifiers = gettext._expand_lang(code)
-
-    domain = constants.APPNAME.lower()
-
-    # Search for .mo files manually, since gettext doesn't support setuptools/pkg_resources.
-    for lang in lang_identifiers:
-        resource = os.path.join(lang, 'LC_MESSAGES', '%s.mo' % domain)
-        if pkg_resources.resource_exists('mcomix.messages', resource):
-            translation = gettext.GNUTranslations(
-                    pkg_resources.resource_stream('mcomix.messages', resource))
-            translation.install(unicode=True)
-            return
-
-    # If nothing was found yet, install an empty translation object.
-    translation = gettext.NullTranslations()
-    translation.install(unicode=True)
 
 def print_version(opt, value, parser, *args, **kwargs):
     """Print the version number and exit."""
@@ -149,7 +116,11 @@ except ImportError:
     wait_and_exit()
 
 preferences.read_preferences_file()
-install_gettext()
+
+import i18n
+i18n.install_gettext()
+
+from log import print_
 
 # Check for PyGTK and PIL dependencies.
 try:
