@@ -18,9 +18,11 @@ class _PreferencesDialog(gtk.Dialog):
     """
 
     def __init__(self, window):
-        gtk.Dialog.__init__(self, _('Preferences'), window, gtk.DIALOG_MODAL,
-             (#gtk.STOCK_REFRESH, constants.RESPONSE_REVERT_TO_DEFAULT,
-              gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE))
+        gtk.Dialog.__init__(self, _('Preferences'), window, gtk.DIALOG_MODAL)
+        
+        reset = self.add_button(_('Clear dialog choices'), constants.RESPONSE_REVERT_TO_DEFAULT)
+        reset.set_tooltip_text(_('Clears all dialog choices that you have previously chosen not to be asked again.'))
+        close = self.add_button(gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
 
         self._window = window
         self.set_has_separator(False)
@@ -396,8 +398,8 @@ class _PreferencesDialog(gtk.Dialog):
             _close_dialog()
 
         elif response == constants.RESPONSE_REVERT_TO_DEFAULT:
-            # to be used to restore preferences to default
-            pass
+            # Reset stored choices
+            prefs['replace bookmark response'] = None
 
         else:
             # Other responses close the dialog, e.g. clicking the X icon on the dialog.
