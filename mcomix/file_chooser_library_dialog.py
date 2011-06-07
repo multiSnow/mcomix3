@@ -21,7 +21,7 @@ class _LibraryFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog)
             self._set_collection_name)
 
         self._collection_button = gtk.CheckButton(
-            '%s:' % _('Automatically add the books to this collection'),
+            '%s:' % _('Add to this collection'),
             False)
         self._collection_button.set_active(
             prefs['auto add books into collections'])
