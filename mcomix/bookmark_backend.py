@@ -127,9 +127,9 @@ class __BookmarksStore:
 
         dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL, gtk.MESSAGE_INFO,
                 gtk.BUTTONS_NONE)
+        dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
         dialog.add_button(gtk.STOCK_NO, constants.RESPONSE_NEW)
         replace_button = dialog.add_button(gtk.STOCK_YES, constants.RESPONSE_REPLACE)
-        dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
         dialog.set_default_response(constants.RESPONSE_REPLACE)
 
         pages = map(str, sorted(map(operator.attrgetter('_page'), old_bookmarks)))
