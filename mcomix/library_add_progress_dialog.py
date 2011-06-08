@@ -3,7 +3,6 @@
 import gtk
 import os
 import pango
-import i18n
 import labels
 import constants
 
@@ -58,42 +57,18 @@ class _AddLibraryProgressDialog(gtk.Dialog):
         main_box.pack_start(added_label, False, False)
         self.show_all()
 
-        new_paths = []
-
-        # Wait for UI to catch up before searching for files
-        number_label.set_text(_('Searching for archives...'))
-        while gtk.events_pending():
-            gtk.main_iteration(False)
-
-
-        # go through the selected files and if folders are selected then
-        # recursively find comics
-        for i, path in enumerate(paths):
-
-            if os.path.isdir(path):
-                while gtk.events_pending():
-                    gtk.main_iteration(False)
-
-                for root, dirs, files in os.walk(path):
-                    new_paths.extend([ os.path.join(root, file) for file in files ])
-            else:
-                new_paths.append(path)
-
-        new_paths = filter(constants.SUPPORTED_ARCHIVE_REGEX.search, new_paths)
-
-        total_paths_int = len(new_paths)
-        total_paths_float = float(len(new_paths))
+        total_paths_int = len(paths)
+        total_paths_float = float(len(paths))
         total_added = 0
 
-        for path in new_paths:
+        for path in paths:
 
             if library.backend.add_book(path, collection):
                 total_added += 1
 
                 number_label.set_text('%d / %d' % (total_added, total_paths_int))
 
-            added_label.set_text(_("Adding '%s'...") %
-                i18n.to_unicode(path))
+            added_label.set_text(_("Adding '%s'...") % path)
             bar.set_fraction(total_added / total_paths_float)
 
             while gtk.events_pending():

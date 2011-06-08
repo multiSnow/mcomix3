@@ -2,6 +2,7 @@
 
 import os
 import gtk
+import mimetypes
 
 import file_chooser_base_dialog
 
@@ -41,7 +42,9 @@ class _LibraryFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog)
         collection_box.show_all()
         self.filechooser.set_extra_widget(collection_box)
 
+        # Remove 'All files' filter from base class
         filters = self.filechooser.list_filters()
+        self.filechooser.remove_filter(filters[0])
 
         try:
             # When setting this to the first filter ("All files"), this
@@ -54,7 +57,7 @@ class _LibraryFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog)
                 prefs['last filter in library filechooser']])
 
         except Exception:
-            self.filechooser.set_filter(filters[1])
+            self.filechooser.set_filter(filters[0])
 
         # Remove default buttons and add buttons that make more sense
         for widget in self.get_action_area().get_children():
@@ -76,12 +79,37 @@ class _LibraryFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog)
         one or more folders in addition to normal archives. """
         if response == gtk.RESPONSE_OK:
 
+            filter = self.filechooser.get_filter()
+
             # Collect files, if necessary also from subdirectories
-            files = [ path.decode('utf-8') for path in self.filechooser.get_filenames() ]
-            self.files_chosen(files)
+            archives = [ ]
+            for path in self.filechooser.get_filenames():
+                path = path.decode('utf-8')
+
+                if os.path.isdir(path):
+                    archives.extend(self._collect_files_from_subdir(path, filter))
+                else:
+                    archives.append(path)
+
+            self.files_chosen(archives)
 
         else:
             self.files_chosen([])
+
+    def _collect_files_from_subdir(self, path, filter):
+        """ Recursively finds archives within C{path} that match the
+        L{gtk.FileFilter} passed in C{filter}. """
+        mimetypes.init()
+
+        for root, dirs, files in os.walk(path):
+            for file in files:
+                full_path = os.path.join(root, file)
+
+                if filter.filter(
+                    (full_path.encode('utf-8'), None, None,
+                        mimetypes.guess_type(full_path)[0])):
+
+                    yield full_path
 
     def files_chosen(self, paths):
         if paths:
