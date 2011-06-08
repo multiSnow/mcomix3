@@ -169,7 +169,6 @@ except ImportError:
 
 # Import required mcomix modules for this script.
 # This should be done only after install_gettext() has been called.
-import deprecated
 import main
 import icons
 import log
@@ -189,7 +188,6 @@ def run():
     if not os.path.exists(constants.CONFIG_DIR):
         os.makedirs(constants.CONFIG_DIR, 0700)
 
-    deprecated.move_files_to_xdg_dirs()
     icons.load_icons()
 
     if len(args) == 1:
@@ -207,7 +205,6 @@ def run():
             show_library = opts.library, manga_mode = opts.manga,
             double_page = opts.doublepage, zoom_mode = opts.zoommode,
             open_path = open_path, open_page = open_page)
-    deprecated.check_for_deprecated_files(window)
 
     signal.signal(signal.SIGTERM, lambda: gobject.idle_add(window.terminate_program))
     try:
