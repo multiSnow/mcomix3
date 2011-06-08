@@ -1086,6 +1086,9 @@ class MainWindow(gtk.Window):
             prefs['path to last file'] = ''
             prefs['page of last file'] = 1
 
+        if prefs['hide all'] and self.hide_all_forced and self.fullscreen:
+            prefs['hide all'] = False
+
         self.write_config_files()
 
         self.filehandler.cleanup()
