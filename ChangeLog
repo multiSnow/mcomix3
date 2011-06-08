@@ -1,5 +1,8 @@
 MComix 0.93
 
+    - Removing a book from the library while its thumbnail wasn't loaded yet
+      could result in a segmentation fault. This issue has been fixed.
+
     - Fixed sorting in the bookmark edit dialog not working as expected. The
       buttons "Sort ascending" and "Sort descending" have been removed, as
       they did the same as clicking on the "Name" header of the bookmarks

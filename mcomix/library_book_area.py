@@ -13,6 +13,7 @@ from preferences import prefs
 import image_tools
 import constants
 import portability
+import callback
 
 _dialog = None
 
@@ -145,7 +146,9 @@ class _BookArea(gtk.ScrolledWindow):
         iter = self._liststore.get_iter_first()
         while iter:
             path = self._liststore.get_value(iter, 2)
-            book_queue.put((iter, path.decode('utf-8')))
+            wrapper = IterWrapper(iter, self._liststore)
+            self._path_about_to_be_removed += wrapper.invalidate
+            book_queue.put((wrapper, path.decode('utf-8')))
 
             iter = self._liststore.iter_next(iter)
 
@@ -171,6 +174,7 @@ class _BookArea(gtk.ScrolledWindow):
         """Remove the book at <path> from the ListStore (and thus from
         the _BookArea).
         """
+        self._path_about_to_be_removed(path)
         iterator = self._liststore.get_iter(path)
         self._liststore.remove(iterator)
 
@@ -252,7 +256,8 @@ class _BookArea(gtk.ScrolledWindow):
         """ Executed when a pixbuf was created, to actually insert the pixbuf
         into the view store. <pixbuf_info> is a tuple containing (index, pixbuf). """
 
-        iter, pixbuf = pixbuf_info
+        iterwrapper, pixbuf = pixbuf_info
+        iter = iterwrapper.iter
 
         if iter and self._liststore.iter_is_valid(iter):
             self._liststore.set(iter, 0, pixbuf)
@@ -489,5 +494,28 @@ class _BookArea(gtk.ScrolledWindow):
         collection = self._library.collection_area.get_current_collection()
         collection_name = self._library.backend.get_collection_name(collection)
         self._library.add_books(paths, collection_name)
+
+    @callback.Callback
+    def _path_about_to_be_removed(self, path):
+        """ This will be called before a liststore path is about to be removed.
+        Used to invalidate the IterWrapper before PyGTK gets a chance to access
+        the invalid iterator. """
+        pass
+
+class IterWrapper(object):
+    """ This is a security wrapper for TreeIterator that gets notified when an
+    item is about to be deleted from the TreeControl's list store. It then
+    invalidates its iterator to prevent PyGTK from causing a segmentation fault
+    by accessing the iterator. """
+
+    def __init__(self, iter, liststore):
+        self.iter = iter
+        self.liststore = liststore
+
+    def invalidate(self, path):
+        if self.iter:
+            iter_path = self.liststore.get_path(self.iter)
+            if iter_path == path:
+                self.iter = None
 
 # vim: expandtab:sw=4:ts=4
