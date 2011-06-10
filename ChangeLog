@@ -15,6 +15,9 @@ MComix 0.93
     - Library collection names did not accept non-ASCII characters. This has
       been fixed.
 
+    - Added support for LHA/LZH archives, using either 'lha' or '7z' as
+      extractors. Unicode support for Win32 is still problematic.
+
     - By selecting a folder instead of a file in the library's "Add book"
       dialog, all archives within the selected directory will be added to the
       library recursively.

@@ -66,7 +66,8 @@ def RAR_AVAILABLE():
     return archive.rar.RarArchive.is_available() or SZIP_AVAILABLE()
 
 def LHA_AVAILABLE():
-    return SZIP_AVAILABLE()
+    import archive.lha
+    return archive.lha.LhaArchive.is_available() or SZIP_AVAILABLE()
 
 MAX_LIBRARY_COVER_SIZE = 500
 

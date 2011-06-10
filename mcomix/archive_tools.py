@@ -11,6 +11,7 @@ import archive.zip
 import archive.rar
 import archive.tar
 import archive.sevenzip
+import archive.lha
 
 def archive_mime_type(path):
     """Return the archive type of <path> or None for non-archives."""
@@ -91,6 +92,8 @@ def get_archive_handler(path):
         return archive.sevenzip.SevenZipArchive(path)
     elif mime == constants.SEVENZIP and archive.sevenzip.SevenZipArchive.is_available():
         return archive.sevenzip.SevenZipArchive(path)
+    elif mime == constants.LHA and archive.lha.LhaArchive.is_available():
+        return archive.lha.LhaArchive(path)
     elif mime == constants.LHA and archive.sevenzip.SevenZipArchive.is_available():
         return archive.sevenzip.SevenZipArchive(path)
     else:
