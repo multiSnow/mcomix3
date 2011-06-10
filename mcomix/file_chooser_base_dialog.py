@@ -89,6 +89,9 @@ class _BaseFileChooserDialog(gtk.Dialog):
         if constants.SZIP_AVAILABLE():
             mimetypes += constants.SZIP_FORMATS[0]
             patterns += constants.SZIP_FORMATS[1]
+        if constants.LHA_AVAILABLE():
+            mimetypes += constants.LHA_FORMATS[0]
+            patterns += constants.LHA_FORMATS[1]
 
         self.add_filter(_('All Archives'),
             mimetypes, patterns)
@@ -106,6 +109,10 @@ class _BaseFileChooserDialog(gtk.Dialog):
         if constants.SZIP_AVAILABLE():
             self.add_filter(_('7z archives'),
                 *constants.SZIP_FORMATS)
+
+        if constants.LHA_AVAILABLE():
+            self.add_filter(_('LHA archives'),
+                *constants.LHA_FORMATS)
 
         try:
             if (self.__class__._last_activated_file is not None

@@ -41,8 +41,11 @@ def archive_mime_type(path):
             if magic == 'Rar!':
                 return constants.RAR
 
-            if magic == '7z\xBC\xAF':
+            elif magic == '7z\xBC\xAF':
                 return constants.SEVENZIP
+
+            elif magic[2:] == '-l':
+                return constants.LHA
 
             #if magic == '%PDF':
             #    return constants.PDF
@@ -87,6 +90,8 @@ def get_archive_handler(path):
     elif mime == constants.RAR and archive.sevenzip.SevenZipArchive.is_available():
         return archive.sevenzip.SevenZipArchive(path)
     elif mime == constants.SEVENZIP and archive.sevenzip.SevenZipArchive.is_available():
+        return archive.sevenzip.SevenZipArchive(path)
+    elif mime == constants.LHA and archive.sevenzip.SevenZipArchive.is_available():
         return archive.sevenzip.SevenZipArchive(path)
     else:
         return None

@@ -22,7 +22,7 @@ PREFERENCE_PICKLE_PATH = os.path.join(CONFIG_DIR, 'preferences.pickle')
 FILEINFO_PICKLE_PATH = os.path.join(DATA_DIR, 'file.pickle')
 
 ZOOM_MODE_BEST, ZOOM_MODE_WIDTH, ZOOM_MODE_HEIGHT, ZOOM_MODE_MANUAL = range(4)
-ZIP, RAR, TAR, GZIP, BZIP2, PDF, SEVENZIP = range(7)
+ZIP, RAR, TAR, GZIP, BZIP2, PDF, SEVENZIP, LHA = range(8)
 NORMAL_CURSOR, GRAB_CURSOR, WAIT_CURSOR = range(3)
 LIBRARY_DRAG_EXTERNAL_ID, LIBRARY_DRAG_BOOK_ID, LIBRARY_DRAG_COLLECTION_ID = range(3)
 
@@ -39,7 +39,7 @@ SORT_NAME, SORT_PATH, SORT_SIZE = 1, 2, 3
 
 ACCEPTED_COMMENT_EXTENSIONS = ['txt', 'nfo']
 SUPPORTED_IMAGE_REGEX = re.compile(r'\.(jpg|jpeg|png|gif|tif|tiff|bmp|ppm|pgm|pbm)\s*$', re.I)
-SUPPORTED_ARCHIVE_REGEX = re.compile(r'\.(cbz|cbr|cbt|zip|rar|tar|gz|bz2|bzip2|7z)\s*$', re.I)
+SUPPORTED_ARCHIVE_REGEX = re.compile(r'\.(cbz|cbr|cbt|zip|rar|tar|gz|bz2|bzip2|7z|lza|lzh)\s*$', re.I)
 
 ZIP_FORMATS = (
         ('application/x-zip', 'application/zip', 'application/x-cbz'),
@@ -53,6 +53,9 @@ TAR_FORMATS = (
 SZIP_FORMATS = (
         ('application/x-7z-compressed', 'application/x-cb7'),
         ('*.7z', '*.cb7'))
+LHA_FORMATS = (
+        ('application/x-lzh', 'application/x-lha', 'application/x-lzh-compressed'),
+        ('*.lha', '*.lzh'))
 
 def SZIP_AVAILABLE():
     import archive.sevenzip
@@ -61,6 +64,9 @@ def SZIP_AVAILABLE():
 def RAR_AVAILABLE():
     import archive.rar
     return archive.rar.RarArchive.is_available() or SZIP_AVAILABLE()
+
+def LHA_AVAILABLE():
+    return SZIP_AVAILABLE()
 
 MAX_LIBRARY_COVER_SIZE = 500
 
