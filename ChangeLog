@@ -22,6 +22,9 @@ MComix 0.93
       dialog, all archives within the selected directory will be added to the
       library recursively.
 
+    - Doing the same in the normal "Open" dialog will open all files within the
+      directory.
+
     - MComix will now ask for confirmation when creating a new bookmark in an
       archive that was already bookmarked before. This allows the user to
       either create a new bookmark, or replace the old one with the current

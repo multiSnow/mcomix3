@@ -2,7 +2,6 @@
 
 import os
 import gtk
-import mimetypes
 
 import file_chooser_base_dialog
 
@@ -67,49 +66,15 @@ class _LibraryFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog)
         self.add_button(gtk.STOCK_ADD, gtk.RESPONSE_OK)
         self.set_default_response(gtk.RESPONSE_OK)
 
+    def should_open_recursive(self):
+        return True
+
     def _set_collection_name(self, *args):
         """Set the text in the ComboBoxEntry to the name of the current
         directory.
         """
         name = os.path.basename(self.filechooser.get_current_folder())
         self._comboentry.child.set_text(name)
-
-    def _response(self, widget, response):
-        """ Overrides the base class' response handling to allow selecting
-        one or more folders in addition to normal archives. """
-        if response == gtk.RESPONSE_OK:
-
-            filter = self.filechooser.get_filter()
-
-            # Collect files, if necessary also from subdirectories
-            archives = [ ]
-            for path in self.filechooser.get_filenames():
-                path = path.decode('utf-8')
-
-                if os.path.isdir(path):
-                    archives.extend(self._collect_files_from_subdir(path, filter))
-                else:
-                    archives.append(path)
-
-            self.files_chosen(archives)
-
-        else:
-            self.files_chosen([])
-
-    def _collect_files_from_subdir(self, path, filter):
-        """ Recursively finds archives within C{path} that match the
-        L{gtk.FileFilter} passed in C{filter}. """
-        mimetypes.init()
-
-        for root, dirs, files in os.walk(path):
-            for file in files:
-                full_path = os.path.join(root, file)
-
-                if filter.filter(
-                    (full_path.encode('utf-8'), None, None,
-                        mimetypes.guess_type(full_path)[0])):
-
-                    yield full_path
 
     def files_chosen(self, paths):
         if paths:

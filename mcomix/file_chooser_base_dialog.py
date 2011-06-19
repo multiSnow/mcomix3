@@ -1,6 +1,7 @@
 """filechooser_chooser_base_dialog.py - Custom FileChooserDialog implementations."""
 
 import os
+import mimetypes
 import gtk
 import pango
 
@@ -74,10 +75,8 @@ class _BaseFileChooserDialog(gtk.Dialog):
         preview_box.show_all()
         self.filechooser.connect('update-preview', self._update_preview)
 
-        ffilter = gtk.FileFilter()
-        ffilter.add_pattern('*')
-        ffilter.set_name(_('All files'))
-        self.filechooser.add_filter(ffilter)
+        self._all_files_filter = self.add_filter(
+            _('All files'), [], ['*'])
 
         # Determine which types should go into 'All archives' based on
         # extractor availability.
@@ -116,7 +115,7 @@ class _BaseFileChooserDialog(gtk.Dialog):
 
         try:
             if (self.__class__._last_activated_file is not None
-                    and os.path.isfile(self.__class__._last_activated_file)):
+                    and os.path.exists(self.__class__._last_activated_file)):
                 self.filechooser.set_filename(
                     self.__class__._last_activated_file)
 
@@ -142,6 +141,26 @@ class _BaseFileChooserDialog(gtk.Dialog):
 
         ffilter.set_name(name)
         self.filechooser.add_filter(ffilter)
+        return ffilter
+
+    def collect_files_from_subdir(self, path, filter, recursive=False):
+        """ Finds archives within C{path} that match the
+        L{gtk.FileFilter} passed in C{filter}. """
+        mimetypes.init()
+
+        for root, dirs, files in os.walk(path):
+            for file in files:
+                full_path = os.path.join(root, file)
+                mimetype = mimetypes.guess_type(full_path)[0]
+
+                if (filter == self._all_files_filter or
+                    filter.filter((full_path.encode('utf-8'),
+                    None, None, mimetype))):
+
+                    yield full_path
+
+            if not recursive:
+                break
 
     def set_save_name(self, name):
         self.filechooser.set_current_name(name)
@@ -149,30 +168,40 @@ class _BaseFileChooserDialog(gtk.Dialog):
     def set_current_directory(self, path):
         self.filechooser.set_current_folder(path)
 
+    def should_open_recursive(self):
+        return False
+
     def _response(self, widget, response):
         """Return a list of the paths of the chosen files, or None if the
         event only changed the current directory.
         """
         if response == gtk.RESPONSE_OK:
-            paths = self.filechooser.get_filenames()
-
-            if len(paths) == 1 and os.path.isdir(paths[0]):
-                self.filechooser.set_current_folder(paths[0])
-                self.emit_stop_by_name('response')
+            if not self.filechooser.get_filenames():
                 return
 
-            if not paths:
-                return
+            # Collect files, if necessary also from subdirectories
+            filter = self.filechooser.get_filter()
+            paths = [ ]
+            for path in self.filechooser.get_filenames():
+                path = path.decode('utf-8')
+
+                if os.path.isdir(path):
+                    paths.extend(self.collect_files_from_subdir(path, filter,
+                        self.should_open_recursive()))
+                else:
+                    paths.append(path)
 
             # FileChooser.set_do_overwrite_confirmation() doesn't seem to
             # work on our custom dialog, so we use a simple alternative.
-            if (self._action == gtk.FILE_CHOOSER_ACTION_SAVE
-              and os.path.exists(paths[0])):
+            first_path = self.filechooser.get_filenames()[0].decode('utf-8')
+            if (self._action == gtk.FILE_CHOOSER_ACTION_SAVE and
+                not os.path.isdir(first_path) and
+                os.path.exists(first_path)):
 
                 overwrite_dialog = gtk.MessageDialog(None, 0,
                     gtk.MESSAGE_QUESTION, gtk.BUTTONS_OK_CANCEL,
                     _("A file named '%s' already exists. Do you want to replace it?") %
-                    os.path.basename(paths[0]))
+                    os.path.basename(first_path))
 
                 overwrite_dialog.format_secondary_text(
                     _('Replacing it will overwrite its contents.'))
@@ -185,7 +214,7 @@ class _BaseFileChooserDialog(gtk.Dialog):
 
             prefs['path of last browsed in filechooser'] = \
                 self.filechooser.get_current_folder()
-            self.__class__._last_activated_file = paths[0]
+            self.__class__._last_activated_file = first_path
             self.files_chosen(paths)
 
         else:
