@@ -50,7 +50,7 @@ class Extractor:
             return self._condition
         else:
             log.warning(_('! Non-supported archive format: %s'),
-                os.path.splitext(src)[1][1:])
+                os.path.basename(src))
             return None
 
     def get_files(self):
