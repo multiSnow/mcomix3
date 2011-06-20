@@ -1,14 +1,21 @@
 """status.py - Statusbar for main window."""
 
 import gtk
+import gobject
+
 import i18n
 from preferences import prefs
 
-class Statusbar(gtk.Statusbar):
+class Statusbar(gtk.CellView):
 
     def __init__(self):
-        gtk.Statusbar.__init__(self)
-        self.set_has_resize_grip(True)
+        gtk.CellView.__init__(self)
+        for i in range(4):
+            cell = gtk.CellRendererText()
+            cell.set_property("xpad", 20)
+            self.pack_start(cell, False)
+            self.add_attribute(cell, "text", i)
+
         self._page_info = ''
         self._resolution = ''
         self._root = ''
@@ -18,8 +25,11 @@ class Statusbar(gtk.Statusbar):
         """Set a specific message (such as an error message) on the statusbar,
         replacing whatever was there earlier.
         """
-        self.pop(0)
-        self.push(0, ' %s' % i18n.to_unicode(message))
+        model = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING,
+            gobject.TYPE_STRING, gobject.TYPE_STRING)
+        model.append((message, '', '', ''))
+        self.set_model(model)
+        self.set_displayed_row(0)
 
     def set_page_number(self, page, total, double_page=False):
         """Update the page number."""
@@ -50,9 +60,16 @@ class Statusbar(gtk.Statusbar):
 
     def update(self):
         """Set the statusbar to display the current state."""
-        self.pop(0)
-        self.push(0, ' %s      |      %s      |      %s      |      %s' %
-            (self._page_info, self._resolution, self._root, self._filename))
+        #self.pop(0)
+        #self.push(0, ' %s      |      %s      |      %s      |      %s' %
+        #    (self._page_info, self._resolution, self._root, self._filename))
+
+        model = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING,
+            gobject.TYPE_STRING, gobject.TYPE_STRING)
+        model.append((self._page_info, self._resolution, self._root, self._filename))
+        self.set_model(model)
+        self.set_displayed_row(0)
+
 
 
 # vim: expandtab:sw=4:ts=4
