@@ -75,7 +75,9 @@ prefs = {
     'lib window width': 500,
     'lib sort key': constants.SORT_PATH,
     'lib sort order': constants.RESPONSE_SORT_ASCENDING,
-    'language': 'auto'
+    'language': 'auto',
+    'statusbar fields': constants.STATUS_PAGE | constants.STATUS_RESOLUTION | \
+                        constants.STATUS_PATH | constants.STATUS_FILENAME
 }
 
 def read_preferences_file():

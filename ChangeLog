@@ -1,7 +1,7 @@
 MComix 0.93
 
     - Removing a book from the library while its thumbnail wasn't loaded yet
-      could result in a segmentation fault. This issue has been fixed.
+      would result in a segmentation fault. This issue has been fixed.
 
     - Fixed sorting in the bookmark edit dialog not working as expected. The
       buttons "Sort ascending" and "Sort descending" have been removed, as
@@ -35,6 +35,10 @@ MComix 0.93
 
     - Settings in the Enhance dialog can now be remembered using the "Save"
       button.
+
+    - Information shown in the status bar can now be enabled/disabled
+      separately by right-clicking on the status bar and toggling the
+      respective check box.
 
     - MComix can now use Chardet (http://chardet.feedparser.org) for guessing
       filename encodings in archives, if installed.
