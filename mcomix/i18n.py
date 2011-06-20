@@ -5,6 +5,11 @@ import os
 import locale
 import gettext
 
+try:
+    import chardet
+except ImportError:
+    chardet = None
+
 import preferences
 import portability
 import constants
@@ -16,13 +21,20 @@ _translation = None
 
 def to_unicode(string):
     """Convert <string> to unicode. First try the default filesystem
-    encoding, and then fall back on some common encodings. If none
-    of the convertions are successful, "???" is returned.
+    encoding, and then fall back on some common encodings.
     """
     if isinstance(string, unicode):
         return string
 
-    for encoding in (locale.getpreferredencoding(),
+    # Try chardet heuristic
+    if chardet:
+        probable_encoding = chardet.detect(string)['encoding'] or \
+            locale.getpreferredencoding() # Fallback if chardet detection fails
+    else:
+        probable_encoding = locale.getpreferredencoding()
+
+    for encoding in (
+        probable_encoding,
         sys.getfilesystemencoding(),
         'utf-8',
         'latin-1'):
