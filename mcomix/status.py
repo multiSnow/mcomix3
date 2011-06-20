@@ -60,9 +60,6 @@ class Statusbar(gtk.CellView):
 
     def update(self):
         """Set the statusbar to display the current state."""
-        #self.pop(0)
-        #self.push(0, ' %s      |      %s      |      %s      |      %s' %
-        #    (self._page_info, self._resolution, self._root, self._filename))
 
         model = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING,
             gobject.TYPE_STRING, gobject.TYPE_STRING)
