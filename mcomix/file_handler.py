@@ -111,10 +111,24 @@ class FileHandler(object):
         # Actually open the file(s)/archive passed in path.
         if self.archive_type is not None:
             image_files, current_image_index = \
-                    self._open_archive(self._current_file, start_page)
+                self._open_archive(self._current_file, start_page)
+
+            # Update status bar
+            archive_list = self._file_provider.list_files(
+                file_provider.FileProvider.ARCHIVES)
+            if self._current_file in archive_list:
+                current_index = archive_list.index(self._current_file)
+            else:
+                current_index = 0
+
+            self._window.statusbar.set_file_number(current_index + 1,
+                len(archive_list))
         else:
             image_files, current_image_index = \
-                    self._open_image_files(filelist, self._current_file)
+                self._open_image_files(filelist, self._current_file)
+
+            # Update status bar (0 disables file numbers for images)
+            self._window.statusbar.set_file_number(0, 0)
 
         if not image_files:
             self.file_loaded = False

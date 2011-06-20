@@ -15,14 +15,13 @@ class Statusbar(gtk.EventBox):
         self._loading = True
 
         self.cellview = gtk.CellView()
-        # Status text, page number, resolution, path, filename
-        self.model = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING,
-            gobject.TYPE_STRING, gobject.TYPE_STRING, gobject.TYPE_STRING)
+        # Status text, page number, file number, resolution, path, filename
+        self.model = gtk.ListStore(*([ gobject.TYPE_STRING ] * 6))
         self.cellview.set_model(self.model)
         self.add(self.cellview)
 
         # Set up renderers for the statusbar boxes.
-        for i in range(5):
+        for i in range(6):
             cell = gtk.CellRendererText()
             cell.set_property("xpad", 20)
 
@@ -35,6 +34,7 @@ class Statusbar(gtk.EventBox):
         <ui>
             <popup name="Statusbar">
                 <menuitem action="pagenumber" />
+                <menuitem action="filenumber" />
                 <menuitem action="resolution" />
                 <menuitem action="rootpath" />
                 <menuitem action="filename" />
@@ -46,6 +46,8 @@ class Statusbar(gtk.EventBox):
         actiongroup = gtk.ActionGroup('mcomix-statusbar')
         actiongroup.add_toggle_actions([
             ('pagenumber', None, _('Show page numbers'), None, None,
+                self.toggle_status_visibility),
+            ('filenumber', None, _('Show file numbers'), None, None,
                 self.toggle_status_visibility),
             ('resolution', None, _('Show resolution'), None, None,
                 self.toggle_status_visibility),
@@ -61,6 +63,7 @@ class Statusbar(gtk.EventBox):
 
         # Default status information
         self._page_info = ''
+        self._file_info = ''
         self._resolution = ''
         self._root = ''
         self._filename = ''
@@ -73,7 +76,7 @@ class Statusbar(gtk.EventBox):
         replacing whatever was there earlier.
         """
         self.model.clear()
-        self.model.append((message, '', '', '', ''))
+        self.model.append((message, '', '', '', '', ''))
         self.cellview.set_displayed_row(0)
 
         # Hide all cells so that only the message is shown.
@@ -87,6 +90,14 @@ class Statusbar(gtk.EventBox):
             self._page_info = '%d,%d / %d' % (page, page + 1, total)
         else:
             self._page_info = '%d / %d' % (page, total)
+
+    def set_file_number(self, fileno, total):
+        """Updates the file number (i.e. number of current file/total
+        files loaded)."""
+        if total > 0:
+            self._file_info = '(%d / %d)' % (fileno, total)
+        else:
+            self._file_info = ''
 
     def set_resolution(self, left_dimensions, right_dimensions=None):
         """Update the resolution data.
@@ -111,7 +122,8 @@ class Statusbar(gtk.EventBox):
         """Set the statusbar to display the current state."""
 
         self.model.clear()
-        self.model.append(('', self._page_info, self._resolution, self._root, self._filename))
+        self.model.append(('', self._page_info, self._file_info,
+            self._resolution, self._root, self._filename))
         self.cellview.set_displayed_row(0)
 
         self._update_visibility()
@@ -132,6 +144,8 @@ class Statusbar(gtk.EventBox):
             bit = constants.STATUS_PATH
         elif actionname == 'filename':
             bit = constants.STATUS_FILENAME
+        elif actionname == 'filenumber':
+            bit = constants.STATUS_FILENUMBER
 
         if action.get_active():
             prefs['statusbar fields'] |= bit
@@ -156,20 +170,23 @@ class Statusbar(gtk.EventBox):
         """ Updates the cells' visibility based on user preferences.
         The status text cell (the first one) is always hidden by this method. """
 
-        status, page, resolution, path, filename = self.cellview.get_cells()
+        status, page, fileno, resolution, path, filename = self.cellview.get_cells()
 
         page_visible = prefs['statusbar fields'] & constants.STATUS_PAGE
+        fileno_visible = prefs['statusbar fields'] & constants.STATUS_FILENUMBER
         resolution_visible = prefs['statusbar fields'] & constants.STATUS_RESOLUTION
         path_visible = prefs['statusbar fields'] & constants.STATUS_PATH
         filename_visible = prefs['statusbar fields'] & constants.STATUS_FILENAME
 
         status.set_property('visible', False)
         page.set_property('visible', page_visible)
+        fileno.set_property('visible', fileno_visible)
         resolution.set_property('visible', resolution_visible)
         path.set_property('visible', path_visible)
         filename.set_property('visible', filename_visible)
 
         for name, visible in (('pagenumber', page_visible),
+                ('filenumber', fileno_visible),
                 ('resolution', resolution_visible),
                 ('rootpath', path_visible),
                 ('filename', filename_visible)):
