@@ -1103,4 +1103,15 @@ class MainWindow(gtk.Window):
 
         gtk.main_quit()
 
+#: Main window instance
+__main_window = None
+
+def main_window():
+    """ Returns the global main window instance. """
+    return __main_window
+
+def set_main_window(window):
+    global __main_window
+    __main_window = window
+
 # vim: expandtab:sw=4:ts=4

@@ -5,6 +5,7 @@ import mimetypes
 import gtk
 import pango
 
+import main
 import image_tools
 import labels
 import constants
@@ -114,11 +115,16 @@ class _BaseFileChooserDialog(gtk.Dialog):
                 *constants.LHA_FORMATS)
 
         try:
-            if (self.__class__._last_activated_file is not None
-                    and os.path.exists(self.__class__._last_activated_file)):
-                self.filechooser.set_filename(
-                    self.__class__._last_activated_file)
+            current_file = main.main_window().filehandler.get_path_to_base()
+            last_file = self.__class__._last_activated_file
 
+            # If a file is currently open, use its path
+            if current_file and os.path.exists(current_file):
+                self.filechooser.set_current_folder(os.path.dirname(current_file))
+            # If no file is open, use the last stored file
+            elif (last_file and os.path.exists(last_file)):
+                self.filechooser.set_filename(last_file)
+            # If no file was stored yet, fall back to preferences
             elif os.path.isdir(prefs['path of last browsed in filechooser']):
                 self.filechooser.set_current_folder(
                     prefs['path of last browsed in filechooser'])

@@ -200,11 +200,11 @@ def run():
         open_page = preferences.prefs['page of last file']
 
     log.setLevel(opts.loglevel)
-
     window = main.MainWindow(fullscreen = opts.fullscreen, is_slideshow = opts.slideshow,
             show_library = opts.library, manga_mode = opts.manga,
             double_page = opts.doublepage, zoom_mode = opts.zoommode,
             open_path = open_path, open_page = open_page)
+    main.set_main_window(window)
 
     signal.signal(signal.SIGTERM, lambda: gobject.idle_add(window.terminate_program))
     try:
