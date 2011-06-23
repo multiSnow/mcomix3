@@ -40,6 +40,9 @@ MComix 0.93
       separately by right-clicking on the status bar and toggling the
       respective check box.
 
+    - By pressing TAB, an OSD-like panel will be displayed, showing the current
+      page and file.
+
     - MComix can now use Chardet (http://chardet.feedparser.org) for guessing
       filename encodings in archives, if installed.
 

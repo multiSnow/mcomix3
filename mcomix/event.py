@@ -253,6 +253,12 @@ class EventHandler:
                         self._window.next_page()
 
         # ---------------------------------------------------------------
+        # OSD display
+        # ---------------------------------------------------------------
+        elif event.keyval == gtk.keysyms.Tab:
+            self._window.show_info_panel()
+
+        # ---------------------------------------------------------------
         # Register CTRL for scrolling only one page instead of two
         # pages in double page mode
         # ---------------------------------------------------------------
