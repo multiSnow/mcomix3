@@ -1091,7 +1091,7 @@ class MainWindow(gtk.Window):
         layout.set_alignment(pango.ALIGN_CENTER)
 
         # Scale font to fit within the screen size
-        max_width = self._main_layout.get_allocation().width
+        max_width = self.get_allocation().width - 10
         max_height = self._main_layout.get_allocation().height
 
         SIZE_MIN, SIZE_MAX = 5, 60
