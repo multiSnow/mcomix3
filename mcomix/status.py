@@ -91,6 +91,10 @@ class Statusbar(gtk.EventBox):
         else:
             self._page_info = '%d / %d' % (page, total)
 
+    def get_page_number(self):
+        """Returns the bar's page information."""
+        return self._page_info
+
     def set_file_number(self, fileno, total):
         """Updates the file number (i.e. number of current file/total
         files loaded)."""
@@ -98,6 +102,10 @@ class Statusbar(gtk.EventBox):
             self._file_info = '(%d / %d)' % (fileno, total)
         else:
             self._file_info = ''
+
+    def get_file_number(self):
+        """ Returns the bar's file information."""
+        return self._file_info
 
     def set_resolution(self, left_dimensions, right_dimensions=None):
         """Update the resolution data.

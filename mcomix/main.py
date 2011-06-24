@@ -1080,9 +1080,9 @@ class MainWindow(gtk.Window):
 
         # Determine text to draw
         filename = self.imagehandler.get_pretty_current_filename().encode('utf-8')
-        page_text = '%s %d / %d' % (_('Page'),
-                self.imagehandler.get_current_page(),
-                self.imagehandler.get_number_of_pages())
+        page_text = '%s %s' % (_('Page'), self.statusbar.get_page_number())
+        if self.statusbar.get_file_number():
+            page_text += ' ' + self.statusbar.get_file_number()
         layout = self._image_box.create_pango_layout(filename + "\n\n" + page_text)
 
         # Set up font information
