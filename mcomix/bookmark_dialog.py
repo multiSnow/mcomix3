@@ -97,6 +97,7 @@ class _BookmarksDialog(gtk.Dialog):
         self.connect('delete_event', self._close)
 
         self._treeview.connect('key_press_event', self._key_press_event)
+        self._treeview.connect('row_activated', self._bookmark_activated)
 
         for bookmark in self._bookmarks_store.get_bookmarks():
             self._add_bookmark(bookmark)
@@ -118,6 +119,15 @@ class _BookmarksDialog(gtk.Dialog):
             bookmark = self._liststore.get_value(treeiter, 5)
             self._liststore.remove(treeiter)
             self._bookmarks_store.remove_bookmark(bookmark)
+
+    def _bookmark_activated(self, treeview, path, view_column, *args):
+        """ Open the activated bookmark. """
+
+        iter = treeview.get_model().get_iter(path)
+        bookmark = treeview.get_model().get_value(iter, 5)
+
+        self._close()
+        bookmark._load()
 
     def _sort_model(self, treemodel, iter1, iter2, user_data):
         """ Custom sort function to sort to model entries based on the
