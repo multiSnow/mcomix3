@@ -6,7 +6,7 @@ MComix 0.93
     - Fixed sorting in the bookmark edit dialog not working as expected. The
       buttons "Sort ascending" and "Sort descending" have been removed, as
       they did the same as clicking on the "Name" header of the bookmarks
-      table.
+      table. Double-clicking a bookmark will open it.
 
     - Fixed a bug that made it impossible to show toolbar/menu controls in
       fullscreen mode if "Automatically hide all toolbars in fullscreen" was
@@ -16,7 +16,9 @@ MComix 0.93
       been fixed.
 
     - Added support for LHA/LZH archives, using either 'lha' or '7z' as
-      extractors. Unicode support for Win32 is still problematic.
+      extractors. Please not that the '7z' executable on Windows does not
+      support printing Unicode characters at all, so extracting an archive with
+      non-ASCII filenames will always fail.
 
     - By selecting a folder instead of a file in the library's "Add book"
       dialog, all archives within the selected directory will be added to the
@@ -44,7 +46,8 @@ MComix 0.93
       page and file.
 
     - MComix can now use Chardet (http://chardet.feedparser.org) for guessing
-      filename encodings in archives, if installed.
+      filename encodings in archives, if installed. If file names are too
+      short, the detection will still be hit-and-miss.
 
 MComix 0.92
 Release date: 27.05.2011
