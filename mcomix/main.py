@@ -864,8 +864,7 @@ class MainWindow(gtk.Window):
         """
         width, height = self.get_size()
 
-        if not prefs['hide all'] and not (self.is_fullscreen and
-          prefs['hide all in fullscreen']):
+        if not prefs['hide all']:
 
             if prefs['show toolbar']:
                 height -= self.toolbar.size_request()[1]
