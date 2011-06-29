@@ -41,7 +41,7 @@ STATUS_PAGE, STATUS_RESOLUTION, STATUS_PATH, STATUS_FILENAME, STATUS_FILENUMBER 
 
 SORT_NAME, SORT_PATH, SORT_SIZE = 1, 2, 3
 
-ACCEPTED_COMMENT_EXTENSIONS = ['txt', 'nfo']
+ACCEPTED_COMMENT_EXTENSIONS = ['txt', 'nfo', 'xml']
 SUPPORTED_IMAGE_REGEX = re.compile(r'\.(jpg|jpeg|png|gif|tif|tiff|bmp|ppm|pgm|pbm)\s*$', re.I)
 SUPPORTED_ARCHIVE_REGEX = re.compile(r'\.(cbz|cbr|cbt|zip|rar|tar|gz|bz2|bzip2|7z|lza|lzh)\s*$', re.I)
 
