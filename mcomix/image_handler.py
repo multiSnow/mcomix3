@@ -192,7 +192,7 @@ class ImageHandler:
                 prefs['auto open next archive']:
                 next_archive_opened = self._window.filehandler._open_next_archive()
 
-            if not next_archive_opened and self.force_single_step:
+            if not next_archive_opened:
                 directory_changed = self._window.filehandler.open_next_directory()
 
             return False
@@ -216,7 +216,7 @@ class ImageHandler:
                 prefs['auto open next archive']:
                 previous_archive_opened = self._window.filehandler._open_previous_archive()
 
-            if not previous_archive_opened and self.force_single_step:
+            if not previous_archive_opened:
                 directory_changed = self._window.filehandler.open_previous_directory()
 
             return False

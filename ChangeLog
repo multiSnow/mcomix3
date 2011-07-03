@@ -35,6 +35,9 @@ MComix 0.93
     - ALT+Left mouse button and ALT+Right now advance one page, while ALT+Right
       mouse button/ALT+Left go back one page.
 
+    - When on the last page, advancing to the next page will load files from
+      the next sibling directory - holding CTRL is no longer necessary.
+
     - Settings in the Enhance dialog can now be remembered using the "Save"
       button.
 
