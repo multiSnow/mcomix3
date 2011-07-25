@@ -301,6 +301,7 @@ class MainUI(gtk.UIManager):
                     <separator />
                     <menuitem action="enhance_image" />
                     <separator />
+                    <menuitem action="stretch" />
                     <menuitem action="lens" />
                     <menu action="menu_zoom">
                         <menuitem action="zoom_in" />
