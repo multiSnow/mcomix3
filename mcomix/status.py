@@ -1,7 +1,7 @@
 """status.py - Statusbar for main window."""
 
 import gtk
-import gobject
+import pango
 
 import i18n
 import constants
@@ -9,24 +9,18 @@ from preferences import prefs
 
 class Statusbar(gtk.EventBox):
 
+    SPACING = 5
+
     def __init__(self):
         gtk.EventBox.__init__(self)
 
         self._loading = True
 
-        self.cellview = gtk.CellView()
         # Status text, page number, file number, resolution, path, filename
-        self.model = gtk.ListStore(*([ gobject.TYPE_STRING ] * 6))
-        self.cellview.set_model(self.model)
-        self.add(self.cellview)
-
-        # Set up renderers for the statusbar boxes.
-        for i in range(6):
-            cell = gtk.CellRendererText()
-            cell.set_property("xpad", 20)
-
-            self.cellview.pack_start(cell, False)
-            self.cellview.add_attribute(cell, "text", i)
+        self.label = gtk.Label()
+        self.label.set_alignment(0, 0.5)
+        self.label.set_ellipsize(pango.ELLIPSIZE_END)
+        self.add(self.label)
 
         # Create popup menu for enabling/disabling status boxes.
         self.ui_manager = gtk.UIManager()
@@ -67,7 +61,7 @@ class Statusbar(gtk.EventBox):
         self._resolution = ''
         self._root = ''
         self._filename = ''
-        self.update()
+        self._update_sensitivity()
 
         self._loading = False
 
@@ -75,14 +69,7 @@ class Statusbar(gtk.EventBox):
         """Set a specific message (such as an error message) on the statusbar,
         replacing whatever was there earlier.
         """
-        self.model.clear()
-        self.model.append((message, '', '', '', '', ''))
-        self.cellview.set_displayed_row(0)
-
-        # Hide all cells so that only the message is shown.
-        self.cellview.get_cells()[0].set_property('visible', True)
-        for cell in self.cellview.get_cells()[1:]:
-            cell.set_property('visible', False)
+        self.label.set_text(" " * Statusbar.SPACING + message)
 
     def set_page_number(self, page, total, double_page=False):
         """Update the page number."""
@@ -129,12 +116,26 @@ class Statusbar(gtk.EventBox):
     def update(self):
         """Set the statusbar to display the current state."""
 
-        self.model.clear()
-        self.model.append(('', self._page_info, self._file_info,
-            self._resolution, self._root, self._filename))
-        self.cellview.set_displayed_row(0)
+        space = " " * Statusbar.SPACING
+        text = (space + "|" + space).join(self._get_status_text())
+        self.label.set_text(space + text)
 
-        self._update_visibility()
+    def _get_status_text(self):
+        """ Returns an array of text fields that should be displayed. """
+        fields = []
+
+        if prefs['statusbar fields'] & constants.STATUS_PAGE:
+            fields.append(self._page_info)
+        if prefs['statusbar fields'] & constants.STATUS_FILENUMBER:
+            fields.append(self._file_info)
+        if prefs['statusbar fields'] & constants.STATUS_RESOLUTION:
+            fields.append(self._resolution)
+        if prefs['statusbar fields'] & constants.STATUS_PATH:
+            fields.append(self._root)
+        if prefs['statusbar fields'] & constants.STATUS_FILENAME:
+            fields.append(self._filename)
+
+        return fields
 
     def toggle_status_visibility(self, action, *args):
         """ Called when status entries visibility is to be changed. """
@@ -160,12 +161,8 @@ class Statusbar(gtk.EventBox):
         else:
             prefs['statusbar fields'] &= ~bit
 
-        self._update_visibility()
-
-        # Redraw widget to prevent strange overlapping texts. queue_draw()
-        # does NOT fix all issues, for some reason.
-        self.hide_all()
-        self.show_all()
+        self.update()
+        self._update_sensitivity()
 
     def _button_released(self, widget, event, *args):
         """ Triggered when a mouse button is released to open the context
@@ -174,24 +171,14 @@ class Statusbar(gtk.EventBox):
             self.ui_manager.get_widget('/Statusbar').popup(None, None, None,
                 event.button, event.time)
 
-    def _update_visibility(self):
-        """ Updates the cells' visibility based on user preferences.
-        The status text cell (the first one) is always hidden by this method. """
-
-        status, page, fileno, resolution, path, filename = self.cellview.get_cells()
+    def _update_sensitivity(self):
+        """ Updates the action menu's sensitivity based on user preferences. """
 
         page_visible = prefs['statusbar fields'] & constants.STATUS_PAGE
         fileno_visible = prefs['statusbar fields'] & constants.STATUS_FILENUMBER
         resolution_visible = prefs['statusbar fields'] & constants.STATUS_RESOLUTION
         path_visible = prefs['statusbar fields'] & constants.STATUS_PATH
         filename_visible = prefs['statusbar fields'] & constants.STATUS_FILENAME
-
-        status.set_property('visible', False)
-        page.set_property('visible', page_visible)
-        fileno.set_property('visible', fileno_visible)
-        resolution.set_property('visible', resolution_visible)
-        path.set_property('visible', path_visible)
-        filename.set_property('visible', filename_visible)
 
         for name, visible in (('pagenumber', page_visible),
                 ('filenumber', fileno_visible),
