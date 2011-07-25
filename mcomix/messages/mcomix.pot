@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.93\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2011-06-07 15:11+0200\n"
+"POT-Creation-Date: 2011-07-25 18:20+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -58,7 +58,7 @@ msgid ""
 "! Could not add file %(sourcefile)s to archive %(archivefile)s, aborting..."
 msgstr ""
 
-#: mcomix/archive_tools.py:51
+#: mcomix/archive_tools.py:55
 #, python-format
 msgid "! Could not read %s"
 msgstr ""
@@ -108,7 +108,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: mcomix/bookmark_dialog.py:52
+#: mcomix/bookmark_dialog.py:52 mcomix/main.py:1082
 msgid "Page"
 msgstr ""
 
@@ -142,24 +142,6 @@ msgstr ""
 #: mcomix/comment_dialog.py:54
 #, python-format
 msgid "Could not read %s"
-msgstr ""
-
-#: mcomix/deprecated.py:15
-msgid "There are deprecated files left on your computer."
-msgstr ""
-
-#: mcomix/deprecated.py:21
-msgid ""
-"Some old files (that were used for storing preferences, the library, "
-"bookmarks etc. for older versions of MComix) were found on your computer. If "
-"you do not plan on using the older versions of MComix again, you should "
-"remove these files in order to save some disk space. Do you want these files "
-"to be removed for you now?"
-msgstr ""
-
-#: mcomix/deprecated.py:35
-#, python-format
-msgid "! Could not remove %s"
 msgstr ""
 
 #: mcomix/edit_comment_area.py:18
@@ -242,48 +224,52 @@ msgid ""
 "each colour band."
 msgstr ""
 
-#: mcomix/file_chooser_base_dialog.py:34
+#: mcomix/file_chooser_base_dialog.py:36
 msgid "Open"
 msgstr ""
 
-#: mcomix/file_chooser_base_dialog.py:39
+#: mcomix/file_chooser_base_dialog.py:41
 msgid "Save"
 msgstr ""
 
-#: mcomix/file_chooser_base_dialog.py:79
+#: mcomix/file_chooser_base_dialog.py:80
 msgid "All files"
 msgstr ""
 
-#: mcomix/file_chooser_base_dialog.py:93
+#: mcomix/file_chooser_base_dialog.py:96
 msgid "All Archives"
 msgstr ""
 
-#: mcomix/file_chooser_base_dialog.py:96
+#: mcomix/file_chooser_base_dialog.py:99
 msgid "ZIP archives"
 msgstr ""
 
-#: mcomix/file_chooser_base_dialog.py:99
+#: mcomix/file_chooser_base_dialog.py:102
 msgid "Tar archives"
 msgstr ""
 
-#: mcomix/file_chooser_base_dialog.py:103
+#: mcomix/file_chooser_base_dialog.py:106
 msgid "RAR archives"
 msgstr ""
 
-#: mcomix/file_chooser_base_dialog.py:107
+#: mcomix/file_chooser_base_dialog.py:110
 msgid "7z archives"
 msgstr ""
 
-#: mcomix/file_chooser_base_dialog.py:167
+#: mcomix/file_chooser_base_dialog.py:114
+msgid "LHA archives"
+msgstr ""
+
+#: mcomix/file_chooser_base_dialog.py:209
 #, python-format
 msgid "A file named '%s' already exists. Do you want to replace it?"
 msgstr ""
 
-#: mcomix/file_chooser_base_dialog.py:171
+#: mcomix/file_chooser_base_dialog.py:213
 msgid "Replacing it will overwrite its contents."
 msgstr ""
 
-#: mcomix/file_chooser_library_dialog.py:24
+#: mcomix/file_chooser_library_dialog.py:27
 msgid "Add to this collection"
 msgstr ""
 
@@ -317,27 +303,27 @@ msgstr ""
 msgid "BMP images"
 msgstr ""
 
-#: mcomix/file_handler.py:121 mcomix/file_handler.py:227
+#: mcomix/file_handler.py:135 mcomix/file_handler.py:241
 #, python-format
 msgid "No images in '%s'"
 msgstr ""
 
-#: mcomix/file_handler.py:221
+#: mcomix/file_handler.py:235
 #, python-format
 msgid "Could not open %s: No such file."
 msgstr ""
 
-#: mcomix/file_handler.py:224 mcomix/file_provider.py:114
+#: mcomix/file_handler.py:238 mcomix/file_provider.py:114
 #, python-format
 msgid "Could not open %s: Permission denied."
 msgstr ""
 
-#: mcomix/file_handler.py:232
+#: mcomix/file_handler.py:246
 #, python-format
 msgid "Could not open %s: Unknown file type."
 msgstr ""
 
-#: mcomix/file_handler.py:590
+#: mcomix/file_handler.py:606
 #, python-format
 msgid "! Corrupt preferences file \"%s\", deleting..."
 msgstr ""
@@ -352,23 +338,19 @@ msgstr ""
 msgid "! Could not load icon \"%s\""
 msgstr ""
 
-#: mcomix/image_handler.py:470
+#: mcomix/image_handler.py:473
 msgid "Unknown filetype"
 msgstr ""
 
-#: mcomix/library_add_progress_dialog.py:23
+#: mcomix/library_add_progress_dialog.py:22
 msgid "Adding books"
 msgstr ""
 
-#: mcomix/library_add_progress_dialog.py:45
+#: mcomix/library_add_progress_dialog.py:44
 msgid "Added books"
 msgstr ""
 
-#: mcomix/library_add_progress_dialog.py:63
-msgid "Searching for archives..."
-msgstr ""
-
-#: mcomix/library_add_progress_dialog.py:93
+#: mcomix/library_add_progress_dialog.py:71
 #, python-format
 msgid "Adding '%s'..."
 msgstr ""
@@ -387,86 +369,86 @@ msgstr ""
 msgid "! Could not get cover for book \"%s\""
 msgstr ""
 
-#: mcomix/library_backend.py:244
+#: mcomix/library_backend.py:243
 #, python-format
 msgid "! Could not add book \"%s\" to the library"
 msgstr ""
 
-#: mcomix/library_backend.py:261
+#: mcomix/library_backend.py:260
 #, python-format
 msgid "! Could not add collection \"%s\""
 msgstr ""
 
-#: mcomix/library_backend.py:272
+#: mcomix/library_backend.py:271
 #, python-format
 msgid "! Could not add book %(book)s to collection %(collection)s"
 msgstr ""
 
-#: mcomix/library_backend.py:299
+#: mcomix/library_backend.py:298
 #, python-format
 msgid "! Could not rename collection to \"%s\""
 msgstr ""
 
-#: mcomix/library_backend.py:310 mcomix/library_backend.py:312
+#: mcomix/library_backend.py:309 mcomix/library_backend.py:311
 msgid "(Copy)"
 msgstr ""
 
-#: mcomix/library_backend.py:389
+#: mcomix/library_backend.py:388
 msgid "Could not determine library database version!"
 msgstr ""
 
-#: mcomix/library_backend.py:420
+#: mcomix/library_backend.py:419
 #, python-format
 msgid "Upgrading library database version from %(from)d to %(to)d."
 msgstr ""
 
-#: mcomix/library_book_area.py:81
+#: mcomix/library_book_area.py:82
 msgid "_Open"
 msgstr ""
 
-#: mcomix/library_book_area.py:84
+#: mcomix/library_book_area.py:85
 msgid "Open _without closing library"
 msgstr ""
 
-#: mcomix/library_book_area.py:87
+#: mcomix/library_book_area.py:88
 msgid "Remove from this _collection"
 msgstr ""
 
-#: mcomix/library_book_area.py:90
+#: mcomix/library_book_area.py:91
 msgid "Remove from the _library"
 msgstr ""
 
-#: mcomix/library_book_area.py:93
+#: mcomix/library_book_area.py:94
 msgid "Completely _remove"
 msgstr ""
 
-#: mcomix/library_book_area.py:316
+#: mcomix/library_book_area.py:321
 #, python-format
 msgid "Removed %(num)d book(s) from '%(collection)s'."
 msgstr ""
 
-#: mcomix/library_book_area.py:327 mcomix/library_book_area.py:356
+#: mcomix/library_book_area.py:332 mcomix/library_book_area.py:361
 msgid "Remove books from the library?"
 msgstr ""
 
-#: mcomix/library_book_area.py:329
+#: mcomix/library_book_area.py:334
 msgid ""
 "The selected books will be removed from the library (but the original files "
 "will be untouched). Are you sure that you want to continue?"
 msgstr ""
 
-#: mcomix/library_book_area.py:345
+#: mcomix/library_book_area.py:350
 #, python-format
 msgid "Removed %d book(s) from the library."
 msgstr ""
 
-#: mcomix/library_book_area.py:358
+#: mcomix/library_book_area.py:363
 msgid ""
 "The selected books will be removed from the library and permanently deleted. "
 "Are you sure that you want to continue?"
 msgstr ""
 
-#: mcomix/library_book_area.py:381
+#: mcomix/library_book_area.py:386
 #, python-format
 msgid "! Could not remove file \"%s\""
 msgstr ""
@@ -647,20 +629,20 @@ msgstr ""
 msgid "! You need an sqlite wrapper to use the library."
 msgstr ""
 
-#: mcomix/main.py:922
+#: mcomix/main.py:928
 msgid "SLIDESHOW"
 msgstr ""
 
-#: mcomix/main.py:1002
+#: mcomix/main.py:1008
 msgid "Save page as"
 msgstr ""
 
-#: mcomix/main.py:1021
+#: mcomix/main.py:1027
 #, python-format
 msgid "Delete \"%s\"?"
 msgstr ""
 
-#: mcomix/main.py:1023
+#: mcomix/main.py:1029
 msgid "The file will be deleted from your harddisk."
 msgstr ""
 
@@ -1298,6 +1280,26 @@ msgstr ""
 
 #: mcomix/slideshow.py:46 mcomix/ui.py:113
 msgid "Start slideshow"
+msgstr ""
+
+#: mcomix/status.py:42
+msgid "Show page numbers"
+msgstr ""
+
+#: mcomix/status.py:44
+msgid "Show file numbers"
+msgstr ""
+
+#: mcomix/status.py:46
+msgid "Show resolution"
+msgstr ""
+
+#: mcomix/status.py:48
+msgid "Show path"
+msgstr ""
+
+#: mcomix/status.py:50
+msgid "Show filename"
 msgstr ""
 
 #: mcomix/strings.py:9
