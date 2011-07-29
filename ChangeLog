@@ -12,6 +12,9 @@ MComix 0.93
       fullscreen mode if "Automatically hide all toolbars in fullscreen" was
       enabled.
 
+    - Fixed exception related to calculation of dynamic background colors.
+      (by Nephiel)
+
     - Library collection names did not accept non-ASCII characters. This has
       been fixed.
 

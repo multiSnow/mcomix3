@@ -152,6 +152,10 @@ def get_most_common_edge_colour(pixbuf):
     Note: This could be done more cleanly with subpixbuf(), but that
     doesn't work as expected together with get_pixels().
     """
+
+    if not pixbuf:
+        return (0, 0, 0)
+
     width = pixbuf.get_width()
     height = pixbuf.get_height()
 
