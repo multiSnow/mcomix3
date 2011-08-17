@@ -48,6 +48,9 @@ MComix 0.93
     - Settings in the Enhance dialog can now be remembered using the "Save"
       button.
 
+    - The option "Stretch small images" now increases an image's base size
+      when using manual zoom mode.
+
     - Information shown in the status bar can now be enabled/disabled
       separately by right-clicking on the status bar and toggling the
       respective check box.
