@@ -159,6 +159,9 @@ class MainWindow(gtk.Window):
         if prefs['stretch']:
             self.actiongroup.get_action('stretch').activate()
 
+        if prefs['invert smart scroll']:
+            self.actiongroup.get_action('invert_scroll').activate()
+
         if prefs['show toolbar']:
             prefs['show toolbar'] = False
             self.actiongroup.get_action('toolbar').activate()
@@ -596,6 +599,9 @@ class MainWindow(gtk.Window):
     def change_manga_mode(self, toggleaction):
         self.is_manga_mode = toggleaction.get_active()
         self.draw_image()
+
+    def change_invert_scroll(self, toggleaction):
+        prefs['invert smart scroll'] = toggleaction.get_active()
 
     def change_fullscreen(self, toggleaction):
         self.is_fullscreen = toggleaction.get_active()

@@ -107,6 +107,8 @@ class MainUI(gtk.UIManager):
                 'i', None, window.change_hide_all),
             ('manga_mode', 'mcomix-manga', _('_Manga mode'),
                 'm', _('Manga mode'), window.change_manga_mode),
+            ('invert_scroll', gtk.STOCK_UNDO, _('Invert smart scroll'),
+                'x', _('Invert smart scrolling direction'), window.change_invert_scroll),
             ('keep_transformation', None, _('_Keep transformation'),
                 'k', None, window.change_keep_transformation),
             ('slideshow', gtk.STOCK_MEDIA_PLAY, _('Start _slideshow'),
@@ -114,7 +116,7 @@ class MainUI(gtk.UIManager):
             ('lens', 'mcomix-lens', _('Magnifying _lens'),
                 'l', _('Magnifying lens'), window.lens.toggle),
             ('stretch', None, _('Stretch small images'),
-                None,
+                'y',
                 _('Stretch images to a size that is larger than their original size if the current zoom mode requests it. If this preference is unset, images are never scaled to be larger than their original size.'),
                 window.change_stretch)])
 
@@ -182,6 +184,7 @@ class MainUI(gtk.UIManager):
                 <separator />
                 <toolitem action="double_page" />
                 <toolitem action="manga_mode" />
+                <toolitem action="invert_scroll" />
                 <separator />
                 <toolitem action="lens" />
             </toolbar>
@@ -223,6 +226,7 @@ class MainUI(gtk.UIManager):
                     <menuitem action="slideshow" />
                     <separator />
                     <menuitem action="stretch" />
+                    <menuitem action="invert_scroll" />
                     <menuitem action="lens" />
                     <menu action="menu_zoom">
                         <menuitem action="zoom_in" />
@@ -302,6 +306,7 @@ class MainUI(gtk.UIManager):
                     <menuitem action="enhance_image" />
                     <separator />
                     <menuitem action="stretch" />
+                    <menuitem action="invert_scroll" />
                     <menuitem action="lens" />
                     <menu action="menu_zoom">
                         <menuitem action="zoom_in" />

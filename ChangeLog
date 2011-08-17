@@ -41,6 +41,10 @@ MComix 0.93
     - When on the last page, advancing to the next page will load files from
       the next sibling directory - holding CTRL is no longer necessary.
 
+    - Added a new option to invert the smart scrolling direction. Instead of
+      going left/right, then top/bottom, MComix will scroll top/bottom, then
+      left/right.
+
     - Settings in the Enhance dialog can now be remembered using the "Save"
       button.
 

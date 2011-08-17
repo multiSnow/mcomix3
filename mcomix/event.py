@@ -193,13 +193,23 @@ class EventHandler:
                                     self._window.scroll_to_fixed(
                                         horiz='endsecond')
                     else:
+                        # When a double page is displayed, scroll left/right,
+                        # then top/bottom
+                        if not prefs['invert smart scroll']:
+                            if not self._window.scroll(-x_step, 0):
 
-                        if not self._window.scroll(-x_step, 0):
-
+                                if not self._window.scroll(0, -y_step):
+                                    self._window.previous_page()
+                                else:
+                                    self._window.scroll_to_fixed(horiz='endfirst')
+                        # Scroll top/bottom, then left/right
+                        else:
                             if not self._window.scroll(0, -y_step):
-                                self._window.previous_page()
-                            else:
-                                self._window.scroll_to_fixed(horiz='endfirst')
+                                if not self._window.scroll(-x_step, 0):
+                                    self._window.previous_page()
+                                else:
+                                    self._window.scroll_to_fixed(
+                                        horiz='startfirst', vert='bottom')
                 else:
 
                     if (prefs['zoom mode'] == constants.ZOOM_MODE_BEST or
@@ -238,14 +248,25 @@ class EventHandler:
                                     self._window.scroll_to_fixed(
                                         horiz='startsecond')
                     else:
+                        # When a double page is displayed, scroll left/right,
+                        # then top/bottom
+                        if not prefs['invert smart scroll']:
+                            if not self._window.scroll(x_step, 0):
 
-                        if not self._window.scroll(x_step, 0):
-
+                                if not self._window.scroll(0, y_step):
+                                    self._window.next_page()
+                                else:
+                                    self._window.scroll_to_fixed(
+                                        horiz='startfirst')
+                        # Scroll top/bottom, then left/right
+                        else:
                             if not self._window.scroll(0, y_step):
-                                self._window.next_page()
-                            else:
-                                self._window.scroll_to_fixed(
-                                    horiz='startfirst')
+                                if not self._window.scroll(x_step, 0):
+                                    self._window.next_page()
+                                else:
+                                    self._window.scroll_to_fixed(
+                                        horiz='startsecond', vert='top')
+
                 else:
 
                     if (prefs['zoom mode'] == constants.ZOOM_MODE_BEST or
