@@ -517,7 +517,7 @@ class MainWindow(gtk.Window):
         if page == self.imagehandler.get_current_page() \
             or self.displayed_double() and page == self.imagehandler.get_current_page() + 1:
 
-            self.draw_image()
+            self.draw_image(False, True)
 
         # Use first page as application icon when opening archives.
         if (page == 1
