@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.93\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2011-07-25 18:20+0200\n"
+"POT-Creation-Date: 2011-08-17 19:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -108,7 +108,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: mcomix/bookmark_dialog.py:52 mcomix/main.py:1082
+#: mcomix/bookmark_dialog.py:52 mcomix/main.py:1091
 msgid "Page"
 msgstr ""
 
@@ -629,20 +629,20 @@ msgstr ""
 msgid "! You need an sqlite wrapper to use the library."
 msgstr ""
 
-#: mcomix/main.py:928
+#: mcomix/main.py:937
 msgid "SLIDESHOW"
 msgstr ""
 
-#: mcomix/main.py:1008
+#: mcomix/main.py:1017
 msgid "Save page as"
 msgstr ""
 
-#: mcomix/main.py:1027
+#: mcomix/main.py:1036
 #, python-format
 msgid "Delete \"%s\"?"
 msgstr ""
 
-#: mcomix/main.py:1029
+#: mcomix/main.py:1038
 msgid "The file will be deleted from your harddisk."
 msgstr ""
 
@@ -1278,7 +1278,7 @@ msgstr ""
 msgid "Stop slideshow"
 msgstr ""
 
-#: mcomix/slideshow.py:46 mcomix/ui.py:113
+#: mcomix/slideshow.py:46 mcomix/ui.py:115
 msgid "Start slideshow"
 msgstr ""
 
@@ -1652,93 +1652,101 @@ msgid "Manga mode"
 msgstr ""
 
 #: mcomix/ui.py:110
-msgid "_Keep transformation"
+msgid "Invert smart scroll"
+msgstr ""
+
+#: mcomix/ui.py:111
+msgid "Invert smart scrolling direction"
 msgstr ""
 
 #: mcomix/ui.py:112
-msgid "Start _slideshow"
+msgid "_Keep transformation"
 msgstr ""
 
 #: mcomix/ui.py:114
-msgid "Magnifying _lens"
-msgstr ""
-
-#: mcomix/ui.py:115
-msgid "Magnifying lens"
+msgid "Start _slideshow"
 msgstr ""
 
 #: mcomix/ui.py:116
-msgid "Stretch small images"
+msgid "Magnifying _lens"
+msgstr ""
+
+#: mcomix/ui.py:117
+msgid "Magnifying lens"
 msgstr ""
 
 #: mcomix/ui.py:118
+msgid "Stretch small images"
+msgstr ""
+
+#: mcomix/ui.py:120
 msgid ""
 "Stretch images to a size that is larger than their original size if the "
 "current zoom mode requests it. If this preference is unset, images are never "
 "scaled to be larger than their original size."
 msgstr ""
 
-#: mcomix/ui.py:124
+#: mcomix/ui.py:126
 msgid "_Best fit mode"
 msgstr ""
 
-#: mcomix/ui.py:125
+#: mcomix/ui.py:127
 msgid "Best fit mode"
 msgstr ""
 
-#: mcomix/ui.py:126
+#: mcomix/ui.py:128
 msgid "Fit _width mode"
 msgstr ""
 
-#: mcomix/ui.py:127
+#: mcomix/ui.py:129
 msgid "Fit width mode"
 msgstr ""
 
-#: mcomix/ui.py:128
+#: mcomix/ui.py:130
 msgid "Fit _height mode"
 msgstr ""
 
-#: mcomix/ui.py:129
+#: mcomix/ui.py:131
 msgid "Fit height mode"
 msgstr ""
 
-#: mcomix/ui.py:130
+#: mcomix/ui.py:132
 msgid "M_anual zoom mode"
 msgstr ""
 
-#: mcomix/ui.py:131
+#: mcomix/ui.py:133
 msgid "Manual zoom mode"
 msgstr ""
 
-#: mcomix/ui.py:135
+#: mcomix/ui.py:137
 msgid "_About"
 msgstr ""
 
-#: mcomix/ui.py:139
+#: mcomix/ui.py:141
 msgid "Co_mments..."
 msgstr ""
 
-#: mcomix/ui.py:143
+#: mcomix/ui.py:145
 msgid "Proper_ties"
 msgstr ""
 
-#: mcomix/ui.py:147
+#: mcomix/ui.py:149
 msgid "Pr_eferences"
 msgstr ""
 
-#: mcomix/ui.py:152
+#: mcomix/ui.py:154
 msgid "_Edit archive..."
 msgstr ""
 
-#: mcomix/ui.py:154
+#: mcomix/ui.py:156
 msgid "_Open..."
 msgstr ""
 
-#: mcomix/ui.py:156
+#: mcomix/ui.py:158
 msgid "En_hance image..."
 msgstr ""
 
-#: mcomix/ui.py:160
+#: mcomix/ui.py:162
 msgid "_Library..."
 msgstr ""
 
