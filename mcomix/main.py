@@ -399,8 +399,8 @@ class MainWindow(gtk.Window):
 
             if prefs['zoom mode'] == constants.ZOOM_MODE_MANUAL:
                 # If 'Scale small images' is true, scale up the image's base size
-                scale_x = scale_up and scaled_width or unscaled_x
-                scale_y = scale_up and scaled_height or unscaled_y
+                scale_x = max(scale_up and scaled_width or unscaled_x, unscaled_x)
+                scale_y = max(scale_up and scaled_height or unscaled_y, unscaled_y)
                 scaled_width = int(self._manual_zoom * scale_x / 100)
                 scaled_height = int(self._manual_zoom * scale_y / 100)
 
