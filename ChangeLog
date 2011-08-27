@@ -1,4 +1,5 @@
 MComix 0.93
+Release date: 27.08.2011
 
     - Removing a book from the library while its thumbnail wasn't loaded yet
       would result in a segmentation fault. This issue has been fixed.
