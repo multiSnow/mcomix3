@@ -43,8 +43,6 @@ class Process:
             # stderr are redirected to a pipe as well.
             self._proc = subprocess.Popen(self._args, stdout=subprocess.PIPE,
                     stdin=subprocess.PIPE, stderr=subprocess.PIPE)
-            self._proc.stdin.close()
-            self._proc.stderr.close()
             return self._proc.stdout
         except Exception, ex:
             cmd = len(self._args) > 0 and self._args[0] or "<invalid>"
@@ -68,6 +66,11 @@ class Process:
         if self._proc is None:
             raise Exception('Process not spawned.')
         return self._proc.wait()
+
+    def communicate(self, input=None):
+        """ Buffer all output from the kernel pipe buffer
+        before returning a tuple (stdoutdata, stderrdata). """
+        return self._proc.communicate(input)
 
 
 # vim: expandtab:sw=4:ts=4

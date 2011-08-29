@@ -175,7 +175,8 @@ class ExternalExecutableArchive(NonUnicodeArchive):
         if fd:
             # Create new file
             new = open(destination_path, 'wb')
-            new.write(fd.read())
+            stdout, stderr = proc.communicate()
+            new.write(stdout)
             new.close()
 
             # Wait for process to finish
