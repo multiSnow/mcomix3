@@ -1,5 +1,8 @@
 MComix 0.94
 
+    - Fixed MComix opening archives in sibling directories
+      even when "Automatically open next archive" was disabled.
+
     - Updated French translation. (by Frédéric Chateaux)
 
 MComix 0.93

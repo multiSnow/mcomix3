@@ -186,13 +186,17 @@ class ImageHandler:
 
         if self.get_current_page() + viewed > self.get_number_of_pages():
 
+            archive_open = self._window.filehandler.archive_type is not None
             next_archive_opened = False
             if (self._window.slideshow.is_running() and \
                 prefs['slideshow can go to next archive']) or \
                 prefs['auto open next archive']:
                 next_archive_opened = self._window.filehandler._open_next_archive()
 
-            if not next_archive_opened:
+            # If "Auto open next archive" is disabled, do not go to the next
+            # directory if current file was an archive.
+            if not next_archive_opened and \
+                (not archive_open or prefs['auto open next archive']):
                 directory_changed = self._window.filehandler.open_next_directory()
 
             return False
@@ -210,13 +214,17 @@ class ImageHandler:
 
         if self.get_current_page() <= 1:
 
+            archive_open = self._window.filehandler.archive_type is not None
             previous_archive_opened = False
             if (self._window.slideshow.is_running() and \
                 prefs['slideshow can go to next archive']) or \
                 prefs['auto open next archive']:
                 previous_archive_opened = self._window.filehandler._open_previous_archive()
 
-            if not previous_archive_opened:
+            # If "Auto open next archive" is disabled, do not go to the previous
+            # directory if current file was an archive.
+            if not previous_archive_opened and \
+                (not archive_open or prefs['auto open next archive']):
                 directory_changed = self._window.filehandler.open_previous_directory()
 
             return False
