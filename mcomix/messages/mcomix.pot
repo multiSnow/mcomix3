@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: MComix 0.93\n"
+"Project-Id-Version: MComix 0.94\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2011-08-17 19:00+0200\n"
+"POT-Creation-Date: 2011-08-29 17:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -338,7 +338,7 @@ msgstr ""
 msgid "! Could not load icon \"%s\""
 msgstr ""
 
-#: mcomix/image_handler.py:473
+#: mcomix/image_handler.py:481
 msgid "Unknown filetype"
 msgstr ""
 
@@ -1367,74 +1367,75 @@ msgid "Dutch translation"
 msgstr ""
 
 #: mcomix/strings.py:32 mcomix/strings.py:33 mcomix/strings.py:34
+#: mcomix/strings.py:35
 msgid "French translation"
 msgstr ""
 
-#: mcomix/strings.py:35
+#: mcomix/strings.py:36
 msgid "Polish translatin"
 msgstr ""
 
-#: mcomix/strings.py:36
+#: mcomix/strings.py:37
 msgid "Polish translation"
 msgstr ""
 
-#: mcomix/strings.py:37
+#: mcomix/strings.py:38
 msgid "Greek translation"
 msgstr ""
 
-#: mcomix/strings.py:38
+#: mcomix/strings.py:39
 msgid "Catalan translation"
 msgstr ""
 
-#: mcomix/strings.py:39 mcomix/strings.py:40
+#: mcomix/strings.py:40 mcomix/strings.py:41
 msgid "Traditional Chinese translation"
 msgstr ""
 
-#: mcomix/strings.py:41 mcomix/strings.py:42
+#: mcomix/strings.py:42 mcomix/strings.py:43
 msgid "Japanese translation"
 msgstr ""
 
-#: mcomix/strings.py:43
+#: mcomix/strings.py:44
 msgid "Hungarian translation"
 msgstr ""
 
-#: mcomix/strings.py:44 mcomix/strings.py:45
+#: mcomix/strings.py:45 mcomix/strings.py:46
 msgid "Russian translation"
 msgstr ""
 
-#: mcomix/strings.py:46
+#: mcomix/strings.py:47
 msgid "Croatian translation"
 msgstr ""
 
-#: mcomix/strings.py:47
+#: mcomix/strings.py:48
 msgid "Korean translation"
 msgstr ""
 
-#: mcomix/strings.py:48
+#: mcomix/strings.py:49
 msgid "Persian translation"
 msgstr ""
 
-#: mcomix/strings.py:49
+#: mcomix/strings.py:50
 msgid "Indonesian translation"
 msgstr ""
 
-#: mcomix/strings.py:50
+#: mcomix/strings.py:51
 msgid "Czech translation"
 msgstr ""
 
-#: mcomix/strings.py:51
+#: mcomix/strings.py:52
 msgid "Ukrainian translation"
 msgstr ""
 
-#: mcomix/strings.py:52
+#: mcomix/strings.py:53
 msgid "Galician translation"
 msgstr ""
 
-#: mcomix/strings.py:53
+#: mcomix/strings.py:54
 msgid "Swedish translation"
 msgstr ""
 
-#: mcomix/strings.py:56
+#: mcomix/strings.py:57
 msgid "Icon design"
 msgstr ""
 

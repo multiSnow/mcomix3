@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.92\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2011-08-17 19:00+0200\n"
+"POT-Creation-Date: 2011-08-29 17:14+0200\n"
 "PO-Revision-Date: 2011-05-07 16:40+GMT\n"
 "Last-Translator: Moritz Brunner <oddegamra@gmx.org>\n"
 "Language-Team: \n"
@@ -287,27 +287,33 @@ msgstr "Sie zu ersetzen, wird ihre Inhalte überschreiben."
 msgid "Add to this collection"
 msgstr "Zu dieser Sammlung hinzufügen"
 
-#: mcomix/file_chooser_main_dialog.py:21 mcomix/file_chooser_simple_dialog.py:22
+#: mcomix/file_chooser_main_dialog.py:21
+#: mcomix/file_chooser_simple_dialog.py:22
 msgid "All images"
 msgstr "Alle Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:23 mcomix/file_chooser_simple_dialog.py:24
+#: mcomix/file_chooser_main_dialog.py:23
+#: mcomix/file_chooser_simple_dialog.py:24
 msgid "JPEG images"
 msgstr "JPEG-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:24 mcomix/file_chooser_simple_dialog.py:25
+#: mcomix/file_chooser_main_dialog.py:24
+#: mcomix/file_chooser_simple_dialog.py:25
 msgid "PNG images"
 msgstr "PNG-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:25 mcomix/file_chooser_simple_dialog.py:26
+#: mcomix/file_chooser_main_dialog.py:25
+#: mcomix/file_chooser_simple_dialog.py:26
 msgid "GIF images"
 msgstr "GIF-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:26 mcomix/file_chooser_simple_dialog.py:27
+#: mcomix/file_chooser_main_dialog.py:26
+#: mcomix/file_chooser_simple_dialog.py:27
 msgid "TIFF images"
 msgstr "TIFF-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:27 mcomix/file_chooser_simple_dialog.py:28
+#: mcomix/file_chooser_main_dialog.py:27
+#: mcomix/file_chooser_simple_dialog.py:28
 msgid "BMP images"
 msgstr "BMP-Bilder"
 
@@ -346,7 +352,7 @@ msgstr "Ungültiger Pfad: '%s'"
 msgid "! Could not load icon \"%s\""
 msgstr "! Icon %s kann nicht geladen werden"
 
-#: mcomix/image_handler.py:473
+#: mcomix/image_handler.py:481
 msgid "Unknown filetype"
 msgstr "Unbekannter Dateityp"
 
@@ -1156,9 +1162,9 @@ msgid ""
 "specification. These thumbnails are shared by many other applications, such "
 "as most file managers."
 msgstr ""
-"Vorschaubilder für geöffnete Dateien gemäß der Spezifikation von "
-"freedesktop.org speichern. Diese Vorschaubilder werden mit vielen anderen "
-"Anwendungen, zumeist Dateimanagern, gemeinsam benutzt."
+"Vorschaubilder für geöffnete Dateien gemäß der Spezifikation von freedesktop."
+"org speichern. Diese Vorschaubilder werden mit vielen anderen Anwendungen, "
+"zumeist Dateimanagern, gemeinsam benutzt."
 
 #: mcomix/preferences_dialog.py:346
 msgid "Delay thumbnail generation."
@@ -1454,74 +1460,75 @@ msgid "Dutch translation"
 msgstr "Holländische Übersetzung"
 
 #: mcomix/strings.py:32 mcomix/strings.py:33 mcomix/strings.py:34
+#: mcomix/strings.py:35
 msgid "French translation"
 msgstr "Französische Übersetzung"
 
-#: mcomix/strings.py:35
+#: mcomix/strings.py:36
 msgid "Polish translatin"
 msgstr "Polnische Übersetzung"
 
-#: mcomix/strings.py:36
+#: mcomix/strings.py:37
 msgid "Polish translation"
 msgstr "Polnische Übersetzung"
 
-#: mcomix/strings.py:37
+#: mcomix/strings.py:38
 msgid "Greek translation"
 msgstr "Griechische Übersetzung"
 
-#: mcomix/strings.py:38
+#: mcomix/strings.py:39
 msgid "Catalan translation"
 msgstr "Katalanische Übersetzung"
 
-#: mcomix/strings.py:39 mcomix/strings.py:40
+#: mcomix/strings.py:40 mcomix/strings.py:41
 msgid "Traditional Chinese translation"
 msgstr "Traditionell-chinesische Übersetzung"
 
-#: mcomix/strings.py:41 mcomix/strings.py:42
+#: mcomix/strings.py:42 mcomix/strings.py:43
 msgid "Japanese translation"
 msgstr "Japanische Übersetzung"
 
-#: mcomix/strings.py:43
+#: mcomix/strings.py:44
 msgid "Hungarian translation"
 msgstr "Ungarische Übersetzung"
 
-#: mcomix/strings.py:44 mcomix/strings.py:45
+#: mcomix/strings.py:45 mcomix/strings.py:46
 msgid "Russian translation"
 msgstr "Russische Übersetzung"
 
-#: mcomix/strings.py:46
+#: mcomix/strings.py:47
 msgid "Croatian translation"
 msgstr "Kroatische Übersetzung"
 
-#: mcomix/strings.py:47
+#: mcomix/strings.py:48
 msgid "Korean translation"
 msgstr "Koreanische Übersetzung"
 
-#: mcomix/strings.py:48
+#: mcomix/strings.py:49
 msgid "Persian translation"
 msgstr "Persische Übersetzung"
 
-#: mcomix/strings.py:49
+#: mcomix/strings.py:50
 msgid "Indonesian translation"
 msgstr "Indonesische Übersetzung"
 
-#: mcomix/strings.py:50
+#: mcomix/strings.py:51
 msgid "Czech translation"
 msgstr "Tschechische Übersetzung"
 
-#: mcomix/strings.py:51
+#: mcomix/strings.py:52
 msgid "Ukrainian translation"
 msgstr "Ukrainische Übersetzung"
 
-#: mcomix/strings.py:52
+#: mcomix/strings.py:53
 msgid "Galician translation"
 msgstr "Gallische Übersetzung"
 
-#: mcomix/strings.py:53
+#: mcomix/strings.py:54
 msgid "Swedish translation"
 msgstr "Schwedische Übersetzung"
 
-#: mcomix/strings.py:56
+#: mcomix/strings.py:57
 msgid "Icon design"
 msgstr "Symbol-Design"
 
@@ -2016,8 +2023,8 @@ msgstr "Bitte geben Sie das Passwort ein, um fortzufahren:"
 
 #~ msgid ""
 #~ "Crash recovery saves the current configuration information every "
-#~ "specified seconds.  In case of a crash the previous file will be "
-#~ "re-loaded."
+#~ "specified seconds.  In case of a crash the previous file will be re-"
+#~ "loaded."
 #~ msgstr ""
 #~ "Automatische Wiederherstellung speichert die derzeitige Konfiguration in "
 #~ "spezifizierten Abständen. Sollte MComix abstürzen, wird die zuletzt "
