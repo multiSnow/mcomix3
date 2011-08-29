@@ -175,6 +175,15 @@ class _PreferencesDialog(gtk.Dialog):
             _('Automatically open the next archive in the directory when flipping past the last page, or the previous archive when flipping past the first page.'))
         page.add_row(auto_open_next_button)
 
+        auto_open_dir_button = gtk.CheckButton(
+            _('Automatically open next directory.'))
+        auto_open_dir_button.set_active(prefs['auto open next directory'])
+        auto_open_dir_button.connect('toggled', self._check_button_cb,
+            'auto open next directory')
+        auto_open_dir_button.set_tooltip_text(
+            _('Automatically open the first file in the next sibling directory when flipping past the last page of the last file in a directory, or the previous directory when flipping past the first page of the first file.'))
+        page.add_row(auto_open_dir_button)
+
         label = gtk.Label('%s:' % _('Number of pixels to scroll per arrow key press'))
         adjustment = gtk.Adjustment(prefs['number of pixels to scroll per key event'], 1, 500, 1, 3)
         scroll_key_spinner = gtk.SpinButton(adjustment, digits=0)

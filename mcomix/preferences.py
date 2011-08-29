@@ -13,6 +13,7 @@ prefs = {
     'path to last file': '',
     'number of key presses before page turn': 3,
     'auto open next archive': True,
+    'auto open next directory': True,
     'bg colour': (5000, 5000, 5000),
     'thumb bg colour': (5000, 5000, 5000),
     'smart bg': False,
