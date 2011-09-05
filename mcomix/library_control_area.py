@@ -84,8 +84,8 @@ class _ControlArea(gtk.HBox):
         label.set_use_underline(True)
 
         hbox.pack_start(label, False, False, 6)
-        adjustment = gtk.Adjustment(prefs['library cover size'], 20, constants.MAX_LIBRARY_COVER_SIZE, 1,
-            10, 0)
+        adjustment = gtk.Adjustment(prefs['library cover size'], 20, constants.MAX_LIBRARY_COVER_SIZE, 10,
+            50, 0)
         cover_size_scale = gtk.HScale(adjustment)
         cover_size_scale.set_size_request(150, -1)
         cover_size_scale.set_draw_value(False)
