@@ -44,6 +44,7 @@ class _LibraryFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog)
         # Remove 'All files' filter from base class
         filters = self.filechooser.list_filters()
         self.filechooser.remove_filter(filters[0])
+        self.filechooser.set_filter(filters[1])
 
         try:
             # When setting this to the first filter ("All files"), this

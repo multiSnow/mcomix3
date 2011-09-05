@@ -46,7 +46,7 @@ SUPPORTED_IMAGE_REGEX = re.compile(r'\.(jpg|jpeg|png|gif|tif|tiff|bmp|ppm|pgm|pb
 SUPPORTED_ARCHIVE_REGEX = re.compile(r'\.(cbz|cbr|cbt|zip|rar|tar|gz|bz2|bzip2|7z|lza|lzh)\s*$', re.I)
 
 ZIP_FORMATS = (
-        ('application/x-zip', 'application/zip', 'application/x-cbz'),
+        ('application/x-zip', 'application/zip', 'application/x-zip-compressed', 'application/x-cbz'),
         ('*.zip', '*.cbz'))
 RAR_FORMATS = (
         ('application/x-rar', 'application/x-cbr'),

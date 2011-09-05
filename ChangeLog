@@ -3,6 +3,9 @@ MComix 0.94
     - Fixed MComix opening archives in sibling directories
       even when "Automatically open next archive" was disabled.
 
+    - Fixed recursively adding directories to the library not working
+      consistently on Win32.
+
     - MComix automatically switching to next/previous directories can now
       be controlled with a new preference option.
 

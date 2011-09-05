@@ -2,6 +2,7 @@
 
 import os
 import mimetypes
+import fnmatch
 import gtk
 import pango
 
@@ -11,6 +12,8 @@ import labels
 import constants
 from preferences import prefs
 import thumbnail_tools
+
+mimetypes.init()
 
 class _BaseFileChooserDialog(gtk.Dialog):
 
@@ -139,20 +142,35 @@ class _BaseFileChooserDialog(gtk.Dialog):
         each pattern in <patterns> to the filechooser.
         """
         ffilter = gtk.FileFilter()
-
-        for mime in mimes:
-            ffilter.add_mime_type(mime)
-        for pattern in patterns:
-            ffilter.add_pattern(pattern)
+        ffilter.add_custom(
+                gtk.FILE_FILTER_FILENAME|gtk.FILE_FILTER_MIME_TYPE,
+                self._filter, (patterns, mimes))
 
         ffilter.set_name(name)
         self.filechooser.add_filter(ffilter)
         return ffilter
 
+    def _filter(self, filter_info, data):
+        """ Callback function used to determine if a file
+        should be filtered or not. C{data} is a tuple containing
+        (patterns, mimes) that should pass the test. Returns True
+        if the file passed in C{filter_info} should be displayed. """
+
+        path, uri, display, mime = filter_info
+        match_patterns, match_mimes = data
+
+        matches_mime = bool(filter(
+            lambda match_mime: match_mime == mime,
+            match_mimes))
+        matches_pattern = bool(filter(
+            lambda match_pattern: fnmatch.fnmatch(path, match_pattern),
+            match_patterns))
+
+        return matches_mime or matches_pattern
+
     def collect_files_from_subdir(self, path, filter, recursive=False):
         """ Finds archives within C{path} that match the
         L{gtk.FileFilter} passed in C{filter}. """
-        mimetypes.init()
 
         for root, dirs, files in os.walk(path):
             for file in files:
