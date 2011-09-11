@@ -175,7 +175,7 @@ class _BaseFileChooserDialog(gtk.Dialog):
         for root, dirs, files in os.walk(path):
             for file in files:
                 full_path = os.path.join(root, file)
-                mimetype = mimetypes.guess_type(full_path)[0]
+                mimetype = mimetypes.guess_type(full_path)[0] or 'application/octet-stream'
 
                 if (filter == self._all_files_filter or
                     filter.filter((full_path.encode('utf-8'),
