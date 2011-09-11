@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Comix 4.0\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2011-08-29 17:14+0200\n"
+"POT-Creation-Date: 2011-09-11 19:23+0200\n"
 "PO-Revision-Date: 2009-03-11 14:57+0800\n"
 "Last-Translator: Wayne Su <mstarmstar@gmail.com>\n"
 "Language-Team: \n"
@@ -140,7 +140,7 @@ msgstr ""
 msgid "! Callback %(function)r failed: %(error)s"
 msgstr ""
 
-#: mcomix/comment_dialog.py:10 mcomix/preferences_dialog.py:383
+#: mcomix/comment_dialog.py:10 mcomix/preferences_dialog.py:392
 msgid "Comments"
 msgstr "註解"
 
@@ -232,52 +232,56 @@ msgid ""
 "each colour band."
 msgstr "分別為每個色帶自動調整明亮度對比。"
 
-#: mcomix/file_chooser_base_dialog.py:36
+#: mcomix/file_chooser_base_dialog.py:39
 msgid "Open"
 msgstr "開啟"
 
-#: mcomix/file_chooser_base_dialog.py:41
+#: mcomix/file_chooser_base_dialog.py:44
 msgid "Save"
 msgstr "儲存"
 
-#: mcomix/file_chooser_base_dialog.py:80
+#: mcomix/file_chooser_base_dialog.py:83
 msgid "All files"
 msgstr "所有檔案"
 
-#: mcomix/file_chooser_base_dialog.py:96
+#: mcomix/file_chooser_base_dialog.py:99
 msgid "All Archives"
 msgstr "所有壓縮檔"
 
-#: mcomix/file_chooser_base_dialog.py:99
+#: mcomix/file_chooser_base_dialog.py:102
 msgid "ZIP archives"
 msgstr "ZIP 壓縮檔"
 
-#: mcomix/file_chooser_base_dialog.py:102
+#: mcomix/file_chooser_base_dialog.py:105
 msgid "Tar archives"
 msgstr "TAR 壓縮檔"
 
-#: mcomix/file_chooser_base_dialog.py:106
+#: mcomix/file_chooser_base_dialog.py:109
 msgid "RAR archives"
 msgstr "RAR 壓縮檔"
 
-#: mcomix/file_chooser_base_dialog.py:110
+#: mcomix/file_chooser_base_dialog.py:113
 msgid "7z archives"
 msgstr ""
 
-#: mcomix/file_chooser_base_dialog.py:114
+#: mcomix/file_chooser_base_dialog.py:117
 msgid "LHA archives"
 msgstr ""
 
-#: mcomix/file_chooser_base_dialog.py:209
+#: mcomix/file_chooser_base_dialog.py:227
 #, python-format
 msgid "A file named '%s' already exists. Do you want to replace it?"
 msgstr "檔案 %s 已存在，您要替換掉它嗎？"
 
-#: mcomix/file_chooser_base_dialog.py:213
+#: mcomix/file_chooser_base_dialog.py:231
 msgid "Replacing it will overwrite its contents."
 msgstr "替換後將會覆蓋掉原有內容。"
 
-#: mcomix/file_chooser_library_dialog.py:27
+#: mcomix/file_chooser_library_dialog.py:19
+msgid "Add books"
+msgstr "加入書籍"
+
+#: mcomix/file_chooser_library_dialog.py:28
 msgid "Add to this collection"
 msgstr ""
 
@@ -349,7 +353,7 @@ msgstr ""
 msgid "! Could not load icon \"%s\""
 msgstr ""
 
-#: mcomix/image_handler.py:481
+#: mcomix/image_handler.py:483
 msgid "Unknown filetype"
 msgstr "不明的檔案類型"
 
@@ -413,225 +417,231 @@ msgstr ""
 msgid "Upgrading library database version from %(from)d to %(to)d."
 msgstr ""
 
-#: mcomix/library_book_area.py:82
-msgid "_Open"
-msgstr ""
-
-#: mcomix/library_book_area.py:85
-msgid "Open _without closing library"
-msgstr ""
-
-#: mcomix/library_book_area.py:88
-msgid "Remove from this _collection"
+#: mcomix/library_book_area.py:89
+msgid "Library books"
 msgstr ""
 
 #: mcomix/library_book_area.py:91
-msgid "Remove from the _library"
+msgid "_Open"
 msgstr ""
 
 #: mcomix/library_book_area.py:94
-msgid "Completely _remove"
+msgid "Open _without closing library"
 msgstr ""
 
-#: mcomix/library_book_area.py:321
+#: mcomix/library_book_area.py:96 mcomix/library_collection_area.py:67
+msgid "_Add..."
+msgstr ""
+
+#: mcomix/library_book_area.py:97
+msgid "Add more books to the library."
+msgstr "加入更多書籍到收藏庫中。"
+
+#: mcomix/library_book_area.py:100
+msgid "Remove from this _collection"
+msgstr ""
+
+#: mcomix/library_book_area.py:103
+msgid "Remove from the _library"
+msgstr ""
+
+#: mcomix/library_book_area.py:106
+msgid "_Remove and delete from disk"
+msgstr ""
+
+#: mcomix/library_book_area.py:334
 #, python-format
 msgid "Removed %(num)d book(s) from '%(collection)s'."
 msgstr "已移除 %(num)d 本 %(collection)s 收藏的書籍。"
 
-#: mcomix/library_book_area.py:332 mcomix/library_book_area.py:361
+#: mcomix/library_book_area.py:345 mcomix/library_book_area.py:377
 msgid "Remove books from the library?"
 msgstr "從此收藏庫移除書籍？"
 
-#: mcomix/library_book_area.py:334
+#: mcomix/library_book_area.py:347
 msgid ""
 "The selected books will be removed from the library (but the original files "
 "will be untouched). Are you sure that you want to continue?"
 msgstr "這些書籍將從收藏庫中移除，但原始檔案不會受影響。您確定要繼續嗎？"
 
-#: mcomix/library_book_area.py:350
-#, python-format
-msgid "Removed %d book(s) from the library."
-msgstr "已從收藏庫移除 %d 本書籍。"
-
 #: mcomix/library_book_area.py:363
+#, python-format
+msgid "Removed %d book from the library."
+msgid_plural "Removed %d books from the library."
+msgstr[0] ""
+msgstr[1] ""
+
+#: mcomix/library_book_area.py:379
 #, fuzzy
 msgid ""
 "The selected books will be removed from the library and permanently deleted. "
 "Are you sure that you want to continue?"
 msgstr "這些書籍將從收藏庫中移除，但原始檔案不會受影響。您確定要繼續嗎？"
 
-#: mcomix/library_book_area.py:386
+#: mcomix/library_book_area.py:402 mcomix/thumbnail_tools.py:110
 #, python-format
 msgid "! Could not remove file \"%s\""
 msgstr ""
 
-#: mcomix/library_collection_area.py:60
-msgid "Rename..."
-msgstr "重新命名..."
+#: mcomix/library_collection_area.py:65
+msgid "Library collections"
+msgstr ""
 
-#: mcomix/library_collection_area.py:62
-msgid "Duplicate collection"
-msgstr "備份收藏"
+#: mcomix/library_collection_area.py:68
+msgid "Add a new empty collection."
+msgstr "加入新的空白收藏。"
 
-#: mcomix/library_collection_area.py:64
-msgid "Remove collection..."
-msgstr "移除收藏..."
+#: mcomix/library_collection_area.py:70
+msgid "Re_name"
+msgstr ""
 
-#: mcomix/library_collection_area.py:112
+#: mcomix/library_collection_area.py:72
+msgid "_Duplicate"
+msgstr ""
+
+#: mcomix/library_collection_area.py:74
+msgid "_Clean up"
+msgstr ""
+
+#: mcomix/library_collection_area.py:75
+msgid "Removes no longer existant books from the collection."
+msgstr ""
+
+#: mcomix/library_collection_area.py:77
+msgid "_Remove"
+msgstr ""
+
+#: mcomix/library_collection_area.py:125
 msgid "All books"
 msgstr "所有書籍"
 
+#: mcomix/library_collection_area.py:133
+msgid "Add new collection?"
+msgstr "加入新收藏嗎？"
+
+#: mcomix/library_collection_area.py:135
+msgid "Please enter a name for the new collection."
+msgstr "請輸入新收藏的名稱。"
+
 #: mcomix/library_collection_area.py:141
+msgid "New collection"
+msgstr "新收藏"
+
+#: mcomix/library_collection_area.py:155
+#, python-format
+msgid "Could not add a new collection called '%s'."
+msgstr "無法新增收藏 %s 。"
+
+#: mcomix/library_collection_area.py:160 mcomix/library_collection_area.py:262
+msgid "A collection by that name already exists."
+msgstr "已有相同名稱的收藏。"
+
+#: mcomix/library_collection_area.py:170
+msgid "Do you want to remove non-existent books from the library?"
+msgstr ""
+
+#: mcomix/library_collection_area.py:172
+msgid ""
+"Books that appear in your library, but no longer exist at their original "
+"path, will be removed from the library. This clears books that have been "
+"moved or deleted outside of MComix."
+msgstr ""
+
+#: mcomix/library_collection_area.py:218
 msgid "Remove collection from the library?"
 msgstr "要從收藏庫中移除收藏嗎？"
 
-#: mcomix/library_collection_area.py:143
+#: mcomix/library_collection_area.py:220
 msgid ""
 "The selected collection will be removed from the library (but the books and "
 "subcollections in it will remain). Are you sure that you want to continue?"
 msgstr "這些收藏將從收藏庫中移除，但書籍與子收藏仍會留著。您確定要繼續嗎？"
 
-#: mcomix/library_collection_area.py:161
+#: mcomix/library_collection_area.py:238
 msgid "Rename collection?"
 msgstr "重新命名收藏？"
 
-#: mcomix/library_collection_area.py:163
+#: mcomix/library_collection_area.py:240
 msgid "Please enter a new name for the selected collection."
 msgstr "請輸入此收藏的新名稱。"
 
-#: mcomix/library_collection_area.py:181
+#: mcomix/library_collection_area.py:258
 #, python-format
 msgid "Could not change the name to '%s'."
 msgstr "無法變更名稱為「%s」。"
 
-#: mcomix/library_collection_area.py:185 mcomix/library_control_area.py:269
-msgid "A collection by that name already exists."
-msgstr "已有相同名稱的收藏。"
-
-#: mcomix/library_collection_area.py:195
+#: mcomix/library_collection_area.py:272
 msgid "Could not duplicate collection."
 msgstr "無法備份收藏。"
 
-#: mcomix/library_collection_area.py:292
+#: mcomix/library_collection_area.py:397
 msgid "Root"
 msgstr "Root"
 
-#: mcomix/library_collection_area.py:296
+#: mcomix/library_collection_area.py:401
 #, python-format
 msgid ""
 "Put the collection '%(subcollection)s' in the collection "
 "'%(supercollection)s'."
 msgstr "將收藏 %(subcollection)s 放到 %(supercollection)s 。"
 
-#: mcomix/library_collection_area.py:317
+#: mcomix/library_collection_area.py:422
 #, python-format
 msgid "Add books to '%s'."
 msgstr "將書籍加入 %s。"
 
-#: mcomix/library_collection_area.py:321
+#: mcomix/library_collection_area.py:426
 #, python-format
 msgid ""
 "Move books from '%(source collection)s' to '%(destination collection)s'."
 msgstr "將書籍從 %(source collection)s 移到 %(destination collection)s 。"
 
-#: mcomix/library_control_area.py:72
+#: mcomix/library_control_area.py:74
 msgid "_Search"
 msgstr ""
 
-#: mcomix/library_control_area.py:78
+#: mcomix/library_control_area.py:80
 msgid ""
 "Display only those books that have the specified text string in their full "
 "path. The search is not case sensitive."
 msgstr "只顯示完整路徑中有指定關鍵字的書籍，搜尋時不區分大小寫。"
 
-#: mcomix/library_control_area.py:83
+#: mcomix/library_control_area.py:85
 msgid "Cover si_ze"
 msgstr ""
 
-#: mcomix/library_control_area.py:99
+#: mcomix/library_control_area.py:101
 msgid "Sort order"
 msgstr ""
 
-#: mcomix/library_control_area.py:104
+#: mcomix/library_control_area.py:106
 msgid "Book name"
 msgstr ""
 
-#: mcomix/library_control_area.py:105
+#: mcomix/library_control_area.py:107
 msgid "Full path"
 msgstr ""
 
-#: mcomix/library_control_area.py:106
+#: mcomix/library_control_area.py:108
 msgid "File size"
 msgstr ""
 
-#: mcomix/library_control_area.py:129
+#: mcomix/library_control_area.py:131
 msgid "Ascending"
 msgstr ""
 
-#: mcomix/library_control_area.py:130
+#: mcomix/library_control_area.py:132
 msgid "Descending"
 msgstr ""
 
-#: mcomix/library_control_area.py:157
-msgid "_Add books"
-msgstr ""
-
-#: mcomix/library_control_area.py:161
-msgid "Add more books to the library."
-msgstr "加入更多書籍到收藏庫中。"
-
-#: mcomix/library_control_area.py:164
-msgid "Add _folder"
-msgstr ""
-
-#: mcomix/library_control_area.py:169
-msgid "Add a new empty collection."
-msgstr "加入新的空白收藏。"
-
-#: mcomix/library_control_area.py:172
-msgid "_Clean library"
-msgstr ""
-
-#: mcomix/library_control_area.py:177
-msgid "Removes no longer existing books from the library."
-msgstr ""
-
-#: mcomix/library_control_area.py:183
+#: mcomix/library_control_area.py:163
 msgid "Open the selected book."
 msgstr "開啟選取的書籍。"
 
-#: mcomix/library_control_area.py:218 mcomix/properties_dialog.py:46
+#: mcomix/library_control_area.py:198 mcomix/properties_dialog.py:46
 #, python-format
 msgid "%d pages"
 msgstr "%d 頁"
-
-#: mcomix/library_control_area.py:242
-msgid "Add new collection?"
-msgstr "加入新收藏嗎？"
-
-#: mcomix/library_control_area.py:244
-msgid "Please enter a name for the new collection."
-msgstr "請輸入新收藏的名稱。"
-
-#: mcomix/library_control_area.py:250
-msgid "New collection"
-msgstr "新收藏"
-
-#: mcomix/library_control_area.py:264
-#, python-format
-msgid "Could not add a new collection called '%s'."
-msgstr "無法新增收藏 %s 。"
-
-#: mcomix/library_control_area.py:276
-msgid "Do you want to remove non-existent books from the library?"
-msgstr ""
-
-#: mcomix/library_control_area.py:278
-msgid ""
-"Books that appear in your library, but no longer exist at their original "
-"path, will be removed from the library. This clears books that have been "
-"moved or deleted outside of MComix."
-msgstr ""
 
 #: mcomix/library_main_dialog.py:32
 msgid "Library"
@@ -943,168 +953,179 @@ msgstr ""
 "當在目前壓縮檔翻頁離開最後一頁時，自動開啟目錄中的下一個壓縮檔；當翻頁跳出第"
 "一頁時，則自動開啟上一個壓縮檔。"
 
-#: mcomix/preferences_dialog.py:178
-msgid "Number of pixels to scroll per arrow key press"
+#: mcomix/preferences_dialog.py:179
+msgid "Automatically open next directory."
 msgstr ""
 
 #: mcomix/preferences_dialog.py:184
-msgid "Set the number of pixels to scroll on a page when using the arrow keys."
+msgid ""
+"Automatically open the first file in the next sibling directory when "
+"flipping past the last page of the last file in a directory, or the previous "
+"directory when flipping past the first page of the first file."
 msgstr ""
 
 #: mcomix/preferences_dialog.py:187
-msgid "Number of pixels to scroll per mouse wheel turn"
+msgid "Number of pixels to scroll per arrow key press"
 msgstr ""
 
 #: mcomix/preferences_dialog.py:193
-msgid "Set the number of pixels to scroll on a page when using a mouse wheel."
+msgid "Set the number of pixels to scroll on a page when using the arrow keys."
 msgstr ""
 
 #: mcomix/preferences_dialog.py:196
-msgid "Number of \"steps\" to take before flipping the page"
+msgid "Number of pixels to scroll per mouse wheel turn"
 msgstr ""
 
 #: mcomix/preferences_dialog.py:202
+msgid "Set the number of pixels to scroll on a page when using a mouse wheel."
+msgstr ""
+
+#: mcomix/preferences_dialog.py:205
+msgid "Number of \"steps\" to take before flipping the page"
+msgstr ""
+
+#: mcomix/preferences_dialog.py:211
 msgid ""
 "Set the number of \"steps\" needed to flip to the next or previous page.  "
 "Less steps will allow for very fast page turning but you might find yourself "
 "accidentally turning pages."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:205 mcomix/ui.py:95
+#: mcomix/preferences_dialog.py:214 mcomix/ui.py:95
 msgid "Double page mode"
 msgstr "雙頁模式"
 
-#: mcomix/preferences_dialog.py:208
+#: mcomix/preferences_dialog.py:217
 msgid "Flip two pages in double page mode."
 msgstr "雙頁模式時一次翻兩頁。"
 
-#: mcomix/preferences_dialog.py:213
+#: mcomix/preferences_dialog.py:222
 msgid ""
 "Flip two pages, instead of one, each time we flip pages in double page mode."
 msgstr "雙頁模式時一次翻兩頁，而不是只翻一頁。"
 
-#: mcomix/preferences_dialog.py:217
+#: mcomix/preferences_dialog.py:226
 msgid "Show only one wide image in double page mode."
 msgstr "雙頁模式時只顯示單張的寬幅圖片。"
 
-#: mcomix/preferences_dialog.py:223
+#: mcomix/preferences_dialog.py:232
 msgid ""
 "Display only one image in double page mode, if the image's width exceeds its "
 "height. The result of this is that scans that span two pages are displayed "
 "properly (i.e. alone) also in double page mode."
 msgstr "如果圖片寬度大於高度，則在雙頁模式時仍只顯示單張圖片。"
 
-#: mcomix/preferences_dialog.py:226
+#: mcomix/preferences_dialog.py:235
 msgid "Files"
 msgstr "檔案"
 
-#: mcomix/preferences_dialog.py:229
+#: mcomix/preferences_dialog.py:238
 msgid "Automatically open the last viewed file on startup."
 msgstr "啟動時自動開啟最後檢視的檔案。"
 
-#: mcomix/preferences_dialog.py:234
+#: mcomix/preferences_dialog.py:243
 #, fuzzy
 msgid ""
 "Automatically open, on startup, the file that was open when MComix was last "
 "closed."
 msgstr "當 Comix 啟動時，自動開啟上次最後開啟過的檔案。"
 
-#: mcomix/preferences_dialog.py:238
+#: mcomix/preferences_dialog.py:247
 msgid "Store information about recently opened files."
 msgstr "儲存最近開啟過的檔案資訊。"
 
-#: mcomix/preferences_dialog.py:243
+#: mcomix/preferences_dialog.py:252
 #, fuzzy
 msgid ""
 "Add information about all files opened from within MComix to the shared "
 "recent files list."
 msgstr "將 Comix 開啟過的檔案資訊加入共享的「最近存取文件」清單中。"
 
-#: mcomix/preferences_dialog.py:253
+#: mcomix/preferences_dialog.py:262
 msgid "Default modes"
 msgstr "預設模式"
 
-#: mcomix/preferences_dialog.py:255
+#: mcomix/preferences_dialog.py:264
 msgid "Use double page mode by default."
 msgstr "預設使用雙頁模式。"
 
-#: mcomix/preferences_dialog.py:261
+#: mcomix/preferences_dialog.py:270
 msgid "Use fullscreen by default."
 msgstr "預設使用全螢幕。"
 
-#: mcomix/preferences_dialog.py:267
+#: mcomix/preferences_dialog.py:276
 msgid "Use manga mode by default."
 msgstr "預設使用漫畫模式。"
 
-#: mcomix/preferences_dialog.py:273
+#: mcomix/preferences_dialog.py:282
 msgid "Fullscreen"
 msgstr "全螢幕"
 
-#: mcomix/preferences_dialog.py:275
+#: mcomix/preferences_dialog.py:284
 msgid "Automatically hide all toolbars in fullscreen."
 msgstr "全螢幕時自動隱藏所有工具列。"
 
-#: mcomix/preferences_dialog.py:281
+#: mcomix/preferences_dialog.py:290
 msgid "Slideshow"
 msgstr "投影片放映"
 
-#: mcomix/preferences_dialog.py:282
+#: mcomix/preferences_dialog.py:291
 msgid "Slideshow delay (in seconds)"
 msgstr "投影片放映延遲 (秒)"
 
-#: mcomix/preferences_dialog.py:291
+#: mcomix/preferences_dialog.py:300
 #, fuzzy
 msgid "Slideshow step (in pixels)"
 msgstr "投影片放映延遲 (秒)"
 
-#: mcomix/preferences_dialog.py:299
+#: mcomix/preferences_dialog.py:308
 msgid ""
 "Specify the number of pixels to scroll while in slideshow mode. A positive "
 "value will scroll forward, a negative value will scroll backwards, and a "
 "value of 0 will cause the slideshow to always flip to a new page."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:303
+#: mcomix/preferences_dialog.py:312
 #, fuzzy
 msgid "During a slideshow automatically open the next archive."
 msgstr "自動開啟下一個壓縮檔。"
 
-#: mcomix/preferences_dialog.py:308
+#: mcomix/preferences_dialog.py:317
 msgid ""
 "While in slideshow mode allow the next archive to automatically be opened."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:311
+#: mcomix/preferences_dialog.py:320
 msgid "Rotation"
 msgstr "旋轉"
 
-#: mcomix/preferences_dialog.py:313
+#: mcomix/preferences_dialog.py:322
 msgid "Automatically rotate images according to their metadata."
 msgstr "根據內建資料自動旋轉圖片。"
 
-#: mcomix/preferences_dialog.py:318
+#: mcomix/preferences_dialog.py:327
 msgid ""
 "Automatically rotate images when an orientation is specified in the image "
 "metadata, such as in an Exif tag."
 msgstr "當圖片內建的資料 (如 EXTIF) 中有指定方向時，自動旋轉圖片。"
 
-#: mcomix/preferences_dialog.py:329
+#: mcomix/preferences_dialog.py:338
 msgid "User interface language"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:330
+#: mcomix/preferences_dialog.py:339
 msgid "Language (needs restart)"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:334
+#: mcomix/preferences_dialog.py:343
 msgid "Cache"
 msgstr "快取"
 
-#: mcomix/preferences_dialog.py:337
+#: mcomix/preferences_dialog.py:346
 msgid "Store thumbnails for opened files."
 msgstr "替開啟過的檔案儲存縮圖。"
 
-#: mcomix/preferences_dialog.py:342
+#: mcomix/preferences_dialog.py:351
 msgid ""
 "Store thumbnails for opened files according to the freedesktop.org "
 "specification. These thumbnails are shared by many other applications, such "
@@ -1113,160 +1134,160 @@ msgstr ""
 "依據 freedesktop.org 的標準，替開啟過的檔案儲存縮圖。這些縮圖也可由檔案管理程"
 "式等其他各種應用程式分享共用。"
 
-#: mcomix/preferences_dialog.py:346
+#: mcomix/preferences_dialog.py:355
 msgid "Delay thumbnail generation."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:348
+#: mcomix/preferences_dialog.py:357
 msgid ""
 "Thumbnails are generated only when required, instead of directly after "
 "opening a new file."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:354
+#: mcomix/preferences_dialog.py:363
 msgid "Maximum number of pages to store in the cache"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:360
+#: mcomix/preferences_dialog.py:369
 msgid ""
 "Set the max number of pages to cache. A value of -1 will cache the entire "
 "archive."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:363
+#: mcomix/preferences_dialog.py:372
 msgid "Magnifying Lens"
 msgstr "放大鏡"
 
-#: mcomix/preferences_dialog.py:365
+#: mcomix/preferences_dialog.py:374
 msgid "Magnifying lens size (in pixels)"
 msgstr "放大鏡大小 (像素)"
 
-#: mcomix/preferences_dialog.py:371
+#: mcomix/preferences_dialog.py:380
 msgid ""
 "Set the size of the magnifying lens. It is a square with a side of this many "
 "pixels."
 msgstr "設定放大鏡的大小，請填入正方形的單邊長。"
 
-#: mcomix/preferences_dialog.py:373
+#: mcomix/preferences_dialog.py:382
 msgid "Magnification factor"
 msgstr "放大倍率"
 
-#: mcomix/preferences_dialog.py:380
+#: mcomix/preferences_dialog.py:389
 msgid "Set the magnification factor of the magnifying lens."
 msgstr "設定放大鏡的放大倍率。"
 
-#: mcomix/preferences_dialog.py:384
+#: mcomix/preferences_dialog.py:393
 msgid "Comment extensions"
 msgstr "註解的副檔名"
 
-#: mcomix/preferences_dialog.py:391
+#: mcomix/preferences_dialog.py:400
 msgid ""
 "Treat all files found within archives, that have one of these file endings, "
 "as comments."
 msgstr "壓縮檔內檔名結尾相符的檔案，將被認定為註解。"
 
-#: mcomix/preferences_dialog.py:411
+#: mcomix/preferences_dialog.py:420
 msgid "Auto-detect (Default)"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:412
+#: mcomix/preferences_dialog.py:421
 msgid "Catalan"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:413
+#: mcomix/preferences_dialog.py:422
 msgid "Czech"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:414
+#: mcomix/preferences_dialog.py:423
 msgid "German"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:415
+#: mcomix/preferences_dialog.py:424
 msgid "Greek"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:416
+#: mcomix/preferences_dialog.py:425
 msgid "English"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:417
+#: mcomix/preferences_dialog.py:426
 msgid "Spanish"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:418
+#: mcomix/preferences_dialog.py:427
 msgid "Persian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:419
+#: mcomix/preferences_dialog.py:428
 msgid "French"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:420
+#: mcomix/preferences_dialog.py:429
 msgid "Galician"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:421
+#: mcomix/preferences_dialog.py:430
 msgid "Croatian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:422
+#: mcomix/preferences_dialog.py:431
 msgid "Hungarian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:423
+#: mcomix/preferences_dialog.py:432
 msgid "Indonesian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:424
+#: mcomix/preferences_dialog.py:433
 msgid "Italian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:425
+#: mcomix/preferences_dialog.py:434
 msgid "Japanese"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:426
+#: mcomix/preferences_dialog.py:435
 msgid "Korean"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:427
+#: mcomix/preferences_dialog.py:436
 msgid "Dutch"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:428
+#: mcomix/preferences_dialog.py:437
 msgid "Polish"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:429
+#: mcomix/preferences_dialog.py:438
 msgid "Portuguese"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:430
+#: mcomix/preferences_dialog.py:439
 msgid "Russian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:431
+#: mcomix/preferences_dialog.py:440
 msgid "Swedish"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:432
+#: mcomix/preferences_dialog.py:441
 msgid "Ukrainian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:433
+#: mcomix/preferences_dialog.py:442
 msgid "Chinese (simplified)"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:434
+#: mcomix/preferences_dialog.py:443
 msgid "Chinese (traditional)"
 msgstr ""
 
-#: mcomix/process.py:51
+#: mcomix/process.py:49
 #, python-format
 msgid "! Error spawning process \"%(command)s\": %(error)s."
 msgstr ""
 
-#: mcomix/process.py:52
+#: mcomix/process.py:50
 #, python-format
 msgid "\"%(command)s\" must be on your system PATH to be found."
 msgstr ""
@@ -1358,123 +1379,127 @@ msgstr "RAR 壓縮檔"
 msgid "7z archive"
 msgstr ""
 
-#: mcomix/strings.py:18
-msgid "Original vision/developer of Comix"
+#: mcomix/strings.py:15
+msgid "LHA archive"
 msgstr ""
 
 #: mcomix/strings.py:19
-msgid "Lead developer of MComix"
+msgid "Original vision/developer of Comix"
 msgstr ""
 
 #: mcomix/strings.py:20
+msgid "Lead developer of MComix"
+msgstr ""
+
+#: mcomix/strings.py:21
 msgid "MComix developer"
 msgstr ""
 
-#: mcomix/strings.py:23 mcomix/strings.py:24
+#: mcomix/strings.py:24 mcomix/strings.py:25
 msgid "Simplified Chinese translation"
 msgstr "簡體中文翻譯"
 
-#: mcomix/strings.py:25
+#: mcomix/strings.py:26
 msgid "Spanish translation"
 msgstr "西班牙語翻譯"
 
-#: mcomix/strings.py:26
+#: mcomix/strings.py:27
 msgid "Brazilian Portuguese translation"
 msgstr "巴西葡萄牙語翻譯"
 
-#: mcomix/strings.py:27
+#: mcomix/strings.py:28
 msgid "German translation and Nautilus thumbnailer"
 msgstr "德語翻譯與 Nautilus 縮圖功能作者"
 
-#: mcomix/strings.py:28
+#: mcomix/strings.py:29
 #, fuzzy
 msgid "German translation"
 msgstr "波斯語翻譯"
 
-#: mcomix/strings.py:29 mcomix/strings.py:30
+#: mcomix/strings.py:30 mcomix/strings.py:31
 msgid "Italian translation"
 msgstr "義大利語翻譯"
 
-#: mcomix/strings.py:31
+#: mcomix/strings.py:32
 msgid "Dutch translation"
 msgstr "荷蘭語翻譯"
 
-#: mcomix/strings.py:32 mcomix/strings.py:33 mcomix/strings.py:34
-#: mcomix/strings.py:35
+#: mcomix/strings.py:33 mcomix/strings.py:34 mcomix/strings.py:35
+#: mcomix/strings.py:36
 msgid "French translation"
 msgstr "法語翻譯"
 
-#: mcomix/strings.py:36
+#: mcomix/strings.py:37
 #, fuzzy
 msgid "Polish translatin"
 msgstr "波蘭語翻譯"
 
-#: mcomix/strings.py:37
+#: mcomix/strings.py:38
 msgid "Polish translation"
 msgstr "波蘭語翻譯"
 
-#: mcomix/strings.py:38
+#: mcomix/strings.py:39
 msgid "Greek translation"
 msgstr "希臘語翻譯"
 
-#: mcomix/strings.py:39
+#: mcomix/strings.py:40
 msgid "Catalan translation"
 msgstr "加泰羅尼亞語翻譯"
 
-#: mcomix/strings.py:40 mcomix/strings.py:41
+#: mcomix/strings.py:41 mcomix/strings.py:42
 msgid "Traditional Chinese translation"
 msgstr "正體中文翻譯"
 
-#: mcomix/strings.py:42 mcomix/strings.py:43
+#: mcomix/strings.py:43 mcomix/strings.py:44
 msgid "Japanese translation"
 msgstr "日語翻譯"
 
-#: mcomix/strings.py:44
+#: mcomix/strings.py:45
 msgid "Hungarian translation"
 msgstr "匈牙利語翻譯"
 
-#: mcomix/strings.py:45 mcomix/strings.py:46
+#: mcomix/strings.py:46 mcomix/strings.py:47
 msgid "Russian translation"
 msgstr "俄語翻譯"
 
-#: mcomix/strings.py:47
+#: mcomix/strings.py:48
 msgid "Croatian translation"
 msgstr "克羅埃西亞語翻譯"
 
-#: mcomix/strings.py:48
+#: mcomix/strings.py:49
 msgid "Korean translation"
 msgstr "韓語翻譯"
 
-#: mcomix/strings.py:49
+#: mcomix/strings.py:50
 msgid "Persian translation"
 msgstr "波斯語翻譯"
 
-#: mcomix/strings.py:50
+#: mcomix/strings.py:51
 msgid "Indonesian translation"
 msgstr "印尼語翻譯"
 
-#: mcomix/strings.py:51
+#: mcomix/strings.py:52
 msgid "Czech translation"
 msgstr "捷克語翻譯"
 
-#: mcomix/strings.py:52
+#: mcomix/strings.py:53
 msgid "Ukrainian translation"
 msgstr ""
 
-#: mcomix/strings.py:53
+#: mcomix/strings.py:54
 #, fuzzy
 msgid "Galician translation"
 msgstr "義大利語翻譯"
 
-#: mcomix/strings.py:54
+#: mcomix/strings.py:55
 msgid "Swedish translation"
 msgstr ""
 
-#: mcomix/strings.py:57
+#: mcomix/strings.py:58
 msgid "Icon design"
 msgstr "圖示設計"
 
-#: mcomix/thumbnail_tools.py:205
+#: mcomix/thumbnail_tools.py:209
 #, python-format
 msgid "! Could not save thumbnail \"%(thumbpath)s\": %(error)s"
 msgstr ""
@@ -1800,6 +1825,18 @@ msgstr ""
 msgid "Please enter the password to continue:"
 msgstr ""
 
+#~ msgid "Removed %d book(s) from the library."
+#~ msgstr "已從收藏庫移除 %d 本書籍。"
+
+#~ msgid "Rename..."
+#~ msgstr "重新命名..."
+
+#~ msgid "Duplicate collection"
+#~ msgstr "備份收藏"
+
+#~ msgid "Remove collection..."
+#~ msgstr "移除收藏..."
+
 #~ msgid "About"
 #~ msgstr "關於"
 
@@ -1941,9 +1978,6 @@ msgstr ""
 
 #~ msgid "Cover size"
 #~ msgstr "封面大小"
-
-#~ msgid "Add books"
-#~ msgstr "加入書籍"
 
 #, fuzzy
 #~ msgid "Usage:"

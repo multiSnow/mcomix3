@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2011-08-29 17:14+0200\n"
+"POT-Creation-Date: 2011-09-11 19:23+0200\n"
 "PO-Revision-Date: 2008-12-13 14:48+0900\n"
 "Last-Translator: Lv5doraki <kmk1290@gmail.com>\n"
 "Language-Team: \n"
@@ -144,7 +144,7 @@ msgstr ""
 #
 # File: src/comment.py, line: 16
 # File: src/preferences.py, line: 288
-#: mcomix/comment_dialog.py:10 mcomix/preferences_dialog.py:383
+#: mcomix/comment_dialog.py:10 mcomix/preferences_dialog.py:392
 msgid "Comments"
 msgstr "주석"
 
@@ -265,68 +265,74 @@ msgstr "자동으로 명암을 조절합니다"
 #
 # File: src/filechooser.py, line: 35
 # File: src/library.py, line: 489
-#: mcomix/file_chooser_base_dialog.py:36
+#: mcomix/file_chooser_base_dialog.py:39
 msgid "Open"
 msgstr "열기"
 
 #
 # File: src/filechooser.py, line: 39
-#: mcomix/file_chooser_base_dialog.py:41
+#: mcomix/file_chooser_base_dialog.py:44
 msgid "Save"
 msgstr "저장"
 
 #
 # File: src/filechooser.py, line: 75
-#: mcomix/file_chooser_base_dialog.py:80
+#: mcomix/file_chooser_base_dialog.py:83
 msgid "All files"
 msgstr "모든 파일"
 
 #
 # File: src/filechooser.py, line: 78
-#: mcomix/file_chooser_base_dialog.py:96
+#: mcomix/file_chooser_base_dialog.py:99
 msgid "All Archives"
 msgstr "모든 압축파일"
 
 #
 # File: src/filechooser.py, line: 82
-#: mcomix/file_chooser_base_dialog.py:99
+#: mcomix/file_chooser_base_dialog.py:102
 msgid "ZIP archives"
 msgstr "ZIP 압축파일"
 
 #
 # File: src/filechooser.py, line: 86
-#: mcomix/file_chooser_base_dialog.py:102
+#: mcomix/file_chooser_base_dialog.py:105
 msgid "Tar archives"
 msgstr "Tar 압축파일"
 
 #
 # File: src/filechooser.py, line: 84
-#: mcomix/file_chooser_base_dialog.py:106
+#: mcomix/file_chooser_base_dialog.py:109
 msgid "RAR archives"
 msgstr "RAR 압축파일"
 
-#: mcomix/file_chooser_base_dialog.py:110
+#: mcomix/file_chooser_base_dialog.py:113
 msgid "7z archives"
 msgstr ""
 
-#: mcomix/file_chooser_base_dialog.py:114
+#: mcomix/file_chooser_base_dialog.py:117
 msgid "LHA archives"
 msgstr ""
 
 #
 # File: src/filechooser.py, line: 125
-#: mcomix/file_chooser_base_dialog.py:209
+#: mcomix/file_chooser_base_dialog.py:227
 #, python-format
 msgid "A file named '%s' already exists. Do you want to replace it?"
 msgstr "'%s' 파일이 이미 있습니다. 덮어씌우시겟습니까?"
 
 #
 # File: src/filechooser.py, line: 128
-#: mcomix/file_chooser_base_dialog.py:213
+#: mcomix/file_chooser_base_dialog.py:231
 msgid "Replacing it will overwrite its contents."
 msgstr "내용을 덮어 쓰게됩니다."
 
-#: mcomix/file_chooser_library_dialog.py:27
+#
+# File: src/library.py, line: 789
+#: mcomix/file_chooser_library_dialog.py:19
+msgid "Add books"
+msgstr "만화책 추가"
+
+#: mcomix/file_chooser_library_dialog.py:28
 msgid "Add to this collection"
 msgstr ""
 
@@ -425,7 +431,7 @@ msgstr ""
 
 #
 # File: src/filehandler.py, line: 411
-#: mcomix/image_handler.py:481
+#: mcomix/image_handler.py:483
 msgid "Unknown filetype"
 msgstr "알 수 없는 파일 형식"
 
@@ -498,42 +504,56 @@ msgstr ""
 msgid "Upgrading library database version from %(from)d to %(to)d."
 msgstr ""
 
-#: mcomix/library_book_area.py:82
-msgid "_Open"
-msgstr ""
-
-#: mcomix/library_book_area.py:85
-msgid "Open _without closing library"
-msgstr ""
-
-#: mcomix/library_book_area.py:88
-msgid "Remove from this _collection"
+#: mcomix/library_book_area.py:89
+msgid "Library books"
 msgstr ""
 
 #: mcomix/library_book_area.py:91
-msgid "Remove from the _library"
+msgid "_Open"
 msgstr ""
 
 #: mcomix/library_book_area.py:94
-msgid "Completely _remove"
+msgid "Open _without closing library"
+msgstr ""
+
+#: mcomix/library_book_area.py:96 mcomix/library_collection_area.py:67
+msgid "_Add..."
+msgstr ""
+
+#
+# File: src/library.py, line: 793
+#: mcomix/library_book_area.py:97
+msgid "Add more books to the library."
+msgstr "라이브러리에 더 많은 만화책 추가"
+
+#: mcomix/library_book_area.py:100
+msgid "Remove from this _collection"
+msgstr ""
+
+#: mcomix/library_book_area.py:103
+msgid "Remove from the _library"
+msgstr ""
+
+#: mcomix/library_book_area.py:106
+msgid "_Remove and delete from disk"
 msgstr ""
 
 #
 # File: src/library.py, line: 588
-#: mcomix/library_book_area.py:321
+#: mcomix/library_book_area.py:334
 #, python-format
 msgid "Removed %(num)d book(s) from '%(collection)s'."
 msgstr "'%(collection)s' 에서 %(num)d  만화책 제거."
 
 #
 # File: src/library.py, line: 597
-#: mcomix/library_book_area.py:332 mcomix/library_book_area.py:361
+#: mcomix/library_book_area.py:345 mcomix/library_book_area.py:377
 msgid "Remove books from the library?"
 msgstr "라이브러리에서 만화책 제거"
 
 #
 # File: src/library.py, line: 599
-#: mcomix/library_book_area.py:334
+#: mcomix/library_book_area.py:347
 msgid ""
 "The selected books will be removed from the library (but the original files "
 "will be untouched). Are you sure that you want to continue?"
@@ -541,16 +561,16 @@ msgstr ""
 "선택한 만화책은 라이브러리에서 (원본 파일은 보존) 제거됩니다. 계속하시겠습니"
 "까?"
 
-#
-# File: src/library.py, line: 609
-#: mcomix/library_book_area.py:350
+#: mcomix/library_book_area.py:363
 #, python-format
-msgid "Removed %d book(s) from the library."
-msgstr "라이브러리에서 %d 만화책을 제거"
+msgid "Removed %d book from the library."
+msgid_plural "Removed %d books from the library."
+msgstr[0] ""
+msgstr[1] ""
 
 #
 # File: src/library.py, line: 599
-#: mcomix/library_book_area.py:363
+#: mcomix/library_book_area.py:379
 #, fuzzy
 msgid ""
 "The selected books will be removed from the library and permanently deleted. "
@@ -559,44 +579,99 @@ msgstr ""
 "선택한 만화책은 라이브러리에서 (원본 파일은 보존) 제거됩니다. 계속하시겠습니"
 "까?"
 
-#: mcomix/library_book_area.py:386
+#: mcomix/library_book_area.py:402 mcomix/thumbnail_tools.py:110
 #, python-format
 msgid "! Could not remove file \"%s\""
 msgstr ""
 
-#
-# File: src/library.py, line: 150
-#: mcomix/library_collection_area.py:60
-msgid "Rename..."
-msgstr "이름바꾸기"
+#: mcomix/library_collection_area.py:65
+msgid "Library collections"
+msgstr ""
 
 #
-# File: src/library.py, line: 152
-#: mcomix/library_collection_area.py:62
-msgid "Duplicate collection"
-msgstr "모음집사본"
+# File: src/library.py, line: 800
+#: mcomix/library_collection_area.py:68
+msgid "Add a new empty collection."
+msgstr "비어있는 새 모음집 추가"
 
-#
-# File: src/library.py, line: 154
-#: mcomix/library_collection_area.py:64
-msgid "Remove collection..."
-msgstr "모음집 제거"
+#: mcomix/library_collection_area.py:70
+msgid "Re_name"
+msgstr ""
+
+#: mcomix/library_collection_area.py:72
+msgid "_Duplicate"
+msgstr ""
+
+#: mcomix/library_collection_area.py:74
+msgid "_Clean up"
+msgstr ""
+
+#: mcomix/library_collection_area.py:75
+msgid "Removes no longer existant books from the collection."
+msgstr ""
+
+#: mcomix/library_collection_area.py:77
+msgid "_Remove"
+msgstr ""
 
 #
 # File: src/library.py, line: 202
-#: mcomix/library_collection_area.py:112
+#: mcomix/library_collection_area.py:125
 msgid "All books"
 msgstr "모든 만화책"
 
 #
-# File: src/library.py, line: 231
+# File: src/library.py, line: 854
+#: mcomix/library_collection_area.py:133
+msgid "Add new collection?"
+msgstr "새 모음집을 추가합니까?"
+
+#
+# File: src/library.py, line: 856
+#: mcomix/library_collection_area.py:135
+msgid "Please enter a name for the new collection."
+msgstr "새 모음집의 이름을 입력해주세요."
+
+#
+# File: src/library.py, line: 862
 #: mcomix/library_collection_area.py:141
+msgid "New collection"
+msgstr "새 모음집"
+
+#
+# File: src/library.py, line: 876
+#: mcomix/library_collection_area.py:155
+#, python-format
+msgid "Could not add a new collection called '%s'."
+msgstr "새 모음집을 추가하지 못했습니다. '%s'."
+
+#
+# File: src/library.py, line: 275
+# File: src/library.py, line: 881
+#: mcomix/library_collection_area.py:160 mcomix/library_collection_area.py:262
+msgid "A collection by that name already exists."
+msgstr "같은 이름의 모음집이 존재합니다."
+
+#: mcomix/library_collection_area.py:170
+msgid "Do you want to remove non-existent books from the library?"
+msgstr ""
+
+#: mcomix/library_collection_area.py:172
+msgid ""
+"Books that appear in your library, but no longer exist at their original "
+"path, will be removed from the library. This clears books that have been "
+"moved or deleted outside of MComix."
+msgstr ""
+
+#
+# File: src/library.py, line: 231
+#: mcomix/library_collection_area.py:218
 msgid "Remove collection from the library?"
 msgstr "라이브러리로부터 모음집을 제거"
 
 #
 # File: src/library.py, line: 233
-#: mcomix/library_collection_area.py:143
+#: mcomix/library_collection_area.py:220
 msgid ""
 "The selected collection will be removed from the library (but the books and "
 "subcollections in it will remain). Are you sure that you want to continue?"
@@ -606,45 +681,38 @@ msgstr ""
 
 #
 # File: src/library.py, line: 251
-#: mcomix/library_collection_area.py:161
+#: mcomix/library_collection_area.py:238
 msgid "Rename collection?"
 msgstr "모음집 이름바꾸기"
 
 #
 # File: src/library.py, line: 253
-#: mcomix/library_collection_area.py:163
+#: mcomix/library_collection_area.py:240
 msgid "Please enter a new name for the selected collection."
 msgstr "선택된 모음집에 대한 새 이름을 입력하시기 바랍니다."
 
 #
 # File: src/library.py, line: 271
-#: mcomix/library_collection_area.py:181
+#: mcomix/library_collection_area.py:258
 #, python-format
 msgid "Could not change the name to '%s'."
 msgstr "이름을 변경하지 못했습니다. '%s'."
 
 #
-# File: src/library.py, line: 275
-# File: src/library.py, line: 881
-#: mcomix/library_collection_area.py:185 mcomix/library_control_area.py:269
-msgid "A collection by that name already exists."
-msgstr "같은 이름의 모음집이 존재합니다."
-
-#
 # File: src/library.py, line: 285
-#: mcomix/library_collection_area.py:195
+#: mcomix/library_collection_area.py:272
 msgid "Could not duplicate collection."
 msgstr "모음집 사본을 못했습니다."
 
 #
 # File: src/library.py, line: 382
-#: mcomix/library_collection_area.py:292
+#: mcomix/library_collection_area.py:397
 msgid "Root"
 msgstr "관리자"
 
 #
 # File: src/library.py, line: 386
-#: mcomix/library_collection_area.py:296
+#: mcomix/library_collection_area.py:401
 #, python-format
 msgid ""
 "Put the collection '%(subcollection)s' in the collection "
@@ -653,27 +721,27 @@ msgstr "'%(subcollection)s' 모음집을 '%(supercollection)s' 모음집에 넣�
 
 #
 # File: src/library.py, line: 407
-#: mcomix/library_collection_area.py:317
+#: mcomix/library_collection_area.py:422
 #, python-format
 msgid "Add books to '%s'."
 msgstr "만화책 추가 '%s'."
 
 #
 # File: src/library.py, line: 411
-#: mcomix/library_collection_area.py:321
+#: mcomix/library_collection_area.py:426
 #, python-format
 msgid ""
 "Move books from '%(source collection)s' to '%(destination collection)s'."
 msgstr ""
 "'%(source collection)s' 에서 '%(destination collection)s' 으로 만화책 이동."
 
-#: mcomix/library_control_area.py:72
+#: mcomix/library_control_area.py:74
 msgid "_Search"
 msgstr ""
 
 #
 # File: src/library.py, line: 774
-#: mcomix/library_control_area.py:78
+#: mcomix/library_control_area.py:80
 msgid ""
 "Display only those books that have the specified text string in their full "
 "path. The search is not case sensitive."
@@ -681,111 +749,47 @@ msgstr ""
 "전체 경로에 지정된 문자열이 만화책을 표시합니다. 검색은 대소문자를 구분하지 "
 "않습니다."
 
-#: mcomix/library_control_area.py:83
+#: mcomix/library_control_area.py:85
 msgid "Cover si_ze"
 msgstr ""
 
-#: mcomix/library_control_area.py:99
+#: mcomix/library_control_area.py:101
 msgid "Sort order"
 msgstr ""
 
-#: mcomix/library_control_area.py:104
+#: mcomix/library_control_area.py:106
 msgid "Book name"
 msgstr ""
 
-#: mcomix/library_control_area.py:105
+#: mcomix/library_control_area.py:107
 msgid "Full path"
 msgstr ""
 
-#: mcomix/library_control_area.py:106
+#: mcomix/library_control_area.py:108
 msgid "File size"
 msgstr ""
 
-#: mcomix/library_control_area.py:129
+#: mcomix/library_control_area.py:131
 msgid "Ascending"
 msgstr ""
 
-#: mcomix/library_control_area.py:130
+#: mcomix/library_control_area.py:132
 msgid "Descending"
-msgstr ""
-
-#: mcomix/library_control_area.py:157
-msgid "_Add books"
-msgstr ""
-
-#
-# File: src/library.py, line: 793
-#: mcomix/library_control_area.py:161
-msgid "Add more books to the library."
-msgstr "라이브러리에 더 많은 만화책 추가"
-
-#: mcomix/library_control_area.py:164
-msgid "Add _folder"
-msgstr ""
-
-#
-# File: src/library.py, line: 800
-#: mcomix/library_control_area.py:169
-msgid "Add a new empty collection."
-msgstr "비어있는 새 모음집 추가"
-
-#: mcomix/library_control_area.py:172
-msgid "_Clean library"
-msgstr ""
-
-#: mcomix/library_control_area.py:177
-msgid "Removes no longer existing books from the library."
 msgstr ""
 
 #
 # File: src/library.py, line: 806
-#: mcomix/library_control_area.py:183
+#: mcomix/library_control_area.py:163
 msgid "Open the selected book."
 msgstr "선택한 만화책 열기"
 
 #
 # File: src/library.py, line: 832
 # File: src/properties.py, line: 113
-#: mcomix/library_control_area.py:218 mcomix/properties_dialog.py:46
+#: mcomix/library_control_area.py:198 mcomix/properties_dialog.py:46
 #, python-format
 msgid "%d pages"
 msgstr "%d 페이지"
-
-#
-# File: src/library.py, line: 854
-#: mcomix/library_control_area.py:242
-msgid "Add new collection?"
-msgstr "새 모음집을 추가합니까?"
-
-#
-# File: src/library.py, line: 856
-#: mcomix/library_control_area.py:244
-msgid "Please enter a name for the new collection."
-msgstr "새 모음집의 이름을 입력해주세요."
-
-#
-# File: src/library.py, line: 862
-#: mcomix/library_control_area.py:250
-msgid "New collection"
-msgstr "새 모음집"
-
-#
-# File: src/library.py, line: 876
-#: mcomix/library_control_area.py:264
-#, python-format
-msgid "Could not add a new collection called '%s'."
-msgstr "새 모음집을 추가하지 못했습니다. '%s'."
-
-#: mcomix/library_control_area.py:276
-msgid "Do you want to remove non-existent books from the library?"
-msgstr ""
-
-#: mcomix/library_control_area.py:278
-msgid ""
-"Books that appear in your library, but no longer exist at their original "
-"path, will be removed from the library. This clears books that have been "
-"moved or deleted outside of MComix."
-msgstr ""
 
 #
 # File: src/library.py, line: 38
@@ -1155,27 +1159,38 @@ msgstr ""
 " 마지막 페이지에서 페이지 넘기기를 할경우, 자동적으로 같은 디렉토리에 있는 다"
 "음 압축파일을 불러옵니다."
 
-#: mcomix/preferences_dialog.py:178
-msgid "Number of pixels to scroll per arrow key press"
+#: mcomix/preferences_dialog.py:179
+msgid "Automatically open next directory."
 msgstr ""
 
 #: mcomix/preferences_dialog.py:184
-msgid "Set the number of pixels to scroll on a page when using the arrow keys."
+msgid ""
+"Automatically open the first file in the next sibling directory when "
+"flipping past the last page of the last file in a directory, or the previous "
+"directory when flipping past the first page of the first file."
 msgstr ""
 
 #: mcomix/preferences_dialog.py:187
-msgid "Number of pixels to scroll per mouse wheel turn"
+msgid "Number of pixels to scroll per arrow key press"
 msgstr ""
 
 #: mcomix/preferences_dialog.py:193
-msgid "Set the number of pixels to scroll on a page when using a mouse wheel."
+msgid "Set the number of pixels to scroll on a page when using the arrow keys."
 msgstr ""
 
 #: mcomix/preferences_dialog.py:196
-msgid "Number of \"steps\" to take before flipping the page"
+msgid "Number of pixels to scroll per mouse wheel turn"
 msgstr ""
 
 #: mcomix/preferences_dialog.py:202
+msgid "Set the number of pixels to scroll on a page when using a mouse wheel."
+msgstr ""
+
+#: mcomix/preferences_dialog.py:205
+msgid "Number of \"steps\" to take before flipping the page"
+msgstr ""
+
+#: mcomix/preferences_dialog.py:211
 msgid ""
 "Set the number of \"steps\" needed to flip to the next or previous page.  "
 "Less steps will allow for very fast page turning but you might find yourself "
@@ -1185,32 +1200,32 @@ msgstr ""
 #
 # File: src/preferences.py, line: 177
 # File: src/ui.py, line: 296
-#: mcomix/preferences_dialog.py:205 mcomix/ui.py:95
+#: mcomix/preferences_dialog.py:214 mcomix/ui.py:95
 msgid "Double page mode"
 msgstr "양면 보기"
 
 #
 # File: src/preferences.py, line: 179
-#: mcomix/preferences_dialog.py:208
+#: mcomix/preferences_dialog.py:217
 msgid "Flip two pages in double page mode."
 msgstr "2 페이지 넘기면 양면 보기로 전환"
 
 #
 # File: src/preferences.py, line: 184
-#: mcomix/preferences_dialog.py:213
+#: mcomix/preferences_dialog.py:222
 msgid ""
 "Flip two pages, instead of one, each time we flip pages in double page mode."
 msgstr " 페이지를 동시에 두번 넘기면 양면 보기로 전환됩니다."
 
 #
 # File: src/preferences.py, line: 187
-#: mcomix/preferences_dialog.py:217
+#: mcomix/preferences_dialog.py:226
 msgid "Show only one wide image in double page mode."
 msgstr "양면 보기에서 넓은 이미지 보기"
 
 #
 # File: src/preferences.py, line: 193
-#: mcomix/preferences_dialog.py:223
+#: mcomix/preferences_dialog.py:232
 msgid ""
 "Display only one image in double page mode, if the image's width exceeds its "
 "height. The result of this is that scans that span two pages are displayed "
@@ -1221,19 +1236,19 @@ msgstr ""
 
 #
 # File: src/preferences.py, line: 196
-#: mcomix/preferences_dialog.py:226
+#: mcomix/preferences_dialog.py:235
 msgid "Files"
 msgstr "파일"
 
 #
 # File: src/preferences.py, line: 206
-#: mcomix/preferences_dialog.py:229
+#: mcomix/preferences_dialog.py:238
 msgid "Automatically open the last viewed file on startup."
 msgstr "자동으로 프로그램 시작할때 마지막 파일 열기"
 
 #
 # File: src/preferences.py, line: 211
-#: mcomix/preferences_dialog.py:234
+#: mcomix/preferences_dialog.py:243
 #, fuzzy
 msgid ""
 "Automatically open, on startup, the file that was open when MComix was last "
@@ -1242,13 +1257,13 @@ msgstr "Comix로 열었던 마지막 파일을 자동으로 열어봅니다."
 
 #
 # File: src/preferences.py, line: 214
-#: mcomix/preferences_dialog.py:238
+#: mcomix/preferences_dialog.py:247
 msgid "Store information about recently opened files."
 msgstr "최근 열어본 압축파일에 대한 정보를 표시합니다."
 
 #
 # File: src/preferences.py, line: 219
-#: mcomix/preferences_dialog.py:243
+#: mcomix/preferences_dialog.py:252
 #, fuzzy
 msgid ""
 "Add information about all files opened from within MComix to the shared "
@@ -1257,60 +1272,60 @@ msgstr "Comix 의 최근 공유 목록에 설명을 추가합니다. 혹은 설�
 
 #
 # File: src/preferences.py, line: 243
-#: mcomix/preferences_dialog.py:253
+#: mcomix/preferences_dialog.py:262
 msgid "Default modes"
 msgstr "기본 보기"
 
 #
 # File: src/preferences.py, line: 245
-#: mcomix/preferences_dialog.py:255
+#: mcomix/preferences_dialog.py:264
 msgid "Use double page mode by default."
 msgstr "양면 보기를 기본으로 사용"
 
 #
 # File: src/preferences.py, line: 250
-#: mcomix/preferences_dialog.py:261
+#: mcomix/preferences_dialog.py:270
 msgid "Use fullscreen by default."
 msgstr "전체화면을 기본으로 사용"
 
 #
 # File: src/preferences.py, line: 255
-#: mcomix/preferences_dialog.py:267
+#: mcomix/preferences_dialog.py:276
 msgid "Use manga mode by default."
 msgstr "만화 페이지순 보기를 기본으로 사용"
 
 #
 # File: src/preferences.py, line: 271
-#: mcomix/preferences_dialog.py:273
+#: mcomix/preferences_dialog.py:282
 msgid "Fullscreen"
 msgstr "전체화면"
 
 #
 # File: src/preferences.py, line: 273
-#: mcomix/preferences_dialog.py:275
+#: mcomix/preferences_dialog.py:284
 msgid "Automatically hide all toolbars in fullscreen."
 msgstr "전체화면 상태에서 도구모음 숨김"
 
 #
 # File: src/preferences.py, line: 279
-#: mcomix/preferences_dialog.py:281
+#: mcomix/preferences_dialog.py:290
 msgid "Slideshow"
 msgstr "슬라이드쇼"
 
 #
 # File: src/preferences.py, line: 280
-#: mcomix/preferences_dialog.py:282
+#: mcomix/preferences_dialog.py:291
 msgid "Slideshow delay (in seconds)"
 msgstr "슬라이드쇼 지연시간(초)"
 
 #
 # File: src/preferences.py, line: 280
-#: mcomix/preferences_dialog.py:291
+#: mcomix/preferences_dialog.py:300
 #, fuzzy
 msgid "Slideshow step (in pixels)"
 msgstr "슬라이드쇼 지연시간(초)"
 
-#: mcomix/preferences_dialog.py:299
+#: mcomix/preferences_dialog.py:308
 msgid ""
 "Specify the number of pixels to scroll while in slideshow mode. A positive "
 "value will scroll forward, a negative value will scroll backwards, and a "
@@ -1319,53 +1334,53 @@ msgstr ""
 
 #
 # File: src/preferences.py, line: 198
-#: mcomix/preferences_dialog.py:303
+#: mcomix/preferences_dialog.py:312
 #, fuzzy
 msgid "During a slideshow automatically open the next archive."
 msgstr "자동으로 다음 압축파일 열기"
 
-#: mcomix/preferences_dialog.py:308
+#: mcomix/preferences_dialog.py:317
 msgid ""
 "While in slideshow mode allow the next archive to automatically be opened."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:311
+#: mcomix/preferences_dialog.py:320
 msgid "Rotation"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:313
+#: mcomix/preferences_dialog.py:322
 msgid "Automatically rotate images according to their metadata."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:318
+#: mcomix/preferences_dialog.py:327
 msgid ""
 "Automatically rotate images when an orientation is specified in the image "
 "metadata, such as in an Exif tag."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:329
+#: mcomix/preferences_dialog.py:338
 msgid "User interface language"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:330
+#: mcomix/preferences_dialog.py:339
 msgid "Language (needs restart)"
 msgstr ""
 
 #
 # File: src/preferences.py, line: 230
-#: mcomix/preferences_dialog.py:334
+#: mcomix/preferences_dialog.py:343
 msgid "Cache"
 msgstr "캐시"
 
 #
 # File: src/preferences.py, line: 222
-#: mcomix/preferences_dialog.py:337
+#: mcomix/preferences_dialog.py:346
 msgid "Store thumbnails for opened files."
 msgstr "열어본 파일의 미리보기를 보관"
 
 #
 # File: src/preferences.py, line: 227
-#: mcomix/preferences_dialog.py:342
+#: mcomix/preferences_dialog.py:351
 msgid ""
 "Store thumbnails for opened files according to the freedesktop.org "
 "specification. These thumbnails are shared by many other applications, such "
@@ -1374,21 +1389,21 @@ msgstr ""
 "열려진 파일의 썸네일을 freedesktop.org 에서 지정한 바에 따라 저장하여, 다른 "
 "사용자들과 썸네일을 공유하게 됩니다."
 
-#: mcomix/preferences_dialog.py:346
+#: mcomix/preferences_dialog.py:355
 msgid "Delay thumbnail generation."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:348
+#: mcomix/preferences_dialog.py:357
 msgid ""
 "Thumbnails are generated only when required, instead of directly after "
 "opening a new file."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:354
+#: mcomix/preferences_dialog.py:363
 msgid "Maximum number of pages to store in the cache"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:360
+#: mcomix/preferences_dialog.py:369
 msgid ""
 "Set the max number of pages to cache. A value of -1 will cache the entire "
 "archive."
@@ -1396,19 +1411,19 @@ msgstr ""
 
 #
 # File: src/preferences.py, line: 124
-#: mcomix/preferences_dialog.py:363
+#: mcomix/preferences_dialog.py:372
 msgid "Magnifying Lens"
 msgstr "돋보기"
 
 #
 # File: src/preferences.py, line: 125
-#: mcomix/preferences_dialog.py:365
+#: mcomix/preferences_dialog.py:374
 msgid "Magnifying lens size (in pixels)"
 msgstr "돋보기 크기(픽셀)"
 
 #
 # File: src/preferences.py, line: 131
-#: mcomix/preferences_dialog.py:371
+#: mcomix/preferences_dialog.py:380
 msgid ""
 "Set the size of the magnifying lens. It is a square with a side of this many "
 "pixels."
@@ -1416,132 +1431,132 @@ msgstr "돋보기의 크기를 설정합니다."
 
 #
 # File: src/preferences.py, line: 133
-#: mcomix/preferences_dialog.py:373
+#: mcomix/preferences_dialog.py:382
 msgid "Magnification factor"
 msgstr "확대 인수"
 
 #
 # File: src/preferences.py, line: 140
-#: mcomix/preferences_dialog.py:380
+#: mcomix/preferences_dialog.py:389
 msgid "Set the magnification factor of the magnifying lens."
 msgstr "돋보기의 확대 인수를 설정합니다."
 
 #
 # File: src/preferences.py, line: 289
-#: mcomix/preferences_dialog.py:384
+#: mcomix/preferences_dialog.py:393
 msgid "Comment extensions"
 msgstr "주석 확장"
 
 #
 # File: src/preferences.py, line: 295
-#: mcomix/preferences_dialog.py:391
+#: mcomix/preferences_dialog.py:400
 msgid ""
 "Treat all files found within archives, that have one of these file endings, "
 "as comments."
 msgstr "목록중에 이와 같은 확장자 형식을 가진 파일을 주석으로 인식합니다."
 
-#: mcomix/preferences_dialog.py:411
+#: mcomix/preferences_dialog.py:420
 msgid "Auto-detect (Default)"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:412
+#: mcomix/preferences_dialog.py:421
 msgid "Catalan"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:413
+#: mcomix/preferences_dialog.py:422
 msgid "Czech"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:414
+#: mcomix/preferences_dialog.py:423
 msgid "German"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:415
+#: mcomix/preferences_dialog.py:424
 msgid "Greek"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:416
+#: mcomix/preferences_dialog.py:425
 msgid "English"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:417
+#: mcomix/preferences_dialog.py:426
 msgid "Spanish"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:418
+#: mcomix/preferences_dialog.py:427
 msgid "Persian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:419
+#: mcomix/preferences_dialog.py:428
 msgid "French"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:420
+#: mcomix/preferences_dialog.py:429
 msgid "Galician"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:421
+#: mcomix/preferences_dialog.py:430
 msgid "Croatian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:422
+#: mcomix/preferences_dialog.py:431
 msgid "Hungarian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:423
+#: mcomix/preferences_dialog.py:432
 msgid "Indonesian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:424
+#: mcomix/preferences_dialog.py:433
 msgid "Italian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:425
+#: mcomix/preferences_dialog.py:434
 msgid "Japanese"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:426
+#: mcomix/preferences_dialog.py:435
 msgid "Korean"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:427
+#: mcomix/preferences_dialog.py:436
 msgid "Dutch"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:428
+#: mcomix/preferences_dialog.py:437
 msgid "Polish"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:429
+#: mcomix/preferences_dialog.py:438
 msgid "Portuguese"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:430
+#: mcomix/preferences_dialog.py:439
 msgid "Russian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:431
+#: mcomix/preferences_dialog.py:440
 msgid "Swedish"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:432
+#: mcomix/preferences_dialog.py:441
 msgid "Ukrainian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:433
+#: mcomix/preferences_dialog.py:442
 msgid "Chinese (simplified)"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:434
+#: mcomix/preferences_dialog.py:443
 msgid "Chinese (traditional)"
 msgstr ""
 
-#: mcomix/process.py:51
+#: mcomix/process.py:49
 #, python-format
 msgid "! Error spawning process \"%(command)s\": %(error)s."
 msgstr ""
 
-#: mcomix/process.py:52
+#: mcomix/process.py:50
 #, python-format
 msgid "\"%(command)s\" must be on your system PATH to be found."
 msgstr ""
@@ -1667,169 +1682,173 @@ msgstr "RAR 압축파일"
 msgid "7z archive"
 msgstr ""
 
-#: mcomix/strings.py:18
-msgid "Original vision/developer of Comix"
+#: mcomix/strings.py:15
+msgid "LHA archive"
 msgstr ""
 
 #: mcomix/strings.py:19
-msgid "Lead developer of MComix"
+msgid "Original vision/developer of Comix"
 msgstr ""
 
 #: mcomix/strings.py:20
+msgid "Lead developer of MComix"
+msgstr ""
+
+#: mcomix/strings.py:21
 msgid "MComix developer"
 msgstr ""
 
 #
 # File: src/about.py, line: 77
-#: mcomix/strings.py:23 mcomix/strings.py:24
+#: mcomix/strings.py:24 mcomix/strings.py:25
 msgid "Simplified Chinese translation"
 msgstr "간체 중국어 번역"
 
 #
 # File: src/about.py, line: 78
-#: mcomix/strings.py:25
+#: mcomix/strings.py:26
 msgid "Spanish translation"
 msgstr "스페인어 번역"
 
 #
 # File: src/about.py, line: 79
-#: mcomix/strings.py:26
+#: mcomix/strings.py:27
 msgid "Brazilian Portuguese translation"
 msgstr "포르투갈어(브라질) 번역"
 
 #
 # File: src/about.py, line: 81
-#: mcomix/strings.py:27
+#: mcomix/strings.py:28
 msgid "German translation and Nautilus thumbnailer"
 msgstr "독일어 번역과 Nautilus의 미리보기 작성"
 
 #
 # File: src/about.py, line: 94
-#: mcomix/strings.py:28
+#: mcomix/strings.py:29
 #, fuzzy
 msgid "German translation"
 msgstr "이슬란어 번역"
 
 #
 # File: src/about.py, line: 82
-#: mcomix/strings.py:29 mcomix/strings.py:30
+#: mcomix/strings.py:30 mcomix/strings.py:31
 msgid "Italian translation"
 msgstr "이탈리아어 번역"
 
 #
 # File: src/about.py, line: 83
-#: mcomix/strings.py:31
+#: mcomix/strings.py:32
 msgid "Dutch translation"
 msgstr "네덜란드어 번역"
 
 #
 # File: src/about.py, line: 84
-#: mcomix/strings.py:32 mcomix/strings.py:33 mcomix/strings.py:34
-#: mcomix/strings.py:35
+#: mcomix/strings.py:33 mcomix/strings.py:34 mcomix/strings.py:35
+#: mcomix/strings.py:36
 msgid "French translation"
 msgstr "프랑스어 번역"
 
 #
 # File: src/about.py, line: 85
-#: mcomix/strings.py:36
+#: mcomix/strings.py:37
 #, fuzzy
 msgid "Polish translatin"
 msgstr "폴란드어 번역"
 
 #
 # File: src/about.py, line: 85
-#: mcomix/strings.py:37
+#: mcomix/strings.py:38
 msgid "Polish translation"
 msgstr "폴란드어 번역"
 
 #
 # File: src/about.py, line: 86
-#: mcomix/strings.py:38
+#: mcomix/strings.py:39
 msgid "Greek translation"
 msgstr "그리스어 번역"
 
 #
 # File: src/about.py, line: 87
-#: mcomix/strings.py:39
+#: mcomix/strings.py:40
 msgid "Catalan translation"
 msgstr "카타로니아어 번역"
 
 #
 # File: src/about.py, line: 88
-#: mcomix/strings.py:40 mcomix/strings.py:41
+#: mcomix/strings.py:41 mcomix/strings.py:42
 msgid "Traditional Chinese translation"
 msgstr "정체 중국어 번역"
 
 #
 # File: src/about.py, line: 89
-#: mcomix/strings.py:42 mcomix/strings.py:43
+#: mcomix/strings.py:43 mcomix/strings.py:44
 msgid "Japanese translation"
 msgstr "일본어 번역"
 
 #
 # File: src/about.py, line: 90
-#: mcomix/strings.py:44
+#: mcomix/strings.py:45
 msgid "Hungarian translation"
 msgstr "헝거리어 번역"
 
 #
 # File: src/about.py, line: 91
-#: mcomix/strings.py:45 mcomix/strings.py:46
+#: mcomix/strings.py:46 mcomix/strings.py:47
 msgid "Russian translation"
 msgstr "러시아어 번역"
 
 #
 # File: src/about.py, line: 92
-#: mcomix/strings.py:47
+#: mcomix/strings.py:48
 msgid "Croatian translation"
 msgstr "크로아티아어 번역"
 
 #
 # File: src/about.py, line: 93
-#: mcomix/strings.py:48
+#: mcomix/strings.py:49
 msgid "Korean translation"
 msgstr "한국어 번역"
 
 #
 # File: src/about.py, line: 94
-#: mcomix/strings.py:49
+#: mcomix/strings.py:50
 msgid "Persian translation"
 msgstr "이슬란어 번역"
 
 #
 # File: src/about.py, line: 95
-#: mcomix/strings.py:50
+#: mcomix/strings.py:51
 msgid "Indonesian translation"
 msgstr "인도네시아어 번역"
 
 #
 # File: src/about.py, line: 96
-#: mcomix/strings.py:51
+#: mcomix/strings.py:52
 msgid "Czech translation"
 msgstr "체코어 번역"
 
-#: mcomix/strings.py:52
+#: mcomix/strings.py:53
 msgid "Ukrainian translation"
 msgstr ""
 
 #
 # File: src/about.py, line: 82
-#: mcomix/strings.py:53
+#: mcomix/strings.py:54
 #, fuzzy
 msgid "Galician translation"
 msgstr "이탈리아어 번역"
 
-#: mcomix/strings.py:54
+#: mcomix/strings.py:55
 msgid "Swedish translation"
 msgstr ""
 
 #
 # File: src/about.py, line: 97
-#: mcomix/strings.py:57
+#: mcomix/strings.py:58
 msgid "Icon design"
 msgstr "아이콘 디자인"
 
-#: mcomix/thumbnail_tools.py:205
+#: mcomix/thumbnail_tools.py:209
 #, python-format
 msgid "! Could not save thumbnail \"%(thumbpath)s\": %(error)s"
 msgstr ""
@@ -2269,6 +2288,26 @@ msgid "Please enter the password to continue:"
 msgstr ""
 
 #
+# File: src/library.py, line: 609
+#~ msgid "Removed %d book(s) from the library."
+#~ msgstr "라이브러리에서 %d 만화책을 제거"
+
+#
+# File: src/library.py, line: 150
+#~ msgid "Rename..."
+#~ msgstr "이름바꾸기"
+
+#
+# File: src/library.py, line: 152
+#~ msgid "Duplicate collection"
+#~ msgstr "모음집사본"
+
+#
+# File: src/library.py, line: 154
+#~ msgid "Remove collection..."
+#~ msgstr "모음집 제거"
+
+#
 # File: src/about.py, line: 18
 # File: src/about.py, line: 67
 #~ msgid "About"
@@ -2485,11 +2524,6 @@ msgstr ""
 # File: src/library.py, line: 776
 #~ msgid "Cover size"
 #~ msgstr "표지 크기"
-
-#
-# File: src/library.py, line: 789
-#~ msgid "Add books"
-#~ msgstr "만화책 추가"
 
 #
 # File: src/bookmark.py, line: 256
