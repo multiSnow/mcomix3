@@ -43,8 +43,10 @@ class _ControlArea(gtk.HBox):
         insidebox.add(infobox)
 
         self._namelabel = labels.BoldLabel()
-        self._namelabel.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
         self._namelabel.set_alignment(0, 0.5)
+        self._namelabel.set_selectable(True)
+        self._namelabel.set_line_wrap(True)
+        self._namelabel.set_line_wrap_mode(pango.WRAP_CHAR)
         infobox.pack_start(self._namelabel, False, False)
 
         self._pageslabel = gtk.Label()
@@ -60,6 +62,7 @@ class _ControlArea(gtk.HBox):
         self._dirlabel = gtk.Label()
         self._dirlabel.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
         self._dirlabel.set_alignment(0, 0.5)
+        self._dirlabel.set_selectable(True)
         infobox.pack_start(self._dirlabel, False, False)
 
         vbox = gtk.VBox(False, 10)
