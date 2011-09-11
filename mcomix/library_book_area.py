@@ -14,6 +14,7 @@ import image_tools
 import constants
 import portability
 import callback
+import i18n
 
 _dialog = None
 
@@ -91,7 +92,7 @@ class _BookArea(gtk.ScrolledWindow):
                 _('Remove from the _library'), None, None,
                 self._remove_books_from_library),
             ('completely remove', gtk.STOCK_DELETE,
-                _('Completely _remove'), None, None,
+                _('_Remove and delete from disk'), None, None,
                 self._completely_remove_book)
                 ])
 
@@ -346,8 +347,11 @@ class _BookArea(gtk.ScrolledWindow):
                 self._library.backend.remove_book(book)
                 self.remove_book_at_path(path)
 
-            self._library.set_status_message(
-                _('Removed %d book(s) from the library.') % len(selected))
+            msg = i18n.get_translation().ngettext(
+                'Removed %d book from the library.',
+                'Removed %d books from the library.',
+                len(selected))
+            self._library.set_status_message(msg % len(selected))
 
     def _completely_remove_book(self, request_response=True, *args):
         """Remove the currently selected books from the library and the

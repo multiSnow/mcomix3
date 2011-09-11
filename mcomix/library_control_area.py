@@ -82,7 +82,7 @@ class _ControlArea(gtk.HBox):
         hbox.pack_start(search_entry, True, True, 6)
         label.set_mnemonic_widget(search_entry)
 
-        # TODO enable generic consistent kebindings for zoom in/zoom out/zoom 100. 
+        # TODO enable generic consistent kebindings for zoom in/zoom out/zoom 100.
         label = gtk.Label('%s:' % _('Cover si_ze'))
         label.set_use_underline(True)
 
@@ -164,22 +164,6 @@ class _ControlArea(gtk.HBox):
         add_book_button.set_tooltip_text(_('Add more books to the library.'))
         hbox.pack_start(add_book_button, False, False)
 
-        add_collection_button = gtk.Button(_('Add _folder'))
-        add_collection_button.connect('clicked', self._add_collection)
-        add_collection_button.set_image(gtk.image_new_from_stock(
-            gtk.STOCK_ADD, gtk.ICON_SIZE_BUTTON))
-        add_collection_button.set_tooltip_text(
-            _('Add a new empty collection.'))
-        hbox.pack_start(add_collection_button, False, False)
-
-        clean_button = gtk.Button(_('_Clean library'))
-        clean_button.connect('clicked', self._clean_library)
-        clean_button.set_image(gtk.image_new_from_stock(
-            gtk.STOCK_CLEAR, gtk.ICON_SIZE_BUTTON))
-        clean_button.set_tooltip_text(
-            _('Removes no longer existing books from the library.'))
-        hbox.pack_start(clean_button, False, False)
-
         self._open_button = gtk.Button(None, gtk.STOCK_OPEN)
         self._open_button.connect('clicked',
             self._library.book_area.open_selected_book)
@@ -238,56 +222,6 @@ class _ControlArea(gtk.HBox):
         the library.
         """
         file_chooser_library_dialog.open_library_filechooser_dialog(self._library)
-
-    def _add_collection(self, *args):
-        """Add a new collection to the library, through a dialog."""
-        add_dialog = gtk.MessageDialog(None, 0, gtk.MESSAGE_QUESTION,
-            gtk.BUTTONS_OK_CANCEL, _('Add new collection?'))
-        add_dialog.format_secondary_text(
-            _('Please enter a name for the new collection.'))
-        add_dialog.set_default_response(gtk.RESPONSE_OK)
-
-        box = gtk.HBox() # To get nice line-ups with the padding.
-        add_dialog.vbox.pack_start(box)
-        entry = gtk.Entry()
-        entry.set_text(_('New collection'))
-        entry.set_activates_default(True)
-        box.pack_start(entry, True, True, 6)
-        box.show_all()
-
-        response = add_dialog.run()
-        name = entry.get_text().decode('utf-8')
-        add_dialog.destroy()
-        if response == gtk.RESPONSE_OK and name:
-            if self._library.backend.add_collection(name):
-                collection = self._library.backend.get_collection_by_name(name)
-                prefs['last library collection'] = collection
-                self._library.collection_area.display_collections()
-            else:
-                message = _("Could not add a new collection called '%s'.") % (
-                    name)
-                if (self._library.backend.get_collection_by_name(name)
-                  is not None):
-                    message = '%s %s' % (message,
-                        _('A collection by that name already exists.'))
-                self._library.set_status_message(message)
-
-    def _clean_library(self, *args):
-        """ Check all books in the library, removing those that no longer exist. """
-        dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL,
-            gtk.MESSAGE_WARNING, gtk.BUTTONS_OK_CANCEL,
-            _("Do you want to remove non-existent books from the library?"))
-        dialog.format_secondary_text(
-            _("Books that appear in your library, but no longer exist at their original path, will be removed from the library. This clears books that have been moved or deleted outside of MComix."))
-        response = dialog.run()
-        dialog.destroy()
-
-        if response == gtk.RESPONSE_OK:
-            removed = self._library.backend.clean_collection()
-
-            if removed > 0:
-                collection = self._library.collection_area.get_current_collection()
-                gobject.idle_add(self._library.book_area.display_covers, collection)
 
     def _filter_books(self, entry, *args):
         """Display only the books in the current collection whose paths

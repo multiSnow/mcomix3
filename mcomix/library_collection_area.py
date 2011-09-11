@@ -30,6 +30,7 @@ class _CollectionArea(gtk.ScrolledWindow):
         self._treeview.connect_after('drag_begin', self._drag_begin)
         self._treeview.connect('button_press_event', self._button_press)
         self._treeview.connect('key_press_event', self._key_press)
+        self._treeview.connect('popup_menu', self._popup_menu)
         self._treeview.connect('row_activated', self._expand_or_collapse_row)
         self._treeview.set_headers_visible(False)
         self._treeview.set_rules_hint(True)
@@ -46,10 +47,14 @@ class _CollectionArea(gtk.ScrolledWindow):
         self._ui_manager = gtk.UIManager()
         ui_description = """
         <ui>
-            <popup name="Popup">
+            <popup name="library collections">
+                <menuitem action="_title" />
+                <separator />
+                <menuitem action="add" />
                 <menuitem action="rename" />
                 <menuitem action="duplicate" />
                 <separator />
+                <menuitem action="cleanup" />
                 <menuitem action="remove" />
             </popup>
         </ui>
@@ -57,11 +62,19 @@ class _CollectionArea(gtk.ScrolledWindow):
         self._ui_manager.add_ui_from_string(ui_description)
         actiongroup = gtk.ActionGroup('mcomix-library-collection-area')
         actiongroup.add_actions([
-            ('rename', None, _('Rename...'), None, None,
+            ('_title', None, _("Library collections"), None, None,
+                lambda *args: False),
+            ('add', gtk.STOCK_ADD, _('_Add'), None,
+                _('Add a new empty collection.'),
+                self.add_collection),
+            ('rename', gtk.STOCK_EDIT, _('Re_name'), None, None,
                 self._rename_collection),
-            ('duplicate', gtk.STOCK_COPY, _('Duplicate collection'), None, None,
+            ('duplicate', gtk.STOCK_COPY, _('_Duplicate'), None, None,
                 self._duplicate_collection),
-            ('remove', gtk.STOCK_REMOVE, _('Remove collection...'), None, None,
+            ('cleanup', gtk.STOCK_CLEAR, _('_Clean up'), None,
+                _('Removes no longer existant books from the collection.'),
+                self._clean_collection),
+            ('remove', gtk.STOCK_REMOVE, _('_Remove'), None, None,
                 self._remove_collection)])
         self._ui_manager.insert_action_group(actiongroup, 0)
 
@@ -114,6 +127,59 @@ class _CollectionArea(gtk.ScrolledWindow):
         _recursive_add(None, None)
         self._treestore.foreach(_expand_and_select)
 
+    def add_collection(self, *args):
+        """Add a new collection to the library, through a dialog."""
+        add_dialog = gtk.MessageDialog(None, 0, gtk.MESSAGE_INFO,
+            gtk.BUTTONS_OK_CANCEL, _('Add new collection?'))
+        add_dialog.format_secondary_text(
+            _('Please enter a name for the new collection.'))
+        add_dialog.set_default_response(gtk.RESPONSE_OK)
+
+        box = gtk.HBox() # To get nice line-ups with the padding.
+        add_dialog.vbox.pack_start(box)
+        entry = gtk.Entry()
+        entry.set_text(_('New collection'))
+        entry.set_activates_default(True)
+        box.pack_start(entry, True, True, 6)
+        box.show_all()
+
+        response = add_dialog.run()
+        name = entry.get_text().decode('utf-8')
+        add_dialog.destroy()
+        if response == gtk.RESPONSE_OK and name:
+            if self._library.backend.add_collection(name):
+                collection = self._library.backend.get_collection_by_name(name)
+                prefs['last library collection'] = collection
+                self._library.collection_area.display_collections()
+            else:
+                message = _("Could not add a new collection called '%s'.") % (
+                    name)
+                if (self._library.backend.get_collection_by_name(name)
+                  is not None):
+                    message = '%s %s' % (message,
+                        _('A collection by that name already exists.'))
+                self._library.set_status_message(message)
+
+    def clean_collection(self, collection):
+        """ Check all books in the collection, removing those that
+        no longer exist. If C{collection} is None, the whole library
+        will be cleaned. """
+
+        dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL,
+            gtk.MESSAGE_WARNING, gtk.BUTTONS_OK_CANCEL,
+            _("Do you want to remove non-existent books from the library?"))
+        dialog.format_secondary_text(
+            _("Books that appear in your library, but no longer exist at their original path, will be removed from the library. This clears books that have been moved or deleted outside of MComix."))
+        response = dialog.run()
+        dialog.destroy()
+
+        if response == gtk.RESPONSE_OK:
+            removed = self._library.backend.clean_collection(collection)
+
+            if removed > 0:
+                collection = self._library.collection_area.get_current_collection()
+                gobject.idle_add(self._library.book_area.display_covers, collection)
+
     def _get_collection_at_path(self, path):
         """Return the collection ID of the collection at the (TreeView)
         <path>.
@@ -131,6 +197,17 @@ class _CollectionArea(gtk.ScrolledWindow):
             return
         prefs['last library collection'] = collection
         gobject.idle_add(self._library.book_area.display_covers, collection)
+
+    def _clean_collection(self, *args):
+        """ Menu item hook to clean a collection. """
+
+        collection = self.get_current_collection()
+
+        # The backend expects _COLLECTION_ALL to be passed as None
+        if collection == _COLLECTION_ALL:
+            collection = None
+
+        self.clean_collection(collection)
 
     def _remove_collection(self, action=None):
         """Remove the currently selected collection from the library, if the
@@ -196,20 +273,48 @@ class _CollectionArea(gtk.ScrolledWindow):
 
     def _button_press(self, treeview, event):
         """Handle mouse button presses on the _CollectionArea."""
-        row = treeview.get_path_at_pos(int(event.x), int(event.y))
-        if row is None:
-            return
-        path = row[0]
+
         if event.button == 3:
-            if self._get_collection_at_path(path) == _COLLECTION_ALL:
-                sens = False
+            row = treeview.get_path_at_pos(int(event.x), int(event.y))
+            if row:
+                path, column, x, y = row
+                collection = self._get_collection_at_path(path)
             else:
-                sens = True
-            self._ui_manager.get_action('/Popup/rename').set_sensitive(sens)
-            self._ui_manager.get_action('/Popup/duplicate').set_sensitive(sens)
-            self._ui_manager.get_action('/Popup/remove').set_sensitive(sens)
-            self._ui_manager.get_widget('/Popup').popup(None, None, None,
-                event.button, event.time)
+                collection = None
+
+            self._popup_collection_menu(collection)
+
+    def _popup_menu(self, treeview):
+        """ Called to open the control's popup menu via
+        keyboard controls. """
+
+        model, iter = treeview.get_selection().get_selected()
+        if iter is not None:
+            book_path = model.get_path(iter)[0]
+            collection = self._get_collection_at_path(book_path)
+        else:
+            collection = None
+
+        self._popup_collection_menu(collection)
+        return True
+
+    def _popup_collection_menu(self, collection):
+        """ Show the library collection popup. Depending on the
+        value of C{collection}, menu items will be disabled or enabled. """
+
+        is_collection_all = collection == _COLLECTION_ALL
+
+        for path in ('rename', 'duplicate', 'remove'):
+            control = self._ui_manager.get_action(
+                    '/library collections/' + path)
+            control.set_sensitive(collection is not None and
+                    not is_collection_all)
+
+        self._ui_manager.get_action('/library collections/cleanup').set_sensitive(collection is not None)
+        self._ui_manager.get_action('/library collections/_title').set_sensitive(False)
+
+        menu = self._ui_manager.get_widget('/library collections')
+        menu.popup(None, None, None, 3, gtk.get_current_event_time())
 
     def _key_press(self, treeview, event):
         """Handle key presses on the _CollectionArea."""
