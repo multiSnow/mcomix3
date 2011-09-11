@@ -40,7 +40,7 @@ class _BookArea(gtk.ScrolledWindow):
         # The SORT_ constants must correspond to the correct column here,
         # i.e. SORT_SIZE must be 3, since 3 is the size column in the ListStore.
         self._liststore = gtk.ListStore(gtk.gdk.Pixbuf,
-                gobject.TYPE_INT, gobject.TYPE_STRING, gobject.TYPE_INT)
+                gobject.TYPE_INT, gobject.TYPE_STRING, gobject.TYPE_INT64)
         self._liststore.set_sort_func(constants.SORT_NAME, self._sort_by_name, None)
         self._iconview = gtk.IconView(self._liststore)
         self._iconview.set_pixbuf_column(0)
