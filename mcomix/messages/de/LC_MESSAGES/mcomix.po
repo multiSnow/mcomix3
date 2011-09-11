@@ -599,7 +599,7 @@ msgstr "Weitere Bücher zu der Bibliothek hinzufügen."
 
 #: mcomix/library_control_area.py:164
 msgid "Add _folder"
-msgstr "_Ordner hinzufügen"
+msgstr "_Sammlung hinzufügen"
 
 #: mcomix/library_control_area.py:169
 msgid "Add a new empty collection."
