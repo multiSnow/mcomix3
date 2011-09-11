@@ -15,6 +15,7 @@ import constants
 import portability
 import callback
 import i18n
+import file_chooser_library_dialog
 
 _dialog = None
 
@@ -52,6 +53,7 @@ class _BookArea(gtk.ScrolledWindow):
         self._iconview.connect('drag_data_received', self._drag_data_received)
         self._iconview.connect('button_press_event', self._button_press)
         self._iconview.connect('key_press_event', self._key_press)
+        self._iconview.connect('popup_menu', self._popup_menu)
         self._iconview.modify_base(gtk.STATE_NORMAL, gtk.gdk.Color()) # Black.
         self._iconview.enable_model_drag_source(0,
             [('book', gtk.TARGET_SAME_APP, constants.LIBRARY_DRAG_EXTERNAL_ID)],
@@ -66,9 +68,13 @@ class _BookArea(gtk.ScrolledWindow):
 
         ui_description = """
         <ui>
-            <popup name="Popup">
+            <popup name="library books">
+                <menuitem action="_title" />
+                <separator />
                 <menuitem action="open" />
-                <menuitem action="open_nowinclose" />
+                <menuitem action="open keep library" />
+                <separator />
+                <menuitem action="add" />
                 <separator />
                 <menuitem action="remove from collection" />
                 <menuitem action="remove from library" />
@@ -80,11 +86,16 @@ class _BookArea(gtk.ScrolledWindow):
         self._ui_manager.add_ui_from_string(ui_description)
         actiongroup = gtk.ActionGroup('mcomix-library-book-area')
         actiongroup.add_actions([
+            ('_title', None, _('Library books'), None, None,
+                lambda *args: False),
             ('open', gtk.STOCK_OPEN, _('_Open'), None, None,
                 self.open_selected_book),
-            ('open_nowinclose', gtk.STOCK_OPEN,
+            ('open keep library', gtk.STOCK_OPEN,
                 _('Open _without closing library'), None, None,
                 self.open_selected_book_noclose),
+            ('add', gtk.STOCK_ADD, _('_Add...'), '<Ctrl>a',
+                _('Add more books to the library.'),
+                lambda *args: file_chooser_library_dialog.open_library_filechooser_dialog(self._library)),
             ('remove from collection', gtk.STOCK_REMOVE,
                 _('Remove from this _collection'), None, None,
                 self._remove_books_from_collection),
@@ -97,6 +108,7 @@ class _BookArea(gtk.ScrolledWindow):
                 ])
 
         self._ui_manager.insert_action_group(actiongroup, 0)
+        library.add_accel_group(self._ui_manager.get_accel_group())
 
     def close(self):
         """Run clean-up tasks for the _BookArea prior to closing."""
@@ -392,36 +404,51 @@ class _BookArea(gtk.ScrolledWindow):
     def _button_press(self, iconview, event):
         """Handle mouse button presses on the _BookArea."""
         path = iconview.get_path_at_pos(int(event.x), int(event.y))
-        if path is None:
-            return
+
         # For some reason we don't always get an item_activated event when
         # double-clicking on an icon, so we handle it explicitly here.
-        if event.type == gtk.gdk._2BUTTON_PRESS:
+        if event.type == gtk.gdk._2BUTTON_PRESS and path is not None:
             self._book_activated(iconview, path)
+
         if event.button == 3:
-            if not iconview.path_is_selected(path):
+            if path and not iconview.path_is_selected(path):
                 iconview.unselect_all()
                 iconview.select_path(path)
-            if len(iconview.get_selected_items()) > 0:
-                self._ui_manager.get_action('/Popup/open').set_sensitive(True)
-                self._ui_manager.get_action('/Popup/open_nowinclose').set_sensitive(True)
-            else:
-                self._ui_manager.get_action('/Popup/open').set_sensitive(False)
-                self._ui_manager.get_action('/Popup/open_nowinclose').set_sensitive(False)
-            if (self._library.collection_area.get_current_collection() ==
-              _COLLECTION_ALL):
-                self._ui_manager.get_action(
-                    '/Popup/remove from collection').set_sensitive(False)
-            else:
-                self._ui_manager.get_action(
-                    '/Popup/remove from collection').set_sensitive(True)
-            self._ui_manager.get_widget('/Popup').popup(None, None, None,
-                event.button, event.time)
+
+            self._popup_book_menu()
+
+    def _popup_book_menu(self):
+        """ Shows the book panel popup menu. """
+
+        books_selected = len(self._iconview.get_selected_items()) > 0
+        collection = self._library.collection_area.get_current_collection()
+        is_collection_all = collection == _COLLECTION_ALL
+
+        for action in ('open', 'open keep library', 'remove from library', 'completely remove'):
+            self._set_sensitive(action, books_selected)
+
+        self._set_sensitive('_title', False)
+        self._set_sensitive('add', collection is not None)
+        self._set_sensitive('remove from collection', books_selected and not is_collection_all)
+
+        menu = self._ui_manager.get_widget('/library books')
+        menu.popup(None, None, None, 3, gtk.get_current_event_time())
+
+    def _set_sensitive(self, action, sensitive):
+        """ Enables the popup menu action <action> based on <sensitive>. """
+
+        control = self._ui_manager.get_action('/library books/' + action)
+        control.set_sensitive(sensitive)
 
     def _key_press(self, iconview, event):
         """Handle key presses on the _BookArea."""
         if event.keyval == gtk.keysyms.Delete:
             self._remove_books_from_collection()
+
+    def _popup_menu(self, iconview):
+        """ Called when the menu key is pressed to open the popup menu. """
+        self._popup_book_menu()
+        return True
 
     def _drag_begin(self, iconview, context):
         """Create a cursor image for drag-n-drop from the library.

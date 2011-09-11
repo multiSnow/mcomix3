@@ -64,7 +64,7 @@ class _CollectionArea(gtk.ScrolledWindow):
         actiongroup.add_actions([
             ('_title', None, _("Library collections"), None, None,
                 lambda *args: False),
-            ('add', gtk.STOCK_ADD, _('_Add'), None,
+            ('add', gtk.STOCK_ADD, _('_Add...'), None,
                 _('Add a new empty collection.'),
                 self.add_collection),
             ('rename', gtk.STOCK_EDIT, _('Re_name'), None, None,

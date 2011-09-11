@@ -16,6 +16,7 @@ class _LibraryFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog)
     def __init__(self, library):
         file_chooser_base_dialog._BaseFileChooserDialog.__init__(self)
         self.set_transient_for(library)
+        self.set_title(_('Add books'))
 
         self._library = library
 

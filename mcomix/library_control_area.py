@@ -6,7 +6,6 @@ import gtk
 import gobject
 import pango
 import i18n
-import file_chooser_library_dialog
 import labels
 import strings
 import constants
@@ -154,15 +153,9 @@ class _ControlArea(gtk.HBox):
         # Add empty box to fill space between upper controls and buttons.
         vbox.pack_start(gtk.HBox(), True, True)
 
-        # Last line of controls, containing buttons like 'Add' and 'Open'
+        # Last line of controls, containing buttons like 'Open'
         hbox = gtk.HBox(False, 10)
         vbox.pack_start(hbox, False, False)
-        add_book_button = gtk.Button(_('_Add books'))
-        add_book_button.set_image(gtk.image_new_from_stock(
-            gtk.STOCK_ADD, gtk.ICON_SIZE_BUTTON))
-        add_book_button.connect('clicked', self._add_books)
-        add_book_button.set_tooltip_text(_('Add more books to the library.'))
-        hbox.pack_start(add_book_button, False, False)
 
         self._open_button = gtk.Button(None, gtk.STOCK_OPEN)
         self._open_button.connect('clicked',
@@ -216,12 +209,6 @@ class _ControlArea(gtk.HBox):
             self._dirlabel.set_text(i18n.to_unicode(dir_path))
         else:
             self._dirlabel.set_text('')
-
-    def _add_books(self, *args):
-        """Open up a filechooser dialog from which books can be added to
-        the library.
-        """
-        file_chooser_library_dialog.open_library_filechooser_dialog(self._library)
 
     def _filter_books(self, entry, *args):
         """Display only the books in the current collection whose paths
