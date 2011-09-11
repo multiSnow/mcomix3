@@ -19,7 +19,7 @@ class _PreferencesDialog(gtk.Dialog):
 
     def __init__(self, window):
         gtk.Dialog.__init__(self, _('Preferences'), window, gtk.DIALOG_MODAL)
-        
+
         reset = self.add_button(_('Clear dialog choices'), constants.RESPONSE_REVERT_TO_DEFAULT)
         reset.set_tooltip_text(_('Clears all dialog choices that you have previously chosen not to be asked again.'))
         close = self.add_button(gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
