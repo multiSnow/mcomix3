@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.92\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2011-09-11 19:23+0200\n"
+"POT-Creation-Date: 2011-09-20 16:01+0200\n"
 "PO-Revision-Date: 2011-05-01 22:21+0900\n"
 "Last-Translator: Keita Haga <keitahaga@mail.com>\n"
 "Language-Team: \n"
@@ -540,13 +540,13 @@ msgstr "開く(_O)"
 msgid "Open _without closing library"
 msgstr ""
 
-#: mcomix/library_book_area.py:96 mcomix/library_collection_area.py:67
+#: mcomix/library_book_area.py:96 mcomix/library_collection_area.py:70
 msgid "_Add..."
 msgstr ""
 
 #
 # File: src/library.py, line: 793
-#: mcomix/library_book_area.py:97
+#: mcomix/library_book_area.py:97 mcomix/library_collection_area.py:71
 msgid "Add more books to the library."
 msgstr "ライブラリに本を追加する"
 
@@ -614,63 +614,67 @@ msgstr ""
 msgid "! Could not remove file \"%s\""
 msgstr "%sを読めませんでした"
 
-#: mcomix/library_collection_area.py:65
+#: mcomix/library_collection_area.py:68
 msgid "Library collections"
+msgstr ""
+
+#: mcomix/library_collection_area.py:73
+msgid "New"
 msgstr ""
 
 #
 # File: src/library.py, line: 800
-#: mcomix/library_collection_area.py:68
+#: mcomix/library_collection_area.py:74
 msgid "Add a new empty collection."
 msgstr "空のコレクションを新規作成する"
 
-#: mcomix/library_collection_area.py:70
+#: mcomix/library_collection_area.py:76
 msgid "Re_name"
 msgstr ""
 
-#: mcomix/library_collection_area.py:72
+#: mcomix/library_collection_area.py:78
 msgid "_Duplicate"
 msgstr ""
 
-#: mcomix/library_collection_area.py:74
+#: mcomix/library_collection_area.py:80
 msgid "_Clean up"
 msgstr ""
 
-#: mcomix/library_collection_area.py:75
+#: mcomix/library_collection_area.py:81
 msgid "Removes no longer existant books from the collection."
 msgstr ""
 
-#: mcomix/library_collection_area.py:77
+#: mcomix/library_collection_area.py:83
 msgid "_Remove"
 msgstr ""
 
 #
 # File: src/library.py, line: 202
-#: mcomix/library_collection_area.py:125
+#: mcomix/library_collection_area.py:131
 msgid "All books"
 msgstr "全ての本"
 
 #
 # File: src/library.py, line: 854
-#: mcomix/library_collection_area.py:133
+#: mcomix/library_collection_area.py:139
 msgid "Add new collection?"
 msgstr "新しいコレクションを追加しますか？"
 
 #
 # File: src/library.py, line: 856
-#: mcomix/library_collection_area.py:135
+#: mcomix/library_collection_area.py:141
 msgid "Please enter a name for the new collection."
 msgstr "新しいコレクションの名前を入力してください。"
 
 #
 # File: src/library.py, line: 862
-#: mcomix/library_collection_area.py:141
+#: mcomix/library_collection_area.py:147
 msgid "New collection"
 msgstr "新しいコレクション"
 
 #
 # File: src/library.py, line: 876
-#: mcomix/library_collection_area.py:155
+#: mcomix/library_collection_area.py:161
 #, python-format
 msgid "Could not add a new collection called '%s'."
 msgstr "'%s'という名前の新しいコレクションを追加出来ませんでした。"
@@ -678,18 +682,18 @@ msgstr "'%s'という名前の新しいコレクションを追加出来ませ�
 #
 # File: src/library.py, line: 275
 # File: src/library.py, line: 881
-#: mcomix/library_collection_area.py:160 mcomix/library_collection_area.py:262
+#: mcomix/library_collection_area.py:166 mcomix/library_collection_area.py:268
 msgid "A collection by that name already exists."
 msgstr "その名前のコレクションは既に存在します。"
 
 #
 # File: src/library.py, line: 597
-#: mcomix/library_collection_area.py:170
+#: mcomix/library_collection_area.py:176
 #, fuzzy
 msgid "Do you want to remove non-existent books from the library?"
 msgstr "ライブラリから本を削除しますか？"
 
-#: mcomix/library_collection_area.py:172
+#: mcomix/library_collection_area.py:178
 msgid ""
 "Books that appear in your library, but no longer exist at their original "
 "path, will be removed from the library. This clears books that have been "
@@ -698,13 +702,13 @@ msgstr ""
 
 #
 # File: src/library.py, line: 231
-#: mcomix/library_collection_area.py:218
+#: mcomix/library_collection_area.py:224
 msgid "Remove collection from the library?"
 msgstr "コレクションをライブラリから削除しますか？"
 
 #
 # File: src/library.py, line: 233
-#: mcomix/library_collection_area.py:220
+#: mcomix/library_collection_area.py:226
 msgid ""
 "The selected collection will be removed from the library (but the books and "
 "subcollections in it will remain). Are you sure that you want to continue?"
@@ -714,38 +718,38 @@ msgstr ""
 
 #
 # File: src/library.py, line: 251
-#: mcomix/library_collection_area.py:238
+#: mcomix/library_collection_area.py:244
 msgid "Rename collection?"
 msgstr "コレクションの名前を変更しますか？"
 
 #
 # File: src/library.py, line: 253
-#: mcomix/library_collection_area.py:240
+#: mcomix/library_collection_area.py:246
 msgid "Please enter a new name for the selected collection."
 msgstr "選択されたコレクションの新しい名前を入力してください。"
 
 #
 # File: src/library.py, line: 271
-#: mcomix/library_collection_area.py:258
+#: mcomix/library_collection_area.py:264
 #, python-format
 msgid "Could not change the name to '%s'."
 msgstr "'%s'の名前を変更出来ませんでした。"
 
 #
 # File: src/library.py, line: 285
-#: mcomix/library_collection_area.py:272
+#: mcomix/library_collection_area.py:278
 msgid "Could not duplicate collection."
 msgstr "コレクションを複製出来ませんでした。"
 
 #
 # File: src/library.py, line: 382
-#: mcomix/library_collection_area.py:397
+#: mcomix/library_collection_area.py:404
 msgid "Root"
 msgstr "ルート"
 
 #
 # File: src/library.py, line: 386
-#: mcomix/library_collection_area.py:401
+#: mcomix/library_collection_area.py:408
 #, python-format
 msgid ""
 "Put the collection '%(subcollection)s' in the collection "
@@ -756,14 +760,14 @@ msgstr ""
 
 #
 # File: src/library.py, line: 407
-#: mcomix/library_collection_area.py:422
+#: mcomix/library_collection_area.py:429
 #, python-format
 msgid "Add books to '%s'."
 msgstr "本を'%s'に加える"
 
 #
 # File: src/library.py, line: 411
-#: mcomix/library_collection_area.py:426
+#: mcomix/library_collection_area.py:433
 #, python-format
 msgid ""
 "Move books from '%(source collection)s' to '%(destination collection)s'."

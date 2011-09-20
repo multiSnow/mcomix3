@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Comix 4.0\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2011-09-11 19:23+0200\n"
+"POT-Creation-Date: 2011-09-20 16:01+0200\n"
 "PO-Revision-Date: 2009-03-11 14:57+0800\n"
 "Last-Translator: Wayne Su <mstarmstar@gmail.com>\n"
 "Language-Team: \n"
@@ -429,11 +429,11 @@ msgstr ""
 msgid "Open _without closing library"
 msgstr ""
 
-#: mcomix/library_book_area.py:96 mcomix/library_collection_area.py:67
+#: mcomix/library_book_area.py:96 mcomix/library_collection_area.py:70
 msgid "_Add..."
 msgstr ""
 
-#: mcomix/library_book_area.py:97
+#: mcomix/library_book_area.py:97 mcomix/library_collection_area.py:71
 msgid "Add more books to the library."
 msgstr "加入更多書籍到收藏庫中。"
 
@@ -483,114 +483,118 @@ msgstr "這些書籍將從收藏庫中移除，但原始檔案不會受影響。
 msgid "! Could not remove file \"%s\""
 msgstr ""
 
-#: mcomix/library_collection_area.py:65
+#: mcomix/library_collection_area.py:68
 msgid "Library collections"
 msgstr ""
 
-#: mcomix/library_collection_area.py:68
-msgid "Add a new empty collection."
-msgstr "加入新的空白收藏。"
-
-#: mcomix/library_collection_area.py:70
-msgid "Re_name"
-msgstr ""
-
-#: mcomix/library_collection_area.py:72
-msgid "_Duplicate"
+#: mcomix/library_collection_area.py:73
+msgid "New"
 msgstr ""
 
 #: mcomix/library_collection_area.py:74
+msgid "Add a new empty collection."
+msgstr "加入新的空白收藏。"
+
+#: mcomix/library_collection_area.py:76
+msgid "Re_name"
+msgstr ""
+
+#: mcomix/library_collection_area.py:78
+msgid "_Duplicate"
+msgstr ""
+
+#: mcomix/library_collection_area.py:80
 msgid "_Clean up"
 msgstr ""
 
-#: mcomix/library_collection_area.py:75
+#: mcomix/library_collection_area.py:81
 msgid "Removes no longer existant books from the collection."
 msgstr ""
 
-#: mcomix/library_collection_area.py:77
+#: mcomix/library_collection_area.py:83
 msgid "_Remove"
 msgstr ""
 
-#: mcomix/library_collection_area.py:125
+#: mcomix/library_collection_area.py:131
 msgid "All books"
 msgstr "所有書籍"
 
-#: mcomix/library_collection_area.py:133
+#: mcomix/library_collection_area.py:139
 msgid "Add new collection?"
 msgstr "加入新收藏嗎？"
 
-#: mcomix/library_collection_area.py:135
+#: mcomix/library_collection_area.py:141
 msgid "Please enter a name for the new collection."
 msgstr "請輸入新收藏的名稱。"
 
-#: mcomix/library_collection_area.py:141
+#: mcomix/library_collection_area.py:147
 msgid "New collection"
 msgstr "新收藏"
 
-#: mcomix/library_collection_area.py:155
+#: mcomix/library_collection_area.py:161
 #, python-format
 msgid "Could not add a new collection called '%s'."
 msgstr "無法新增收藏 %s 。"
 
-#: mcomix/library_collection_area.py:160 mcomix/library_collection_area.py:262
+#: mcomix/library_collection_area.py:166 mcomix/library_collection_area.py:268
 msgid "A collection by that name already exists."
 msgstr "已有相同名稱的收藏。"
 
-#: mcomix/library_collection_area.py:170
+#: mcomix/library_collection_area.py:176
 msgid "Do you want to remove non-existent books from the library?"
 msgstr ""
 
-#: mcomix/library_collection_area.py:172
+#: mcomix/library_collection_area.py:178
 msgid ""
 "Books that appear in your library, but no longer exist at their original "
 "path, will be removed from the library. This clears books that have been "
 "moved or deleted outside of MComix."
 msgstr ""
 
-#: mcomix/library_collection_area.py:218
+#: mcomix/library_collection_area.py:224
 msgid "Remove collection from the library?"
 msgstr "要從收藏庫中移除收藏嗎？"
 
-#: mcomix/library_collection_area.py:220
+#: mcomix/library_collection_area.py:226
 msgid ""
 "The selected collection will be removed from the library (but the books and "
 "subcollections in it will remain). Are you sure that you want to continue?"
 msgstr "這些收藏將從收藏庫中移除，但書籍與子收藏仍會留著。您確定要繼續嗎？"
 
-#: mcomix/library_collection_area.py:238
+#: mcomix/library_collection_area.py:244
 msgid "Rename collection?"
 msgstr "重新命名收藏？"
 
-#: mcomix/library_collection_area.py:240
+#: mcomix/library_collection_area.py:246
 msgid "Please enter a new name for the selected collection."
 msgstr "請輸入此收藏的新名稱。"
 
-#: mcomix/library_collection_area.py:258
+#: mcomix/library_collection_area.py:264
 #, python-format
 msgid "Could not change the name to '%s'."
 msgstr "無法變更名稱為「%s」。"
 
-#: mcomix/library_collection_area.py:272
+#: mcomix/library_collection_area.py:278
 msgid "Could not duplicate collection."
 msgstr "無法備份收藏。"
 
-#: mcomix/library_collection_area.py:397
+#: mcomix/library_collection_area.py:404
 msgid "Root"
 msgstr "Root"
 
-#: mcomix/library_collection_area.py:401
+#: mcomix/library_collection_area.py:408
 #, python-format
 msgid ""
 "Put the collection '%(subcollection)s' in the collection "
 "'%(supercollection)s'."
 msgstr "將收藏 %(subcollection)s 放到 %(supercollection)s 。"
 
-#: mcomix/library_collection_area.py:422
+#: mcomix/library_collection_area.py:429
 #, python-format
 msgid "Add books to '%s'."
 msgstr "將書籍加入 %s。"
 
-#: mcomix/library_collection_area.py:426
+#: mcomix/library_collection_area.py:433
 #, python-format
 msgid ""
 "Move books from '%(source collection)s' to '%(destination collection)s'."

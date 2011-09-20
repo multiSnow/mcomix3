@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Comix 4.0.3\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2011-09-11 19:23+0200\n"
+"POT-Creation-Date: 2011-09-20 16:01+0200\n"
 "PO-Revision-Date: 2009-01-26 19:34+0100\n"
 "Last-Translator: Ernő Drabik <drerno@gmail.com>\n"
 "Language-Team: \n"
@@ -422,11 +422,11 @@ msgstr ""
 msgid "Open _without closing library"
 msgstr ""
 
-#: mcomix/library_book_area.py:96 mcomix/library_collection_area.py:67
+#: mcomix/library_book_area.py:96 mcomix/library_collection_area.py:70
 msgid "_Add..."
 msgstr ""
 
-#: mcomix/library_book_area.py:97
+#: mcomix/library_book_area.py:97 mcomix/library_collection_area.py:71
 msgid "Add more books to the library."
 msgstr "Több könyv hozzáadása a könyvtárhoz."
 
@@ -480,75 +480,79 @@ msgstr ""
 msgid "! Could not remove file \"%s\""
 msgstr ""
 
-#: mcomix/library_collection_area.py:65
+#: mcomix/library_collection_area.py:68
 msgid "Library collections"
 msgstr ""
 
-#: mcomix/library_collection_area.py:68
-msgid "Add a new empty collection."
-msgstr "Új, üres gyűjtemény hozzáadása."
-
-#: mcomix/library_collection_area.py:70
-msgid "Re_name"
-msgstr ""
-
-#: mcomix/library_collection_area.py:72
-msgid "_Duplicate"
+#: mcomix/library_collection_area.py:73
+msgid "New"
 msgstr ""
 
 #: mcomix/library_collection_area.py:74
+msgid "Add a new empty collection."
+msgstr "Új, üres gyűjtemény hozzáadása."
+
+#: mcomix/library_collection_area.py:76
+msgid "Re_name"
+msgstr ""
+
+#: mcomix/library_collection_area.py:78
+msgid "_Duplicate"
+msgstr ""
+
+#: mcomix/library_collection_area.py:80
 msgid "_Clean up"
 msgstr ""
 
-#: mcomix/library_collection_area.py:75
+#: mcomix/library_collection_area.py:81
 msgid "Removes no longer existant books from the collection."
 msgstr ""
 
-#: mcomix/library_collection_area.py:77
+#: mcomix/library_collection_area.py:83
 msgid "_Remove"
 msgstr ""
 
-#: mcomix/library_collection_area.py:125
+#: mcomix/library_collection_area.py:131
 msgid "All books"
 msgstr "Minden könyv"
 
-#: mcomix/library_collection_area.py:133
+#: mcomix/library_collection_area.py:139
 msgid "Add new collection?"
 msgstr "Új gyűjtemény hozzáadása?"
 
-#: mcomix/library_collection_area.py:135
+#: mcomix/library_collection_area.py:141
 msgid "Please enter a name for the new collection."
 msgstr "Adja meg az új gyűjtemény nevét."
 
-#: mcomix/library_collection_area.py:141
+#: mcomix/library_collection_area.py:147
 msgid "New collection"
 msgstr "Új gyűjtemény."
 
-#: mcomix/library_collection_area.py:155
+#: mcomix/library_collection_area.py:161
 #, python-format
 msgid "Could not add a new collection called '%s'."
 msgstr "Nem lehetett hozzáadni a '%s' nevű gyűjteményt."
 
-#: mcomix/library_collection_area.py:160 mcomix/library_collection_area.py:262
+#: mcomix/library_collection_area.py:166 mcomix/library_collection_area.py:268
 msgid "A collection by that name already exists."
 msgstr "A megadott nevű gyűjtemény már létezik."
 
-#: mcomix/library_collection_area.py:170
+#: mcomix/library_collection_area.py:176
 msgid "Do you want to remove non-existent books from the library?"
 msgstr ""
 
-#: mcomix/library_collection_area.py:172
+#: mcomix/library_collection_area.py:178
 msgid ""
 "Books that appear in your library, but no longer exist at their original "
 "path, will be removed from the library. This clears books that have been "
 "moved or deleted outside of MComix."
 msgstr ""
 
-#: mcomix/library_collection_area.py:218
+#: mcomix/library_collection_area.py:224
 msgid "Remove collection from the library?"
 msgstr "Törli a gyűjteményt a könyvtárból?"
 
-#: mcomix/library_collection_area.py:220
+#: mcomix/library_collection_area.py:226
 msgid ""
 "The selected collection will be removed from the library (but the books and "
 "subcollections in it will remain). Are you sure that you want to continue?"
@@ -556,28 +560,28 @@ msgstr ""
 "A kiválasztott gyűjtemény kikerül a könyvtárból (de a benne lévő könyvek és "
 "algyűjtemények megmaradnak). Biztosan folytatja?"
 
-#: mcomix/library_collection_area.py:238
+#: mcomix/library_collection_area.py:244
 msgid "Rename collection?"
 msgstr "Átnevezi a gyűjteményt?"
 
-#: mcomix/library_collection_area.py:240
+#: mcomix/library_collection_area.py:246
 msgid "Please enter a new name for the selected collection."
 msgstr "Adja meg a kiválasztott gyűjtemény új nevét."
 
-#: mcomix/library_collection_area.py:258
+#: mcomix/library_collection_area.py:264
 #, python-format
 msgid "Could not change the name to '%s'."
 msgstr "A nevet nem lehet megváltoztatni a következőre: '%s'."
 
-#: mcomix/library_collection_area.py:272
+#: mcomix/library_collection_area.py:278
 msgid "Could not duplicate collection."
 msgstr "A gyűjteményt nem lehet duplikálni."
 
-#: mcomix/library_collection_area.py:397
+#: mcomix/library_collection_area.py:404
 msgid "Root"
 msgstr "Alapkönyvtár"
 
-#: mcomix/library_collection_area.py:401
+#: mcomix/library_collection_area.py:408
 #, python-format
 msgid ""
 "Put the collection '%(subcollection)s' in the collection "
@@ -586,12 +590,12 @@ msgstr ""
 "A '%(subcollection)s' gyűjtemény áthelyezése a következőbe: "
 "'%(supercollection)s'."
 
-#: mcomix/library_collection_area.py:422
+#: mcomix/library_collection_area.py:429
 #, python-format
 msgid "Add books to '%s'."
 msgstr "Könyvek hozzáadása a következőhöz: '%s'."
 
-#: mcomix/library_collection_area.py:426
+#: mcomix/library_collection_area.py:433
 #, python-format
 msgid ""
 "Move books from '%(source collection)s' to '%(destination collection)s'."
