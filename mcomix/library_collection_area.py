@@ -5,6 +5,7 @@ import gtk
 import gobject
 import constants
 from preferences import prefs
+import file_chooser_library_dialog
 
 _dialog = None
 # The "All books" collection is not a real collection stored in the library,
@@ -51,6 +52,8 @@ class _CollectionArea(gtk.ScrolledWindow):
                 <menuitem action="_title" />
                 <separator />
                 <menuitem action="add" />
+                <separator />
+                <menuitem action="new" />
                 <menuitem action="rename" />
                 <menuitem action="duplicate" />
                 <separator />
@@ -65,6 +68,9 @@ class _CollectionArea(gtk.ScrolledWindow):
             ('_title', None, _("Library collections"), None, None,
                 lambda *args: False),
             ('add', gtk.STOCK_ADD, _('_Add...'), None,
+                _('Add more books to the library.'),
+                lambda *args: file_chooser_library_dialog.open_library_filechooser_dialog(self._library)),
+            ('new', gtk.STOCK_NEW, _('New'), None,
                 _('Add a new empty collection.'),
                 self.add_collection),
             ('rename', gtk.STOCK_EDIT, _('Re_name'), None, None,
@@ -310,6 +316,7 @@ class _CollectionArea(gtk.ScrolledWindow):
             control.set_sensitive(collection is not None and
                     not is_collection_all)
 
+        self._ui_manager.get_action('/library collections/add').set_sensitive(collection is not None)
         self._ui_manager.get_action('/library collections/cleanup').set_sensitive(collection is not None)
         self._ui_manager.get_action('/library collections/_title').set_sensitive(False)
 
