@@ -15,8 +15,6 @@ class EventHandler:
 
         self._last_pointer_pos_x = 0
         self._last_pointer_pos_y = 0
-        self._last_lens_pos_x = 0
-        self._last_lens_pos_y = 0
         self._pressed_pointer_pos_x = 0
         self._pressed_pointer_pos_y = 0
 
@@ -409,20 +407,8 @@ class EventHandler:
             self._last_pointer_pos_y = event.y_root
             self._drag_timer = event.time
 
-        elif self._window.actiongroup.get_action('lens').get_active():
-
-            # this is set to check if the mouse hasn't moved but the mouse event has fired
-            # this attempts to prevent lens re-drawing in the case of a jittery mouse or
-            # extremely small mouse movements
-            if event.x != self._last_lens_pos_x or event.y != self._last_lens_pos_y:
-
-                self._window.lens.set_lens_cursor(event.x, event.y)
-
         else:
             self._window.cursor_handler.refresh()
-
-        self._last_lens_pos_x = event.x
-        self._last_lens_pos_y = event.y
 
     def drag_n_drop_event(self, widget, context, x, y, selection, drag_id,
       eventtime):

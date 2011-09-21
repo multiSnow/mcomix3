@@ -23,6 +23,8 @@ class CursorHandler:
             mode = gtk.gdk.Cursor(gtk.gdk.FLEUR)
         elif cursor == constants.WAIT_CURSOR:
             mode = gtk.gdk.Cursor(gtk.gdk.WATCH)
+        elif cursor == constants.NO_CURSOR:
+            mode = self._get_hidden_cursor()
         else:
             mode = cursor
 

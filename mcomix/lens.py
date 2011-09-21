@@ -6,7 +6,7 @@ from preferences import prefs
 import image_tools
 import constants
 
-class MagnifyingLens:
+class MagnifyingLens(object):
 
     """The MagnifyingLens creates cursors from the raw pixbufs containing
     the unscaled data for the currently displayed images. It does this by
@@ -20,55 +20,103 @@ class MagnifyingLens:
 
     def __init__(self, window):
         self._window = window
+        self._area = self._window._main_layout
+        self._area.connect('motion-notify-event', self._motion_event)
 
-    def add_lens(self, left_pixbuf, right_pixbuf=None):
-        """Add the lens to the main images"""
-        canvas = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8,
-            prefs['lens size'], prefs['lens size'])
-        canvas.fill(0x000000bb)
+        #: Stores lens state
+        self._enabled = False
+        #: Stores a tuple of the last mouse coordinates
+        self._point = None
+        #: Stores the last rectangle that was used to render the lens
+        self._last_lens_rect = None
 
-        if right_pixbuf == None:
+    def get_enabled(self):
+        return self._enabled
 
-            source_pixbuf = left_pixbuf
-            image_size = self._window.left_image.size_request()
-            x, y = self._window.get_layout_pointer_position()
+    def set_enabled(self, enabled):
+        self._enabled = enabled
 
-            self._add_subpixbuf(canvas, x, y, image_size, source_pixbuf)
-            canvas = image_tools.add_border(canvas, 1)
+        if enabled:
+            # FIXME: If no file is currently loaded, the cursor will still be hidden.
+            self._window.cursor_handler.set_cursor_type(constants.NO_CURSOR)
 
-            pixbuf = self._get_lens_pixbuf(400,400)
+            if self._point:
+                self._draw_lens(*self._point)
+        else:
+            self._window.cursor_handler.set_cursor_type(constants.NORMAL_CURSOR)
+            self._clear_lens()
+            self._last_lens_rect = None
 
-            source_pixbuf = pixbuf
+    enabled = property(get_enabled, set_enabled)
 
-        return source_pixbuf
-
-    def set_lens_cursor(self, x, y):
+    def _draw_lens(self, x, y):
         """Calculate what image data to put in the lens and update the cursor
         with it; <x> and <y> are the positions of the cursor within the
         main window layout area.
         """
-        if not self._window.filehandler.file_loaded:
+        if not self._window.filehandler.file_loaded or not self._window.left_image.get_pixbuf():
             return
 
+        rectangle = self._calculate_lens_rect(x, y, prefs['lens size'], prefs['lens size'])
         pixbuf = self._get_lens_pixbuf(x, y)
 
-        cursor = gtk.gdk.Cursor(gtk.gdk.display_get_default(), pixbuf,
-            prefs['lens size'] // 2, prefs['lens size'] // 2)
+        # Region used to draw the pixbuf
+        lens_region = gtk.gdk.region_rectangle(rectangle)
+        # Combined regions (area that will be drawn to in this operation
+        full_region = lens_region.copy()
+        if self._last_lens_rect:
+            last_region = gtk.gdk.region_rectangle(self._last_lens_rect)
+            full_region.union(last_region)
 
-        self._window.cursor_handler.set_cursor_type(cursor)
+        window = self._area.get_bin_window()
+        window.begin_paint_region(full_region)
+        self._clear_lens(lens_region)
+        window.draw_pixbuf(None, pixbuf, 0, 0, *rectangle)
+        window.end_paint()
+
+        self._last_lens_rect = rectangle
+
+    def _calculate_lens_rect(self, x, y, width, height):
+        """ Calculates the area where the lens will be drawn on screen. This method takes
+        screen space into calculation and moves the rectangle accordingly when the the rectangle
+        would otherwise flow over the allocated area. """
+
+        lens_x = max(x - width // 2, 0)
+        lens_y = max(y - height // 2, 0)
+
+        max_width, max_height = self._window.get_visible_area_size()
+        lens_x = min(lens_x, max_width - width)
+        lens_y = min(lens_y, max_height - height)
+
+        return lens_x, lens_y, width, height
+
+    def _clear_lens(self, current_lens_region=None):
+        """ Invalidates the area that was damaged by the last call to draw_lens.
+        If <current_lens_region> is not None, this region will not be invalidated. """
+
+        if not self._last_lens_rect:
+            return
+
+        last_region = gtk.gdk.region_rectangle(self._last_lens_rect)
+        if current_lens_region:
+            last_region.subtract(current_lens_region)
+
+        self._area.get_bin_window().invalidate_region(last_region, True)
 
     def toggle(self, action):
         """Toggle on or off the lens depending on the state of <action>."""
-        if action.get_active():
-            self._window.draw_image()
-        else:
-            self._window.cursor_handler.set_cursor_type(constants.NORMAL_CURSOR)
+        self.enabled = action.get_active()
+
+    def _motion_event(self, widget, event):
+        """ Called whenever the mouse moves over the image area. """
+        self._point = (int(event.x), int(event.y))
+        if self.enabled:
+            self._draw_lens(*self._point)
 
     def _get_lens_pixbuf(self, x, y):
         """Get a pixbuf containing the appropiate image data for the lens
         where <x> and <y> are the positions of the cursor.
         """
-
         canvas = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8,
             prefs['lens size'], prefs['lens size'])
         canvas.fill(0x000000bb)
@@ -130,13 +178,13 @@ class MagnifyingLens:
         width = prefs['lens size'] / source_mag
         height = width
 
-        paste_left = x > width / 2
-        paste_top = y > height / 2
+        paste_left = x > width // 2
+        paste_top = y > height // 2
         dest_x = max(0, int(math.ceil((width / 2 - x) * source_mag)))
         dest_y = max(0, int(math.ceil((height / 2 - y) * source_mag)))
 
-        src_x = x - width / 2
-        src_y = y - height / 2
+        src_x = x - width // 2
+        src_y = y - height // 2
         if src_x < 0:
             width += src_x
             src_x = 0

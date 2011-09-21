@@ -57,6 +57,14 @@ class MainWindow(gtk.Window):
         self._manual_zoom = 100 # In percent of original image size
         self._waiting_for_redraw = False
 
+        self._image_box = gtk.HBox(False, 2)
+        self._main_layout = gtk.Layout()
+        self._event_handler = event.EventHandler(self)
+        self._vadjust = self._main_layout.get_vadjustment()
+        self._hadjust = self._main_layout.get_hadjustment()
+        self._vscroll = gtk.VScrollbar(self._vadjust)
+        self._hscroll = gtk.HScrollbar(self._hadjust)
+
         self.filehandler = file_handler.FileHandler(self)
         self.imagehandler = image_handler.ImageHandler(self)
         self.imagehandler.page_available += self._page_available
@@ -76,14 +84,6 @@ class MainWindow(gtk.Window):
 
         self.left_image = gtk.Image()
         self.right_image = gtk.Image()
-
-        self._image_box = gtk.HBox(False, 2)
-        self._main_layout = gtk.Layout()
-        self._event_handler = event.EventHandler(self)
-        self._vadjust = self._main_layout.get_vadjustment()
-        self._hadjust = self._main_layout.get_hadjustment()
-        self._vscroll = gtk.VScrollbar(self._vadjust)
-        self._hscroll = gtk.HScrollbar(self._hadjust)
 
         # ----------------------------------------------------------------
         # Setup

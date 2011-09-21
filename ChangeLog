@@ -12,6 +12,9 @@ MComix 0.94
       main book panel popup. Additionally, CTRL-A has been set as shortcut
       for this action.
 
+    - The magnifying lens can no longer become partially invisible when moving
+      around near window edges, and should no longer flicker.
+
     - MComix automatically switching to next/previous directories can now
       be controlled with a new preference option.
 
