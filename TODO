@@ -5,3 +5,7 @@ TODO
     
     -Only calculate the auto-background color once and store during 
      initial image loading. 
+	-Library dialog: 
+       Move info panel left below library collection view
+       Search: Make items invisible instead of removing all? (Faster redrawing)
+    -Tooltips for most menus are missing
