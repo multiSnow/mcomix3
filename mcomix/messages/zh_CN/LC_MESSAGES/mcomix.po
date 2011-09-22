@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Comix 4.0.1\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2011-09-20 16:01+0200\n"
+"POT-Creation-Date: 2011-09-22 12:57+0200\n"
 "PO-Revision-Date: 2009-01-28 13:36+0800\n"
 "Last-Translator: Xie Yanbo <xieyanbo@gmail.com>\n"
 "Language-Team: Xie Yanbo <xieyanbo@gmail.com>\n"
@@ -510,62 +510,118 @@ msgstr ""
 msgid "Upgrading library database version from %(from)d to %(to)d."
 msgstr ""
 
-#: mcomix/library_book_area.py:89
+#: mcomix/library_book_area.py:108
 msgid "Library books"
 msgstr ""
 
-#: mcomix/library_book_area.py:91
+#: mcomix/library_book_area.py:110
 msgid "_Open"
 msgstr ""
 
-#: mcomix/library_book_area.py:94
+#: mcomix/library_book_area.py:113
 msgid "Open _without closing library"
 msgstr ""
 
-#: mcomix/library_book_area.py:96 mcomix/library_collection_area.py:70
+#: mcomix/library_book_area.py:115 mcomix/library_collection_area.py:70
 msgid "_Add..."
 msgstr ""
 
 #
 # File: src/library.py, line: 793
-#: mcomix/library_book_area.py:97 mcomix/library_collection_area.py:71
+#: mcomix/library_book_area.py:116 mcomix/library_collection_area.py:71
 msgid "Add more books to the library."
 msgstr "向收藏库中添加更多书"
 
-#: mcomix/library_book_area.py:100
+#: mcomix/library_book_area.py:119
 msgid "Remove from this _collection"
 msgstr ""
 
-#: mcomix/library_book_area.py:103
+#: mcomix/library_book_area.py:122
 msgid "Remove from the _library"
 msgstr ""
 
-#: mcomix/library_book_area.py:106
+#: mcomix/library_book_area.py:125
 msgid "_Remove and delete from disk"
+msgstr ""
+
+#: mcomix/library_book_area.py:127
+msgid "_Sort"
+msgstr ""
+
+#: mcomix/library_book_area.py:128
+msgid "Cover si_ze"
+msgstr ""
+
+#: mcomix/library_book_area.py:132
+msgid "Book name"
+msgstr ""
+
+#: mcomix/library_book_area.py:133
+msgid "Full path"
+msgstr ""
+
+#: mcomix/library_book_area.py:134
+msgid "File size"
+msgstr ""
+
+#: mcomix/library_book_area.py:137
+msgid "Ascending"
+msgstr ""
+
+#: mcomix/library_book_area.py:139
+msgid "Descending"
+msgstr ""
+
+#: mcomix/library_book_area.py:145
+msgid "Huge"
+msgstr ""
+
+#: mcomix/library_book_area.py:147
+msgid "Large"
+msgstr ""
+
+#: mcomix/library_book_area.py:149
+msgid "Normal"
+msgstr ""
+
+#: mcomix/library_book_area.py:151
+msgid "Small"
+msgstr ""
+
+#: mcomix/library_book_area.py:153
+msgid "Tiny"
+msgstr ""
+
+#: mcomix/library_book_area.py:155
+msgid "Custom..."
+msgstr ""
+
+#: mcomix/library_book_area.py:340
+msgid "Set library cover size"
 msgstr ""
 
 #
 # File: src/library.py, line: 588
-#: mcomix/library_book_area.py:334
+#: mcomix/library_book_area.py:456
 #, python-format
 msgid "Removed %(num)d book(s) from '%(collection)s'."
 msgstr "从“%(collection)s”中删除了%(num)d本书。"
 
 #
 # File: src/library.py, line: 597
-#: mcomix/library_book_area.py:345 mcomix/library_book_area.py:377
+#: mcomix/library_book_area.py:467 mcomix/library_book_area.py:499
 msgid "Remove books from the library?"
 msgstr "要从收藏库中删除这些书吗？"
 
 #
 # File: src/library.py, line: 599
-#: mcomix/library_book_area.py:347
+#: mcomix/library_book_area.py:469
 msgid ""
 "The selected books will be removed from the library (but the original files "
 "will be untouched). Are you sure that you want to continue?"
 msgstr "从收藏库中删除选中的书（不会影响原始文件）。你确定要继续吗？"
 
-#: mcomix/library_book_area.py:363
+#: mcomix/library_book_area.py:485
 #, python-format
 msgid "Removed %d book from the library."
 msgid_plural "Removed %d books from the library."
@@ -574,14 +630,14 @@ msgstr[1] ""
 
 #
 # File: src/library.py, line: 599
-#: mcomix/library_book_area.py:379
+#: mcomix/library_book_area.py:501
 #, fuzzy
 msgid ""
 "The selected books will be removed from the library and permanently deleted. "
 "Are you sure that you want to continue?"
 msgstr "从收藏库中删除选中的书（不会影响原始文件）。你确定要继续吗？"
 
-#: mcomix/library_book_area.py:402 mcomix/thumbnail_tools.py:110
+#: mcomix/library_book_area.py:524 mcomix/thumbnail_tools.py:110
 #, python-format
 msgid "! Could not remove file \"%s\""
 msgstr ""
@@ -750,44 +806,16 @@ msgid ""
 "path. The search is not case sensitive."
 msgstr "只显示在完整路径名中包含指定字符串的书。搜索不区分字母大小写。"
 
-#: mcomix/library_control_area.py:85
-msgid "Cover si_ze"
-msgstr ""
-
-#: mcomix/library_control_area.py:101
-msgid "Sort order"
-msgstr ""
-
-#: mcomix/library_control_area.py:106
-msgid "Book name"
-msgstr ""
-
-#: mcomix/library_control_area.py:107
-msgid "Full path"
-msgstr ""
-
-#: mcomix/library_control_area.py:108
-msgid "File size"
-msgstr ""
-
-#: mcomix/library_control_area.py:131
-msgid "Ascending"
-msgstr ""
-
-#: mcomix/library_control_area.py:132
-msgid "Descending"
-msgstr ""
-
 #
 # File: src/library.py, line: 806
-#: mcomix/library_control_area.py:163
+#: mcomix/library_control_area.py:91
 msgid "Open the selected book."
 msgstr "打开选中的书。"
 
 #
 # File: src/library.py, line: 832
 # File: src/properties.py, line: 113
-#: mcomix/library_control_area.py:198 mcomix/properties_dialog.py:46
+#: mcomix/library_control_area.py:126 mcomix/properties_dialog.py:46
 #, python-format
 msgid "%d pages"
 msgstr "共%d页"

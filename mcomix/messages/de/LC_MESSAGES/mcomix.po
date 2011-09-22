@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.92\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2011-09-20 16:01+0200\n"
+"POT-Creation-Date: 2011-09-22 12:57+0200\n"
 "PO-Revision-Date: 2011-05-07 16:40+GMT\n"
 "Last-Translator: Moritz Brunner <oddegamra@gmx.org>\n"
 "Language-Team: \n"
@@ -414,48 +414,104 @@ msgstr "Konnte Bibliothek-Datenbankversion nicht bestimmen!"
 msgid "Upgrading library database version from %(from)d to %(to)d."
 msgstr "Aktualisiere Bibliothek-Datenbankversion von %(from)d auf %(to)d."
 
-#: mcomix/library_book_area.py:89
+#: mcomix/library_book_area.py:108
 msgid "Library books"
 msgstr "Bücher in Bibliothek"
 
-#: mcomix/library_book_area.py:91
+#: mcomix/library_book_area.py:110
 msgid "_Open"
 msgstr "Ö_ffnen"
 
-#: mcomix/library_book_area.py:94
+#: mcomix/library_book_area.py:113
 msgid "Open _without closing library"
 msgstr "Öffnen _ohne Bibliothek zu schließen"
 
-#: mcomix/library_book_area.py:96 mcomix/library_collection_area.py:70
+#: mcomix/library_book_area.py:115 mcomix/library_collection_area.py:70
 msgid "_Add..."
 msgstr "_Hinzufügen..."
 
-#: mcomix/library_book_area.py:97 mcomix/library_collection_area.py:71
+#: mcomix/library_book_area.py:116 mcomix/library_collection_area.py:71
 msgid "Add more books to the library."
 msgstr "Weitere Bücher zu der Bibliothek hinzufügen."
 
-#: mcomix/library_book_area.py:100
+#: mcomix/library_book_area.py:119
 msgid "Remove from this _collection"
 msgstr "Aus _Sammlung entfernen"
 
-#: mcomix/library_book_area.py:103
+#: mcomix/library_book_area.py:122
 msgid "Remove from the _library"
 msgstr "Aus _Bibliothek entfernen"
 
-#: mcomix/library_book_area.py:106
+#: mcomix/library_book_area.py:125
 msgid "_Remove and delete from disk"
 msgstr "Aus Bibliothek entfernen und _löschen"
 
-#: mcomix/library_book_area.py:334
+#: mcomix/library_book_area.py:127
+msgid "_Sort"
+msgstr "_Sortierung"
+
+#: mcomix/library_book_area.py:128
+msgid "Cover si_ze"
+msgstr "Deckblatt_größe"
+
+#: mcomix/library_book_area.py:132
+msgid "Book name"
+msgstr "Buch-Name"
+
+#: mcomix/library_book_area.py:133
+msgid "Full path"
+msgstr "Voller Pfad"
+
+#: mcomix/library_book_area.py:134
+msgid "File size"
+msgstr "Dateigröße"
+
+#: mcomix/library_book_area.py:137
+msgid "Ascending"
+msgstr "Aufsteigend"
+
+#: mcomix/library_book_area.py:139
+msgid "Descending"
+msgstr "Absteigend"
+
+#: mcomix/library_book_area.py:145
+msgid "Huge"
+msgstr "Riesig"
+
+#: mcomix/library_book_area.py:147
+msgid "Large"
+msgstr "Groß"
+
+#: mcomix/library_book_area.py:149
+msgid "Normal"
+msgstr "Normal"
+
+#: mcomix/library_book_area.py:151
+msgid "Small"
+msgstr "Klein"
+
+#: mcomix/library_book_area.py:153
+msgid "Tiny"
+msgstr "Winzig"
+
+#: mcomix/library_book_area.py:155
+msgid "Custom..."
+msgstr "Benutzerdefiniert..."
+
+#: mcomix/library_book_area.py:340
+msgid "Set library cover size"
+msgstr "Deckblattgröße ändern"
+
+#: mcomix/library_book_area.py:456
 #, python-format
 msgid "Removed %(num)d book(s) from '%(collection)s'."
 msgstr "%(num)d Buch(Bücher) wurden aus »%(collection)s« entfernt."
 
-#: mcomix/library_book_area.py:345 mcomix/library_book_area.py:377
+#: mcomix/library_book_area.py:467 mcomix/library_book_area.py:499
 msgid "Remove books from the library?"
 msgstr "Bücher aus der Bibliothek entfernen?"
 
-#: mcomix/library_book_area.py:347
+#: mcomix/library_book_area.py:469
 msgid ""
 "The selected books will be removed from the library (but the original files "
 "will be untouched). Are you sure that you want to continue?"
@@ -464,14 +520,14 @@ msgstr ""
 "Originaldateien werden nicht angerührt). Sind Sie sicher, dass Sie "
 "fortfahren möchten?"
 
-#: mcomix/library_book_area.py:363
+#: mcomix/library_book_area.py:485
 #, python-format
 msgid "Removed %d book from the library."
 msgid_plural "Removed %d books from the library."
 msgstr[0] "%d Buch wurde aus der Bibliothek entfernt."
 msgstr[1] "%d Bücher wurden aus der Bibliothek entfernt."
 
-#: mcomix/library_book_area.py:379
+#: mcomix/library_book_area.py:501
 msgid ""
 "The selected books will be removed from the library and permanently deleted. "
 "Are you sure that you want to continue?"
@@ -479,7 +535,7 @@ msgstr ""
 "Die ausgewählten Bücher werden aus der Bibliothek entfernt und die "
 "Originaldatei wird gelöscht. Sind Sie sicher, dass Sie fortfahren möchten?"
 
-#: mcomix/library_book_area.py:402 mcomix/thumbnail_tools.py:110
+#: mcomix/library_book_area.py:524 mcomix/thumbnail_tools.py:110
 #, python-format
 msgid "! Could not remove file \"%s\""
 msgstr "! Konnte %s nicht entfernen"
@@ -625,39 +681,11 @@ msgstr ""
 "vollständigen Pfad haben. Die Suche ist unabhängig von Groß- und "
 "Kleinschreibung."
 
-#: mcomix/library_control_area.py:85
-msgid "Cover si_ze"
-msgstr "Deckblatt_größe"
-
-#: mcomix/library_control_area.py:101
-msgid "Sort order"
-msgstr "Sortierung"
-
-#: mcomix/library_control_area.py:106
-msgid "Book name"
-msgstr "Buch-Name"
-
-#: mcomix/library_control_area.py:107
-msgid "Full path"
-msgstr "Voller Pfad"
-
-#: mcomix/library_control_area.py:108
-msgid "File size"
-msgstr "Dateigröße"
-
-#: mcomix/library_control_area.py:131
-msgid "Ascending"
-msgstr "Aufsteigend"
-
-#: mcomix/library_control_area.py:132
-msgid "Descending"
-msgstr "Absteigend"
-
-#: mcomix/library_control_area.py:163
+#: mcomix/library_control_area.py:91
 msgid "Open the selected book."
 msgstr "Das ausgewählte Buch öffnen."
 
-#: mcomix/library_control_area.py:198 mcomix/properties_dialog.py:46
+#: mcomix/library_control_area.py:126 mcomix/properties_dialog.py:46
 #, python-format
 msgid "%d pages"
 msgstr "%d Seiten"
@@ -1882,6 +1910,9 @@ msgstr "Das Archiv ist passwortgeschützt."
 #: mcomix/archive/__init__.py:13
 msgid "Please enter the password to continue:"
 msgstr "Bitte geben Sie das Passwort ein, um fortzufahren:"
+
+#~ msgid "Sort order"
+#~ msgstr "Sortierung"
 
 #~ msgid "Completely _remove"
 #~ msgstr "Komplett _entfernen"
