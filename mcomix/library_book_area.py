@@ -79,15 +79,34 @@ class _BookArea(gtk.ScrolledWindow):
                 <menuitem action="remove from collection" />
                 <menuitem action="remove from library" />
                 <menuitem action="completely remove" />
+                <separator />
+                <menu action="sort">
+                    <menuitem action="by name" />
+                    <menuitem action="by path" />
+                    <menuitem action="by size" />
+                    <separator />
+                    <menuitem action="ascending" />
+                    <menuitem action="descending" />
+                </menu>
+                <menu action="cover size">
+                    <menuitem action="huge" />
+                    <menuitem action="large" />
+                    <menuitem action="normal" />
+                    <menuitem action="small" />
+                    <menuitem action="tiny" />
+                    <separator />
+                    <menuitem action="custom" />
+                </menu>
             </popup>
         </ui>
         """
 
         self._ui_manager.add_ui_from_string(ui_description)
         actiongroup = gtk.ActionGroup('mcomix-library-book-area')
+        # General book actions
         actiongroup.add_actions([
             ('_title', None, _('Library books'), None, None,
-                lambda *args: False),
+                None),
             ('open', gtk.STOCK_OPEN, _('_Open'), None, None,
                 self.open_selected_book),
             ('open keep library', gtk.STOCK_OPEN,
@@ -104,8 +123,42 @@ class _BookArea(gtk.ScrolledWindow):
                 self._remove_books_from_library),
             ('completely remove', gtk.STOCK_DELETE,
                 _('_Remove and delete from disk'), None, None,
-                self._completely_remove_book)
-                ])
+                self._completely_remove_book),
+            ('sort', None, _('_Sort'), None, None, None),
+            ('cover size', None, _('Cover si_ze'), None, None, None)
+       ])
+        # Sorting the view
+        actiongroup.add_radio_actions([
+            ('by name', None, _('Book name'), None, None, constants.SORT_NAME),
+            ('by path', None, _('Full path'), None, None, constants.SORT_PATH),
+            ('by size', None, _('File size'), None, None, constants.SORT_SIZE)],
+            prefs['lib sort key'], self._sort_changed)
+        actiongroup.add_radio_actions([
+            ('ascending', gtk.STOCK_SORT_ASCENDING, _('Ascending'), None, None,
+                constants.RESPONSE_SORT_ASCENDING),
+            ('descending', gtk.STOCK_SORT_DESCENDING, _('Descending'), None, None,
+                constants.RESPONSE_SORT_DESCENDING)],
+            prefs['lib sort order'], self._sort_changed)
+
+        # Library cover size
+        actiongroup.add_radio_actions([
+            ('huge', None, _('Huge') + '  (%dpx)' % constants.SIZE_HUGE,
+                None, None, constants.SIZE_HUGE),
+            ('large', None, _('Large') + '  (%dpx)' % constants.SIZE_LARGE,
+                None, None, constants.SIZE_LARGE),
+            ('normal', None, _('Normal') + '  (%dpx)' % constants.SIZE_NORMAL,
+                None, None, constants.SIZE_NORMAL),
+            ('small', None, _('Small') + '  (%dpx)' % constants.SIZE_SMALL,
+                None, None, constants.SIZE_SMALL),
+            ('tiny', None, _('Tiny') + '  (%dpx)' % constants.SIZE_TINY,
+                None, None, constants.SIZE_TINY),
+            ('custom', None, _('Custom...'), None, None, 0)],
+            prefs['library cover size']
+                if prefs['library cover size'] in (constants.SIZE_HUGE,
+                    constants.SIZE_LARGE, constants.SIZE_NORMAL,
+                    constants.SIZE_SMALL, constants.SIZE_TINY)
+                else 0,
+            self._book_size_changed)
 
         self._ui_manager.insert_action_group(actiongroup, 0)
         library.add_accel_group(self._ui_manager.get_accel_group())
@@ -217,9 +270,31 @@ class _BookArea(gtk.ScrolledWindow):
 
     def sort_books(self, sort_key, sort_order=gtk.SORT_ASCENDING):
         """ Orders the list store based on the key passed in C{sort_key}.
-        Should be one of the C{SORT_} constants from L{library_book_area}.
+        Should be one of the C{SORT_} constants from L{constants}.
         """
         self._liststore.set_sort_column_id(sort_key, sort_order)
+
+    def _sort_changed(self, old, current):
+        """ Called whenever the sorting options changed. """
+        name = current.get_name()
+        if name == 'by name':
+            prefs['lib sort key'] = constants.SORT_NAME
+        elif name == 'by path':
+            prefs['lib sort key'] = constants.SORT_PATH
+        elif name == 'by size':
+            prefs['lib sort key'] = constants.SORT_SIZE
+
+        if name == 'ascending':
+            prefs['lib sort order'] = constants.RESPONSE_SORT_ASCENDING
+        elif name == 'descending':
+            prefs['lib sort order'] = constants.RESPONSE_SORT_DESCENDING
+
+        if prefs['lib sort order'] == constants.RESPONSE_SORT_ASCENDING:
+            order = gtk.SORT_ASCENDING
+        else:
+            order = gtk.SORT_DESCENDING
+
+        self.sort_books(prefs['lib sort key'], order)
 
     def _sort_by_name(self, treemodel, iter1, iter2, user_data):
         """ Compares two books based on their file name without the
@@ -243,6 +318,53 @@ class _BookArea(gtk.ScrolledWindow):
                 return -1
             else:
                 return 1
+
+    def _book_size_changed(self, old, current):
+        """ Called when library cover size changes. """
+        old_size = prefs['library cover size']
+        name = current.get_name()
+        if name == 'huge':
+            prefs['library cover size'] = constants.SIZE_HUGE
+        elif name == 'large':
+            prefs['library cover size'] = constants.SIZE_LARGE
+        elif name == 'normal':
+            prefs['library cover size'] = constants.SIZE_NORMAL
+        elif name == 'small':
+            prefs['library cover size'] = constants.SIZE_SMALL
+        elif name == 'tiny':
+            prefs['library cover size'] = constants.SIZE_TINY
+        elif name == 'custom':
+            dialog = gtk.MessageDialog(self._library, gtk.DIALOG_DESTROY_WITH_PARENT,
+                    gtk.MESSAGE_INFO, gtk.BUTTONS_OK)
+            dialog.set_markup('<span weight="bold" size="larger">' +
+                _('Set library cover size') +
+                '</span>')
+
+            # Add adjustment scale
+            adjustment = gtk.Adjustment(prefs['library cover size'], 20,
+                    constants.MAX_LIBRARY_COVER_SIZE, 10, 25, 0)
+            cover_size_scale = gtk.HScale(adjustment)
+            cover_size_scale.set_size_request(200, -1)
+            cover_size_scale.set_digits(0)
+            cover_size_scale.set_draw_value(True)
+            cover_size_scale.set_value_pos(gtk.POS_LEFT)
+            for mark in (constants.SIZE_HUGE, constants.SIZE_LARGE,
+                    constants.SIZE_NORMAL, constants.SIZE_SMALL,
+                    constants.SIZE_TINY):
+                cover_size_scale.add_mark(mark, gtk.POS_TOP, None)
+
+            dialog.get_message_area().pack_end(cover_size_scale)
+            dialog.show_all()
+            response = dialog.run()
+            size = int(adjustment.get_value())
+            dialog.destroy()
+
+            if response == gtk.RESPONSE_OK:
+                prefs['library cover size'] = size
+
+        if prefs['library cover size'] != old_size:
+            collection = self._library.collection_area.get_current_collection()
+            gobject.idle_add(self.display_covers, collection)
 
     def _add_book(self, book):
         """Add the <book> to the ListStore (and thus to the _BookArea)."""

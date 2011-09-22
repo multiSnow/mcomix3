@@ -67,7 +67,7 @@ class _ControlArea(gtk.HBox):
         vbox = gtk.VBox(False, 10)
         self.pack_start(vbox, True, True)
 
-        # First line of controls, containing search box and library cover size.
+        # First line of controls, containing the search box
         hbox = gtk.HBox(False)
         vbox.pack_start(hbox, False, False)
 
@@ -81,81 +81,9 @@ class _ControlArea(gtk.HBox):
         hbox.pack_start(search_entry, True, True, 6)
         label.set_mnemonic_widget(search_entry)
 
-        # TODO enable generic consistent kebindings for zoom in/zoom out/zoom 100.
-        label = gtk.Label('%s:' % _('Cover si_ze'))
-        label.set_use_underline(True)
-
-        hbox.pack_start(label, False, False, 6)
-        adjustment = gtk.Adjustment(prefs['library cover size'], 20, constants.MAX_LIBRARY_COVER_SIZE, 10,
-            50, 0)
-        cover_size_scale = gtk.HScale(adjustment)
-        cover_size_scale.set_size_request(150, -1)
-        cover_size_scale.set_draw_value(False)
-        cover_size_scale.connect('value_changed', self._change_cover_size)
-        label.set_mnemonic_widget(cover_size_scale)
-        hbox.pack_start(cover_size_scale, False, False)
-
-        # Second line of controls, containing book sort order.
-        hbox = gtk.HBox(False)
-        vbox.pack_start(hbox, False, False)
-        label = gtk.Label('%s:'% _('Sort order'))
-        label.set_alignment(1, 0.5)
-        hbox.pack_start(label, True, True, 6)
-
-        model = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_INT)
-        for text, sortkey in ((_('Book name'), constants.SORT_NAME),
-                (_('Full path'), constants.SORT_PATH),
-                (_('File size'), constants.SORT_SIZE)):
-            model.append((text, sortkey))
-
-        self._sort_box = sort_box = gtk.ComboBox(model)
-        # Determine default box selection based on preferences.
-        iter = model.get_iter_first()
-        index = 0
-        while iter:
-            if model.get_value(iter, 1) == prefs['lib sort key']:
-                sort_box.set_active(index)
-                break
-            else:
-                index += 1
-                iter = model.iter_next(iter)
-
-        sort_box.connect('changed', self._change_sort)
-        cell = gtk.CellRendererText()
-        sort_box.pack_start(cell, True)
-        sort_box.add_attribute(cell, 'text', 0)
-        hbox.pack_start(sort_box, False, False)
-
-        model = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_INT)
-        for text, sortorder in (
-                (_('Ascending'), constants.RESPONSE_SORT_ASCENDING),
-                (_('Descending'), constants.RESPONSE_SORT_DESCENDING)):
-            model.append((text, sortorder))
-
-        self._sortorder_box = sortorder_box = gtk.ComboBox(model)
-        # Determine default box selection based on preferences.
-        iter = model.get_iter_first()
-        index = 0
-        while iter:
-            if model.get_value(iter, 1) == prefs['lib sort order']:
-                sortorder_box.set_active(index)
-                break
-            else:
-                index += 1
-                iter = model.iter_next(iter)
-
-        sortorder_box.connect('changed', self._change_sort)
-        cell = gtk.CellRendererText()
-        sortorder_box.pack_start(cell, True)
-        sortorder_box.add_attribute(cell, 'text', 0)
-        hbox.pack_start(sortorder_box, False, False)
-
-        # Add empty box to fill space between upper controls and buttons.
-        vbox.pack_start(gtk.HBox(), True, True)
-
         # Last line of controls, containing buttons like 'Open'
         hbox = gtk.HBox(False, 10)
-        vbox.pack_start(hbox, False, False)
+        vbox.pack_end(hbox, False, False)
 
         self._open_button = gtk.Button(None, gtk.STOCK_OPEN)
         self._open_button.connect('clicked',
@@ -220,38 +148,5 @@ class _ControlArea(gtk.HBox):
             self._library.filter_string = None
         collection = self._library.collection_area.get_current_collection()
         gobject.idle_add(self._library.book_area.display_covers, collection)
-
-    def _change_cover_size(self, scale):
-        """Change the size of the covers in the _BookArea."""
-        prefs['library cover size'] = int(scale.get_value())
-        collection = self._library.collection_area.get_current_collection()
-        gobject.idle_add(self._library.book_area.display_covers, collection)
-
-    def _change_sort(self, combobox, *args):
-        """ Changes the books' sorting. """
-        active = self._sort_box.get_active()
-        if active > -1:
-            iter = self._sort_box.get_model().get_iter(active)
-            sortkey = self._sort_box.get_model().get_value(iter, 1)
-        else:
-            sortkey = constants.SORT_PATH
-
-        active = self._sortorder_box.get_active()
-        if active > -1:
-            iter = self._sortorder_box.get_model().get_iter(active)
-            sortorder = self._sortorder_box.get_model().get_value(iter, 1)
-        else:
-            sortorder = constants.RESPONSE_SORT_ASCENDING
-
-        prefs['lib sort key'] = sortkey
-        prefs['lib sort order'] = sortorder
-
-        # Map sort order constants to GTK's own constants
-        if sortorder == constants.RESPONSE_SORT_ASCENDING:
-            sortorder = gtk.SORT_ASCENDING
-        else:
-            sortorder = gtk.SORT_DESCENDING
-
-        self._library.book_area.sort_books(sortkey, sortorder)
 
 # vim: expandtab:sw=4:ts=4

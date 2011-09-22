@@ -39,7 +39,9 @@ RESPONSE_NEW = 8
 STATUS_PAGE, STATUS_RESOLUTION, STATUS_PATH, STATUS_FILENAME, STATUS_FILENUMBER = \
     1, 2, 4, 8, 16
 
+MAX_LIBRARY_COVER_SIZE = 500
 SORT_NAME, SORT_PATH, SORT_SIZE = 1, 2, 3
+SIZE_HUGE, SIZE_LARGE, SIZE_NORMAL, SIZE_SMALL, SIZE_TINY = MAX_LIBRARY_COVER_SIZE, 300, 250, 125, 80
 
 ACCEPTED_COMMENT_EXTENSIONS = ['txt', 'nfo', 'xml']
 SUPPORTED_IMAGE_REGEX = re.compile(r'\.(jpg|jpeg|png|gif|tif|tiff|bmp|ppm|pgm|pbm)\s*$', re.I)
@@ -72,8 +74,6 @@ def RAR_AVAILABLE():
 def LHA_AVAILABLE():
     import archive.lha
     return archive.lha.LhaArchive.is_available() or SZIP_AVAILABLE()
-
-MAX_LIBRARY_COVER_SIZE = 500
 
 MISSING_IMAGE_ICON = None
 try:
