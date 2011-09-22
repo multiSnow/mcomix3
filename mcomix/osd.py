@@ -1,0 +1,128 @@
+""" osd.py - Onscreen display showing currently opened file. """
+# -*- coding: utf-8 -*-
+
+import gtk
+import gobject
+import pango
+
+class OnScreenDisplay(object):
+
+    """ The OSD shows information such as currently opened file, archive and
+    page in a black box drawn on the bottom end of the screen.
+
+    The OSD will automatically be erased after TIMEOUT seconds.
+    """
+
+    TIMEOUT = 3
+
+    def __init__(self, window):
+        #: MainWindow
+        self._window = window
+        #: Stores the last rectangle that was used to render the OSD
+        self._last_osd_rect = None
+        #: Timeout event ID registered while waiting to hide the OSD
+        self._timeout_event = None
+
+    def show(self):
+        """ Shows the OSD on the lower portion of the image window. """
+
+        if not self._window.filehandler.file_loaded:
+            return
+
+        # Determine text to draw
+        text = self._get_osd_text()
+        layout = self._window._image_box.create_pango_layout(text)
+
+        # Set up font information
+        font = layout.get_context().get_font_description()
+        font.set_weight(pango.WEIGHT_BOLD)
+        layout.set_alignment(pango.ALIGN_CENTER)
+
+        # Scale font to fit within the screen size
+        max_width, max_height = self._window.get_visible_area_size()
+        self._scale_font(font, layout, max_width, max_height)
+
+        # Calculate surrounding box
+        layout_width, layout_height = layout.get_pixel_size()
+        pos_x = max(int(max_width // 2) - int(layout_width // 2) +
+                    int(self._window._hadjust.get_value()), 0)
+        pos_y = max(int(max_height) - int(layout_height * 1.1) +
+                    int(self._window._vadjust.get_value()), 0)
+
+        rect = (pos_x - 10, pos_y - 10,
+                layout_width + 20, layout_height + 20)
+
+        # Draw OSD
+        self._draw_osd(layout, rect)
+
+        self._last_osd_rect = rect
+        if self._timeout_event:
+            gobject.source_remove(self._timeout_event)
+        self._timeout_event = gobject.timeout_add_seconds(OnScreenDisplay.TIMEOUT, self.clear)
+
+    def clear(self):
+        """ Removes the OSD. """
+        self._clear_osd()
+        self._timeout_event = None
+        return 0 # To unregister gobject timer event
+
+    def _clear_osd(self, exclude_region=None):
+        """ Invalidates the OSD region. C{exclude_region} will not be invalidated, even
+        if it was part of a previous drawing operation. """
+
+        if not self._last_osd_rect:
+            return
+
+        last_region = gtk.gdk.region_rectangle(self._last_osd_rect)
+        if exclude_region:
+            last_region.subtract(exclude_region)
+        self._window._main_layout.get_bin_window().invalidate_region(last_region, True)
+
+        self._last_osd_rect = None
+
+    def _get_osd_text(self):
+        """ Returns the text that will be placed on the OSD as string. """
+        filename = self._window.imagehandler.get_pretty_current_filename().encode('utf-8')
+        page_text = '%s %s' % (_('Page'), self._window.statusbar.get_page_number())
+        if self._window.statusbar.get_file_number():
+            page_text += ' ' + self._window.statusbar.get_file_number()
+
+        return filename + "\n\n" + page_text
+
+    def _scale_font(self, font, layout, max_width, max_height):
+        """ Scales the font used by C{layout} until max_width/max_height is reached. """
+
+        SIZE_MIN, SIZE_MAX = 5, 60
+        for font_size in range(SIZE_MIN, SIZE_MAX, 5):
+            old_size = font.get_size()
+            font.set_size(font_size * pango.SCALE)
+            layout.set_font_description(font)
+
+            if layout.get_pixel_size()[0] > max_width:
+                font.set_size(old_size)
+                layout.set_font_description(font)
+                break
+
+    def _draw_osd(self, layout, rect):
+        """ Draws the text specified in C{layout} into a box at C{rect}. """
+
+        osd_region = gtk.gdk.region_rectangle(rect)
+        draw_region = osd_region.copy()
+        if self._last_osd_rect:
+            draw_region.union(gtk.gdk.region_rectangle(self._last_osd_rect))
+
+        window = self._window._main_layout.get_bin_window()
+        window.begin_paint_region(draw_region)
+        self._clear_osd(osd_region)
+
+        # Set up drawing context
+        colormap = gtk.gdk.colormap_get_system()
+        black = colormap.alloc_color(5000, 5000, 5000)
+        white = colormap.alloc_color("white")
+        gc = window.new_gc(foreground=black, background=black)
+
+        window.draw_rectangle(gc, True, *rect)
+        window.draw_layout(gc, rect[0] + 10, rect[1] + 10, layout, foreground=white)
+        window.end_paint()
+
+# vim: expandtab:sw=4:ts=4

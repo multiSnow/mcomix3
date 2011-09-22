@@ -26,6 +26,7 @@ import status
 import thumbbar
 import clipboard
 import pageselect
+import osd
 
 class MainWindow(gtk.Window):
 
@@ -51,8 +52,6 @@ class MainWindow(gtk.Window):
         self.was_out_of_focus = False
         #: Used to remember if changing to fullscreen enabled 'Hide all'
         self.hide_all_forced = False
-        #: Indicate if the OSD is currently showing
-        self._osd_shown = False
 
         self._manual_zoom = 100 # In percent of original image size
         self._waiting_for_redraw = False
@@ -76,6 +75,7 @@ class MainWindow(gtk.Window):
         self.cursor_handler = cursor_handler.CursorHandler(self)
         self.enhancer = enhance_backend.ImageEnhancer(self)
         self.lens = lens.MagnifyingLens(self)
+        self.osd = osd.OnScreenDisplay(self)
         self.uimanager = ui.MainUI(self)
         self.menubar = self.uimanager.get_widget('/Menu')
         self.toolbar = self.uimanager.get_widget('/Tool')
@@ -297,9 +297,6 @@ class MainWindow(gtk.Window):
         else:
             scaled_height = area_height
 
-        if self._osd_shown:
-            self._main_layout.get_bin_window().clear()
-
         scale_up = prefs['stretch']
         self.is_virtual_double_page = \
             self.imagehandler.get_virtual_double_page()
@@ -483,7 +480,6 @@ class MainWindow(gtk.Window):
 
         self._update_page_information()
         self._waiting_for_redraw = False
-        self._osd_shown = False
 
         while gtk.events_pending():
             gtk.main_iteration(False)
@@ -1073,56 +1069,7 @@ class MainWindow(gtk.Window):
 
     def show_info_panel(self):
         """ Shows an OSD displaying information about the current page. """
-
-        if self._osd_shown or not self.filehandler.file_loaded:
-            return
-
-        self._osd_shown = True
-        window = self._main_layout.get_bin_window()
-
-        # Set up drawing context
-        colormap = gtk.gdk.colormap_get_system()
-        black = colormap.alloc_color(5000, 5000, 5000)
-        white = colormap.alloc_color("white")
-        gc = window.new_gc(foreground=black, background=black)
-
-        # Determine text to draw
-        filename = self.imagehandler.get_pretty_current_filename().encode('utf-8')
-        page_text = '%s %s' % (_('Page'), self.statusbar.get_page_number())
-        if self.statusbar.get_file_number():
-            page_text += ' ' + self.statusbar.get_file_number()
-        layout = self._image_box.create_pango_layout(filename + "\n\n" + page_text)
-
-        # Set up font information
-        font = layout.get_context().get_font_description()
-        font.set_weight(pango.WEIGHT_BOLD)
-        layout.set_alignment(pango.ALIGN_CENTER)
-
-        # Scale font to fit within the screen size
-        max_width, max_height = self.get_visible_area_size()
-
-        SIZE_MIN, SIZE_MAX = 5, 60
-        for font_size in range(SIZE_MIN, SIZE_MAX, 5):
-            old_size = font.get_size()
-            font.set_size(font_size * pango.SCALE)
-            layout.set_font_description(font)
-
-            if layout.get_pixel_size()[0] > max_width:
-                font.set_size(old_size)
-                layout.set_font_description(font)
-                break
-
-        # Draw text and surrounding box
-        layout_width, layout_height = layout.get_pixel_size()
-        pos_x = max(int(max_width // 2) - int(layout_width // 2) +
-                int(self._hadjust.get_value()), 0)
-        pos_y = max(int(max_height) - int(layout_height * 1.1) +
-                int(self._vadjust.get_value()), 0)
-        window.draw_rectangle(gc, True, pos_x - 10, pos_y - 10,
-                layout_width + 20, layout_height + 20)
-        window.draw_layout(gc, pos_x, pos_y, layout, foreground=white)
-
-        gobject.timeout_add_seconds(3, self.draw_image)
+        self.osd.show()
 
     def write_config_files(self):
 
