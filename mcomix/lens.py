@@ -84,7 +84,9 @@ class MagnifyingLens(object):
         lens_x = max(x - width // 2, 0)
         lens_y = max(y - height // 2, 0)
 
-        _, _, max_width, max_height, _ = self._area.get_bin_window().get_geometry()#window.get_visible_area_size()
+        max_width, max_height = self._window.get_visible_area_size()
+        max_width += int(self._window._hadjust.get_value())
+        max_height += int(self._window._vadjust.get_value())
         lens_x = min(lens_x, max_width - width)
         lens_y = min(lens_y, max_height - height)
 
