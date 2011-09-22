@@ -70,7 +70,7 @@ prefs = {
     'max pages to cache': 7,
     'window height': 600,
     'window width': 500,
-    'library cover size': 128,
+    'library cover size': 125,
     'auto add books into collections': True,
     'last library collection': None,
     'lib window height': 600,
