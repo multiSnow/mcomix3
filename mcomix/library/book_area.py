@@ -9,13 +9,14 @@ import gtk
 import gobject
 import Image
 import ImageDraw
-from preferences import prefs
-import image_tools
-import constants
-import portability
-import callback
-import i18n
-import file_chooser_library_dialog
+
+from mcomix.preferences import prefs
+from mcomix import image_tools
+from mcomix import constants
+from mcomix import portability
+from mcomix import callback
+from mcomix import i18n
+from mcomix import file_chooser_library_dialog
 
 _dialog = None
 

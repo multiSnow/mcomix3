@@ -4,7 +4,6 @@ import os
 import gtk
 
 import file_chooser_base_dialog
-
 from preferences import prefs
 
 _library_filechooser_dialog = None

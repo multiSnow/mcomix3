@@ -4,8 +4,9 @@ from xml.sax.saxutils import escape as xmlescape
 import gtk
 import gobject
 import constants
-from preferences import prefs
-import file_chooser_library_dialog
+
+from mcomix.preferences import prefs
+from mcomix import file_chooser_library_dialog
 
 _dialog = None
 # The "All books" collection is not a real collection stored in the library,

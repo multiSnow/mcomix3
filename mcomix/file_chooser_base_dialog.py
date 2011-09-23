@@ -6,7 +6,6 @@ import fnmatch
 import gtk
 import pango
 
-import main
 import image_tools
 import labels
 import constants
@@ -118,7 +117,7 @@ class _BaseFileChooserDialog(gtk.Dialog):
                 *constants.LHA_FORMATS)
 
         try:
-            current_file = main.main_window().filehandler.get_path_to_base()
+            current_file = self._current_file()
             last_file = self.__class__._last_activated_file
 
             # If a file is currently open, use its path
@@ -285,5 +284,12 @@ class _BaseFileChooserDialog(gtk.Dialog):
     def _window_destroyed(self, *args):
         """ Called when the dialog is being destroyed. """
         self._destroyed = True
+
+    def _current_file(self):
+        # XXX: This method defers the import of main to avoid cyclic imports
+        # during startup.
+
+        from mcomix.main import main_window
+        return main_window().filehandler.get_path_to_base()
 
 # vim: expandtab:sw=4:ts=4
