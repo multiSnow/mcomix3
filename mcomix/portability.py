@@ -53,9 +53,9 @@ def get_commandline_args():
         else:
             # For some reason CommandLineToArgvW failed and returned NULL
             # Fall back to sys.argv
-            return [arg.decode(locale.getpreferredencoding(), 'replace') for arg in sys.argv]
+            return [arg.decode(locale.getpreferredencoding(), 'replace') for arg in sys.argv[1:]]
     else:
-        return [arg.decode(locale.getpreferredencoding(), 'replace') for arg in sys.argv]
+        return [arg.decode(locale.getpreferredencoding(), 'replace') for arg in sys.argv[1:]]
 
 def invalid_filesystem_chars():
     """ List of characters that cannot be used in filenames on the target platform. """

@@ -178,9 +178,8 @@ def run():
 
     open_path = None
     open_page = 1
-
     argv = portability.get_commandline_args()
-    opts, args = parse_arguments(argv[1:])
+    opts, args = parse_arguments(argv)
 
     if not os.path.exists(constants.DATA_DIR):
         os.makedirs(constants.DATA_DIR, 0700)

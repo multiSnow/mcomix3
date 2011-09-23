@@ -6,6 +6,9 @@ MComix 0.94
     - Fixed recursively adding directories to the library not working
       consistently on Win32.
 
+    - Fixed the first command line argument to MComix being ignored on Win32,
+      breaking "Open with..." functionality.
+
     - The library window has been slighly reorganized. All collection-related
       functionality can now be accessed via the right-click popup on the
       collection panel to the left. Similiarily, "Add books" is now on the
