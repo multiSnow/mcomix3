@@ -3,8 +3,8 @@
 from xml.sax.saxutils import escape as xmlescape
 import gtk
 import gobject
-import constants
 
+from mcomix import constants
 from mcomix.preferences import prefs
 from mcomix import file_chooser_library_dialog
 
