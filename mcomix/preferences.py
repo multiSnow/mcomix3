@@ -2,7 +2,6 @@
 
 import os
 import cPickle
-import logging
 import constants
 
 # All the preferences are stored here.

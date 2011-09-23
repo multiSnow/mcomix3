@@ -6,7 +6,6 @@ import gobject
 import preferences_page
 import image_tools
 import constants
-import log
 from preferences import prefs
 
 _dialog = None

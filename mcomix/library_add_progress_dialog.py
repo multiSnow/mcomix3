@@ -1,10 +1,8 @@
 """library_add_progress_dialog.py - Progress bar for the library."""
 
 import gtk
-import os
 import pango
 import labels
-import constants
 
 _dialog = None
 # The "All books" collection is not a real collection stored in the library,

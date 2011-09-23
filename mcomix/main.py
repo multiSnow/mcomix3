@@ -1,13 +1,10 @@
 """main.py - Main window."""
 
 import os
-import sys
 import shutil
 import threading
 import gtk
 import gobject
-import pango
-import cPickle
 import constants
 import cursor_handler
 import i18n

@@ -4,7 +4,6 @@
 pre-configured settings. Functions in this module are redirected to
 this default logger. """
 
-import threading
 import logging
 import sys
 import locale

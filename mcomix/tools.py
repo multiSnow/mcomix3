@@ -4,7 +4,6 @@ import os
 import sys
 import re
 import gc
-import locale
 
 def alphanumeric_sort(filenames):
     """Do an in-place alphanumeric sort of the strings in <filenames>,

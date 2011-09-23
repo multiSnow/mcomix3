@@ -5,7 +5,6 @@ import subprocess
 import sys
 
 import log
-import i18n
 
 class Process:
 
