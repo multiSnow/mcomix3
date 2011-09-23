@@ -17,6 +17,7 @@ from mcomix import portability
 from mcomix import callback
 from mcomix import i18n
 from mcomix import file_chooser_library_dialog
+from mcomix.library.pixbuf_cache import get_pixbuf_cache
 
 _dialog = None
 
@@ -34,6 +35,7 @@ class _BookArea(gtk.ScrolledWindow):
         gtk.ScrolledWindow.__init__(self)
 
         self._library = library
+        self._cache = get_pixbuf_cache()
         self._stop_update = False
         self._thumbnail_threads = None
 
@@ -244,6 +246,7 @@ class _BookArea(gtk.ScrolledWindow):
         self._path_about_to_be_removed(path)
         iterator = self._liststore.get_iter(path)
         self._liststore.remove(iterator)
+        self._cache.invalidate(path)
 
     def get_book_at_path(self, path):
         """Return the book ID corresponding to the IconView <path>."""
@@ -364,6 +367,7 @@ class _BookArea(gtk.ScrolledWindow):
                 prefs['library cover size'] = size
 
         if prefs['library cover size'] != old_size:
+            self._cache.invalidate_all()
             collection = self._library.collection_area.get_current_collection()
             gobject.idle_add(self.display_covers, collection)
 
@@ -403,15 +407,18 @@ class _BookArea(gtk.ScrolledWindow):
 
     def _get_pixbuf(self, path):
         """ Get or create the thumbnail for the selected book at <path>. """
+        if self._cache.exists(path):
+            return self._cache.get(path)
+        else:
+            pixbuf = self._library.backend.get_book_thumbnail(path) or constants.MISSING_IMAGE_ICON
+            # The ratio (0.67) is just above the normal aspect ratio for books.
+            pixbuf = image_tools.fit_in_rectangle(pixbuf,
+                int(0.67 * prefs['library cover size']),
+                prefs['library cover size'], True)
+            pixbuf = image_tools.add_border(pixbuf, 1, 0xFFFFFFFF)
+            self._cache.add(path, pixbuf)
 
-        pixbuf = self._library.backend.get_book_thumbnail(path) or constants.MISSING_IMAGE_ICON
-        # The ratio (0.67) is just above the normal aspect ratio for books.
-        pixbuf = image_tools.fit_in_rectangle(pixbuf,
-            int(0.67 * prefs['library cover size']),
-            prefs['library cover size'], True)
-        pixbuf = image_tools.add_border(pixbuf, 1, 0xFFFFFFFF)
-
-        return pixbuf
+            return pixbuf
 
     def _get_empty_thumbnail(self):
         """ Create an empty filler pixmap. """

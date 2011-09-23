@@ -12,8 +12,12 @@ MComix 0.94
     - The library window has been slighly reorganized. All collection-related
       functionality can now be accessed via the right-click popup on the
       collection panel to the left. Similiarily, "Add books" is now on the
-      main book panel popup. Additionally, CTRL-A has been set as shortcut
-      for this action.
+      main book panel popup. Additionally, CTRL-SHIFT-A has been set as
+      shortcut for this action.
+
+    - Library covers will now be cached after being loaded. This will avoid
+      frequent reloading when switching between collections, or when filtering
+      books.
 
     - The magnifying lens can no longer become partially invisible when moving
       around near window edges, and should no longer flicker.
