@@ -5,6 +5,7 @@ import gtk
 import gobject
 
 from mcomix import constants
+from mcomix import i18n
 from mcomix.preferences import prefs
 from mcomix import file_chooser_library_dialog
 
@@ -137,15 +138,19 @@ class _CollectionArea(gtk.ScrolledWindow):
     def add_collection(self, *args):
         """Add a new collection to the library, through a dialog."""
         add_dialog = gtk.MessageDialog(None, 0, gtk.MESSAGE_INFO,
-            gtk.BUTTONS_OK_CANCEL, _('Add new collection?'))
+            gtk.BUTTONS_OK_CANCEL)
+        add_dialog.set_markup('<span weight="bold" size="larger">' +
+            _('Add new collection?') +
+            '</span>'
+        )
         add_dialog.format_secondary_text(
-            _('Please enter a name for the new collection.'))
+            _('Please enter a name for the new collection.')
+        )
         add_dialog.set_default_response(gtk.RESPONSE_OK)
 
         box = gtk.HBox() # To get nice line-ups with the padding.
         add_dialog.vbox.pack_start(box)
         entry = gtk.Entry()
-        entry.set_text(_('New collection'))
         entry.set_activates_default(True)
         box.pack_start(entry, True, True, 6)
         box.show_all()
@@ -172,20 +177,17 @@ class _CollectionArea(gtk.ScrolledWindow):
         no longer exist. If C{collection} is None, the whole library
         will be cleaned. """
 
-        dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL,
-            gtk.MESSAGE_WARNING, gtk.BUTTONS_OK_CANCEL,
-            _("Do you want to remove non-existent books from the library?"))
-        dialog.format_secondary_text(
-            _("Books that appear in your library, but no longer exist at their original path, will be removed from the library. This clears books that have been moved or deleted outside of MComix."))
-        response = dialog.run()
-        dialog.destroy()
+        removed = self._library.backend.clean_collection(collection)
 
-        if response == gtk.RESPONSE_OK:
-            removed = self._library.backend.clean_collection(collection)
+        msg = i18n.get_translation().ngettext(
+            'Removed %d book from the library.',
+            'Removed %d books from the library.',
+            removed)
+        self._library.set_status_message(msg % removed)
 
-            if removed > 0:
-                collection = self._library.collection_area.get_current_collection()
-                gobject.idle_add(self._library.book_area.display_covers, collection)
+        if removed > 0:
+            collection = self._library.collection_area.get_current_collection()
+            gobject.idle_add(self._library.book_area.display_covers, collection)
 
     def _get_collection_at_path(self, path):
         """Return the collection ID of the collection at the (TreeView)
@@ -217,21 +219,11 @@ class _CollectionArea(gtk.ScrolledWindow):
         self.clean_collection(collection)
 
     def _remove_collection(self, action=None):
-        """Remove the currently selected collection from the library, if the
-        user answers 'Yes' in a dialog.
-        """
-        choice_dialog = gtk.MessageDialog(self._library, 0,
-            gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-            _('Remove collection from the library?'))
-        choice_dialog.format_secondary_text(
-            _('The selected collection will be removed from the library (but the books and subcollections in it will remain). Are you sure that you want to continue?'))
-        response = choice_dialog.run()
-        choice_dialog.destroy()
-        if response == gtk.RESPONSE_YES:
-            collection = self.get_current_collection()
-            self._library.backend.remove_collection(collection)
-            prefs['last library collection'] = _COLLECTION_ALL
-            self.display_collections()
+        """Remove the currently selected collection from the library."""
+        collection = self.get_current_collection()
+        self._library.backend.remove_collection(collection)
+        prefs['last library collection'] = _COLLECTION_ALL
+        self.display_collections()
 
     def _rename_collection(self, action):
         """Rename the currently selected collection, using a dialog."""
@@ -241,10 +233,14 @@ class _CollectionArea(gtk.ScrolledWindow):
         except Exception:
             return
         rename_dialog = gtk.MessageDialog(self._library, 0,
-            gtk.MESSAGE_QUESTION, gtk.BUTTONS_OK_CANCEL,
-            _('Rename collection?'))
+            gtk.MESSAGE_INFO, gtk.BUTTONS_OK_CANCEL)
+        rename_dialog.set_markup('<span weight="bold" size="larger">' +
+            _('Rename collection?') +
+            '</span>'
+        )
         rename_dialog.format_secondary_text(
-            _('Please enter a new name for the selected collection.'))
+            _('Please enter a new name for the selected collection.')
+        )
         rename_dialog.set_default_response(gtk.RESPONSE_OK)
 
         box = gtk.HBox() # To get nice line-ups with the padding.

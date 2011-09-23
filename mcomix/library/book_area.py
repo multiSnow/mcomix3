@@ -464,36 +464,23 @@ class _BookArea(gtk.ScrolledWindow):
             _("Removed %(num)d book(s) from '%(collection)s'.") %
             {'num': len(selected), 'collection': coll_name})
 
-    def _remove_books_from_library(self, request_response=True, *args):
+    def _remove_books_from_library(self, *args):
         """Remove the currently selected books from the library, and thus
         also from the _BookArea.
         """
 
-        if request_response:
-            choice_dialog = gtk.MessageDialog(self._library, 0,
-                gtk.MESSAGE_QUESTION, gtk.BUTTONS_NONE,
-                _('Remove books from the library?'))
-            choice_dialog.format_secondary_text(
-                _('The selected books will be removed from the library (but the original files will be untouched). Are you sure that you want to continue?'))
-            choice_dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
-            choice_dialog.add_button(gtk.STOCK_REMOVE, gtk.RESPONSE_OK)
-            choice_dialog.set_default_response(gtk.RESPONSE_OK)
-            response = choice_dialog.run()
-            choice_dialog.destroy()
+        selected = self._iconview.get_selected_items()
 
-        if not request_response or (request_response and response == gtk.RESPONSE_OK):
-            selected = self._iconview.get_selected_items()
+        for path in selected:
+            book = self.get_book_at_path(path)
+            self._library.backend.remove_book(book)
+            self.remove_book_at_path(path)
 
-            for path in selected:
-                book = self.get_book_at_path(path)
-                self._library.backend.remove_book(book)
-                self.remove_book_at_path(path)
-
-            msg = i18n.get_translation().ngettext(
-                'Removed %d book from the library.',
-                'Removed %d books from the library.',
-                len(selected))
-            self._library.set_status_message(msg % len(selected))
+        msg = i18n.get_translation().ngettext(
+            'Removed %d book from the library.',
+            'Removed %d books from the library.',
+            len(selected))
+        self._library.set_status_message(msg % len(selected))
 
     def _completely_remove_book(self, request_response=True, *args):
         """Remove the currently selected books from the library and the
@@ -503,10 +490,16 @@ class _BookArea(gtk.ScrolledWindow):
         if request_response:
 
             choice_dialog = gtk.MessageDialog(self._library, 0,
-                gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO,
-                _('Remove books from the library?'))
+                gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO)
+            choice_dialog.set_markup('<span weight="bold" size="larger">' +
+                _('Remove books from the library?') +
+                '</span>'
+            )
             choice_dialog.format_secondary_text(
-                _('The selected books will be removed from the library and permanently deleted. Are you sure that you want to continue?'))
+                _('The selected books will be removed from the library and '
+                  'permanently deleted. Are you sure that you want to continue?')
+            )
+            choice_dialog.set_default_response(gtk.RESPONSE_YES)
             response = choice_dialog.run()
             choice_dialog.destroy()
 
@@ -519,7 +512,7 @@ class _BookArea(gtk.ScrolledWindow):
             paths = [ self._library.backend.get_book_path(book_id) for book_id in book_ids ]
 
             # Remove books from library
-            self._remove_books_from_library(False)
+            self._remove_books_from_library()
 
             # Remove from the harddisk
             for book_path in paths:

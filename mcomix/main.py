@@ -1023,7 +1023,7 @@ class MainWindow(gtk.Window):
         a confirmation dialog. """
 
         current_file = self.imagehandler.get_real_path()
-        dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL, gtk.MESSAGE_WARNING,
+        dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL, gtk.MESSAGE_QUESTION,
                 gtk.BUTTONS_NONE)
         dialog.set_markup('<span weight="bold" size="larger">'
                 + _('Delete "%s"?') % os.path.basename(current_file)
@@ -1031,7 +1031,7 @@ class MainWindow(gtk.Window):
         dialog.format_secondary_markup(_('The file will be deleted from your harddisk.'))
         dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
         dialog.add_button(gtk.STOCK_DELETE, gtk.RESPONSE_OK)
-        dialog.set_default_response(gtk.RESPONSE_CANCEL)
+        dialog.set_default_response(gtk.RESPONSE_OK)
 
         result = dialog.run()
         dialog.destroy()
