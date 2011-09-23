@@ -9,8 +9,9 @@ import pango
 import image_tools
 import labels
 import constants
-from preferences import prefs
+import log
 import thumbnail_tools
+from preferences import prefs
 
 mimetypes.init()
 
@@ -131,8 +132,8 @@ class _BaseFileChooserDialog(gtk.Dialog):
                 self.filechooser.set_current_folder(
                     prefs['path of last browsed in filechooser'])
 
-        except Exception: # E.g. broken prefs values.
-            pass
+        except Exception, ex: # E.g. broken prefs values.
+            log.debug(ex)
 
         self.show_all()
 
@@ -289,7 +290,7 @@ class _BaseFileChooserDialog(gtk.Dialog):
         # XXX: This method defers the import of main to avoid cyclic imports
         # during startup.
 
-        from mcomix.main import main_window
-        return main_window().filehandler.get_path_to_base()
+        import main
+        return main.main_window().filehandler.get_path_to_base()
 
 # vim: expandtab:sw=4:ts=4
