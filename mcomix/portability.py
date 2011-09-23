@@ -48,8 +48,13 @@ def get_commandline_args():
         if args_pointer:
             args = [args_pointer[i] for i in range(args_length.value)]
             ctypes.windll.kernel32.LocalFree(args_pointer)
-            # The first argument is the python interpreter, skip it.
-            return args[1:]
+            # The first argument is either the python interpreter, or MComix.exe
+            # in case of being called as py2exe wrapper. If called by Python, the
+            # second argument will be a Python script, which needs to be removed.
+            if hasattr(sys, 'frozen'):
+                return args[1:]
+            else:
+                return args[2:]
         else:
             # For some reason CommandLineToArgvW failed and returned NULL
             # Fall back to sys.argv
