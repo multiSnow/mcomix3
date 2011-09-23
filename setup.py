@@ -100,7 +100,8 @@ setuptools.setup(
     maintainer = 'Oddegamra',
     maintainer_email = 'oddegamra@gmx.org',
     url = 'http://mcomix.sourceforge.net',
-    description = 'MComix is a fork of Comix and is a user-friendly, customizable image viewer. '
+    description = 'GTK comic book viewer',
+    long_description = 'MComix is a fork of Comix and is a user-friendly, customizable image viewer. '
         'It is specifically designed to handle comic books.',
     license = "License :: OSI Approved :: GNU General Public License (GPL)",
     download_url = "http://sourceforge.net/projects/mcomix/files",
