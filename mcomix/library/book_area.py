@@ -113,7 +113,7 @@ class _BookArea(gtk.ScrolledWindow):
             ('open keep library', gtk.STOCK_OPEN,
                 _('Open _without closing library'), None, None,
                 self.open_selected_book_noclose),
-            ('add', gtk.STOCK_ADD, _('_Add...'), '<Ctrl>a',
+            ('add', gtk.STOCK_ADD, _('_Add...'), '<Ctrl><Shift>a',
                 _('Add more books to the library.'),
                 lambda *args: file_chooser_library_dialog.open_library_filechooser_dialog(self._library)),
             ('remove from collection', gtk.STOCK_REMOVE,
