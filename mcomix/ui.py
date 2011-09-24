@@ -2,6 +2,7 @@
 """
 
 import gtk
+
 import bookmark_menu
 import edit_dialog
 import enhance_dialog
@@ -9,6 +10,7 @@ import preferences_dialog
 import recent
 import dialog_handler
 import constants
+import status
 import file_chooser_base_dialog
 import file_chooser_main_dialog
 import library.main_dialog as library_main_dialog
@@ -19,6 +21,7 @@ class MainUI(gtk.UIManager):
         gtk.UIManager.__init__(self)
 
         self._window = window
+        self._tooltipstatus = status.TooltipStatusHelper(self, window.statusbar)
 
         # ----------------------------------------------------------------
         # Create actions for the menus.

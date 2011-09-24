@@ -16,6 +16,7 @@ from mcomix import constants
 from mcomix import portability
 from mcomix import callback
 from mcomix import i18n
+from mcomix import status
 from mcomix import file_chooser_library_dialog
 from mcomix.library.pixbuf_cache import get_pixbuf_cache
 
@@ -68,6 +69,8 @@ class _BookArea(gtk.ScrolledWindow):
         self.add(self._iconview)
 
         self._ui_manager = gtk.UIManager()
+        self._tooltipstatus = status.TooltipStatusHelper(self._ui_manager,
+            self._library.get_status_bar())
 
         ui_description = """
         <ui>

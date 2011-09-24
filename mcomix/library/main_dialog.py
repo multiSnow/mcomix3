@@ -6,6 +6,7 @@ from mcomix import i18n
 from mcomix import tools
 from mcomix import log
 from mcomix import file_chooser_library_dialog
+from mcomix import status
 from mcomix.preferences import prefs
 from mcomix.library import backend as library_backend
 from mcomix.library import book_area as library_book_area
@@ -51,7 +52,6 @@ class _LibraryDialog(gtk.Window):
             gtk.FILL)
 
         if prefs['show statusbar']:
-            prefs['show statusbar'] = True
             table.attach(self._statusbar, 0, 2, 2, 3, gtk.FILL, gtk.FILL)
 
         self.add(table)
@@ -72,12 +72,17 @@ class _LibraryDialog(gtk.Window):
         elif len(paths) == 1:
             self._file_handler.open_file(paths[0])
 
+    def get_status_bar(self):
+        """ Returns the window's status bar. """
+        return self._statusbar
+
     def set_status_message(self, message):
         """Set a specific message on the statusbar, replacing whatever was
         there earlier.
         """
         self._statusbar.pop(0)
-        self._statusbar.push(0, ' %s' % i18n.to_unicode(message))
+        self._statusbar.push(0,
+            ' ' * status.Statusbar.SPACING + '%s' % i18n.to_unicode(message))
 
     def close(self, *args):
         """Close the library and do required cleanup tasks."""

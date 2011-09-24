@@ -6,6 +6,7 @@ import gobject
 
 from mcomix import constants
 from mcomix import i18n
+from mcomix import status
 from mcomix.preferences import prefs
 from mcomix import file_chooser_library_dialog
 
@@ -48,6 +49,8 @@ class _CollectionArea(gtk.ScrolledWindow):
         self.add(self._treeview)
 
         self._ui_manager = gtk.UIManager()
+        self._tooltipstatus = status.TooltipStatusHelper(self._ui_manager,
+            self._library.get_status_bar())
         ui_description = """
         <ui>
             <popup name="library collections">

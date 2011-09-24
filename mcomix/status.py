@@ -17,13 +17,12 @@ class Statusbar(gtk.EventBox):
         self._loading = True
 
         # Status text, page number, file number, resolution, path, filename
-        self.label = gtk.Label()
-        self.label.set_alignment(0, 0.5)
-        self.label.set_ellipsize(pango.ELLIPSIZE_END)
-        self.add(self.label)
+        self.status = gtk.Statusbar()
+        self.add(self.status)
 
         # Create popup menu for enabling/disabling status boxes.
         self.ui_manager = gtk.UIManager()
+        self.tooltipstatus = TooltipStatusHelper(self.ui_manager, self.status)
         ui_description = """
         <ui>
             <popup name="Statusbar">
@@ -69,7 +68,8 @@ class Statusbar(gtk.EventBox):
         """Set a specific message (such as an error message) on the statusbar,
         replacing whatever was there earlier.
         """
-        self.label.set_text(" " * Statusbar.SPACING + message)
+        self.status.pop(-1)
+        self.status.push(-1, " " * Statusbar.SPACING + message)
 
     def set_page_number(self, page, total, double_page=False):
         """Update the page number."""
@@ -118,7 +118,16 @@ class Statusbar(gtk.EventBox):
 
         space = " " * Statusbar.SPACING
         text = (space + "|" + space).join(self._get_status_text())
-        self.label.set_text(space + text)
+        self.status.pop(-1)
+        self.status.push(-1, space + text)
+
+    def push(self, context_id, message):
+        """ Compatibility with gtk.Statusbar. """
+        self.status.push(context_id, message)
+
+    def pop(self, context_id):
+        """ Compatibility with gtk.Statusbar. """
+        self.status.pop(context_id)
 
     def _get_status_text(self):
         """ Returns an array of text fields that should be displayed. """
@@ -187,5 +196,37 @@ class Statusbar(gtk.EventBox):
                 ('filename', filename_visible)):
             action = self.ui_manager.get_action('/Statusbar/' + name)
             action.set_active(visible)
+
+
+class TooltipStatusHelper(object):
+    """ Attaches to a L{gtk.UIManager} to provide statusbar tooltips when
+    selecting menu items. """
+
+    def __init__(self, uimanager, statusbar):
+        self._statusbar = statusbar
+
+        uimanager.connect('connect-proxy', self._on_connect_proxy)
+        uimanager.connect('disconnect-proxy', self._on_disconnect_proxy)
+
+    def _on_connect_proxy(self, uimgr, action, widget):
+        """ Connects the widget's selection handlers to the status bar update. 
+        """
+        tooltip = action.get_property('tooltip')
+        if isinstance(widget, gtk.MenuItem) and tooltip:
+            cid = widget.connect('select', self._on_item_select, tooltip)
+            cid2 = widget.connect('deselect', self._on_item_deselect)
+            widget.set_data('app::connect-ids', (cid, cid2))
+
+    def _on_disconnect_proxy(self, uimgr, action, widget):
+        """ Disconnects the widget's selection handlers. """
+        cids = widget.get_data('app::connect-ids') or ()
+        for cid in cids:
+            widget.disconnect(cid)
+
+    def _on_item_select(self, menuitem, tooltip):
+        self._statusbar.push(-1, " " * Statusbar.SPACING + tooltip)
+
+    def _on_item_deselect(self, menuitem):
+        self._statusbar.pop(-1)
 
 # vim: expandtab:sw=4:ts=4
