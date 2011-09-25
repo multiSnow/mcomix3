@@ -5,7 +5,9 @@
 import os
 import zipfile
 import threading
-import archive_base
+
+from mcomix import log
+from mcomix.archive import archive_base
 
 class ZipArchive(archive_base.NonUnicodeArchive):
     def __init__(self, archive):
@@ -39,8 +41,19 @@ class ZipArchive(archive_base.NonUnicodeArchive):
         self._create_directory(destination_dir)
 
         new = file(destination_path, 'wb')
-        new.write(self.zip.read(self._original_filename(filename)))
+        content = self.zip.read(self._original_filename(filename))
+        new.write(content)
         new.close()
+
+        zipinfo = self.zip.getinfo(self._original_filename(filename))
+        if len(content) != zipinfo.file_size:
+            log.warning(_('%(filename)s\'s extracted size is %(actual_size)d bytes,'
+                ' but should be %(expected_size)d bytes.'
+                ' The archive might be corrupt or in an unsupported format.'),
+                { 'filename' : filename, 'actual_size' : len(content),
+                  'expected_size' : zipinfo.file_size })
+
+
 
     def close(self):
         self.zip.close()
