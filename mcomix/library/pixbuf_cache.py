@@ -21,7 +21,7 @@ class _PixbufCache(object):
         #: Store book id => pixbuf
         self._cache = {}
         #: Ensure thread safety
-        self._lock = threading.Lock()
+        self._lock = threading.RLock()
 
     def add(self, id, pixbuf):
         """ Adds a cache object with <id> and associates it with the
