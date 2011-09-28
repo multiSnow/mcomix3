@@ -1,4 +1,5 @@
 MComix 0.94
+Release date: 27.09.2011
 
     - Fixed MComix opening archives in sibling directories
       even when "Automatically open next archive" was disabled.
