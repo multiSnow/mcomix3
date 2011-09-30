@@ -37,7 +37,6 @@ class ImageHandler:
         self._image_files = None
         self._current_image_index = None
         self._raw_pixbufs = {}
-        self._pixbuf_auto_bgs = {}
         self._name_table = {}
         self.force_single_step = False
 
@@ -55,10 +54,8 @@ class ImageHandler:
             try:
                 pixbuf = image_tools.load_pixbuf(self._image_files[index])
                 self._raw_pixbufs[index] = pixbuf
-                self._pixbuf_auto_bgs[index] = image_tools.get_most_common_edge_colour(self._raw_pixbufs[index])
             except Exception:
                 self._raw_pixbufs[index] = constants.MISSING_IMAGE_ICON
-                self._pixbuf_auto_bgs[index] = [0,0,0]
         else:
             try:
                 pixbuf = self._raw_pixbufs[index]
@@ -80,18 +77,21 @@ class ImageHandler:
                 self._get_pixbuf(self._current_image_index + 1)]
 
     def get_pixbuf_auto_background(self, single=False):
+        """ Returns an automatically calculated background color
+        for the current page(s). """
 
-        self._get_pixbuf(self._current_image_index)
-        auto_bg = self._pixbuf_auto_bgs[self._current_image_index]
+        pixbufs = self.get_pixbufs(single)
 
-        if self._window.displayed_double() or not single:
+        if len(pixbufs) == 1:
+            auto_bg = image_tools.get_most_common_edge_colour(pixbufs[0])
+        elif len(pixbufs) == 2:
+            left, right = pixbufs
+            if self._window.is_manga_mode:
+                left, right = right, left
 
-            self._get_pixbuf(self._current_image_index + 1)
-            second_page_bg = self._pixbuf_auto_bgs[self._current_image_index + 1]
-
-            auto_bg[0] = (auto_bg[0] + second_page_bg[0]) / 2
-            auto_bg[1] = (auto_bg[1] + second_page_bg[1]) / 2
-            auto_bg[2] = (auto_bg[2] + second_page_bg[2]) / 2
+            auto_bg = image_tools.get_most_common_edge_colour((left, right))
+        else:
+            assert False, 'Unexpected pixbuf count'
 
         return auto_bg
 

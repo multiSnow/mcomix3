@@ -429,9 +429,8 @@ class MainWindow(gtk.Window):
 
         if prefs['smart bg']:
 
-            bg_colour = image_tools.get_most_common_edge_colour(
-                            self.left_image.get_pixbuf())
-
+            bg_colour = self.imagehandler.get_pixbuf_auto_background(
+                    not self.displayed_double())
             self.set_bg_colour(bg_colour)
 
             if prefs['smart thumb bg'] and prefs['show thumbnails']: # or prefs['thumbnail bg uses main colour']:

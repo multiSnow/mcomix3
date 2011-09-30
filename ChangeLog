@@ -2,6 +2,9 @@ MComix 0.95
 
     - Fixed library freezing up when displaying large amounts of books.
 
+    - The "Dynamic background color" option now uses a color that should be
+      closer to a page's actual edge color.
+
 MComix 0.94
 Release date: 27.09.2011
 

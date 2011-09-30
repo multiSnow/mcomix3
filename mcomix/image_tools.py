@@ -144,47 +144,84 @@ def add_border(pixbuf, thickness, colour=0x000000FF):
     return canvas
 
 
-def get_most_common_edge_colour(pixbuf):
+def get_most_common_edge_colour(pixbufs, edge=2):
     """Return the most commonly occurring pixel value along the four edges
     of <pixbuf>. The return value is a sequence, (r, g, b), with 16 bit
-    values.
+    values. If <pixbuf> is a tuple, the edges will be computed from
+    both the left and the right image.
 
     Note: This could be done more cleanly with subpixbuf(), but that
     doesn't work as expected together with get_pixels().
     """
 
-    if not pixbuf:
+    def round_color(color, steps=10):
+        """ This rounds an RGB tuple <color> to the next nearest value,
+        i.e. 128, 83, 10 becomes 130, 85, 10 with <steps>=5. This compensates for
+        dirty colors where no clear dominating color can be made out. """
+
+        def round(color_value):
+            if steps % 2 == 0:
+                middle = steps // 2
+            else:
+                middle = steps // 2 + 1
+
+            remainder = color_value % steps
+            if remainder >= middle:
+                color_value = color_value + (steps - remainder)
+            else:
+                color_value = color_value - remainder
+
+            return min(255, max(0, color_value))
+
+        return tuple(map(round, color))
+
+    def get_edge_pixbuf(pixbuf, side, edge):
+        """ Returns a pixbuf corresponding to the side passed in <side>.
+        Valid sides are 'left', 'right', 'top', 'bottom'. """
+        width = pixbuf.get_width()
+        height = pixbuf.get_height()
+        edge = min(edge, width, height)
+
+        subpix = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, False, 8, edge, height)
+        if side == 'left':
+            pixbuf.copy_area(0, 0, edge, height, subpix, 0, 0)
+        elif side == 'right':
+            pixbuf.copy_area(width - edge, 0, edge, height, subpix, 0, 0)
+        elif side == 'top':
+            pixbuf.copy_area(0, 0, width, edge, subpix, 0, 0)
+        elif side == 'bottom':
+            pixbuf.copy_area(0, height - edge, width, edge, subpix, 0, 0)
+        else:
+            assert False, 'Invalid edge side'
+
+        return subpix
+
+    if not pixbufs:
         return (0, 0, 0)
 
-    width = pixbuf.get_width()
-    height = pixbuf.get_height()
+    if not isinstance(pixbufs, (tuple, list)):
+        left_edge = get_edge_pixbuf(pixbufs, 'left', edge)
+        right_edge = get_edge_pixbuf(pixbufs, 'right', edge)
+    else:
+        assert len(pixbufs) == 2, 'Expected two pages in list'
+        left_edge = get_edge_pixbuf(pixbufs[0], 'left', edge)
+        right_edge = get_edge_pixbuf(pixbufs[1], 'right', edge)
 
-    top_edge = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8, width, 1)
-    bottom_edge = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8, width, 1)
-    left_edge = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8, 1, height)
-    right_edge = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8, 1, height)
-
-    pixbuf.copy_area(0, 0, width, 1, top_edge, 0, 0)
-    pixbuf.copy_area(0, height - 1, width, 1, bottom_edge, 0, 0)
-    pixbuf.copy_area(0, 0, 1, height, left_edge, 0, 0)
-    pixbuf.copy_area(width - 1, 0, 1, height, right_edge, 0, 0)
-
-    total_red = 0
-    total_green = 0
-    total_blue = 0
-
-    total_count = 0
-
-    for edge in (top_edge, bottom_edge, left_edge, right_edge):
+    # Find all edge colors. Color count is separate for all four edges
+    ungrouped_colors = []
+    for edge in (left_edge, right_edge):
         im = pixbuf_to_pil(edge)
+        ungrouped_colors.extend(im.getcolors(im.size[0] * im.size[1]))
 
-        for count, colour in im.getcolors(im.size[0] * im.size[1]):
-            total_red += (count * colour[0])
-            total_green += (count * colour[1])
-            total_blue += (count * colour[2])
-            total_count += count
+    # Sum up colors from all edges
+    ungrouped_colors.sort(key=operator.itemgetter(1))
+    colors = [ (sum(itertools.imap(operator.itemgetter(0), group)), color)
+        for color, group in itertools.groupby(ungrouped_colors, lambda t: round_color(t[1])) ]
 
-    return [(color/total_count) * 257 for color in (total_red, total_green, total_blue) ]
+    # The most used color appears first in the list after it has been sorted
+    colors.sort(key=operator.itemgetter(0), reverse=True)
+    most_used = colors[0]
+    return [color * 257 for color in most_used[1]]
 
 def pil_to_pixbuf(image):
     """Return a pixbuf created from the PIL <image>."""
