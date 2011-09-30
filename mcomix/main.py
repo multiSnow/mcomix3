@@ -427,25 +427,21 @@ class MainWindow(gtk.Window):
             self.statusbar.set_resolution((unscaled_x, unscaled_y,
                 scale_percent))
 
-        if prefs['smart bg']:
+        if prefs['smart bg'] and not skip_pixbuf:
 
             bg_colour = self.imagehandler.get_pixbuf_auto_background(
                     not self.displayed_double())
             self.set_bg_colour(bg_colour)
 
-            if prefs['smart thumb bg'] and prefs['show thumbnails']: # or prefs['thumbnail bg uses main colour']:
-
+            if prefs['smart thumb bg'] and prefs['show thumbnails']:
                 self.thumbnailsidebar.change_thumbnail_background_color(bg_colour)
 
-        elif prefs['smart thumb bg'] and prefs['show thumbnails']:
+        elif prefs['smart thumb bg'] and prefs['show thumbnails'] and not skip_pixbuf:
 
             bg_colour = image_tools.get_most_common_edge_colour(
                             self.left_image.get_pixbuf())
 
             self.thumbnailsidebar.change_thumbnail_background_color(bg_colour)
-
-        #elif prefs['thumbnail bg uses main colour']:
-        #    self.thumbnailsidebar.set_thumbnail_background(prefs['bg colour'])
 
         if not skip_pixbuf:
             self._image_box.window.freeze_updates()
