@@ -209,7 +209,7 @@ class TooltipStatusHelper(object):
         uimanager.connect('disconnect-proxy', self._on_disconnect_proxy)
 
     def _on_connect_proxy(self, uimgr, action, widget):
-        """ Connects the widget's selection handlers to the status bar update. 
+        """ Connects the widget's selection handlers to the status bar update.
         """
         tooltip = action.get_property('tooltip')
         if isinstance(widget, gtk.MenuItem) and tooltip:
