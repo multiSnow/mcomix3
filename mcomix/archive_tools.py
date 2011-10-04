@@ -89,12 +89,14 @@ def get_archive_handler(path):
     elif mime == constants.RAR and archive.rar.RarArchive.is_available():
         return archive.rar.RarArchive(path)
     elif mime == constants.RAR and archive.sevenzip.SevenZipArchive.is_available():
+        log.info('Using Sevenzip for RAR archives.')
         return archive.sevenzip.SevenZipArchive(path)
     elif mime == constants.SEVENZIP and archive.sevenzip.SevenZipArchive.is_available():
         return archive.sevenzip.SevenZipArchive(path)
     elif mime == constants.LHA and archive.lha.LhaArchive.is_available():
         return archive.lha.LhaArchive(path)
     elif mime == constants.LHA and archive.sevenzip.SevenZipArchive.is_available():
+        log.info('Using Sevenzip for LHA archives.')
         return archive.sevenzip.SevenZipArchive(path)
     else:
         return None
