@@ -2,12 +2,12 @@
 
 import gtk
 
+from preferences import prefs
 from mcomix import i18n
 from mcomix import tools
 from mcomix import log
 from mcomix import file_chooser_library_dialog
 from mcomix import status
-from mcomix.preferences import prefs
 from mcomix.library import backend as library_backend
 from mcomix.library import book_area as library_book_area
 from mcomix.library import collection_area as library_collection_area
@@ -56,6 +56,7 @@ class _LibraryDialog(gtk.Window):
 
         self.add(table)
         self.show_all()
+        self.present()
 
     def open_book(self, books, keep_library_open=False):
         """Open the book with ID <book>."""
