@@ -584,10 +584,12 @@ class MainWindow(gtk.Window):
         self.draw_image()
 
     def change_double_page(self, toggleaction):
+        prefs['default double page'] = toggleaction.get_active()
         self.is_double_page = toggleaction.get_active()
         self.draw_image()
 
     def change_manga_mode(self, toggleaction):
+        prefs['default manga mode'] = toggleaction.get_active()
         self.is_manga_mode = toggleaction.get_active()
         self.draw_image()
 

@@ -259,24 +259,12 @@ class _PreferencesDialog(gtk.Dialog):
         # ----------------------------------------------------------------
         page = preferences_page._PreferencePage(None)
         page.new_section(_('Default modes'))
-        double_page_button = gtk.CheckButton(
-            _('Use double page mode by default.'))
-        double_page_button.set_active(prefs['default double page'])
-        double_page_button.connect('toggled', self._check_button_cb,
-            'default double page')
-        page.add_row(double_page_button)
 
         fullscreen_button = gtk.CheckButton(_('Use fullscreen by default.'))
         fullscreen_button.set_active(prefs['default fullscreen'])
         fullscreen_button.connect('toggled', self._check_button_cb,
             'default fullscreen')
         page.add_row(fullscreen_button)
-
-        manga_button = gtk.CheckButton(_('Use manga mode by default.'))
-        manga_button.set_active(prefs['default manga mode'])
-        manga_button.connect('toggled', self._check_button_cb,
-            'default manga mode')
-        page.add_row(manga_button)
 
         page.new_section(_('Fullscreen'))
         hide_in_fullscreen_button = gtk.CheckButton(

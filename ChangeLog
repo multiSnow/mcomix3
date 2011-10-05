@@ -7,6 +7,10 @@ MComix 0.95
     - The "Dynamic background color" option now uses a color that should be
       closer to a page's actual edge color.
 
+    - Removed preference options for 'Use double page mode by default' and
+      'Use manga mode by default'. The last used settings will be remembered
+      instead.
+
 MComix 0.94
 Release date: 27.09.2011
 
