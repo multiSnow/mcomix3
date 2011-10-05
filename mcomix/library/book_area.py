@@ -191,6 +191,10 @@ class _BookArea(gtk.ScrolledWindow):
     def display_covers(self, collection):
         """Display the books in <collection> in the IconView."""
 
+        adjustment = self.get_vadjustment()
+        if adjustment:
+            adjustment.set_value(0)
+
         self.stop_update()
         self._liststore.clear()
 
