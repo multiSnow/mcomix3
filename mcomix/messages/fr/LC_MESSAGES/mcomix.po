@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.93\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2011-09-24 10:52+0200\n"
+"POT-Creation-Date: 2011-10-05 18:19+0200\n"
 "PO-Revision-Date: 2011-08-28 15:42+0200\n"
 "Last-Translator: Frédéric Chateaux <fredchat@frenchmozilla.org>\n"
 "Language-Team: Benoît H. <brenze@users.sourceforge.net>\n"
@@ -140,7 +140,7 @@ msgstr "_Éditer les signets…"
 msgid "! Callback %(function)r failed: %(error)s"
 msgstr ""
 
-#: mcomix/comment_dialog.py:10 mcomix/preferences_dialog.py:391
+#: mcomix/comment_dialog.py:10 mcomix/preferences_dialog.py:379
 msgid "Comments"
 msgstr "Commentaires"
 
@@ -362,20 +362,20 @@ msgstr "! Impossible de charger l'icône \"%s\""
 msgid "Unknown filetype"
 msgstr "Type de fichier inconnu"
 
-#: mcomix/main.py:930
+#: mcomix/main.py:927
 msgid "SLIDESHOW"
 msgstr "DIAPORAMA"
 
-#: mcomix/main.py:1010
+#: mcomix/main.py:1007
 msgid "Save page as"
 msgstr "Enregistrer la page sous"
 
-#: mcomix/main.py:1029
+#: mcomix/main.py:1026
 #, python-format
 msgid "Delete \"%s\"?"
 msgstr "Effacer \"%s\" ?"
 
-#: mcomix/main.py:1031
+#: mcomix/main.py:1028
 msgid "The file will be deleted from your harddisk."
 msgstr "Le fichier sera effacer de votre disque dur."
 
@@ -780,38 +780,30 @@ msgid "Default modes"
 msgstr "Modes par défaut"
 
 #: mcomix/preferences_dialog.py:263
-msgid "Use double page mode by default."
-msgstr "Utiliser le mode double page par défaut."
-
-#: mcomix/preferences_dialog.py:269
 msgid "Use fullscreen by default."
 msgstr "Utiliser le mode plein écran par défaut."
 
-#: mcomix/preferences_dialog.py:275
-msgid "Use manga mode by default."
-msgstr "Utiliser le mode manga par défaut."
-
-#: mcomix/preferences_dialog.py:281
+#: mcomix/preferences_dialog.py:269
 msgid "Fullscreen"
 msgstr "Plein écran"
 
-#: mcomix/preferences_dialog.py:283
+#: mcomix/preferences_dialog.py:271
 msgid "Automatically hide all toolbars in fullscreen."
 msgstr "Masquer automatiquement les barres d'outils en plein écran."
 
-#: mcomix/preferences_dialog.py:289
+#: mcomix/preferences_dialog.py:277
 msgid "Slideshow"
 msgstr "Diaporama"
 
-#: mcomix/preferences_dialog.py:290
+#: mcomix/preferences_dialog.py:278
 msgid "Slideshow delay (in seconds)"
 msgstr "Intervalle du diaporama (en secondes)"
 
-#: mcomix/preferences_dialog.py:299
+#: mcomix/preferences_dialog.py:287
 msgid "Slideshow step (in pixels)"
 msgstr "Pas du diaporama (en pixels)"
 
-#: mcomix/preferences_dialog.py:307
+#: mcomix/preferences_dialog.py:295
 msgid ""
 "Specify the number of pixels to scroll while in slideshow mode. A positive "
 "value will scroll forward, a negative value will scroll backwards, and a "
@@ -821,24 +813,24 @@ msgstr ""
 "positive indique un mouvement vers l'avant, une valeur négative indique un "
 "mouvement vers l'arrière et une valeur de 0 effectuera un saut de page."
 
-#: mcomix/preferences_dialog.py:311
+#: mcomix/preferences_dialog.py:299
 msgid "During a slideshow automatically open the next archive."
 msgstr "Ouvrir automatiquement l'archive suivante."
 
-#: mcomix/preferences_dialog.py:316
+#: mcomix/preferences_dialog.py:304
 msgid ""
 "While in slideshow mode allow the next archive to automatically be opened."
 msgstr "Lors d'un diaporama, ouvre automatiquement l'archive suivante."
 
-#: mcomix/preferences_dialog.py:319
+#: mcomix/preferences_dialog.py:307
 msgid "Rotation"
 msgstr "Rotation"
 
-#: mcomix/preferences_dialog.py:321
+#: mcomix/preferences_dialog.py:309
 msgid "Automatically rotate images according to their metadata."
 msgstr "Rotation automatique des images suivant leurs métadonnées."
 
-#: mcomix/preferences_dialog.py:326
+#: mcomix/preferences_dialog.py:314
 msgid ""
 "Automatically rotate images when an orientation is specified in the image "
 "metadata, such as in an Exif tag."
@@ -846,23 +838,23 @@ msgstr ""
 "Rotation automatique des images quand une orientation est spécifiée dans les "
 "métadonnées de l'image, comme un tag EXIF."
 
-#: mcomix/preferences_dialog.py:337
+#: mcomix/preferences_dialog.py:325
 msgid "User interface language"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:338
+#: mcomix/preferences_dialog.py:326
 msgid "Language (needs restart)"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:342
+#: mcomix/preferences_dialog.py:330
 msgid "Cache"
 msgstr "Cache"
 
-#: mcomix/preferences_dialog.py:345
+#: mcomix/preferences_dialog.py:333
 msgid "Store thumbnails for opened files."
 msgstr "Enregistrer les vignettes des fichiers ouverts."
 
-#: mcomix/preferences_dialog.py:350
+#: mcomix/preferences_dialog.py:338
 msgid ""
 "Store thumbnails for opened files according to the freedesktop.org "
 "specification. These thumbnails are shared by many other applications, such "
@@ -872,11 +864,11 @@ msgstr ""
 "freedesktop.org. Ces vignettes sont partagés par d'autres applications comme "
 "les gestionnaires de fichiers."
 
-#: mcomix/preferences_dialog.py:354
+#: mcomix/preferences_dialog.py:342
 msgid "Delay thumbnail generation."
 msgstr "Délais de génération des vignettes"
 
-#: mcomix/preferences_dialog.py:356
+#: mcomix/preferences_dialog.py:344
 msgid ""
 "Thumbnails are generated only when required, instead of directly after "
 "opening a new file."
@@ -884,11 +876,11 @@ msgstr ""
 "Les vignettes sont générées lorsqu'elles sont requises, plutôt qu'après "
 "l'ouverture d'un nouveau fichier."
 
-#: mcomix/preferences_dialog.py:362
+#: mcomix/preferences_dialog.py:350
 msgid "Maximum number of pages to store in the cache"
 msgstr "Nombre de pages maximal dans le cache."
 
-#: mcomix/preferences_dialog.py:368
+#: mcomix/preferences_dialog.py:356
 msgid ""
 "Set the max number of pages to cache. A value of -1 will cache the entire "
 "archive."
@@ -896,15 +888,15 @@ msgstr ""
 "Définir le nombre maximal de pages dans le cache. Une valeur de -1 stockera "
 "toute l'archive en cache."
 
-#: mcomix/preferences_dialog.py:371
+#: mcomix/preferences_dialog.py:359
 msgid "Magnifying Lens"
 msgstr "Loupe"
 
-#: mcomix/preferences_dialog.py:373
+#: mcomix/preferences_dialog.py:361
 msgid "Magnifying lens size (in pixels)"
 msgstr "Taille de la loupe (en pixels)"
 
-#: mcomix/preferences_dialog.py:379
+#: mcomix/preferences_dialog.py:367
 msgid ""
 "Set the size of the magnifying lens. It is a square with a side of this many "
 "pixels."
@@ -912,19 +904,19 @@ msgstr ""
 "Défini la taille de la loupe. C'est un carré dont la taille du côté est égal "
 "à ce paramètre en pixel."
 
-#: mcomix/preferences_dialog.py:381
+#: mcomix/preferences_dialog.py:369
 msgid "Magnification factor"
 msgstr "Facteur d'agrandissement"
 
-#: mcomix/preferences_dialog.py:388
+#: mcomix/preferences_dialog.py:376
 msgid "Set the magnification factor of the magnifying lens."
 msgstr "Défini le facteur d'agrandissement de la loupe"
 
-#: mcomix/preferences_dialog.py:392
+#: mcomix/preferences_dialog.py:380
 msgid "Comment extensions"
 msgstr "Extensions des fichiers de commentaires"
 
-#: mcomix/preferences_dialog.py:399
+#: mcomix/preferences_dialog.py:387
 msgid ""
 "Treat all files found within archives, that have one of these file endings, "
 "as comments."
@@ -932,99 +924,99 @@ msgstr ""
 "Considérer tous les fichiers des archives qui utilisent une de ces "
 "extensions comme fichiers de commentaires."
 
-#: mcomix/preferences_dialog.py:419
+#: mcomix/preferences_dialog.py:407
 msgid "Auto-detect (Default)"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:420
+#: mcomix/preferences_dialog.py:408
 msgid "Catalan"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:421
+#: mcomix/preferences_dialog.py:409
 msgid "Czech"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:422
+#: mcomix/preferences_dialog.py:410
 msgid "German"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:423
+#: mcomix/preferences_dialog.py:411
 msgid "Greek"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:424
+#: mcomix/preferences_dialog.py:412
 msgid "English"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:425
+#: mcomix/preferences_dialog.py:413
 msgid "Spanish"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:426
+#: mcomix/preferences_dialog.py:414
 msgid "Persian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:427
+#: mcomix/preferences_dialog.py:415
 msgid "French"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:428
+#: mcomix/preferences_dialog.py:416
 msgid "Galician"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:429
+#: mcomix/preferences_dialog.py:417
 msgid "Croatian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:430
+#: mcomix/preferences_dialog.py:418
 msgid "Hungarian"
 msgstr "Hongroise"
 
-#: mcomix/preferences_dialog.py:431
+#: mcomix/preferences_dialog.py:419
 msgid "Indonesian"
 msgstr "Indonésienne"
 
-#: mcomix/preferences_dialog.py:432
+#: mcomix/preferences_dialog.py:420
 msgid "Italian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:433
+#: mcomix/preferences_dialog.py:421
 msgid "Japanese"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:434
+#: mcomix/preferences_dialog.py:422
 msgid "Korean"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:435
+#: mcomix/preferences_dialog.py:423
 msgid "Dutch"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:436
+#: mcomix/preferences_dialog.py:424
 msgid "Polish"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:437
+#: mcomix/preferences_dialog.py:425
 msgid "Portuguese"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:438
+#: mcomix/preferences_dialog.py:426
 msgid "Russian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:439
+#: mcomix/preferences_dialog.py:427
 msgid "Swedish"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:440
+#: mcomix/preferences_dialog.py:428
 msgid "Ukrainian"
 msgstr "Ukrainienne"
 
-#: mcomix/preferences_dialog.py:441
+#: mcomix/preferences_dialog.py:429
 msgid "Chinese (simplified)"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:442
+#: mcomix/preferences_dialog.py:430
 msgid "Chinese (traditional)"
 msgstr ""
 
@@ -1611,6 +1603,14 @@ msgstr "L'archive est protégée par un mot de passe"
 msgid "Please enter the password to continue:"
 msgstr "Veuillez saisir le mot de passe pour continuer :"
 
+#: mcomix/archive/zip.py:50
+#, python-format
+msgid ""
+"%(filename)s's extracted size is %(actual_size)d bytes, but should be "
+"%(expected_size)d bytes. The archive might be corrupt or in an unsupported "
+"format."
+msgstr ""
+
 #: mcomix/library/add_progress_dialog.py:21
 msgid "Adding books"
 msgstr "Ajout de livres"
@@ -1943,9 +1943,15 @@ msgstr "Ouvrir le livre sélectionné."
 msgid "Library"
 msgstr "Bibliothèque"
 
-#: mcomix/library/main_dialog.py:124
+#: mcomix/library/main_dialog.py:125
 msgid "! You need an sqlite wrapper to use the library."
 msgstr "! Il faut la composante sqlite pour utiliser la bibliothèque"
+
+#~ msgid "Use double page mode by default."
+#~ msgstr "Utiliser le mode double page par défaut."
+
+#~ msgid "Use manga mode by default."
+#~ msgstr "Utiliser le mode manga par défaut."
 
 #~ msgid "Refresh file"
 #~ msgstr "Rafraîchir le fichier"
