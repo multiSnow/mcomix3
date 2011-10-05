@@ -258,7 +258,7 @@ class _PreferencesDialog(gtk.Dialog):
         # The "Display" tab.
         # ----------------------------------------------------------------
         page = preferences_page._PreferencePage(None)
-        page.new_section(_('Default modes'))
+        page.new_section(_('Fullscreen'))
 
         fullscreen_button = gtk.CheckButton(_('Use fullscreen by default.'))
         fullscreen_button.set_active(prefs['default fullscreen'])
@@ -266,7 +266,6 @@ class _PreferencesDialog(gtk.Dialog):
             'default fullscreen')
         page.add_row(fullscreen_button)
 
-        page.new_section(_('Fullscreen'))
         hide_in_fullscreen_button = gtk.CheckButton(
             _('Automatically hide all toolbars in fullscreen.'))
         hide_in_fullscreen_button.set_active(prefs['hide all in fullscreen'])
