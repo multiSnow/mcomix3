@@ -1,6 +1,8 @@
 MComix 0.95
 
     - Fixed library freezing up when displaying large amounts of books.
+      In addition, changes to cover size and sort order weren't kept
+      across program restarts.
 
     - The "Dynamic background color" option now uses a color that should be
       closer to a page's actual edge color.

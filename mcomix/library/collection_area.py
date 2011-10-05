@@ -4,10 +4,10 @@ from xml.sax.saxutils import escape as xmlescape
 import gtk
 import gobject
 
+from preferences import prefs
 from mcomix import constants
 from mcomix import i18n
 from mcomix import status
-from mcomix.preferences import prefs
 from mcomix import file_chooser_library_dialog
 
 _dialog = None

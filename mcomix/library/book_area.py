@@ -10,7 +10,7 @@ import gobject
 import Image
 import ImageDraw
 
-from mcomix.preferences import prefs
+from preferences import prefs
 from mcomix import image_tools
 from mcomix import constants
 from mcomix import portability
