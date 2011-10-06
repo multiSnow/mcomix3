@@ -10,14 +10,16 @@ import gobject
 import Image
 import ImageDraw
 
+# XXX: Importing these by absolute path causes the modules to be loaded twice.
+import file_chooser_library_dialog
 from preferences import prefs
+
 from mcomix import image_tools
 from mcomix import constants
 from mcomix import portability
 from mcomix import callback
 from mcomix import i18n
 from mcomix import status
-from mcomix import file_chooser_library_dialog
 from mcomix.library.pixbuf_cache import get_pixbuf_cache
 
 _dialog = None
