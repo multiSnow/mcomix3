@@ -253,6 +253,9 @@ class Thumbnailer(object):
         files = itertools.ifilter(lambda filename:
                 u'__MACOSX' not in os.path.normpath(filename).split(os.sep),
                 files)
+        # Ignore credit files if possible.
+        files = itertools.ifilter(lambda filename:
+                u'credit' not in os.path.split(filename)[1].lower(), files)
 
         ext_re = constants.SUPPORTED_IMAGE_REGEX
         images = list(itertools.ifilter(constants.SUPPORTED_IMAGE_REGEX.search, files))
