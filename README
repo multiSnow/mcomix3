@@ -50,7 +50,10 @@
   or C:\Windows\system32), or directly in MComix' root directory when run
   without having first installed MComix.
 
-  To read 7Zip archives, you need to have the "7z" program installed.
+  To read 7Zip archives, you need to have the "7z" program installed. Likewise,
+  "lha" is needed to open LHA/LZA archives. Note that "7z" can be used as
+  substitute for both "unrar" and "lha", but extraction of Unicode filenames
+  on Windows will be broken in that case.
   
 === Credits ===================================================================
   
