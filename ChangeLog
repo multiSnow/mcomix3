@@ -4,6 +4,8 @@ MComix 0.95
       In addition, changes to cover size and sort order weren't kept
       across program restarts.
 
+    - Fixed "Copy to clipboard" doing nothing on Win32.
+
     - The "Dynamic background color" option now uses a color that should be
       closer to a page's actual edge color.
 
