@@ -182,7 +182,8 @@ def get_most_common_edge_colour(pixbufs, edge=2):
         height = pixbuf.get_height()
         edge = min(edge, width, height)
 
-        subpix = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, False, 8, edge, height)
+        subpix = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB,
+                pixbuf.get_has_alpha(), 8, edge, height)
         if side == 'left':
             pixbuf.copy_area(0, 0, edge, height, subpix, 0, 0)
         elif side == 'right':
