@@ -57,6 +57,7 @@ setuptools.setup(
         'mcomix.images' : images },
     entry_points = {
         'console_scripts' : [ 'mcomix = mcomix.mcomixstarter:run' ] },
+    test_suite = "test",
     requires = ['pygtk (>=2.12.0)', 'PIL (>=1.15)'],
     install_requires = ['setuptools'],
     zip_safe = False,
