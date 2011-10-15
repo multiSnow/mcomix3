@@ -258,9 +258,13 @@ class FileHandler(object):
 
 
         self._base_path = path
-        self._condition = self._extractor.setup(self._base_path,
+        try:
+            self._condition = self._extractor.setup(self._base_path,
                                                 self._tmp_dir,
                                                 self.archive_type)
+        except Exception, ex:
+            log.error(ex)
+            self._condition = None
 
         if self._condition != None:
 
