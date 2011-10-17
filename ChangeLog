@@ -6,6 +6,10 @@ MComix 0.95
 
     - Fixed "Copy to clipboard" doing nothing on Win32.
 
+    - Fix MComix crashing on startup when opening a file in a directory
+      that contains names Python cannot directly convert to Unicode strings.
+      (by Joseph Seaton)
+
     - The "Dynamic background color" option now uses a color that should be
       closer to a page's actual edge color.
 

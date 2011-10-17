@@ -11,6 +11,7 @@ import archive_tools
 import tools
 import constants
 import preferences
+import i18n
 import log
 
 def get_file_provider(filelist):
@@ -104,8 +105,11 @@ class OrderedFileProvider(FileProvider):
             should_accept = lambda file: True
 
         try:
-            files = [ os.path.join(self.base_dir, filename)
-                      for filename in os.listdir(self.base_dir)
+            files = [ os.path.join(self.base_dir, filename) for filename in
+                      # Explicitly convert all files to Unicode, even when
+                      # os.listdir returns a mixture of byte/unicode strings.
+                      # (MComix bug #3424405)
+                      [ i18n.to_unicode(fn) for fn in os.listdir(self.base_dir) ]
                       if should_accept(os.path.join(self.base_dir, filename)) ]
             files.sort(locale.strcoll)
 
