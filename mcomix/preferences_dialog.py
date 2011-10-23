@@ -53,8 +53,8 @@ class _PreferencesDialog(gtk.Dialog):
         page = preferences_page._PreferencePage(80)
         page.new_section(_('Background'))
 
-        fixed_bg_button = gtk.RadioButton(None, '%s:' %
-            _('Use this colour as background'))
+        fixed_bg_button = gtk.RadioButton(None, 
+            _('Use this colour as background:'))
         fixed_bg_button.set_tooltip_text(
             _('Always use this selected colour as the background colour.'))
         fixed_bg_button.connect('toggled', self._check_button_cb, 'color box bg')
@@ -64,7 +64,7 @@ class _PreferencesDialog(gtk.Dialog):
         page.add_row(fixed_bg_button, bg_color_button)
 
         dynamic_bg_button = gtk.RadioButton(fixed_bg_button,
-            _('Use dynamic background colour.'))
+            _('Use dynamic background colour'))
         dynamic_bg_button.set_active(prefs['smart bg'])
         dynamic_bg_button.connect('toggled', self._check_button_cb, 'smart bg')
         dynamic_bg_button.set_tooltip_text(
@@ -74,8 +74,8 @@ class _PreferencesDialog(gtk.Dialog):
 
         page.new_section(_('Thumbnails'))
 
-        thumb_fixed_bg_button = gtk.RadioButton(None, '%s:' %
-            _('Use this colour as the thumbnail background'))
+        thumb_fixed_bg_button = gtk.RadioButton(None,
+            _('Use this colour as the thumbnail background:'))
         thumb_fixed_bg_button.set_tooltip_text(
             _('Always use this selected colour as the thumbnail background colour.'))
         thumb_fixed_bg_button.connect('toggled', self._check_button_cb, 'color box thumb bg')
@@ -85,7 +85,7 @@ class _PreferencesDialog(gtk.Dialog):
         page.add_row(thumb_fixed_bg_button, thumb_bg_color_button)
 
         thumb_dynamic_bg_button = gtk.RadioButton(thumb_fixed_bg_button,
-            _('Use the dynamic background colour for the thumbnail background.'))
+            _('Use dynamic background colour'))
         thumb_dynamic_bg_button.set_active(prefs['smart thumb bg'])
         thumb_dynamic_bg_button.set_tooltip_text(
             _('Automatically use the colour that fits the viewed image for the thumbnail background.'))
@@ -93,25 +93,8 @@ class _PreferencesDialog(gtk.Dialog):
 
         page.add_row(thumb_dynamic_bg_button)
 
-        """
-        same_as_main_bg_button = gtk.RadioButton(thumb_dynamic_bg_button,
-            _('Use the same background colour as the main background.'))
-        same_as_main_bg_button.connect('toggled', self._check_button_cb, 'thumbnail bg uses main colour')
-        same_as_main_bg_button.set_tooltip_text(
-            _('The thumbnail background will use the same colour as the main image background colour.'))
-
-        page.add_row(same_as_main_bg_button)
-        """
-
-        label = gtk.Label('%s:' % _('Thumbnail size (in pixels)'))
-        adjustment = gtk.Adjustment(prefs['thumbnail size'], 20, 500, 1, 10)
-        thumb_size_spinner = gtk.SpinButton(adjustment)
-        thumb_size_spinner.connect('value_changed', self._spinner_cb,
-            'thumbnail size')
-        page.add_row(label, thumb_size_spinner)
-
         thumb_number_button = gtk.CheckButton(
-            _('Show page numbers on thumbnails.'))
+            _('Show page numbers on thumbnails'))
         thumb_number_button.set_active(
             prefs['show page numbers on thumbnails'])
         thumb_number_button.connect('toggled', self._check_button_cb,
@@ -119,7 +102,7 @@ class _PreferencesDialog(gtk.Dialog):
         page.add_row(thumb_number_button)
 
         thumb_as_preview_icon = gtk.CheckButton(
-            _('Use archive thumbnail as application icon.'))
+            _('Use archive thumbnail as application icon'))
         thumb_as_preview_icon.set_tooltip_text(
             _('By enabling this setting, the first page of a book will be used as application icon instead of the standard icon.'))
         thumb_as_preview_icon.set_active(
@@ -128,9 +111,16 @@ class _PreferencesDialog(gtk.Dialog):
             'archive thumbnail as icon')
         page.add_row(thumb_as_preview_icon)
 
+        label = gtk.Label(_('Thumbnail size (in pixels):'))
+        adjustment = gtk.Adjustment(prefs['thumbnail size'], 20, 500, 1, 10)
+        thumb_size_spinner = gtk.SpinButton(adjustment)
+        thumb_size_spinner.connect('value_changed', self._spinner_cb,
+            'thumbnail size')
+        page.add_row(label, thumb_size_spinner)
+
         page.new_section(_('Transparency'))
         checkered_bg_button = gtk.CheckButton(
-            _('Use checkered background for transparent images.'))
+            _('Use checkered background for transparent images'))
         checkered_bg_button.set_active(
             prefs['checkered bg for transparent images'])
         checkered_bg_button.connect('toggled', self._check_button_cb,
@@ -148,7 +138,7 @@ class _PreferencesDialog(gtk.Dialog):
         page = preferences_page._PreferencePage(80)
         page.new_section(_('Scroll'))
         smart_space_button = gtk.CheckButton(
-            _('Use smart space key scrolling.'))
+            _('Use smart space key scrolling'))
         smart_space_button.set_active(prefs['smart space scroll'])
         smart_space_button.connect('toggled', self._check_button_cb,
             'smart space scroll')
@@ -157,7 +147,7 @@ class _PreferencesDialog(gtk.Dialog):
         page.add_row(smart_space_button)
 
         flip_with_wheel_button = gtk.CheckButton(
-            _('Flip pages when scrolling off the edges of the page.'))
+            _('Flip pages when scrolling off the edges of the page'))
         flip_with_wheel_button.set_active(prefs['flip with wheel'])
         flip_with_wheel_button.connect('toggled', self._check_button_cb,
             'flip with wheel')
@@ -166,7 +156,7 @@ class _PreferencesDialog(gtk.Dialog):
         page.add_row(flip_with_wheel_button)
 
         auto_open_next_button = gtk.CheckButton(
-            _('Automatically open the next archive.'))
+            _('Automatically open the next archive'))
         auto_open_next_button.set_active(prefs['auto open next archive'])
         auto_open_next_button.connect('toggled', self._check_button_cb,
             'auto open next archive')
@@ -175,7 +165,7 @@ class _PreferencesDialog(gtk.Dialog):
         page.add_row(auto_open_next_button)
 
         auto_open_dir_button = gtk.CheckButton(
-            _('Automatically open next directory.'))
+            _('Automatically open next directory'))
         auto_open_dir_button.set_active(prefs['auto open next directory'])
         auto_open_dir_button.connect('toggled', self._check_button_cb,
             'auto open next directory')
@@ -183,7 +173,7 @@ class _PreferencesDialog(gtk.Dialog):
             _('Automatically open the first file in the next sibling directory when flipping past the last page of the last file in a directory, or the previous directory when flipping past the first page of the first file.'))
         page.add_row(auto_open_dir_button)
 
-        label = gtk.Label('%s:' % _('Number of pixels to scroll per arrow key press'))
+        label = gtk.Label(_('Number of pixels to scroll per arrow key press:'))
         adjustment = gtk.Adjustment(prefs['number of pixels to scroll per key event'], 1, 500, 1, 3)
         scroll_key_spinner = gtk.SpinButton(adjustment, digits=0)
         scroll_key_spinner.connect('value_changed', self._spinner_cb,
@@ -192,7 +182,7 @@ class _PreferencesDialog(gtk.Dialog):
             _('Set the number of pixels to scroll on a page when using the arrow keys.'))
         page.add_row(label, scroll_key_spinner)
 
-        label = gtk.Label('%s:' % _('Number of pixels to scroll per mouse wheel turn'))
+        label = gtk.Label(_('Number of pixels to scroll per mouse wheel turn:'))
         adjustment = gtk.Adjustment(prefs['number of pixels to scroll per mouse wheel event'], 1, 500, 1, 3)
         scroll_key_spinner = gtk.SpinButton(adjustment, digits=0)
         scroll_key_spinner.connect('value_changed', self._spinner_cb,
@@ -201,7 +191,7 @@ class _PreferencesDialog(gtk.Dialog):
             _('Set the number of pixels to scroll on a page when using a mouse wheel.'))
         page.add_row(label, scroll_key_spinner)
 
-        label = gtk.Label('%s:' % _('Number of "steps" to take before flipping the page'))
+        label = gtk.Label(_('Number of "steps" to take before flipping the page:'))
         adjustment = gtk.Adjustment(prefs['number of key presses before page turn'], 1, 100, 1, 3)
         flipping_spinner = gtk.SpinButton(adjustment, digits=0)
         flipping_spinner.connect('value_changed', self._spinner_cb,
@@ -213,7 +203,7 @@ class _PreferencesDialog(gtk.Dialog):
         page.new_section(_('Double page mode'))
 
         step_length_button = gtk.CheckButton(
-            _('Flip two pages in double page mode.'))
+            _('Flip two pages in double page mode'))
         step_length_button.set_active(prefs['double step in double page mode'])
         step_length_button.connect('toggled', self._check_button_cb,
             'double step in double page mode')
@@ -222,7 +212,7 @@ class _PreferencesDialog(gtk.Dialog):
         page.add_row(step_length_button)
 
         virtual_double_button = gtk.CheckButton(
-            _('Show only one wide image in double page mode.'))
+            _('Show only one wide image in double page mode'))
         virtual_double_button.set_active(
             prefs['no double page for wide images'])
         virtual_double_button.connect('toggled', self._check_button_cb,
@@ -234,7 +224,7 @@ class _PreferencesDialog(gtk.Dialog):
         page.new_section(_('Files'))
 
         auto_open_last_button = gtk.CheckButton(
-            _('Automatically open the last viewed file on startup.'))
+            _('Automatically open the last viewed file on startup'))
         auto_open_last_button.set_active(prefs['auto load last file'])
         auto_open_last_button.connect('toggled', self._check_button_cb,
             'auto load last file')
@@ -243,7 +233,7 @@ class _PreferencesDialog(gtk.Dialog):
         page.add_row(auto_open_last_button)
 
         store_recent_button = gtk.CheckButton(
-            _('Store information about recently opened files.'))
+            _('Store information about recently opened files'))
         store_recent_button.set_active(prefs['store recent file info'])
         store_recent_button.connect('toggled', self._check_button_cb,
             'store recent file info')
@@ -260,21 +250,21 @@ class _PreferencesDialog(gtk.Dialog):
         page = preferences_page._PreferencePage(None)
         page.new_section(_('Fullscreen'))
 
-        fullscreen_button = gtk.CheckButton(_('Use fullscreen by default.'))
+        fullscreen_button = gtk.CheckButton(_('Use fullscreen by default'))
         fullscreen_button.set_active(prefs['default fullscreen'])
         fullscreen_button.connect('toggled', self._check_button_cb,
             'default fullscreen')
         page.add_row(fullscreen_button)
 
         hide_in_fullscreen_button = gtk.CheckButton(
-            _('Automatically hide all toolbars in fullscreen.'))
+            _('Automatically hide all toolbars in fullscreen'))
         hide_in_fullscreen_button.set_active(prefs['hide all in fullscreen'])
         hide_in_fullscreen_button.connect('toggled', self._check_button_cb,
             'hide all in fullscreen')
         page.add_row(hide_in_fullscreen_button)
 
         page.new_section(_('Slideshow'))
-        label = gtk.Label('%s:' % _('Slideshow delay (in seconds)'))
+        label = gtk.Label(_('Slideshow delay (in seconds):'))
         adjustment = gtk.Adjustment(prefs['slideshow delay'] / 1000.0,
             0.5, 3600.0, 0.1, 1)
         delay_spinner = gtk.SpinButton(adjustment, digits=1)
@@ -283,7 +273,7 @@ class _PreferencesDialog(gtk.Dialog):
             'slideshow delay')
         page.add_row(label, delay_spinner)
 
-        label = gtk.Label('%s:' % _('Slideshow step (in pixels)'))
+        label = gtk.Label(_('Slideshow step (in pixels):'))
         adjustment = gtk.Adjustment(prefs['number of pixels to scroll per slideshow event'],
             -500, 500, 1, 1)
         slideshow_step_spinner = gtk.SpinButton(adjustment, digits=0)
@@ -295,7 +285,7 @@ class _PreferencesDialog(gtk.Dialog):
         page.add_row(label, slideshow_step_spinner)
 
         slideshow_auto_open_button = gtk.CheckButton(
-            _('During a slideshow automatically open the next archive.'))
+            _('During a slideshow automatically open the next archive'))
         slideshow_auto_open_button.set_active(prefs['slideshow can go to next archive'])
         slideshow_auto_open_button.connect('toggled', self._check_button_cb,
             'slideshow can go to next archive')
@@ -305,7 +295,7 @@ class _PreferencesDialog(gtk.Dialog):
 
         page.new_section(_('Rotation'))
         auto_rotate_button = gtk.CheckButton(
-            _('Automatically rotate images according to their metadata.'))
+            _('Automatically rotate images according to their metadata'))
         auto_rotate_button.set_active(prefs['auto rotate from exif'])
         auto_rotate_button.connect('toggled', self._check_button_cb,
             'auto rotate from exif')
@@ -322,14 +312,14 @@ class _PreferencesDialog(gtk.Dialog):
         page = preferences_page._PreferencePage(None)
 
         page.new_section(_('User interface language'))
-        label = gtk.Label('%s:' % _('Language (needs restart)'))
+        label = gtk.Label(_('Language (needs restart):'))
         language_box = self._create_language_control()
         page.add_row(label, language_box)
 
         page.new_section(_('Cache'))
 
         create_thumbs_button = gtk.CheckButton(
-            _('Store thumbnails for opened files.'))
+            _('Store thumbnails for opened files'))
         create_thumbs_button.set_active(prefs['create thumbnails'])
         create_thumbs_button.connect('toggled', self._check_button_cb,
             'create thumbnails')
@@ -338,7 +328,7 @@ class _PreferencesDialog(gtk.Dialog):
         page.add_row(create_thumbs_button)
 
         delay_thumbs_button = gtk.CheckButton(
-            _('Delay thumbnail generation.'))
+            _('Delay thumbnail generation'))
         delay_thumbs_button.set_tooltip_text(
             _('Thumbnails are generated only when required, instead of directly after opening a new file.'))
         delay_thumbs_button.set_active(prefs['delay thumbnails'])
@@ -346,7 +336,7 @@ class _PreferencesDialog(gtk.Dialog):
             'delay thumbnails')
         page.add_row(delay_thumbs_button)
 
-        label = gtk.Label('%s:' % _('Maximum number of pages to store in the cache'))
+        label = gtk.Label(_('Maximum number of pages to store in the cache:'))
         adjustment = gtk.Adjustment(prefs['max pages to cache'], -1, 500, 1, 3)
         cache_spinner = gtk.SpinButton(adjustment, digits=0)
         cache_spinner.connect('value-changed', self._spinner_cb,
@@ -357,7 +347,7 @@ class _PreferencesDialog(gtk.Dialog):
 
         page.new_section(_('Magnifying Lens'))
 
-        label = gtk.Label('%s:' % _('Magnifying lens size (in pixels)'))
+        label = gtk.Label(_('Magnifying lens size (in pixels):'))
         adjustment = gtk.Adjustment(prefs['lens size'], 50, 400, 1, 10)
         lens_size_spinner = gtk.SpinButton(adjustment)
         lens_size_spinner.connect('value_changed', self._spinner_cb,
@@ -365,7 +355,7 @@ class _PreferencesDialog(gtk.Dialog):
         lens_size_spinner.set_tooltip_text(
             _('Set the size of the magnifying lens. It is a square with a side of this many pixels.'))
         page.add_row(label, lens_size_spinner)
-        label = gtk.Label('%s:' % _('Magnification factor'))
+        label = gtk.Label(_('Magnification factor:'))
         adjustment = gtk.Adjustment(prefs['lens magnification'], 1.1, 10.0,
             0.1, 1.0)
         lens_magnification_spinner = gtk.SpinButton(adjustment, digits=1)
@@ -376,7 +366,7 @@ class _PreferencesDialog(gtk.Dialog):
         page.add_row(label, lens_magnification_spinner)
 
         page.new_section(_('Comments'))
-        label = gtk.Label('%s:' % _('Comment extensions'))
+        label = gtk.Label(_('Comment extensions:'))
         extensions_entry = gtk.Entry()
         extensions_entry.set_size_request(200, -1)
         extensions_entry.set_text(', '.join(prefs['comment extensions']))
@@ -503,21 +493,6 @@ class _PreferencesDialog(gtk.Dialog):
             else:
                 self._window.draw_image()
 
-
-        #elif preference == 'thumbnail bg uses main colour' and button.get_active():
-            """
-            if prefs[preference]:
-                prefs['color box thumb bg'] = False
-                prefs['smart thumb bg'] = False
-
-                if prefs['smart bg']:
-
-                    self._window.draw_image()
-                else:
-                    self._window.thumbnailsidebar.change_thumbnail_background_color(prefs['bg colour'])
-            else:
-                self._window.draw_image()
-            """
         elif preference in ('checkered bg for transparent images',
           'no double page for wide images', 'auto rotate from exif'):
             self._window.draw_image()

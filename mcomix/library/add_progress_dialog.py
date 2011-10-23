@@ -40,7 +40,7 @@ class _AddLibraryProgressDialog(gtk.Dialog):
         hbox.pack_start(left_box, False, False)
         hbox.pack_start(right_box, False, False)
 
-        label = labels.BoldLabel('%s:' % _('Added books'))
+        label = labels.BoldLabel(_('Added books:'))
         label.set_alignment(1.0, 1.0)
         left_box.pack_start(label, True, True)
         number_label = gtk.Label('0')

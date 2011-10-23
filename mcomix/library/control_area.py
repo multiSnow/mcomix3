@@ -70,7 +70,7 @@ class _ControlArea(gtk.HBox):
         hbox = gtk.HBox(False)
         vbox.pack_start(hbox, False, False)
 
-        label = gtk.Label('%s:' % _('_Search'))
+        label = gtk.Label(_('_Search:'))
         label.set_use_underline(True)
         hbox.pack_start(label, False, False)
         search_entry = gtk.Entry()

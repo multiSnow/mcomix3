@@ -51,7 +51,7 @@ class _EnhanceImageDialog(gtk.Dialog):
         hbox.pack_start(vbox_left, False, False, 2)
         hbox.pack_start(vbox_right, True, True, 2)
 
-        label = gtk.Label(_('_Brightness') + ':')
+        label = gtk.Label(_('_Brightness:'))
         label.set_alignment(1, 0.5)
         label.set_use_underline(True)
         vbox_left.pack_start(label, True, False, 2)
@@ -64,7 +64,7 @@ class _EnhanceImageDialog(gtk.Dialog):
         label.set_mnemonic_widget(self._brightness_scale)
         vbox_right.pack_start(self._brightness_scale, True, False, 2)
 
-        label = gtk.Label(_('_Contrast') + ':')
+        label = gtk.Label(_('_Contrast:'))
         label.set_alignment(1, 0.5)
         label.set_use_underline(True)
         vbox_left.pack_start(label, True, False, 2)
@@ -77,7 +77,7 @@ class _EnhanceImageDialog(gtk.Dialog):
         label.set_mnemonic_widget(self._contrast_scale)
         vbox_right.pack_start(self._contrast_scale, True, False, 2)
 
-        label = gtk.Label(_('S_aturation') + ':')
+        label = gtk.Label(_('S_aturation:'))
         label.set_alignment(1, 0.5)
         label.set_use_underline(True)
         vbox_left.pack_start(label, True, False, 2)
@@ -90,7 +90,7 @@ class _EnhanceImageDialog(gtk.Dialog):
         label.set_mnemonic_widget(self._saturation_scale)
         vbox_right.pack_start(self._saturation_scale, True, False, 2)
 
-        label = gtk.Label(_('S_harpness') + ':')
+        label = gtk.Label(_('S_harpness:'))
         label.set_alignment(1, 0.5)
         label.set_use_underline(True)
         vbox_left.pack_start(label, True, False, 2)
@@ -106,7 +106,7 @@ class _EnhanceImageDialog(gtk.Dialog):
         vbox.pack_start(gtk.HSeparator())
 
         self._autocontrast_button = \
-            gtk.CheckButton(_('_Automatically adjust contrast.'))
+            gtk.CheckButton(_('_Automatically adjust contrast'))
         self._autocontrast_button.set_tooltip_text(
             _('Automatically adjust contrast (both lightness and darkness), separately for each colour band.'))
         vbox.pack_start(self._autocontrast_button, False, False, 2)
