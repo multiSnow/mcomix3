@@ -78,7 +78,7 @@ class _CollectionArea(gtk.ScrolledWindow):
             ('new', gtk.STOCK_NEW, _('New'), None,
                 _('Add a new empty collection.'),
                 self.add_collection),
-            ('rename', gtk.STOCK_EDIT, _('Re_name'), None, 
+            ('rename', gtk.STOCK_EDIT, _('Re_name'), None,
                 _('Renames the selected collection.'),
                 self._rename_collection),
             ('duplicate', gtk.STOCK_COPY, _('_Duplicate'), None,
@@ -87,7 +87,7 @@ class _CollectionArea(gtk.ScrolledWindow):
             ('cleanup', gtk.STOCK_CLEAR, _('_Clean up'), None,
                 _('Removes no longer existant books from the collection.'),
                 self._clean_collection),
-            ('remove', gtk.STOCK_REMOVE, _('_Remove'), None, 
+            ('remove', gtk.STOCK_REMOVE, _('_Remove'), None,
                 _('Deletes the selected collection.'),
                 self._remove_collection)])
         self._ui_manager.insert_action_group(actiongroup, 0)

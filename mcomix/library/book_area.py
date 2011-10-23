@@ -113,11 +113,11 @@ class _BookArea(gtk.ScrolledWindow):
         actiongroup.add_actions([
             ('_title', None, _('Library books'), None, None,
                 None),
-            ('open', gtk.STOCK_OPEN, _('_Open'), None, 
+            ('open', gtk.STOCK_OPEN, _('_Open'), None,
                 _('Opens the selected books for viewing.'),
                 self.open_selected_book),
             ('open keep library', gtk.STOCK_OPEN,
-                _('Open _without closing library'), None, 
+                _('Open _without closing library'), None,
                 _('Opens the selected books, but keeps the library window open.'),
                 self.open_selected_book_noclose),
             ('add', gtk.STOCK_ADD, _('_Add...'), '<Ctrl><Shift>a',
@@ -135,9 +135,9 @@ class _BookArea(gtk.ScrolledWindow):
                 _('_Remove and delete from disk'), None,
                 _('Deletes the selected books from disk.'),
                 self._completely_remove_book),
-            ('sort', None, _('_Sort'), None, 
+            ('sort', None, _('_Sort'), None,
                 _('Changes the sort order of the library.'), None),
-            ('cover size', None, _('Cover si_ze'), None, 
+            ('cover size', None, _('Cover si_ze'), None,
                 _('Changes the book cover size.'), None)
        ])
         # Sorting the view

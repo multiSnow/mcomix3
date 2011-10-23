@@ -26,7 +26,7 @@ class _PixbufCache(object):
     def add(self, id, pixbuf):
         """ Adds a cache object with <id> and associates it with the
         passed pixbuf. """
-        
+
         with self._lock:
             if len(self._cache) > self.cachesize:
                 first = self._cache.items()[0]

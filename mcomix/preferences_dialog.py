@@ -53,7 +53,7 @@ class _PreferencesDialog(gtk.Dialog):
         page = preferences_page._PreferencePage(80)
         page.new_section(_('Background'))
 
-        fixed_bg_button = gtk.RadioButton(None, 
+        fixed_bg_button = gtk.RadioButton(None,
             _('Use this colour as background:'))
         fixed_bg_button.set_tooltip_text(
             _('Always use this selected colour as the background colour.'))
