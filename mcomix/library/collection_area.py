@@ -5,10 +5,10 @@ import gtk
 import gobject
 
 from preferences import prefs
-from mcomix import constants
-from mcomix import i18n
-from mcomix import status
-from mcomix import file_chooser_library_dialog
+import constants
+import i18n
+import status
+import file_chooser_library_dialog
 
 _dialog = None
 # The "All books" collection is not a real collection stored in the library,

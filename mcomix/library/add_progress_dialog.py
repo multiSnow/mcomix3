@@ -3,7 +3,7 @@
 import gtk
 import pango
 
-from mcomix import labels
+import labels
 
 _dialog = None
 # The "All books" collection is not a real collection stored in the library,
