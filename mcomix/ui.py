@@ -192,7 +192,6 @@ class MainUI(gtk.UIManager):
                 <separator />
                 <toolitem action="double_page" />
                 <toolitem action="manga_mode" />
-                <toolitem action="invert_scroll" />
                 <separator />
                 <toolitem action="lens" />
             </toolbar>
