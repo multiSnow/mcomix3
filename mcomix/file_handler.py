@@ -78,7 +78,12 @@ class FileHandler(object):
         Return True if the file is successfully loaded.
         """
 
-        path = self._initialize_fileprovider(path, keep_fileprovider)
+        try:
+            path = self._initialize_fileprovider(path, keep_fileprovider)
+        except ValueError, ex:
+            self._window.statusbar.set_message(unicode(ex))
+            self._window.osd.show(unicode(ex))
+            return False
 
         if os.path.exists(path) and os.access(path, os.R_OK):
             filelist = self._file_provider.list_files()
@@ -90,6 +95,7 @@ class FileHandler(object):
         error_message = self._check_for_error_message(path, filelist, archive_type)
         if error_message:
             self._window.statusbar.set_message(error_message)
+            self._window.osd.show(error_message)
             return False
 
         # We close the previously opened file.
@@ -116,6 +122,7 @@ class FileHandler(object):
             except Exception, ex:
                 self.file_loaded = False
                 self._window.statusbar.set_message(unicode(ex))
+                self._window.osd.show(unicode(ex))
                 self._window.uimanager.set_sensitivities()
                 return False
 
@@ -138,8 +145,9 @@ class FileHandler(object):
 
         if not image_files:
             self.file_loaded = False
-            self._window.statusbar.set_message(_("No images in '%s'") %
-                os.path.basename(path))
+            msg = _("No images in '%s'") % os.path.basename(path)
+            self._window.statusbar.set_message(msg)
+            self._window.osd.show(msg)
 
             result = False
             self._window.uimanager.set_sensitivities()
