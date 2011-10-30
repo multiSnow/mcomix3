@@ -1063,7 +1063,16 @@ class MainWindow(gtk.Window):
 
     def show_info_panel(self):
         """ Shows an OSD displaying information about the current page. """
-        self.osd.show()
+
+        if not self.filehandler.file_loaded:
+            return
+
+        filename = self.imagehandler.get_pretty_current_filename().encode('utf-8')
+        page_text = '%s %s' % (_('Page'), self.statusbar.get_page_number())
+        if self.statusbar.get_file_number():
+            page_text += ' ' + self.statusbar.get_file_number()
+
+        self.osd.show(filename + "\n\n" + page_text)
 
     def write_config_files(self):
 

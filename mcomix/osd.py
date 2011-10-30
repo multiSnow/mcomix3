@@ -23,14 +23,10 @@ class OnScreenDisplay(object):
         #: Timeout event ID registered while waiting to hide the OSD
         self._timeout_event = None
 
-    def show(self):
+    def show(self, text):
         """ Shows the OSD on the lower portion of the image window. """
 
-        if not self._window.filehandler.file_loaded:
-            return
-
         # Determine text to draw
-        text = self._get_osd_text()
         layout = self._window._image_box.create_pango_layout(text)
 
         # Set up font information
@@ -79,15 +75,6 @@ class OnScreenDisplay(object):
         self._window._main_layout.get_bin_window().invalidate_region(last_region, True)
 
         self._last_osd_rect = None
-
-    def _get_osd_text(self):
-        """ Returns the text that will be placed on the OSD as string. """
-        filename = self._window.imagehandler.get_pretty_current_filename().encode('utf-8')
-        page_text = '%s %s' % (_('Page'), self._window.statusbar.get_page_number())
-        if self._window.statusbar.get_file_number():
-            page_text += ' ' + self._window.statusbar.get_file_number()
-
-        return filename + "\n\n" + page_text
 
     def _scale_font(self, font, layout, max_width, max_height):
         """ Scales the font used by C{layout} until max_width/max_height is reached. """
