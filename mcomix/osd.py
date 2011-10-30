@@ -45,7 +45,7 @@ class OnScreenDisplay(object):
         pos_y = max(int(max_height) - int(layout_height * 1.1) +
                     int(self._window._vadjust.get_value()), 0)
 
-        rect = (pos_x - 10, pos_y - 10,
+        rect = (pos_x - 10, pos_y - 20,
                 layout_width + 20, layout_height + 20)
 
         # Draw OSD
