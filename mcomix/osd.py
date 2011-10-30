@@ -79,7 +79,7 @@ class OnScreenDisplay(object):
     def _scale_font(self, font, layout, max_width, max_height):
         """ Scales the font used by C{layout} until max_width/max_height is reached. """
 
-        SIZE_MIN, SIZE_MAX = 5, 60
+        SIZE_MIN, SIZE_MAX = 10, 60
         for font_size in range(SIZE_MIN, SIZE_MAX, 5):
             old_size = font.get_size()
             font.set_size(font_size * pango.SCALE)
