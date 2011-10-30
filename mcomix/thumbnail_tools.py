@@ -142,6 +142,20 @@ class Thumbnailer(object):
                 shutil.rmtree(tmpdir, True)
                 return pixbuf, tEXt_data
             else:
+                # Then check for subarchives by file extension and
+                # extract only the first...
+                subs = filter(constants.SUPPORTED_ARCHIVE_REGEX, files)
+                if subs:
+                    subarchive = extractor.set_files([subs[0]])
+                    extractor.extract()
+                    condition.acquire()
+                    while not extractor.is_ready(subs[0]):
+                        condition.wait()
+                    condition.release()
+                    subpath = os.path.join(tmpdir, subs[0])
+                    # Recursively try to find an image to use as cover
+                    return self._create_thumbnail_pixbuf(subpath)
+
                 shutil.rmtree(tmpdir, True)
                 return None, None
 

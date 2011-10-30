@@ -10,6 +10,9 @@ MComix 0.95
       that contains names Python cannot directly convert to Unicode strings.
       (by Joseph Seaton)
 
+    - Added support for reading archives in archives.
+      (by Joachim)
+
     - The "Dynamic background color" option now uses a color that should be
       closer to a page's actual edge color.
 

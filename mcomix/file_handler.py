@@ -282,10 +282,18 @@ class FileHandler(object):
             self._comment_files = [ os.path.join(self._tmp_dir, f)
                                     for f in comment_files ]
 
+            # Allow managing sub-archives by keeping archives based on extension
+            archive_files = filter(constants.SUPPORTED_ARCHIVE_REGEX.search, files)
+            archive_files_paths = [ os.path.join(self._tmp_dir, f)
+                                    for f in archive_files ]
+
             for name, full_path in zip(archive_images, image_files):
                 self._name_table[full_path] = name
 
             for name, full_path in zip(comment_files, self._comment_files):
+                self._name_table[full_path] = name
+
+            for name, full_path in zip(archive_files, archive_files_paths):
                 self._name_table[full_path] = name
 
             # Determine current archive image index.
@@ -303,9 +311,84 @@ class FileHandler(object):
             # Sort files to determine extraction order.
             self._sort_archive_files(archive_images, current_image_index)
 
-            self._extractor.set_files(archive_images + comment_files)
+            self._extractor.set_files(archive_images + comment_files + archive_files)
             self._extractor.file_extracted += self._extracted_file
             self._extractor.extract()
+
+            # Manage subarchive through recursion
+            if archive_files:
+                has_subarchive = False
+
+                # For each potential archive, change the current extractor,
+                # extract recursively, and restore the internal extractor.
+                for f in archive_files_paths:
+                    if not self._extractor.is_ready(f):
+                        self._wait_on_file(f)
+
+                    if archive_tools.archive_mime_type(f) is not None:
+                        # save self data
+                        cur_extractor = self._extractor
+                        cur_condition = self._condition
+                        cur_base_path = self._base_path
+                        cur_comment_files = self._comment_files
+                        # Setup temporary data
+                        self._extractor = archive_extractor.Extractor()
+                        self._condition = self._extractor.setup(self._base_path,
+                                                self._tmp_dir,
+                                                self.archive_type)
+                        self._extractor.file_extracted += self._extracted_file
+                        add_images, dummy_idx = self._open_archive(f, 1) # recursion here
+                        # Since it's recursive, we do not want to loose the way to ensure
+                        # that the file was extracted, so too bad but it will be a lil' slower.
+                        for image in add_images:
+                            self._wait_on_file(image)
+                        image_files += add_images
+                        self._extractor.stop()
+                        self._extractor.close()
+                        # restore self data
+                        self._extractor = cur_extractor
+                        self._base_path = cur_base_path
+                        self._condition = cur_condition
+                        self._comment_files = cur_comment_files
+                        has_subarchive = True
+
+                # Allows to avoid any behaviour changes if there was no subarchive..
+                if has_subarchive:
+                    # Now, get all files, and move them into the temp directory
+                    # while renaming them to avoid any sorting error.
+                    tmp_image_files = []
+                    tmpdir_len = len(self._tmp_dir)
+                    extracted_files = []
+                    for file in image_files:
+                        dst = file[tmpdir_len:].replace('\\', ' - ').replace("/", " - ")
+                        extracted_files.append(dst)
+                        dst = self._tmp_dir + dst
+                        shutil.move(file, dst)
+                        tmp_image_files.append(dst)
+                    self._comment_files = \
+                        filter(self._comment_re.search, tmp_image_files)
+                    tmp_image_files = \
+                        filter(self._image_re.search, tmp_image_files)
+                    self._name_table.clear()
+                    for full_path in tmp_image_files + self._comment_files:
+                        self._name_table[full_path] = os.path.basename(full_path)
+                        # This trick here allows to avoid indefinite waiting on
+                        # the sub-extracted files.
+                        self._extractor._extracted[os.path.basename(full_path)] = True
+                    # set those files instead of image_files for the return
+                    image_files = tmp_image_files
+
+            # Determine current archive image index.
+            num_of_pages = len(image_files)
+            if start_page < 0:
+                if self._window.is_double_page:
+                    current_image_index = num_of_pages - 2
+                else:
+                    current_image_index = num_of_pages - 1
+            else:
+                current_image_index = start_page - 1
+
+            current_image_index = max(0, current_image_index)
 
             return image_files, current_image_index
 
