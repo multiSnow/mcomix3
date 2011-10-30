@@ -341,12 +341,13 @@ class FileHandler(object):
 
                     if archive_tools.archive_mime_type(f) is not None:
                         # save self data
-                        cur_extractor = self._extractor
-                        cur_condition = self._condition
-                        cur_base_path = self._base_path
-                        cur_comment_files = self._comment_files
+                        state = self._save_state()
                         # Setup temporary data
                         self._extractor = archive_extractor.Extractor()
+                        self._tmp_dir = os.path.join(self._tmp_dir,
+                            os.path.basename(f) + u'.dir')
+                        if not os.path.exists(self._tmp_dir):
+                            os.mkdir(self._tmp_dir)
                         self._condition = self._extractor.setup(self._base_path,
                                                 self._tmp_dir,
                                                 self.archive_type)
@@ -356,33 +357,20 @@ class FileHandler(object):
                         # that the file was extracted, so too bad but it will be a lil' slower.
                         for image in add_images:
                             self._wait_on_file(image)
-                        image_files += add_images
+                        image_files.extend(add_images)
                         self._extractor.stop()
                         self._extractor.close()
                         # restore self data
-                        self._extractor = cur_extractor
-                        self._base_path = cur_base_path
-                        self._condition = cur_condition
-                        self._comment_files = cur_comment_files
+                        self._restore_state(state)
                         has_subarchive = True
 
                 # Allows to avoid any behaviour changes if there was no subarchive..
                 if has_subarchive:
-                    # Now, get all files, and move them into the temp directory
-                    # while renaming them to avoid any sorting error.
-                    tmp_image_files = []
-                    tmpdir_len = len(self._tmp_dir)
-                    extracted_files = []
-                    for file in image_files:
-                        dst = file[tmpdir_len:].replace('\\', ' - ').replace("/", " - ")
-                        extracted_files.append(dst)
-                        dst = self._tmp_dir + dst
-                        shutil.move(file, dst)
-                        tmp_image_files.append(dst)
+                    # Mark additional files as extracted
                     self._comment_files = \
-                        filter(self._comment_re.search, tmp_image_files)
+                        filter(self._comment_re.search, image_files)
                     tmp_image_files = \
-                        filter(self._image_re.search, tmp_image_files)
+                        filter(self._image_re.search, image_files)
                     self._name_table.clear()
                     for full_path in tmp_image_files + self._comment_files:
                         self._name_table[full_path] = os.path.basename(full_path)
@@ -392,7 +380,7 @@ class FileHandler(object):
                     # set those files instead of image_files for the return
                     image_files = tmp_image_files
 
-            # Determine current archive image index.
+            # Image index may have changed after additional files were extracted.
             num_of_pages = len(image_files)
             if start_page < 0:
                 if self._window.is_double_page:
@@ -401,7 +389,6 @@ class FileHandler(object):
                     current_image_index = num_of_pages - 1
             else:
                 current_image_index = start_page - 1
-
             current_image_index = max(0, current_image_index)
 
             return image_files, current_image_index
@@ -409,6 +396,23 @@ class FileHandler(object):
         else:
             # No condition was returned from the Extractor, i.e. invalid archive.
             return [], 0
+
+    def _save_state(self):
+        """ Saves the FileHandler's internal state and returns it as dict object,
+        which can be loaded by L{_restore_state}. """
+
+        state = {}
+        for var in ('_extractor', '_base_path', '_tmp_dir', '_condition',
+                '_comment_files'):
+            state[var] = getattr(self, var)
+
+        return state
+
+    def _restore_state(self, state):
+        """ Restores the state previously saved by L{_save_state}. """
+
+        for key, value in state.iteritems():
+            setattr(self, key, value)
 
     def _sort_archive_files(self, archive_images, current_image_index):
         """ Sorts the list C{archive_images} in place based on a priority order
