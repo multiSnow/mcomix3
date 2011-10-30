@@ -49,9 +49,9 @@ class Extractor:
             self._setupped = True
             return self._condition
         else:
-            log.warning(_('! Non-supported archive format: %s'),
-                os.path.basename(src))
-            return None
+            msg = _('Non-supported archive format: %s') % os.path.basename(src)
+            log.warning(msg)
+            raise ArchiveException(msg)
 
     def get_files(self):
         """Return a list of names of all the files the extractor is currently
@@ -153,5 +153,9 @@ class Extractor:
         self._condition.notifyAll()
         self._condition.release()
         self.file_extracted(name)
+
+class ArchiveException(Exception):
+    """ Indicate error during extraction operations. """
+    pass
 
 # vim: expandtab:sw=4:ts=4

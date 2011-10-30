@@ -110,8 +110,14 @@ class FileHandler(object):
 
         # Actually open the file(s)/archive passed in path.
         if self.archive_type is not None:
-            image_files, current_image_index = \
-                self._open_archive(self._current_file, start_page)
+            try:
+                image_files, current_image_index = \
+                    self._open_archive(self._current_file, start_page)
+            except Exception, ex:
+                self.file_loaded = False
+                self._window.statusbar.set_message(unicode(ex))
+                self._window.uimanager.set_sensitivities()
+                return False
 
             # Update status bar
             archive_list = self._file_provider.list_files(
@@ -263,8 +269,8 @@ class FileHandler(object):
                                                 self._tmp_dir,
                                                 self.archive_type)
         except Exception, ex:
-            log.error(ex)
             self._condition = None
+            raise
 
         if self._condition != None:
 

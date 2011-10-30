@@ -20,6 +20,10 @@ MComix 0.95
       'Use manga mode by default'. The last used settings will be remembered
       instead.
 
+    - When an archive cannot be opened because the required tool isn't
+      installed, the error message will be shown in the UI status bar instead
+      of on the console.
+
     - Updated French translation. (by Frédéric Chateaux)
 
 MComix 0.94
