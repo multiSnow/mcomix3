@@ -183,8 +183,6 @@ class MainUI(gtk.UIManager):
                 <toolitem action="last_page" />
                 <toolitem action="next_archive" />
                 <separator />
-                <toolitem action="refresh_archive" />
-                <separator />
                 <toolitem action="slideshow" />
                 <toolitem action="expander" />
                 <toolitem action="best_fit_mode" />
