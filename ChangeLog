@@ -11,7 +11,7 @@ MComix 0.95
       (by Joseph Seaton)
 
     - Added support for reading archives in archives.
-      (by Joachim)
+      (by David Pineau)
 
     - The "Dynamic background color" option now uses a color that should be
       closer to a page's actual edge color.
