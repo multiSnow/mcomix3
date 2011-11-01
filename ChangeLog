@@ -13,6 +13,8 @@ MComix 0.95
 
     - Fixed "Copy to clipboard" doing nothing on Win32.
 
+    - The All-in-one package on Win32 should now use the native Windows theme.
+
     - Fix MComix crashing on startup when opening a file in a directory
       that contains names Python cannot directly convert to Unicode strings.
       (by Joseph Seaton)
