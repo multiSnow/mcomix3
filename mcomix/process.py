@@ -47,8 +47,9 @@ class Process:
         except Exception, ex:
             cmd = len(self._args) > 0 and self._args[0] or "<invalid>"
             log.info(_('! Error spawning process "%(command)s": %(error)s.')
-                      + ' ' + _('"%(command)s" must be on your system PATH to be found.'),
-                      { 'command' : cmd, 'error' : ex })
+                      + u' ' + _('"%(command)s" must be on your system PATH to be found.'),
+                      { 'command' : unicode(cmd, errors='replace'),
+                        'error' : unicode(ex, errors='replace')})
             return None
 
     def _startupinfo(self):
