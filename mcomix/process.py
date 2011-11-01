@@ -41,13 +41,27 @@ class Process:
             # Cannot spawn processes with PythonW/Win32 unless stdin and
             # stderr are redirected to a pipe as well.
             self._proc = subprocess.Popen(self._args, stdout=subprocess.PIPE,
-                    stdin=subprocess.PIPE, stderr=subprocess.PIPE)
+                    stdin=subprocess.PIPE, stderr=subprocess.PIPE,
+                    startupinfo=self._startupinfo())
             return self._proc.stdout
         except Exception, ex:
             cmd = len(self._args) > 0 and self._args[0] or "<invalid>"
             log.info(_('! Error spawning process "%(command)s": %(error)s.')
                       + ' ' + _('"%(command)s" must be on your system PATH to be found.'),
                       { 'command' : cmd, 'error' : ex })
+            return None
+
+    def _startupinfo(self):
+        """ Creates a STARTUPINFO structure on Windows (to hide spawned
+        unextract windows). Does nothing on other platforms. """
+        if sys.platform == 'win32':
+            info = subprocess.STARTUPINFO()
+            STARTF_USESHOWWINDOW = 0x1
+            SW_HIDE = 0x0
+            info.dwFlags = STARTF_USESHOWWINDOW
+            info.wShowWindow = SW_HIDE
+            return info
+        else:
             return None
 
     def spawn(self):
