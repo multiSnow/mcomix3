@@ -5,8 +5,8 @@ import ctypes
 import cStringIO
 import sys
 
-import log
-import image_tools
+from mcomix import log
+from mcomix import image_tools
 
 class Clipboard(gtk.Clipboard):
 

@@ -3,7 +3,7 @@
 import gtk
 import histogram
 
-from preferences import prefs
+from mcomix.preferences import prefs
 
 _dialog = None
 

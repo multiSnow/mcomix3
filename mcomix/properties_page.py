@@ -1,9 +1,10 @@
 """properties_page.py - A page to put in the properties dialog window."""
 
 import gtk
-import i18n
-import image_tools
-import labels
+
+from mcomix import i18n
+from mcomix import image_tools
+from mcomix import labels
 
 class _Page(gtk.VBox):
 

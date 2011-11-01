@@ -2,7 +2,8 @@
 
 import os
 import cPickle
-import constants
+
+from mcomix import constants
 
 # All the preferences are stored here.
 prefs = {

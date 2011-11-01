@@ -4,7 +4,7 @@ import gc
 import subprocess
 import sys
 
-import log
+from mcomix import log
 
 class Process:
 

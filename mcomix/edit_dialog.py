@@ -4,14 +4,15 @@ import os
 import tempfile
 import gobject
 import gtk
-import archive_packer
-import file_chooser_simple_dialog
-import image_tools
-import edit_image_area
-import edit_comment_area
-import constants
 import re
-from preferences import prefs
+
+from mcomix.preferences import prefs
+from mcomix import archive_packer
+from mcomix import file_chooser_simple_dialog
+from mcomix import image_tools
+from mcomix import edit_image_area
+from mcomix import edit_comment_area
+from mcomix import constants
 
 _dialog = None
 

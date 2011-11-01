@@ -3,10 +3,11 @@
 import operator
 import gtk
 import gobject
-import preferences_page
-import image_tools
-import constants
-from preferences import prefs
+
+from mcomix.preferences import prefs
+from mcomix import preferences_page
+from mcomix import image_tools
+from mcomix import constants
 
 _dialog = None
 

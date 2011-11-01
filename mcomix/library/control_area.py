@@ -6,9 +6,9 @@ import gtk
 import gobject
 import pango
 
-import i18n
-import labels
-import strings
+from mcomix import i18n
+from mcomix import labels
+from mcomix import strings
 
 # The "All books" collection is not a real collection stored in the library,
 # but is represented by this ID in the library's TreeModels.

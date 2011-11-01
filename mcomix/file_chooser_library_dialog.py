@@ -3,8 +3,8 @@
 import os
 import gtk
 
-import file_chooser_base_dialog
-from preferences import prefs
+from mcomix.preferences import prefs
+from mcomix import file_chooser_base_dialog
 
 _library_filechooser_dialog = None
 

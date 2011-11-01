@@ -1,12 +1,13 @@
 """event.py - Event handling (keyboard, mouse, etc.) for the main window.
 """
 
-import constants
 import urllib
 import gtk
 import gtk.gdk
-import portability
-from preferences import prefs
+
+from mcomix.preferences import prefs
+from mcomix import constants
+from mcomix import portability
 
 class EventHandler:
 

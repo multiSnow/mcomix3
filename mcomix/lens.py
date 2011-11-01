@@ -2,9 +2,10 @@
 
 import math
 import gtk
-from preferences import prefs
-import image_tools
-import constants
+
+from mcomix.preferences import prefs
+from mcomix import image_tools
+from mcomix import constants
 
 class MagnifyingLens(object):
 

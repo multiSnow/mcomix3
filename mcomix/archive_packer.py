@@ -4,7 +4,7 @@ import os
 import zipfile
 import threading
 
-import log
+from mcomix import log
 
 class Packer:
 

@@ -1,33 +1,19 @@
-#!/usr/bin/env python
-
-"""MComix - GTK Comic Book Viewer
-"""
-
-# -------------------------------------------------------------------------
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# -------------------------------------------------------------------------
 
 import os
 import sys
 import optparse
 import signal
 
+if __name__ == '__main__':
+    print >> sys.stderr, 'PROGRAM TERMINATED'
+    print >> sys.stderr, 'Please do not run this script directly! Use mcomixstarter.py instead.'
+    sys.exit(1)
+
 # These modules must not depend on GTK, pkg_resources, PIL,
 # or any other optional libraries.
-import constants
-import portability
-import preferences
+from mcomix import constants
+from mcomix import portability
+from mcomix import preferences
 
 def wait_and_exit():
     """ Wait for the user pressing ENTER before closing. This should help
@@ -117,10 +103,10 @@ except ImportError:
 
 preferences.read_preferences_file()
 
-import i18n
+from mcomix import i18n
 i18n.install_gettext()
 
-from log import print_
+from mcomix.log import print_
 
 # Check for PyGTK and PIL dependencies.
 try:
@@ -169,9 +155,9 @@ except ImportError:
 
 # Import required mcomix modules for this script.
 # This should be done only after install_gettext() has been called.
-import main
-import icons
-import log
+from mcomix import main
+from mcomix import icons
+from mcomix import log
 
 def run():
     """Run the program."""
@@ -210,8 +196,5 @@ def run():
         gtk.main()
     except KeyboardInterrupt: # Will not always work because of threading.
         window.save_and_terminate_program()
-
-if __name__ == '__main__':
-    run()
 
 # vim: expandtab:sw=4:ts=4

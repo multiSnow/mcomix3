@@ -3,7 +3,8 @@
 import Image
 import ImageDraw
 import ImageOps
-import image_tools
+
+from mcomix import image_tools
 
 def draw_histogram(pixbuf, height=170, fill=170, text=True):
     """Draw a histogram from <pixbuf> and return it as another pixbuf.

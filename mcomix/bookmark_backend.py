@@ -4,15 +4,14 @@ import os
 import cPickle
 import gtk
 import operator
-
-import constants
-import log
-import bookmark_menu_item
-import callback
 import datetime
-import i18n
 
-from preferences import prefs
+from mcomix.preferences import prefs
+from mcomix import constants
+from mcomix import log
+from mcomix import bookmark_menu_item
+from mcomix import callback
+from mcomix import i18n
 
 class __BookmarksStore:
 

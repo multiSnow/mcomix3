@@ -4,14 +4,13 @@ import os
 import zipfile
 import tarfile
 
-import archive_extractor
-import constants
-import log
-import archive.zip
-import archive.rar
-import archive.tar
-import archive.sevenzip
-import archive.lha
+from mcomix import constants
+from mcomix import log
+from mcomix.archive import zip
+from mcomix.archive import rar
+from mcomix.archive import tar
+from mcomix.archive import sevenzip
+from mcomix.archive import lha
 
 def archive_mime_type(path):
     """Return the archive type of <path> or None for non-archives."""
@@ -58,9 +57,12 @@ def archive_mime_type(path):
 
 def get_archive_info(path):
     """Return a tuple (mime, num_pages, size) with info about the archive
-    at <path>, or None if <path> doesn't point to a supported archive.
+    at <path>, or None if <path> doesn't point to a supported 
     """
     image_re = constants.SUPPORTED_IMAGE_REGEX
+
+    # XXX: Deferred import to avoid circular dependency
+    from mcomix import archive_extractor
 
     extractor = archive_extractor.Extractor()
     extractor.setup(path, None)
@@ -83,21 +85,21 @@ def get_archive_handler(path):
     mime = archive_mime_type(path)
 
     if mime == constants.ZIP:
-        return archive.zip.ZipArchive(path)
+        return zip.ZipArchive(path)
     elif mime in (constants.TAR, constants.GZIP, constants.BZIP2):
-        return archive.tar.TarArchive(path)
-    elif mime == constants.RAR and archive.rar.RarArchive.is_available():
-        return archive.rar.RarArchive(path)
-    elif mime == constants.RAR and archive.sevenzip.SevenZipArchive.is_available():
+        return tar.TarArchive(path)
+    elif mime == constants.RAR and rar.RarArchive.is_available():
+        return rar.RarArchive(path)
+    elif mime == constants.RAR and sevenzip.SevenZipArchive.is_available():
         log.info('Using Sevenzip for RAR archives.')
-        return archive.sevenzip.SevenZipArchive(path)
-    elif mime == constants.SEVENZIP and archive.sevenzip.SevenZipArchive.is_available():
-        return archive.sevenzip.SevenZipArchive(path)
-    elif mime == constants.LHA and archive.lha.LhaArchive.is_available():
-        return archive.lha.LhaArchive(path)
-    elif mime == constants.LHA and archive.sevenzip.SevenZipArchive.is_available():
+        return sevenzip.SevenZipArchive(path)
+    elif mime == constants.SEVENZIP and sevenzip.SevenZipArchive.is_available():
+        return sevenzip.SevenZipArchive(path)
+    elif mime == constants.LHA and lha.LhaArchive.is_available():
+        return lha.LhaArchive(path)
+    elif mime == constants.LHA and sevenzip.SevenZipArchive.is_available():
         log.info('Using Sevenzip for LHA archives.')
-        return archive.sevenzip.SevenZipArchive(path)
+        return sevenzip.SevenZipArchive(path)
     else:
         return None
 

@@ -1,7 +1,8 @@
 """file_chooser_simple_dialog.py - Custom FileChooserDialog implementations."""
 
 import gtk
-import file_chooser_base_dialog
+
+from mcomix import file_chooser_base_dialog
 
 class SimpleFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog):
 

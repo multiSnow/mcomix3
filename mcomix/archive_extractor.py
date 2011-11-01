@@ -4,10 +4,10 @@ import sys
 import os
 import threading
 
-import archive_tools
-import constants
-import callback
-import log
+from mcomix import archive_tools
+from mcomix import constants
+from mcomix import callback
+from mcomix import log
 
 class Extractor:
 

@@ -1,8 +1,9 @@
 """bookmark_menu.py - Bookmarks menu."""
 
 import gtk
-import bookmark_backend
-import bookmark_dialog
+
+from mcomix import bookmark_backend
+from mcomix import bookmark_dialog
 
 class BookmarksMenu(gtk.Menu):
 

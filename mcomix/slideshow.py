@@ -2,7 +2,8 @@
 
 import gtk
 import gobject
-from preferences import prefs
+
+from mcomix.preferences import prefs
 
 class Slideshow:
 

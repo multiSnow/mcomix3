@@ -2,9 +2,8 @@
 brightness etc.)
 """
 
-import image_tools
-
-from preferences import prefs
+from mcomix.preferences import prefs
+from mcomix import image_tools
 
 class ImageEnhancer:
 

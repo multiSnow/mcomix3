@@ -1,11 +1,10 @@
 """icons.py - Load MComix specific icons."""
 
 import gtk
-
-import image_tools
-import log
-
 from pkg_resources import resource_string
+
+from mcomix import image_tools
+from mcomix import log
 
 def mcomix_icons():
     """ Returns a list of differently sized pixbufs for the

@@ -56,7 +56,7 @@ setuptools.setup(
         'mcomix.messages' : get_data_patterns('mcomix/messages', '*.mo'),
         'mcomix.images' : images },
     entry_points = {
-        'console_scripts' : [ 'mcomix = mcomix.mcomixstarter:run' ] },
+        'console_scripts' : [ 'mcomix = mcomix.run:run' ] },
     test_suite = "test",
     requires = ['pygtk (>=2.12.0)', 'PIL (>=1.15)'],
     install_requires = ['setuptools'],
@@ -120,7 +120,6 @@ setuptools.setup(
             'dist_dir' : 'dist_py2exe',
             'excludes' : ['_ssl', 'pyreadline', 'difflib', 'doctest', 
                 'calendar', 'pdb', 'unittest', 'inspect']
-            
         }
     }
 )

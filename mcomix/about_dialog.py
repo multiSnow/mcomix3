@@ -2,10 +2,11 @@
 """about_dialog.py - About dialog."""
 
 import gtk
-import constants
-import strings
 import pkg_resources
-import image_tools
+
+from mcomix import constants
+from mcomix import strings
+from mcomix import image_tools
 
 class _AboutDialog(gtk.AboutDialog):
 

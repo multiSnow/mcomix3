@@ -2,7 +2,8 @@
 
 import gobject
 import gtk
-import constants
+
+from mcomix import constants
 
 class CursorHandler:
 

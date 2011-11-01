@@ -2,17 +2,17 @@
 
 import gtk
 
-from preferences import prefs
-import i18n
-import tools
-import log
-import file_chooser_library_dialog
-import status
-from library import backend as library_backend
-from library import book_area as library_book_area
-from library import collection_area as library_collection_area
-from library import control_area as library_control_area
-from library import add_progress_dialog as library_add_progress_dialog
+from mcomix.preferences import prefs
+from mcomix import i18n
+from mcomix import tools
+from mcomix import log
+from mcomix import file_chooser_library_dialog
+from mcomix import status
+from mcomix.library import backend as library_backend
+from mcomix.library import book_area as library_book_area
+from mcomix.library import collection_area as library_collection_area
+from mcomix.library import control_area as library_control_area
+from mcomix.library import add_progress_dialog as library_add_progress_dialog
 
 _dialog = None
 # The "All books" collection is not a real collection stored in the library,

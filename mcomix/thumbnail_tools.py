@@ -3,13 +3,6 @@ freedesktop.org "standard" at http://jens.triq.net/thumbnail-spec/
 """
 
 import os
-from urllib import pathname2url
-
-try: # The md5 module is deprecated as of Python 2.5, replaced by hashlib.
-    from hashlib import md5
-except ImportError:
-    from md5 import new as md5
-
 import re
 import shutil
 import tempfile
@@ -17,17 +10,23 @@ import mimetypes
 import threading
 import itertools
 import Image
-import archive_extractor
-import constants
-import archive_tools
-import tools
-import image_tools
-import portability
-import i18n
-import callback
-import log
+from urllib import pathname2url
 
-from preferences import prefs
+try: # The md5 module is deprecated as of Python 2.5, replaced by hashlib.
+    from hashlib import md5
+except ImportError:
+    from md5 import new as md5
+
+from mcomix.preferences import prefs
+from mcomix import archive_extractor
+from mcomix import constants
+from mcomix import archive_tools
+from mcomix import tools
+from mcomix import image_tools
+from mcomix import portability
+from mcomix import i18n
+from mcomix import callback
+from mcomix import log
 
 class Thumbnailer(object):
     """ The Thumbnailer class is responsible for managing MComix

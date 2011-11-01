@@ -8,17 +8,16 @@ import re
 import cPickle
 import gtk
 
-import archive_extractor
-import archive_tools
-import image_tools
-import icons
-import tools
-import constants
-import file_provider
-import callback
-import log
-
-from preferences import prefs
+from mcomix.preferences import prefs
+from mcomix import archive_extractor
+from mcomix import archive_tools
+from mcomix import image_tools
+from mcomix import icons
+from mcomix import tools
+from mcomix import constants
+from mcomix import file_provider
+from mcomix import callback
+from mcomix import log
 
 class FileHandler(object):
 

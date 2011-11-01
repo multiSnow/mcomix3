@@ -4,12 +4,13 @@ import urllib
 import Queue
 import gtk
 import gobject
-import image_tools
-import tools
-import constants
-from preferences import prefs
 import threading
-import callback
+
+from mcomix.preferences import prefs
+from mcomix import image_tools
+from mcomix import tools
+from mcomix import constants
+from mcomix import callback
 
 class ThumbnailSidebar(gtk.HBox):
 

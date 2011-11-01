@@ -10,7 +10,7 @@ import Image
 import ImageEnhance
 import ImageOps
 
-from preferences import prefs
+from mcomix.preferences import prefs
 
 # File formats supported by PyGTK (sorted list of extensions)
 _supported_formats = sorted(

@@ -2,7 +2,8 @@
 
 import os
 import gtk
-import i18n
+
+from mcomix import i18n
 
 class _CommentsDialog(gtk.Dialog):
 

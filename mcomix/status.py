@@ -3,9 +3,9 @@
 import gtk
 import pango
 
-import i18n
-import constants
-from preferences import prefs
+from mcomix import i18n
+from mcomix import constants
+from mcomix.preferences import prefs
 
 class Statusbar(gtk.EventBox):
 

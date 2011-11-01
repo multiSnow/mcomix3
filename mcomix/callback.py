@@ -4,7 +4,7 @@ import weakref
 import threading
 import gobject
 
-import log
+from mcomix import log
 
 class Callback(object):
     """ Decorator class for implementing callbacks within the main thread.

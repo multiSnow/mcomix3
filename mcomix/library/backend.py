@@ -2,10 +2,10 @@
 
 import os
 
-import archive_tools
-import constants
-import thumbnail_tools
-import log
+from mcomix import archive_tools
+from mcomix import constants
+from mcomix import thumbnail_tools
+from mcomix import log
 
 try:
     from sqlite3 import dbapi2

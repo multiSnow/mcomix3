@@ -1,18 +1,18 @@
 """properties_dialog.py - Properties dialog that displays information about the archive/file."""
 
 import gtk
-import i18n
-import properties_page
 import os
 import time
 import stat
-import strings
-
 try:
     import pwd
 except ImportError:
     # Running on non-Unix machine.
     pass
+
+from mcomix import i18n
+from mcomix import strings
+from mcomix import properties_page
 
 class _PropertiesDialog(gtk.Dialog):
 

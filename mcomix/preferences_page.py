@@ -1,7 +1,8 @@
 """preferences_page.py - MComix preference page."""
 
 import gtk
-import preferences_section
+
+from mcomix import preferences_section
 
 class _PreferencePage(gtk.VBox):
 

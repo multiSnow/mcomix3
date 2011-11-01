@@ -1,7 +1,8 @@
 """preferences_section.py - Preference dialog section."""
 
 import gtk
-import labels
+
+from mcomix import labels
 
 class _PreferenceSection(gtk.VBox):
 

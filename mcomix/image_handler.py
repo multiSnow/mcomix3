@@ -3,13 +3,14 @@
 import os
 import threading
 import gtk
-import i18n
-import tools
-import image_tools
-from preferences import prefs
-import thumbnail_tools
-import constants
-import callback
+
+from mcomix.preferences import prefs
+from mcomix import i18n
+from mcomix import tools
+from mcomix import image_tools
+from mcomix import thumbnail_tools
+from mcomix import constants
+from mcomix import callback
 
 class ImageHandler:
 

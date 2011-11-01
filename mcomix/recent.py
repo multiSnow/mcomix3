@@ -3,11 +3,12 @@
 import urllib
 import itertools
 import gtk
-import preferences
 import sys
-import i18n
-import portability
-import constants
+
+from mcomix import preferences
+from mcomix import i18n
+from mcomix import portability
+from mcomix import constants
 
 class RecentFilesMenu(gtk.RecentChooserMenu):
 

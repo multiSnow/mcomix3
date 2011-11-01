@@ -30,7 +30,7 @@
       # python setup.py install
   
   If you don't want to install MComix in some system directory, you can just
-  execute the file mcomix/mcomixstarter.py in the unpacked MComix directory to
+  execute the file mcomixstarter.py in the unpacked MComix directory to
   run the program. You could also create a symlink somewhere in your PATH
   pointing to this file.
   

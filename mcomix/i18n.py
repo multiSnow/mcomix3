@@ -4,16 +4,16 @@ import sys
 import os
 import locale
 import gettext
+import pkg_resources
 
 try:
     import chardet
 except ImportError:
     chardet = None
 
-import preferences
-import portability
-import constants
-import pkg_resources
+from mcomix import preferences
+from mcomix import portability
+from mcomix import constants
 
 # Translation instance to enable other modules to use
 # functions other than the global _() if necessary

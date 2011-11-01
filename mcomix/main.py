@@ -6,25 +6,26 @@ import threading
 import textwrap
 import gtk
 import gobject
-import constants
-import cursor_handler
-import i18n
-import enhance_backend
-import enhance_dialog
-import event
-import file_handler
-import image_handler
-import image_tools
-import lens
-import preferences
-from preferences import prefs
-import ui
-import slideshow
-import status
-import thumbbar
-import clipboard
-import pageselect
-import osd
+
+from mcomix import constants
+from mcomix import cursor_handler
+from mcomix import i18n
+from mcomix import enhance_backend
+from mcomix import enhance_dialog
+from mcomix import event
+from mcomix import file_handler
+from mcomix import image_handler
+from mcomix import image_tools
+from mcomix import lens
+from mcomix import preferences
+from mcomix.preferences import prefs
+from mcomix import ui
+from mcomix import slideshow
+from mcomix import status
+from mcomix import thumbbar
+from mcomix import clipboard
+from mcomix import pageselect
+from mcomix import osd
 
 class MainWindow(gtk.Window):
 

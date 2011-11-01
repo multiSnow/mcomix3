@@ -9,7 +9,7 @@ import sys
 import locale
 from logging import DEBUG, INFO, WARNING, ERROR
 
-import i18n
+from mcomix import i18n
 
 __all__ = ['debug', 'info', 'warning', 'error', 'setLevel',
            'DEBUG', 'INFO', 'WARNING', 'ERROR']

@@ -6,12 +6,12 @@ import fnmatch
 import gtk
 import pango
 
-import image_tools
-import labels
-import constants
-import log
-import thumbnail_tools
-from preferences import prefs
+from mcomix.preferences import prefs
+from mcomix import image_tools
+from mcomix import labels
+from mcomix import constants
+from mcomix import log
+from mcomix import thumbnail_tools
 
 mimetypes.init()
 

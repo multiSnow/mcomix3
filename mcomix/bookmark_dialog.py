@@ -2,8 +2,9 @@
 
 import gtk
 import gobject
-import constants
-import bookmark_menu_item
+
+from mcomix import constants
+from mcomix import bookmark_menu_item
 
 class _BookmarksDialog(gtk.Dialog):
 

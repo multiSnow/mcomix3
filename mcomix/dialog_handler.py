@@ -3,9 +3,9 @@
    information and then exit with no added functionality inbetween.
 """
 
-import about_dialog
-import comment_dialog
-import properties_dialog
+from mcomix import about_dialog
+from mcomix import comment_dialog
+from mcomix import properties_dialog
 
 dialog_windows = {}
 dialog_windows[ 'about-dialog' ] = [None, about_dialog._AboutDialog]

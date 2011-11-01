@@ -3,7 +3,8 @@
 
 import re
 import os
-import tools
+
+from mcomix import tools
 
 APPNAME = 'MComix'
 VERSION = '0.95-SVN'

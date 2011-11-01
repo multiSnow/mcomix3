@@ -2,9 +2,10 @@
 
 import os
 import gtk
-import i18n
-import image_tools
-import thumbnail_tools
+
+from mcomix import i18n
+from mcomix import image_tools
+from mcomix import thumbnail_tools
 
 class _ImageArea(gtk.ScrolledWindow):
 
