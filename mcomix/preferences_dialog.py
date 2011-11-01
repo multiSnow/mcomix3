@@ -212,13 +212,14 @@ class _PreferencesDialog(gtk.Dialog):
         page.add_row(step_length_button)
 
         virtual_double_button = gtk.CheckButton(
-            _('Show only one wide image in double page mode'))
+            _('Show only one page where appropriate'))
         virtual_double_button.set_active(
             prefs['no double page for wide images'])
         virtual_double_button.connect('toggled', self._check_button_cb,
             'no double page for wide images')
         virtual_double_button.set_tooltip_text(
-            _("Display only one image in double page mode, if the image's width exceeds its height. The result of this is that scans that span two pages are displayed properly (i.e. alone) also in double page mode."))
+            _("When showing the first page of an archive, or an image's width "
+              "exceeds its height, only a single page will be displayed."))
         page.add_row(virtual_double_button)
 
         page.new_section(_('Files'))

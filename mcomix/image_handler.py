@@ -286,6 +286,7 @@ class ImageHandler:
         on the first page.
         """
         if (self.get_current_page() == 1 and
+            prefs['no double page for wide images'] and
             self._window.filehandler.archive_type is not None):
             return True
 
