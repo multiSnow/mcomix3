@@ -267,8 +267,8 @@ class _PreferencesDialog(gtk.Dialog):
         page.new_section(_('Slideshow'))
         label = gtk.Label(_('Slideshow delay (in seconds):'))
         adjustment = gtk.Adjustment(prefs['slideshow delay'] / 1000.0,
-            0.5, 3600.0, 0.1, 1)
-        delay_spinner = gtk.SpinButton(adjustment, digits=1)
+            0.01, 3600.0, 0.1, 1)
+        delay_spinner = gtk.SpinButton(adjustment, digits=2)
         delay_spinner.set_size_request(80, -1)
         delay_spinner.connect('value_changed', self._spinner_cb,
             'slideshow delay')

@@ -13,6 +13,10 @@ MComix 0.95
     - Added support for reading archives in archives.
       (by David Pineau)
 
+    - Reduced minumum slideshow scrolling delay. With small values here and in
+      scrolling distance (e.g. 0.05s, 1px), MComix can simulate "smooth"
+      scrolling.
+
     - The "Dynamic background color" option now uses a color that should be
       closer to a page's actual edge color.
 
