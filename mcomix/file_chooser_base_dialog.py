@@ -290,7 +290,7 @@ class _BaseFileChooserDialog(gtk.Dialog):
         # XXX: This method defers the import of main to avoid cyclic imports
         # during startup.
 
-        import main
+        from mcomix import main
         return main.main_window().filehandler.get_path_to_base()
 
 # vim: expandtab:sw=4:ts=4
