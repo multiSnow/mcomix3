@@ -45,7 +45,7 @@ images.remove('*.png')
 images.extend([ os.path.basename(img)
     for img in glob.glob(os.path.join(constants.BASE_PATH, 'mcomix/images', '*.png'))
     if os.path.basename(img) not in
-        ('mcomix-large.png', 'screenshot-monkey.png', 'screenshot-original.png')])
+        ('mcomix-large.png', )])
 
 setuptools.setup(
     name = constants.APPNAME.lower(),

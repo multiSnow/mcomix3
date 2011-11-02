@@ -56,9 +56,7 @@ def complete_library_zip():
 	add_files_to_archive(library, messages)
 
 	images = list_files('mcomix/images', '*.png')
-	to_remove = ('mcomix/images/mcomix-large.png', 
-		'mcomix/images/screenshot-monkey.png',
-		'mcomix/images/screenshot-original.png')
+	to_remove = ('mcomix/images/mcomix-large.png', )
 	
 	for img in to_remove:
 		fixed_path = os.path.normpath(img)
