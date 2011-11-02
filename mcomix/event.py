@@ -369,6 +369,9 @@ class EventHandler:
             self._window.popup.popup(None, None, None, event.button,
                 event.time)
 
+        elif event.button == 4:
+            self._window.show_info_panel()
+
     def mouse_release_event(self, widget, event):
         """Handle mouse button release events on the main layout area."""
 

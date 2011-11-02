@@ -33,9 +33,10 @@ MComix 0.95
       'Use manga mode by default'. The last used settings will be remembered
       instead.
 
-    - When an archive cannot be opened because the required tool isn't
-      installed, the error message will be shown in the UI status bar instead
-      of on the console.
+    - The OSD is now used more frequently for displaying error messages that
+      would only appear in the status bar or in the console before.
+      In addition, the OSD can now be triggered with mouse button 4, as well
+      as with the TAB key.
 
     - Updated French translation. (by Frédéric Chateaux)
 
