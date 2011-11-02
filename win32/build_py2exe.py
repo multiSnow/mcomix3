@@ -7,7 +7,25 @@ import shutil
 """ Wrapper for py2exe, to compensate some shortcomings of the build process.
 
 This file should be run from MComix' root directory, in order to avoid
-having to play around with relative path names. """
+having to play around with relative path names.
+
+	Build instructions:
+
+	0. Py2exe contains some code in site-packages/py2exe/boot_common.py that
+	   creates an annoying popup window on shutdown when stuff was written
+	   to STDERR. This should probably be disabled locally.
+	1. 'win32/build_py2exe.py' will create dist_py2exe and copy relevant
+	   libraries.
+	2. Copy files from mcomix/images and mcomix/messages into
+	   dist_py2exe/library.zip/mcomix (this is done by the wrapper script)
+	3. Copy share/locale (only gtk20.mo files to conserve space),
+	        share/themes/MS-Windows,
+			lib/gtk-2.0/2.10.0/engines/libwimp.dll,
+			etc/gtk-2.0/gtkrc
+			from the GTK+ distribution into dist_py2exe/
+	4. Rename dist_py2exe/mcomixstarter.exe into MComix.exe (also done
+	   (by the wrapper script)
+"""
 
 def list_files(basedir, *patterns):
 	""" Locates all files in <basedir> that match one of <patterns>. """
@@ -18,7 +36,7 @@ def list_files(basedir, *patterns):
 		for pattern in patterns:
 			cur_pattern = os.path.join(dirpath, pattern)
 			all_files.extend([ os.path.normpath(path) for path in glob.glob(cur_pattern) ])
-	
+
 	return all_files
 
 def add_files_to_archive(ziparchive, files):
@@ -33,13 +51,15 @@ def clear_distdir(distdir):
 	if not os.path.isdir(distdir):
 		return
 
-	files = [os.path.join(distdir, file) 
-			for file in os.listdir(distdir)
-			if os.path.isfile(os.path.join(distdir, file))]
+	files = [os.path.join(distdir, file)
+			for file in os.listdir(distdir)]
 
 	print 'Cleaning %s...' % distdir
 	for file in files:
-		os.unlink(file)
+		if os.path.isfile(file):
+			os.unlink(file)
+		elif os.path.isdir(file):
+			shutil.rmtree(file)
 
 def create_py2exe():
 	""" Runs setup.py py2exe. """
@@ -57,24 +77,61 @@ def complete_library_zip():
 
 	images = list_files('mcomix/images', '*.png')
 	to_remove = ('mcomix/images/mcomix-large.png', )
-	
+
 	for img in to_remove:
 		fixed_path = os.path.normpath(img)
 		if fixed_path in images:
 			images.remove(fixed_path)
-	
+
 	print 'Adding images to library.zip...'
 	add_files_to_archive(library, images)
-	
+
 	library.close()
+
+def copy_gtk_runtime_files():
+	""" Copies files from the GTK runtime into the distribution directory. """
+
+	import gtk
+	runtime_dir = os.path.join(
+			os.path.dirname(os.path.dirname(gtk.__file__)),
+			'runtime')
+
+	if not os.path.isdir(runtime_dir):
+		print 'Detection of GTK runtime failed.'
+		return False
+
+	locales = [
+		os.path.normpath(path).replace(os.path.normpath(runtime_dir) + os.sep, "")
+		for path in list_files(os.path.join(runtime_dir, 'share/locale'), 'gtk20.mo')
+	]
+	theme = ['share/themes/MS-Windows/gtk-2.0/gtkrc',
+			 'etc/gtk-2.0/gtkrc',
+			 'lib/gtk-2.0/2.10.0/engines/libwimp.dll']
+
+	print 'Copying GTK theme and language files...'
+	for filename in locales + theme:
+		source = os.path.join(runtime_dir, filename)
+		destination = os.path.join('dist_py2exe', filename)
+
+		if not os.path.exists(source):
+			print '{0} doesn\'t exist!'.format(source)
+			return False
+
+		if os.path.isfile(destination):
+			os.unlink(destination)
+		if not os.path.isdir(os.path.dirname(destination)):
+			os.makedirs(os.path.dirname(destination), 0755)
+		shutil.copy(source, destination)
+
+	return True
 
 def rename_executable():
 	""" Rename the executable into something reasonable. """
 	print 'Renaming executable...'
 	if os.path.isfile('dist_py2exe/MComix.exe'):
 		os.unlink('dist_py2exe/MComix.exe')
-	if os.path.isfile('dist_py2exe/mcomix_py2exe.exe'):
-		shutil.move('dist_py2exe/mcomix_py2exe.exe', 'dist_py2exe/MComix.exe')
+	if os.path.isfile('dist_py2exe/mcomixstarter.exe'):
+		shutil.move('dist_py2exe/mcomixstarter.exe', 'dist_py2exe/MComix.exe')
 
 def win32_newline(source, dest):
 	""" Converts Unix newlines to Windows newlines. """
@@ -84,7 +141,7 @@ def win32_newline(source, dest):
 	for line in from_fp:
 		to_fp.write(line.rstrip())
 		to_fp.write("\r\n")
-	
+
 	from_fp.close()
 	to_fp.close()
 
@@ -95,14 +152,21 @@ def copy_other_files():
 	win32_newline('README', 'dist_py2exe/README.txt')
 	win32_newline('COPYING', 'dist_py2exe/COPYING.txt')
 
+	if os.path.isfile('unrar.dll'):
+		shutil.copy('unrar.dll', 'dist_py2exe/unrar.dll')
+
 if __name__ == '__main__':
 	clear_distdir('dist_py2exe')
 
 	success = create_py2exe() == 0
-	
+
 	if not success: sys.exit(1)
-	
+
 	complete_library_zip()
+
+	success = copy_gtk_runtime_files()
+
+	if not success: sys.exit(1)
 
 	rename_executable()
 

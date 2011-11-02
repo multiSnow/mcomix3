@@ -34,7 +34,9 @@ def print_(*args, **options):
 
     def print_generic(text):
         if text:
-            if sys.stdout and sys.stdout.encoding:
+            if (sys.stdout and
+                hasattr(sys.stdout, 'encoding') and
+                sys.stdout.encoding is not None):
                 encoding = sys.stdout.encoding
             else:
                 encoding = locale.getpreferredencoding() or sys.getfilesystemencoding()

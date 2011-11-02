@@ -111,7 +111,7 @@ setuptools.setup(
         'Operating System :: POSIX :: BSD'],
 
     # Py2Exe options
-    windows = [{ 'script' : 'win32/mcomix_py2exe.py',
+    windows = [{ 'script' : 'mcomixstarter.py',
         'icon_resources' : [(1, "mcomix/images/mcomix.ico")]  }],
     options = {
         'py2exe' : {
