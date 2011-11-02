@@ -3,7 +3,6 @@
 import os
 import shutil
 import threading
-import textwrap
 import gtk
 import gobject
 
@@ -1070,7 +1069,6 @@ class MainWindow(gtk.Window):
             return
 
         filename = self.imagehandler.get_pretty_current_filename().encode('utf-8')
-        filename = "\n".join(textwrap.wrap(filename, 70))
         page_text = '%s %s' % (_('Page'), self.statusbar.get_page_number())
         if self.statusbar.get_file_number():
             page_text += ' ' + self.statusbar.get_file_number()

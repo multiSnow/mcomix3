@@ -4,6 +4,7 @@
 import gtk
 import gobject
 import pango
+import textwrap
 
 class OnScreenDisplay(object):
 
@@ -27,6 +28,7 @@ class OnScreenDisplay(object):
         """ Shows the OSD on the lower portion of the image window. """
 
         # Determine text to draw
+        text = self._wrap_text(text)
         layout = self._window._image_box.create_pango_layout(text)
 
         # Set up font information
@@ -61,6 +63,19 @@ class OnScreenDisplay(object):
         self._clear_osd()
         self._timeout_event = None
         return 0 # To unregister gobject timer event
+
+    def _wrap_text(self, text, width=70):
+        """ Wraps the text to be C{width} characters at most. """
+        parts = text.split('\n')
+        result = []
+
+        for part in parts:
+            if part:
+                result.extend(textwrap.wrap(part, width))
+            else:
+                result.append(part)
+
+        return "\n".join(result)
 
     def _clear_osd(self, exclude_region=None):
         """ Invalidates the OSD region. C{exclude_region} will not be invalidated, even
