@@ -15,10 +15,10 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         return SevenZipArchive._find_7z_executable()
 
     def _get_list_arguments(self):
-        return [u'l', u'-slt', u'--']
+        return [u'l', u'-slt', u'-p', u'--']
 
     def _get_extract_arguments(self):
-        return [u'x', u'-so', u'--']
+        return [u'x', u'-so', u'-p', u'--']
 
     def _parse_list_output_line(self, line):
         if line.startswith('Path = ') and not line.endswith('.7z'):

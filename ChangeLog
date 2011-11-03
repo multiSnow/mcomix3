@@ -13,6 +13,9 @@ MComix 0.95
 
     - Fixed "Copy to clipboard" doing nothing on Win32.
 
+    - Fixed freezing on password-protected 7zip archives. Please not that such
+      files currently aren't supported and will always appear empty in MComix.
+
     - The All-in-one package on Win32 should now use the native Windows theme.
 
     - Fix MComix crashing on startup when opening a file in a directory
