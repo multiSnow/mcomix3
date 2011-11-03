@@ -1,4 +1,0 @@
-BUGS
-    -In double page mode, while trying to advance the pages when an archive
-     isn't completely loaded yet, MComix often shows the same two pages
-     repeatedly.
