@@ -34,6 +34,7 @@ class _BaseFileChooserDialog(gtk.Dialog):
 
     def __init__(self, action=gtk.FILE_CHOOSER_ACTION_OPEN):
         self._action = action
+        self._destroyed = False
 
         if action == gtk.FILE_CHOOSER_ACTION_OPEN:
             title = _('Open')
@@ -51,8 +52,6 @@ class _BaseFileChooserDialog(gtk.Dialog):
 
         self.filechooser = gtk.FileChooserWidget(action=action)
         self.filechooser.set_size_request(680, 420)
-        self.filechooser.connect('destroy-event', self._window_destroyed)
-        self._destroyed = False
         self.vbox.pack_start(self.filechooser)
         self.set_border_width(4)
         self.filechooser.set_border_width(6)
@@ -244,6 +243,8 @@ class _BaseFileChooserDialog(gtk.Dialog):
         else:
             self.files_chosen([])
 
+        self._destroyed = True
+
     def _update_preview(self, *args):
         if self.filechooser.get_preview_filename():
             path = self.filechooser.get_preview_filename().decode('utf-8')
@@ -281,10 +282,6 @@ class _BaseFileChooserDialog(gtk.Dialog):
                 self._namelabel.set_text(os.path.basename(filepath))
                 self._sizelabel.set_text(
                     '%.1f KiB' % (os.stat(filepath).st_size / 1024.0))
-
-    def _window_destroyed(self, *args):
-        """ Called when the dialog is being destroyed. """
-        self._destroyed = True
 
     def _current_file(self):
         # XXX: This method defers the import of main to avoid cyclic imports
