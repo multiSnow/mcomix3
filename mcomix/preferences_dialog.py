@@ -409,7 +409,7 @@ class _PreferencesDialog(gtk.Dialog):
             (_('Hungarian'), 'hu'),
             (_('Indonesian'), 'id'),
             (_('Italian'), 'it'),
-            (_('Japanese'), 'jp'),
+            (_('Japanese'), 'ja'),
             (_('Korean'), 'ko'),
             (_('Dutch'), 'nl'),
             (_('Polish'), 'pl'),

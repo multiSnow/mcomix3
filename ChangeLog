@@ -22,6 +22,9 @@ MComix 0.95
       that contains names Python cannot directly convert to Unicode strings.
       (by Joseph Seaton)
 
+    - Selecting "Japanese" from the language dropdown box in the preferences
+      dialog reverted the language to English.
+
     - Added support for reading archives in archives.
       (by David Pineau)
 
