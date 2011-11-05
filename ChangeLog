@@ -1,4 +1,5 @@
 MComix 0.95
+Release date: 05.11.2011
 
     - mcomix/mcomixstarter.py has been moved out of the mcomix package into
       the root directory of the mcomix distribution.
