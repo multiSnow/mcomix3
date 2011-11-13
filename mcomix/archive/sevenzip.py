@@ -11,6 +11,12 @@ _7z_executable = -1
 class SevenZipArchive(archive_base.ExternalExecutableArchive):
     """ 7z file extractor using the 7z executable. """
 
+    def __init__(self, archive):
+        super(SevenZipArchive, self).__init__(archive)
+
+        #: Indicates that the first PATH line in the list mode has been read.
+        self._read_first_path = False
+
     def _get_executable(self):
         return SevenZipArchive._find_7z_executable()
 
@@ -21,8 +27,16 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         return [u'x', u'-so', u'-p', u'--']
 
     def _parse_list_output_line(self, line):
-        if line.startswith('Path = ') and not line.endswith('.7z'):
-            return line[len('Path = '):]
+        """ The first path listed is always the archive itself,
+        so skip until the next line. """
+        if line.startswith('Path = '):
+            filename = line[len('Path = '):]
+
+            if self._read_first_path:
+                return filename
+            else:
+                self._read_first_path = True
+                return None
         else:
             return None
 
