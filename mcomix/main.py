@@ -1112,7 +1112,6 @@ class MainWindow(gtk.Window):
 
         self.filehandler.cleanup()
         self.imagehandler.cleanup()
-        self.imagehandler.cleanup()
         self.thumbnailsidebar.clear()
 
         # This hack is to avoid Python issue #1856.
