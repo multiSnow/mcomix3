@@ -262,7 +262,6 @@ class _BookArea(gtk.ScrolledWindow):
         filepath = self._liststore.get_value(iterator, 2)
         self._liststore.remove(iterator)
         self._cache.invalidate(filepath)
-        print 'Invalidating', filepath
 
     def get_book_at_path(self, path):
         """Return the book ID corresponding to the IconView <path>."""
