@@ -3,6 +3,9 @@ MComix 0.96
     - Opening a RAR archive with 7z would destroy the archive, leaving only
       a 0-byte file. This has been fixed.
 
+    - Fixed MComix opening files in other directories after scrolling past the
+      first page, even when "Automatically open next directory" was disabled.
+
 MComix 0.95
 Release date: 05.11.2011
 

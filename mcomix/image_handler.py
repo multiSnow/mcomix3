@@ -219,7 +219,6 @@ class ImageHandler:
             archive_open = self._window.filehandler.archive_type is not None
             previous_archive_opened = False
             if (self._window.slideshow.is_running() and \
-                prefs['auto open next directory'] and \
                 prefs['slideshow can go to next archive']) or \
                 prefs['auto open next archive']:
                 previous_archive_opened = self._window.filehandler._open_previous_archive()
@@ -227,6 +226,7 @@ class ImageHandler:
             # If "Auto open next archive" is disabled, do not go to the previous
             # directory if current file was an archive.
             if not previous_archive_opened and \
+                prefs['auto open next directory'] and \
                 (not archive_open or prefs['auto open next archive']):
                 directory_changed = self._window.filehandler.open_previous_directory()
 
