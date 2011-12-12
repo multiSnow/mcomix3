@@ -111,7 +111,7 @@ class OrderedFileProvider(FileProvider):
                       # (MComix bug #3424405)
                       [ i18n.to_unicode(fn) for fn in os.listdir(self.base_dir) ]
                       if should_accept(os.path.join(self.base_dir, filename)) ]
-            files.sort(locale.strcoll)
+            tools.alphanumeric_sort(files)
 
             return files
         except OSError:

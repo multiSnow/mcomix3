@@ -9,6 +9,10 @@ MComix 0.96
     - Fixed a bug that would hang MComix when trying to open a
       password-protected RAR archive.
 
+    - Files opened outside of archives are now naturally sorted (e.g. 1.jpg,
+      2.jpg, 10.jpg instead of 1.jpg, 10.jpg, 2.jpg). Before, only images
+      within archives were naturally sorted.
+
 MComix 0.95
 Release date: 05.11.2011
 
