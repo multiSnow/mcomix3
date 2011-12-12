@@ -6,6 +6,9 @@ MComix 0.96
     - Fixed MComix opening files in other directories after scrolling past the
       first page, even when "Automatically open next directory" was disabled.
 
+    - Fixed a bug that would hang MComix when trying to open a
+      password-protected RAR archive.
+
 MComix 0.95
 Release date: 05.11.2011
 
