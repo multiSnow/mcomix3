@@ -1119,8 +1119,6 @@ class MainWindow(gtk.Window):
             if thread is not threading.currentThread():
                 thread.join()
 
-        gtk.main_quit()
-
 #: Main window instance
 __main_window = None
 
