@@ -108,11 +108,20 @@ class _EditArchiveDialog(gtk.Dialog):
             packing_success = packer.wait()
 
             if packing_success:
+                # Preserve permissions if currently edited files come from an archive
+                if (self._window.filehandler.archive_type is not None and
+                    os.path.exists(self._window.filehandler.get_path_to_base())):
+                    mode = os.stat(self._window.filehandler.get_path_to_base()).st_mode
+                else:
+                    mode = os.stat(tmp_path).st_mode
+
                 # Remove existing file (Win32 fails on rename otherwise)
                 if os.path.exists(archive_path):
                     os.unlink(archive_path)
 
                 os.rename(tmp_path, archive_path)
+                os.chmod(archive_path, mode)
+
                 _close_dialog()
             else:
                 fail = True
