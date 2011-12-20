@@ -195,6 +195,6 @@ def run():
     try:
         gtk.main()
     except KeyboardInterrupt: # Will not always work because of threading.
-        window.save_and_terminate_program()
+        window.terminate_program()
 
 # vim: expandtab:sw=4:ts=4
