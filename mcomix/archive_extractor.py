@@ -137,7 +137,7 @@ class Extractor:
         """
         if self._stop:
             self.close()
-            sys.exit(0)
+            return
 
         try:
             dst_path = os.path.join(self._dst, name)
