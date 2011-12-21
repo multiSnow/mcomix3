@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Comix 3.2\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2011-11-01 08:50+0100\n"
+"POT-Creation-Date: 2011-12-21 13:58+0100\n"
 "PO-Revision-Date: 2009-01-25 22:33+0100\n"
 "Last-Translator: Carles Escrig i Royo <simkin@ono.com>\n"
 "Language-Team: CA <gentoo@softcatala.net>\n"
@@ -16,23 +16,23 @@ msgstr ""
 "X-Poedit-Language: Catalan\n"
 "X-Poedit-Country: SPAIN\n"
 
-#: mcomix/about_dialog.py:26
+#: mcomix/about_dialog.py:27
 #, python-format
 msgid "%s is an image viewer specifically designed to handle comic books."
 msgstr ""
 
 #
 # File: src/about.py, line: 57
-#: mcomix/about_dialog.py:28
+#: mcomix/about_dialog.py:29
 msgid "It reads ZIP, RAR and tar archives, as well as plain image files."
 msgstr "Llegeix arxius ZIP, RAR i tar, així com fitxers d'imatge."
 
-#: mcomix/about_dialog.py:32
+#: mcomix/about_dialog.py:33
 #, python-format
 msgid "%s is licensed under the terms of the GNU General Public License."
 msgstr ""
 
-#: mcomix/about_dialog.py:34
+#: mcomix/about_dialog.py:35
 #, python-format
 msgid "A copy of this license can be obtained from %s"
 msgstr ""
@@ -42,7 +42,7 @@ msgstr ""
 msgid "Non-supported archive format: %s"
 msgstr ""
 
-#: mcomix/archive_extractor.py:149
+#: mcomix/archive_extractor.py:152
 #, python-format
 msgid "! Extraction error: %s"
 msgstr ""
@@ -58,83 +58,83 @@ msgid ""
 "! Could not add file %(sourcefile)s to archive %(archivefile)s, aborting..."
 msgstr ""
 
-#: mcomix/archive_tools.py:55
+#: mcomix/archive_tools.py:54
 #, python-format
 msgid "! Could not read %s"
 msgstr ""
 
-#: mcomix/bookmark_backend.py:47
+#: mcomix/bookmark_backend.py:46
 #, python-format
 msgid "! Could not parse bookmarks file %s"
 msgstr ""
 
-#: mcomix/bookmark_backend.py:49
+#: mcomix/bookmark_backend.py:48
 msgid "! Deleting corrupt bookmarks file."
 msgstr ""
 
-#: mcomix/bookmark_backend.py:138
+#: mcomix/bookmark_backend.py:137
 #, python-format
 msgid "Replace existing bookmark on page %s?"
 msgid_plural "Replace existing bookmarks on pages %s?"
 msgstr[0] ""
 msgstr[1] ""
 
-#: mcomix/bookmark_backend.py:144
+#: mcomix/bookmark_backend.py:143
 #, python-format
 msgid ""
 "The current book already contains marked pages. Do you want to replace them "
 "with a new bookmark on page %d? "
 msgstr ""
 
-#: mcomix/bookmark_backend.py:147
+#: mcomix/bookmark_backend.py:146
 msgid ""
 "Selecting \"No\" will create a new bookmark without affecting the other "
 "bookmarks."
 msgstr ""
 
-#: mcomix/bookmark_backend.py:150
+#: mcomix/bookmark_backend.py:149
 msgid "Do not ask again."
 msgstr ""
 
-#: mcomix/bookmark_dialog.py:15
+#: mcomix/bookmark_dialog.py:16
 msgid "Edit Bookmarks"
 msgstr ""
 
-#: mcomix/bookmark_dialog.py:50
+#: mcomix/bookmark_dialog.py:51
 msgid "Type"
 msgstr ""
 
 #
 # File: src/bookmark.py, line: 255
 # File: src/edit.py, line: 267
-#: mcomix/bookmark_dialog.py:51 mcomix/edit_comment_area.py:31
+#: mcomix/bookmark_dialog.py:52 mcomix/edit_comment_area.py:31
 msgid "Name"
 msgstr "Nom"
 
 #
 # File: src/bookmark.py, line: 256
-#: mcomix/bookmark_dialog.py:52 mcomix/main.py:1073
+#: mcomix/bookmark_dialog.py:53 mcomix/main.py:1072
 msgid "Page"
 msgstr "Pàgina"
 
 #
 # File: src/properties.py, line: 124
 # File: src/properties.py, line: 159
-#: mcomix/bookmark_dialog.py:53 mcomix/properties_dialog.py:60
+#: mcomix/bookmark_dialog.py:54 mcomix/properties_dialog.py:60
 #: mcomix/properties_dialog.py:98
 msgid "Location"
 msgstr "Ubicació"
 
 #. TRANSLATORS: "Added" as in "Date Added"
-#: mcomix/bookmark_dialog.py:55
+#: mcomix/bookmark_dialog.py:56
 msgid "Added"
 msgstr ""
 
-#: mcomix/bookmark_menu.py:27
+#: mcomix/bookmark_menu.py:28
 msgid "Add _Bookmark"
 msgstr ""
 
-#: mcomix/bookmark_menu.py:29
+#: mcomix/bookmark_menu.py:30
 msgid "_Edit Bookmarks..."
 msgstr ""
 
@@ -146,13 +146,13 @@ msgstr ""
 #
 # File: src/comment.py, line: 16
 # File: src/preferences.py, line: 288
-#: mcomix/comment_dialog.py:10 mcomix/preferences_dialog.py:369
+#: mcomix/comment_dialog.py:11 mcomix/preferences_dialog.py:364
 msgid "Comments"
 msgstr "Comentaris"
 
 #
 # File: src/comment.py, line: 53
-#: mcomix/comment_dialog.py:54
+#: mcomix/comment_dialog.py:55
 #, python-format
 msgid "Could not read %s"
 msgstr "No s'ha pogut llegir %s"
@@ -177,49 +177,49 @@ msgstr "Mida"
 #
 # File: src/edit.py, line: 168
 # File: src/edit.py, line: 285
-#: mcomix/edit_comment_area.py:52 mcomix/edit_image_area.py:48
+#: mcomix/edit_comment_area.py:52 mcomix/edit_image_area.py:49
 msgid "Remove from archive"
 msgstr "Suprimeix del fitxer"
 
 #
 # File: src/edit.py, line: 28
-#: mcomix/edit_dialog.py:26
+#: mcomix/edit_dialog.py:27
 msgid "Edit archive"
 msgstr "Edita l'arxiu"
 
-#: mcomix/edit_dialog.py:38
+#: mcomix/edit_dialog.py:39
 msgid "_Import"
 msgstr ""
 
 #
 # File: src/edit.py, line: 50
-#: mcomix/edit_dialog.py:54
+#: mcomix/edit_dialog.py:55
 msgid "Images"
 msgstr "Imatges"
 
 #
 # File: src/comment.py, line: 16
 # File: src/preferences.py, line: 288
-#: mcomix/edit_dialog.py:55
+#: mcomix/edit_dialog.py:56
 #, fuzzy
 msgid "Comment files"
 msgstr "Comentaris"
 
 #
 # File: src/edit.py, line: 99
-#: mcomix/edit_dialog.py:123
+#: mcomix/edit_dialog.py:133
 msgid "The new archive could not be saved!"
 msgstr "No s'ha pogut desar l'arxiu nou!"
 
 #
 # File: src/edit.py, line: 101
-#: mcomix/edit_dialog.py:125
+#: mcomix/edit_dialog.py:135
 msgid "The original files have not been removed."
 msgstr "No s'han eliminat els fitxers originals."
 
 #
 # File: src/edit.py, line: 115
-#: mcomix/edit_dialog.py:144
+#: mcomix/edit_dialog.py:154
 msgid "Archives are stored as ZIP files."
 msgstr "Els arxius es desen en format ZIP."
 
@@ -285,64 +285,64 @@ msgstr ""
 #
 # File: src/filechooser.py, line: 35
 # File: src/library.py, line: 489
-#: mcomix/file_chooser_base_dialog.py:39
+#: mcomix/file_chooser_base_dialog.py:40
 msgid "Open"
 msgstr "Obre"
 
 #
 # File: src/filechooser.py, line: 39
-#: mcomix/file_chooser_base_dialog.py:44
+#: mcomix/file_chooser_base_dialog.py:45
 msgid "Save"
 msgstr "Desa"
 
 #
 # File: src/filechooser.py, line: 75
-#: mcomix/file_chooser_base_dialog.py:83
+#: mcomix/file_chooser_base_dialog.py:82
 msgid "All files"
 msgstr "Tots els fitxers"
 
 #
 # File: src/filechooser.py, line: 78
-#: mcomix/file_chooser_base_dialog.py:99
+#: mcomix/file_chooser_base_dialog.py:98
 msgid "All Archives"
 msgstr "Tots els arxius"
 
 #
 # File: src/filechooser.py, line: 82
-#: mcomix/file_chooser_base_dialog.py:102
+#: mcomix/file_chooser_base_dialog.py:101
 msgid "ZIP archives"
 msgstr "Arxius ZIP"
 
 #
 # File: src/filechooser.py, line: 86
-#: mcomix/file_chooser_base_dialog.py:105
+#: mcomix/file_chooser_base_dialog.py:104
 msgid "Tar archives"
 msgstr "Arxius tar"
 
 #
 # File: src/filechooser.py, line: 84
-#: mcomix/file_chooser_base_dialog.py:109
+#: mcomix/file_chooser_base_dialog.py:108
 msgid "RAR archives"
 msgstr "Arxius RAR"
 
-#: mcomix/file_chooser_base_dialog.py:113
+#: mcomix/file_chooser_base_dialog.py:112
 msgid "7z archives"
 msgstr ""
 
-#: mcomix/file_chooser_base_dialog.py:117
+#: mcomix/file_chooser_base_dialog.py:116
 msgid "LHA archives"
 msgstr ""
 
 #
 # File: src/filechooser.py, line: 125
-#: mcomix/file_chooser_base_dialog.py:227
+#: mcomix/file_chooser_base_dialog.py:226
 #, python-format
 msgid "A file named '%s' already exists. Do you want to replace it?"
 msgstr "Ja existeix un fitxer anomenat '%s'. Voleu substituir-lo?"
 
 #
 # File: src/filechooser.py, line: 128
-#: mcomix/file_chooser_base_dialog.py:231
+#: mcomix/file_chooser_base_dialog.py:230
 msgid "Replacing it will overwrite its contents."
 msgstr "Substituint-lo hi sobreescriureu els continguts."
 
@@ -362,40 +362,40 @@ msgstr "Afegeix una col·lecció"
 #
 # File: src/filechooser.py, line: 171
 # File: src/filechooser.py, line: 249
-#: mcomix/file_chooser_main_dialog.py:21
-#: mcomix/file_chooser_simple_dialog.py:22
+#: mcomix/file_chooser_main_dialog.py:22
+#: mcomix/file_chooser_simple_dialog.py:23
 msgid "All images"
 msgstr "Totes les imatges"
 
 #
 # File: src/filechooser.py, line: 173
 # File: src/filechooser.py, line: 251
-#: mcomix/file_chooser_main_dialog.py:23
-#: mcomix/file_chooser_simple_dialog.py:24
+#: mcomix/file_chooser_main_dialog.py:24
+#: mcomix/file_chooser_simple_dialog.py:25
 msgid "JPEG images"
 msgstr "Imatges JPEG"
 
 #
 # File: src/filechooser.py, line: 174
 # File: src/filechooser.py, line: 252
-#: mcomix/file_chooser_main_dialog.py:24
-#: mcomix/file_chooser_simple_dialog.py:25
+#: mcomix/file_chooser_main_dialog.py:25
+#: mcomix/file_chooser_simple_dialog.py:26
 msgid "PNG images"
 msgstr "Imatges PNG"
 
 #
 # File: src/filechooser.py, line: 174
 # File: src/filechooser.py, line: 252
-#: mcomix/file_chooser_main_dialog.py:25
-#: mcomix/file_chooser_simple_dialog.py:26
+#: mcomix/file_chooser_main_dialog.py:26
+#: mcomix/file_chooser_simple_dialog.py:27
 #, fuzzy
 msgid "GIF images"
 msgstr "Imatges PNG"
 
 #
 # File: src/edit.py, line: 50
-#: mcomix/file_chooser_main_dialog.py:26
-#: mcomix/file_chooser_simple_dialog.py:27
+#: mcomix/file_chooser_main_dialog.py:27
+#: mcomix/file_chooser_simple_dialog.py:28
 #, fuzzy
 msgid "TIFF images"
 msgstr "Imatges"
@@ -403,41 +403,41 @@ msgstr "Imatges"
 #
 # File: src/filechooser.py, line: 174
 # File: src/filechooser.py, line: 252
-#: mcomix/file_chooser_main_dialog.py:27
-#: mcomix/file_chooser_simple_dialog.py:28
+#: mcomix/file_chooser_main_dialog.py:28
+#: mcomix/file_chooser_simple_dialog.py:29
 #, fuzzy
 msgid "BMP images"
 msgstr "Imatges PNG"
 
 #
 # File: src/filehandler.py, line: 285
-#: mcomix/file_handler.py:148 mcomix/file_handler.py:255
+#: mcomix/file_handler.py:147 mcomix/file_handler.py:254
 #, python-format
 msgid "No images in '%s'"
 msgstr "No hi ha imatges a '%s'"
 
 #
 # File: src/filehandler.py, line: 213
-#: mcomix/file_handler.py:249
+#: mcomix/file_handler.py:248
 #, python-format
 msgid "Could not open %s: No such file."
 msgstr "No s'ha pogut obrir %s: No existeix el fitxer."
 
 #
 # File: src/filehandler.py, line: 217
-#: mcomix/file_handler.py:252 mcomix/file_provider.py:118
+#: mcomix/file_handler.py:251 mcomix/file_provider.py:118
 #, python-format
 msgid "Could not open %s: Permission denied."
 msgstr "No s'ha pogut obrir %s: S'ha denegat el permís."
 
 #
 # File: src/filehandler.py, line: 222
-#: mcomix/file_handler.py:260
+#: mcomix/file_handler.py:259
 #, python-format
 msgid "Could not open %s: Unknown file type."
 msgstr "No s'ha pogut obrir %s: Tipus de fitxer desconegut."
 
-#: mcomix/file_handler.py:711
+#: mcomix/file_handler.py:710
 #, python-format
 msgid "! Corrupt preferences file \"%s\", deleting..."
 msgstr ""
@@ -447,14 +447,14 @@ msgstr ""
 msgid "Invalid path: '%s'"
 msgstr ""
 
-#: mcomix/icons.py:66
+#: mcomix/icons.py:65
 #, python-format
 msgid "! Could not load icon \"%s\""
 msgstr ""
 
 #
 # File: src/filehandler.py, line: 411
-#: mcomix/image_handler.py:484
+#: mcomix/image_handler.py:485
 msgid "Unknown filetype"
 msgstr "Tipus de fitxer desconegut"
 
@@ -477,125 +477,6 @@ msgstr ""
 msgid "The file will be deleted from your harddisk."
 msgstr ""
 
-#: mcomix/mcomixstarter.py:55
-msgid "[OPTION...] [PATH]"
-msgstr ""
-
-#: mcomix/mcomixstarter.py:56
-msgid "View images and comic book archives."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:59
-msgid "Show this help and exit."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:61
-msgid "Start the application in slideshow mode."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:63
-msgid "Show the library on startup."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:65
-msgid "Show the version number and exit."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:67
-msgid "View modes"
-msgstr ""
-
-#: mcomix/mcomixstarter.py:69
-msgid "Start the application in fullscreen mode."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:71
-msgid "Start the application in manga mode."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:73
-msgid "Start the application in double page mode."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:76
-msgid "Zoom modes"
-msgstr ""
-
-#: mcomix/mcomixstarter.py:79
-msgid "Start the application with zoom set to best fit mode."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:82
-msgid "Start the application with zoom set to fit width."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:85
-msgid "Start the application with zoom set to fit height."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:88
-msgid "Debug options"
-msgstr ""
-
-#: mcomix/mcomixstarter.py:92
-msgid "Sets the desired output log level."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:138
-msgid "You do not have the required versions of GTK+ and PyGTK installed."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:139
-#, python-format
-msgid "Installed GTK+ version is: %s"
-msgstr ""
-
-#: mcomix/mcomixstarter.py:141
-msgid "Required GTK+ version is: 2.12.0 or higher\n"
-msgstr ""
-
-#: mcomix/mcomixstarter.py:142
-#, python-format
-msgid "Installed PyGTK version is: %s"
-msgstr ""
-
-#: mcomix/mcomixstarter.py:144 mcomix/mcomixstarter.py:148
-msgid "Required PyGTK version is: 2.12.0 or higher"
-msgstr ""
-
-#: mcomix/mcomixstarter.py:149
-msgid "No version of PyGTK was found on your system."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:150
-msgid "This error might be caused by missing GTK+ libraries."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:159
-msgid "You don't have the required version of the Python Imaging"
-msgstr ""
-
-#: mcomix/mcomixstarter.py:160
-msgid "Library (PIL) installed."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:161
-#, python-format
-msgid "Installed PIL version is: %s"
-msgstr ""
-
-#: mcomix/mcomixstarter.py:162
-msgid "Required PIL version is: 1.1.5 or higher"
-msgstr ""
-
-#: mcomix/mcomixstarter.py:166
-msgid "Python Imaging Library (PIL) 1.1.5 or higher is required."
-msgstr ""
-
-#: mcomix/mcomixstarter.py:167
-msgid "No version of the Python Imaging Library was found on your system."
-msgstr ""
-
 #
 # File: src/ui.py, line: 69
 #: mcomix/pageselect.py:14 mcomix/ui.py:93 mcomix/ui.py:94
@@ -616,15 +497,15 @@ msgstr ""
 
 #
 # File: src/preferences.py, line: 78
-#: mcomix/preferences_dialog.py:20
+#: mcomix/preferences_dialog.py:21
 msgid "Preferences"
 msgstr "Preferències"
 
-#: mcomix/preferences_dialog.py:22
+#: mcomix/preferences_dialog.py:23
 msgid "Clear dialog choices"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:23
+#: mcomix/preferences_dialog.py:24
 msgid ""
 "Clears all dialog choices that you have previously chosen not to be asked "
 "again."
@@ -632,82 +513,82 @@ msgstr ""
 
 #
 # File: src/preferences.py, line: 161
-#: mcomix/preferences_dialog.py:39
+#: mcomix/preferences_dialog.py:40
 msgid "Appearance"
 msgstr "Aspecte"
 
 #
 # File: src/preferences.py, line: 237
-#: mcomix/preferences_dialog.py:41
+#: mcomix/preferences_dialog.py:42
 msgid "Behaviour"
 msgstr "Comportament"
 
 #
 # File: src/preferences.py, line: 297
-#: mcomix/preferences_dialog.py:43
+#: mcomix/preferences_dialog.py:44
 msgid "Display"
 msgstr "Visualització"
 
-#: mcomix/preferences_dialog.py:45
+#: mcomix/preferences_dialog.py:46
 msgid "Advanced"
 msgstr ""
 
 #
 # File: src/preferences.py, line: 93
-#: mcomix/preferences_dialog.py:54
+#: mcomix/preferences_dialog.py:55
 msgid "Background"
 msgstr "Fons"
 
 #
 # File: src/preferences.py, line: 95
-#: mcomix/preferences_dialog.py:57
+#: mcomix/preferences_dialog.py:58
 #, fuzzy
 msgid "Use this colour as background:"
 msgstr "Usa aquest color com a fons"
 
 #
 # File: src/preferences.py, line: 97
-#: mcomix/preferences_dialog.py:59
+#: mcomix/preferences_dialog.py:60
 msgid "Always use this selected colour as the background colour."
 msgstr "Usa sempre aquest color per al fons."
 
 #
 # File: src/preferences.py, line: 102
-#: mcomix/preferences_dialog.py:67 mcomix/preferences_dialog.py:88
+#: mcomix/preferences_dialog.py:68 mcomix/preferences_dialog.py:89
 #, fuzzy
 msgid "Use dynamic background colour"
 msgstr "Color de fons dinàmic."
 
 #
 # File: src/preferences.py, line: 106
-#: mcomix/preferences_dialog.py:71
+#: mcomix/preferences_dialog.py:72
 msgid "Automatically pick a background colour that fits the viewed image."
 msgstr ""
 "Selecciona automàticament un color per al fons que combine amb la imatge."
 
 #
 # File: src/preferences.py, line: 109
-#: mcomix/preferences_dialog.py:75
+#: mcomix/preferences_dialog.py:76
 msgid "Thumbnails"
 msgstr "Miniatures"
 
 #
 # File: src/preferences.py, line: 95
-#: mcomix/preferences_dialog.py:78
+#: mcomix/preferences_dialog.py:79
 #, fuzzy
 msgid "Use this colour as the thumbnail background:"
 msgstr "Usa aquest color com a fons"
 
 #
 # File: src/preferences.py, line: 97
-#: mcomix/preferences_dialog.py:80
+#: mcomix/preferences_dialog.py:81
 #, fuzzy
 msgid "Always use this selected colour as the thumbnail background colour."
 msgstr "Usa sempre aquest color per al fons."
 
 #
 # File: src/preferences.py, line: 106
-#: mcomix/preferences_dialog.py:91
+#: mcomix/preferences_dialog.py:92
 #, fuzzy
 msgid ""
 "Automatically use the colour that fits the viewed image for the thumbnail "
@@ -717,16 +598,16 @@ msgstr ""
 
 #
 # File: src/preferences.py, line: 117
-#: mcomix/preferences_dialog.py:97
+#: mcomix/preferences_dialog.py:98
 #, fuzzy
 msgid "Show page numbers on thumbnails"
 msgstr "Mostra el número de la pàgina a la miniatura."
 
-#: mcomix/preferences_dialog.py:105
+#: mcomix/preferences_dialog.py:106
 msgid "Use archive thumbnail as application icon"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:107
+#: mcomix/preferences_dialog.py:108
 msgid ""
 "By enabling this setting, the first page of a book will be used as "
 "application icon instead of the standard icon."
@@ -734,27 +615,27 @@ msgstr ""
 
 #
 # File: src/preferences.py, line: 110
-#: mcomix/preferences_dialog.py:114
+#: mcomix/preferences_dialog.py:115
 #, fuzzy
 msgid "Thumbnail size (in pixels):"
 msgstr "Mida de les miniatures (en píxels)"
 
 #
 # File: src/preferences.py, line: 151
-#: mcomix/preferences_dialog.py:121
+#: mcomix/preferences_dialog.py:122
 msgid "Transparency"
 msgstr "Transparència"
 
 #
 # File: src/preferences.py, line: 153
-#: mcomix/preferences_dialog.py:123
+#: mcomix/preferences_dialog.py:124
 #, fuzzy
 msgid "Use checkered background for transparent images"
 msgstr "Usa un fons a quadrats per a les imatges transparents."
 
 #
 # File: src/preferences.py, line: 159
-#: mcomix/preferences_dialog.py:129
+#: mcomix/preferences_dialog.py:130
 msgid ""
 "Use a grey checkered background for transparent images. If this preference "
 "is unset, the background is plain white instead."
@@ -764,20 +645,20 @@ msgstr ""
 
 #
 # File: src/preferences.py, line: 167
-#: mcomix/preferences_dialog.py:139
+#: mcomix/preferences_dialog.py:140
 msgid "Scroll"
 msgstr "Desplaçament"
 
 #
 # File: src/preferences.py, line: 169
-#: mcomix/preferences_dialog.py:141
+#: mcomix/preferences_dialog.py:142
 #, fuzzy
 msgid "Use smart space key scrolling"
 msgstr "Usa el desplaçament intel·ligent."
 
 #
 # File: src/preferences.py, line: 174
-#: mcomix/preferences_dialog.py:146
+#: mcomix/preferences_dialog.py:147
 msgid ""
 "Use smart scrolling with the space key. Normally the space key scrolls only "
 "right down (or up when shift is pressed), but with this preference set it "
@@ -789,12 +670,12 @@ msgstr ""
 "però amb aquesta opció habilitada també desplaçarà lateralment i per tant "
 "intenta seguir el curs natural de lectura del còmic."
 
-#: mcomix/preferences_dialog.py:150
+#: mcomix/preferences_dialog.py:151
 #, fuzzy
 msgid "Flip pages when scrolling off the edges of the page"
 msgstr "Passa de pàgina quan ens desplacem fora dels límits de la pàgina."
 
-#: mcomix/preferences_dialog.py:155
+#: mcomix/preferences_dialog.py:156
 #, fuzzy
 msgid ""
 "Flip pages when scrolling \"off the page\" with the scroll wheel or with the "
@@ -807,14 +688,14 @@ msgstr ""
 
 #
 # File: src/preferences.py, line: 198
-#: mcomix/preferences_dialog.py:159
+#: mcomix/preferences_dialog.py:160
 #, fuzzy
 msgid "Automatically open the next archive"
 msgstr "Obre automàticament el següent arxiu."
 
 #
 # File: src/preferences.py, line: 203
-#: mcomix/preferences_dialog.py:164
+#: mcomix/preferences_dialog.py:165
 msgid ""
 "Automatically open the next archive in the directory when flipping past the "
 "last page, or the previous archive when flipping past the first page."
@@ -824,39 +705,39 @@ msgstr ""
 
 #
 # File: src/preferences.py, line: 198
-#: mcomix/preferences_dialog.py:168
+#: mcomix/preferences_dialog.py:169
 #, fuzzy
 msgid "Automatically open next directory"
 msgstr "Obre automàticament el següent arxiu."
 
-#: mcomix/preferences_dialog.py:173
+#: mcomix/preferences_dialog.py:174
 msgid ""
 "Automatically open the first file in the next sibling directory when "
 "flipping past the last page of the last file in a directory, or the previous "
 "directory when flipping past the first page of the first file."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:176
+#: mcomix/preferences_dialog.py:177
 msgid "Number of pixels to scroll per arrow key press:"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:182
+#: mcomix/preferences_dialog.py:183
 msgid "Set the number of pixels to scroll on a page when using the arrow keys."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:185
+#: mcomix/preferences_dialog.py:186
 msgid "Number of pixels to scroll per mouse wheel turn:"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:191
+#: mcomix/preferences_dialog.py:192
 msgid "Set the number of pixels to scroll on a page when using a mouse wheel."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:194
+#: mcomix/preferences_dialog.py:195
 msgid "Number of \"steps\" to take before flipping the page:"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:200
+#: mcomix/preferences_dialog.py:201
 msgid ""
 "Set the number of \"steps\" needed to flip to the next or previous page.  "
 "Less steps will allow for very fast page turning but you might find yourself "
@@ -866,20 +747,20 @@ msgstr ""
 #
 # File: src/preferences.py, line: 177
 # File: src/ui.py, line: 296
-#: mcomix/preferences_dialog.py:203 mcomix/ui.py:104
+#: mcomix/preferences_dialog.py:204 mcomix/ui.py:104
 msgid "Double page mode"
 msgstr "Mode de doble pàgina"
 
 #
 # File: src/preferences.py, line: 179
-#: mcomix/preferences_dialog.py:206
+#: mcomix/preferences_dialog.py:207
 #, fuzzy
 msgid "Flip two pages in double page mode"
 msgstr "Gira dues pàgines en el mode de doble pàgina."
 
 #
 # File: src/preferences.py, line: 184
-#: mcomix/preferences_dialog.py:211
+#: mcomix/preferences_dialog.py:212
 msgid ""
 "Flip two pages, instead of one, each time we flip pages in double page mode."
 msgstr ""
@@ -887,10 +768,10 @@ msgstr ""
 "de doble pàgina."
 
 #: mcomix/preferences_dialog.py:215
-msgid "Show only one page where appropriate"
+msgid "Show only one page where appropriate:"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:221
+#: mcomix/preferences_dialog.py:217
 msgid ""
 "When showing the first page of an archive, or an image's width exceeds its "
 "height, only a single page will be displayed."
@@ -898,20 +779,20 @@ msgstr ""
 
 #
 # File: src/preferences.py, line: 196
-#: mcomix/preferences_dialog.py:225
+#: mcomix/preferences_dialog.py:220
 msgid "Files"
 msgstr "Fitxers"
 
 #
 # File: src/preferences.py, line: 206
-#: mcomix/preferences_dialog.py:228
+#: mcomix/preferences_dialog.py:223
 #, fuzzy
 msgid "Automatically open the last viewed file on startup"
 msgstr "Obre automàticament a l'inici l'últim arxiu vist."
 
 #
 # File: src/preferences.py, line: 211
-#: mcomix/preferences_dialog.py:233
+#: mcomix/preferences_dialog.py:228
 #, fuzzy
 msgid ""
 "Automatically open, on startup, the file that was open when MComix was last "
@@ -922,14 +803,14 @@ msgstr ""
 
 #
 # File: src/preferences.py, line: 214
-#: mcomix/preferences_dialog.py:237
+#: mcomix/preferences_dialog.py:232
 #, fuzzy
 msgid "Store information about recently opened files"
 msgstr "Desa informació dels últims fitxers oberts."
 
 #
 # File: src/preferences.py, line: 219
-#: mcomix/preferences_dialog.py:242
+#: mcomix/preferences_dialog.py:237
 #, fuzzy
 msgid ""
 "Add information about all files opened from within MComix to the shared "
@@ -940,45 +821,45 @@ msgstr ""
 
 #
 # File: src/preferences.py, line: 271
-#: mcomix/preferences_dialog.py:252
+#: mcomix/preferences_dialog.py:247
 msgid "Fullscreen"
 msgstr "Pantalla completa"
 
 #
 # File: src/preferences.py, line: 250
-#: mcomix/preferences_dialog.py:254
+#: mcomix/preferences_dialog.py:249
 #, fuzzy
 msgid "Use fullscreen by default"
 msgstr "Usa per defecte el mode de pantalla completa."
 
 #
 # File: src/preferences.py, line: 273
-#: mcomix/preferences_dialog.py:261
+#: mcomix/preferences_dialog.py:256
 #, fuzzy
 msgid "Automatically hide all toolbars in fullscreen"
 msgstr "Oculta automàticament totes les barres d'eines."
 
 #
 # File: src/preferences.py, line: 279
-#: mcomix/preferences_dialog.py:267
+#: mcomix/preferences_dialog.py:262
 msgid "Slideshow"
 msgstr "Projecció de diapositives"
 
 #
 # File: src/preferences.py, line: 280
-#: mcomix/preferences_dialog.py:268
+#: mcomix/preferences_dialog.py:263
 #, fuzzy
 msgid "Slideshow delay (in seconds):"
 msgstr "Retard (en segons)"
 
 #
 # File: src/preferences.py, line: 280
-#: mcomix/preferences_dialog.py:277
+#: mcomix/preferences_dialog.py:272
 #, fuzzy
 msgid "Slideshow step (in pixels):"
 msgstr "Retard (en segons)"
 
-#: mcomix/preferences_dialog.py:285
+#: mcomix/preferences_dialog.py:280
 msgid ""
 "Specify the number of pixels to scroll while in slideshow mode. A positive "
 "value will scroll forward, a negative value will scroll backwards, and a "
@@ -987,26 +868,26 @@ msgstr ""
 
 #
 # File: src/preferences.py, line: 198
-#: mcomix/preferences_dialog.py:289
+#: mcomix/preferences_dialog.py:284
 #, fuzzy
 msgid "During a slideshow automatically open the next archive"
 msgstr "Obre automàticament el següent arxiu."
 
-#: mcomix/preferences_dialog.py:294
+#: mcomix/preferences_dialog.py:289
 msgid ""
 "While in slideshow mode allow the next archive to automatically be opened."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:297
+#: mcomix/preferences_dialog.py:292
 msgid "Rotation"
 msgstr "Rotació"
 
-#: mcomix/preferences_dialog.py:299
+#: mcomix/preferences_dialog.py:294
 #, fuzzy
 msgid "Automatically rotate images according to their metadata"
 msgstr "Rotar automàticament les imatges d'acord amb les metadades."
 
-#: mcomix/preferences_dialog.py:304
+#: mcomix/preferences_dialog.py:299
 msgid ""
 "Automatically rotate images when an orientation is specified in the image "
 "metadata, such as in an Exif tag."
@@ -1014,30 +895,30 @@ msgstr ""
 "Rota automàticament les imatges quan s'hi especifique una orientació a les "
 "metadades de la imatge, com per exemple a les etiquetes Exif."
 
-#: mcomix/preferences_dialog.py:315
+#: mcomix/preferences_dialog.py:310
 msgid "User interface language"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:316
+#: mcomix/preferences_dialog.py:311
 msgid "Language (needs restart):"
 msgstr ""
 
 #
 # File: src/preferences.py, line: 230
-#: mcomix/preferences_dialog.py:320
+#: mcomix/preferences_dialog.py:315
 msgid "Cache"
 msgstr "Memòria cau"
 
 #
 # File: src/preferences.py, line: 222
-#: mcomix/preferences_dialog.py:323
+#: mcomix/preferences_dialog.py:318
 #, fuzzy
 msgid "Store thumbnails for opened files"
 msgstr "Desa les miniatures dels fitxers oberts."
 
 #
 # File: src/preferences.py, line: 227
-#: mcomix/preferences_dialog.py:328
+#: mcomix/preferences_dialog.py:323
 msgid ""
 "Store thumbnails for opened files according to the freedesktop.org "
 "specification. These thumbnails are shared by many other applications, such "
@@ -1047,21 +928,21 @@ msgstr ""
 "freedesktop.org. Aquestes miniatures es comparteixen amb moltes altres "
 "aplicacions, com ara bé la majoria de gestors de fitxers."
 
-#: mcomix/preferences_dialog.py:332
+#: mcomix/preferences_dialog.py:327
 msgid "Delay thumbnail generation"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:334
+#: mcomix/preferences_dialog.py:329
 msgid ""
 "Thumbnails are generated only when required, instead of directly after "
 "opening a new file."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:340
+#: mcomix/preferences_dialog.py:335
 msgid "Maximum number of pages to store in the cache:"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:346
+#: mcomix/preferences_dialog.py:341
 msgid ""
 "Set the max number of pages to cache. A value of -1 will cache the entire "
 "archive."
@@ -1069,20 +950,20 @@ msgstr ""
 
 #
 # File: src/preferences.py, line: 124
-#: mcomix/preferences_dialog.py:349
+#: mcomix/preferences_dialog.py:344
 msgid "Magnifying Lens"
 msgstr "Lupa"
 
 #
 # File: src/preferences.py, line: 125
-#: mcomix/preferences_dialog.py:351
+#: mcomix/preferences_dialog.py:346
 #, fuzzy
 msgid "Magnifying lens size (in pixels):"
 msgstr "Mida de la lupa (en píxels)"
 
 #
 # File: src/preferences.py, line: 131
-#: mcomix/preferences_dialog.py:357
+#: mcomix/preferences_dialog.py:352
 msgid ""
 "Set the size of the magnifying lens. It is a square with a side of this many "
 "pixels."
@@ -1092,27 +973,27 @@ msgstr ""
 
 #
 # File: src/preferences.py, line: 133
-#: mcomix/preferences_dialog.py:359
+#: mcomix/preferences_dialog.py:354
 #, fuzzy
 msgid "Magnification factor:"
 msgstr "Factor d'augment"
 
 #
 # File: src/preferences.py, line: 140
-#: mcomix/preferences_dialog.py:366
+#: mcomix/preferences_dialog.py:361
 msgid "Set the magnification factor of the magnifying lens."
 msgstr "Configura el factor d'augment de la lupa."
 
 #
 # File: src/preferences.py, line: 289
-#: mcomix/preferences_dialog.py:370
+#: mcomix/preferences_dialog.py:365
 #, fuzzy
 msgid "Comment extensions:"
 msgstr "Extensions dels comentaris"
 
 #
 # File: src/preferences.py, line: 295
-#: mcomix/preferences_dialog.py:377
+#: mcomix/preferences_dialog.py:372
 msgid ""
 "Treat all files found within archives, that have one of these file endings, "
 "as comments."
@@ -1120,108 +1001,124 @@ msgstr ""
 "Tracta tots els fitxers que hi ha dintre dels arxius, que tinguen una "
 "d'aquestes extensions, com a comentaris."
 
-#: mcomix/preferences_dialog.py:397
+#: mcomix/preferences_dialog.py:392
 msgid "Auto-detect (Default)"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:398
+#: mcomix/preferences_dialog.py:393
 msgid "Catalan"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:399
+#: mcomix/preferences_dialog.py:394
 msgid "Czech"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:400
+#: mcomix/preferences_dialog.py:395
 msgid "German"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:401
+#: mcomix/preferences_dialog.py:396
 msgid "Greek"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:402
+#: mcomix/preferences_dialog.py:397
 msgid "English"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:403
+#: mcomix/preferences_dialog.py:398
 msgid "Spanish"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:404
+#: mcomix/preferences_dialog.py:399
 msgid "Persian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:405
+#: mcomix/preferences_dialog.py:400
 msgid "French"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:406
+#: mcomix/preferences_dialog.py:401
 msgid "Galician"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:407
+#: mcomix/preferences_dialog.py:402
 msgid "Croatian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:408
+#: mcomix/preferences_dialog.py:403
 msgid "Hungarian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:409
+#: mcomix/preferences_dialog.py:404
 msgid "Indonesian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:410
+#: mcomix/preferences_dialog.py:405
 msgid "Italian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:411
+#: mcomix/preferences_dialog.py:406
 msgid "Japanese"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:412
+#: mcomix/preferences_dialog.py:407
 msgid "Korean"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:413
+#: mcomix/preferences_dialog.py:408
 msgid "Dutch"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:414
+#: mcomix/preferences_dialog.py:409
 msgid "Polish"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:415
+#: mcomix/preferences_dialog.py:410
 msgid "Portuguese"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:416
+#: mcomix/preferences_dialog.py:411
 msgid "Russian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:417
+#: mcomix/preferences_dialog.py:412
 msgid "Swedish"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:418
+#: mcomix/preferences_dialog.py:413
 msgid "Ukrainian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:419
+#: mcomix/preferences_dialog.py:414
 msgid "Chinese (simplified)"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:420
+#: mcomix/preferences_dialog.py:415
 msgid "Chinese (traditional)"
 msgstr ""
 
-#: mcomix/process.py:48
+#: mcomix/preferences_dialog.py:453
+msgid "Never"
+msgstr ""
+
+#: mcomix/preferences_dialog.py:454
+msgid "Only for title pages"
+msgstr ""
+
+#: mcomix/preferences_dialog.py:455
+msgid "Only for wide images"
+msgstr ""
+
+#: mcomix/preferences_dialog.py:456
+msgid "Always"
+msgstr ""
+
+#: mcomix/process.py:50
 #, python-format
 msgid "! Error spawning process \"%(command)s\": %(error)s."
 msgstr ""
 
-#: mcomix/process.py:49
+#: mcomix/process.py:52
 #, python-format
 msgid "\"%(command)s\" must be on your system PATH to be found."
 msgstr ""
@@ -1287,16 +1184,135 @@ msgstr "Arxiu"
 msgid "Image"
 msgstr "Imatge"
 
+#: mcomix/run.py:41
+msgid "[OPTION...] [PATH]"
+msgstr ""
+
+#: mcomix/run.py:42
+msgid "View images and comic book archives."
+msgstr ""
+
+#: mcomix/run.py:45
+msgid "Show this help and exit."
+msgstr ""
+
+#: mcomix/run.py:47
+msgid "Start the application in slideshow mode."
+msgstr ""
+
+#: mcomix/run.py:49
+msgid "Show the library on startup."
+msgstr ""
+
+#: mcomix/run.py:51
+msgid "Show the version number and exit."
+msgstr ""
+
+#: mcomix/run.py:53
+msgid "View modes"
+msgstr ""
+
+#: mcomix/run.py:55
+msgid "Start the application in fullscreen mode."
+msgstr ""
+
+#: mcomix/run.py:57
+msgid "Start the application in manga mode."
+msgstr ""
+
+#: mcomix/run.py:59
+msgid "Start the application in double page mode."
+msgstr ""
+
+#: mcomix/run.py:62
+msgid "Zoom modes"
+msgstr ""
+
+#: mcomix/run.py:65
+msgid "Start the application with zoom set to best fit mode."
+msgstr ""
+
+#: mcomix/run.py:68
+msgid "Start the application with zoom set to fit width."
+msgstr ""
+
+#: mcomix/run.py:71
+msgid "Start the application with zoom set to fit height."
+msgstr ""
+
+#: mcomix/run.py:74
+msgid "Debug options"
+msgstr ""
+
+#: mcomix/run.py:78
+msgid "Sets the desired output log level."
+msgstr ""
+
+#: mcomix/run.py:124
+msgid "You do not have the required versions of GTK+ and PyGTK installed."
+msgstr ""
+
+#: mcomix/run.py:125
+#, python-format
+msgid "Installed GTK+ version is: %s"
+msgstr ""
+
+#: mcomix/run.py:127
+msgid "Required GTK+ version is: 2.12.0 or higher\n"
+msgstr ""
+
+#: mcomix/run.py:128
+#, python-format
+msgid "Installed PyGTK version is: %s"
+msgstr ""
+
+#: mcomix/run.py:130 mcomix/run.py:134
+msgid "Required PyGTK version is: 2.12.0 or higher"
+msgstr ""
+
+#: mcomix/run.py:135
+msgid "No version of PyGTK was found on your system."
+msgstr ""
+
+#: mcomix/run.py:136
+msgid "This error might be caused by missing GTK+ libraries."
+msgstr ""
+
+#: mcomix/run.py:145
+msgid "You don't have the required version of the Python Imaging"
+msgstr ""
+
+#: mcomix/run.py:146
+msgid "Library (PIL) installed."
+msgstr ""
+
+#: mcomix/run.py:147
+#, python-format
+msgid "Installed PIL version is: %s"
+msgstr ""
+
+#: mcomix/run.py:148
+msgid "Required PIL version is: 1.1.5 or higher"
+msgstr ""
+
+#: mcomix/run.py:152
+msgid "Python Imaging Library (PIL) 1.1.5 or higher is required."
+msgstr ""
+
+#: mcomix/run.py:153
+msgid "No version of the Python Imaging Library was found on your system."
+msgstr ""
+
 #
 # File: src/preferences.py, line: 279
-#: mcomix/slideshow.py:42
+#: mcomix/slideshow.py:43
 #, fuzzy
 msgid "Stop slideshow"
 msgstr "Projecció de diapositives"
 
 #
 # File: src/preferences.py, line: 279
-#: mcomix/slideshow.py:46 mcomix/ui.py:125
+#: mcomix/slideshow.py:47 mcomix/ui.py:125
 #, fuzzy
 msgid "Start slideshow"
 msgstr "Projecció de diapositives"
@@ -1521,12 +1537,12 @@ msgstr ""
 msgid "Icon design"
 msgstr "Disseny d'icones"
 
-#: mcomix/thumbnail_tools.py:110 mcomix/library/book_area.py:541
+#: mcomix/thumbnail_tools.py:109 mcomix/library/book_area.py:540
 #, python-format
 msgid "! Could not remove file \"%s\""
 msgstr ""
 
-#: mcomix/thumbnail_tools.py:223
+#: mcomix/thumbnail_tools.py:222
 #, python-format
 msgid "! Could not save thumbnail \"%(thumbpath)s\": %(error)s"
 msgstr ""
@@ -2178,18 +2194,18 @@ msgstr ""
 msgid "Custom..."
 msgstr ""
 
-#: mcomix/library/book_area.py:360
+#: mcomix/library/book_area.py:359
 msgid "Set library cover size"
 msgstr ""
 
 #
 # File: src/library.py, line: 588
-#: mcomix/library/book_area.py:480
+#: mcomix/library/book_area.py:479
 #, python-format
 msgid "Removed %(num)d book(s) from '%(collection)s'."
 msgstr "S'han esborrat %(num)d llibres de '%(collection)s'."
 
-#: mcomix/library/book_area.py:496 mcomix/library/collection_area.py:189
+#: mcomix/library/book_area.py:495 mcomix/library/collection_area.py:189
 #, python-format
 msgid "Removed %d book from the library."
 msgid_plural "Removed %d books from the library."
@@ -2198,13 +2214,13 @@ msgstr[1] ""
 
 #
 # File: src/library.py, line: 597
-#: mcomix/library/book_area.py:511
+#: mcomix/library/book_area.py:510
 msgid "Remove books from the library?"
 msgstr "Voleu esborrar els llibres de la biblioteca?"
 
 #
 # File: src/library.py, line: 599
-#: mcomix/library/book_area.py:515
+#: mcomix/library/book_area.py:514
 #, fuzzy
 msgid ""
 "The selected books will be removed from the library and permanently deleted. "
