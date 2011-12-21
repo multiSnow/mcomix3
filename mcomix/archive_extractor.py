@@ -82,7 +82,10 @@ class Extractor:
         """Return True if the file <name> in the extractor's file list
         (as set by set_files()) is fully extracted.
         """
-        return self._extracted.get(name, False)
+        self._condition.acquire()
+        isready = self._extracted.get(name, False)
+        self._condition.release()
+        return isready
 
     def get_mime_type(self):
         """Return the mime type name of the extractor's current archive."""
