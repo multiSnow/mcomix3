@@ -136,7 +136,7 @@ class _PreferencesDialog(gtk.Dialog):
         # ----------------------------------------------------------------
         # The "Behaviour" tab.
         # ----------------------------------------------------------------
-        page = preferences_page._PreferencePage(80)
+        page = preferences_page._PreferencePage(None)
         page.new_section(_('Scroll'))
         smart_space_button = gtk.CheckButton(
             _('Use smart space key scrolling'))
@@ -212,17 +212,11 @@ class _PreferencesDialog(gtk.Dialog):
             _('Flip two pages, instead of one, each time we flip pages in double page mode.'))
         page.add_row(step_length_button)
 
-        virtual_double_button = gtk.CheckButton(
-            _('Show only one page where appropriate'))
-        virtual_double_button.set_active(
-            prefs['no double page for wide images'])
-        virtual_double_button.connect('toggled', self._check_button_cb,
-            'no double page for wide images')
-        virtual_double_button.set_tooltip_text(
+        label = gtk.Label(_('Show only one page where appropriate:'))
+        label.set_tooltip_text(
             _("When showing the first page of an archive, or an image's width "
               "exceeds its height, only a single page will be displayed."))
-        page.add_row(virtual_double_button)
-
+        page.add_row(label, self._create_doublepage_as_one_control())
         page.new_section(_('Files'))
 
         auto_open_last_button = gtk.CheckButton(
@@ -427,7 +421,7 @@ class _PreferencesDialog(gtk.Dialog):
 
         box = gtk.ComboBox(model)
 
-        # Determine current log level
+        # Determine current language
         iter = model.get_iter_first()
         index = 0
         while iter:
@@ -452,6 +446,44 @@ class _PreferencesDialog(gtk.Dialog):
             iter = combobox.get_model().iter_nth_child(None, model_index)
             text, lang_code = combobox.get_model().get(iter, 0, 1)
             prefs['language'] = lang_code
+
+    def _create_doublepage_as_one_control(self):
+        """ Creates the ComboBox control for selecting virtual double page options. """
+        options = (
+                (_('Never'), 0),
+                (_('Only for title pages'), constants.SHOW_DOUBLE_AS_ONE_TITLE),
+                (_('Only for wide images'), constants.SHOW_DOUBLE_AS_ONE_WIDE),
+                (_('Always'), constants.SHOW_DOUBLE_AS_ONE_TITLE | constants.SHOW_DOUBLE_AS_ONE_WIDE))
+        
+        model = gtk.ListStore(gobject.TYPE_INT, gobject.TYPE_STRING)
+        for text, value in options:
+            model.append((value, text))
+
+        virtual_double_box = gtk.ComboBox(model)
+        renderer = gtk.CellRendererText()
+        virtual_double_box.pack_start(renderer, True)
+        virtual_double_box.add_attribute(renderer, "text", 1)
+
+        # Set active box option
+        iter = model.get_iter_first()
+        while iter:
+            if model.get_value(iter, 0) == prefs['virtual double page for fitting images']:
+                virtual_double_box.set_active_iter(iter)
+                break
+            else:
+                iter = model.iter_next(iter)
+
+        virtual_double_box.connect('changed', self._double_page_changed_cb)
+
+        return virtual_double_box
+
+    def _double_page_changed_cb(self, combobox, *args):
+        """ Called when a new option was selected for the virtual double page option. """
+        iter = combobox.get_active_iter()
+        if combobox.get_model().iter_is_valid(iter):
+            value = combobox.get_model().get_value(iter, 0)
+            prefs['virtual double page for fitting images'] = value
+            self._window.draw_image()
 
     def _check_button_cb(self, button, preference):
         """Callback for all checkbutton-type preferences."""

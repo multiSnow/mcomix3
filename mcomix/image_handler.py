@@ -287,12 +287,12 @@ class ImageHandler:
         on the first page.
         """
         if (self.get_current_page() == 1 and
-            prefs['no double page for wide images'] and
+            prefs['virtual double page for fitting images'] & constants.SHOW_DOUBLE_AS_ONE_TITLE and
             self._window.filehandler.archive_type is not None):
             return True
 
         if (not self._window.is_double_page or
-          not prefs['no double page for wide images'] or
+          not prefs['virtual double page for fitting images'] & constants.SHOW_DOUBLE_AS_ONE_WIDE or
           self.get_current_page() == self.get_number_of_pages()):
             return False
 

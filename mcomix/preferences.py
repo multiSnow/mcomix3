@@ -28,7 +28,8 @@ prefs = {
     'default manga mode': False,
     'lens magnification': 2,
     'lens size': 200,
-    'no double page for wide images': True,
+    'virtual double page for fitting images': constants.SHOW_DOUBLE_AS_ONE_TITLE | \
+											  constants.SHOW_DOUBLE_AS_ONE_WIDE,
     'double step in double page mode': True,
     'show page numbers on thumbnails': True,
     'thumbnail size': 80,

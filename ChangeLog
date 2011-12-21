@@ -16,6 +16,10 @@ MComix 0.96
       2.jpg, 10.jpg instead of 1.jpg, 10.jpg, 2.jpg). Before, only images
       within archives were naturally sorted.
 
+    - The preference option "Show only one page where appropriate" has been
+      split up to allow controlling whether certain pages should be displayed
+      as single page in double page mode (title pages/wide pages/none).
+
     - Updated traditional Chinese translation (by Wayne Su).
 
 MComix 0.95
