@@ -31,7 +31,7 @@ class MainUI(gtk.UIManager):
             ('copy_page', gtk.STOCK_COPY, _('_Copy'), None,
                 _('Copies the current page to clipboard.'),
                 window.clipboard.copy_page),
-            ('delete', gtk.STOCK_DELETE, _('_Delete'), 'F8',
+            ('delete', gtk.STOCK_DELETE, _('_Delete'), 'Delete',
                 _('Deletes the current file or archive from disk.'),
                 window.delete),
             ('next_page', 'mcomix-next-page', _('_Next page'),

@@ -20,6 +20,9 @@ MComix 0.96
       split up to allow controlling whether certain pages should be displayed
       as single page in double page mode (title pages/wide pages/none).
 
+    - "Delete" is now bound to "DEL" instead of "F8" for consistency with most
+      other desktop applications.
+
     - Updated traditional Chinese translation (by Wayne Su).
 
 MComix 0.95
