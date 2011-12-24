@@ -1,4 +1,5 @@
 MComix 0.96
+Release date: 24.12.2011
 
     - Opening a RAR archive with 7z would destroy the archive, leaving only
       a 0-byte file. This has been fixed.
