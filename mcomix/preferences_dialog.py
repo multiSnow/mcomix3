@@ -454,7 +454,7 @@ class _PreferencesDialog(gtk.Dialog):
                 (_('Only for title pages'), constants.SHOW_DOUBLE_AS_ONE_TITLE),
                 (_('Only for wide images'), constants.SHOW_DOUBLE_AS_ONE_WIDE),
                 (_('Always'), constants.SHOW_DOUBLE_AS_ONE_TITLE | constants.SHOW_DOUBLE_AS_ONE_WIDE))
-        
+
         model = gtk.ListStore(gobject.TYPE_INT, gobject.TYPE_STRING)
         for text, value in options:
             model.append((value, text))
