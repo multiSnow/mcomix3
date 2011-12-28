@@ -65,9 +65,12 @@ def get_archive_info(path):
     from mcomix import archive_extractor
 
     extractor = archive_extractor.Extractor()
-    extractor.setup(path, None)
-    mime = extractor.get_mime_type()
+    try:
+        extractor.setup(path, None)
+    except archive_extractor.ArchiveException:
+        return None
 
+    mime = extractor.get_mime_type()
     if mime is None:
         return None
 
