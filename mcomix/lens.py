@@ -177,7 +177,7 @@ class MagnifyingLens(object):
         scale = larger_size / image_size[0]
         x *= scale
         y *= scale
-        source_mag = prefs['lens magnification'] / scale
+        source_mag = max(prefs['lens magnification'] / scale, 2)
         width = prefs['lens size'] / source_mag
         height = width
 
