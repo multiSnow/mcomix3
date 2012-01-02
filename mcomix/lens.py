@@ -172,14 +172,8 @@ class MagnifyingLens(object):
         x -= padding_x
         y -= padding_y
 
-        # Determine pixbuf scaling
-        larger_size = max(source_pixbuf.get_height(), source_pixbuf.get_width())
-        scale = larger_size / image_size[0]
-        x *= scale
-        y *= scale
-        source_mag = max(prefs['lens magnification'] / scale, 2)
-        width = prefs['lens size'] / source_mag
-        height = width
+        source_mag = prefs['lens magnification']
+        width = height = prefs['lens size'] / source_mag
 
         paste_left = x > width // 2
         paste_top = y > height // 2
