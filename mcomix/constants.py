@@ -17,6 +17,7 @@ BASE_PATH = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 THUMBNAIL_PATH = os.path.join(HOME_DIR, '.thumbnails/normal')
 LIBRARY_DATABASE_PATH = os.path.join(DATA_DIR, 'library.db')
 LIBRARY_COVERS_PATH = os.path.join(DATA_DIR, 'library_covers')
+KEYBINDINGS_PATH = os.path.join(CONFIG_DIR, 'keybindings.rc')
 
 BOOKMARK_PICKLE_PATH = os.path.join(DATA_DIR, 'bookmarks.pickle')
 PREFERENCE_PICKLE_PATH = os.path.join(CONFIG_DIR, 'preferences.pickle')

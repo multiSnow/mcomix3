@@ -191,6 +191,10 @@ def run():
             open_path = open_path, open_page = open_page)
     main.set_main_window(window)
 
+    # Enable accelerators change by hovering over a menu item and pressing a key.
+    gtk_settings = gtk.settings_get_default()
+    gtk_settings.set_long_property("gtk-can-change-accels", 1, "MComix:Main")
+
     signal.signal(signal.SIGTERM, lambda: gobject.idle_add(window.terminate_program))
     try:
         gtk.main()

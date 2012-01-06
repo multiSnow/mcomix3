@@ -1081,6 +1081,9 @@ class MainWindow(gtk.Window):
         preferences.write_preferences_file()
         self.uimanager.bookmarks.write_bookmarks_file()
 
+        # Write keyboard accelerator map
+        gtk.accel_map_save(constants.KEYBINDINGS_PATH)
+
     def save_and_terminate_program(self, *args):
         prefs['previous quit was quit and save'] = True
 

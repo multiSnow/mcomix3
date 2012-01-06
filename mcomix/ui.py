@@ -1,6 +1,7 @@
 """ui.py - UI definitions for main window.
 """
 
+import os.path
 import gtk
 
 from mcomix import bookmark_menu
@@ -365,6 +366,9 @@ class MainUI(gtk.UIManager):
         self.get_widget('/Popup/menu_recent').set_submenu(self.recentPopup)
         self.get_widget('/Popup/menu_recent').show()
 
+        # Load keyboard accelerator map
+        if os.path.isfile(constants.KEYBINDINGS_PATH):
+            gtk.accel_map_load(constants.KEYBINDINGS_PATH)
         window.add_accel_group(self.get_accel_group())
 
         # Is there no built-in way to do this?

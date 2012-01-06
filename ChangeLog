@@ -5,6 +5,10 @@ MComix 0.97
       area. In addition, fixed zero division error when trying to use the lens
       on images with width greatly exceeding height.
 
+    - Menu item hotkeys can now be changed by hovering over a menu item with
+      the mouse and pressing the desired key, or key combination.
+      (by Juha Sahakangas and Alan Horkan)
+
 MComix 0.96
 Release date: 24.12.2011
 
