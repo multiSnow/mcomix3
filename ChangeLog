@@ -1,7 +1,9 @@
 MComix 0.97
 
-    - Fixed zero division error when trying to use the lens on images with
-      width greatly exceeding height.
+    - The lens now used to original pixbuf when preparing the magnified image
+      instead of the already scaled pixbuf that is shown in MComix' display
+      area. In addition, fixed zero division error when trying to use the lens
+      on images with width greatly exceeding height.
 
 MComix 0.96
 Release date: 24.12.2011
