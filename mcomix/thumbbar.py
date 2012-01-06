@@ -404,16 +404,12 @@ class ThumbnailSidebar(gtk.HBox):
 
     def set_thumbnail_background(self, colour):
 
-        self._pixbuf_cellrenderer.set_property(
-                'cell-background-gdk',
-                gtk.gdk.colormap_get_system().alloc_color(
+        color = gtk.gdk.colormap_get_system().alloc_color(
                     gtk.gdk.Color(colour[0], colour[1], colour[2]),
-                    False, True))
-
-        self._text_cellrenderer.set_property(
-                'background-gdk',
-                gtk.gdk.colormap_get_system().alloc_color(
-                    gtk.gdk.Color(colour[0], colour[1], colour[2]),
-                    False, True))
+                    False, True)
+        self._pixbuf_cellrenderer.set_property('cell-background-gdk',
+                color)
+        self._text_cellrenderer.set_property('background-gdk',
+                color)
 
 # vim: expandtab:sw=4:ts=4
