@@ -17,11 +17,12 @@ BASE_PATH = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 THUMBNAIL_PATH = os.path.join(HOME_DIR, '.thumbnails/normal')
 LIBRARY_DATABASE_PATH = os.path.join(DATA_DIR, 'library.db')
 LIBRARY_COVERS_PATH = os.path.join(DATA_DIR, 'library_covers')
-KEYBINDINGS_PATH = os.path.join(CONFIG_DIR, 'keybindings.rc')
+KEYBINDINGS_PATH = os.path.join(CONFIG_DIR, 'keybindings-gtk.rc')
 
 BOOKMARK_PICKLE_PATH = os.path.join(DATA_DIR, 'bookmarks.pickle')
 PREFERENCE_PICKLE_PATH = os.path.join(CONFIG_DIR, 'preferences.pickle')
 FILEINFO_PICKLE_PATH = os.path.join(DATA_DIR, 'file.pickle')
+KEYBINDINGS_PICKLE_PATH = os.path.join(CONFIG_DIR, 'keybindings.pickle')
 
 ZOOM_MODE_BEST, ZOOM_MODE_WIDTH, ZOOM_MODE_HEIGHT, ZOOM_MODE_MANUAL = range(4)
 ZIP, RAR, TAR, GZIP, BZIP2, PDF, SEVENZIP, LHA = range(8)

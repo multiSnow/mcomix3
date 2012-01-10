@@ -8,6 +8,7 @@ import gtk.gdk
 from mcomix.preferences import prefs
 from mcomix import constants
 from mcomix import portability
+from mcomix import keybindings
 
 class EventHandler:
 
@@ -19,7 +20,8 @@ class EventHandler:
         self._pressed_pointer_pos_x = 0
         self._pressed_pointer_pos_y = 0
 
-        self._extra_scroll_events = 0 # For scrolling "off the page".
+        #: For scrolling "off the page".
+        self._extra_scroll_events = 0
 
     def resize_event(self, widget, event):
         """Handle events from resizing and moving the main window."""
@@ -37,108 +39,94 @@ class EventHandler:
             self._window.height = event.height
             self._window.draw_image()
 
-    def key_press_event(self, widget, event, *args):
-        """Handle key press events on the main window."""
+    def register_key_events(self):
+        """ Registers keyboard events and their default binings, and hooks
+        them up with their respective callback functions. """
 
-        # ----------------------------------------------------------------
-        # Some navigation keys that work as well as the accelerators in
-        # ui.py.
-        # ----------------------------------------------------------------
-        if event.keyval in (gtk.keysyms.KP_Page_Up, gtk.keysyms.BackSpace) or \
-           (event.keyval == gtk.keysyms.Left and event.state & gtk.gdk.MOD1_MASK):
-            self._window.previous_page()
+        manager = keybindings.keybinding_manager()
 
-        elif event.keyval == gtk.keysyms.KP_Page_Down or \
-             (event.keyval == gtk.keysyms.Right and event.state & gtk.gdk.MOD1_MASK):
-            self._window.next_page()
+        # Navigation keys that work in addition to the accelerators in ui.py
+        manager.register('previous page',
+            ['KP_Page_Up', 'BackSpace', '<Mod1>Left'],
+            self._window.previous_page)
+        manager.register('next page',
+            ['KP_Page_Down', '<Mod1>Right'],
+            self._window.next_page)
 
-        # ----------------------------------------------------------------
         # Numpad (without numlock) aligns the image depending on the key.
-        # ----------------------------------------------------------------
-        elif event.keyval == gtk.keysyms.KP_1:
-            self._window.scroll_to_fixed(horiz='left', vert='bottom')
+        manager.register('scroll left bottom',
+            ['KP_1'],
+            self._window.scroll_to_fixed,
+            kwargs={'horiz':'left', 'vert':'bottom'})
+        manager.register('scroll middle bottom',
+            ['KP_2'],
+            self._window.scroll_to_fixed,
+            kwargs={'horiz':'middle', 'vert':'bottom'})
+        manager.register('scroll right bottom',
+            ['KP_3'],
+            self._window.scroll_to_fixed,
+            kwargs={'horiz':'right', 'vert':'bottom'})
 
-        elif event.keyval == gtk.keysyms.KP_2:
-            self._window.scroll_to_fixed(horiz='middle', vert='bottom')
+        manager.register('scroll left middle',
+            ['KP_4'],
+            self._window.scroll_to_fixed,
+            kwargs={'horiz':'left', 'vert':'middle'})
+        manager.register('scroll middle',
+            ['KP_5'],
+            self._window.scroll_to_fixed,
+            kwargs={'horiz':'middle', 'vert':'middle'})
+        manager.register('scroll right middle',
+            ['KP_6'],
+            self._window.scroll_to_fixed,
+            kwargs={'horiz':'right', 'vert':'middle'})
 
-        elif event.keyval == gtk.keysyms.KP_3:
-            self._window.scroll_to_fixed(horiz='right', vert='bottom')
+        manager.register('scroll left top',
+            ['KP_7'],
+            self._window.scroll_to_fixed,
+            kwargs={'horiz':'left', 'vert':'top'})
+        manager.register('scroll middle top',
+            ['KP_8'],
+            self._window.scroll_to_fixed,
+            kwargs={'horiz':'middle', 'vert':'top'})
+        manager.register('scroll right top',
+            ['KP_9'],
+            self._window.scroll_to_fixed,
+            kwargs={'horiz':'right', 'vert':'top'})
 
-        elif event.keyval == gtk.keysyms.KP_4:
-            self._window.scroll_to_fixed(horiz='left', vert='middle')
+        # Enter/exit fullscreen.
+        manager.register('exit fullscreen',
+            ['Escape'],
+            self._window.actiongroup.get_action('fullscreen').set_active,
+            args=(False,))
+        manager.register('toggle fullscreen',
+            ['F11'],
+            self._window.actiongroup.get_action('fullscreen').activate)
 
-        elif event.keyval == gtk.keysyms.KP_5:
-            self._window.scroll_to_fixed(horiz='middle', vert='middle')
+        # Zooming commands for manual zoom mode
+        manager.register('zoom in',
+            ['plus', 'equal'],
+            self._window.actiongroup.get_action('zoom_in').activate)
+        manager.register('zoom out',
+            ['minus'],
+            self._window.actiongroup.get_action('zoom_out').activate)
+        manager.register('zoom original',
+            ['<Control>0', '<Control>KP_0'],
+            self._window.actiongroup.get_action('zoom_original').activate)
 
-        elif event.keyval == gtk.keysyms.KP_6:
-            self._window.scroll_to_fixed(horiz='right', vert='middle')
+        # Arrow keys scroll the image
+        manager.register('scroll down',
+            ['Down', 'KP_Down'],
+            self._scroll_down)
+        manager.register('scroll up',
+            ['Up', 'KP_Up'],
+            self._scroll_up)
+        manager.register('scroll right',
+            ['Right', 'KP_Right'],
+            self._scroll_right)
+        manager.register('scroll left',
+            ['Left', 'KP_Left'],
+            self._scroll_left)
 
-        elif event.keyval == gtk.keysyms.KP_7:
-            self._window.scroll_to_fixed(horiz='left', vert='top')
-
-        elif event.keyval == gtk.keysyms.KP_8:
-            self._window.scroll_to_fixed(horiz='middle', vert='top')
-
-        elif event.keyval == gtk.keysyms.KP_9:
-            self._window.scroll_to_fixed(horiz='right', vert='top')
-
-        # ----------------------------------------------------------------
-        # Enter/exit fullscreen. 'f' is also a valid key, defined as an
-        # accelerator elsewhere.
-        # ----------------------------------------------------------------
-        elif event.keyval == gtk.keysyms.Escape:
-            self._window.actiongroup.get_action('fullscreen').set_active(False)
-
-        elif event.keyval == gtk.keysyms.F11:
-            self._window.actiongroup.get_action('fullscreen').activate()
-
-        # ----------------------------------------------------------------
-        # Zooming commands for manual zoom mode. These keys complement
-        # others (with the same action) defined as accelerators.
-        # ----------------------------------------------------------------
-        elif event.keyval in (gtk.keysyms.plus, gtk.keysyms.equal):
-            self._window.actiongroup.get_action('zoom_in').activate()
-
-        elif event.keyval == gtk.keysyms.minus:
-            self._window.actiongroup.get_action('zoom_out').activate()
-
-        elif (event.keyval in (gtk.keysyms._0, gtk.keysyms.KP_0) and
-          'GDK_CONTROL_MASK' in event.state.value_names):
-            self._window.actiongroup.get_action('zoom_original').activate()
-
-        # ----------------------------------------------------------------
-        # Arrow keys scroll the image, except in best fit mode where
-        # they flip pages instead.
-        # ----------------------------------------------------------------
-        elif event.keyval in (gtk.keysyms.Down, gtk.keysyms.KP_Down):
-
-            if not prefs['zoom mode'] == constants.ZOOM_MODE_BEST:
-                self._scroll_with_flipping(0, prefs['number of pixels to scroll per key event'])
-            else:
-                self._window.next_page()
-
-        elif event.keyval in (gtk.keysyms.Up, gtk.keysyms.KP_Up):
-
-            if not prefs['zoom mode'] == constants.ZOOM_MODE_BEST:
-                self._scroll_with_flipping(0, -prefs['number of pixels to scroll per key event'])
-            else:
-                self._window.previous_page()
-
-        elif event.keyval in (gtk.keysyms.Right, gtk.keysyms.KP_Right):
-
-            if not prefs['zoom mode'] == constants.ZOOM_MODE_BEST:
-                self._scroll_with_flipping(prefs['number of pixels to scroll per key event'], 0)
-            else:
-                self._window.next_page()
-
-        elif event.keyval in (gtk.keysyms.Left, gtk.keysyms.KP_Left):
-
-            if not prefs['zoom mode'] == constants.ZOOM_MODE_BEST:
-                self._scroll_with_flipping(-prefs['number of pixels to scroll per key event'], 0)
-            else:
-                self._window.previous_page()
-
-        # ----------------------------------------------------------------
         # Space key scrolls down a percentage of the window height or the
         # image height at a time. When at the bottom it flips to the next
         # page.
@@ -147,136 +135,24 @@ class EventHandler:
         # the flow of the comic.
         #
         # If Shift is pressed we should backtrack instead.
-        # ----------------------------------------------------------------
-        elif event.keyval in [gtk.keysyms.space, gtk.keysyms.KP_Home,
-          gtk.keysyms.KP_End]:
+        manager.register('smart scroll down',
+            ['space'],
+            self._smart_scroll_down)
+        manager.register('smart scroll up',
+            ['<Shift>space'],
+            self._smart_scroll_up)
 
-            x_step, y_step = self._window.get_visible_area_size()
-            x_step = int(x_step * 0.9)
-            y_step = int(y_step * 0.9)
+        # OSD Display
+        manager.register('osd panel',
+            ['Tab'],
+            self._window.show_info_panel)
 
-            if self._window.is_manga_mode:
-                x_step *= -1
+    def key_press_event(self, widget, event, *args):
+        """Handle key press events on the main window."""
 
-            if ('GDK_SHIFT_MASK' in event.state.value_names or
-              event.keyval == gtk.keysyms.KP_Home):
-
-                if prefs['smart space scroll']:
-
-                    if self._window.displayed_double():
-
-                        if self._window.is_on_first_page():
-
-                            if not self._window.scroll(-x_step, 0, 'first'):
-
-                                if not self._window.scroll(0, -y_step):
-                                    self._window.previous_page()
-                                else:
-                                    self._window.scroll_to_fixed(
-                                        horiz='endfirst')
-
-                        else:
-                            if not self._window.scroll(-x_step, 0, 'second'):
-
-                                if not self._window.scroll(0, -y_step):
-
-                                    if not self._window.scroll_to_fixed(
-                                      horiz='endfirst'):
-                                        self._window.previous_page()
-
-                                    else:
-                                        self._window.scroll_to_fixed(
-                                            vert='bottom')
-
-                                else:
-                                    self._window.scroll_to_fixed(
-                                        horiz='endsecond')
-                    else:
-                        # When a double page is displayed, scroll left/right,
-                        # then top/bottom
-                        if not prefs['invert smart scroll']:
-                            if not self._window.scroll(-x_step, 0):
-
-                                if not self._window.scroll(0, -y_step):
-                                    self._window.previous_page()
-                                else:
-                                    self._window.scroll_to_fixed(horiz='endfirst')
-                        # Scroll top/bottom, then left/right
-                        else:
-                            if not self._window.scroll(0, -y_step):
-                                if not self._window.scroll(-x_step, 0):
-                                    self._window.previous_page()
-                                else:
-                                    self._window.scroll_to_fixed(
-                                        horiz='startfirst', vert='bottom')
-                else:
-
-                    if (prefs['zoom mode'] == constants.ZOOM_MODE_BEST or
-                      not self._window.scroll(0, -y_step)):
-                        self._window.previous_page()
-            else:
-
-                if prefs['smart space scroll']:
-
-                    if self._window.displayed_double():
-
-                        if self._window.is_on_first_page():
-
-                            if not self._window.scroll(x_step, 0, 'first'):
-
-                                if not self._window.scroll(0, y_step):
-
-                                    if not self._window.scroll_to_fixed(
-                                      horiz='startsecond'):
-                                        self._window.next_page()
-                                    else:
-                                        self._window.scroll_to_fixed(
-                                                vert='top')
-
-                                else:
-
-                                    self._window.scroll_to_fixed(
-                                        horiz='startfirst')
-                        else:
-
-                            if not self._window.scroll(x_step, 0, 'second'):
-
-                                if not self._window.scroll(0, y_step):
-                                    self._window.next_page()
-                                else:
-                                    self._window.scroll_to_fixed(
-                                        horiz='startsecond')
-                    else:
-                        # When a double page is displayed, scroll left/right,
-                        # then top/bottom
-                        if not prefs['invert smart scroll']:
-                            if not self._window.scroll(x_step, 0):
-
-                                if not self._window.scroll(0, y_step):
-                                    self._window.next_page()
-                                else:
-                                    self._window.scroll_to_fixed(
-                                        horiz='startfirst')
-                        # Scroll top/bottom, then left/right
-                        else:
-                            if not self._window.scroll(0, y_step):
-                                if not self._window.scroll(x_step, 0):
-                                    self._window.next_page()
-                                else:
-                                    self._window.scroll_to_fixed(
-                                        horiz='startsecond', vert='top')
-
-                else:
-
-                    if (prefs['zoom mode'] == constants.ZOOM_MODE_BEST or
-                      not self._window.scroll(0, y_step)):
-                        self._window.next_page()
-
-        # ---------------------------------------------------------------
-        # OSD display
-        # ---------------------------------------------------------------
-        elif event.keyval == gtk.keysyms.Tab:
-            self._window.show_info_panel()
+        # Dispatch keyboard input handling
+        manager = keybindings.keybinding_manager()
+        manager.execute((event.keyval, event.state))
 
         # ---------------------------------------------------------------
         # Register CTRL for scrolling only one page instead of two
@@ -297,7 +173,6 @@ class EventHandler:
           'GDK_MOD1_MASK' in event.state.value_names)):
 
             self._window.emit_stop_by_name('key_press_event')
-
             return True
 
     def key_release_event(self, widget, event, *args):
@@ -476,6 +351,164 @@ class EventHandler:
                 return False
 
             return True
+
+    def _scroll_down(self):
+        """ In best fit mode, skip right to the  next page. In other modes,
+        scroll first. """
+        if not prefs['zoom mode'] == constants.ZOOM_MODE_BEST:
+            self._scroll_with_flipping(0, prefs['number of pixels to scroll per key event'])
+        else:
+            self._window.next_page()
+
+    def _scroll_up(self):
+        """ In best fit mode, skip right to the  previous page. In other modes,
+        scroll first. """
+        if not prefs['zoom mode'] == constants.ZOOM_MODE_BEST:
+            self._scroll_with_flipping(0, -prefs['number of pixels to scroll per key event'])
+        else:
+            self._window.previous_page()
+
+    def _scroll_right(self):
+        """ In best fit mode, skip right to the  next page. In other modes,
+        scroll first. """
+        if not prefs['zoom mode'] == constants.ZOOM_MODE_BEST:
+            self._scroll_with_flipping(prefs['number of pixels to scroll per key event'], 0)
+        else:
+            self._window.next_page()
+
+    def _scroll_left(self):
+        """ In best fit mode, skip right to the  previous page. In other modes,
+        scroll first. """
+        if not prefs['zoom mode'] == constants.ZOOM_MODE_BEST:
+            self._scroll_with_flipping(-prefs['number of pixels to scroll per key event'], 0)
+        else:
+            self._window.previous_page()
+
+    def _smart_scroll_down(self):
+        """ Smart scrolling. """
+
+        x_step, y_step = self._window.get_visible_area_size()
+        x_step = int(x_step * 0.9)
+        y_step = int(y_step * 0.9)
+
+        if self._window.is_manga_mode:
+            x_step *= -1
+
+        if not prefs["smart space scroll"]:
+            if (prefs['zoom mode'] == constants.ZOOM_MODE_BEST or
+                not self._window.scroll(0, y_step)):
+                self._window.next_page()
+            return
+
+        if self._window.displayed_double():
+            if self._window.is_on_first_page():
+
+                if not self._window.scroll(x_step, 0, 'first'):
+
+                    if not self._window.scroll(0, y_step):
+
+                        if not self._window.scroll_to_fixed(
+                          horiz='startsecond'):
+                            self._window.next_page()
+                        else:
+                            self._window.scroll_to_fixed(
+                                    vert='top')
+
+                    else:
+
+                        self._window.scroll_to_fixed(
+                            horiz='startfirst')
+            else:
+
+                if not self._window.scroll(x_step, 0, 'second'):
+
+                    if not self._window.scroll(0, y_step):
+                        self._window.next_page()
+                    else:
+                        self._window.scroll_to_fixed(
+                            horiz='startsecond')
+        else:
+            # When a double page is displayed, scroll left/right,
+            # then top/bottom
+            if not prefs['invert smart scroll']:
+                if not self._window.scroll(x_step, 0):
+
+                    if not self._window.scroll(0, y_step):
+                        self._window.next_page()
+                    else:
+                        self._window.scroll_to_fixed(
+                            horiz='startfirst')
+            # Scroll top/bottom, then left/right
+            else:
+                if not self._window.scroll(0, y_step):
+                    if not self._window.scroll(x_step, 0):
+                        self._window.next_page()
+                    else:
+                        self._window.scroll_to_fixed(
+                            horiz='startsecond', vert='top')
+
+
+    def _smart_scroll_up(self):
+        """ Reversed smart scrolling. """
+
+        x_step, y_step = self._window.get_visible_area_size()
+        x_step = int(x_step * 0.9)
+        y_step = int(y_step * 0.9)
+
+        if self._window.is_manga_mode:
+            x_step *= -1
+
+        if not prefs["smart space scroll"]:
+            if (prefs['zoom mode'] == constants.ZOOM_MODE_BEST or
+                not self._window.scroll(0, -y_step)):
+                self._window.previous_page()
+            return
+
+        if self._window.displayed_double():
+            if self._window.is_on_first_page():
+
+                if not self._window.scroll(-x_step, 0, 'first'):
+
+                    if not self._window.scroll(0, -y_step):
+                        self._window.previous_page()
+                    else:
+                        self._window.scroll_to_fixed(
+                            horiz='endfirst')
+
+            else:
+                if not self._window.scroll(-x_step, 0, 'second'):
+
+                    if not self._window.scroll(0, -y_step):
+
+                        if not self._window.scroll_to_fixed(
+                          horiz='endfirst'):
+                            self._window.previous_page()
+
+                        else:
+                            self._window.scroll_to_fixed(
+                                vert='bottom')
+
+                    else:
+                        self._window.scroll_to_fixed(
+                            horiz='endsecond')
+        else:
+            # When a double page is displayed, scroll left/right,
+            # then top/bottom
+            if not prefs['invert smart scroll']:
+                if not self._window.scroll(-x_step, 0):
+
+                    if not self._window.scroll(0, -y_step):
+                        self._window.previous_page()
+                    else:
+                        self._window.scroll_to_fixed(horiz='endfirst')
+            # Scroll top/bottom, then left/right
+            else:
+                if not self._window.scroll(0, -y_step):
+                    if not self._window.scroll(-x_step, 0):
+                        self._window.previous_page()
+                    else:
+                        self._window.scroll_to_fixed(
+                            horiz='startfirst', vert='bottom')
 
 def _get_latest_event_of_same_type(event):
     """Return the latest event in the event queue that is of the same type

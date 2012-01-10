@@ -90,6 +90,9 @@ class MainWindow(gtk.Window):
         self.set_size_request(300, 300)  # Avoid making the window *too* small
         self.resize(prefs['window width'], prefs['window height'])
 
+        # Hook up any additional key events not handled by UI accelerators
+        self._event_handler.register_key_events()
+
         # This is a hack to get the focus away from the toolbar so that
         # we don't activate it with space or some other key (alternative?)
         self.toolbar.set_focus_child(
