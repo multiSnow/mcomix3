@@ -17,7 +17,7 @@ class _AboutDialog(gtk.AboutDialog):
         self.set_program_name(constants.APPNAME)
         self.set_version(constants.VERSION)
         self.set_website('http://mcomix.sourceforge.net')
-        self.set_copyright('Copyright © 2005-2011')
+        self.set_copyright('Copyright © 2005-2012')
 
         icon_data = pkg_resources.resource_string('mcomix.images', 'mcomix.png')
         pixbuf = image_tools.load_pixbuf_data(icon_data)
