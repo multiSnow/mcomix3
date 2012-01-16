@@ -148,9 +148,9 @@ class _BookArea(gtk.ScrolledWindow):
             prefs['lib sort key'], self._sort_changed)
         actiongroup.add_radio_actions([
             ('ascending', gtk.STOCK_SORT_ASCENDING, _('Ascending'), None, None,
-                constants.RESPONSE_SORT_ASCENDING),
+                constants.SORT_ASCENDING),
             ('descending', gtk.STOCK_SORT_DESCENDING, _('Descending'), None, None,
-                constants.RESPONSE_SORT_DESCENDING)],
+                constants.SORT_DESCENDING)],
             prefs['lib sort order'], self._sort_changed)
 
         # Library cover size
@@ -218,7 +218,7 @@ class _BookArea(gtk.ScrolledWindow):
             iter = self._liststore.append([filler, book, path, size])
 
         # Sort the list store based on preferences.
-        if prefs['lib sort order'] == constants.RESPONSE_SORT_ASCENDING:
+        if prefs['lib sort order'] == constants.SORT_ASCENDING:
             sortorder = gtk.SORT_ASCENDING
         else:
             sortorder = gtk.SORT_DESCENDING
@@ -304,11 +304,11 @@ class _BookArea(gtk.ScrolledWindow):
             prefs['lib sort key'] = constants.SORT_SIZE
 
         if name == 'ascending':
-            prefs['lib sort order'] = constants.RESPONSE_SORT_ASCENDING
+            prefs['lib sort order'] = constants.SORT_ASCENDING
         elif name == 'descending':
-            prefs['lib sort order'] = constants.RESPONSE_SORT_DESCENDING
+            prefs['lib sort order'] = constants.SORT_DESCENDING
 
-        if prefs['lib sort order'] == constants.RESPONSE_SORT_ASCENDING:
+        if prefs['lib sort order'] == constants.SORT_ASCENDING:
             order = gtk.SORT_ASCENDING
         else:
             order = gtk.SORT_DESCENDING
