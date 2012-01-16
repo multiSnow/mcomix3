@@ -312,6 +312,25 @@ class _PreferencesDialog(gtk.Dialog):
         language_box = self._create_language_control()
         page.add_row(label, language_box)
 
+        page.new_section(_('File order'))
+
+        label = gtk.Label(_('Open files in order of:'))
+        label.set_tooltip_text(
+            _("Files will be opened according to the sort order specified here."))
+        page.add_row(label, self._create_sort_by_as_one_control())
+
+        reverse_sort_button = gtk.CheckButton(
+            _('Reverse archive sorting'))
+        reverse_sort_button.set_active(prefs['sort descending'])
+        reverse_sort_button.connect('toggled', self._check_button_cb,
+            'sort descending')
+        reverse_sort_button.set_tooltip_text(
+            _('Makes archive changing order inverted. For example, if you start '
+                'at "05.zip" and go to the next archive, "04.zip" will load. '
+                'Similarly, if you are on "05.zip" and go to the previous archive, '
+                '"06.zip" will load. This is most useful for sorting by date.'))
+        page.add_row(reverse_sort_button)
+
         page.new_section(_('Cache'))
 
         create_thumbs_button = gtk.CheckButton(
@@ -484,6 +503,42 @@ class _PreferencesDialog(gtk.Dialog):
             value = combobox.get_model().get_value(iter, 0)
             prefs['virtual double page for fitting images'] = value
             self._window.draw_image()
+
+    def _create_sort_by_as_one_control(self):
+        """ Creates the ComboBox control for selecting archive sort by options. """
+        options = (
+                (_('None'), 0),
+                (_('Alphabetically'), constants.SORT_NAME),
+                (_('By Last Modified'), constants.SORT_LAST_MODIFIED))
+
+        model = gtk.ListStore(gobject.TYPE_INT, gobject.TYPE_STRING)
+        for text, value in options:
+            model.append((value, text))
+
+        virtual_double_box = gtk.ComboBox(model)
+        renderer = gtk.CellRendererText()
+        virtual_double_box.pack_start(renderer, True)
+        virtual_double_box.add_attribute(renderer, "text", 1)
+
+        # Set active box option
+        iter = model.get_iter_first()
+        while iter:
+            if model.get_value(iter, 0) == prefs['sort by']:
+                virtual_double_box.set_active_iter(iter)
+                break
+            else:
+                iter = model.iter_next(iter)
+
+        virtual_double_box.connect('changed', self._sort_by_changed_cb)
+
+        return virtual_double_box
+
+    def _sort_by_changed_cb(self, combobox, *args):
+        """ Called when a new option was selected for the virtual double page option. """
+        iter = combobox.get_active_iter()
+        if combobox.get_model().iter_is_valid(iter):
+            value = combobox.get_model().get_value(iter, 0)
+            prefs['sort by'] = value
 
     def _check_button_cb(self, button, preference):
         """Callback for all checkbutton-type preferences."""

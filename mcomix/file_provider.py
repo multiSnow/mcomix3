@@ -111,7 +111,16 @@ class OrderedFileProvider(FileProvider):
                       # (MComix bug #3424405)
                       [ i18n.to_unicode(fn) for fn in os.listdir(self.base_dir) ]
                       if should_accept(os.path.join(self.base_dir, filename)) ]
-            tools.alphanumeric_sort(files)
+
+            if preferences.prefs['sort by'] == constants.SORT_LAST_MODIFIED:
+                tools.lastmodified_sort(files)
+            elif preferences.prefs['sort by'] == constants.SORT_NAME:
+                tools.alphanumeric_sort(files)
+            # else: don't sort at all: use OS ordering.
+
+            # Default is ascending.
+            if preferences.prefs['sort descending'] == True:
+                files.reverse()
 
             return files
         except OSError:

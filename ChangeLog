@@ -9,6 +9,11 @@ MComix 0.97
       the mouse and pressing the desired key, or key combination.
       (by Juha Sahakangas and Alan Horkan)
 
+    - The order in which files are loaded and displayed can now be customized
+      in the "Advanced" tab of the preferences dialog. Files can be sorted
+      either by name or by last-modified date.
+      (by C Nelson)
+
 MComix 0.96
 Release date: 24.12.2011
 

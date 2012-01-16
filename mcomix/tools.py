@@ -19,6 +19,12 @@ def alphanumeric_sort(filenames):
     rec = re.compile("\d+|\D+")
     filenames.sort(key=lambda s: map(_format_substring, rec.findall(s)))
 
+def lastmodified_sort(filenames):
+    """Do an in-place sort of the strings in <filenames> based on each
+    filename's last modified attribute. This will return a list of filenames
+    where the most recently modified file is returned first, and so on."""
+    filenames.sort(key=lambda s: os.path.getmtime(s)*-1)
+
 def get_home_directory():
     """On UNIX-like systems, this method will return the path of the home
     directory, e.g. /home/username. On Windows, it will return an MComix
