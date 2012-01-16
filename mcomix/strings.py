@@ -17,7 +17,7 @@ ARCHIVE_DESCRIPTIONS = {
 
 AUTHORS = (
             ('Pontus Ekberg', _('Original vision/developer of Comix')),
-            ('Louis Casillas', _('Lead developer of MComix')),
+            ('Louis Casillas', _('MComix developer')),
             ('Moritz Brunner', _('MComix developer'))
           )
 TRANSLATORS = (
