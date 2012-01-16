@@ -314,7 +314,7 @@ class _PreferencesDialog(gtk.Dialog):
 
         page.new_section(_('File order'))
 
-        label = gtk.Label(_('Open files ordered by:'))
+        label = gtk.Label(_('Order files by:'))
         label.set_tooltip_text(
             _("Files will be opened and displayed according to the sort order "
               "specified here. This option does not affect ordering within archives."))
