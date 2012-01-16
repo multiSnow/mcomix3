@@ -434,27 +434,8 @@ class _PreferencesDialog(gtk.Dialog):
             (_('Chinese (traditional)'), 'zh_TW')]
         languages.sort(key=operator.itemgetter(0))
 
-        model = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING)
-        for name, lang_code in languages:
-            model.append((name, lang_code))
-
-        box = gtk.ComboBox(model)
-
-        # Determine current language
-        iter = model.get_iter_first()
-        index = 0
-        while iter:
-            if model.get_value(iter, 1) == prefs['language']:
-                box.set_active(index)
-                break
-            else:
-                iter = model.iter_next(iter)
-                index += 1
-
-        cell = gtk.CellRendererText()
-        box.pack_start(cell, True)
-        box.add_attribute(cell, 'text', 0)
-        box.connect('changed', self._language_changed_cb)
+        box = self._create_combobox(languages, prefs['language'],
+                self._language_changed_cb)
 
         return box
 
@@ -474,70 +455,75 @@ class _PreferencesDialog(gtk.Dialog):
                 (_('Only for wide images'), constants.SHOW_DOUBLE_AS_ONE_WIDE),
                 (_('Always'), constants.SHOW_DOUBLE_AS_ONE_TITLE | constants.SHOW_DOUBLE_AS_ONE_WIDE))
 
-        model = gtk.ListStore(gobject.TYPE_INT, gobject.TYPE_STRING)
-        for text, value in options:
-            model.append((value, text))
+        box = self._create_combobox(options, prefs['virtual double page for fitting images'],
+                self._double_page_changed_cb)
 
-        virtual_double_box = gtk.ComboBox(model)
-        renderer = gtk.CellRendererText()
-        virtual_double_box.pack_start(renderer, True)
-        virtual_double_box.add_attribute(renderer, "text", 1)
-
-        # Set active box option
-        iter = model.get_iter_first()
-        while iter:
-            if model.get_value(iter, 0) == prefs['virtual double page for fitting images']:
-                virtual_double_box.set_active_iter(iter)
-                break
-            else:
-                iter = model.iter_next(iter)
-
-        virtual_double_box.connect('changed', self._double_page_changed_cb)
-
-        return virtual_double_box
+        return box
 
     def _double_page_changed_cb(self, combobox, *args):
         """ Called when a new option was selected for the virtual double page option. """
         iter = combobox.get_active_iter()
         if combobox.get_model().iter_is_valid(iter):
-            value = combobox.get_model().get_value(iter, 0)
+            value = combobox.get_model().get_value(iter, 1)
             prefs['virtual double page for fitting images'] = value
             self._window.draw_image()
 
     def _create_sort_by_as_one_control(self):
         """ Creates the ComboBox control for selecting archive sort by options. """
         options = (
-                (_('None'), 0),
-                (_('Alphabetically'), constants.SORT_NAME),
-                (_('By Last Modified'), constants.SORT_LAST_MODIFIED))
+                (_('No sorting'), 0),
+                (_('File name'), constants.SORT_NAME),
+                (_('File size'), constants.SORT_SIZE),
+                (_('Last modified'), constants.SORT_LAST_MODIFIED))
 
-        model = gtk.ListStore(gobject.TYPE_INT, gobject.TYPE_STRING)
+        sort_key_box = self._create_combobox(options, prefs['sort by'],
+            self._sort_by_changed_cb)
+
+        return sort_key_box
+
+    def _create_combobox(self, options, selected_value, change_callback):
+        """ Creates a new dropdown combobox and populates it with the items
+        passed in C{options}.
+
+        @param options: List of tuples: (Option display text, option value)
+        @param selected_value: One of the values passed in C{options} that will
+            be pre-selected when the control is created.
+        @param change_callback: Function that will be called when the 'changed'
+            event is triggered.
+        @returns gtk.ComboBox
+        """
+        assert options and len(options[0]) == 2, "Invalid format for options."
+
+        # Use the first list item to determine typing of model fields.
+        # First field is textual description, second field is value.
+        model = gtk.ListStore(gobject.TYPE_STRING, type(options[0][1]))
         for text, value in options:
-            model.append((value, text))
+            model.append((text, value))
 
-        virtual_double_box = gtk.ComboBox(model)
+        box = gtk.ComboBox(model)
         renderer = gtk.CellRendererText()
-        virtual_double_box.pack_start(renderer, True)
-        virtual_double_box.add_attribute(renderer, "text", 1)
+        box.pack_start(renderer, True)
+        box.add_attribute(renderer, "text", 0)
 
         # Set active box option
         iter = model.get_iter_first()
         while iter:
-            if model.get_value(iter, 0) == prefs['sort by']:
-                virtual_double_box.set_active_iter(iter)
+            if model.get_value(iter, 1) == selected_value:
+                box.set_active_iter(iter)
                 break
             else:
                 iter = model.iter_next(iter)
 
-        virtual_double_box.connect('changed', self._sort_by_changed_cb)
+        if change_callback:
+            box.connect('changed', change_callback)
 
-        return virtual_double_box
+        return box
 
     def _sort_by_changed_cb(self, combobox, *args):
         """ Called when a new option was selected for the virtual double page option. """
         iter = combobox.get_active_iter()
         if combobox.get_model().iter_is_valid(iter):
-            value = combobox.get_model().get_value(iter, 0)
+            value = combobox.get_model().get_value(iter, 1)
             prefs['sort by'] = value
 
     def _check_button_cb(self, button, preference):
