@@ -15,7 +15,7 @@ prefs = {
     'auto open next archive': True,
     'auto open next directory': True,
     'sort by': constants.SORT_NAME,
-    'sort descending': False,
+    'sort order': constants.SORT_ASCENDING,
     'bg colour': (5000, 5000, 5000),
     'thumb bg colour': (5000, 5000, 5000),
     'smart bg': False,

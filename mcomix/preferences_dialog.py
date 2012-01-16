@@ -316,20 +316,9 @@ class _PreferencesDialog(gtk.Dialog):
 
         label = gtk.Label(_('Open files ordered by:'))
         label.set_tooltip_text(
-            _("Files will be opened according to the sort order specified here."))
-        page.add_row(label, self._create_sort_by_as_one_control())
-
-        reverse_sort_button = gtk.CheckButton(
-            _('Reverse archive sorting'))
-        reverse_sort_button.set_active(prefs['sort descending'])
-        reverse_sort_button.connect('toggled', self._check_button_cb,
-            'sort descending')
-        reverse_sort_button.set_tooltip_text(
-            _('Makes archive changing order inverted. For example, if you start '
-                'at "05.zip" and go to the next archive, "04.zip" will load. '
-                'Similarly, if you are on "05.zip" and go to the previous archive, '
-                '"06.zip" will load. This is most useful for sorting by date.'))
-        page.add_row(reverse_sort_button)
+            _("Files will be opened and displayed according to the sort order "
+              "specified here. This option does not affect ordering within archives."))
+        page.add_row(label, self._create_sort_by_control())
 
         page.new_section(_('Cache'))
 
@@ -449,13 +438,14 @@ class _PreferencesDialog(gtk.Dialog):
 
     def _create_doublepage_as_one_control(self):
         """ Creates the ComboBox control for selecting virtual double page options. """
-        options = (
+        items = (
                 (_('Never'), 0),
                 (_('Only for title pages'), constants.SHOW_DOUBLE_AS_ONE_TITLE),
                 (_('Only for wide images'), constants.SHOW_DOUBLE_AS_ONE_WIDE),
                 (_('Always'), constants.SHOW_DOUBLE_AS_ONE_TITLE | constants.SHOW_DOUBLE_AS_ONE_WIDE))
 
-        box = self._create_combobox(options, prefs['virtual double page for fitting images'],
+        box = self._create_combobox(items,
+                prefs['virtual double page for fitting images'],
                 self._double_page_changed_cb)
 
         return box
@@ -468,18 +458,48 @@ class _PreferencesDialog(gtk.Dialog):
             prefs['virtual double page for fitting images'] = value
             self._window.draw_image()
 
-    def _create_sort_by_as_one_control(self):
+    def _create_sort_by_control(self):
         """ Creates the ComboBox control for selecting archive sort by options. """
-        options = (
+        sortkey_items = (
                 (_('No sorting'), 0),
                 (_('File name'), constants.SORT_NAME),
                 (_('File size'), constants.SORT_SIZE),
                 (_('Last modified'), constants.SORT_LAST_MODIFIED))
 
-        sort_key_box = self._create_combobox(options, prefs['sort by'],
+        sortkey_box = self._create_combobox(sortkey_items, prefs['sort by'],
             self._sort_by_changed_cb)
 
-        return sort_key_box
+        sortorder_items = (
+                (_('Ascending'), constants.SORT_ASCENDING),
+                (_('Descending'), constants.SORT_DESCENDING))
+
+        sortorder_box = self._create_combobox(sortorder_items,
+                prefs['sort order'],
+                self._sort_order_changed_cb)
+
+        box = gtk.HBox()
+        box.pack_start(sortkey_box)
+        box.pack_start(sortorder_box)
+
+        return box
+
+    def _sort_by_changed_cb(self, combobox, *args):
+        """ Called when a new option was selected for the virtual double page option. """
+        iter = combobox.get_active_iter()
+        if combobox.get_model().iter_is_valid(iter):
+            value = combobox.get_model().get_value(iter, 1)
+            prefs['sort by'] = value
+
+            self._window.filehandler.refresh_file()
+
+    def _sort_order_changed_cb(self, combobox, *args):
+        """ Called when sort order changes (ascending or descending) """
+        iter = combobox.get_active_iter()
+        if combobox.get_model().iter_is_valid(iter):
+            value = combobox.get_model().get_value(iter, 1)
+            prefs['sort order'] = value
+
+            self._window.filehandler.refresh_file()
 
     def _create_combobox(self, options, selected_value, change_callback):
         """ Creates a new dropdown combobox and populates it with the items
@@ -518,13 +538,6 @@ class _PreferencesDialog(gtk.Dialog):
             box.connect('changed', change_callback)
 
         return box
-
-    def _sort_by_changed_cb(self, combobox, *args):
-        """ Called when a new option was selected for the virtual double page option. """
-        iter = combobox.get_active_iter()
-        if combobox.get_model().iter_is_valid(iter):
-            value = combobox.get_model().get_value(iter, 1)
-            prefs['sort by'] = value
 
     def _check_button_cb(self, button, preference):
         """Callback for all checkbutton-type preferences."""

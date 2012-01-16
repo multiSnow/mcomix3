@@ -124,7 +124,7 @@ class OrderedFileProvider(FileProvider):
             # else: don't sort at all: use OS ordering.
 
             # Default is ascending.
-            if preferences.prefs['sort descending'] == True:
+            if preferences.prefs['sort order'] == constants.SORT_DESCENDING:
                 files.reverse()
 
             return files
