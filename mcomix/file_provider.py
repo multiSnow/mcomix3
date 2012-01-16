@@ -112,10 +112,15 @@ class OrderedFileProvider(FileProvider):
                       [ i18n.to_unicode(fn) for fn in os.listdir(self.base_dir) ]
                       if should_accept(os.path.join(self.base_dir, filename)) ]
 
-            if preferences.prefs['sort by'] == constants.SORT_LAST_MODIFIED:
-                tools.lastmodified_sort(files)
-            elif preferences.prefs['sort by'] == constants.SORT_NAME:
+
+            if preferences.prefs['sort by'] == constants.SORT_NAME:
                 tools.alphanumeric_sort(files)
+            elif preferences.prefs['sort by'] == constants.SORT_LAST_MODIFIED:
+                # Most recently modified file first
+                files.sort(key=lambda filename: os.path.getmtime(filename)*-1)
+            elif preferences.prefs['sort by'] == constants.SORT_SIZE:
+                # Smallest file first
+                files.sort(key=lambda filename: os.stat(filename).st_size)
             # else: don't sort at all: use OS ordering.
 
             # Default is ascending.

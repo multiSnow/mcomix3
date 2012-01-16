@@ -314,7 +314,7 @@ class _PreferencesDialog(gtk.Dialog):
 
         page.new_section(_('File order'))
 
-        label = gtk.Label(_('Open files in order of:'))
+        label = gtk.Label(_('Open files ordered by:'))
         label.set_tooltip_text(
             _("Files will be opened according to the sort order specified here."))
         page.add_row(label, self._create_sort_by_as_one_control())
