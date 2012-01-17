@@ -3,6 +3,7 @@
 import sys
 import locale
 import ctypes
+import cStringIO
 
 def uri_prefix():
     """ The prefix used for creating file URIs. This is 'file://' on
@@ -91,5 +92,12 @@ def get_default_locale():
             return unicode(lang)
         else:
             return u"C"
+
+# Py2Exe has an annoying habit of creating a log file for errors and nagging
+# the user about it every time the program closes. Try to prevent this
+# by manually redirecting stdout/stderr.
+if hasattr(sys, 'frozen'):
+    sys.stdout = cStringIO.StringIO()
+    sys.stderr = cStringIO.StringIO()
 
 # vim: expandtab:sw=4:ts=4
