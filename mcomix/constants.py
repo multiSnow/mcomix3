@@ -21,6 +21,8 @@ KEYBINDINGS_PATH = os.path.join(CONFIG_DIR, 'keybindings-gtk.rc')
 
 BOOKMARK_PICKLE_PATH = os.path.join(DATA_DIR, 'bookmarks.pickle')
 PREFERENCE_PICKLE_PATH = os.path.join(CONFIG_DIR, 'preferences.pickle')
+# ^ Transitional - used if yaml preferences are (were) absent.
+PREFERENCE_YAML_PATH = os.path.join(CONFIG_DIR, 'preferences.yaml')
 FILEINFO_PICKLE_PATH = os.path.join(DATA_DIR, 'file.pickle')
 KEYBINDINGS_PICKLE_PATH = os.path.join(CONFIG_DIR, 'keybindings.pickle')
 

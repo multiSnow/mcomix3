@@ -1,7 +1,9 @@
-"""preferences.py - Contains the preferences and the functions to read and write them."""
+""" preferences.py - Contains the preferences and the functions to read and
+write them.  """
 
 import os
 import cPickle
+import yaml
 
 from mcomix import constants
 
@@ -16,8 +18,8 @@ prefs = {
     'auto open next directory': True,
     'sort by': constants.SORT_NAME,
     'sort order': constants.SORT_ASCENDING,
-    'bg colour': (5000, 5000, 5000),
-    'thumb bg colour': (5000, 5000, 5000),
+    'bg colour': [5000, 5000, 5000],
+    'thumb bg colour': [5000, 5000, 5000],
     'smart bg': False,
     'smart thumb bg': False,
     'thumbnail bg uses main colour': False,
@@ -31,7 +33,7 @@ prefs = {
     'lens magnification': 2,
     'lens size': 200,
     'virtual double page for fitting images': constants.SHOW_DOUBLE_AS_ONE_TITLE | \
-											  constants.SHOW_DOUBLE_AS_ONE_WIDE,
+                                              constants.SHOW_DOUBLE_AS_ONE_WIDE,
     'double step in double page mode': True,
     'show page numbers on thumbnails': True,
     'thumbnail size': 80,
@@ -49,7 +51,7 @@ prefs = {
     'store recent file info': True,
     'hide all': False,
     'hide all in fullscreen': True,
-    'stored hide all values': (True, True, True, True, True),
+    'stored hide all values': [True, True, True, True, True],
     'path of last browsed in filechooser': constants.HOME_DIR,
     'last filter in main filechooser': 0,
     'last filter in library filechooser': 1,
@@ -87,30 +89,54 @@ prefs = {
 
 def read_preferences_file():
     """Read preferences data from disk."""
-    if os.path.isfile(constants.PREFERENCE_PICKLE_PATH):
-        config = None
+    if os.path.isfile(constants.PREFERENCE_YAML_PATH):
+        config_file = None
         try:
-            config = open(constants.PREFERENCE_PICKLE_PATH, 'rb')
-            version = cPickle.load(config)
-            old_prefs = cPickle.load(config)
-            config.close()
-        except Exception:
+            config_file = open(constants.PREFERENCE_YAML_PATH, 'r')
+            saved_prefs = yaml.load(config_file)
+        except Exception:  # `yaml.reader.ReaderError` is usually expected.
             # Gettext might not be installed yet at this point.
-            print ('! Corrupt preferences file "%s", deleting...' %
+            print ('! Corrupt preferences file "%s", moving away...' %
+                   constants.PREFERENCE_YAML_PATH)
+            os.rename(constants.PREFERENCE_YAML_PATH,
+                      "%s.broken" % constants.PREFERENCE_YAML_PATH)
+        else:
+            for key in saved_prefs:
+                if key in prefs:
+                    prefs[key] = saved_prefs[key]
+        if config_file is not None:
+            config_file.close()
+    else:
+        if os.path.isfile(constants.PREFERENCE_PICKLE_PATH):
+            print ('Note: loading old (pickle) preferences from "%s".' %
                    constants.PREFERENCE_PICKLE_PATH)
+            # Transitional case.
+            config = None
+            try:
+                config = open(constants.PREFERENCE_PICKLE_PATH, 'rb')
+                version = cPickle.load(config)
+                old_prefs = cPickle.load(config)
+            except Exception:
+                # Gettext might not be installed yet at this point.
+                print ('! Corrupt legacy preferences file "%s", ignoring...' %
+                       constants.PREFERENCE_PICKLE_PATH)
+            else:
+                for key in old_prefs:
+                    if key in prefs:
+                        prefs[key] = old_prefs[key]
             if config is not None:
                 config.close()
-            os.remove(constants.PREFERENCE_PICKLE_PATH)
-        else:
-            for key in old_prefs:
-                if key in prefs:
-                    prefs[key] = old_prefs[key]
 
 def write_preferences_file():
     """Write preference data to disk."""
-    config = open(constants.PREFERENCE_PICKLE_PATH, 'wb')
-    cPickle.dump(constants.VERSION, config, cPickle.HIGHEST_PROTOCOL)
-    cPickle.dump(prefs, config, cPickle.HIGHEST_PROTOCOL)
-    config.close()
+    # TODO: it might be better to save only those options that were (ever)
+    # explicitly changed by the used, leaving everything else as default
+    # and available (if really needed) to change of defaults on upgrade.
+    config_file = open(constants.PREFERENCE_YAML_PATH, 'w')
+    # XXX: constants.VERSION? It's *preferable* to not complicate the YAML
+    # file by adding a `{'version': constants.VERSION, 'prefs': config}`
+    # dict or a list.  Adding an extra init line sounds bad too.
+    yaml.dump(prefs, config_file)
+    config_file.close()
 
 # vim: expandtab:sw=4:ts=4
