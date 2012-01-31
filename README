@@ -41,7 +41,7 @@
   setup.py must be called with a additonal options:
 
       # python setup.py install --single-version-externally-managed \
-	                            --root /usr --record mcomix-files.txt
+	                            --prefix /usr --root / --record mcomix-files.txt
 
   This sort of installation is only recommended for advanced users, as no
   simple uninstall procedure exists of yet. All files belonging to MComix will
