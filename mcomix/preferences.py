@@ -3,7 +3,7 @@ write them.  """
 
 import os
 import cPickle
-import yaml
+import json
 
 from mcomix import constants
 
@@ -89,54 +89,52 @@ prefs = {
 
 def read_preferences_file():
     """Read preferences data from disk."""
-    if os.path.isfile(constants.PREFERENCE_YAML_PATH):
-        config_file = None
+
+    saved_prefs = None
+
+    if os.path.isfile(constants.PREFERENCE_PATH):
         try:
-            config_file = open(constants.PREFERENCE_YAML_PATH, 'r')
-            saved_prefs = yaml.load(config_file)
-        except Exception:  # `yaml.reader.ReaderError` is usually expected.
-            # Gettext might not be installed yet at this point.
-            print ('! Corrupt preferences file "%s", moving away...' %
-                   constants.PREFERENCE_YAML_PATH)
-            os.rename(constants.PREFERENCE_YAML_PATH,
-                      "%s.broken" % constants.PREFERENCE_YAML_PATH)
-        else:
-            for key in saved_prefs:
-                if key in prefs:
-                    prefs[key] = saved_prefs[key]
-        if config_file is not None:
+            config_file = open(constants.PREFERENCE_PATH, 'r')
+            saved_prefs = json.load(config_file)
             config_file.close()
-    else:
-        if os.path.isfile(constants.PREFERENCE_PICKLE_PATH):
-            print ('Note: loading old (pickle) preferences from "%s".' %
+        except Exception:
+            # Gettext might not be installed yet at this point.
+            corrupt_name = "%s.broken" % constants.PREFERENCE_PATH
+            print ('! Corrupt preferences file, moving to "%s".' %
+                   corrupt_name)
+            if os.path.isfile(corrupt_name):
+                os.unlink(corrupt_name)
+            os.rename(constants.PREFERENCE_PATH, corrupt_name)
+
+    elif os.path.isfile(constants.PREFERENCE_PICKLE_PATH):
+        try:
+            config_file = open(constants.PREFERENCE_PICKLE_PATH, 'rb')
+            version = cPickle.load(config_file)
+            saved_prefs = cPickle.load(config_file)
+            config_file.close()
+
+            # Remove legacy format preferences file
+            os.unlink(constants.PREFERENCE_PICKLE_PATH)
+        except Exception:
+            # Gettext might not be installed yet at this point.
+            print ('! Corrupt legacy preferences file "%s", ignoring...' %
                    constants.PREFERENCE_PICKLE_PATH)
-            # Transitional case.
-            config = None
-            try:
-                config = open(constants.PREFERENCE_PICKLE_PATH, 'rb')
-                version = cPickle.load(config)
-                old_prefs = cPickle.load(config)
-            except Exception:
-                # Gettext might not be installed yet at this point.
-                print ('! Corrupt legacy preferences file "%s", ignoring...' %
-                       constants.PREFERENCE_PICKLE_PATH)
-            else:
-                for key in old_prefs:
-                    if key in prefs:
-                        prefs[key] = old_prefs[key]
-            if config is not None:
-                config.close()
+
+    if saved_prefs:
+        for key in saved_prefs:
+            if key in prefs:
+                prefs[key] = saved_prefs[key]
 
 def write_preferences_file():
     """Write preference data to disk."""
     # TODO: it might be better to save only those options that were (ever)
     # explicitly changed by the used, leaving everything else as default
     # and available (if really needed) to change of defaults on upgrade.
-    config_file = open(constants.PREFERENCE_YAML_PATH, 'w')
+    config_file = open(constants.PREFERENCE_PATH, 'w')
     # XXX: constants.VERSION? It's *preferable* to not complicate the YAML
     # file by adding a `{'version': constants.VERSION, 'prefs': config}`
     # dict or a list.  Adding an extra init line sounds bad too.
-    yaml.dump(prefs, config_file)
+    json.dump(prefs, config_file, indent=2)
     config_file.close()
 
 # vim: expandtab:sw=4:ts=4

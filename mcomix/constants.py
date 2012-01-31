@@ -18,13 +18,13 @@ THUMBNAIL_PATH = os.path.join(HOME_DIR, '.thumbnails/normal')
 LIBRARY_DATABASE_PATH = os.path.join(DATA_DIR, 'library.db')
 LIBRARY_COVERS_PATH = os.path.join(DATA_DIR, 'library_covers')
 KEYBINDINGS_PATH = os.path.join(CONFIG_DIR, 'keybindings-gtk.rc')
+PREFERENCE_PATH = os.path.join(CONFIG_DIR, 'preferences.conf')
 
 BOOKMARK_PICKLE_PATH = os.path.join(DATA_DIR, 'bookmarks.pickle')
-PREFERENCE_PICKLE_PATH = os.path.join(CONFIG_DIR, 'preferences.pickle')
-# ^ Transitional - used if yaml preferences are (were) absent.
-PREFERENCE_YAML_PATH = os.path.join(CONFIG_DIR, 'preferences.yaml')
 FILEINFO_PICKLE_PATH = os.path.join(DATA_DIR, 'file.pickle')
 KEYBINDINGS_PICKLE_PATH = os.path.join(CONFIG_DIR, 'keybindings.pickle')
+# Transitional - used if json preferences are (were) absent.
+PREFERENCE_PICKLE_PATH = os.path.join(CONFIG_DIR, 'preferences.pickle')
 
 ZOOM_MODE_BEST, ZOOM_MODE_WIDTH, ZOOM_MODE_HEIGHT, ZOOM_MODE_MANUAL = range(4)
 ZIP, RAR, TAR, GZIP, BZIP2, PDF, SEVENZIP, LHA = range(8)
