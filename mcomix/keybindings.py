@@ -15,16 +15,18 @@ configured different bindings, the default ones will be used.
 Afterwards, the action will be stored together with its keycode/modifier in a
 dictionary:
 (keycode: int, modifier: GdkModifierType) =>
-    (callback: func, args: list, kwargs: dict)
+    (action: string, callback: func, args: list, kwargs: dict)
 
+Default keybindings will be stored here at initialization:
 action-name: string => [keycodes: list]
+
 
 Each action_name can have multiple keybindings.
 """
 
 import gtk
 import os
-import cPickle
+import json
 
 from mcomix import constants
 from mcomix import log
@@ -76,13 +78,13 @@ class _KeybindingManager(object):
 
         self._initialize()
 
-    def register(self, name, bindings, action, args=[], kwargs={}):
+    def register(self, name, bindings, callback, args=[], kwargs={}):
         """ Registers an action for a predefined keybinding name.
         @param name: Action name, defined in L{BINDING_INFO}.
         @param bindings: List of keybinding strings, as understood
                          by L{gtk.accelerator_parse}. Only used if no
                          bindings were loaded for this action.
-        @param action: Function callback
+        @param callback: Function callback
         @param args: List of arguments to pass to the callback
         @param kwargs: List of keyword arguments to pass to the callback.
         """
@@ -100,38 +102,56 @@ class _KeybindingManager(object):
                 log.warning(_('Keybinding for "%(action)s" overrides hotkey for another action.'),
                         {"action" : name})
 
-            self._callbacks[keycode] = (action, args, kwargs)
+            self._callbacks[keycode] = (name, callback, args, kwargs)
 
     def execute(self, keybinding):
         """ Executes an action that has been registered for the
         passed keyboard event. If no action is bound to the passed key, this
         method is a no-op. """
         if keybinding in self._callbacks:
-            func, args, kwargs = self._callbacks[keybinding]
+            action, func, args, kwargs = self._callbacks[keybinding]
             func(*args, **kwargs)
         # Some keys may need modifiers to be typeable, but may be registered without.
         elif (keybinding[0], 0) in self._callbacks:
-            func, args, kwargs = self._callbacks[(keybinding[0], 0)]
+            action, func, args, kwargs = self._callbacks[(keybinding[0], 0)]
             func(*args, **kwargs)
+
+    def save(self):
+        """ Stores the keybindings that have been set to disk. """
+
+        # Collect keybindings for all registered actions
+        action_to_keys = {}
+        for binding, callback in self._callbacks.iteritems():
+            keyval, modifiers = binding
+            action, func, args, kwargs = callback
+
+            keyname = gtk.accelerator_name(keyval, modifiers)
+            if action in action_to_keys:
+                action_to_keys[action].append(keyname)
+            else:
+                action_to_keys[action] = [keyname]
+
+        fp = file(constants.KEYBINDINGS_CONF_PATH, "w")
+        json.dump(action_to_keys, fp, indent=2)
+        fp.close()
 
     def _initialize(self):
         """ Restore keybindings from disk. """
         try:
-            fp = file(constants.KEYBINDINGS_PICKLE_PATH, "rb")
-            old_action_bindings = cPickle.load(fp)
+            fp = file(constants.KEYBINDINGS_CONF_PATH, "r")
+            stored_action_bindings = json.load(fp)
             fp.close()
         except Exception, e:
             log.error(_("Couldn't load keybindings: %s"), e)
-            old_action_bindings = {}
+            stored_action_bindings = {}
 
         for action in BINDING_INFO.iterkeys():
-            if action in old_action_bindings:
-                self._action_bindings[action] = old_action_bindings[action]
+            if action in stored_action_bindings:
+                self._action_bindings[action] = [
+                    gtk.accelerator_parse(keyname)
+                    for keyname in stored_action_bindings[action] ]
             else:
                 self._action_bindings[action] = None
-
-        # gtk.accelerator_parse => (keyval, modifiermask) or (0, 0) on fail
-        # gtk.gdk.keyval_name(keyval) => string
 
     def _get_bindings_for_action(self, name):
         """ Returns a list of (keycode, modifier) for the action C{name}. """

@@ -17,12 +17,12 @@ BASE_PATH = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 THUMBNAIL_PATH = os.path.join(HOME_DIR, '.thumbnails/normal')
 LIBRARY_DATABASE_PATH = os.path.join(DATA_DIR, 'library.db')
 LIBRARY_COVERS_PATH = os.path.join(DATA_DIR, 'library_covers')
-KEYBINDINGS_PATH = os.path.join(CONFIG_DIR, 'keybindings-gtk.rc')
 PREFERENCE_PATH = os.path.join(CONFIG_DIR, 'preferences.conf')
+KEYBINDINGS_PATH = os.path.join(CONFIG_DIR, 'keybindings-gtk.rc')
+KEYBINDINGS_CONF_PATH = os.path.join(CONFIG_DIR, 'keybindings.conf')
 
 BOOKMARK_PICKLE_PATH = os.path.join(DATA_DIR, 'bookmarks.pickle')
 FILEINFO_PICKLE_PATH = os.path.join(DATA_DIR, 'file.pickle')
-KEYBINDINGS_PICKLE_PATH = os.path.join(CONFIG_DIR, 'keybindings.pickle')
 # Transitional - used if json preferences are (were) absent.
 PREFERENCE_PICKLE_PATH = os.path.join(CONFIG_DIR, 'preferences.pickle')
 

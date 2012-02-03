@@ -25,6 +25,7 @@ from mcomix import thumbbar
 from mcomix import clipboard
 from mcomix import pageselect
 from mcomix import osd
+from mcomix import keybindings
 
 class MainWindow(gtk.Window):
 
@@ -1086,6 +1087,7 @@ class MainWindow(gtk.Window):
 
         # Write keyboard accelerator map
         gtk.accel_map_save(constants.KEYBINDINGS_PATH)
+        keybindings.keybinding_manager().save()
 
     def save_and_terminate_program(self, *args):
         prefs['previous quit was quit and save'] = True

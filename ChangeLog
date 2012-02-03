@@ -9,6 +9,14 @@ MComix 0.97
       the mouse and pressing the desired key, or key combination.
       (by Juha Sahakangas and Alan Horkan)
 
+    - All other hotkeys (such as keys for scrolling or zooming) can now be
+      customized by editing keybindings.conf in MComix' configuration
+      directory, i.e. ~/.config/mcomix on Linux or %HOMEPATH%/MComix on
+      Windows.
+
+    - Removed error nag box that would pop up after program shutdown on
+      Windows occasionally.
+
     - The order in which files are loaded and displayed can now be customized
       in the "Advanced" tab of the preferences dialog. Files can be sorted
       either by name, file size, or by last-modified date.
