@@ -68,7 +68,7 @@ setuptools.setup(
     # Otherwise, these files end up in a MComix egg directory in site-packages.
     # (Thank you, setuptools!)
     data_files = [
-        ('share/man/man1', ['mcomix.1.gz', 'mime/comicthumb.1.gz']),
+        ('share/man/man1', ['mcomix.1.gz']),
         ('share/applications', ['mime/mcomix.desktop']),
         ('share/mime/packages', ['mime/mcomix.xml']),
         ('share/icons/hicolor/16x16/apps', ['mcomix/images/16x16/mcomix.png']),
