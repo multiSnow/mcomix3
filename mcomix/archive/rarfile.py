@@ -122,7 +122,7 @@ class UnrarDll(object):
             filelist.append(headerdata.FileNameW)
             # Skip to the next entry
             self._unrar.RARProcessFileW(handle, UnrarDll._ProcessingMode.RAR_SKIP, None, None)
-            # Read it's header
+            # Read its header
             result = self._unrar.RARReadHeaderEx(handle, ctypes.byref(headerdata))
 
         self._close(handle)
