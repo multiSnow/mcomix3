@@ -11,6 +11,13 @@ from mcomix import constants
 from mcomix import callback
 from mcomix import archive
 
+if sys.platform == 'win32':
+    UNRARCALLBACK = ctypes.WINFUNCTYPE(ctypes.c_int, ctypes.c_uint,
+        ctypes.c_long, ctypes.c_long, ctypes.c_long)
+else:
+    UNRARCALLBACK = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_uint,
+        ctypes.c_long, ctypes.c_long, ctypes.c_long)
+
 class UnrarDll(object):
     """ Wrapper class for libunrar. All string values passed to this class must be unicode objects.
     In turn, all values returned are also unicode. """
@@ -48,10 +55,13 @@ class UnrarDll(object):
                       ("OpenMode", ctypes.c_uint),
                       ("OpenResult", ctypes.c_uint),
                       ("CmtBuf", ctypes.c_char_p),
+                      ("CmtBufSize", ctypes.c_uint),
                       ("CmtSize", ctypes.c_uint),
                       ("CmtState", ctypes.c_uint),
                       ("Flags", ctypes.c_uint),
-                      ("Reserved", ctypes.c_uint * 32)]
+                      ("Callback", UNRARCALLBACK),
+                      ("UserData", ctypes.c_long),
+                      ("Reserved", ctypes.c_uint * 28)]
 
     class _RARHeaderDataEx(ctypes.Structure):
         """ Archive file structure. Used by DLL calls. """
@@ -182,19 +192,12 @@ class UnrarDll(object):
         """ Opens the rar file specified by <path> and returns its handle. """
         assert isinstance(path, unicode), "Path must be Unicode string"
 
-        archivedata = UnrarDll._RAROpenArchiveDataEx(ArcNameW=path, OpenMode=openmode)
+        self._callback_function = UNRARCALLBACK(self._password_callback)
+        archivedata = UnrarDll._RAROpenArchiveDataEx(ArcNameW=path,
+            OpenMode=openmode, Callback=self._callback_function, UserData=0)
 
         handle = self._unrar.RAROpenArchiveEx(ctypes.byref(archivedata))
         if handle:
-            if sys.platform == 'win32':
-                callback_type = ctypes.WINFUNCTYPE(ctypes.c_int, ctypes.c_uint,
-                    ctypes.c_long, ctypes.c_long, ctypes.c_long)
-            else:
-                callback_type = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_uint,
-                    ctypes.c_long, ctypes.c_long, ctypes.c_long)
-
-            self._callback_function = callback_type(self._password_callback)
-            self._unrar.RARSetCallback(handle, self._callback_function, 0)
             return handle
         else:
             errormessage = UnrarException.get_error_message(archivedata.OpenResult)

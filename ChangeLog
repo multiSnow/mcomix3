@@ -23,6 +23,8 @@ MComix 0.97
       not affect ordering of files inside archives.
       (by C Nelson)
 
+    - RAR password support now requires LibUnrar 4.
+
 MComix 0.96
 Release date: 24.12.2011
 
