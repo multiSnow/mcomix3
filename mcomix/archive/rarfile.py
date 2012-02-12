@@ -103,11 +103,20 @@ class UnrarDll(object):
         self._callback_function = None
         self._password = None
 
-        # Set up function prototypes
+        # Set up function prototypes.
+        # Mandatory since pointers get truncated on x64 otherwise!
         self._unrar.RAROpenArchiveEx.restype = ctypes.c_void_p
+        self._unrar.RAROpenArchiveEx.argtypes = \
+            [ctypes.POINTER(UnrarDll._RAROpenArchiveDataEx)]
         self._unrar.RARCloseArchive.restype = ctypes.c_int
+        self._unrar.RARCloseArchive.argtypes = \
+            [ctypes.c_void_p]
         self._unrar.RARReadHeaderEx.restype = ctypes.c_int
+        self._unrar.RARReadHeaderEx.argtypes = \
+            [ctypes.c_void_p, ctypes.POINTER(UnrarDll._RARHeaderDataEx)]
         self._unrar.RARProcessFileW.restype = ctypes.c_int
+        self._unrar.RARProcessFileW.argtypes = \
+            [ctypes.c_void_p, ctypes.c_int, ctypes.c_wchar_p, ctypes.c_wchar_p]
 
     def list_contents(self):
         """ Returns a list of files in the archive. """

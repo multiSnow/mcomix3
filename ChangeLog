@@ -1,5 +1,8 @@
 MComix 0.97
 
+    - Fixed segmentation fault on x64 platforms when trying to extract RAR
+      archives with libunrar.
+
     - The lens now uses the original pixbuf when preparing the magnified image
       instead of the already scaled pixbuf that is shown in MComix' display
       area. In addition, fixed zero division error when trying to use the lens
