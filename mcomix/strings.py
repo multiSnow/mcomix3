@@ -28,6 +28,7 @@ TRANSLATORS = (
             ('Christoph Wolk', _('German translation and Nautilus thumbnailer')),
             ('Chris Leick', _('German translation')),
             ('Raimondo Giammanco', _('Italian translation')),
+            ('Giovanni Scafora', _('Italian translation')),
             ('GhePeU', _('Italian translation')),
             ('Arthur Nieuwland', _('Dutch translation')),
             ('Achraf Cherti', _('French translation')),
