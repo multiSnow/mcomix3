@@ -209,6 +209,7 @@ class UnrarDll(object):
 
         handle = self._unrar.RAROpenArchiveEx(ctypes.byref(archivedata))
         if handle:
+            self._unrar.RARSetCallback(handle, self._callback_function, 0)
             return handle
         else:
             errormessage = UnrarException.get_error_message(archivedata.OpenResult)
