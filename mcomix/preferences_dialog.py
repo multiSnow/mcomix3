@@ -228,14 +228,12 @@ class _PreferencesDialog(gtk.Dialog):
             _('Automatically open, on startup, the file that was open when MComix was last closed.'))
         page.add_row(auto_open_last_button)
 
-        store_recent_button = gtk.CheckButton(
-            _('Store information about recently opened files'))
-        store_recent_button.set_active(prefs['store recent file info'])
-        store_recent_button.connect('toggled', self._check_button_cb,
-            'store recent file info')
-        store_recent_button.set_tooltip_text(
+        store_recent_label = gtk.Label(
+            _('Store information about recently opened files:'))
+        store_recent_label.set_tooltip_text(
             _('Add information about all files opened from within MComix to the shared recent files list.'))
-        page.add_row(store_recent_button)
+        store_recent_box = self._create_store_recent_combobox()
+        page.add_row(store_recent_label, store_recent_box)
 
         return page
 
@@ -500,6 +498,33 @@ class _PreferencesDialog(gtk.Dialog):
             prefs['sort order'] = value
 
             self._window.filehandler.refresh_file()
+
+    def _create_store_recent_combobox(self):
+        """ Creates the combobox for "Store recently opened files". """
+        items = (
+                (_('Never'), 0),
+                (_('Only file names'), constants.STORE_LAST_PATH),
+                (_('File names and last read page'), constants.STORE_LAST_PATH_AND_PAGE))
+
+        # Map legacy true/false values:
+        if prefs['store recent file info'] is True:
+            selection = constants.STORE_LAST_PATH
+        elif prefs['store recent file info'] is False:
+            selection = 0
+        else:
+            selection = prefs['store recent file info']
+
+        box = self._create_combobox(items, selection, self._store_recent_changed_cb)
+        return box
+
+    def _store_recent_changed_cb(self, combobox, *args):
+        """ Called when option "Store recently opened files" was changed. """
+        iter = combobox.get_active_iter()
+        if combobox.get_model().iter_is_valid(iter):
+            value = combobox.get_model().get_value(iter, 1)
+            prefs['store recent file info'] = value
+            self._window.filehandler.last_read_page.set_enabled(
+                value == constants.STORE_LAST_PATH_AND_PAGE)
 
     def _create_combobox(self, options, selected_value, change_callback):
         """ Creates a new dropdown combobox and populates it with the items

@@ -30,7 +30,10 @@ MComix 0.97
       not affect ordering of files inside archives.
       (by C Nelson)
 
-    - RAR password support now requires LibUnrar 4.
+    - MComix can now automatically remember the last read page in archive
+      files. When an archive is opened, the last read page will be loaded if
+      "Store information about recently opened files" is set to "File names
+      and last read page" (see "Behaviour" tab of the preferences window).
 
     - Updated Italian translation (by Giovanni Scafora).
 

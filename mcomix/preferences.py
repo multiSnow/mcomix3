@@ -48,7 +48,7 @@ prefs = {
     'smart space scroll': True,
     'invert smart scroll': False,
     'flip with wheel': True,
-    'store recent file info': True,
+    'store recent file info': constants.STORE_LAST_PATH,
     'hide all': False,
     'hide all in fullscreen': True,
     'stored hide all values': [True, True, True, True, True],

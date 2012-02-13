@@ -64,8 +64,8 @@ class FileHandler(object):
         self._comment_re = None
         self.update_comment_extensions()
 
-        # FIXME: Depend on preferences
-        self.last_read_page.set_enabled(True)
+        self.last_read_page.set_enabled(
+            prefs['store recent file info'] == constants.STORE_LAST_PATH_AND_PAGE)
 
     def refresh_file(self, *args, **kwargs):
         """ Closes the current file(s)/archive and reloads them. """
