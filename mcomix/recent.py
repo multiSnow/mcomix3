@@ -3,12 +3,14 @@
 import urllib
 import itertools
 import gtk
+import gobject
 import sys
 
 from mcomix import preferences
 from mcomix import i18n
 from mcomix import portability
 from mcomix import constants
+from mcomix import log
 
 class RecentFilesMenu(gtk.RecentChooserMenu):
 
@@ -49,6 +51,10 @@ class RecentFilesMenu(gtk.RecentChooserMenu):
         if not did_file_load:
             self.remove(path)
 
+    def count(self):
+        """ Returns the amount of stored entries. """
+        return len(self._manager.get_items())
+
     def add(self, path):
         if not preferences.prefs['store recent file info']:
             return
@@ -60,6 +66,13 @@ class RecentFilesMenu(gtk.RecentChooserMenu):
             return
         uri = portability.uri_prefix() + urllib.pathname2url(i18n.to_utf8(path))
         self._manager.remove_item(uri)
+
+    def remove_all(self):
+        """ Removes all entries to recently opened files. """
+        try:
+            self._manager.purge_items()
+        except gobject.GError, error:
+            log.debug(error)
 
 
 # vim: expandtab:sw=4:ts=4

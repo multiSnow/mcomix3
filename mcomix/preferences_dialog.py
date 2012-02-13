@@ -520,11 +520,35 @@ class _PreferencesDialog(gtk.Dialog):
     def _store_recent_changed_cb(self, combobox, *args):
         """ Called when option "Store recently opened files" was changed. """
         iter = combobox.get_active_iter()
-        if combobox.get_model().iter_is_valid(iter):
-            value = combobox.get_model().get_value(iter, 1)
-            prefs['store recent file info'] = value
-            self._window.filehandler.last_read_page.set_enabled(
-                value == constants.STORE_LAST_PATH_AND_PAGE)
+        if not combobox.get_model().iter_is_valid(iter):
+            return
+
+        value = combobox.get_model().get_value(iter, 1)
+        last_value = prefs['store recent file info']
+        prefs['store recent file info'] = value
+        self._window.filehandler.last_read_page.set_enabled(
+            value == constants.STORE_LAST_PATH_AND_PAGE)
+
+        # If "Never" was selected, ask to purge recent files.
+        if (last_value > 0 and value == 0
+            and (self._window.uimanager.recent.count() > 0
+                 or self._window.filehandler.last_read_page.count() > 0)):
+
+            dialog = gtk.MessageDialog(self, gtk.DIALOG_MODAL,
+                gtk.MESSAGE_INFO, gtk.BUTTONS_YES_NO)
+            dialog.set_default_response(gtk.RESPONSE_YES)
+            dialog.set_markup('<span weight="bold" size="larger">' +
+                _('Delete information about recently opened files?') +
+                '</span>')
+            dialog.format_secondary_text(
+                _('This will remove all entries from the "Recent" menu,'
+                  ' and clear information about last read pages.'))
+            response = dialog.run()
+            dialog.destroy()
+
+            if response == gtk.RESPONSE_YES:
+                self._window.uimanager.recent.remove_all()
+                self._window.filehandler.last_read_page.clear_all()
 
     def _create_combobox(self, options, selected_value, change_callback):
         """ Creates a new dropdown combobox and populates it with the items
