@@ -18,6 +18,7 @@ from mcomix import constants
 from mcomix import file_provider
 from mcomix import callback
 from mcomix import log
+from mcomix import last_read_page
 
 class FileHandler(object):
 
@@ -55,11 +56,16 @@ class FileHandler(object):
         self._condition = None
         #: Provides a list of available files/archives in the open directory.
         self._file_provider = None
+        #: Keeps track of the last read page in archives
+        self.last_read_page = last_read_page.LastReadPage(constants.LASTPAGE_DATABASE_PATH)
         #: Regexp used for determining which archive files are images.
         self._image_re = constants.SUPPORTED_IMAGE_REGEX
         #: Regexp used for determining which archive files are comment files.
         self._comment_re = None
         self.update_comment_extensions()
+
+        # FIXME: Depend on preferences
+        self.last_read_page.set_enabled(True)
 
     def refresh_file(self, *args, **kwargs):
         """ Closes the current file(s)/archive and reloads them. """
@@ -67,7 +73,7 @@ class FileHandler(object):
             current_file = os.path.abspath(self._window.imagehandler.get_real_path())
             self.open_file(current_file, keep_fileprovider=True)
 
-    def open_file(self, path, start_page=1, keep_fileprovider=False):
+    def open_file(self, path, start_page=0, keep_fileprovider=False):
         """Open the file pointed to by <path>.
 
         If <start_page> is not set we set the current
@@ -185,6 +191,7 @@ class FileHandler(object):
 
     def close_file(self, *args):
         """Run tasks for "closing" the currently opened file(s)."""
+        self.update_last_read_page()
         self.file_loaded = False
         self.archive_type = None
         self._current_file = None
@@ -311,16 +318,8 @@ class FileHandler(object):
                 self._name_table[full_path] = name
 
             # Determine current archive image index.
-            num_of_pages = len(image_files)
-            if start_page < 0:
-                if self._window.is_double_page:
-                    current_image_index = num_of_pages - 2
-                else:
-                    current_image_index = num_of_pages - 1
-            else:
-                current_image_index = start_page - 1
-
-            current_image_index = max(0, current_image_index)
+            current_image_index = self._get_index_for_page(start_page,
+                len(image_files), path)
 
             # Sort files to determine extraction order.
             self._sort_archive_files(archive_images, current_image_index)
@@ -381,15 +380,8 @@ class FileHandler(object):
                     image_files = tmp_image_files
 
             # Image index may have changed after additional files were extracted.
-            num_of_pages = len(image_files)
-            if start_page < 0:
-                if self._window.is_double_page:
-                    current_image_index = num_of_pages - 2
-                else:
-                    current_image_index = num_of_pages - 1
-            else:
-                current_image_index = start_page - 1
-            current_image_index = max(0, current_image_index)
+            current_image_index = self._get_index_for_page(start_page,
+                len(image_files), path)
 
             return image_files, current_image_index
 
@@ -413,6 +405,25 @@ class FileHandler(object):
 
         for key, value in state.iteritems():
             setattr(self, key, value)
+
+    def _get_index_for_page(self, start_page, num_of_pages, path):
+        """ Returns the page that should be displayed for an archive.
+        @param start_page: If -1, show last page. If 0, show either first page
+                           or last read page. If > 0, show C{start_page}.
+        @param num_of_pages: Page count.
+        @param path: Archive path.
+        """
+        if start_page < 0 and self._window.is_double_page:
+            current_image_index = num_of_pages - 2
+        elif start_page < 0 and not self._window.is_double_page:
+            current_image_index = num_of_pages - 1
+        elif start_page == 0:
+            # get_page returns either a page number (starting from 1) or None
+            current_image_index = (self.last_read_page.get_page(path) or 1) - 1
+        else:
+            current_image_index = start_page - 1
+
+        return min(max(0, current_image_index), num_of_pages - 1)
 
     def _sort_archive_files(self, archive_images, current_image_index):
         """ Sorts the list C{archive_images} in place based on a priority order
@@ -461,6 +472,9 @@ class FileHandler(object):
             self._condition.acquire()
             self._condition.notifyAll()
             self._condition.release()
+
+        self.update_last_read_page()
+        self.last_read_page.cleanup()
 
     def get_number_of_comments(self):
         """Return the number of comments in the current archive."""
@@ -716,6 +730,21 @@ class FileHandler(object):
                 os.remove(constants.FILEINFO_PICKLE_PATH)
 
         return fileinfo
+
+    def update_last_read_page(self):
+        """ Stores the currently viewed page. """
+        if self.archive_type is None or not self.file_loaded:
+            return
+
+        archive_path = self.get_path_to_base()
+        page = self._window.imagehandler.get_current_page()
+        is_last_page = self._window.imagehandler.is_last_page()
+        # Do not store first and last page (last page means archive was finished,
+        # first page is default behaviour and would waste space unnecessarily)
+        if page == 1 or is_last_page:
+            self.last_read_page.clear_page(archive_path)
+        else:
+            self.last_read_page.set_page(archive_path, page)
 
 
 # vim: expandtab:sw=4:ts=4
