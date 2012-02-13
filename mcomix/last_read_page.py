@@ -35,6 +35,18 @@ class LastReadPage(object):
         """
         self.enabled = enabled
 
+    def count(self):
+        """ Number of stored book/page combinations. This method is
+        not affected by setting L{enabled} to false.
+        @return: The number of entries stored by this module. """
+
+        sql = """SELECT COUNT(*) FROM lastread"""
+        cursor = self.db.execute(sql)
+        count = cursor.fetchone()[0]
+        cursor.close()
+
+        return count
+
     def set_page(self, path, page):
         """ Sets C{page} as last read page for the book at C{path}.
         @param path: Path to book. Raises ValueError if file doesn't exist.
@@ -66,6 +78,14 @@ class LastReadPage(object):
         full_path = os.path.abspath(path)
         sql = """DELETE FROM lastread WHERE path = ?"""
         cursor = self.db.execute(sql, (full_path,))
+        cursor.close()
+
+    def clear_all(self):
+        """ Removes all stored books. This method is not affected by setting
+        L{enabled} to false. """
+
+        sql = """DELETE FROM lastread"""
+        cursor = self.db.execute(sql)
         cursor.close()
 
     def get_page(self, path):

@@ -26,6 +26,15 @@ class OpenLastPageBasicTest(unittest.TestCase):
         os.unlink(self.archive1)
         os.unlink(self.archive2)
 
+    def test_init(self):
+        self.assertEqual(0, self.lastread.count())
+
+    def test_count(self):
+        self.lastread.set_page(self.archive1, 1)
+        self.assertEqual(1, self.lastread.count())
+        self.lastread.set_page(self.archive2, 1)
+        self.assertEqual(2, self.lastread.count())
+
     def test_set_last_page(self):
         self.lastread.set_page(self.archive1, 1)
         self.assertEqual(1, self.lastread.get_page(self.archive1))
@@ -41,6 +50,11 @@ class OpenLastPageBasicTest(unittest.TestCase):
         self.lastread.set_page(self.archive1, 1)
         self.lastread.clear_page(self.archive1)
         self.assertIsNone(self.lastread.get_page(self.archive1))
+
+    def test_clear_all(self):
+        self.lastread.set_page(self.archive1, 1)
+        self.lastread.clear_all()
+        self.assertEqual(0, self.lastread.count())
 
     def test_overwrite(self):
         self.lastread.set_page(self.archive1, 1)
@@ -70,6 +84,7 @@ class OpenLastPageBasicTest(unittest.TestCase):
     def test_cleanup(self):
         self.lastread.cleanup()
         self.assertFalse(self.lastread.enabled)
+        self.assertTrue(os.path.isfile(self.db))
 
         # Closing twice shouldn't lead to exception
         self.lastread.cleanup()
