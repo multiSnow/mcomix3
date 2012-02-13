@@ -8,6 +8,10 @@ MComix 0.97
       area. In addition, fixed zero division error when trying to use the lens
       on images with width greatly exceeding height.
 
+    - If 'Auto load last opened file' was enabled in the preferences, MComix
+      would try to load an invalid path if no file was opened when MComix was
+      last closed.
+
     - Menu item hotkeys can now be changed by hovering over a menu item with
       the mouse and pressing the desired key, or key combination.
       (by Juha Sahakangas and Alan Horkan)

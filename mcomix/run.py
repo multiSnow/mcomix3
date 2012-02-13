@@ -180,7 +180,8 @@ def run():
     elif len(args) > 1:
         open_path = args
 
-    elif preferences.prefs['auto load last file']:
+    elif preferences.prefs['auto load last file'] \
+        and os.path.isfile(preferences.prefs['path to last file']):
         open_path = preferences.prefs['path to last file']
         open_page = preferences.prefs['page of last file']
 

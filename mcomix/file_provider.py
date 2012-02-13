@@ -24,13 +24,17 @@ def get_file_provider(filelist):
     if "Auto Open last file" is set. Otherwise, no provider is constructed. """
 
     if len(filelist) > 0:
-        if len(filelist) == 1 and os.path.exists(filelist[0]):
-            provider = OrderedFileProvider(filelist[0])
+        if len(filelist) == 1:
+            if os.path.exists(filelist[0]):
+                provider = OrderedFileProvider(filelist[0])
+            else:
+                provider = None
         else:
             provider = PreDefinedFileProvider(filelist)
 
 
-    elif preferences.prefs['auto load last file']:
+    elif (preferences.prefs['auto load last file']
+        and os.path.isfile(preferences.prefs['path to last file'])):
         provider = OrderedFileProvider(preferences.prefs['path to last file'])
 
     else:
