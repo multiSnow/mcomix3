@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: comix.HEAD\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2012-02-13 15:39+0100\n"
+"POT-Creation-Date: 2012-02-13 17:46+0100\n"
 "PO-Revision-Date: 2008-12-13 17:56-0300\n"
 "Last-Translator: Manuel Quiñones <manuel.por.aca@gmail.com>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
@@ -64,7 +64,7 @@ msgid ""
 "! Could not add file %(sourcefile)s to archive %(archivefile)s, aborting..."
 msgstr ""
 
-#: mcomix/archive_tools.py:54 mcomix/last_read_page.py:57
+#: mcomix/archive_tools.py:54 mcomix/last_read_page.py:69
 #, python-format
 msgid "! Could not read %s"
 msgstr ""
@@ -1291,6 +1291,19 @@ msgstr ""
 
 #: mcomix/preferences_dialog.py:507
 msgid "File names and last read page"
+msgstr ""
+
+#
+# File: src/preferences.py, line: 214
+#: mcomix/preferences_dialog.py:541
+#, fuzzy
+msgid "Delete information about recently opened files?"
+msgstr "Guardar información sobre de los último archivos abiertos."
+
+#: mcomix/preferences_dialog.py:544
+msgid ""
+"This will remove all entries from the \"Recent\" menu, and clear information "
+"about last read pages."
 msgstr ""
 
 #: mcomix/process.py:50

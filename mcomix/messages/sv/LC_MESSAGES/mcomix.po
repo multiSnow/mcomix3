@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.90.4\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2012-02-13 15:39+0100\n"
+"POT-Creation-Date: 2012-02-13 17:46+0100\n"
 "PO-Revision-Date: 2011-04-13 22:59+0100\n"
 "Last-Translator: Martin Karlsson <h.m.j.karlsson@gmail.com>\n"
 "Language-Team: Swedish <LL@li.org>\n"
@@ -62,7 +62,7 @@ msgstr ""
 
 #
 # File: src/comment.py, line: 53
-#: mcomix/archive_tools.py:54 mcomix/last_read_page.py:57
+#: mcomix/archive_tools.py:54 mcomix/last_read_page.py:69
 #, python-format
 msgid "! Could not read %s"
 msgstr "! Kunde inte läsa %s"
@@ -1300,6 +1300,19 @@ msgstr ""
 
 #: mcomix/preferences_dialog.py:507
 msgid "File names and last read page"
+msgstr ""
+
+#
+# File: src/preferences.py, line: 214
+#: mcomix/preferences_dialog.py:541
+#, fuzzy
+msgid "Delete information about recently opened files?"
+msgstr "Lagra information om de senast öppnade filerna."
+
+#: mcomix/preferences_dialog.py:544
+msgid ""
+"This will remove all entries from the \"Recent\" menu, and clear information "
+"about last read pages."
 msgstr ""
 
 #: mcomix/process.py:50
