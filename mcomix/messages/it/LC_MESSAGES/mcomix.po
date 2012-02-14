@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: MComix\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
 "POT-Creation-Date: 2012-02-13 17:46+0100\n"
-"PO-Revision-Date: 2012-02-12 16:00+0100\n"
+"PO-Revision-Date: 2012-02-14 13:00+0100\n"
 "Last-Translator: Giovanni Scafora <giovanni@archlinux.org>\n"
 "Language-Team: Arch Linux Italian Team <giovanni@archlinux.org>\n"
 "Language: it\n"
@@ -1078,24 +1078,24 @@ msgid "Descending"
 msgstr "Discendente"
 
 #: mcomix/preferences_dialog.py:506
-#, fuzzy
 msgid "Only file names"
-msgstr "Solo per i titoli delle pagine"
+msgstr "Solo per i nomi dei file"
 
 #: mcomix/preferences_dialog.py:507
 msgid "File names and last read page"
-msgstr ""
+msgstr "Nomi dei file e ultima pagina letta"
 
 #: mcomix/preferences_dialog.py:541
-#, fuzzy
 msgid "Delete information about recently opened files?"
-msgstr "Memorizza le informazioni dei file aperti di recente:"
+msgstr "Vuoi eliminare le informazioni dei file aperti di recente?"
 
 #: mcomix/preferences_dialog.py:544
 msgid ""
 "This will remove all entries from the \"Recent\" menu, and clear information "
 "about last read pages."
 msgstr ""
+"Questo rimuoverà tutte le voci presenti nel menu \"Recenti\" e le informazioni "
+"delle ultime pagine lette."
 
 #: mcomix/process.py:50
 #, python-format
