@@ -19,7 +19,8 @@ MComix 0.97
     - All other hotkeys (such as keys for scrolling or zooming) can now be
       customized by editing keybindings.conf in MComix' configuration
       directory, i.e. ~/.config/mcomix on Linux or %HOMEPATH%/MComix on
-      Windows.
+      Windows. MComix must not be running while editing the file, or changes
+      will be overwritten once the program exits.
 
     - Removed error nag box that would pop up after program shutdown on
       Windows occasionally.
