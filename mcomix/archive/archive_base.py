@@ -113,17 +113,17 @@ class ExternalExecutableArchive(NonUnicodeArchive):
     def _get_executable(self):
         """ Returns the executable's name or path. Return None if no executable
         was found on the system. """
-        raise NotImplementedError, "Subclasses must override this method."
+        raise NotImplementedError("Subclasses must override this method.")
 
     def _get_list_arguments(self):
         """ Returns an array of arguments required for the executable
         to produce a list of archive members. """
-        raise NotImplementedError, "Subclasses must override this method."
+        raise NotImplementedError("Subclasses must override this method.")
 
     def _get_extract_arguments(self):
         """ Returns an array of arguments required for the executable
         to extract a file to STDOUT. """
-        raise NotImplementedError, "Subclasses must override this method."
+        raise NotImplementedError("Subclasses must override this method.")
 
     def _parse_list_output_line(self, line):
         """ Parses the output of the external executable's list command
