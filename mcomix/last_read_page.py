@@ -4,6 +4,7 @@ import os
 import datetime
 import sqlite3
 
+
 class LastReadPage(object):
     """ Automatically stores the last page the user read for all book files,
     and restores the page the next time the archive is opened. When the book
@@ -63,7 +64,8 @@ class LastReadPage(object):
             self.clear_page(full_path)
             sql = """INSERT INTO lastread (path, page, time_set)
                 VALUES (?, ?, ?)"""
-            cursor = self.db.execute(sql, (full_path, page, datetime.datetime.now()))
+            cursor = self.db.execute(sql, (full_path, page,
+                datetime.datetime.now()))
             cursor.close()
         else:
             raise ValueError(_("! Could not read %s") % full_path)

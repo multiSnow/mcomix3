@@ -12,7 +12,7 @@ import itertools
 import Image
 from urllib import pathname2url
 
-try: # The md5 module is deprecated as of Python 2.5, replaced by hashlib.
+try:  # The md5 module is deprecated as of Python 2.5, replaced by hashlib.
     from hashlib import md5
 except ImportError:
     from md5 import new as md5
@@ -27,6 +27,7 @@ from mcomix import portability
 from mcomix import i18n
 from mcomix import callback
 from mcomix import log
+
 
 class Thumbnailer(object):
     """ The Thumbnailer class is responsible for managing MComix
@@ -145,7 +146,7 @@ class Thumbnailer(object):
                 # extract only the first...
                 subs = filter(constants.SUPPORTED_ARCHIVE_REGEX.search, files)
                 if subs:
-                    subarchive = extractor.set_files([subs[0]])
+                    extractor.set_files([subs[0]])
                     extractor.extract()
                     condition.acquire()
                     while not extractor.is_ready(subs[0]):
@@ -270,7 +271,6 @@ class Thumbnailer(object):
         files = itertools.ifilter(lambda filename:
                 u'credit' not in os.path.split(filename)[1].lower(), files)
 
-        ext_re = constants.SUPPORTED_IMAGE_REGEX
         images = list(itertools.ifilter(constants.SUPPORTED_IMAGE_REGEX.search, files))
 
         tools.alphanumeric_sort(images)

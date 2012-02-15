@@ -25,7 +25,6 @@ Each action_name can have multiple keybindings.
 """
 
 import gtk
-import os
 import json
 
 from mcomix import constants
@@ -67,6 +66,7 @@ BINDING_INFO = {
     'osd panel' : { 'title' : _('Show OSD panel'), 'group' : _('User Interface') }
 }
 
+
 class _KeybindingManager(object):
     def __init__(self, window):
         #: Main window instance
@@ -100,7 +100,7 @@ class _KeybindingManager(object):
         for keycode in keycodes:
             if keycode in self._callbacks:
                 log.warning(_('Keybinding for "%(action)s" overrides hotkey for another action.'),
-                        {"action" : name})
+                        {"action": name})
 
             self._callbacks[keycode] = (name, callback, args, kwargs)
 
@@ -161,6 +161,8 @@ class _KeybindingManager(object):
             return []
 
 _manager = None
+
+
 def keybinding_manager():
     """ Returns a singleton instance of the keybinding manager. """
     global _manager

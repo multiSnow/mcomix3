@@ -12,6 +12,7 @@ from mcomix import tools
 from mcomix import constants
 from mcomix import callback
 
+
 class ThumbnailSidebar(gtk.HBox):
 
     """A thumbnail sidebar including scrollbar for the main window."""
@@ -59,10 +60,10 @@ class ThumbnailSidebar(gtk.HBox):
 
         self._thumbnail_page_treeviewcolumn.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         self._thumbnail_page_treeviewcolumn.pack_start(self._text_cellrenderer, False)
-        self._thumbnail_page_treeviewcolumn.add_attribute(self._text_cellrenderer, 'text', 0 )
+        self._thumbnail_page_treeviewcolumn.add_attribute(self._text_cellrenderer, 'text', 0)
 
         if not prefs['show page numbers on thumbnails']:
-            self._thumbnail_page_treeviewcolumn.set_property('visible',False)
+            self._thumbnail_page_treeviewcolumn.set_property('visible', False)
 
         self._thumbnail_image_treeviewcolumn.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         self._thumbnail_image_treeviewcolumn.pack_start(self._pixbuf_cellrenderer, True)
@@ -99,9 +100,9 @@ class ThumbnailSidebar(gtk.HBox):
     def toggle_page_numbers_visible(self):
 
         if prefs['show page numbers on thumbnails']:
-            self._thumbnail_page_treeviewcolumn.set_property('visible',True)
+            self._thumbnail_page_treeviewcolumn.set_property('visible', True)
         else:
-            self._thumbnail_page_treeviewcolumn.set_property('visible',False)
+            self._thumbnail_page_treeviewcolumn.set_property('visible', False)
 
         self.update_layout_size()
 
@@ -287,7 +288,7 @@ class ThumbnailSidebar(gtk.HBox):
         if iter and self._thumbnail_liststore.iter_is_valid(iter):
             return self._thumbnail_liststore.get_value(iter, 1)
         else:
-            return get_empty_thumbnail()
+            return self.get_empty_thumbnail()
 
     def get_needed_thumbnail_height(self):
         """ Gets the height for all thumbnails, as indicated by the treeview. """

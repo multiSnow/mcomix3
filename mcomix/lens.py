@@ -7,6 +7,7 @@ from mcomix.preferences import prefs
 from mcomix import image_tools
 from mcomix import constants
 
+
 class MagnifyingLens(object):
 
     """The MagnifyingLens creates cursors from the raw pixbufs containing

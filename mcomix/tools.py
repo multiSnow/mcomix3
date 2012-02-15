@@ -5,6 +5,7 @@ import sys
 import re
 import gc
 
+
 def alphanumeric_sort(filenames):
     """Do an in-place alphanumeric sort of the strings in <filenames>,
     such that for an example "1.jpg", "2.jpg", "10.jpg" is a sorted
@@ -19,6 +20,7 @@ def alphanumeric_sort(filenames):
     rec = re.compile("\d+|\D+")
     filenames.sort(key=lambda s: map(_format_substring, rec.findall(s)))
 
+
 def get_home_directory():
     """On UNIX-like systems, this method will return the path of the home
     directory, e.g. /home/username. On Windows, it will return an MComix
@@ -28,6 +30,7 @@ def get_home_directory():
         return os.path.join(os.path.expanduser('~'), 'MComix')
     else:
         return os.path.expanduser('~')
+
 
 def get_config_directory():
     """Return the path to the MComix config directory. On UNIX, this will
@@ -44,6 +47,7 @@ def get_config_directory():
             os.path.join(get_home_directory(), '.config'))
         return os.path.join(base_path, 'mcomix')
 
+
 def get_data_directory():
     """Return the path to the MComix data directory. On UNIX, this will
     be $XDG_DATA_HOME/mcomix, on Windows it will be the same directory as
@@ -59,8 +63,8 @@ def get_data_directory():
             os.path.join(get_home_directory(), '.local/share'))
         return os.path.join(base_path, 'mcomix')
 
-def number_of_digits( n ):
 
+def number_of_digits(n):
     num_of_digits = 1
 
     while n > 9:
@@ -68,6 +72,7 @@ def number_of_digits( n ):
         num_of_digits += 1
 
     return num_of_digits
+
 
 def garbage_collect():
     """ Runs the garbage collector. """

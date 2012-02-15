@@ -27,6 +27,7 @@ from mcomix import pageselect
 from mcomix import osd
 from mcomix import keybindings
 
+
 class MainWindow(gtk.Window):
 
     """The main window, is created at start and terminates the
@@ -45,14 +46,14 @@ class MainWindow(gtk.Window):
         self.is_fullscreen = False
         self.is_double_page = False
         self.is_manga_mode = False
-        self.is_virtual_double_page = False # I.e. a wide image is displayed
+        self.is_virtual_double_page = False  # I.e. a wide image is displayed
         self.width = None
         self.height = None
         self.was_out_of_focus = False
         #: Used to remember if changing to fullscreen enabled 'Hide all'
         self.hide_all_forced = False
 
-        self._manual_zoom = 100 # In percent of original image size
+        self._manual_zoom = 100  # In percent of original image size
         self._waiting_for_redraw = False
 
         self._image_box = gtk.HBox(False, 2)
@@ -272,7 +273,7 @@ class MainWindow(gtk.Window):
     def draw_image(self, at_bottom=False, scroll=False):
         """Draw the current pages and update the titlebar and statusbar.
         """
-        if not self._waiting_for_redraw: # Don't stack up redraws.
+        if not self._waiting_for_redraw:  # Don't stack up redraws.
             self._waiting_for_redraw = True
             gobject.idle_add(self._draw_image, at_bottom, scroll,
                 priority=gobject.PRIORITY_HIGH_IDLE)
@@ -339,7 +340,7 @@ class MainWindow(gtk.Window):
                     total_width += right_unscaled_x
                     total_height += right_unscaled_y
 
-                total_width += 2 # For the 2 px gap between images.
+                total_width += 2  # For the 2 px gap between images.
                 scaled_width = int(self._manual_zoom * total_width / 100)
                 scaled_height = int(self._manual_zoom * total_height / 100)
                 scale_up = True
@@ -566,7 +567,7 @@ class MainWindow(gtk.Window):
             self.set_page(new_page_number)
 
     def page_select(self, *args):
-        page_selector = pageselect.Pageselector(self)
+        pageselect.Pageselector(self)
 
     def rotate_90(self, *args):
         prefs['rotation'] = (prefs['rotation'] + 90) % 360
@@ -675,7 +676,7 @@ class MainWindow(gtk.Window):
 
     def manual_zoom_in(self, *args):
         new_zoom = self._manual_zoom * 1.15
-        if 95 < new_zoom < 105: # To compensate for rounding errors
+        if 95 < new_zoom < 105:  # To compensate for rounding errors
             new_zoom = 100
         if new_zoom > 1000:
             return
@@ -684,7 +685,7 @@ class MainWindow(gtk.Window):
 
     def manual_zoom_out(self, *args):
         new_zoom = self._manual_zoom / 1.15
-        if 95 < new_zoom < 105: # To compensate for rounding errors
+        if 95 < new_zoom < 105:  # To compensate for rounding errors
             new_zoom = 100
         if new_zoom < 10:
             return
@@ -1130,9 +1131,11 @@ class MainWindow(gtk.Window):
 #: Main window instance
 __main_window = None
 
+
 def main_window():
     """ Returns the global main window instance. """
     return __main_window
+
 
 def set_main_window(window):
     global __main_window
