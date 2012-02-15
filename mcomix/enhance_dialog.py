@@ -24,7 +24,7 @@ class _EnhanceImageDialog(gtk.Dialog):
         save = gtk.Button(None, gtk.STOCK_SAVE)
         save.set_tooltip_text(_('Save the selected values as default for future files.'))
         self.add_action_widget(save, gtk.RESPONSE_APPLY)
-        ok = self.add_button(gtk.STOCK_OK, gtk.RESPONSE_OK)
+        self.add_button(gtk.STOCK_OK, gtk.RESPONSE_OK)
 
         self.set_has_separator(False)
         self.set_resizable(False)

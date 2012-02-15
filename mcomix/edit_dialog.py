@@ -195,7 +195,6 @@ class _EditArchiveDialog(gtk.Dialog):
                 new_image_array.append(path)
                 treeiter = self._image_area._liststore.iter_next(treeiter)
 
-            array_to_delete = []
             new_positions = []
 
             end_index = len(old_image_array) - 1

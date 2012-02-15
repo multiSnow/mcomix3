@@ -540,7 +540,6 @@ class MainWindow(gtk.Window):
         self.draw_image(at_bottom=at_bottom, scroll=True)
 
     def set_page(self, num, at_bottom=False):
-
         if self.imagehandler.set_page(num):
             self.new_page(at_bottom=at_bottom)
             self.slideshow.update_delay()

@@ -176,13 +176,11 @@ class ImageHandler:
         self.is_cacheing = False
 
     def next_page(self):
-        """Set up filehandler to the next page. Return True if this results
-        in a new page.
+        """Set up filehandler to the next page. Return the new page number.
         """
         if not self._window.filehandler.file_loaded and self._window.filehandler.archive_type is None:
             return False
 
-        old_page = self.get_current_page()
         viewed = self._window.displayed_double() and 2 or 1
 
         if self.get_current_page() + viewed > self.get_number_of_pages():
@@ -199,7 +197,7 @@ class ImageHandler:
             if not next_archive_opened and \
                 prefs['auto open next directory'] and \
                 (not archive_open or prefs['auto open next archive']):
-                directory_changed = self._window.filehandler.open_next_directory()
+                self._window.filehandler.open_next_directory()
 
             return False
 
@@ -208,8 +206,7 @@ class ImageHandler:
         return self.get_current_page()
 
     def previous_page(self):
-        """Set up filehandler to the previous page. Return True if this
-        results in a new page.
+        """Set up filehandler to the previous page. Return the new page number.
         """
         if not self._window.filehandler.file_loaded and self._window.filehandler.archive_type is None:
             return False
@@ -228,11 +225,10 @@ class ImageHandler:
             if not previous_archive_opened and \
                 prefs['auto open next directory'] and \
                 (not archive_open or prefs['auto open next archive']):
-                directory_changed = self._window.filehandler.open_previous_directory()
+                self._window.filehandler.open_previous_directory()
 
             return False
 
-        old_page = self.get_current_page()
         step = self._get_backward_step_length()
         step = min(self._current_image_index, step)
         self._current_image_index -= step
@@ -243,22 +239,18 @@ class ImageHandler:
         return self.get_current_page()
 
     def first_page(self):
-        """Set up filehandler to the first page. Return True if this
-        results in a new page.
+        """Set up filehandler to the first page. Return the new page number.
         """
         if not self._window.filehandler.file_loaded:
             return False
-        old_page = self.get_current_page()
         self._current_image_index = 0
         return self.get_current_page()
 
     def last_page(self):
-        """Set up filehandler to the last page. Return True if this results
-        in a new page.
+        """Set up filehandler to the last page. Return the new page number.
         """
         if not self._window.filehandler.file_loaded:
             return False
-        old_page = self.get_current_page()
         offset = self._window.is_double_page and 2 or 1
         offset = min(self.get_number_of_pages(), offset)
         self._current_image_index = self.get_number_of_pages() - offset
@@ -267,13 +259,11 @@ class ImageHandler:
         return self.get_current_page()
 
     def set_page(self, page_num):
-        """Set up filehandler to the page <page_num>. Return True if this
-        results in a new page.
+        """Set up filehandler to the page <page_num>. Return the new page number.
         """
         if not 0 < page_num <= self.get_number_of_pages():
             return False
 
-        old_page = self.get_current_page()
         self._current_image_index = page_num - 1
         self.do_cacheing()
 

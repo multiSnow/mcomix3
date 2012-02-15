@@ -255,7 +255,7 @@ class _BaseFileChooserDialog(gtk.Dialog):
             thumbnailer = thumbnail_tools.Thumbnailer()
             thumbnailer.set_size(128, 128)
             thumbnailer.thumbnail_finished += self._preview_thumbnail_finished
-            pixbuf = thumbnailer.thumbnail(path, async=True)
+            thumbnailer.thumbnail(path, async=True)
         else:
             self._preview_image.clear()
             self._namelabel.set_text('')
