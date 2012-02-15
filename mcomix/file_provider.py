@@ -4,7 +4,6 @@
 
 import os
 import re
-import locale
 
 from mcomix import image_tools
 from mcomix import archive_tools

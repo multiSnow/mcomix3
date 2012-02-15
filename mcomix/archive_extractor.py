@@ -1,6 +1,5 @@
 """archive_extractor.py - Archive extraction class."""
 
-import sys
 import os
 import threading
 

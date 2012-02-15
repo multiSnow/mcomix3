@@ -12,7 +12,6 @@ from mcomix import recent
 from mcomix import dialog_handler
 from mcomix import constants
 from mcomix import status
-from mcomix import file_chooser_base_dialog
 from mcomix import file_chooser_main_dialog
 from mcomix.library import main_dialog as library_main_dialog
 

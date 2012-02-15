@@ -1,7 +1,6 @@
 """status.py - Statusbar for main window."""
 
 import gtk
-import pango
 
 from mcomix import i18n
 from mcomix import constants
