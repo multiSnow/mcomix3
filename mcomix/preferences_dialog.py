@@ -213,10 +213,11 @@ class _PreferencesDialog(gtk.Dialog):
         page.add_row(step_length_button)
 
         label = gtk.Label(_('Show only one page where appropriate:'))
-        label.set_tooltip_text(
+        doublepage_control = self._create_doublepage_as_one_control()
+        doublepage_control.set_tooltip_text(
             _("When showing the first page of an archive, or an image's width "
               "exceeds its height, only a single page will be displayed."))
-        page.add_row(label, self._create_doublepage_as_one_control())
+        page.add_row(label, doublepage_control)
         page.new_section(_('Files'))
 
         auto_open_last_button = gtk.CheckButton(
@@ -230,9 +231,9 @@ class _PreferencesDialog(gtk.Dialog):
 
         store_recent_label = gtk.Label(
             _('Store information about recently opened files:'))
-        store_recent_label.set_tooltip_text(
-            _('Add information about all files opened from within MComix to the shared recent files list.'))
         store_recent_box = self._create_store_recent_combobox()
+        store_recent_box.set_tooltip_text(
+            _('Add information about all files opened from within MComix to the shared recent files list.'))
         page.add_row(store_recent_label, store_recent_box)
 
         return page
@@ -313,9 +314,6 @@ class _PreferencesDialog(gtk.Dialog):
         page.new_section(_('File order'))
 
         label = gtk.Label(_('Order files by:'))
-        label.set_tooltip_text(
-            _("Files will be opened and displayed according to the sort order "
-              "specified here. This option does not affect ordering within archives."))
         page.add_row(label, self._create_sort_by_control())
 
         page.new_section(_('Cache'))
@@ -478,6 +476,11 @@ class _PreferencesDialog(gtk.Dialog):
         box = gtk.HBox()
         box.pack_start(sortkey_box)
         box.pack_start(sortorder_box)
+
+        label = _("Files will be opened and displayed according to the sort order "
+              "specified here. This option does not affect ordering within archives.")
+        sortkey_box.set_tooltip_text(label)
+        sortorder_box.set_tooltip_text(label)
 
         return box
 
