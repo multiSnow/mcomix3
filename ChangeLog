@@ -1,4 +1,5 @@
 MComix 0.97
+Release date: 17.02.2012
 
     - Fixed segmentation fault on x64 platforms when trying to extract RAR
       archives with libunrar.
