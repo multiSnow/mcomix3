@@ -117,6 +117,8 @@ class UnrarDll(object):
         self._unrar.RARProcessFileW.restype = ctypes.c_int
         self._unrar.RARProcessFileW.argtypes = \
             [ctypes.c_void_p, ctypes.c_int, ctypes.c_wchar_p, ctypes.c_wchar_p]
+        self._unrar.RARSetCallback.argtypes = \
+            [ctypes.c_void_p, UNRARCALLBACK, ctypes.c_long]
 
     def list_contents(self):
         """ Returns a list of files in the archive. """
