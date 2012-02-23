@@ -2,7 +2,14 @@
 
 import os
 import datetime
-import sqlite3
+try:
+    from sqlite3 import dbapi2
+except ImportError:
+    try:
+        from pysqlite2 import dbapi2
+    except ImportError:
+        log.warning( _('! Could neither find pysqlite2 nor sqlite3.') )
+        dbapi2 = None
 
 
 class LastReadPage(object):
@@ -27,6 +34,9 @@ class LastReadPage(object):
 
     def cleanup(self):
         """ Closes the database connection used by this class. """
+        if not dbapi2:
+            return
+
         self.db.close()
         self.enabled = False
 
@@ -34,12 +44,18 @@ class LastReadPage(object):
         """ Enables (or disables) all functionality of this module.
         @type enabled: bool
         """
-        self.enabled = enabled
+        if dbapi2:
+            self.enabled = enabled
+        else:
+            self.enabled = False
 
     def count(self):
         """ Number of stored book/page combinations. This method is
         not affected by setting L{enabled} to false.
         @return: The number of entries stored by this module. """
+
+        if not dbapi2:
+            return 0
 
         sql = """SELECT COUNT(*) FROM lastread"""
         cursor = self.db.execute(sql)
@@ -85,6 +101,8 @@ class LastReadPage(object):
     def clear_all(self):
         """ Removes all stored books. This method is not affected by setting
         L{enabled} to false. """
+        if not dbapi2:
+            return
 
         sql = """DELETE FROM lastread"""
         cursor = self.db.execute(sql)
@@ -118,6 +136,9 @@ class LastReadPage(object):
         @param path: Path to book.
         @return: C{datetime} object, or C{None} if no page was set.
         """
+        if not self.enabled:
+            return None
+
         full_path = os.path.abspath(path)
         sql = """SELECT time_set FROM lastread WHERE path = ?"""
         cursor = self.db.execute(sql, (full_path,))
@@ -137,7 +158,10 @@ class LastReadPage(object):
         @param dbfile: Database file name. This file needn't exist.
         @return: Open SQLite database connection.
         """
-        db = sqlite3.connect(dbfile, isolation_level=None)
+        if not dbapi2:
+            return None
+
+        db = dbapi2.connect(dbfile, isolation_level=None)
         sql = """CREATE TABLE IF NOT EXISTS lastread (
             path TEXT PRIMARY KEY,
             page INTEGER,
