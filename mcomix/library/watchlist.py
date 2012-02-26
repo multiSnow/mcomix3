@@ -20,7 +20,7 @@ class WatchListDialog(gtk.Dialog):
         @param library: Dialog parent window, should be library window.
         """
         super(WatchListDialog, self).__init__(_("Library watch list"),
-            library, gtk.DIALOG_DESTROY_WITH_PARENT,
+            library, gtk.DIALOG_DESTROY_WITH_PARENT | gtk.DIALOG_MODAL,
             (gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE))
 
         self.library = library
