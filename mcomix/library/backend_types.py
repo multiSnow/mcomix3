@@ -1,8 +1,10 @@
 """ Data class for library books and collections. """
 
 import os
+import threading
 
 from mcomix import constants
+from mcomix import callback
 
 
 class _BackendObject(object):
@@ -212,6 +214,29 @@ class _WatchList(object):
             entries.append(_WatchListEntry(row[0], collection))
 
         return entries
+
+    def scan_for_new_files(self):
+        """ Begins scanning for new files in the watched directories.
+        When the scan finishes, L{new_files_found} will be called
+        asynchronously. """
+        thread = threading.Thread(target=self._scan_for_new_files_thread)
+        thread.start()
+
+    def _scan_for_new_files_thread(self):
+        """ Executes the actual scanning operation in a new thread. """
+        existing_books = [book.path for book in DefaultCollection.get_books()]
+        for entry in self.get_watchlist():
+            new_files = entry.get_new_files(existing_books)
+            self.new_files_found(new_files, entry)
+
+    @callback.Callback
+    def new_files_found(self, paths, watchentry):
+        """ Called after scan_for_new_files finishes.
+        @param paths: List of filenames for newly added files. This list
+                      may be empty if no new files were found during the scan.
+        @param watchentry: Watchentry for files/directory.
+        """
+        pass
 
 
 class _WatchListEntry(_BackendObject):

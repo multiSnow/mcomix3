@@ -1,5 +1,6 @@
 """library_main_dialog.py - The library dialog window."""
 
+import os
 import gtk
 
 from mcomix.preferences import prefs
@@ -43,6 +44,8 @@ class _LibraryDialog(gtk.Window):
         self.control_area = library_control_area._ControlArea(self)
         self.collection_area = library_collection_area._CollectionArea(self)
 
+        self.backend.watchlist.new_files_found += self._new_files_found
+
         table = gtk.Table(2, 2, False)
         table.attach(self.collection_area, 0, 1, 0, 1, gtk.FILL,
             gtk.EXPAND|gtk.FILL)
@@ -57,6 +60,8 @@ class _LibraryDialog(gtk.Window):
         self.add(table)
         self.show_all()
         self.present()
+
+        self.scan_for_new_files()
 
     def open_book(self, books, keep_library_open=False):
         """Open the book with ID <book>."""
@@ -73,6 +78,33 @@ class _LibraryDialog(gtk.Window):
         elif len(paths) == 1:
             self._file_handler.open_file(paths[0])
 
+    def scan_for_new_files(self):
+        """ Start scanning for new files from the watch list. """
+
+        if len(self.backend.watchlist.get_watchlist()) > 0:
+            self.set_status_message(_("Scanning for new books..."))
+            self.backend.watchlist.scan_for_new_files()
+
+    def _new_files_found(self, filelist, watchentry):
+        """ Called after the scan for new files finished. """
+
+        if len(filelist) > 0:
+            if watchentry.collection.id is not None:
+                collection_name = watchentry.collection.name
+            else:
+                collection_name = None
+
+            self.add_books(filelist, collection_name)
+            message = i18n.get_translation().ngettext(
+                "Added new book '%(bookname)s' from directory '%(directory)s'.",
+                "Added %(count)d new books from directory '%(directory)s'.",
+                len(filelist))
+            self.set_status_message(message % {'directory': watchentry.directory,
+                'count': len(filelist), 'bookname': os.path.basename(filelist[0])})
+        else:
+            self.set_status_message(
+                _("No new books found in directory '%s'.") % watchentry.directory)
+
     def get_status_bar(self):
         """ Returns the window's status bar. """
         return self._statusbar
@@ -88,6 +120,7 @@ class _LibraryDialog(gtk.Window):
     def close(self, *args):
         """Close the library and do required cleanup tasks."""
         prefs['lib window width'], prefs['lib window height'] = self.get_size()
+        self.backend.watchlist.new_files_found -= self._new_files_found
         self.book_area.stop_update()
         self.backend.close()
         self.book_area.close()
