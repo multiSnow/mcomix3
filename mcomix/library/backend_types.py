@@ -173,6 +173,47 @@ class _DefaultCollection(_Collection):
 DefaultCollection = _DefaultCollection()
 
 
+class _WatchList(object):
+    """ Scans watched directories and updates the database when new books have
+    been added. This object is part of the library backend, i.e.
+    C{library.backend.watchlist}. """
+
+    def __init__(self, backend):
+        self.backend = backend
+
+    def add_directory(self, path, collection=DefaultCollection):
+        """ Adds a new watched directory. """
+
+        directory = os.path.abspath(path)
+        sql = """INSERT OR IGNORE INTO watchlist (path, collection)
+                 VALUES (?, ?)"""
+        cursor = self.backend.execute(sql, [directory, collection.id])
+        cursor.close()
+
+    def get_watchlist(self):
+        """ Returns a list of watched directories.
+        @return: List of L{_WatchListEntry} objects. """
+
+        sql = """SELECT watchlist.path,
+                        collection.id, collection.name,
+                        collection.supercollection
+                 FROM watchlist
+                 LEFT JOIN collection ON watchlist.collection = collection.id"""
+
+        cursor = self.backend.execute(sql)
+        entries = []
+        for row in cursor.fetchall():
+            collection_id = row[1]
+            if collection_id:
+                collection = _Collection(*row[1:])
+            else:
+                collection = DefaultCollection
+
+            entries.append(_WatchListEntry(row[0], collection))
+
+        return entries
+
+
 class _WatchListEntry(_BackendObject):
     """ A watched directory. """
 

@@ -41,6 +41,8 @@ class _LibraryBackend:
         self._con = dbapi2.connect(constants.LIBRARY_DATABASE_PATH)
         self._con.row_factory = row_factory
 
+        self.watchlist = backend_types._WatchList(self)
+
         version = self._library_version()
         self._upgrade_database(version, _LibraryBackend.DB_VERSION)
 
