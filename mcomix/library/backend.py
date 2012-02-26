@@ -217,6 +217,25 @@ class _LibraryBackend:
         else:
             return None
 
+    def get_collection_by_id(self, id):
+        """ Returns the collection with ID C{id}.
+        @param id: Integer value. May be C{-1} or C{None} for default collection.
+        @return: L{_Collection} if found, None otherwise.
+        """
+        if id is None or id == -1:
+            return backend_types.DefaultCollection
+        else:
+            cur = self._con.execute('''select id, name, supercollection
+                from collection
+                where id = ?''', (id,))
+            result = cur.fetchone()
+            cur.close()
+
+            if result:
+                return backend_types._Collection(*result)
+            else:
+                return None
+
     def get_supercollection(self, collection):
         """Return the supercollection of <collection>."""
         cur = self._con.execute('''select supercollection from Collection
