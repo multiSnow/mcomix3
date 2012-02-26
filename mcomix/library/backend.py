@@ -372,6 +372,8 @@ class _LibraryBackend:
 
     def remove_collection(self, collection):
         """Remove the <collection> (sans books) from the library."""
+        self._con.execute('''update watchlist set collection = NULL
+            where collection = ?''', (collection,))
         self._con.execute('delete from Collection where id = ?', (collection,))
         self._con.execute('delete from Contain where collection = ?',
             (collection,))
