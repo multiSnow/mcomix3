@@ -109,10 +109,10 @@ class _LibraryDialog(gtk.Window):
                 collection = self.backend.get_collection_by_name(
                     collection_name)
 
-        library_add_progress_dialog._AddLibraryProgressDialog(self, self._window, paths, collection)
+        library_add_progress_dialog._AddLibraryProgressDialog(self, self._window, paths, collection.id)
 
         if collection is not None:
-            prefs['last library collection'] = collection
+            prefs['last library collection'] = collection.id
 
         self.collection_area.display_collections()
 

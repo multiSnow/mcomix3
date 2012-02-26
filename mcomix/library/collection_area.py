@@ -167,7 +167,7 @@ class _CollectionArea(gtk.ScrolledWindow):
         if response == gtk.RESPONSE_OK and name:
             if self._library.backend.add_collection(name):
                 collection = self._library.backend.get_collection_by_name(name)
-                prefs['last library collection'] = collection
+                prefs['last library collection'] = collection.id
                 self._library.collection_area.display_collections()
             else:
                 message = _("Could not add a new collection called '%s'.") % (
