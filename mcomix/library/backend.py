@@ -396,6 +396,9 @@ class _LibraryBackend:
         self._con.commit()
         self._con.close()
 
+        global _backend
+        _backend = None
+
     def _table_exists(self, table):
         """ Checks if C{table} exists in the database. """
         cursor = self._con.cursor()
