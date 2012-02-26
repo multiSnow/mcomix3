@@ -121,4 +121,27 @@ class CollectionTest(unittest.TestCase):
         self.assertEqual(len(col.get_all_collections()), 2)
     
 
+class WatchListEntryTest(unittest.TestCase):
+
+    def test_invalid_dir(self):
+        entry = backend_types._WatchListEntry("/root/invalid-directory", None)
+
+        self.assertFalse(entry.is_valid())
+        self.assertIsInstance(entry.get_new_files([]), list)
+        self.assertEqual(len(entry.get_new_files([])), 0)
+
+    def test_valid_dir(self):
+        directory = unicode(os.path.abspath('test/files/archives'))
+        available = [os.path.join(directory, u'01-ZIP-Normal.zip'),
+                     os.path.join(directory, u'02-TAR-Normal.tar')]
+        others = [os.path.join(directory, u'03-RAR-Normal.rar'),
+                  os.path.join(directory, u'04-7Z-Normal.7z')]
+
+        entry = backend_types._WatchListEntry(directory, None)
+        new_files = entry.get_new_files(available)
+        new_files.sort()
+
+        self.assertIsInstance(new_files, list)
+        self.assertEqual(new_files, others)
+
 # vim: expandtab:sw=4:ts=4

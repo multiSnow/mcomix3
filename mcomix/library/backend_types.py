@@ -1,11 +1,17 @@
 """ Data class for library books and collections. """
 
+import os
+
+from mcomix import constants
+
+
 class _BackendObject(object):
 
     def get_backend(self):
         # XXX: Delayed import to avoid circular import
         from mcomix.library.backend import LibraryBackend
         return LibraryBackend()
+
 
 class _Book(_BackendObject):
     """ Library book instance. """
@@ -171,8 +177,26 @@ class _WatchListEntry(_BackendObject):
     """ A watched directory. """
 
     def __init__(self, directory, collection):
-        self.directory = directory
+        self.directory = os.path.abspath(directory)
         self.collection = collection
+
+    def get_new_files(self, filelist):
+        """ Returns a list of files that are present in the watched directory,
+        but not in the list of files passed in C{filelist}. """
+
+        if not self.is_valid():
+            return []
+
+        old_files = frozenset([os.path.abspath(path) for path in filelist])
+        available_files = frozenset([os.path.join(self.directory, filename)
+            for filename in os.listdir(self.directory)
+            if constants.SUPPORTED_ARCHIVE_REGEX.search(filename)])
+
+        return list(available_files.difference(old_files))
+
+    def is_valid(self):
+        """ Check if the watched directory is a valid directory and exists. """
+        return os.path.isdir(self.directory)
 
 
 # vim: expandtab:sw=4:ts=4
