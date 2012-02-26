@@ -1,7 +1,13 @@
 """ Data class for library books and collections. """
 
+class _BackendObject(object):
 
-class _Book(object):
+    def get_backend(self):
+        # XXX: Delayed import to avoid circular import
+        from mcomix.library.backend import LibraryBackend
+        return LibraryBackend()
+
+class _Book(_BackendObject):
     """ Library book instance. """
 
     def __init__(self, id, name, path, pages, format, size, added):
@@ -23,7 +29,7 @@ class _Book(object):
         self.added = added
 
 
-class _Collection(object):
+class _Collection(_BackendObject):
     """ Library collection instance. 
     This class should NOT be instianted directly, but only with methods from
     L{LibraryBackend} instead. """
@@ -62,7 +68,7 @@ class _Collection(object):
                 sql += ''' WHERE book.name LIKE '%' || ? || '%' '''
                 sql_args.append(filter_string)
 
-            cursor = get_backend().execute(sql, sql_args)
+            cursor = self.get_backend().execute(sql, sql_args)
             rows = cursor.fetchall()
             cursor.close()
 
@@ -73,7 +79,7 @@ class _Collection(object):
     def get_collections(self):
         """ Returns a list of all direct subcollections of this instance. """
 
-        cursor = get_backend().execute('''SELECT id, name, supercollection
+        cursor = self.get_backend().execute('''SELECT id, name, supercollection
                 FROM collection
                 WHERE supercollection = ?
                 ORDER by name''', [self.id])
@@ -100,7 +106,7 @@ class _Collection(object):
     def add_collection(self, subcollection):
         """ Sets C{subcollection} as child of this collection. """
 
-        get_backend().execute('''UPDATE collection
+        self.get_backend().execute('''UPDATE collection
                 SET supercollection = ?
                 WHERE id = ?''', (self.id, subcollection.id))
         subcollection.supercollection = self.id
@@ -128,7 +134,7 @@ class _DefaultCollection(_Collection):
             sql += ''' WHERE book.name LIKE '%' || ? || '%' '''
             sql_args.append(filter_string)
 
-        cursor = get_backend().execute(sql, sql_args)
+        cursor = self.get_backend().execute(sql, sql_args)
         rows = cursor.fetchall()
         cursor.close()
 
@@ -140,7 +146,7 @@ class _DefaultCollection(_Collection):
 
         assert subcollection is not DefaultCollection, "Cannot change DefaultCollection"
 
-        get_backend().execute('''UPDATE collection
+        self.get_backend().execute('''UPDATE collection
                 SET supercollection = NULL
                 WHERE id = ?''', (subcollection.id,))
         subcollection.supercollection = None
@@ -148,7 +154,7 @@ class _DefaultCollection(_Collection):
     def get_collections(self):
         """ Returns a list of all root collections. """
         
-        cursor = get_backend().execute('''SELECT id, name, supercollection
+        cursor = self.get_backend().execute('''SELECT id, name, supercollection
                 FROM collection
                 WHERE supercollection IS NULL
                 ORDER by name''')
@@ -157,13 +163,16 @@ class _DefaultCollection(_Collection):
 
         return [ _Collection(*row) for row in result ]
 
+
 DefaultCollection = _DefaultCollection()
 
 
-def get_backend():
-    # XXX: Delayed import to avoid circular import
-    from mcomix.library.backend import LibraryBackend
-    return LibraryBackend()
+class _WatchListEntry(_BackendObject):
+    """ A watched directory. """
+
+    def __init__(self, directory, collection):
+        self.directory = directory
+        self.collection = collection
 
 
 # vim: expandtab:sw=4:ts=4
