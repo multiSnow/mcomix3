@@ -6,6 +6,7 @@ from mcomix import archive_tools
 from mcomix import constants
 from mcomix import thumbnail_tools
 from mcomix import log
+from mcomix.library import backend_types
 
 try:
     from sqlite3 import dbapi2
@@ -204,9 +205,15 @@ class _LibraryBackend:
         collection exists. Names are unique, so at most one such collection
         can exist.
         """
-        cur = self._con.execute('''select id from Collection
+        cur = self._con.execute('''select id, name, supercollection
+            from collection
             where name = ?''', (name,))
-        return cur.fetchone()
+        result = cur.fetchone()
+        cur.close()
+        if result:
+            return backend_types._Collection(*result)
+        else:
+            return None
 
     def get_supercollection(self, collection):
         """Return the supercollection of <collection>."""
@@ -354,6 +361,11 @@ class _LibraryBackend:
         """Remove <book> from <collection>."""
         self._con.execute('''delete from Contain
             where book = ? and collection = ?''', (book, collection))
+
+    def execute(self, *args):
+        """ Passes C{args} directly to the C{execute} method of the SQL
+        connection. """
+        return self._con.execute(*args)
 
     def close(self):
         """Commit changes and close cleanly."""
