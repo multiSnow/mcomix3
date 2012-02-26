@@ -85,7 +85,7 @@ class _ControlArea(gtk.HBox):
         hbox = gtk.HBox(False, 10)
         vbox.pack_end(hbox, False, False)
 
-        watchlist_button = gtk.Button(_("_Watchlist"))
+        watchlist_button = gtk.Button(_("_Watch list"))
         watchlist_button.set_image(
             gtk.image_new_from_stock(gtk.STOCK_FIND, gtk.ICON_SIZE_BUTTON))
         watchlist_button.connect('clicked',
