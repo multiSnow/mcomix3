@@ -65,7 +65,7 @@ class WatchListDialog(gtk.Dialog):
         self.vbox.pack_start(main_box)
 
         self.resize(400, 350)
-        self.connect('response', lambda *args: self.destroy())
+        self.connect('response', self._close_cb)
         self.show_all()
 
     def get_selected_watchlist_entry(self):
@@ -172,6 +172,12 @@ class WatchListDialog(gtk.Dialog):
             text = backend_types.DefaultCollection.name
 
         cell.set_property("text", text)
+
+    def _close_cb(self, dialog, response, *args):
+        """ Trigger scan for new files after watch dialog closes. """
+        self.destroy()
+        if response == gtk.RESPONSE_CLOSE:
+            self.library.scan_for_new_files()
 
 
 # vim: expandtab:sw=4:ts=4
