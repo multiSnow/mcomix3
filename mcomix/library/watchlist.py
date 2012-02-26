@@ -3,9 +3,13 @@
 import gtk
 import gobject
 
+from mcomix.library import backend_types
+
+
 COL_DIRECTORY = 0
 COL_COLLECTION = 0
 COL_COLLECTION_ID = 1
+
 
 class WatchListDialog(gtk.Dialog):
     """ Dialog for managing watched directories. """
@@ -42,7 +46,19 @@ class WatchListDialog(gtk.Dialog):
                 self._treeview_collection_id_to_name)
         self._treeview.append_column(collection_column)
 
-        self.vbox.pack_start(self._treeview)
+        add_button = gtk.Button(_("_Add"), gtk.STOCK_ADD)
+        add_button.connect('clicked', self._add_cb)
+        remove_button = gtk.Button(_("_Remove"), gtk.STOCK_REMOVE)
+        remove_button.connect('clicked', self._remove_cb)
+
+        button_box = gtk.VBox()
+        button_box.pack_start(add_button, expand=False)
+        button_box.pack_start(remove_button, expand=False, padding=2)
+
+        main_box = gtk.HBox()
+        main_box.pack_start(self._treeview, padding=2)
+        main_box.pack_end(button_box, expand=False)
+        self.vbox.pack_start(main_box)
 
         self.resize(400, 350)
         self.connect('response', lambda *args: self.destroy())
@@ -52,11 +68,14 @@ class WatchListDialog(gtk.Dialog):
         """ Creates a model containing all watched directories. """
         # Watched directory, associated library collection ID
         model = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_INT)
-        collection_model = self._create_collection_model()
 
-        # FIXME: Add real data from database
-        model.append(("/home/user/data/", 1))
-        model.append(("/var/tmp", 1))
+        for entry in  self.library.backend.watchlist.get_watchlist():
+            if entry.collection.id is None:
+                id = -1
+            else:
+                id = entry.collection.id
+
+            model.append((entry.directory, id))
 
         return model
 
@@ -66,6 +85,7 @@ class WatchListDialog(gtk.Dialog):
         model = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_INT)
 
         ids = self.library.backend.get_all_collections()
+        model.append((backend_types.DefaultCollection.name, -1))
         for id in ids:
             model.append((self.library.backend.get_collection_name(id), id))
 
@@ -84,14 +104,23 @@ class WatchListDialog(gtk.Dialog):
 
         # TODO: Update database with new collection id
 
+    def _add_cb(self, button, *args):
+        """ Called when a new watch list entry should be added. """
+        pass
+
+    def _remove_cb(self, button, *args):
+        """ Called when a watch list entry should be removed. """
+        pass
+
     def _treeview_collection_id_to_name(self, column, cell, model, iter, *args):
         """ Maps a collection ID to the corresponding collection name. """
         id = model.get_value(iter, COL_COLLECTION_ID)
-        cell.set_property("text", self.library.backend.get_collection_name(id))
+        if id != -1:
+            text = self.library.backend.get_collection_name(id)
+        else:
+            text = backend_types.DefaultCollection.name
 
-class WatchList(object):
-    """ Scans watched directories and updates the database when new books have
-    been added. """
-    pass
+        cell.set_property("text", text)
+
 
 # vim: expandtab:sw=4:ts=4
