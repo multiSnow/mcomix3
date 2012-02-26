@@ -38,7 +38,7 @@ class _Book(_BackendObject):
 
 
 class _Collection(_BackendObject):
-    """ Library collection instance. 
+    """ Library collection instance.
     This class should NOT be instianted directly, but only with methods from
     L{LibraryBackend} instead. """
 
@@ -161,7 +161,7 @@ class _DefaultCollection(_Collection):
 
     def get_collections(self):
         """ Returns a list of all root collections. """
-        
+
         cursor = self.get_backend().execute('''SELECT id, name, supercollection
                 FROM collection
                 WHERE supercollection IS NULL
