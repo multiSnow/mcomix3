@@ -16,7 +16,8 @@ except ImportError:
         log.warning( _('! Could neither find pysqlite2 nor sqlite3.') )
         dbapi2 = None
 
-class LibraryBackend:
+
+class _LibraryBackend:
 
     """The LibraryBackend handles the storing and retrieval of library
     data to and from disk.
@@ -40,7 +41,7 @@ class LibraryBackend:
         self._con.row_factory = row_factory
 
         version = self._library_version()
-        self._upgrade_database(version, LibraryBackend.DB_VERSION)
+        self._upgrade_database(version, _LibraryBackend.DB_VERSION)
 
     def get_books_in_collection(self, collection=None, filter_string=None):
         """Return a sequence with all the books in <collection>, or *ALL*
@@ -428,7 +429,7 @@ class LibraryBackend:
                 self._create_table_watchlist()
 
             self._con.execute('''update info set value = ? where key = 'version' ''',
-                              (str(LibraryBackend.DB_VERSION),))
+                              (str(_LibraryBackend.DB_VERSION),))
 
     def _create_table_book(self):
         self._con.execute('''create table if not exists book (
@@ -458,12 +459,24 @@ class LibraryBackend:
             value text)''')
         self._con.execute('''insert into info
             (key, value) values ('version', ?)''',
-            (str(LibraryBackend.DB_VERSION),))
+            (str(_LibraryBackend.DB_VERSION),))
 
     def _create_table_watchlist(self):
         self._con.execute('''create table if not exists watchlist (
             path text primary key,
             collection integer references collection (id) on delete set null)''')
 
+
+_backend = None
+
+
+def LibraryBackend():
+    """ Returns the singleton instance of the library backend. """
+    global _backend
+    if _backend is not None:
+        return _backend
+    else:
+        _backend = _LibraryBackend()
+        return _backend
 
 # vim: expandtab:sw=4:ts=4
