@@ -38,7 +38,8 @@ class _LibraryBackend:
                 return row[0]
             return row
 
-        self._con = dbapi2.connect(constants.LIBRARY_DATABASE_PATH)
+        self._con = dbapi2.connect(constants.LIBRARY_DATABASE_PATH,
+            check_same_thread=False)
         self._con.row_factory = row_factory
 
         self.watchlist = backend_types._WatchList(self)
