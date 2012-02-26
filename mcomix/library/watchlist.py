@@ -1,5 +1,6 @@
 """ Library watch list dialog and backend classes. """
 
+import os
 import gtk
 import gobject
 
@@ -68,16 +69,18 @@ class WatchListDialog(gtk.Dialog):
         """ Creates a model containing all watched directories. """
         # Watched directory, associated library collection ID
         model = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_INT)
+        self._fill_model(model)
+        return model
 
-        for entry in  self.library.backend.watchlist.get_watchlist():
+    def _fill_model(self, model):
+        model.clear()
+        for entry in self.library.backend.watchlist.get_watchlist():
             if entry.collection.id is None:
                 id = -1
             else:
                 id = entry.collection.id
 
             model.append((entry.directory, id))
-
-        return model
 
     def _create_collection_model(self):
         """ Creates a model containing all available collections. """
@@ -106,7 +109,22 @@ class WatchListDialog(gtk.Dialog):
 
     def _add_cb(self, button, *args):
         """ Called when a new watch list entry should be added. """
-        pass
+        filechooser = gtk.FileChooserDialog(parent=self,
+            action=gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER,
+            buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
+                     gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
+        result = filechooser.run()
+        if filechooser.get_filename() is not None:
+            directory = filechooser.get_filename().decode('utf-8')
+        else:
+            directory = u""
+        filechooser.destroy()
+
+        if result == gtk.RESPONSE_ACCEPT \
+            and os.path.isdir(directory):
+
+            self.library.backend.watchlist.add_directory(directory)
+            self._fill_model(self._treeview.get_model())
 
     def _remove_cb(self, button, *args):
         """ Called when a watch list entry should be removed. """
