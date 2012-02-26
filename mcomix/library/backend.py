@@ -23,7 +23,8 @@ class LibraryBackend:
     """
 
     #: Current version of the library database structure.
-    DB_VERSION = 1
+    # See method _upgrade_database() for changes between versions.
+    DB_VERSION = 2
 
     def __init__(self):
 
@@ -399,6 +400,7 @@ class LibraryBackend:
         self._create_table_collection()
         self._create_table_contain()
         self._create_table_info()
+        self._create_table_watchlist()
 
     def _upgrade_database(self, from_version, to_version):
         """ Performs sequential upgrades to the database, bringing
@@ -412,19 +414,21 @@ class LibraryBackend:
 
         if from_version != to_version:
             upgrades = range(from_version, to_version)
+            log.info(_("Upgrading library database version from %(from)d to %(to)d."),
+                { "from" : from_version, "to" : to_version })
 
             if 0 in upgrades:
                 # Upgrade from Comix database structure to DB version 1
                 # (Added table 'info')
-                log.info(_("Upgrading library database version from %(from)d to %(to)d."),
-                    { "from" : from_version, "to" : to_version })
                 self._create_table_info()
 
             if 1 in upgrades:
                 # Upgrade to database structure version 2.
-                # (No changes yet, but for me to remember that this if statement
-                # must not be 'elif' to preserve sequential upgrade bahaviour.)
-                pass
+                # (Added table 'watchlist' for storing auto-add directories)
+                self._create_table_watchlist()
+
+            self._con.execute('''update info set value = ? where key = 'version' ''',
+                              (str(LibraryBackend.DB_VERSION),))
 
     def _create_table_book(self):
         self._con.execute('''create table if not exists book (
@@ -455,6 +459,11 @@ class LibraryBackend:
         self._con.execute('''insert into info
             (key, value) values ('version', ?)''',
             (str(LibraryBackend.DB_VERSION),))
+
+    def _create_table_watchlist(self):
+        self._con.execute('''create table if not exists watchlist (
+            path text primary key,
+            collection integer references collection (id) on delete set null)''')
 
 
 # vim: expandtab:sw=4:ts=4
