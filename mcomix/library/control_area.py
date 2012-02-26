@@ -9,6 +9,7 @@ import pango
 from mcomix import i18n
 from mcomix import labels
 from mcomix import strings
+from mcomix.library.watchlist import WatchListDialog
 
 # The "All books" collection is not a real collection stored in the library,
 # but is represented by this ID in the library's TreeModels.
@@ -83,6 +84,15 @@ class _ControlArea(gtk.HBox):
         # Last line of controls, containing buttons like 'Open'
         hbox = gtk.HBox(False, 10)
         vbox.pack_end(hbox, False, False)
+
+        watchlist_button = gtk.Button(_("_Watchlist"))
+        watchlist_button.set_image(
+            gtk.image_new_from_stock(gtk.STOCK_FIND, gtk.ICON_SIZE_BUTTON))
+        watchlist_button.connect('clicked',
+            lambda *args: WatchListDialog(self._library))
+        watchlist_button.set_tooltip_text(
+            _('Open the watchlist management dialog.'))
+        hbox.pack_start(watchlist_button, expand=False)
 
         self._open_button = gtk.Button(None, gtk.STOCK_OPEN)
         self._open_button.connect('clicked',
