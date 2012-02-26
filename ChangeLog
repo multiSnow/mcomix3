@@ -3,6 +3,10 @@ MComix 0.98
     - The last-read-page module now falls back to pysqlite2 if sqlite3 isn't
       available.
 
+    - The library can now scan directories for new files every time it is
+      started, and automatically add new books. Watched directories can be
+      edited with the "Watch list" button in the library main window.
+
 MComix 0.97.1
 Release date: 18.02.2012
 
