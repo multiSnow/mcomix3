@@ -239,5 +239,24 @@ class _WatchListEntry(_BackendObject):
         """ Check if the watched directory is a valid directory and exists. """
         return os.path.isdir(self.directory)
 
+    def remove(self):
+        """ Removes this entry from the watchlist, deleting its associated
+        path from the database. """
+        sql = """DELETE FROM watchlist WHERE path = ?"""
+        cursor = self.get_backend().execute(sql, (self.directory,))
+        cursor.close()
+
+        self.directory = u""
+        self.collection = None
+
+    def set_collection(self, new_collection):
+        """ Updates the collection associated with this watchlist entry. """
+        if new_collection != self.collection:
+            sql = """UPDATE watchlist SET collection = ? WHERE path = ?"""
+            cursor = self.get_backend().execute(sql,
+                    (new_collection.id, self.directory))
+            cursor.close()
+            self.collection = new_collection
+
 
 # vim: expandtab:sw=4:ts=4

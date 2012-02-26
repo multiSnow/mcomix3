@@ -30,9 +30,11 @@ class WatchListDialog(gtk.Dialog):
         # Initialize treeview control showing existing watch directories
         self._treeview = gtk.TreeView(self._create_model())
         self._treeview.set_headers_visible(True)
+        self._treeview.get_selection().connect('changed', self._item_selected_cb)
+
         dir_renderer = gtk.CellRendererText()
         dir_column = gtk.TreeViewColumn(_("Directory"), dir_renderer)
-        dir_column.set_attributes(dir_renderer, text=COL_DIRECTORY, editable=True)
+        dir_column.set_attributes(dir_renderer, text=COL_DIRECTORY)
         self._treeview.append_column(dir_column)
 
         collection_model = self._create_collection_model()
@@ -49,7 +51,8 @@ class WatchListDialog(gtk.Dialog):
 
         add_button = gtk.Button(_("_Add"), gtk.STOCK_ADD)
         add_button.connect('clicked', self._add_cb)
-        remove_button = gtk.Button(_("_Remove"), gtk.STOCK_REMOVE)
+        self._remove_button = remove_button = gtk.Button(_("_Remove"), gtk.STOCK_REMOVE)
+        remove_button.set_sensitive(False)
         remove_button.connect('clicked', self._remove_cb)
 
         button_box = gtk.VBox()
@@ -65,6 +68,21 @@ class WatchListDialog(gtk.Dialog):
         self.connect('response', lambda *args: self.destroy())
         self.show_all()
 
+    def get_selected_watchlist_entry(self):
+        """ Returns the selected watchlist entry, or C{None} if no
+        item is selected. """
+        selection = self._treeview.get_selection()
+
+        model, iter = selection.get_selected()
+        if iter is not None:
+            path = model.get_value(iter, COL_DIRECTORY)
+            collection_id = model.get_value(iter, COL_COLLECTION_ID)
+            collection = self.library.backend.get_collection_by_id(collection_id)
+
+            return backend_types._WatchListEntry(path, collection)
+        else:
+            return None
+
     def _create_model(self):
         """ Creates a model containing all watched directories. """
         # Watched directory, associated library collection ID
@@ -73,6 +91,7 @@ class WatchListDialog(gtk.Dialog):
         return model
 
     def _fill_model(self, model):
+        """ Empties the model's data and updates it from the database. """
         model.clear()
         for entry in self.library.backend.watchlist.get_watchlist():
             if entry.collection.id is None:
@@ -99,13 +118,15 @@ class WatchListDialog(gtk.Dialog):
         """ A new collection was set for a watched directory. """
         # Get new collection ID from collection model
         new_id = collection_model.get_value(collection_iter, COL_COLLECTION_ID)
+        collection = self.library.backend.get_collection_by_id(new_id)
+
+        # Update database
+        self.get_selected_watchlist_entry().set_collection(collection)
 
         # Update collection ID in watchlist model
         model = self._treeview.get_model()
         iter = model.get_iter(path)
         model.set_value(iter, COL_COLLECTION_ID, new_id)
-
-        # TODO: Update database with new collection id
 
     def _add_cb(self, button, *args):
         """ Called when a new watch list entry should be added. """
@@ -128,7 +149,19 @@ class WatchListDialog(gtk.Dialog):
 
     def _remove_cb(self, button, *args):
         """ Called when a watch list entry should be removed. """
-        pass
+        entry = self.get_selected_watchlist_entry()
+        if entry:
+            entry.remove()
+
+            # Remove selection from list
+            selection = self._treeview.get_selection()
+            model, iter = selection.get_selected()
+            model.remove(iter)
+
+    def _item_selected_cb(self, selection, *args):
+        """ Called when an item is selected. Enables or disables the "Remove"
+        button. """
+        self._remove_button.set_sensitive(selection.count_selected_rows() > 0)
 
     def _treeview_collection_id_to_name(self, column, cell, model, iter, *args):
         """ Maps a collection ID to the corresponding collection name. """
