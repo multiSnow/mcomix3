@@ -18,6 +18,7 @@ from mcomix import portability
 from mcomix import callback
 from mcomix import i18n
 from mcomix import status
+from mcomix import log
 from mcomix.library.pixbuf_cache import get_pixbuf_cache
 
 _dialog = None
@@ -212,7 +213,7 @@ class _BookArea(gtk.ScrolledWindow):
 
             # Fill the liststore with a filler pixbuf.
             iter = self._liststore.append([filler,
-                book.id, book.path, book.size, book.added])
+                book.id, book.path.encode('utf-8'), book.size, book.added])
 
         # Sort the list store based on preferences.
         if prefs['lib sort order'] == constants.SORT_ASCENDING:
@@ -317,8 +318,8 @@ class _BookArea(gtk.ScrolledWindow):
     def _sort_by_name(self, treemodel, iter1, iter2, user_data):
         """ Compares two books based on their file name without the
         path component. """
-        path1 = self._liststore.get_value(iter1, 2)
-        path2 = self._liststore.get_value(iter2, 2)
+        path1 = self._liststore.get_value(iter1, 2).decode('utf-8')
+        path2 = self._liststore.get_value(iter2, 2).decode('utf-8')
 
         # Catch None values from liststore
         if path1 is None:
@@ -384,14 +385,6 @@ class _BookArea(gtk.ScrolledWindow):
             self._cache.invalidate_all()
             collection = self._library.collection_area.get_current_collection()
             gobject.idle_add(self.display_covers, collection)
-
-    def _add_book(self, book):
-        """Add the <book> to the ListStore (and thus to the _BookArea)."""
-        path = self._library.backend.get_book_path(book)
-
-        if path:
-            pixbuf = self._get_pixbuf(path)
-            self._liststore.append([pixbuf, book])
 
     def _pixbuf_worker(self, books):
         """ Run by a worker thread to generate the thumbnail for a list
@@ -557,7 +550,8 @@ class _BookArea(gtk.ScrolledWindow):
     def _popup_book_menu(self):
         """ Shows the book panel popup menu. """
 
-        books_selected = len(self._iconview.get_selected_items()) > 0
+        selected = self._iconview.get_selected_items()
+        books_selected = len(selected) > 0
         collection = self._library.collection_area.get_current_collection()
         is_collection_all = collection == _COLLECTION_ALL
 
