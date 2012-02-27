@@ -25,12 +25,11 @@ class _ControlArea(gtk.HBox):
 
         search_entry = gtk.Entry()
         label.set_mnemonic_widget(search_entry)
-        search_entry.set_size_request(400, -1)
         search_entry.connect('activate', self._filter_books)
         search_entry.set_tooltip_text(
             _('Display only those books that have the specified text string in'
               ' their full path. The search is not case sensitive.'))
-        self.pack_start(search_entry, expand=False)
+        self.pack_start(search_entry, expand=True)
 
         self._open_button = gtk.Button(None, gtk.STOCK_OPEN)
         self._open_button.connect('clicked',
