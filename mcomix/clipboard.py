@@ -8,6 +8,7 @@ import sys
 from mcomix import log
 from mcomix import image_tools
 
+
 class Clipboard(gtk.Clipboard):
 
     """The Clipboard takes care of all necessary copy-paste functionality
@@ -18,7 +19,15 @@ class Clipboard(gtk.Clipboard):
         gtk.Clipboard.__init__(self, display=gtk.gdk.display_get_default(),
             selection="CLIPBOARD")
 
+    def copy(self, text, pixbuf):
+        """ Copies C{text} and C{pixbuf} to clipboard. """
+        if sys.platform == 'win32':
+            self._copy_windows(pixbuf, text)
+        else:
+            self._copy_linux(pixbuf, text.encode('utf-8'))
+
     def copy_page(self, *args):
+        """ Copies the currently opened page and pixbuf to clipboard. """
 
         if self._window.filehandler.file_loaded:
             # Get pixbuf for current page
@@ -34,10 +43,7 @@ class Clipboard(gtk.Clipboard):
 
             # Get path for current page
             path = self._window.imagehandler.get_path_to_page()
-            if sys.platform == 'win32':
-                self._copy_windows(pixbuf, path)
-            else:
-                self._copy_linux(pixbuf, path.encode('utf-8'))
+            self.copy(path, pixbuf)
 
     def _copy_windows(self, pixbuf, path):
         """ Copies pixbuf and path to the clipboard.
@@ -57,7 +63,7 @@ class Clipboard(gtk.Clipboard):
             """ Creates a memory handle for the passed data.
             This handle doesn't need to be freed by the application. """
             global_mem = GlobalAlloc(
-                0x0042, # GMEM_MOVEABLE | GMEM_ZEROINIT
+                0x0042,  # GMEM_MOVEABLE | GMEM_ZEROINIT
                 buffer_size)
             lock = GlobalLock(global_mem)
             ctypes.memmove(lock, ctypes.addressof(buffer), buffer_size)
@@ -83,9 +89,9 @@ class Clipboard(gtk.Clipboard):
         # Actually copy data to clipboard
         if OpenClipboard(self._window.window.handle):
             EmptyClipboard()
-            SetClipboardData(13, # CF_UNICODETEXT
+            SetClipboardData(13,  # CF_UNICODETEXT
                 text_handle)
-            SetClipboardData(8, # CF_DIB
+            SetClipboardData(8,  # CF_DIB
                 image_handle)
             CloseClipboard()
         else:
