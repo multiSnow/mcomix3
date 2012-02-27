@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: comix 4.0.1\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2012-02-26 14:57+0100\n"
+"POT-Creation-Date: 2012-02-27 17:30+0100\n"
 "PO-Revision-Date: 2008-12-13 18:00+0100\n"
 "Last-Translator: Adrian C. <anrxc@sysphere.org>\n"
 "Language-Team: Croatian\n"
@@ -1257,7 +1257,7 @@ msgstr ""
 msgid "File name"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:462 mcomix/library/book_area.py:147
+#: mcomix/preferences_dialog.py:462 mcomix/library/book_area.py:149
 msgid "File size"
 msgstr ""
 
@@ -1265,11 +1265,11 @@ msgstr ""
 msgid "Last modified"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:469 mcomix/library/book_area.py:150
+#: mcomix/preferences_dialog.py:469 mcomix/library/book_area.py:153
 msgid "Ascending"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:470 mcomix/library/book_area.py:152
+#: mcomix/preferences_dialog.py:470 mcomix/library/book_area.py:155
 msgid "Descending"
 msgstr ""
 
@@ -1720,7 +1720,7 @@ msgstr ""
 msgid "Icon design"
 msgstr "Dizajn ikona"
 
-#: mcomix/thumbnail_tools.py:110 mcomix/library/book_area.py:540
+#: mcomix/thumbnail_tools.py:110 mcomix/library/book_area.py:539
 #, python-format
 msgid "! Could not remove file \"%s\""
 msgstr ""
@@ -2253,120 +2253,124 @@ msgstr ""
 msgid "All books"
 msgstr "Sve knjige"
 
-#: mcomix/library/book_area.py:114
+#: mcomix/library/book_area.py:116
 msgid "Library books"
 msgstr ""
 
-#: mcomix/library/book_area.py:116
+#: mcomix/library/book_area.py:118
 msgid "_Open"
 msgstr ""
 
-#: mcomix/library/book_area.py:117
+#: mcomix/library/book_area.py:119
 msgid "Opens the selected books for viewing."
 msgstr ""
 
-#: mcomix/library/book_area.py:120
+#: mcomix/library/book_area.py:122
 msgid "Open _without closing library"
 msgstr ""
 
-#: mcomix/library/book_area.py:121
+#: mcomix/library/book_area.py:123
 msgid "Opens the selected books, but keeps the library window open."
 msgstr ""
 
-#: mcomix/library/book_area.py:123 mcomix/library/collection_area.py:75
+#: mcomix/library/book_area.py:125 mcomix/library/collection_area.py:75
 msgid "_Add..."
 msgstr ""
 
 #
 # File: src/library.py, line: 793
-#: mcomix/library/book_area.py:124 mcomix/library/collection_area.py:76
+#: mcomix/library/book_area.py:126 mcomix/library/collection_area.py:76
 msgid "Add more books to the library."
 msgstr "Dodaj još knjiga u biblioteku."
 
-#: mcomix/library/book_area.py:127
+#: mcomix/library/book_area.py:129
 msgid "Remove from this _collection"
 msgstr ""
 
-#: mcomix/library/book_area.py:128
+#: mcomix/library/book_area.py:130
 msgid "Removes the selected books from the current collection."
 msgstr ""
 
-#: mcomix/library/book_area.py:131
+#: mcomix/library/book_area.py:133
 msgid "Remove from the _library"
 msgstr ""
 
-#: mcomix/library/book_area.py:132
+#: mcomix/library/book_area.py:134
 msgid "Completely removes the selected books from the library."
 msgstr ""
 
-#: mcomix/library/book_area.py:135
+#: mcomix/library/book_area.py:137
 msgid "_Remove and delete from disk"
 msgstr ""
 
-#: mcomix/library/book_area.py:136
+#: mcomix/library/book_area.py:138
 msgid "Deletes the selected books from disk."
 msgstr ""
 
-#: mcomix/library/book_area.py:138
+#: mcomix/library/book_area.py:140
 msgid "_Sort"
 msgstr ""
 
-#: mcomix/library/book_area.py:139
+#: mcomix/library/book_area.py:141
 msgid "Changes the sort order of the library."
 msgstr ""
 
-#: mcomix/library/book_area.py:140
+#: mcomix/library/book_area.py:142
 msgid "Cover si_ze"
 msgstr ""
 
-#: mcomix/library/book_area.py:141
+#: mcomix/library/book_area.py:143
 msgid "Changes the book cover size."
 msgstr ""
 
-#: mcomix/library/book_area.py:145
+#: mcomix/library/book_area.py:147
 msgid "Book name"
 msgstr ""
 
-#: mcomix/library/book_area.py:146
+#: mcomix/library/book_area.py:148
 msgid "Full path"
 msgstr ""
 
-#: mcomix/library/book_area.py:158
+#: mcomix/library/book_area.py:150
+msgid "Date added"
+msgstr ""
+
+#: mcomix/library/book_area.py:161
 msgid "Huge"
 msgstr ""
 
-#: mcomix/library/book_area.py:160
+#: mcomix/library/book_area.py:163
 msgid "Large"
 msgstr ""
 
-#: mcomix/library/book_area.py:162
+#: mcomix/library/book_area.py:165
 msgid "Normal"
 msgstr ""
 
-#: mcomix/library/book_area.py:164
+#: mcomix/library/book_area.py:167
 msgid "Small"
 msgstr ""
 
-#: mcomix/library/book_area.py:166
+#: mcomix/library/book_area.py:169
 msgid "Tiny"
 msgstr ""
 
-#: mcomix/library/book_area.py:168
+#: mcomix/library/book_area.py:171
 msgid "Custom..."
 msgstr ""
 
-#: mcomix/library/book_area.py:359
+#: mcomix/library/book_area.py:358
 msgid "Set library cover size"
 msgstr ""
 
 #
 # File: src/library.py, line: 588
-#: mcomix/library/book_area.py:479
+#: mcomix/library/book_area.py:478
 #, python-format
 msgid "Removed %(num)d book(s) from '%(collection)s'."
 msgstr "Obrisano %(num)d knjiga iz '%(collection)s'."
 
-#: mcomix/library/book_area.py:495 mcomix/library/collection_area.py:189
+#: mcomix/library/book_area.py:494 mcomix/library/collection_area.py:189
 #, python-format
 msgid "Removed %d book from the library."
 msgid_plural "Removed %d books from the library."
@@ -2376,13 +2380,13 @@ msgstr[2] ""
 
 #
 # File: src/library.py, line: 597
-#: mcomix/library/book_area.py:510
+#: mcomix/library/book_area.py:509
 msgid "Remove books from the library?"
 msgstr "Obrisati knjige iz biblioteke?"
 
 #
 # File: src/library.py, line: 599
-#: mcomix/library/book_area.py:514
+#: mcomix/library/book_area.py:513
 #, fuzzy
 msgid ""
 "The selected books will be removed from the library and permanently deleted. "
