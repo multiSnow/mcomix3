@@ -23,7 +23,10 @@ class WatchListDialog(gtk.Dialog):
             library, gtk.DIALOG_DESTROY_WITH_PARENT | gtk.DIALOG_MODAL,
             (gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE))
 
+        #: Stores a reference to the library
         self.library = library
+        #: True if changes were made to the watchlist. Not 100% accurate.
+        self._changed = False
 
         self.set_default_response(gtk.RESPONSE_CLOSE)
 
@@ -131,6 +134,8 @@ class WatchListDialog(gtk.Dialog):
         iter = model.get_iter(path)
         model.set_value(iter, COL_COLLECTION_ID, new_id)
 
+        self._changed = True
+
     def _add_cb(self, button, *args):
         """ Called when a new watch list entry should be added. """
         filechooser = gtk.FileChooserDialog(parent=self,
@@ -149,6 +154,8 @@ class WatchListDialog(gtk.Dialog):
 
             self.library.backend.watchlist.add_directory(directory)
             self._fill_model(self._treeview.get_model())
+
+            self._changed = True
 
     def _remove_cb(self, button, *args):
         """ Called when a watch list entry should be removed. """
@@ -179,7 +186,7 @@ class WatchListDialog(gtk.Dialog):
     def _close_cb(self, dialog, response, *args):
         """ Trigger scan for new files after watch dialog closes. """
         self.destroy()
-        if response == gtk.RESPONSE_CLOSE:
+        if response == gtk.RESPONSE_CLOSE and self._changed:
             self.library.scan_for_new_files()
 
 
