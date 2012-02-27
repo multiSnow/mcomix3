@@ -44,14 +44,8 @@ class _ControlArea(gtk.HBox):
         self._namelabel = labels.BoldLabel()
         self._namelabel.set_alignment(0, 0.5)
         self._namelabel.set_selectable(True)
-        self._namelabel.set_line_wrap(True)
-        self._namelabel.set_line_wrap_mode(pango.WRAP_CHAR)
+        self._namelabel.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
         infobox.pack_start(self._namelabel, False, False)
-
-        self._pageslabel = gtk.Label()
-        self._pageslabel.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
-        self._pageslabel.set_alignment(0, 0.5)
-        infobox.pack_start(self._pageslabel, False, False)
 
         self._filelabel = gtk.Label()
         self._filelabel.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
@@ -107,12 +101,10 @@ class _ControlArea(gtk.HBox):
         """
 
         if selected:
-
             book = self._library.book_area.get_book_at_path(selected[0])
             name = self._library.backend.get_book_name(book)
             dir_path = os.path.dirname(
                 self._library.backend.get_book_path(book))
-            format = self._library.backend.get_book_format(book)
             pages = self._library.backend.get_book_pages(book)
             size = self._library.backend.get_book_size(book)
 
@@ -131,14 +123,10 @@ class _ControlArea(gtk.HBox):
             self._namelabel.set_text('')
             self._namelabel.set_has_tooltip(False)
 
-        if pages is not None:
-            self._pageslabel.set_text(_('%d pages') % pages)
-        else:
-            self._pageslabel.set_text('')
-
-        if format is not None and size is not None:
-            self._filelabel.set_text('%s, %s' % (strings.ARCHIVE_DESCRIPTIONS[format],
-                '%.1f MiB' % (size / 1048576.0)))
+        if pages is not None and size is not None:
+            text = '%s, %s' % (_('%d pages') % pages,
+                '%.1f MiB' % (size / 1048576.0))
+            self._filelabel.set_text(text)
         else:
             self._filelabel.set_text('')
 
