@@ -206,10 +206,9 @@ class ThumbnailSidebar(gtk.HBox):
             thumbnails_needed.put(page)
 
         # Start worker threads
-        thread_count = 3
         self._cache_threads = [
             threading.Thread(target=self.cache_thumbnails, args=(thumbnails_needed,))
-            for _ in range(thread_count) ]
+            for _ in range(prefs['max threads']) ]
 
         for thread in self._cache_threads:
             thread.setDaemon(True)

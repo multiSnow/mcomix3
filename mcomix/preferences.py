@@ -84,7 +84,8 @@ prefs = {
     'lib sort order': constants.SORT_ASCENDING,
     'language': 'auto',
     'statusbar fields': constants.STATUS_PAGE | constants.STATUS_RESOLUTION | \
-                        constants.STATUS_PATH | constants.STATUS_FILENAME
+                        constants.STATUS_PATH | constants.STATUS_FILENAME,
+    'max threads': 3
 }
 
 def read_preferences_file():

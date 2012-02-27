@@ -234,7 +234,7 @@ class _BookArea(gtk.ScrolledWindow):
 
         # Start the thumbnail threads.
         self._thumbnail_threads = [ threading.Thread(target=self._pixbuf_worker,
-            args=(book_queue,)) for _ in range(3) ]
+            args=(book_queue,)) for _ in range(prefs['max threads']) ]
         for thread in self._thumbnail_threads:
             thread.setDaemon(True)
             thread.start()
