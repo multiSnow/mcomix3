@@ -53,6 +53,7 @@ class _BookArea(gtk.ScrolledWindow):
                 gobject.TYPE_INT, gobject.TYPE_STRING, gobject.TYPE_INT64,
                 gobject.TYPE_STRING, gobject.TYPE_STRING)
         self._liststore.set_sort_func(constants.SORT_NAME, self._sort_by_name, None)
+        self._liststore.connect('row-inserted', self._icon_added)
         self._iconview = gtk.IconView(self._liststore)
         self._iconview.set_pixbuf_column(0)
         self._iconview.set_tooltip_column(5)
@@ -348,6 +349,14 @@ class _BookArea(gtk.ScrolledWindow):
                 return -1
             else:
                 return 1
+
+    def _icon_added(self, model, path, iter, *args):
+        """ Justifies the alignment of all cell renderers when new data is
+        added to the model. """
+        # FIXME Setting the alignment for all cells each time something
+        # is added seems rather wasteful. Find better way to do this.
+        for cell in self._iconview.get_cells():
+            cell.set_alignment(0.5, 0.5)
 
     def _book_size_changed(self, old, current):
         """ Called when library cover size changes. """
