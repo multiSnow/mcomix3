@@ -42,11 +42,12 @@ class _BookArea(gtk.ScrolledWindow):
 
         self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
 
-        # Store Cover, book ID, book path, book size
+        # Store Cover, book ID, book path, book size, date added to library
         # The SORT_ constants must correspond to the correct column here,
         # i.e. SORT_SIZE must be 3, since 3 is the size column in the ListStore.
         self._liststore = gtk.ListStore(gtk.gdk.Pixbuf,
-                gobject.TYPE_INT, gobject.TYPE_STRING, gobject.TYPE_INT64)
+                gobject.TYPE_INT, gobject.TYPE_STRING, gobject.TYPE_INT64,
+                gobject.TYPE_STRING)
         self._liststore.set_sort_func(constants.SORT_NAME, self._sort_by_name, None)
         self._iconview = gtk.IconView(self._liststore)
         self._iconview.set_pixbuf_column(0)
@@ -90,6 +91,7 @@ class _BookArea(gtk.ScrolledWindow):
                     <menuitem action="by name" />
                     <menuitem action="by path" />
                     <menuitem action="by size" />
+                    <menuitem action="by date added" />
                     <separator />
                     <menuitem action="ascending" />
                     <menuitem action="descending" />
@@ -144,7 +146,8 @@ class _BookArea(gtk.ScrolledWindow):
         actiongroup.add_radio_actions([
             ('by name', None, _('Book name'), None, None, constants.SORT_NAME),
             ('by path', None, _('Full path'), None, None, constants.SORT_PATH),
-            ('by size', None, _('File size'), None, None, constants.SORT_SIZE)],
+            ('by size', None, _('File size'), None, None, constants.SORT_SIZE),
+            ('by date added', None, _('Date added'), None, None, constants.SORT_LAST_MODIFIED)],
             prefs['lib sort key'], self._sort_changed)
         actiongroup.add_radio_actions([
             ('ascending', gtk.STOCK_SORT_ASCENDING, _('Ascending'), None, None,
@@ -188,8 +191,8 @@ class _BookArea(gtk.ScrolledWindow):
         # order to not leak memory.
         self._liststore.clear()
 
-    def display_covers(self, collection):
-        """Display the books in <collection> in the IconView."""
+    def display_covers(self, collection_id):
+        """Display the books in <collection_id> in the IconView."""
 
         adjustment = self.get_vadjustment()
         if adjustment:
@@ -198,24 +201,18 @@ class _BookArea(gtk.ScrolledWindow):
         self.stop_update()
         self._liststore.clear()
 
-        if collection == _COLLECTION_ALL: # The "All" collection is virtual.
-            collection = None
+        collection = self._library.backend.get_collection_by_id(collection_id)
 
         # Get all books that need to be added.
         # This cannot be executed threaded due to SQLite connections
         # being bound to the thread that created them.
-        books = self._library.backend.get_books_in_collection(
-          collection, self._library.filter_string)
-        book_paths = [ self._library.backend.get_book_path(book)
-            for book in books ]
-        book_sizes = [ self._library.backend.get_book_size(book)
-            for book in books ]
-
+        books = collection.get_books(self._library.filter_string)
         filler = self._get_empty_thumbnail()
-        for book, path, size in itertools.izip(books, book_paths, book_sizes):
+        for book in books:
 
             # Fill the liststore with a filler pixbuf.
-            iter = self._liststore.append([filler, book, path, size])
+            iter = self._liststore.append([filler,
+                book.id, book.path, book.size, book.added])
 
         # Sort the list store based on preferences.
         if prefs['lib sort order'] == constants.SORT_ASCENDING:
@@ -302,6 +299,8 @@ class _BookArea(gtk.ScrolledWindow):
             prefs['lib sort key'] = constants.SORT_PATH
         elif name == 'by size':
             prefs['lib sort key'] = constants.SORT_SIZE
+        elif name == 'by date added':
+            prefs['lib sort key'] = constants.SORT_LAST_MODIFIED
 
         if name == 'ascending':
             prefs['lib sort order'] = constants.SORT_ASCENDING

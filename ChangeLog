@@ -7,6 +7,10 @@ MComix 0.98
       started, and automatically add new books. Watched directories can be
       edited with the "Watch list" button in the library main window.
 
+    - Added "Date added" to library sort criteriae. This might be slightly
+      inaccurate for older library entries, as only the day, not the time of
+      the moment a book was added used to be stored in the library database.
+
 MComix 0.97.1
 Release date: 18.02.2012
 
