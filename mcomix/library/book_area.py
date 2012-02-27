@@ -88,6 +88,8 @@ class _BookArea(gtk.ScrolledWindow):
                 <menuitem action="remove from library" />
                 <menuitem action="completely remove" />
                 <separator />
+                <menuitem action="copy to clipboard" />
+                <separator />
                 <menu action="sort">
                     <menuitem action="by name" />
                     <menuitem action="by path" />
@@ -138,6 +140,10 @@ class _BookArea(gtk.ScrolledWindow):
                 _('_Remove and delete from disk'), None,
                 _('Deletes the selected books from disk.'),
                 self._completely_remove_book),
+            ('copy to clipboard', gtk.STOCK_COPY,
+                _('_Copy'), None,
+                _('Copies the selected book\'s path to clipboard.'),
+                self._copy_selected),
             ('sort', None, _('_Sort'), None,
                 _('Changes the sort order of the library.'), None),
             ('cover size', None, _('Cover si_ze'), None,
@@ -529,7 +535,18 @@ class _BookArea(gtk.ScrolledWindow):
                     # of a single file
                     os.remove(book_path)
                 except Exception:
-                    print _('! Could not remove file "%s"') % book_path
+                    log.error(_('! Could not remove file "%s"') % book_path)
+
+    def _copy_selected(self, *args):
+        """ Copies the currently selected item to clipboard. """
+        paths = self._iconview.get_selected_items()
+        if len(paths) == 1:
+            model = self._iconview.get_model()
+            iter = model.get_iter(paths[0])
+            path = model.get_value(iter, 2).decode('utf-8')
+            pixbuf = model.get_value(iter, 0)
+
+            self._library._window.clipboard.copy(path, pixbuf)
 
     def _button_press(self, iconview, event):
         """Handle mouse button presses on the _BookArea."""
@@ -561,6 +578,7 @@ class _BookArea(gtk.ScrolledWindow):
         self._set_sensitive('_title', False)
         self._set_sensitive('add', collection is not None)
         self._set_sensitive('remove from collection', books_selected and not is_collection_all)
+        self._set_sensitive('copy to clipboard', len(selected) == 1)
 
         menu = self._ui_manager.get_widget('/library books')
         menu.popup(None, None, None, 3, gtk.get_current_event_time())
