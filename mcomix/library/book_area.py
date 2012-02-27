@@ -330,8 +330,8 @@ class _BookArea(gtk.ScrolledWindow):
     def _sort_by_name(self, treemodel, iter1, iter2, user_data):
         """ Compares two books based on their file name without the
         path component. """
-        path1 = self._liststore.get_value(iter1, 2).decode('utf-8')
-        path2 = self._liststore.get_value(iter2, 2).decode('utf-8')
+        path1 = self._liststore.get_value(iter1, 2)
+        path2 = self._liststore.get_value(iter2, 2)
 
         # Catch None values from liststore
         if path1 is None:
@@ -339,8 +339,8 @@ class _BookArea(gtk.ScrolledWindow):
         elif path2 is None:
             return -1
 
-        name1 = os.path.split(path1)[1].lower()
-        name2 = os.path.split(path2)[1].lower()
+        name1 = os.path.split(path1.decode('utf-8'))[1].lower()
+        name2 = os.path.split(path2.decode('utf-8'))[1].lower()
 
         if name1 == name2:
             return 0
