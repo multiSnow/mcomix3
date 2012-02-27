@@ -690,13 +690,14 @@ class _BookArea(gtk.ScrolledWindow):
     def _format_tooltip_text(self, book):
         """ Returns a string suitable for a tooltip window for C{book}. """
 
-        name = "<b>%s</b>" % "\n".join(textwrap.wrap(book.name.encode('utf-8')))
+        name = "<b>%s</b>" % "\n".join(textwrap.wrap(book.name))
         pages = _('%d pages') % book.pages
-        archive = '%s, %s' % (strings.ARCHIVE_DESCRIPTIONS[book.format],
-                '%.1f MiB' % (book.size / 1048576.0))
-        directory = os.path.dirname(book.path).encode('utf-8')
+        archive = u'%s, %s' % (strings.ARCHIVE_DESCRIPTIONS[book.format],
+                u'%.1f MiB' % (book.size / 1048576.0))
+        directory = os.path.dirname(book.path)
 
-        return "\n".join([name, pages, archive, directory])
+        tooltip = u"\n".join([name, pages, archive, directory])
+        return tooltip.encode('utf-8')
 
 class IterWrapper(object):
     """ This is a security wrapper for TreeIterator that gets notified when an
