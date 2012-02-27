@@ -4,7 +4,7 @@ import os
 import urllib
 import Queue
 import threading
-import textwrap
+import itertools
 import gtk
 import gobject
 import Image
@@ -14,7 +14,6 @@ from mcomix.preferences import prefs
 from mcomix import file_chooser_library_dialog
 from mcomix import image_tools
 from mcomix import constants
-from mcomix import strings
 from mcomix import portability
 from mcomix import callback
 from mcomix import i18n
@@ -44,19 +43,16 @@ class _BookArea(gtk.ScrolledWindow):
 
         self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
 
-        # Store Cover, book ID, book path, book size, date added to library,
-        # and book tooltip text.
-
+        # Store Cover, book ID, book path, book size, date added to library
         # The SORT_ constants must correspond to the correct column here,
         # i.e. SORT_SIZE must be 3, since 3 is the size column in the ListStore.
         self._liststore = gtk.ListStore(gtk.gdk.Pixbuf,
                 gobject.TYPE_INT, gobject.TYPE_STRING, gobject.TYPE_INT64,
-                gobject.TYPE_STRING, gobject.TYPE_STRING)
+                gobject.TYPE_STRING)
         self._liststore.set_sort_func(constants.SORT_NAME, self._sort_by_name, None)
         self._liststore.connect('row-inserted', self._icon_added)
         self._iconview = gtk.IconView(self._liststore)
         self._iconview.set_pixbuf_column(0)
-        self._iconview.set_tooltip_column(5)
         self._iconview.connect('item_activated', self._book_activated)
         self._iconview.connect('selection_changed', self._selection_changed)
         self._iconview.connect_after('drag_begin', self._drag_begin)
@@ -224,8 +220,7 @@ class _BookArea(gtk.ScrolledWindow):
 
             # Fill the liststore with a filler pixbuf.
             iter = self._liststore.append([filler,
-                book.id, book.path.encode('utf-8'), book.size, book.added,
-                self._format_tooltip_text(book)])
+                book.id, book.path.encode('utf-8'), book.size, book.added])
 
         # Sort the list store based on preferences.
         if prefs['lib sort order'] == constants.SORT_ASCENDING:
@@ -696,17 +691,6 @@ class _BookArea(gtk.ScrolledWindow):
         the invalid iterator. """
         pass
 
-    def _format_tooltip_text(self, book):
-        """ Returns a string suitable for a tooltip window for C{book}. """
-
-        name = "<b>%s</b>" % "\n".join(textwrap.wrap(book.name))
-        pages = _('%d pages') % book.pages
-        archive = u'%s, %s' % (strings.ARCHIVE_DESCRIPTIONS[book.format],
-                u'%.1f MiB' % (book.size / 1048576.0))
-        directory = os.path.dirname(book.path)
-
-        tooltip = u"\n".join([name, pages, archive, directory])
-        return tooltip.encode('utf-8')
 
 class IterWrapper(object):
     """ This is a security wrapper for TreeIterator that gets notified when an

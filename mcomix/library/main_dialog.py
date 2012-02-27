@@ -47,11 +47,11 @@ class _LibraryDialog(gtk.Window):
         self.backend.watchlist.new_files_found += self._new_files_found
 
         table = gtk.Table(2, 2, False)
-        table.attach(self.collection_area, 0, 1, 0, 2, gtk.FILL,
+        table.attach(self.collection_area, 0, 1, 0, 1, gtk.FILL,
             gtk.EXPAND|gtk.FILL)
         table.attach(self.book_area, 1, 2, 0, 1, gtk.EXPAND|gtk.FILL,
             gtk.EXPAND|gtk.FILL)
-        table.attach(self.control_area, 1, 2, 1, 2, gtk.EXPAND|gtk.FILL,
+        table.attach(self.control_area, 0, 2, 1, 2, gtk.EXPAND|gtk.FILL,
             gtk.FILL)
 
         if prefs['show statusbar']:
