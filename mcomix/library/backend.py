@@ -26,7 +26,7 @@ class _LibraryBackend:
 
     #: Current version of the library database structure.
     # See method _upgrade_database() for changes between versions.
-    DB_VERSION = 2
+    DB_VERSION = 3
 
     def __init__(self):
 
@@ -467,6 +467,17 @@ class _LibraryBackend:
                 # (Added table 'watchlist' for storing auto-add directories)
                 self._create_table_watchlist()
 
+            if 2 in upgrades:
+                # Changed 'added' field in 'book' from date to datetime.
+                self._con.execute('''alter table book rename to book_old''')
+                self._create_table_book()
+                self._con.execute('''insert into book
+                    (id, name, path, pages, format, size, added)
+                    select id, name, path, pages, format, size, datetime(added)
+                    from book_old''')
+                self._con.execute('''drop table book_old''')
+
+
             self._con.execute('''update info set value = ? where key = 'version' ''',
                               (str(_LibraryBackend.DB_VERSION),))
 
@@ -478,7 +489,7 @@ class _LibraryBackend:
             pages integer,
             format integer,
             size integer,
-            added date default current_date)''')
+            added datetime default current_timestamp)''')
 
     def _create_table_collection(self):
         self._con.execute('''create table if not exists collection (
