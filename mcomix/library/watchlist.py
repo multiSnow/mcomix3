@@ -60,7 +60,10 @@ class WatchListDialog(gtk.Dialog):
         button_box.pack_start(remove_button, expand=False, padding=2)
 
         main_box = gtk.HBox()
-        main_box.pack_start(self._treeview, padding=2)
+        scroll_window = gtk.ScrolledWindow()
+        scroll_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        scroll_window.add(self._treeview)
+        main_box.pack_start(scroll_window, padding=2)
         main_box.pack_end(button_box, expand=False)
         self.vbox.pack_start(main_box)
 
