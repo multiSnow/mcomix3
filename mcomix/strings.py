@@ -43,6 +43,7 @@ TRANSLATORS = (
             ('Wayne Su', _('Traditional Chinese translation')),
             ('Mamoru Tasaka', _('Japanese translation')),
             ('Keita Haga', _('Japanese translation')),
+            ('Toshiharu Kudoh', _('Japanese translation')),
             ('Ernő Drabik', _('Hungarian translation')),
             ('Artyom Smirnov', _('Russian translation')),
             ('Евгений Лежнин', _('Russian translation')),
