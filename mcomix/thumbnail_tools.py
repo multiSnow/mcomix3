@@ -235,7 +235,11 @@ class Thumbnailer(object):
 
             if os.path.isfile(thumbpath):
                 # Check the thumbnail's stored mTime
-                img = Image.open(thumbpath)
+                try:
+                    img = Image.open(thumbpath)
+                except IOError:
+                    return False
+
                 info = img.info
                 stored_mtime = long(info['Thumb::MTime'])
                 # The source file might no longer exist
