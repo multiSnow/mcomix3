@@ -133,7 +133,7 @@ class _LibraryDialog(gtk.Window):
         books should be put in.
         """
         if collection_name is None:
-            collection = self.collection_area.get_current_collection()
+            collection_id = self.collection_area.get_current_collection()
         else:
             collection = self.backend.get_collection_by_name(collection_name)
 
@@ -142,10 +142,12 @@ class _LibraryDialog(gtk.Window):
                 collection = self.backend.get_collection_by_name(
                     collection_name)
 
-        library_add_progress_dialog._AddLibraryProgressDialog(self, self._window, paths, collection.id)
+            collection_id = collection.id
 
-        if collection is not None:
-            prefs['last library collection'] = collection.id
+        library_add_progress_dialog._AddLibraryProgressDialog(self, self._window, paths, collection_id)
+
+        if collection_id is not None:
+            prefs['last library collection'] = collection_id
 
         self.collection_area.display_collections()
 
