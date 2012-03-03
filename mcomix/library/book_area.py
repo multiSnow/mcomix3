@@ -1,16 +1,14 @@
 """library_book_area.py - The window of the library that displays the covers of books."""
 
 import os
-import operator
 import urllib
-import Queue
-import threading
 import gtk
 import gobject
 import Image
 import ImageDraw
 
 from mcomix.preferences import prefs
+from mcomix import thumbnail_view
 from mcomix import file_chooser_library_dialog
 from mcomix import image_tools
 from mcomix import constants
@@ -38,9 +36,6 @@ class _BookArea(gtk.ScrolledWindow):
 
         self._library = library
         self._cache = get_pixbuf_cache()
-        self._stop_update = False
-        self._thumbnail_threads = []
-        self._requested_thumbnail_queue = Queue.Queue()
 
         self._library.backend.book_added += self._new_book_added
 
@@ -57,8 +52,12 @@ class _BookArea(gtk.ScrolledWindow):
         self._liststore.set_sort_func(constants.SORT_NAME, self._sort_by_name, None)
         self.set_sort_order()
         self._liststore.connect('row-inserted', self._icon_added)
-        self._iconview = gtk.IconView(self._liststore)
+        self._iconview = thumbnail_view.ThumbnailView(self._liststore)
         self._iconview.set_pixbuf_column(0)
+        self._iconview.set_status_column(5)
+        self._iconview.generate_thumbnail = self._get_pixbuf
+        self._iconview.get_file_path_from_model = lambda model, iter: \
+                model.get_value(iter, 2).decode('utf-8')
         self._iconview.connect('item_activated', self._book_activated)
         self._iconview.connect('selection_changed', self._selection_changed)
         self._iconview.connect_after('drag_begin', self._drag_begin)
@@ -67,7 +66,6 @@ class _BookArea(gtk.ScrolledWindow):
         self._iconview.connect('button_press_event', self._button_press)
         self._iconview.connect('key_press_event', self._key_press)
         self._iconview.connect('popup_menu', self._popup_menu)
-        self._iconview.connect('expose-event', self._show_covers)
         self._iconview.modify_base(gtk.STATE_NORMAL, gtk.gdk.Color())  # Black.
         self._iconview.enable_model_drag_source(0,
             [('book', gtk.TARGET_SAME_APP, constants.LIBRARY_DRAG_EXTERNAL_ID)],
@@ -227,14 +225,7 @@ class _BookArea(gtk.ScrolledWindow):
 
     def stop_update(self):
         """Signal that the updating of book covers should stop."""
-        self._stop_update = True
-
-        if self._thumbnail_threads:
-            for thread in self._thumbnail_threads:
-                thread.join()
-
-        # All update threads should have finished now.
-        self._stop_update = False
+        self._iconview.stop_update()
 
     def add_books(self, books):
         """ Adds new book covers to the icon view.
@@ -246,7 +237,7 @@ class _BookArea(gtk.ScrolledWindow):
             self._liststore.append([filler, book.id,
                 book.path.encode('utf-8'), book.size, book.added, False])
 
-        self._show_covers()
+        self._iconview.draw_thumbnails_on_screen()
 
     def _new_book_added(self, book):
         """ Callback function for L{LibraryBackend.book_added}. """
@@ -338,40 +329,6 @@ class _BookArea(gtk.ScrolledWindow):
             else:
                 return 1
 
-    def _show_covers(self, *args):
-        """ Callback executed whenever the IconView's displayed area
-        changes. Fills in real covers of books that are currently shown. """
-
-        visible = self._iconview.get_visible_range()
-        if not visible:
-            return
-
-        pixbufs_needed = False
-        start = visible[0][0]
-        end = visible[1][0]
-        # Read ahead and start caching a few more icons
-        additional = (end - start) // 2
-        for path in range(start, end + additional + 1):
-            try:
-                iter = self._liststore.get_iter(path)
-            except ValueError:
-                iter = None
-
-            # Do not queue again if cover was already created
-            if (iter is not None and
-                not self._liststore.get_value(iter, 5)):
-                # Mark book cover as generated
-                self._liststore.set_value(iter, 5, True)
-
-                book_path = self._liststore.get_value(iter, 2).decode('utf-8')
-                ref = gtk.TreeRowReference(self._liststore, (path, ))
-                thumbnail_request = (ref, book_path)
-                self._requested_thumbnail_queue.put(thumbnail_request)
-                pixbufs_needed = True
-
-        if pixbufs_needed:
-            self._start_pixbuf_workers(self._requested_thumbnail_queue)
-
     def _icon_added(self, model, path, iter, *args):
         """ Justifies the alignment of all cell renderers when new data is
         added to the model. """
@@ -427,48 +384,6 @@ class _BookArea(gtk.ScrolledWindow):
             self._cache.invalidate_all()
             collection = self._library.collection_area.get_current_collection()
             gobject.idle_add(self.display_covers, collection)
-
-    def _start_pixbuf_workers(self, book_queue):
-        """ Starts the threads that create/load book covers. """
-
-        running_threads = [thread for thread in self._thumbnail_threads
-            if thread.isAlive()]
-        new_threads = [threading.Thread(target=self._pixbuf_worker,
-            args=(book_queue,))
-            for _ in range(prefs['max threads'] - len(running_threads))]
-
-        self._thumbnail_threads = running_threads + new_threads
-        for thread in new_threads:
-            thread.setDaemon(True)
-            thread.start()
-
-    def _pixbuf_worker(self, books):
-        """ Run by a worker thread to generate the thumbnail for a list
-        of books. """
-        while not self._stop_update and not books.empty():
-            try:
-                ref, path = books.get_nowait()
-            except Queue.Empty:
-                break
-
-            books.task_done()
-            pixbuf = self._get_pixbuf(path)
-            gobject.idle_add(self._pixbuf_finished, (ref, pixbuf))
-
-    def _pixbuf_finished(self, pixbuf_info):
-        """ Executed when a pixbuf was created, to actually insert the pixbuf
-        into the view store. <pixbuf_info> is a tuple containing (index, pixbuf). """
-
-        ref, pixbuf = pixbuf_info
-        path = ref.get_path()
-
-        if path:
-            iter = ref.get_model().get_iter(path)
-            self._liststore.set(iter, 0, pixbuf)
-
-        # Remove this idle handler.
-        del ref
-        return 0
 
     def _get_pixbuf(self, path):
         """ Get or create the thumbnail for the selected book at <path>. """
