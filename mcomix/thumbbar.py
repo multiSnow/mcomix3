@@ -214,16 +214,6 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
 
         return pixbuf
 
-    def get_thumbnail(self, page):
-        """ Gets the thumbnail pixbuf for the selected <page>.
-        Numbering of <page> starts with 1. """
-
-        iter = self._thumbnail_liststore.iter_nth_child(None, page - 1)
-        if iter and self._thumbnail_liststore.iter_is_valid(iter):
-            return self._thumbnail_liststore.get_value(iter, 1)
-        else:
-            return self.get_empty_thumbnail()
-
     def _get_selected_row(self):
         """Return the index of the currently selected row."""
         try:

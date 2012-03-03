@@ -30,9 +30,6 @@ class _ImageArea(gtk.ScrolledWindow):
         self._iconview.connect_after('drag_begin', self._drag_begin)
         self.add(self._iconview)
 
-        self._window.thumbnailsidebar.load_thumbnails(True)
-        self._window.thumbnailsidebar.thumbnail_loaded += self._thumbnail_loaded
-
         self._ui_manager = gtk.UIManager()
         ui_description = """
         <ui>
@@ -54,7 +51,7 @@ class _ImageArea(gtk.ScrolledWindow):
         """Load all the images in the archive or directory."""
 
         for page in xrange(1, self._window.imagehandler.get_number_of_pages() + 1):
-            thumb = self._window.thumbnailsidebar.get_thumbnail(page)
+            thumb = self._window.imagehandler.get_thumbnail(page)
 
             path = self._window.imagehandler.get_path_to_page(page)
             encoded_path = i18n.to_unicode(os.path.basename(path))
@@ -62,12 +59,8 @@ class _ImageArea(gtk.ScrolledWindow):
 
             self._liststore.append([thumb, encoded_path, path])
 
-    def _thumbnail_loaded(self, page, pixbuf):
-        """ Callback executed each time a new thumbnail pixbuf
-        has been loaded. """
-
-        iter = self._liststore.iter_nth_child(None, page - 1)
-        self._liststore.set_value(iter, 0, pixbuf)
+            while gtk.events_pending():
+                gtk.main_iteration(False)
 
     def add_extra_image(self, path):
         """Add an imported image (at <path>) to the end of the image list."""
