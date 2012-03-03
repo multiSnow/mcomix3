@@ -149,7 +149,6 @@ class _LibraryDialog(gtk.Window):
         if collection_id is not None:
             prefs['last library collection'] = collection_id
 
-        self.collection_area.display_collections()
 
 def open_dialog(action, window):
     global _dialog

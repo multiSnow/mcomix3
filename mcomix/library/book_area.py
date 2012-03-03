@@ -1,10 +1,10 @@
 """library_book_area.py - The window of the library that displays the covers of books."""
 
 import os
+import operator
 import urllib
 import Queue
 import threading
-import itertools
 import gtk
 import gobject
 import Image
@@ -15,7 +15,6 @@ from mcomix import file_chooser_library_dialog
 from mcomix import image_tools
 from mcomix import constants
 from mcomix import portability
-from mcomix import callback
 from mcomix import i18n
 from mcomix import status
 from mcomix import log
@@ -26,6 +25,7 @@ _dialog = None
 # The "All books" collection is not a real collection stored in the library, but is represented by this ID in the
 # library's TreeModels.
 _COLLECTION_ALL = -1
+
 
 class _BookArea(gtk.ScrolledWindow):
 
@@ -39,17 +39,23 @@ class _BookArea(gtk.ScrolledWindow):
         self._library = library
         self._cache = get_pixbuf_cache()
         self._stop_update = False
-        self._thumbnail_threads = None
+        self._thumbnail_threads = []
+        self._requested_thumbnail_queue = Queue.Queue()
+
+        self._library.backend.book_added += self._new_book_added
 
         self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
 
-        # Store Cover, book ID, book path, book size, date added to library
+        # Store Cover, book ID, book path, book size, date added to library,
+        # is thumbnail loaded?
+
         # The SORT_ constants must correspond to the correct column here,
         # i.e. SORT_SIZE must be 3, since 3 is the size column in the ListStore.
         self._liststore = gtk.ListStore(gtk.gdk.Pixbuf,
                 gobject.TYPE_INT, gobject.TYPE_STRING, gobject.TYPE_INT64,
-                gobject.TYPE_STRING)
+                gobject.TYPE_STRING, gobject.TYPE_BOOLEAN)
         self._liststore.set_sort_func(constants.SORT_NAME, self._sort_by_name, None)
+        self.set_sort_order()
         self._liststore.connect('row-inserted', self._icon_added)
         self._iconview = gtk.IconView(self._liststore)
         self._iconview.set_pixbuf_column(0)
@@ -61,7 +67,8 @@ class _BookArea(gtk.ScrolledWindow):
         self._iconview.connect('button_press_event', self._button_press)
         self._iconview.connect('key_press_event', self._key_press)
         self._iconview.connect('popup_menu', self._popup_menu)
-        self._iconview.modify_base(gtk.STATE_NORMAL, gtk.gdk.Color()) # Black.
+        self._iconview.connect('expose-event', self._show_covers)
+        self._iconview.modify_base(gtk.STATE_NORMAL, gtk.gdk.Color())  # Black.
         self._iconview.enable_model_drag_source(0,
             [('book', gtk.TARGET_SAME_APP, constants.LIBRARY_DRAG_EXTERNAL_ID)],
             gtk.gdk.ACTION_MOVE)
@@ -207,45 +214,16 @@ class _BookArea(gtk.ScrolledWindow):
             adjustment.set_value(0)
 
         self.stop_update()
+        # Temporarily detach model to speed up updates
+        self._iconview.set_model(None)
         self._liststore.clear()
 
         collection = self._library.backend.get_collection_by_id(collection_id)
-
-        # Get all books that need to be added.
-        # This cannot be executed threaded due to SQLite connections
-        # being bound to the thread that created them.
         books = collection.get_books(self._library.filter_string)
-        filler = self._get_empty_thumbnail()
-        for book in books:
+        self.add_books(books)
 
-            # Fill the liststore with a filler pixbuf.
-            iter = self._liststore.append([filler,
-                book.id, book.path.encode('utf-8'), book.size, book.added])
-
-        # Sort the list store based on preferences.
-        if prefs['lib sort order'] == constants.SORT_ASCENDING:
-            sortorder = gtk.SORT_ASCENDING
-        else:
-            sortorder = gtk.SORT_DESCENDING
-        self.sort_books(prefs['lib sort key'], sortorder)
-
-        # Queue thumbnail loading
-        book_queue = Queue.Queue()
-        iter = self._liststore.get_iter_first()
-        while iter:
-            path = self._liststore.get_value(iter, 2)
-            wrapper = IterWrapper(iter, self._liststore)
-            self._path_about_to_be_removed += wrapper.invalidate
-            book_queue.put((wrapper, path.decode('utf-8')))
-
-            iter = self._liststore.iter_next(iter)
-
-        # Start the thumbnail threads.
-        self._thumbnail_threads = [ threading.Thread(target=self._pixbuf_worker,
-            args=(book_queue,)) for _ in range(prefs['max threads']) ]
-        for thread in self._thumbnail_threads:
-            thread.setDaemon(True)
-            thread.start()
+        # Re-attach model here
+        self._iconview.set_model(self._liststore)
 
     def stop_update(self):
         """Signal that the updating of book covers should stop."""
@@ -258,11 +236,26 @@ class _BookArea(gtk.ScrolledWindow):
         # All update threads should have finished now.
         self._stop_update = False
 
+    def add_books(self, books):
+        """ Adds new book covers to the icon view.
+        @param books: List of L{_Book} instances. """
+        filler = self._get_empty_thumbnail()
+
+        for book in books:
+            # Fill the liststore with a filler pixbuf.
+            self._liststore.append([filler, book.id,
+                book.path.encode('utf-8'), book.size, book.added, False])
+
+        self._show_covers()
+
+    def _new_book_added(self, book):
+        """ Callback function for L{LibraryBackend.book_added}. """
+        self.add_books([book])
+
     def remove_book_at_path(self, path):
         """Remove the book at <path> from the ListStore (and thus from
         the _BookArea).
         """
-        self._path_about_to_be_removed(path)
         iterator = self._liststore.get_iter(path)
         filepath = self._liststore.get_value(iterator, 2)
         self._liststore.remove(iterator)
@@ -292,11 +285,16 @@ class _BookArea(gtk.ScrolledWindow):
             return
         self._book_activated(self._iconview, selected, True)
 
-    def sort_books(self, sort_key, sort_order=gtk.SORT_ASCENDING):
+    def set_sort_order(self):
         """ Orders the list store based on the key passed in C{sort_key}.
         Should be one of the C{SORT_} constants from L{constants}.
         """
-        self._liststore.set_sort_column_id(sort_key, sort_order)
+        if prefs['lib sort order'] == constants.SORT_ASCENDING:
+            sortorder = gtk.SORT_ASCENDING
+        else:
+            sortorder = gtk.SORT_DESCENDING
+
+        self._liststore.set_sort_column_id(prefs['lib sort key'], sortorder)
 
     def _sort_changed(self, old, current):
         """ Called whenever the sorting options changed. """
@@ -315,12 +313,7 @@ class _BookArea(gtk.ScrolledWindow):
         elif name == 'descending':
             prefs['lib sort order'] = constants.SORT_DESCENDING
 
-        if prefs['lib sort order'] == constants.SORT_ASCENDING:
-            order = gtk.SORT_ASCENDING
-        else:
-            order = gtk.SORT_DESCENDING
-
-        self.sort_books(prefs['lib sort key'], order)
+        self.set_sort_order()
 
     def _sort_by_name(self, treemodel, iter1, iter2, user_data):
         """ Compares two books based on their file name without the
@@ -344,6 +337,34 @@ class _BookArea(gtk.ScrolledWindow):
                 return -1
             else:
                 return 1
+
+    def _show_covers(self, *args):
+        """ Callback executed whenever the IconView's displayed area
+        changes. Fills in real covers of books that are currently shown. """
+
+        visible = self._iconview.get_visible_range()
+        if not visible:
+            return
+
+        pixbufs_needed = False
+        start = visible[0][0]
+        end = visible[1][0]
+        for path in range(start, end + 1):
+            iter = self._liststore.get_iter(path)
+
+            # Do not queue again if cover was already created
+            if not self._liststore.get_value(iter, 5):
+                # Mark book cover as generated
+                self._liststore.set_value(iter, 5, True)
+
+                book_path = self._liststore.get_value(iter, 2).decode('utf-8')
+                ref = gtk.TreeRowReference(self._liststore, (path, ))
+                thumbnail_request = (ref, book_path)
+                self._requested_thumbnail_queue.put(thumbnail_request)
+                pixbufs_needed = True
+
+        if pixbufs_needed:
+            self._start_pixbuf_workers(self._requested_thumbnail_queue)
 
     def _icon_added(self, model, path, iter, *args):
         """ Justifies the alignment of all cell renderers when new data is
@@ -401,30 +422,46 @@ class _BookArea(gtk.ScrolledWindow):
             collection = self._library.collection_area.get_current_collection()
             gobject.idle_add(self.display_covers, collection)
 
+    def _start_pixbuf_workers(self, book_queue):
+        """ Starts the threads that create/load book covers. """
+
+        running_threads = [thread for thread in self._thumbnail_threads
+            if thread.isAlive()]
+        new_threads = [threading.Thread(target=self._pixbuf_worker,
+            args=(book_queue,))
+            for _ in range(prefs['max threads'] - len(running_threads))]
+
+        self._thumbnail_threads = running_threads + new_threads
+        for thread in new_threads:
+            thread.setDaemon(True)
+            thread.start()
+
     def _pixbuf_worker(self, books):
         """ Run by a worker thread to generate the thumbnail for a list
         of books. """
         while not self._stop_update and not books.empty():
             try:
-                iter, path = books.get_nowait()
+                ref, path = books.get_nowait()
             except Queue.Empty:
                 break
 
-            pixbuf = self._get_pixbuf(path)
-            gobject.idle_add(self._pixbuf_finished, (iter, pixbuf))
             books.task_done()
+            pixbuf = self._get_pixbuf(path)
+            gobject.idle_add(self._pixbuf_finished, (ref, pixbuf))
 
     def _pixbuf_finished(self, pixbuf_info):
         """ Executed when a pixbuf was created, to actually insert the pixbuf
         into the view store. <pixbuf_info> is a tuple containing (index, pixbuf). """
 
-        iterwrapper, pixbuf = pixbuf_info
-        iter = iterwrapper.iter
+        ref, pixbuf = pixbuf_info
+        path = ref.get_path()
 
-        if iter and self._liststore.iter_is_valid(iter):
+        if path:
+            iter = ref.get_model().get_iter(path)
             self._liststore.set(iter, 0, pixbuf)
 
         # Remove this idle handler.
+        del ref
         return 0
 
     def _get_pixbuf(self, path):
@@ -684,28 +721,5 @@ class _BookArea(gtk.ScrolledWindow):
         collection_name = self._library.backend.get_collection_name(collection)
         self._library.add_books(paths, collection_name)
 
-    @callback.Callback
-    def _path_about_to_be_removed(self, path):
-        """ This will be called before a liststore path is about to be removed.
-        Used to invalidate the IterWrapper before PyGTK gets a chance to access
-        the invalid iterator. """
-        pass
-
-
-class IterWrapper(object):
-    """ This is a security wrapper for TreeIterator that gets notified when an
-    item is about to be deleted from the TreeControl's list store. It then
-    invalidates its iterator to prevent PyGTK from causing a segmentation fault
-    by accessing the iterator. """
-
-    def __init__(self, iter, liststore):
-        self.iter = iter
-        self.liststore = liststore
-
-    def invalidate(self, path):
-        if self.iter:
-            iter_path = self.liststore.get_path(self.iter)
-            if iter_path == path:
-                self.iter = None
 
 # vim: expandtab:sw=4:ts=4
