@@ -8,7 +8,10 @@ import gobject
 from mcomix.preferences import prefs
 
 
-class ThumbnailView(gtk.IconView):
+class ThumbnailViewBase(object):
+    """ This class provides shared functionality for gtk.TreeView and
+    gtk.IconView. Instantiating this class directly is *impossible*,
+    as it depends on methods provided by the view classes. """
 
     def __init__(self, model):
         """ Constructs a new ThumbnailView.
@@ -16,10 +19,11 @@ class ThumbnailView(gtk.IconView):
                       and a boolean column for internal calculations.
         """
 
-        super(ThumbnailView, self).__init__(model)
-
         #: Model index of the thumbnail status field (gobject.BOOLEAN)
-        self._status_column = -1
+        self.status_column = -1
+        #: Model index of the pixbuf field
+        self.pixbuf_column = -1
+
         #: Internal work queue
         self._queue = Queue.Queue()
         #: Worker threads
@@ -29,16 +33,18 @@ class ThumbnailView(gtk.IconView):
         #: Stop flag that interrupts threads
         self._stop = False
 
-        # Connect events
-        self.connect('expose-event', self.draw_thumbnails_on_screen)
-
-    def generate_thumbnail(self, file_path):
-        """ This function must return the thumbnail for C{file_path}. """
+    def generate_thumbnail(self, file_path, model, path):
+        """ This function must return the thumbnail for C{file_path}.
+        C{model} and {path} point at the relevant model line. """
         raise NotImplementedError()
 
     def get_file_path_from_model(self, model, iter):
         """ This function should retrieve a file path from C{model},
         the current row being specified by C{iter}. """
+        raise NotImplementedError()
+
+    def get_visible_range(self):
+        """ See L{gtk.IconView.get_visible_range}. """
         raise NotImplementedError()
 
     def stop_update(self):
@@ -50,17 +56,10 @@ class ThumbnailView(gtk.IconView):
 
         self._stop = False
 
-    def get_status_column(self):
-        """ Returns the status column in the model. """
-        return self._status_column
-
-    def set_status_column(self, column):
-        """ Sets the field in the model that should be used for thumbnail
-        status. Must be of type L{gobject.BOOLEAN}. """
-        self._status_column = column
-
     def draw_thumbnails_on_screen(self, *args):
-        """ Prepares valid thumbnails for currently displayed icons. """
+        """ Prepares valid thumbnails for currently displayed icons.
+        This method is supposed to be called from the expose-event
+        callback function. """
 
         visible = self.get_visible_range()
         if not visible:
@@ -81,9 +80,9 @@ class ThumbnailView(gtk.IconView):
 
             # Do not queue again if cover was already created
             if (iter is not None and
-                not model.get_value(iter, self._status_column)):
+                not model.get_value(iter, self.status_column)):
                 # Mark book cover as generated
-                model.set_value(iter, self._status_column, True)
+                model.set_value(iter, self.status_column, True)
 
                 file_path = self.get_file_path_from_model(model, iter)
                 ref = gtk.TreeRowReference(model, (path, ))
@@ -116,7 +115,7 @@ class ThumbnailView(gtk.IconView):
                 break
 
             self._queue.task_done()
-            pixbuf = self.generate_thumbnail(path)
+            pixbuf = self.generate_thumbnail(path, ref.get_model(), ref.get_path())
             gobject.idle_add(self._pixbuf_finished, (ref, pixbuf))
 
     def _pixbuf_finished(self, pixbuf_info):
@@ -129,10 +128,32 @@ class ThumbnailView(gtk.IconView):
 
         if path:
             iter = ref.get_model().get_iter(path)
-            ref.get_model().set(iter, self.get_pixbuf_column(), pixbuf)
+            ref.get_model().set(iter, self.pixbuf_column, pixbuf)
 
         # Remove this idle handler.
         del ref
         return 0
+
+class ThumbnailIconView(gtk.IconView, ThumbnailViewBase):
+    def __init__(self, model):
+        gtk.IconView.__init__(self, model)
+        ThumbnailViewBase.__init__(self, model)
+
+        # Connect events
+        self.connect('expose-event', self.draw_thumbnails_on_screen)
+
+    def get_visible_range(self):
+        return gtk.IconView.get_visible_range(self)
+
+class ThumbnailTreeView(gtk.TreeView, ThumbnailViewBase):
+    def __init__(self, model):
+        gtk.TreeView.__init__(self, model)
+        ThumbnailViewBase.__init__(self, model)
+
+        # Connect events
+        self.connect('expose-event', self.draw_thumbnails_on_screen)
+
+    def get_visible_range(self):
+        return gtk.TreeView.get_visible_range(self)
 
 # vim: expandtab:sw=4:ts=4

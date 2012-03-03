@@ -52,9 +52,10 @@ class _BookArea(gtk.ScrolledWindow):
         self._liststore.set_sort_func(constants.SORT_NAME, self._sort_by_name, None)
         self.set_sort_order()
         self._liststore.connect('row-inserted', self._icon_added)
-        self._iconview = thumbnail_view.ThumbnailView(self._liststore)
+        self._iconview = thumbnail_view.ThumbnailIconView(self._liststore)
         self._iconview.set_pixbuf_column(0)
-        self._iconview.set_status_column(5)
+        self._iconview.pixbuf_column = 0
+        self._iconview.status_column = 5
         self._iconview.generate_thumbnail = self._get_pixbuf
         self._iconview.get_file_path_from_model = lambda model, iter: \
                 model.get_value(iter, 2).decode('utf-8')
@@ -385,7 +386,7 @@ class _BookArea(gtk.ScrolledWindow):
             collection = self._library.collection_area.get_current_collection()
             gobject.idle_add(self.display_covers, collection)
 
-    def _get_pixbuf(self, path):
+    def _get_pixbuf(self, path, model, model_path):
         """ Get or create the thumbnail for the selected book at <path>. """
         if self._cache.exists(path):
             return self._cache.get(path)
