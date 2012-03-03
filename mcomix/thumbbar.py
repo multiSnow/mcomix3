@@ -169,13 +169,45 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         self._treeview.get_selection().select_path(path)
         self._treeview.scroll_to_cell(path)
 
+    def change_thumbnail_background_color(self, colour):
+        """ Changes the background color of the thumbnail bar. """
+
+        self.set_thumbnail_background(colour)
+
+        # this hides or shows the control and quickly hides/shows it.
+        # this allows the thumbnail background to update
+        # when changing the color.  if there is a better
+        # or easier way to force a refresh I have not found it.
+
+        if (prefs['show thumbnails'] and
+            not (self._window.is_fullscreen and
+                 prefs['hide all in fullscreen'])):
+            self.hide_all()
+            self.show_all()
+        else:
+            self.show_all()
+            self.hide_all()
+
+        while gtk.events_pending():
+            gtk.main_iteration(False)
+
+    def set_thumbnail_background(self, colour):
+
+        color = gtk.gdk.colormap_get_system().alloc_color(
+                    gtk.gdk.Color(colour[0], colour[1], colour[2]),
+                    False, True)
+        self._pixbuf_cellrenderer.set_property('cell-background-gdk',
+                color)
+        self._text_cellrenderer.set_property('background-gdk',
+                color)
+
     def _load(self):
         # Detach model for performance reasons
         model = self._treeview.get_model()
         self._treeview.set_model(None)
 
         # Create empty preview thumbnails.
-        filler = self.get_empty_thumbnail()
+        filler = self._get_empty_thumbnail()
         page_count = self._window.imagehandler.get_number_of_pages()
         while len(self._thumbnail_liststore) < page_count:
             self._thumbnail_liststore.append(
@@ -279,28 +311,8 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
             0, 0, 0, 0, *pixmap.get_size())
         context.set_icon_pixbuf(pointer, -5, -5)
 
-    def change_thumbnail_background_color(self, colour):
 
-        self.set_thumbnail_background(colour)
-
-        # this hides or shows the HBox and quickly hides/shows it.
-        # this allows the thumbnail background to update
-        # when changing the color.  if there is a better
-        # or easier way to force a refresh I have not found it.
-
-        if (prefs['show thumbnails'] and
-            not (self._window.is_fullscreen and
-                 prefs['hide all in fullscreen'])):
-            self.hide_all()
-            self.show_all()
-        else:
-            self.show_all()
-            self.hide_all()
-
-        while gtk.events_pending():
-            gtk.main_iteration(False)
-
-    def get_empty_thumbnail(self):
+    def _get_empty_thumbnail(self):
         """ Create an empty filler pixmap. """
         pixbuf = gtk.gdk.Pixbuf(colorspace=gtk.gdk.COLORSPACE_RGB,
                 has_alpha=True,
@@ -312,14 +324,5 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
 
         return pixbuf
 
-    def set_thumbnail_background(self, colour):
-
-        color = gtk.gdk.colormap_get_system().alloc_color(
-                    gtk.gdk.Color(colour[0], colour[1], colour[2]),
-                    False, True)
-        self._pixbuf_cellrenderer.set_property('cell-background-gdk',
-                color)
-        self._text_cellrenderer.set_property('background-gdk',
-                color)
 
 # vim: expandtab:sw=4:ts=4
