@@ -11,6 +11,7 @@ from mcomix import image_tools
 from mcomix import tools
 from mcomix import constants
 from mcomix import callback
+from mcomix import thumbnail_view
 
 
 class ThumbnailSidebar(gtk.ScrolledWindow):
@@ -21,13 +22,9 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         gtk.ScrolledWindow.__init__(self)
 
         self._window = window
-        # Cache/thumbnail load status
+        #: Thumbnail load status
         self._loaded = False
-        self._is_loading = False
-        self._stop_cacheing = False
-        # Caching threads
-        self._cache_threads = None
-
+        #: Selected page in treeview
         self._currently_selected_page = 0
         self._selection_is_forced = False
 
@@ -36,11 +33,17 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         self.get_vadjustment().page_increment = 1
 
         # models - contains data
-        self._thumbnail_liststore = gtk.ListStore(gobject.TYPE_INT, gtk.gdk.Pixbuf)
+        self._thumbnail_liststore = gtk.ListStore(gobject.TYPE_INT,
+            gtk.gdk.Pixbuf, gobject.TYPE_BOOLEAN)
 
         # view - responsible for laying out the columns
-        self._treeview = gtk.TreeView(self._thumbnail_liststore)
+        self._treeview = thumbnail_view.ThumbnailTreeView(self._thumbnail_liststore)
         self._treeview.set_headers_visible(False)
+        self._treeview.pixbuf_column = 1
+        self._treeview.status_column = 2
+        # This method isn't necessary, as generate_thumbnail doesn't need the path
+        self._treeview.get_file_path_from_model = lambda *args: None
+        self._treeview.generate_thumbnail = self._generate_thumbnail
 
         self._treeview.connect_after('drag_begin', self._drag_begin)
         self._treeview.connect('drag_data_get', self._drag_data_get)
@@ -85,10 +88,10 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
 
         self.add(self._treeview)
         self.update_layout_size()
-
         self.show_all()
 
     def toggle_page_numbers_visible(self):
+        """ Enables or disables page numbers on the thumbnail bar. """
 
         if prefs['show page numbers on thumbnails']:
             self._thumbnail_page_treeviewcolumn.set_property('visible', True)
@@ -98,6 +101,7 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         self.update_layout_size()
 
     def update_layout_size(self):
+        """ Updates the thumbnail bar's width to fit to thumbnail size. """
 
         new_width = prefs['thumbnail size'] + 9
 
@@ -119,7 +123,7 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
     def show(self, *args):
         """Show the ThumbnailSidebar."""
         self.show_all()
-        self.load_thumbnails(True)
+        self.load_thumbnails()
 
     def hide(self):
         """Hide the ThumbnailSidebar."""
@@ -128,28 +132,21 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
     def clear(self):
         """Clear the ThumbnailSidebar of any loaded thumbnails."""
 
-        self._stop_cacheing = True
-        if self._cache_threads is not None:
-            for thread in self._cache_threads:
-                thread.join()
-
+        self._treeview.stop_update()
         self._thumbnail_liststore.clear()
         self.hide()
         self._loaded = False
-        self._is_loading = False
-        self._stop_cacheing = False
-        self._cache_threads = None
         self._currently_selected_page = 0
 
-    def load_thumbnails(self, force_load=False):
+    def load_thumbnails(self):
         """Load the thumbnails, if it is appropriate to do so."""
 
         if (not self._window.filehandler.file_loaded or
             self._window.imagehandler.get_number_of_pages() == 0 or
-            self._is_loading or self._loaded or self._stop_cacheing):
+            self._loaded):
             return
 
-        self._load(force_load)
+        self._load()
 
     def resize(self):
         """Reload the thumbnails with the size specified by in the
@@ -172,69 +169,22 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         self._treeview.get_selection().select_path(path)
         self._treeview.scroll_to_cell(path)
 
-    def thread_cache_thumbnails(self):
-        """Start threaded thumb cacheing.
-        """
+    def _load(self):
+        # Detach model for performance reasons
+        model = self._treeview.get_model()
+        self._treeview.set_model(None)
 
-        # Get numbers of pages that need to be cached.
-        thumbnails_needed = Queue.Queue()
-        page_count = self._window.imagehandler.get_number_of_pages()
-        for page in xrange(1, page_count + 1):
-            thumbnails_needed.put(page)
-
-        # Start worker threads
-        self._cache_threads = [
-            threading.Thread(target=self.cache_thumbnails, args=(thumbnails_needed,))
-            for _ in range(prefs['max threads']) ]
-
-        for thread in self._cache_threads:
-            thread.setDaemon(True)
-            thread.start()
-
-    def cache_thumbnails(self, pages):
-        """ Done by worker threads to create pixbufs for the
-        pages passed into <pages>. """
-        while not self._stop_cacheing and not pages.empty():
-            try:
-                page = pages.get_nowait()
-            except Queue.Empty:
-                break
-            pixbuf = self._window.imagehandler.get_thumbnail(page,
-                prefs['thumbnail size'], prefs['thumbnail size']) or \
-                    constants.MISSING_IMAGE_ICON
-            pixbuf = image_tools.add_border(pixbuf, 1)
-            pages.task_done()
-
-            if not self._stop_cacheing:
-                self.thumbnail_loaded(page, pixbuf)
-
-        if not self._stop_cacheing:
-            pages.join()
-            self._loaded = True
-
-        self._is_loading = False
-
-    @callback.Callback
-    def thumbnail_loaded(self, page, pixbuf):
-        """ Callback when a new thumbnail has been created.
-        <pixbuf_info> is a tuple of (page, pixbuf). """
-        iter = self._thumbnail_liststore.iter_nth_child(None, page - 1)
-        if iter and self._thumbnail_liststore.iter_is_valid(iter):
-            self._thumbnail_liststore.set(iter, 0, page, 1, pixbuf)
-
-    def _load(self, force_load=False):
         # Create empty preview thumbnails.
         filler = self.get_empty_thumbnail()
         page_count = self._window.imagehandler.get_number_of_pages()
         while len(self._thumbnail_liststore) < page_count:
-            self._thumbnail_liststore.append([len(self._thumbnail_liststore) + 1, filler])
+            self._thumbnail_liststore.append(
+                [len(self._thumbnail_liststore) + 1, filler, False])
 
-        if force_load or prefs['show thumbnails'] or not prefs['delay thumbnails']:
-            # Start threads for thumbnailing.
-            self._loaded = False
-            self._is_loading = True
-            self._stop_cacheing = False
-            self.thread_cache_thumbnails()
+        self._loaded = True
+
+        # Re-attach model
+        self._treeview.set_model(model)
 
         if not prefs['show thumbnails']:
             # The control needs to be exposed at least once to enable height
@@ -246,6 +196,24 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         self.update_layout_size()
         self.update_select()
 
+    def _generate_thumbnail(self, file_path, model, path):
+        """ Generate the pixbuf for C{path} at demand. """
+        if isinstance(path, tuple):
+            page = path[0] + 1
+        elif isinstance(path, int):
+            page = path + 1
+        elif path is None:
+            return constants.MISSING_IMAGE_ICON
+        else:
+            assert False, "Expected int or tuple as tree path."
+
+        pixbuf = self._window.imagehandler.get_thumbnail(page,
+                prefs['thumbnail size'], prefs['thumbnail size']) or \
+            constants.MISSING_IMAGE_ICON
+        pixbuf = image_tools.add_border(pixbuf, 1)
+
+        return pixbuf
+
     def get_thumbnail(self, page):
         """ Gets the thumbnail pixbuf for the selected <page>.
         Numbering of <page> starts with 1. """
@@ -256,21 +224,12 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         else:
             return self.get_empty_thumbnail()
 
-    def get_needed_thumbnail_height(self):
-        """ Gets the height for all thumbnails, as indicated by the treeview. """
-        pages = len(self._thumbnail_liststore)
-        height = 0
-        for page in xrange(pages):
-            height += self._treeview.get_background_area(page,
-                self._thumbnail_image_treeviewcolumn).height
-        return height
-
     def _get_selected_row(self):
         """Return the index of the currently selected row."""
         try:
             return self._treeview.get_selection().get_selected_rows()[1][0][0]
 
-        except Exception:
+        except IndexError:
             return None
 
     def _selection_event(self, tree_selection, *args):
@@ -295,7 +254,7 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
             # to give mcomix focus again
             path = self._currently_selected_page
             self._treeview.get_selection().select_path(path)
-            self._treeview.scroll_to_path(path)
+            self._treeview.scroll_to_cell(path)
             self._window.was_out_of_focus = False
 
         self._selection_is_forced = False
