@@ -11,6 +11,11 @@ MComix 0.98
       inaccurate for older library entries, as only the day, not the time of
       the moment a book was added used to be stored in the library database.
 
+    - Improved performance for library book area and thumbnail side bar by
+      only loading thumbnails when they become visible, e.g. triggered by the
+      user scrolling around. The "Delay thumbnail generation" option has thus
+      been removed.
+
     - Updated Japanese translation (by Toshiharu Kudoh).
 
 MComix 0.97.1
