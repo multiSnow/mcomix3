@@ -349,11 +349,17 @@ class _BookArea(gtk.ScrolledWindow):
         pixbufs_needed = False
         start = visible[0][0]
         end = visible[1][0]
-        for path in range(start, end + 1):
-            iter = self._liststore.get_iter(path)
+        # Read ahead and start caching a few more icons
+        additional = (end - start) // 2
+        for path in range(start, end + additional + 1):
+            try:
+                iter = self._liststore.get_iter(path)
+            except ValueError:
+                iter = None
 
             # Do not queue again if cover was already created
-            if not self._liststore.get_value(iter, 5):
+            if (iter is not None and
+                not self._liststore.get_value(iter, 5)):
                 # Mark book cover as generated
                 self._liststore.set_value(iter, 5, True)
 
