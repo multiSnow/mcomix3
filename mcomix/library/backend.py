@@ -1,11 +1,13 @@
 """library_backend.py - Comic book library backend using sqlite."""
 
 import os
+import datetime
 
 from mcomix import archive_tools
 from mcomix import constants
 from mcomix import thumbnail_tools
 from mcomix import log
+from mcomix import callback
 from mcomix.library import backend_types
 
 try:
@@ -261,23 +263,40 @@ class _LibraryBackend:
         old = self._con.execute('''select id from Book
             where path = ?''', (path,)).fetchone()
         try:
+            cursor = self._con.cursor()
             if old is not None:
-                self._con.execute('''update Book set
+                cursor.execute('''update Book set
                     name = ?, pages = ?, format = ?, size = ?
                     where path = ?''', (name, pages, format, size, path))
+                book_id = old
             else:
-                self._con.execute('''insert into Book
+                cursor.execute('''insert into Book
                     (name, path, pages, format, size)
                     values (?, ?, ?, ?, ?)''',
                     (name, path, pages, format, size))
+                book_id = cursor.lastrowid
+
+                book = backend_types._Book(book_id, name, path, pages,
+                        format, size, datetime.datetime.now().isoformat())
+                self.book_added(book)
+
+            cursor.close()
+
+            if collection is not None:
+                self.add_book_to_collection(book_id, collection)
+
+            return True
         except dbapi2.Error:
             log.error( _('! Could not add book "%s" to the library'), path )
             return False
-        if collection is not None:
-            book = self._con.execute('''select id from Book
-                where path = ?''', (path,)).fetchone()
-            self.add_book_to_collection(book, collection)
-        return True
+
+    @callback.Callback
+    def book_added(self, book):
+        """ Event that triggers when a new book is successfully added to the
+        library.
+        @param book: L{_Book} instance of the newly added book.
+        """
+        pass
 
     def add_collection(self, name):
         """Add a new collection with <name> to the library. Return True
