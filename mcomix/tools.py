@@ -4,6 +4,7 @@ import os
 import sys
 import re
 import gc
+import bisect
 
 
 def alphanumeric_sort(filenames):
@@ -19,6 +20,17 @@ def alphanumeric_sort(filenames):
 
     rec = re.compile("\d+|\D+")
     filenames.sort(key=lambda s: map(_format_substring, rec.findall(s)))
+
+
+def bin_search(lst, value):
+    """ Binary search for sorted list C{lst}, looking for C{value}.
+    @return: List index on success, -1 on failure. """
+
+    index = bisect.bisect_left(lst, value)
+    if index != len(lst) and lst[index] == value:
+        return index
+    else:
+        return -1
 
 
 def get_home_directory():

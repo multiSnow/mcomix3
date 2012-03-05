@@ -16,6 +16,8 @@ MComix 0.98
       user scrolling around. The "Delay thumbnail generation" option has thus
       been removed.
 
+    - Improved performance for browsing directories with many images.
+
     - Updated Japanese translation (by Toshiharu Kudoh).
 
 MComix 0.97.1

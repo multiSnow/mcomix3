@@ -177,8 +177,7 @@ class FileHandler(object):
 
             # If no extraction is required, mark all files as available instantly.
             if self.archive_type is None:
-                for path in filelist:
-                    self.file_available(path)
+                self.file_available(filelist)
 
             result = True
 
@@ -642,9 +641,10 @@ class FileHandler(object):
             return False
 
     @callback.Callback
-    def file_available(self, filepath):
+    def file_available(self, filepaths):
         """ Called every time a new file from the Filehandler's opened
-        files becomes available. <filepath> is the now available file. """
+        files becomes available. C{filepaths} is a list of now available files.
+        """
         pass
 
     def _extracted_file(self, name):
@@ -652,7 +652,7 @@ class FileHandler(object):
         <name>. This name is relative to the temporary directory
         the files were extracted to. """
         filepath = os.path.join(self._tmp_dir, name)
-        self.file_available(filepath)
+        self.file_available([filepath])
 
     def _wait_on_page(self, page):
         """Block the running (main) thread until the file corresponding to

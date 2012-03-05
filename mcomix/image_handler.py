@@ -348,16 +348,16 @@ class ImageHandler:
         file has been extracted. """
         pass
 
-    def _file_available(self, filepath):
+    def _file_available(self, filepaths):
         """ Called by the filehandler when a new file becomes available. """
         # Find the page that corresponds to <filepath>
         if not self._image_files:
             return
 
+        available = sorted(filepaths)
         for i, imgpath in enumerate(self._image_files):
-            if filepath == imgpath:
+            if tools.bin_search(available, imgpath):
                 self.page_available(i + 1)
-                break
 
     def is_last_page(self):
         """Return True if at the last page."""
