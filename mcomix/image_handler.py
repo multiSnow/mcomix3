@@ -38,7 +38,6 @@ class ImageHandler:
         self._image_files = None
         self._current_image_index = None
         self._raw_pixbufs = {}
-        self._name_table = {}
         self.force_single_step = False
 
         self._window.filehandler.file_available += self._file_available
@@ -315,7 +314,6 @@ class ImageHandler:
         self._image_files = []
         self._current_image_index = None
         self._raw_pixbufs.clear()
-        self._name_table.clear()
         self.is_cacheing = False
 
         tools.garbage_collect()
