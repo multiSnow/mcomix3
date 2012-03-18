@@ -1,11 +1,11 @@
-# , 2011.
+# Frédéric Chateaux <fredchat@frenchmozilla.org>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.93\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
 "POT-Creation-Date: 2012-02-27 17:30+0100\n"
-"PO-Revision-Date: 2011-10-22 22:41+0200\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2012-03-17 21:16+0100\n"
+"Last-Translator: Frédéric Chateaux <fredchat@frenchmozilla.org>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -42,7 +42,7 @@ msgstr "Une copie de cette licence peut être obtenue sur %s"
 #: mcomix/archive_extractor.py:51
 #, python-format
 msgid "Non-supported archive format: %s"
-msgstr ""
+msgstr "Format d'archive non supporté : %s"
 
 #: mcomix/archive_extractor.py:151
 #, python-format
@@ -142,7 +142,7 @@ msgstr "_Éditer les signets…"
 #: mcomix/callback.py:96
 #, fuzzy, python-format
 msgid "! Callback %(function)r failed: %(error)s"
-msgstr "! Callback %(function)r failed: %(error)s"
+msgstr "! Échec de la fonction de rappel %(function)r : %(error)s"
 
 #: mcomix/comment_dialog.py:11 mcomix/preferences_dialog.py:368
 msgid "Comments"
@@ -367,7 +367,7 @@ msgstr "Page précédente"
 #: mcomix/keybindings.py:59 mcomix/keybindings.py:60 mcomix/keybindings.py:61
 #: mcomix/keybindings.py:63 mcomix/keybindings.py:64
 msgid "Reading"
-msgstr ""
+msgstr "Lecture"
 
 #: mcomix/keybindings.py:37 mcomix/ui.py:38
 msgid "Next page"
@@ -375,112 +375,116 @@ msgstr "Page suivante"
 
 #: mcomix/keybindings.py:39
 msgid "Scroll to bottom left"
-msgstr ""
+msgstr "Aller dans le coin inférieur gauche"
 
 #: mcomix/keybindings.py:39 mcomix/keybindings.py:40 mcomix/keybindings.py:41
 #: mcomix/keybindings.py:43 mcomix/keybindings.py:44 mcomix/keybindings.py:45
 #: mcomix/keybindings.py:47 mcomix/keybindings.py:48 mcomix/keybindings.py:49
 #: mcomix/keybindings.py:54 mcomix/keybindings.py:55 mcomix/keybindings.py:56
 msgid "Page orientation and zoom"
-msgstr ""
+msgstr "Orientation des pages et zoom"
 
 #: mcomix/keybindings.py:40
 msgid "Scroll to bottom center"
-msgstr ""
+msgstr "Aller au centre du bas de l'image"
 
 #: mcomix/keybindings.py:41
 msgid "Scroll to bottom right"
-msgstr ""
+msgstr "Aller dans le coin inférieur droit"
 
 #: mcomix/keybindings.py:43
 msgid "Scroll to middle left"
-msgstr ""
+msgstr "Aller au milieu gauche de l'image"
 
 #: mcomix/keybindings.py:44
 msgid "Scroll to center"
-msgstr ""
+msgstr "Aller au centre de l'image"
 
 #: mcomix/keybindings.py:45
 msgid "Scroll to middle right"
-msgstr ""
+msgstr "Aller au milieu droit de l'image"
 
 #: mcomix/keybindings.py:47
 msgid "Scroll to top left"
-msgstr ""
+msgstr "Aller dans le coin supérieur gauche"
 
 #: mcomix/keybindings.py:48
 msgid "Scroll to top center"
-msgstr ""
+msgstr "Aller au centre du haut de l'image"
 
 #: mcomix/keybindings.py:49
 msgid "Scroll to top right"
-msgstr ""
+msgstr "Aller dans le coin supérieur droit"
 
 #: mcomix/keybindings.py:51
 msgid "Exit from fullscreen"
-msgstr ""
+msgstr "Quitter le mode plein écran"
 
 #: mcomix/keybindings.py:52
 msgid "Toggle fullscreen"
-msgstr ""
+msgstr "Basculer en mode plein écran"
 
 #: mcomix/keybindings.py:52
 msgid "User interface"
-msgstr ""
+msgstr "Interface utilisateur"
 
 #: mcomix/keybindings.py:54
 msgid "Zoom in"
-msgstr ""
+msgstr "Zoomer"
 
 #: mcomix/keybindings.py:55
 msgid "Zoom out"
-msgstr ""
+msgstr "Dézoomer"
 
 #: mcomix/keybindings.py:56
 msgid "Normal size"
-msgstr ""
+msgstr "Taille normale"
 
 #: mcomix/keybindings.py:58
 msgid "Scroll down"
-msgstr ""
+msgstr "Défilement vers le bas"
 
 #: mcomix/keybindings.py:59
 msgid "Scroll up"
-msgstr ""
+msgstr "Défilement vers le haut"
 
 #: mcomix/keybindings.py:60
 msgid "Scroll right"
-msgstr ""
+msgstr "Défilement à droite"
 
 #: mcomix/keybindings.py:61
 msgid "Scroll left"
-msgstr ""
+msgstr "Défilement à gauche"
 
 #: mcomix/keybindings.py:63
 msgid "Smart scroll up"
-msgstr ""
+msgstr "Défilement intelligent vers le haut"
 
 #: mcomix/keybindings.py:64
 msgid "Smart scroll down"
-msgstr ""
+msgstr "Défilement intelligent vers le bas"
 
 #: mcomix/keybindings.py:66
 msgid "Show OSD panel"
-msgstr ""
+msgstr "Afficher le panneau OSD"
 
 #: mcomix/keybindings.py:66
 msgid "User Interface"
-msgstr ""
+msgstr "Interface utilisateur"
 
 #: mcomix/keybindings.py:102
 #, python-format
 msgid "Keybinding for \"%(action)s\" overrides hotkey for another action."
 msgstr ""
+"Le raccourci pour \"% (l'action) s\" remplace le raccourci clavier d'une "
+"autre action."
 
 #: mcomix/keybindings.py:145
 #, python-format
 msgid "Couldn't load keybindings: %s"
 msgstr ""
+"Essayez avec cette orthographe : Couldn't load key bindings"
+"Impossible de charger les raccourcis clavier : %s"
 
 #: mcomix/last_read_page.py:11 mcomix/library/backend.py:17
 msgid "! Could neither find pysqlite2 nor sqlite3."
@@ -525,7 +529,6 @@ msgid "Clear dialog choices"
 msgstr "Réinitialiser"
 
 #: mcomix/preferences_dialog.py:24
-#, fuzzy
 msgid ""
 "Clears all dialog choices that you have previously chosen not to be asked "
 "again."
@@ -738,13 +741,15 @@ msgstr ""
 
 #: mcomix/preferences_dialog.py:215
 msgid "Show only one page where appropriate:"
-msgstr ""
+msgstr "N'afficher qu'une seule page lorsque nécessaire :"
 
 #: mcomix/preferences_dialog.py:218
 msgid ""
 "When showing the first page of an archive, or an image's width exceeds its "
 "height, only a single page will be displayed."
 msgstr ""
+"Une seule image s'affichera pour la première page d'une archive ou lorsque "
+"la largeur d'une image est supérieure à sa hauteur,"
 
 #: mcomix/preferences_dialog.py:221
 msgid "Files"
@@ -843,11 +848,11 @@ msgstr "Langue (redémarrage requis) :"
 
 #: mcomix/preferences_dialog.py:314
 msgid "File order"
-msgstr ""
+msgstr "Ordre des fichiers"
 
 #: mcomix/preferences_dialog.py:316
 msgid "Order files by:"
-msgstr ""
+msgstr "Trier les fichiers par :"
 
 #: mcomix/preferences_dialog.py:319
 msgid "Cache"
@@ -1025,27 +1030,27 @@ msgstr "Chinois (traditionnel)"
 
 #: mcomix/preferences_dialog.py:438 mcomix/preferences_dialog.py:508
 msgid "Never"
-msgstr ""
+msgstr "Jamais"
 
 #: mcomix/preferences_dialog.py:439
 msgid "Only for title pages"
-msgstr ""
+msgstr "Uniquement pour les pages titres"
 
 #: mcomix/preferences_dialog.py:440
 msgid "Only for wide images"
-msgstr ""
+msgstr "Uniquement pour les grandes images"
 
 #: mcomix/preferences_dialog.py:441
 msgid "Always"
-msgstr ""
+msgstr "Toujours"
 
 #: mcomix/preferences_dialog.py:460
 msgid "No sorting"
-msgstr ""
+msgstr "Pas de tri"
 
 #: mcomix/preferences_dialog.py:461
 msgid "File name"
-msgstr ""
+msgstr "Nom de fichier"
 
 #: mcomix/preferences_dialog.py:462 mcomix/library/book_area.py:149
 msgid "File size"
@@ -1053,7 +1058,7 @@ msgstr "Taille du fichier"
 
 #: mcomix/preferences_dialog.py:463
 msgid "Last modified"
-msgstr ""
+msgstr "Dernière modification"
 
 #: mcomix/preferences_dialog.py:469 mcomix/library/book_area.py:153
 msgid "Ascending"
@@ -1068,26 +1073,28 @@ msgid ""
 "Files will be opened and displayed according to the sort order specified "
 "here. This option does not affect ordering within archives."
 msgstr ""
+"Les fichiers seront ouverts et affichés selon l'ordre de tri spécifié ici. "
+"Cette option n'affecte pas l'ordre des fichiers à l'intérieur des archives."
 
 #: mcomix/preferences_dialog.py:509
-#, fuzzy
 msgid "Only file names"
-msgstr "Afficher le nom de fichier"
+msgstr "Uniquement les noms de fichier"
 
 #: mcomix/preferences_dialog.py:510
 msgid "File names and last read page"
-msgstr ""
+msgstr "Noms de fichiers et dernière page lue"
 
 #: mcomix/preferences_dialog.py:544
-#, fuzzy
 msgid "Delete information about recently opened files?"
-msgstr "Enregistrer les informations sur les fichiers récemment ouverts:"
+msgstr "Effacer les informations sur les fichiers récemment ouverts ?"
 
 #: mcomix/preferences_dialog.py:547
 msgid ""
 "This will remove all entries from the \"Recent\" menu, and clear information "
 "about last read pages."
 msgstr ""
+"Ceci va effacer toutes les entrées concernant le menu « Récemment "
+"ouverts » et supprimer les informations sur les dernières pages lues."
 
 #: mcomix/process.py:50
 #, python-format
@@ -1186,19 +1193,18 @@ msgid "Zoom modes"
 msgstr "Modes de zoom"
 
 #: mcomix/run.py:65
-#, fuzzy
 msgid "Start the application with zoom set to best fit mode."
-msgstr "Start the application with zoom set to best fit mode."
+msgstr ""
+"Démarrer l'application avec le zoom réglé pour s'adapter à la meilleure "
+"dimension."
 
 #: mcomix/run.py:68
-#, fuzzy
 msgid "Start the application with zoom set to fit width."
-msgstr "Start the application with zoom set to fit width."
+msgstr "Démarrer l'application avec le zoom réglé pour s'adapter à la largeur."
 
 #: mcomix/run.py:71
-#, fuzzy
 msgid "Start the application with zoom set to fit height."
-msgstr "Start the application with zoom set to fit height."
+msgstr "Démarrer l'application avec le zoom réglé pour s'adapter à la hauteur."
 
 #: mcomix/run.py:74
 msgid "Debug options"
@@ -1933,7 +1939,7 @@ msgstr "Chemin complet"
 
 #: mcomix/library/book_area.py:150
 msgid "Date added"
-msgstr ""
+msgstr "Date ajoutée"
 
 #: mcomix/library/book_area.py:161
 msgid "Huge"
@@ -2104,14 +2110,12 @@ msgstr ""
 "chemin complet. La recherche n'est pas sensible à la casse."
 
 #: mcomix/library/control_area.py:88
-#, fuzzy
 msgid "_Watch list"
-msgstr "Collections de la bibliothèque"
+msgstr "_Liste de suivi"
 
 #: mcomix/library/control_area.py:94
-#, fuzzy
 msgid "Open the watchlist management dialog."
-msgstr "Ouvre l'éditeur d'archive."
+msgstr "Ouvre l'éditeur de la liste de suivi."
 
 #: mcomix/library/control_area.py:100
 msgid "Open the selected book."
@@ -2122,43 +2126,39 @@ msgid "Library"
 msgstr "Bibliothèque"
 
 #: mcomix/library/main_dialog.py:85
-#, fuzzy
 msgid "Scanning for new books..."
-msgstr "Recherche des archives…"
+msgstr "Recherche de nouvelles archives…"
 
 #: mcomix/library/main_dialog.py:99
 #, python-format
 msgid "Added new book '%(bookname)s' from directory '%(directory)s'."
 msgid_plural "Added %(count)d new books from directory '%(directory)s'."
 msgstr[0] ""
+"Nouveaux livres ajoutés '%(directory)s' depuis le répertoire '%(directory)s'"
 msgstr[1] ""
 
 #: mcomix/library/main_dialog.py:106
 #, python-format
 msgid "No new books found in directory '%s'."
-msgstr ""
+msgstr "Pas de nouveau livre trouvé dans le répertoire '%s'."
 
 #: mcomix/library/main_dialog.py:158
 msgid "! You need an sqlite wrapper to use the library."
 msgstr "! Il faut la composante sqlite pour utiliser la bibliothèque"
 
 #: mcomix/library/watchlist.py:22
-#, fuzzy
 msgid "Library watch list"
-msgstr "Collections de la bibliothèque"
+msgstr "Liste de suivi de la bibliothèque"
 
 #: mcomix/library/watchlist.py:36
-#, fuzzy
 msgid "Directory"
-msgstr "Répertoire suivant"
+msgstr "Répertoire"
 
 #: mcomix/library/watchlist.py:47
-#, fuzzy
 msgid "Collection"
-msgstr "Nouvelle collection"
+msgstr "Collection"
 
 #: mcomix/library/watchlist.py:52
-#, fuzzy
 msgid "_Add"
 msgstr "_Ajouter…"
 
