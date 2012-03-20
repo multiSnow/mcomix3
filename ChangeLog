@@ -1,5 +1,8 @@
 MComix 0.98
 
+    - Fixed a bug that occasionally caused MComix to display wrong images
+      after deleting an image from a directory.
+
     - The last-read-page module now falls back to pysqlite2 if sqlite3 isn't
       available.
 

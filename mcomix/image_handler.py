@@ -27,17 +27,31 @@ class ImageHandler:
 
     def __init__(self, window):
 
-        self.first_wanted = 0
-        self.last_wanted = 1
-        self._current_file = None
-        self.is_cacheing = False
-
+        #: Reference to main window
         self._window = window
-        self._base_path = None
+
+        #: First index of last pixbuf cache run
+        self.first_wanted = 0
+        #: Last index of last pixbuf cache run
+        self.last_wanted = 1
+
+        #: Pixbufs are currently being cached
+        self.is_cacheing = False
+        #: Interrupts the cacheing thread if True
         self._stop_cacheing = False
+        #: Caching thread
+        self._thread = None
+
+        #: Archive path, if currently opened file is archive
+        self._base_path = None
+        #: List of image file names, either from extraction or directory
         self._image_files = None
+        #: Index of current page
         self._current_image_index = None
+        #: Pixbuf map from page > Pixbuf
         self._raw_pixbufs = {}
+
+        #: Advance only one page instead of two in double page mode
         self.force_single_step = False
 
         self._window.filehandler.file_available += self._file_available
@@ -158,9 +172,9 @@ class ImageHandler:
     def thread_cache_new_pixbufs(self, wanted_pixbufs):
         """Start threaded cache loading.
         """
-        cache_thread = threading.Thread(target=self.cache_new_pixbufs, args=(wanted_pixbufs,))
-        cache_thread.setDaemon(False)
-        cache_thread.start()
+        self._thread = threading.Thread(target=self.cache_new_pixbufs, args=(wanted_pixbufs,))
+        self._thread.setDaemon(False)
+        self._thread.start()
 
     def cache_new_pixbufs(self, wanted_pixbufs):
         """Cache new pixbufs if they are not already cached.
@@ -307,20 +321,23 @@ class ImageHandler:
 
         self.first_wanted = 0
         self.last_wanted = 1
-        self._current_file = None
 
+        self.cleanup()
         self._base_path = None
-        self._stop_cacheing = False
         self._image_files = []
         self._current_image_index = None
         self._raw_pixbufs.clear()
-        self.is_cacheing = False
 
         tools.garbage_collect()
 
     def cleanup(self):
         """Run clean-up tasks. Should be called prior to exit."""
         self._stop_cacheing = True
+        if self._thread:
+            self._thread.join()
+            self._thread = None
+        self._stop_cacheing = False
+        self.is_cacheing = False
 
     def page_is_available(self, page=None):
         """ Returns True if <page> is available and calls to get_pixbufs
