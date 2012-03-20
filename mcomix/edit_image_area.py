@@ -6,6 +6,8 @@ import gtk
 from mcomix import i18n
 from mcomix import image_tools
 from mcomix import thumbnail_tools
+from mcomix import thumbnail_view
+from mcomix.preferences import prefs
 
 class _ImageArea(gtk.ScrolledWindow):
 
@@ -18,9 +20,15 @@ class _ImageArea(gtk.ScrolledWindow):
         self._edit_dialog = edit_dialog
         self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
 
-        # The ListStore layout is (thumbnail, basename, full path).
-        self._liststore = gtk.ListStore(gtk.gdk.Pixbuf, str, str)
-        self._iconview = gtk.IconView(self._liststore)
+        # The ListStore layout is (thumbnail, basename, full path, pagenumber, thumbnail status).
+        # Basename is used as image tooltip.
+        self._liststore = gtk.ListStore(gtk.gdk.Pixbuf, str, str, int, bool)
+        self._iconview = thumbnail_view.ThumbnailIconView(self._liststore)
+        self._iconview.pixbuf_column = 0
+        self._iconview.status_column = 4
+        # This method isn't necessary, as generate_thumbnail doesn't need the path
+        self._iconview.get_file_path_from_model = lambda *args: None
+        self._iconview.generate_thumbnail = self._generate_thumbnail
         self._iconview.set_pixbuf_column(0)
         self._iconview.set_tooltip_column(1)
         self._iconview.set_reorderable(True)
@@ -50,17 +58,33 @@ class _ImageArea(gtk.ScrolledWindow):
     def fetch_images(self):
         """Load all the images in the archive or directory."""
 
-        for page in xrange(1, self._window.imagehandler.get_number_of_pages() + 1):
-            thumb = self._window.imagehandler.get_thumbnail(page)
+        pixbuf = gtk.gdk.Pixbuf(colorspace=gtk.gdk.COLORSPACE_RGB,
+                has_alpha=True,
+                bits_per_sample=8,
+                width=prefs['thumbnail size'], height=prefs['thumbnail size'])
 
+        # Make the pixbuf transparent.
+        pixbuf.fill(0)
+
+        for page in xrange(1, self._window.imagehandler.get_number_of_pages() + 1):
             path = self._window.imagehandler.get_path_to_page(page)
             encoded_path = i18n.to_unicode(os.path.basename(path))
             encoded_path = encoded_path.replace('&', '&amp;')
 
-            self._liststore.append([thumb, encoded_path, path])
+            self._liststore.append([pixbuf, encoded_path, path, page, False])
 
-            while gtk.events_pending():
-                gtk.main_iteration(False)
+    def _generate_thumbnail(self, file_path, model, path):
+        """ Creates the thumbnail for the passed model path. """
+
+        if path is None:
+            return constants.MISSING_IMAGE_ICON
+
+        iter = model.get_iter(path)
+        page = model.get_value(iter, 3)
+        pixbuf = self._window.imagehandler.get_thumbnail(page) or \
+            constants.MISSING_IMAGE_ICON
+
+        return pixbuf
 
     def add_extra_image(self, path):
         """Add an imported image (at <path>) to the end of the image list."""
@@ -72,16 +96,14 @@ class _ImageArea(gtk.ScrolledWindow):
             thumb = self.render_icon(gtk.STOCK_MISSING_IMAGE,
                 gtk.ICON_SIZE_DIALOG)
 
-        thumb = image_tools.fit_in_rectangle(thumb, 128, 128)
-
-        self._liststore.append([thumb, os.path.basename(path), path])
+        self._liststore.append([thumb, os.path.basename(path), path, -1, True])
 
     def get_file_listing(self):
         """Return a list with the full paths to all the images, in order."""
         file_list = []
 
         for row in self._liststore:
-            file_list.append(row[2])
+            file_list.append(row[2].decode('utf-8'))
 
         return file_list
 
