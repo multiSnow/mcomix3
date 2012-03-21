@@ -295,12 +295,12 @@ class EventHandler:
 
         if 'GDK_BUTTON1_MASK' in event.state.value_names:
             self._window.cursor_handler.set_cursor_type(constants.GRAB_CURSOR)
-            self._window.scroll(self._last_pointer_pos_x - event.x_root,
-                                self._last_pointer_pos_y - event.y_root)
+            scrolled = self._window.scroll(self._last_pointer_pos_x - event.x_root,
+                                           self._last_pointer_pos_y - event.y_root)
 
             # Cursor wrapping stuff. See:
             # https://sourceforge.net/tracker/?func=detail&aid=2988441&group_id=146377&atid=764987
-            if prefs['wrap mouse scroll']:
+            if prefs['wrap mouse scroll'] and scrolled:
                 new_x = _valwarp(event.x_root, self.cached_warp_x1, minval=self.cached_warp_x0)
                 new_y = _valwarp(event.y_root, self.cached_warp_y1, minval=self.cached_warp_y0)
                 if (new_x != event.x_root) or (new_y != event.y_root):
