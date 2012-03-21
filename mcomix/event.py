@@ -236,12 +236,6 @@ class EventHandler:
             self._last_pointer_pos_x = event.x_root
             self._last_pointer_pos_y = event.y_root
 
-            if prefs['wrap mouse scroll']:
-                scr = self._window.get_screen()
-                self.cached_warp_x0 = self.cached_warp_y0 = 0
-                self.cached_warp_x1 = scr.get_width()
-                self.cached_warp_y1 = scr.get_height()
-
         elif event.button == 2:
             self._window.actiongroup.get_action('lens').set_active(True)
 
@@ -292,10 +286,15 @@ class EventHandler:
             # Cursor wrapping stuff. See:
             # https://sourceforge.net/tracker/?func=detail&aid=2988441&group_id=146377&atid=764987
             if prefs['wrap mouse scroll'] and scrolled:
-                new_x = _valwarp(event.x_root, self.cached_warp_x1, minval=self.cached_warp_x0)
-                new_y = _valwarp(event.y_root, self.cached_warp_y1, minval=self.cached_warp_y0)
+                # FIXME: Problems with multi-screen setups
+                screen = self._window.get_screen()
+                warp_x0 = warp_y0 = 0
+                warp_x1 = screen.get_width()
+                warp_y1 = screen.get_height()
+
+                new_x = _valwarp(event.x_root, warp_x1, minval=warp_x0)
+                new_y = _valwarp(event.y_root, warp_y1, minval=warp_y0)
                 if (new_x != event.x_root) or (new_y != event.y_root):
-                    screen = self._window.get_screen()
                     display = screen.get_display()
                     display.warp_pointer(screen, int(new_x), int(new_y))
                     ## This might be (or might not be) necessary to avoid
