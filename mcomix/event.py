@@ -241,8 +241,15 @@ class EventHandler:
                 self.cached_display = disp = gtk.gdk.display_get_default()
                 ## XX: might not work well on multi-monitor setups too.
                 self.cached_screen = scr = disp.get_default_screen()
-                self.cached_display_width = scr.get_width()
-                self.cached_display_height = scr.get_height()
+
+                if prefs['wrap mouse scroll in window']:
+                    self.cached_warp_x0, self.cached_warp_y0 = self._window.get_position()
+                    self.cached_warp_x1 = self.cached_warp_x0 + self._window.width
+                    self.cached_warp_y1 = self.cached_warp_y0 + self._window.height
+                else:
+                    self.cached_warp_x0 = self.cached_warp_y0 = 0
+                    self.cached_warp_x1 = scr.get_width()
+                    self.cached_warp_y1 = scr.get_height()
 
         elif event.button == 2:
             self._window.actiongroup.get_action('lens').set_active(True)
@@ -294,13 +301,13 @@ class EventHandler:
             # Cursor wrapping stuff. See:
             # https://sourceforge.net/tracker/?func=detail&aid=2988441&group_id=146377&atid=764987
             if prefs['wrap mouse scroll']:
-                new_x = _valwarp(event.x_root, self.cached_display_width)
-                new_y = _valwarp(event.y_root, self.cached_display_height)
+                new_x = _valwarp(event.x_root, self.cached_warp_x1, minval=self.cached_warp_x0)
+                new_y = _valwarp(event.y_root, self.cached_warp_y1, minval=self.cached_warp_y0)
                 if (new_x != event.x_root) or (new_y != event.y_root):
                     self.cached_display.warp_pointer(self.cached_screen,
                       int(new_x), int(new_y))
                     ## This might be (or might not be) necessary to avoid
-                    ## doing one wrap multiple times.
+                    ## doing one warp multiple times.
                     event = _get_latest_event_of_same_type(event)
 
                 self._last_pointer_pos_x = new_x
@@ -557,16 +564,16 @@ def _get_latest_event_of_same_type(event):
     return event
 
 
-def _valwarp(cur, maxval, tolerance=3, extra=2):
+def _valwarp(cur, maxval, minval=0, tolerance=3, extra=2):
     """ Helper function for warping the cursor around the screen when it
       comes within `tolerance` to a border (and `extra` more to avoid
       jumping back and forth).  """
-    if cur < tolerance:
-        print "D: wrap back: %r -> (%r) -> %r" % (cur, maxval, cur + maxval - 2*tolerance - extra)
-        return cur + maxval - 2*tolerance - extra  # maxval - tolerance - (tolerance - cur) - extra
+    if cur < minval + tolerance:
+        overmove = minval + tolerance - cur
+        return maxval - tolerance - overmove - extra
     if (maxval - cur) < tolerance:
-        print "D: wrap forw: %r -> (%r) -> %r" % (cur, maxval, cur - (maxval - 2*tolerance - extra))
-        return cur - (maxval - 2*tolerance - extra)  # tolerance + (tolerance - (maxval - cur)) + extra
+        overmove = tolerance - (maxval - cur)
+        return minval + tolerance + overmove + extra
     return cur
 
 

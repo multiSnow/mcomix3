@@ -86,6 +86,7 @@ prefs = {
                         constants.STATUS_PATH | constants.STATUS_FILENAME,
     'max threads': 3,
     'wrap mouse scroll': False,
+    'wrap mouse scroll in window': False,
 }
 
 def read_preferences_file():
