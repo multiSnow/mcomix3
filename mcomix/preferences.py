@@ -85,8 +85,7 @@ prefs = {
     'statusbar fields': constants.STATUS_PAGE | constants.STATUS_RESOLUTION | \
                         constants.STATUS_PATH | constants.STATUS_FILENAME,
     'max threads': 3,
-    'wrap mouse scroll': False,
-    'wrap mouse scroll in window': False,
+    'wrap mouse scroll': False
 }
 
 def read_preferences_file():
