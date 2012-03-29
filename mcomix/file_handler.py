@@ -184,7 +184,8 @@ class FileHandler(object):
         tools.alphanumeric_sort(self._comment_files)
 
         self._window.uimanager.recent.add(self._current_file)
-        self._window.draw_image()
+        # _window.draw_image is called as soon as the currently opened
+        # page is extracted/read via callback function.
 
         return result
 

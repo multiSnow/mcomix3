@@ -281,9 +281,6 @@ class MainWindow(gtk.Window):
     def _draw_image(self, at_bottom, scroll):
         self._display_active_widgets()
 
-        while gtk.events_pending():
-            gtk.main_iteration(False)
-
         if not self.filehandler.file_loaded:
             self._waiting_for_redraw = False
             return False
@@ -479,9 +476,6 @@ class MainWindow(gtk.Window):
         self._update_page_information()
         self._waiting_for_redraw = False
 
-        while gtk.events_pending():
-            gtk.main_iteration(False)
-
         return False
 
     def _update_page_information(self):
@@ -515,7 +509,7 @@ class MainWindow(gtk.Window):
         """ Called whenever a new page is ready for displaying. """
         # Refresh display when currently opened page becomes available.
         if page == self.imagehandler.get_current_page() \
-            or self.displayed_double() and page == self.imagehandler.get_current_page() + 1:
+            or (self.displayed_double() and page == self.imagehandler.get_current_page() + 1):
 
             self.draw_image(False, True)
 
