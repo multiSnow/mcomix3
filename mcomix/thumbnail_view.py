@@ -69,10 +69,13 @@ class ThumbnailViewBase(object):
         pixbufs_needed = False
         start = visible[0][0]
         end = visible[1][0]
-        # Read ahead and start caching a few more icons
+        # Read ahead/back and start caching a few more icons. Currently invisible
+        # icons are always cached only after the visible icons have been completed.
         additional = (end - start) // 2
+        required = range(start, end + additional + 1) + \
+                   range(max(0, start - additional), start)
         model = self.get_model()
-        for path in range(start, end + additional + 1):
+        for path in required:
             try:
                 iter = model.get_iter(path)
             except ValueError:
