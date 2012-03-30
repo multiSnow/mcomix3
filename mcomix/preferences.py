@@ -46,6 +46,7 @@ prefs = {
     'number of pixels to scroll per slideshow event': 50,
     'smart space scroll': True,
     'invert smart scroll': False,
+    'scroll step distance': 0.9,
     'flip with wheel': True,
     'store recent file info': constants.STORE_LAST_PATH,
     'hide all': False,

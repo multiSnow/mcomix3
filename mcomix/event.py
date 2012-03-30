@@ -410,8 +410,9 @@ class EventHandler:
         """ Smart scrolling. """
 
         x_step, y_step = self._window.get_visible_area_size()
-        x_step = int(x_step * 0.9)
-        y_step = int(y_step * 0.9)
+        distance = prefs['scroll step distance']
+        x_step = int(x_step * distance)
+        y_step = int(y_step * distance)
 
         if self._window.is_manga_mode:
             x_step *= -1
@@ -474,8 +475,9 @@ class EventHandler:
         """ Reversed smart scrolling. """
 
         x_step, y_step = self._window.get_visible_area_size()
-        x_step = int(x_step * 0.9)
-        y_step = int(y_step * 0.9)
+        distance = prefs['scroll step distance']
+        x_step = int(x_step * distance)
+        y_step = int(y_step * distance)
 
         if self._window.is_manga_mode:
             x_step *= -1
