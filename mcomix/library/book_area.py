@@ -441,9 +441,12 @@ class _BookArea(gtk.ScrolledWindow):
             self._library.backend.remove_book_from_collection(book, collection)
             self.remove_book_at_path(path)
         coll_name = self._library.backend.get_collection_name(collection)
+        message = i18n.get_translation().ungettext(
+                "Removed %(num)d book from '%(collection)s'.",
+                "Removed %(num)d books from '%(collection)s'.",
+                len(selected))
         self._library.set_status_message(
-            _("Removed %(num)d book(s) from '%(collection)s'.") %
-            {'num': len(selected), 'collection': coll_name})
+            message % {'num': len(selected), 'collection': coll_name})
 
     def _remove_books_from_library(self, *args):
         """Remove the currently selected books from the library, and thus
@@ -457,7 +460,7 @@ class _BookArea(gtk.ScrolledWindow):
             self._library.backend.remove_book(book)
             self.remove_book_at_path(path)
 
-        msg = i18n.get_translation().ngettext(
+        msg = i18n.get_translation().ungettext(
             'Removed %d book from the library.',
             'Removed %d books from the library.',
             len(selected))

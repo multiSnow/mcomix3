@@ -95,7 +95,7 @@ class _LibraryDialog(gtk.Window):
                 collection_name = None
 
             self.add_books(filelist, collection_name)
-            message = i18n.get_translation().ngettext(
+            message = i18n.get_translation().ungettext(
                 "Added new book '%(bookname)s' from directory '%(directory)s'.",
                 "Added %(count)d new books from directory '%(directory)s'.",
                 len(filelist))

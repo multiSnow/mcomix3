@@ -185,7 +185,7 @@ class _CollectionArea(gtk.ScrolledWindow):
 
         removed = self._library.backend.clean_collection(collection)
 
-        msg = i18n.get_translation().ngettext(
+        msg = i18n.get_translation().ungettext(
             'Removed %d book from the library.',
             'Removed %d books from the library.',
             removed)
