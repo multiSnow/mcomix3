@@ -2,6 +2,9 @@
 
 import os
 import datetime
+
+from mcomix import log
+
 try:
     from sqlite3 import dbapi2
 except ImportError:

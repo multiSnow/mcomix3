@@ -3,8 +3,8 @@
 import os
 import gtk
 
+from mcomix import constants
 from mcomix import i18n
-from mcomix import image_tools
 from mcomix import thumbnail_tools
 from mcomix import thumbnail_view
 from mcomix.preferences import prefs

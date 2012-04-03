@@ -2,16 +2,13 @@
 
 import sys
 import urllib
-import Queue
 import gtk
 import gobject
-import threading
 
 from mcomix.preferences import prefs
 from mcomix import image_tools
 from mcomix import tools
 from mcomix import constants
-from mcomix import callback
 from mcomix import thumbnail_view
 
 
@@ -314,7 +311,6 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         pointer = pointer.get_from_drawable(pixmap, treeview.get_colormap(),
             0, 0, 0, 0, *pixmap.get_size())
         context.set_icon_pixbuf(pointer, -5, -5)
-
 
     def _get_empty_thumbnail(self):
         """ Create an empty filler pixmap. """
