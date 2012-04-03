@@ -38,6 +38,7 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
 
         # view - responsible for laying out the columns
         self._treeview = thumbnail_view.ThumbnailTreeView(self._thumbnail_liststore)
+        self._treeview.unset_flags(gtk.DOUBLE_BUFFERED) # Prevents flickering on update
         self._treeview.set_headers_visible(False)
         self._treeview.pixbuf_column = 1
         self._treeview.status_column = 2
