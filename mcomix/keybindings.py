@@ -110,11 +110,21 @@ class _KeybindingManager(object):
         method is a no-op. """
         if keybinding in self._callbacks:
             action, func, args, kwargs = self._callbacks[keybinding]
-            func(*args, **kwargs)
+            return func(*args, **kwargs)
+
+        # Some keys enable additional modifiers (NumLock enables GDK_MOD2_MASK),
+        # which prevent direct lookup simply by being pressed.
+        # XXX: Looking up by key/modifier probably isn't the best implementation
+        for binding, value in self._callbacks.iteritems():
+            keycode, flags = binding
+            if keycode == keybinding[0] and flags & keybinding[1]:
+                action, func, args, kwargs = value
+                return func(*args, **kwargs)
+
         # Some keys may need modifiers to be typeable, but may be registered without.
-        elif (keybinding[0], 0) in self._callbacks:
+        if (keybinding[0], 0) in self._callbacks:
             action, func, args, kwargs = self._callbacks[(keybinding[0], 0)]
-            func(*args, **kwargs)
+            return func(*args, **kwargs)
 
     def save(self):
         """ Stores the keybindings that have been set to disk. """

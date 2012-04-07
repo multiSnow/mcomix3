@@ -6,6 +6,9 @@ MComix 0.98
     - Fixed a bug that caused MComix to jump back up after scrolling down when
       an archive was still being loaded.
 
+    - Fixed NumLock being enabled breaking other keybindings containing
+      Shift, Alt or Ctrl (e.g. smart scrolling with space).
+
     - The last-read-page module now falls back to pysqlite2 if sqlite3 isn't
       available.
 
