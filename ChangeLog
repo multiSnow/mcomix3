@@ -1,4 +1,5 @@
 MComix 0.98
+Release date: 09.04.2012
 
     - Fixed a bug that occasionally caused MComix to display wrong images
       after deleting an image from a directory.
