@@ -591,7 +591,7 @@ class _BookArea(gtk.ScrolledWindow):
             cover = constants.MISSING_IMAGE_ICON
 
         cover = cover.scale_simple(max(0, cover.get_width() // 2),
-            max(0, cover.get_height() // 2), gtk.gdk.INTERP_TILES)
+            max(0, cover.get_height() // 2), prefs['scaling quality'])
         cover = image_tools.add_border(cover, 1, 0xFFFFFFFF)
         cover = image_tools.add_border(cover, 1)
 
@@ -602,7 +602,7 @@ class _BookArea(gtk.ScrolledWindow):
                 max(30, cover_width + 15), max(30, cover_height + 10))
             pointer.fill(0x00000000)
             cover.composite(pointer, 0, 0, cover_width, cover_height, 0, 0,
-            1, 1, gtk.gdk.INTERP_TILES, 255)
+            1, 1, prefs['scaling quality'], 255)
             im = Image.new('RGBA', (30, 30), 0x00000000)
             draw = ImageDraw.Draw(im)
             draw.polygon(
@@ -617,7 +617,7 @@ class _BookArea(gtk.ScrolledWindow):
             circle = image_tools.pil_to_pixbuf(im)
             circle.composite(pointer, max(0, cover_width - 15),
                 max(0, cover_height - 20), 30, 30, max(0, cover_width - 15),
-                max(0, cover_height - 20), 1, 1, gtk.gdk.INTERP_TILES, 255)
+                max(0, cover_height - 20), 1, 1, prefs['scaling quality'], 255)
         else:
             pointer = cover
 

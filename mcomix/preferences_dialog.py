@@ -298,6 +298,13 @@ class _PreferencesDialog(gtk.Dialog):
             _('Automatically rotate images when an orientation is specified in the image metadata, such as in an Exif tag.'))
         page.add_row(auto_rotate_button)
 
+        page.new_section(_('Image quality'))
+        label = gtk.Label(_('Scaling mode'))
+        scaling_box = self._create_scaling_quality_combobox()
+        scaling_box.set_tooltip_text(
+            _('Changes how images are scaled. Slower algorithms result in higher quality resizing, but longer page loading times.'))
+        page.add_row(label, scaling_box)
+
         return page
 
     def _init_advanced_tab(self):
@@ -543,6 +550,29 @@ class _PreferencesDialog(gtk.Dialog):
             if response == gtk.RESPONSE_YES:
                 self._window.uimanager.recent.remove_all()
                 self._window.filehandler.last_read_page.clear_all()
+
+    def _create_scaling_quality_combobox(self):
+        """ Creates combo box for image scaling quality """
+        items = (
+                (_('Normal (fast)'), int(gtk.gdk.INTERP_TILES)),
+                (_('Bilinear'), int(gtk.gdk.INTERP_BILINEAR)),
+                (_('Hyperbolic (slow)'), int(gtk.gdk.INTERP_HYPER)))
+
+        selection = prefs['scaling quality']
+
+        return self._create_combobox(items, selection, self._scaling_quality_changed_cb)
+
+    def _scaling_quality_changed_cb(self, combobox, *args):
+        """ Called whan image scaling quality changes. """
+        iter = combobox.get_active_iter()
+        if combobox.get_model().iter_is_valid(iter):
+            value = combobox.get_model().get_value(iter, 1)
+            print value
+            last_value = prefs['scaling quality']
+            prefs['scaling quality'] = value
+
+            if value != last_value:
+                self._window.draw_image()
 
     def _create_combobox(self, options, selected_value, change_callback):
         """ Creates a new dropdown combobox and populates it with the items

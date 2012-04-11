@@ -235,7 +235,7 @@ class MagnifyingLens(object):
         subpixbuf = subpixbuf.scale_simple(
             int(math.ceil(source_mag * subpixbuf.get_width())),
             int(math.ceil(source_mag * subpixbuf.get_height())),
-            gtk.gdk.INTERP_TILES)
+            prefs['scaling quality'])
 
         if rotation == 90:
             subpixbuf = subpixbuf.rotate_simple(

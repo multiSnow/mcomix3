@@ -86,7 +86,8 @@ prefs = {
     'statusbar fields': constants.STATUS_PAGE | constants.STATUS_RESOLUTION | \
                         constants.STATUS_PATH | constants.STATUS_FILENAME,
     'max threads': 3,
-    'wrap mouse scroll': False
+    'wrap mouse scroll': False,
+    'scaling quality': 1  # gtk.gdk.INTERP_TILES
 }
 
 def read_preferences_file():
@@ -99,13 +100,20 @@ def read_preferences_file():
             config_file = open(constants.PREFERENCE_PATH, 'r')
             saved_prefs = json.load(config_file)
             config_file.close()
-        except Exception:
+        except:
             # Gettext might not be installed yet at this point.
             corrupt_name = "%s.broken" % constants.PREFERENCE_PATH
             print ('! Corrupt preferences file, moving to "%s".' %
                    corrupt_name)
             if os.path.isfile(corrupt_name):
                 os.unlink(corrupt_name)
+
+            try:
+                # File cannot be moved without closing it first
+                config_file.close()
+            except:
+                pass
+
             os.rename(constants.PREFERENCE_PATH, corrupt_name)
 
     elif os.path.isfile(constants.PREFERENCE_PICKLE_PATH):

@@ -51,10 +51,10 @@ def fit_in_rectangle(src, width, height, scale_up=False, rotation=0):
         if src.get_has_alpha():
             if prefs['checkered bg for transparent images']:
                 src = src.composite_color_simple(src_width, src_height,
-                    gtk.gdk.INTERP_TILES, 255, 8, 0x777777, 0x999999)
+                    prefs['scaling quality'], 255, 8, 0x777777, 0x999999)
             else:
                 src = src.composite_color_simple(src_width, src_height,
-                    gtk.gdk.INTERP_TILES, 255, 1024, 0xFFFFFF, 0xFFFFFF)
+                    prefs['scaling quality'], 255, 1024, 0xFFFFFF, 0xFFFFFF)
     else:
         if float(src_width) / width > float(src_height) / height:
             height = int(max(src_height * width / src_width, 1))
@@ -64,12 +64,12 @@ def fit_in_rectangle(src, width, height, scale_up=False, rotation=0):
         if src.get_has_alpha():
             if prefs['checkered bg for transparent images']:
                 src = src.composite_color_simple(width, height,
-                    gtk.gdk.INTERP_TILES, 255, 8, 0x777777, 0x999999)
+                    prefs['scaling quality'], 255, 8, 0x777777, 0x999999)
             else:
                 src = src.composite_color_simple(width, height,
-                    gtk.gdk.INTERP_TILES, 255, 1024, 0xFFFFFF, 0xFFFFFF)
+                    prefs['scaling quality'], 255, 1024, 0xFFFFFF, 0xFFFFFF)
         else:
-            src = src.scale_simple(width, height, gtk.gdk.INTERP_TILES)
+            src = src.scale_simple(width, height, prefs['scaling quality'])
 
     if rotation == 90:
         src = src.rotate_simple(gtk.gdk.PIXBUF_ROTATE_CLOCKWISE)
