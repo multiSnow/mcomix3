@@ -258,6 +258,10 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
     def _selection_event(self, tree_selection, *args):
         """Handle events due to changed thumbnail selection."""
 
+        if not self._treeview.get_realized():
+            # Skip event processing before widget is actually ready
+            return
+
         if not self._window.was_out_of_focus:
             try:
                 selected_row = self._get_selected_row()
