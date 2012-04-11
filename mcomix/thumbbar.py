@@ -260,6 +260,7 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
 
         if not self._treeview.get_realized():
             # Skip event processing before widget is actually ready
+            self._selection_is_forced = False
             return
 
         if not self._window.was_out_of_focus:
