@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.93\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2012-04-03 15:58+0200\n"
+"POT-Creation-Date: 2012-04-12 17:29+0200\n"
 "PO-Revision-Date: 2012-03-17 21:16+0100\n"
 "Last-Translator: Frédéric Chateaux <fredchat@frenchmozilla.org>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
@@ -62,7 +62,7 @@ msgstr ""
 "! Impossible d'ajouter le fichier %(sourcefile)s à l'archive "
 "%(archivefile)s, Processus abandonné."
 
-#: mcomix/archive_tools.py:54 mcomix/last_read_page.py:87
+#: mcomix/archive_tools.py:54 mcomix/last_read_page.py:90
 #, python-format
 msgid "! Could not read %s"
 msgstr "! Impossible de lire %s"
@@ -144,7 +144,7 @@ msgstr "_Éditer les signets…"
 msgid "! Callback %(function)r failed: %(error)s"
 msgstr "! Échec de la fonction de rappel %(function)r : %(error)s"
 
-#: mcomix/comment_dialog.py:11 mcomix/preferences_dialog.py:359
+#: mcomix/comment_dialog.py:11 mcomix/preferences_dialog.py:366
 msgid "Comments"
 msgstr "Commentaires"
 
@@ -479,14 +479,14 @@ msgstr ""
 "Le raccourci pour \"% (l'action) s\" remplace le raccourci clavier d'une "
 "autre action."
 
-#: mcomix/keybindings.py:145
+#: mcomix/keybindings.py:155
 #, python-format
 msgid "Couldn't load keybindings: %s"
 msgstr ""
 "Essayez avec cette orthographe : Couldn't load key bindingsImpossible de "
 "charger les raccourcis clavier : %s"
 
-#: mcomix/last_read_page.py:11 mcomix/library/backend.py:19
+#: mcomix/last_read_page.py:14 mcomix/library/backend.py:19
 msgid "! Could neither find pysqlite2 nor sqlite3."
 msgstr "Erreur : impossible de localiser pysqlite2 et sqlite3."
 
@@ -838,31 +838,47 @@ msgstr ""
 "Rotation automatique des images quand une orientation est spécifiée dans les "
 "métadonnées de l'image, comme un tag EXIF."
 
-#: mcomix/preferences_dialog.py:309
+#: mcomix/preferences_dialog.py:301
+#, fuzzy
+msgid "Image quality"
+msgstr "Mise à l'échelle des images"
+
+#: mcomix/preferences_dialog.py:302
+#, fuzzy
+msgid "Scaling mode"
+msgstr "Mode manga"
+
+#: mcomix/preferences_dialog.py:305
+msgid ""
+"Changes how images are scaled. Slower algorithms result in higher quality "
+"resizing, but longer page loading times."
+msgstr ""
+
+#: mcomix/preferences_dialog.py:316
 msgid "User interface language"
 msgstr "Langue de l'interface"
 
-#: mcomix/preferences_dialog.py:310
+#: mcomix/preferences_dialog.py:317
 msgid "Language (needs restart):"
 msgstr "Langue (redémarrage requis) :"
 
-#: mcomix/preferences_dialog.py:314
+#: mcomix/preferences_dialog.py:321
 msgid "File order"
 msgstr "Ordre des fichiers"
 
-#: mcomix/preferences_dialog.py:316
+#: mcomix/preferences_dialog.py:323
 msgid "Order files by:"
 msgstr "Trier les fichiers par :"
 
-#: mcomix/preferences_dialog.py:319
+#: mcomix/preferences_dialog.py:326
 msgid "Cache"
 msgstr "Cache"
 
-#: mcomix/preferences_dialog.py:322
+#: mcomix/preferences_dialog.py:329
 msgid "Store thumbnails for opened files"
 msgstr "Enregistrer les vignettes des fichiers ouverts"
 
-#: mcomix/preferences_dialog.py:327
+#: mcomix/preferences_dialog.py:334
 msgid ""
 "Store thumbnails for opened files according to the freedesktop.org "
 "specification. These thumbnails are shared by many other applications, such "
@@ -872,11 +888,11 @@ msgstr ""
 "freedesktop.org. Ces vignettes sont partagés par d'autres applications comme "
 "les gestionnaires de fichiers."
 
-#: mcomix/preferences_dialog.py:330
+#: mcomix/preferences_dialog.py:337
 msgid "Maximum number of pages to store in the cache:"
 msgstr "Nombre maximal de pages dans le cache :"
 
-#: mcomix/preferences_dialog.py:336
+#: mcomix/preferences_dialog.py:343
 msgid ""
 "Set the max number of pages to cache. A value of -1 will cache the entire "
 "archive."
@@ -884,15 +900,15 @@ msgstr ""
 "Définir le nombre maximal de pages dans le cache. Une valeur de -1 stockera "
 "toute l'archive en cache."
 
-#: mcomix/preferences_dialog.py:339
+#: mcomix/preferences_dialog.py:346
 msgid "Magnifying Lens"
 msgstr "Loupe"
 
-#: mcomix/preferences_dialog.py:341
+#: mcomix/preferences_dialog.py:348
 msgid "Magnifying lens size (in pixels):"
 msgstr "Taille de la loupe (en pixels) :"
 
-#: mcomix/preferences_dialog.py:347
+#: mcomix/preferences_dialog.py:354
 msgid ""
 "Set the size of the magnifying lens. It is a square with a side of this many "
 "pixels."
@@ -900,19 +916,19 @@ msgstr ""
 "Défini la taille de la loupe. C'est un carré dont la taille du côté est égal "
 "à ce paramètre en pixel."
 
-#: mcomix/preferences_dialog.py:349
+#: mcomix/preferences_dialog.py:356
 msgid "Magnification factor:"
 msgstr "Facteur d'agrandissement :"
 
-#: mcomix/preferences_dialog.py:356
+#: mcomix/preferences_dialog.py:363
 msgid "Set the magnification factor of the magnifying lens."
 msgstr "Défini le facteur d'agrandissement de la loupe"
 
-#: mcomix/preferences_dialog.py:360
+#: mcomix/preferences_dialog.py:367
 msgid "Comment extensions:"
 msgstr "Extensions des fichiers de commentaires :"
 
-#: mcomix/preferences_dialog.py:367
+#: mcomix/preferences_dialog.py:374
 msgid ""
 "Treat all files found within archives, that have one of these file endings, "
 "as comments."
@@ -920,143 +936,143 @@ msgstr ""
 "Considérer tous les fichiers des archives qui utilisent une de ces "
 "extensions comme fichiers de commentaires."
 
-#: mcomix/preferences_dialog.py:387
+#: mcomix/preferences_dialog.py:394
 msgid "Auto-detect (Default)"
 msgstr "Détection automatique (défaut)"
 
-#: mcomix/preferences_dialog.py:388
+#: mcomix/preferences_dialog.py:395
 msgid "Catalan"
 msgstr "Catalan"
 
-#: mcomix/preferences_dialog.py:389
+#: mcomix/preferences_dialog.py:396
 msgid "Czech"
 msgstr "Tchèque"
 
-#: mcomix/preferences_dialog.py:390
+#: mcomix/preferences_dialog.py:397
 msgid "German"
 msgstr "Allemand"
 
-#: mcomix/preferences_dialog.py:391
+#: mcomix/preferences_dialog.py:398
 msgid "Greek"
 msgstr "Grec"
 
-#: mcomix/preferences_dialog.py:392
+#: mcomix/preferences_dialog.py:399
 msgid "English"
 msgstr "Anglais"
 
-#: mcomix/preferences_dialog.py:393
+#: mcomix/preferences_dialog.py:400
 msgid "Spanish"
 msgstr "Espagnol"
 
-#: mcomix/preferences_dialog.py:394
+#: mcomix/preferences_dialog.py:401
 msgid "Persian"
 msgstr "Persan"
 
-#: mcomix/preferences_dialog.py:395
+#: mcomix/preferences_dialog.py:402
 msgid "French"
 msgstr "Français"
 
-#: mcomix/preferences_dialog.py:396
+#: mcomix/preferences_dialog.py:403
 msgid "Galician"
 msgstr "Galicien"
 
-#: mcomix/preferences_dialog.py:397
+#: mcomix/preferences_dialog.py:404
 msgid "Croatian"
 msgstr "Croate"
 
-#: mcomix/preferences_dialog.py:398
+#: mcomix/preferences_dialog.py:405
 msgid "Hungarian"
 msgstr "Hongroise"
 
-#: mcomix/preferences_dialog.py:399
+#: mcomix/preferences_dialog.py:406
 msgid "Indonesian"
 msgstr "Indonésienne"
 
-#: mcomix/preferences_dialog.py:400
+#: mcomix/preferences_dialog.py:407
 msgid "Italian"
 msgstr "Italien"
 
-#: mcomix/preferences_dialog.py:401
+#: mcomix/preferences_dialog.py:408
 msgid "Japanese"
 msgstr "Japonais"
 
-#: mcomix/preferences_dialog.py:402
+#: mcomix/preferences_dialog.py:409
 msgid "Korean"
 msgstr "Coréen"
 
-#: mcomix/preferences_dialog.py:403
+#: mcomix/preferences_dialog.py:410
 msgid "Dutch"
 msgstr "Néerlandais"
 
-#: mcomix/preferences_dialog.py:404
+#: mcomix/preferences_dialog.py:411
 msgid "Polish"
 msgstr "Polonais"
 
-#: mcomix/preferences_dialog.py:405
+#: mcomix/preferences_dialog.py:412
 msgid "Portuguese"
 msgstr "Portugais"
 
-#: mcomix/preferences_dialog.py:406
+#: mcomix/preferences_dialog.py:413
 msgid "Russian"
 msgstr "Russe"
 
-#: mcomix/preferences_dialog.py:407
+#: mcomix/preferences_dialog.py:414
 msgid "Swedish"
 msgstr "Suédois"
 
-#: mcomix/preferences_dialog.py:408
+#: mcomix/preferences_dialog.py:415
 msgid "Ukrainian"
 msgstr "Ukrainienne"
 
-#: mcomix/preferences_dialog.py:409
+#: mcomix/preferences_dialog.py:416
 msgid "Chinese (simplified)"
 msgstr "Chinois (simplifié)"
 
-#: mcomix/preferences_dialog.py:410
+#: mcomix/preferences_dialog.py:417
 msgid "Chinese (traditional)"
 msgstr "Chinois (traditionnel)"
 
-#: mcomix/preferences_dialog.py:429 mcomix/preferences_dialog.py:499
+#: mcomix/preferences_dialog.py:436 mcomix/preferences_dialog.py:506
 msgid "Never"
 msgstr "Jamais"
 
-#: mcomix/preferences_dialog.py:430
+#: mcomix/preferences_dialog.py:437
 msgid "Only for title pages"
 msgstr "Uniquement pour les pages titres"
 
-#: mcomix/preferences_dialog.py:431
+#: mcomix/preferences_dialog.py:438
 msgid "Only for wide images"
 msgstr "Uniquement pour les grandes images"
 
-#: mcomix/preferences_dialog.py:432
+#: mcomix/preferences_dialog.py:439
 msgid "Always"
 msgstr "Toujours"
 
-#: mcomix/preferences_dialog.py:451
+#: mcomix/preferences_dialog.py:458
 msgid "No sorting"
 msgstr "Pas de tri"
 
-#: mcomix/preferences_dialog.py:452
+#: mcomix/preferences_dialog.py:459
 msgid "File name"
 msgstr "Nom de fichier"
 
-#: mcomix/preferences_dialog.py:453 mcomix/library/book_area.py:163
+#: mcomix/preferences_dialog.py:460 mcomix/library/book_area.py:163
 msgid "File size"
 msgstr "Taille du fichier"
 
-#: mcomix/preferences_dialog.py:454
+#: mcomix/preferences_dialog.py:461
 msgid "Last modified"
 msgstr "Dernière modification"
 
-#: mcomix/preferences_dialog.py:460 mcomix/library/book_area.py:167
+#: mcomix/preferences_dialog.py:467 mcomix/library/book_area.py:167
 msgid "Ascending"
 msgstr "Ascendant"
 
-#: mcomix/preferences_dialog.py:461 mcomix/library/book_area.py:169
+#: mcomix/preferences_dialog.py:468 mcomix/library/book_area.py:169
 msgid "Descending"
 msgstr "Descendant"
 
-#: mcomix/preferences_dialog.py:471
+#: mcomix/preferences_dialog.py:478
 msgid ""
 "Files will be opened and displayed according to the sort order specified "
 "here. This option does not affect ordering within archives."
@@ -1064,25 +1080,38 @@ msgstr ""
 "Les fichiers seront ouverts et affichés selon l'ordre de tri spécifié ici. "
 "Cette option n'affecte pas l'ordre des fichiers à l'intérieur des archives."
 
-#: mcomix/preferences_dialog.py:500
+#: mcomix/preferences_dialog.py:507
 msgid "Only file names"
 msgstr "Uniquement les noms de fichier"
 
-#: mcomix/preferences_dialog.py:501
+#: mcomix/preferences_dialog.py:508
 msgid "File names and last read page"
 msgstr "Noms de fichiers et dernière page lue"
 
-#: mcomix/preferences_dialog.py:535
+#: mcomix/preferences_dialog.py:542
 msgid "Delete information about recently opened files?"
 msgstr "Effacer les informations sur les fichiers récemment ouverts ?"
 
-#: mcomix/preferences_dialog.py:538
+#: mcomix/preferences_dialog.py:545
 msgid ""
 "This will remove all entries from the \"Recent\" menu, and clear information "
 "about last read pages."
 msgstr ""
 "Ceci va effacer toutes les entrées concernant le menu « Récemment ouverts » "
 "et supprimer les informations sur les dernières pages lues."
+
+#: mcomix/preferences_dialog.py:557
+#, fuzzy
+msgid "Normal (fast)"
+msgstr "Taille normale"
+
+#: mcomix/preferences_dialog.py:558
+msgid "Bilinear"
+msgstr ""
+
+#: mcomix/preferences_dialog.py:559
+msgid "Hyperbolic (slow)"
+msgstr ""
 
 #: mcomix/process.py:50
 #, python-format
@@ -1098,7 +1127,7 @@ msgstr "\"%(command)s\" doit être dans le PATH de votre système."
 msgid "Properties"
 msgstr "Propriétés"
 
-#: mcomix/properties_dialog.py:46 mcomix/library/control_area.py:127
+#: mcomix/properties_dialog.py:46 mcomix/library/control_area.py:128
 #, python-format
 msgid "%d pages"
 msgstr "%d pages"
@@ -2024,7 +2053,7 @@ msgstr "_Nettoyer"
 msgid "Removes no longer existant books from the collection."
 msgstr "Efface de la collection les livres qui n'existent plus."
 
-#: mcomix/library/collection_area.py:90 mcomix/library/watchlist.py:57
+#: mcomix/library/collection_area.py:90 mcomix/library/watchlist.py:60
 msgid "_Remove"
 msgstr "_Effacer"
 
@@ -2104,15 +2133,15 @@ msgstr ""
 "Affiche uniquement les livres avec la chaîne de caractère spécifiée dans le "
 "chemin complet. La recherche n'est pas sensible à la casse."
 
-#: mcomix/library/control_area.py:82
+#: mcomix/library/control_area.py:83
 msgid "_Watch list"
 msgstr "_Liste de suivi"
 
-#: mcomix/library/control_area.py:88
+#: mcomix/library/control_area.py:89
 msgid "Open the watchlist management dialog."
 msgstr "Ouvre l'éditeur de la liste de suivi."
 
-#: mcomix/library/control_area.py:94
+#: mcomix/library/control_area.py:95
 msgid "Open the selected book."
 msgstr "Ouvrir le livre sélectionné."
 
@@ -2141,19 +2170,23 @@ msgstr "Pas de nouveau livre trouvé dans le répertoire '%s'."
 msgid "! You need an sqlite wrapper to use the library."
 msgstr "! Il faut la composante sqlite pour utiliser la bibliothèque"
 
-#: mcomix/library/watchlist.py:22
+#: mcomix/library/watchlist.py:24
 msgid "Library watch list"
 msgstr "Liste de suivi de la bibliothèque"
 
-#: mcomix/library/watchlist.py:39
+#: mcomix/library/watchlist.py:26
+msgid "_Scan now"
+msgstr ""
+
+#: mcomix/library/watchlist.py:42
 msgid "Directory"
 msgstr "Répertoire"
 
-#: mcomix/library/watchlist.py:50
+#: mcomix/library/watchlist.py:53
 msgid "Collection"
 msgstr "Collection"
 
-#: mcomix/library/watchlist.py:55
+#: mcomix/library/watchlist.py:58
 msgid "_Add"
 msgstr "_Ajouter…"
 
@@ -2313,9 +2346,6 @@ msgstr "_Ajouter…"
 
 #~ msgid "Options:"
 #~ msgstr "Options :"
-
-#~ msgid "Image scaling"
-#~ msgstr "Mise à l'échelle des images"
 
 #~ msgid "Avoid possibly unintentional page flips."
 #~ msgstr "Éviter les changements de page inattendus."

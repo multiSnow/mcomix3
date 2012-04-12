@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: comix 4.0.1\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2012-04-03 15:58+0200\n"
+"POT-Creation-Date: 2012-04-12 17:29+0200\n"
 "PO-Revision-Date: 2008-12-13 18:00+0100\n"
 "Last-Translator: Adrian C. <anrxc@sysphere.org>\n"
 "Language-Team: Croatian\n"
@@ -59,7 +59,7 @@ msgid ""
 "! Could not add file %(sourcefile)s to archive %(archivefile)s, aborting..."
 msgstr ""
 
-#: mcomix/archive_tools.py:54 mcomix/last_read_page.py:87
+#: mcomix/archive_tools.py:54 mcomix/last_read_page.py:90
 #, python-format
 msgid "! Could not read %s"
 msgstr ""
@@ -148,7 +148,7 @@ msgstr ""
 #
 # File: src/comment.py, line: 16
 # File: src/preferences.py, line: 288
-#: mcomix/comment_dialog.py:11 mcomix/preferences_dialog.py:359
+#: mcomix/comment_dialog.py:11 mcomix/preferences_dialog.py:366
 msgid "Comments"
 msgstr "Komentari"
 
@@ -582,12 +582,12 @@ msgstr ""
 msgid "Keybinding for \"%(action)s\" overrides hotkey for another action."
 msgstr ""
 
-#: mcomix/keybindings.py:145
+#: mcomix/keybindings.py:155
 #, python-format
 msgid "Couldn't load keybindings: %s"
 msgstr ""
 
-#: mcomix/last_read_page.py:11 mcomix/library/backend.py:19
+#: mcomix/last_read_page.py:14 mcomix/library/backend.py:19
 msgid "! Could neither find pysqlite2 nor sqlite3."
 msgstr ""
 
@@ -1023,38 +1023,58 @@ msgid ""
 "metadata, such as in an Exif tag."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:309
-msgid "User interface language"
-msgstr ""
+#
+# File: src/preferences.py, line: 143
+#: mcomix/preferences_dialog.py:301
+#, fuzzy
+msgid "Image quality"
+msgstr "Skaliranje slike"
 
-#: mcomix/preferences_dialog.py:310
-msgid "Language (needs restart):"
-msgstr ""
+#
+# File: src/ui.py, line: 297
+#: mcomix/preferences_dialog.py:302
+#, fuzzy
+msgid "Scaling mode"
+msgstr "Manga prikaz"
 
-#: mcomix/preferences_dialog.py:314
-msgid "File order"
+#: mcomix/preferences_dialog.py:305
+msgid ""
+"Changes how images are scaled. Slower algorithms result in higher quality "
+"resizing, but longer page loading times."
 msgstr ""
 
 #: mcomix/preferences_dialog.py:316
+msgid "User interface language"
+msgstr ""
+
+#: mcomix/preferences_dialog.py:317
+msgid "Language (needs restart):"
+msgstr ""
+
+#: mcomix/preferences_dialog.py:321
+msgid "File order"
+msgstr ""
+
+#: mcomix/preferences_dialog.py:323
 msgid "Order files by:"
 msgstr ""
 
 #
 # File: src/preferences.py, line: 230
-#: mcomix/preferences_dialog.py:319
+#: mcomix/preferences_dialog.py:326
 msgid "Cache"
 msgstr "Međuspremnik"
 
 #
 # File: src/preferences.py, line: 222
-#: mcomix/preferences_dialog.py:322
+#: mcomix/preferences_dialog.py:329
 #, fuzzy
 msgid "Store thumbnails for opened files"
 msgstr "Spremaj sličice za otvorene datoteke."
 
 #
 # File: src/preferences.py, line: 227
-#: mcomix/preferences_dialog.py:327
+#: mcomix/preferences_dialog.py:334
 msgid ""
 "Store thumbnails for opened files according to the freedesktop.org "
 "specification. These thumbnails are shared by many other applications, such "
@@ -1064,11 +1084,11 @@ msgstr ""
 "Ove sličice se dijele između mnogo aplikacija, kao npr. većine upravitelja "
 "datotekama."
 
-#: mcomix/preferences_dialog.py:330
+#: mcomix/preferences_dialog.py:337
 msgid "Maximum number of pages to store in the cache:"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:336
+#: mcomix/preferences_dialog.py:343
 msgid ""
 "Set the max number of pages to cache. A value of -1 will cache the entire "
 "archive."
@@ -1076,20 +1096,20 @@ msgstr ""
 
 #
 # File: src/preferences.py, line: 124
-#: mcomix/preferences_dialog.py:339
+#: mcomix/preferences_dialog.py:346
 msgid "Magnifying Lens"
 msgstr "Povećalo"
 
 #
 # File: src/preferences.py, line: 125
-#: mcomix/preferences_dialog.py:341
+#: mcomix/preferences_dialog.py:348
 #, fuzzy
 msgid "Magnifying lens size (in pixels):"
 msgstr "Veličina povećala (u pikselima)"
 
 #
 # File: src/preferences.py, line: 131
-#: mcomix/preferences_dialog.py:347
+#: mcomix/preferences_dialog.py:354
 msgid ""
 "Set the size of the magnifying lens. It is a square with a side of this many "
 "pixels."
@@ -1099,27 +1119,27 @@ msgstr ""
 
 #
 # File: src/preferences.py, line: 133
-#: mcomix/preferences_dialog.py:349
+#: mcomix/preferences_dialog.py:356
 #, fuzzy
 msgid "Magnification factor:"
 msgstr "Faktor uvećanja"
 
 #
 # File: src/preferences.py, line: 140
-#: mcomix/preferences_dialog.py:356
+#: mcomix/preferences_dialog.py:363
 msgid "Set the magnification factor of the magnifying lens."
 msgstr "Postavi faktor uvećanja povećala."
 
 #
 # File: src/preferences.py, line: 289
-#: mcomix/preferences_dialog.py:360
+#: mcomix/preferences_dialog.py:367
 #, fuzzy
 msgid "Comment extensions:"
 msgstr "Ekstenzije komentara"
 
 #
 # File: src/preferences.py, line: 295
-#: mcomix/preferences_dialog.py:367
+#: mcomix/preferences_dialog.py:374
 msgid ""
 "Treat all files found within archives, that have one of these file endings, "
 "as comments."
@@ -1127,167 +1147,179 @@ msgstr ""
 "Tretiraj sve datoteke unutar arhiva, koje imaju jednu od ovih ekstenzija, "
 "kao komentare."
 
-#: mcomix/preferences_dialog.py:387
+#: mcomix/preferences_dialog.py:394
 msgid "Auto-detect (Default)"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:388
+#: mcomix/preferences_dialog.py:395
 msgid "Catalan"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:389
+#: mcomix/preferences_dialog.py:396
 msgid "Czech"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:390
+#: mcomix/preferences_dialog.py:397
 msgid "German"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:391
+#: mcomix/preferences_dialog.py:398
 msgid "Greek"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:392
+#: mcomix/preferences_dialog.py:399
 msgid "English"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:393
+#: mcomix/preferences_dialog.py:400
 msgid "Spanish"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:394
+#: mcomix/preferences_dialog.py:401
 msgid "Persian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:395
+#: mcomix/preferences_dialog.py:402
 msgid "French"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:396
+#: mcomix/preferences_dialog.py:403
 msgid "Galician"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:397
+#: mcomix/preferences_dialog.py:404
 msgid "Croatian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:398
+#: mcomix/preferences_dialog.py:405
 msgid "Hungarian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:399
+#: mcomix/preferences_dialog.py:406
 msgid "Indonesian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:400
+#: mcomix/preferences_dialog.py:407
 msgid "Italian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:401
+#: mcomix/preferences_dialog.py:408
 msgid "Japanese"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:402
+#: mcomix/preferences_dialog.py:409
 msgid "Korean"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:403
+#: mcomix/preferences_dialog.py:410
 msgid "Dutch"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:404
+#: mcomix/preferences_dialog.py:411
 msgid "Polish"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:405
+#: mcomix/preferences_dialog.py:412
 msgid "Portuguese"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:406
+#: mcomix/preferences_dialog.py:413
 msgid "Russian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:407
+#: mcomix/preferences_dialog.py:414
 msgid "Swedish"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:408
+#: mcomix/preferences_dialog.py:415
 msgid "Ukrainian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:409
+#: mcomix/preferences_dialog.py:416
 msgid "Chinese (simplified)"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:410
+#: mcomix/preferences_dialog.py:417
 msgid "Chinese (traditional)"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:429 mcomix/preferences_dialog.py:499
+#: mcomix/preferences_dialog.py:436 mcomix/preferences_dialog.py:506
 msgid "Never"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:430
+#: mcomix/preferences_dialog.py:437
 msgid "Only for title pages"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:431
+#: mcomix/preferences_dialog.py:438
 msgid "Only for wide images"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:432
+#: mcomix/preferences_dialog.py:439
 msgid "Always"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:451
+#: mcomix/preferences_dialog.py:458
 msgid "No sorting"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:452
+#: mcomix/preferences_dialog.py:459
 msgid "File name"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:453 mcomix/library/book_area.py:163
+#: mcomix/preferences_dialog.py:460 mcomix/library/book_area.py:163
 msgid "File size"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:454
+#: mcomix/preferences_dialog.py:461
 msgid "Last modified"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:460 mcomix/library/book_area.py:167
+#: mcomix/preferences_dialog.py:467 mcomix/library/book_area.py:167
 msgid "Ascending"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:461 mcomix/library/book_area.py:169
+#: mcomix/preferences_dialog.py:468 mcomix/library/book_area.py:169
 msgid "Descending"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:471
+#: mcomix/preferences_dialog.py:478
 msgid ""
 "Files will be opened and displayed according to the sort order specified "
 "here. This option does not affect ordering within archives."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:500
+#: mcomix/preferences_dialog.py:507
 msgid "Only file names"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:501
+#: mcomix/preferences_dialog.py:508
 msgid "File names and last read page"
 msgstr ""
 
 #
 # File: src/preferences.py, line: 214
-#: mcomix/preferences_dialog.py:535
+#: mcomix/preferences_dialog.py:542
 #, fuzzy
 msgid "Delete information about recently opened files?"
 msgstr "Spremaj informacije o nedavno otvorenim datotekama."
 
-#: mcomix/preferences_dialog.py:538
+#: mcomix/preferences_dialog.py:545
 msgid ""
 "This will remove all entries from the \"Recent\" menu, and clear information "
 "about last read pages."
+msgstr ""
+
+#: mcomix/preferences_dialog.py:557
+msgid "Normal (fast)"
+msgstr ""
+
+#: mcomix/preferences_dialog.py:558
+msgid "Bilinear"
+msgstr ""
+
+#: mcomix/preferences_dialog.py:559
+msgid "Hyperbolic (slow)"
 msgstr ""
 
 #: mcomix/process.py:50
@@ -1309,7 +1341,7 @@ msgstr "Svojstva"
 #
 # File: src/library.py, line: 832
 # File: src/properties.py, line: 113
-#: mcomix/properties_dialog.py:46 mcomix/library/control_area.py:127
+#: mcomix/properties_dialog.py:46 mcomix/library/control_area.py:128
 #, python-format
 msgid "%d pages"
 msgstr "%d stranica"
@@ -2433,7 +2465,7 @@ msgstr ""
 msgid "Removes no longer existant books from the collection."
 msgstr ""
 
-#: mcomix/library/collection_area.py:90 mcomix/library/watchlist.py:57
+#: mcomix/library/collection_area.py:90 mcomix/library/watchlist.py:60
 msgid "_Remove"
 msgstr ""
 
@@ -2540,17 +2572,17 @@ msgstr ""
 "Prikaži samo one knjige koje imaju naznačeni tekst u njihovoj punoj putanji. "
 "Pretraga nije osjetljiva na velika i mala slova."
 
-#: mcomix/library/control_area.py:82
+#: mcomix/library/control_area.py:83
 msgid "_Watch list"
 msgstr ""
 
-#: mcomix/library/control_area.py:88
+#: mcomix/library/control_area.py:89
 msgid "Open the watchlist management dialog."
 msgstr ""
 
 #
 # File: src/library.py, line: 806
-#: mcomix/library/control_area.py:94
+#: mcomix/library/control_area.py:95
 msgid "Open the selected book."
 msgstr "Otvori označenu knjigu."
 
@@ -2581,22 +2613,26 @@ msgstr ""
 msgid "! You need an sqlite wrapper to use the library."
 msgstr ""
 
-#: mcomix/library/watchlist.py:22
+#: mcomix/library/watchlist.py:24
 msgid "Library watch list"
 msgstr ""
 
-#: mcomix/library/watchlist.py:39
+#: mcomix/library/watchlist.py:26
+msgid "_Scan now"
+msgstr ""
+
+#: mcomix/library/watchlist.py:42
 msgid "Directory"
 msgstr ""
 
 #
 # File: src/library.py, line: 862
-#: mcomix/library/watchlist.py:50
+#: mcomix/library/watchlist.py:53
 #, fuzzy
 msgid "Collection"
 msgstr "Nova kolekcija"
 
-#: mcomix/library/watchlist.py:55
+#: mcomix/library/watchlist.py:58
 msgid "_Add"
 msgstr ""
 
@@ -2891,11 +2927,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Usage:"
 #~ msgstr "Stranica"
-
-#
-# File: src/preferences.py, line: 143
-#~ msgid "Image scaling"
-#~ msgstr "Skaliranje slike"
 
 #
 # File: src/preferences.py, line: 144
