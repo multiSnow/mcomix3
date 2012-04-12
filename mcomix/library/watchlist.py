@@ -15,13 +15,16 @@ COL_COLLECTION_ID = 1
 class WatchListDialog(gtk.Dialog):
     """ Dialog for managing watched directories. """
 
+    RESPONSE_SCANNOW = 1000
+
     def __init__(self, library):
         """ Dialog constructor.
         @param library: Dialog parent window, should be library window.
         """
         super(WatchListDialog, self).__init__(_("Library watch list"),
             library, gtk.DIALOG_DESTROY_WITH_PARENT | gtk.DIALOG_MODAL,
-            (gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE))
+            (_('_Scan now').encode('utf-8'), WatchListDialog.RESPONSE_SCANNOW,
+             gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE))
 
         #: Stores a reference to the library
         self.library = library
@@ -187,6 +190,8 @@ class WatchListDialog(gtk.Dialog):
         """ Trigger scan for new files after watch dialog closes. """
         self.destroy()
         if response == gtk.RESPONSE_CLOSE and self._changed:
+            self.library.scan_for_new_files()
+        elif response == WatchListDialog.RESPONSE_SCANNOW:
             self.library.scan_for_new_files()
 
 

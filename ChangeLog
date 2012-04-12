@@ -3,6 +3,9 @@ MComix 0.99
     - Added new preference option for switching between different resizing
       algorithms (higher quality usually means longer page loading times).
 
+    - Added "Scan now" button to library watch list dialog to trigger
+      immediate update.
+
 MComix 0.98
 Release date: 09.04.2012
 
