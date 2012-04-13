@@ -567,7 +567,6 @@ class _PreferencesDialog(gtk.Dialog):
         iter = combobox.get_active_iter()
         if combobox.get_model().iter_is_valid(iter):
             value = combobox.get_model().get_value(iter, 1)
-            print value
             last_value = prefs['scaling quality']
             prefs['scaling quality'] = value
 
