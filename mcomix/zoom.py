@@ -57,6 +57,8 @@ class ZoomModel(object):
 class FitMode(object):
     """ Base class that handles scaling of images to predefined sizes. """
 
+    ID = -1
+
     def __init__(self):
         #: No upscaling is done unless this is True
         self.scale_up = False
@@ -82,13 +84,24 @@ class FitMode(object):
         """
         raise NotImplementedError()
 
-    def get_mode_identifier(self):
+    @classmethod
+    def get_mode_identifier(cls):
         """ Returns an unique identifier for a fit mode (for serialization) """
-        raise NotImplementedError()
+        return cls.ID
+
+    @staticmethod
+    def create(fitmode):
+        for cls in (NoFitMode, BestFitMode, FitToWidthMode, FitToHeightMode):
+            if cls.get_mode_identifier() == fitmode:
+                return cls()
+
+        raise ValueError("No fit mode registered for identifier '%d'." % fitmode)
 
 class NoFitMode(FitMode):
     """ No automatic scaling depending on image size (unless L{scale_up} is
     True, in which case the image will be fit to screen size). """
+
+    ID = constants.ZOOM_MODE_MANUAL
 
     def get_scaled_size(self, img_size, screen_size):
         if (self.get_scale_up() and
@@ -102,12 +115,11 @@ class NoFitMode(FitMode):
         else:
             return int(img_size[0]), int(img_size[1])
 
-    def get_mode_identifier(self):
-        return constants.ZOOM_MODE_MANUAL
-
 
 class BestFitMode(FitMode):
     """ Scales to fit both width and height into the screen frame. """
+
+    ID = constants.ZOOM_MODE_BEST
 
     def get_scaled_size(self, img_size, screen_size):
         scale = min(self.get_scale_x(img_size[0], screen_size[0]),
@@ -130,30 +142,25 @@ class BestFitMode(FitMode):
         else:
             return scale_y
 
-    def get_mode_identifier(self):
-        return constants.ZOOM_MODE_BEST
-
 
 class FitToWidthMode(BestFitMode):
     """ Scales images to fit into screen width. """
+
+    ID = constants.ZOOM_MODE_WIDTH
 
     def get_scaled_size(self, img_size, screen_size):
         scale = self.get_scale_x(img_size[0], screen_size[0])
         return int(img_size[0] * scale), int(img_size[1] * scale)
 
-    def get_mode_identifier(self):
-        return constants.ZOOM_MODE_WIDTH
-
 
 class FitToHeightMode(BestFitMode):
     """ Scales images to fit into screen height. """
 
+    ID = constants.ZOOM_MODE_HEIGHT
+
     def get_scaled_size(self, img_size, screen_size):
         scale = self.get_scale_y(img_size[1], screen_size[1])
         return int(img_size[0] * scale), int(img_size[1] * scale)
-
-    def get_mode_identifier(self):
-        return constants.ZOOM_MODE_HEIGHT
 
 
 # vim: expandtab:sw=4:ts=4

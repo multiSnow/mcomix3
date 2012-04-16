@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from mcomix.zoom import ZoomModel, NoFitMode, BestFitMode, FitToWidthMode
+from mcomix.zoom import ZoomModel, FitMode, NoFitMode, BestFitMode, FitToWidthMode
+from mcomix import constants
 
 class ZoomModelTest(unittest.TestCase):
     def setUp(self):
         self.zoom = ZoomModel()
 
     def test_bestfit_zoom(self):
-        self.zoom.set_fit_mode(BestFitMode())
+        self.zoom.set_fit_mode(FitMode.create(constants.ZOOM_MODE_BEST))
         img_size = (1000, 2000)
         scr_size = (1000, 500)
         size = self.zoom.get_zoomed_size(img_size, scr_size)
