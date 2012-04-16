@@ -26,6 +26,7 @@ from mcomix import clipboard
 from mcomix import pageselect
 from mcomix import osd
 from mcomix import keybindings
+from mcomix import zoom
 
 
 class MainWindow(gtk.Window):
@@ -53,7 +54,6 @@ class MainWindow(gtk.Window):
         #: Used to remember if changing to fullscreen enabled 'Hide all'
         self.hide_all_forced = False
 
-        self._manual_zoom = 100  # In percent of original image size
         self._waiting_for_redraw = False
 
         self._image_box = gtk.HBox(False, 2)
@@ -76,6 +76,8 @@ class MainWindow(gtk.Window):
         self.enhancer = enhance_backend.ImageEnhancer(self)
         self.lens = lens.MagnifyingLens(self)
         self.osd = osd.OnScreenDisplay(self)
+        self.zoom = zoom.ZoomModel()
+        self.zoom.zoom_changed += lambda zoom: self.draw_image()
         self.uimanager = ui.MainUI(self)
         self.menubar = self.uimanager.get_widget('/Menu')
         self.toolbar = self.uimanager.get_widget('/Tool')
@@ -285,19 +287,6 @@ class MainWindow(gtk.Window):
             self._waiting_for_redraw = False
             return False
 
-        area_width, area_height = self.get_visible_area_size()
-
-        if prefs['zoom mode'] == constants.ZOOM_MODE_HEIGHT:
-            scaled_width = -1
-        else:
-            scaled_width = area_width
-
-        if prefs['zoom mode'] == constants.ZOOM_MODE_WIDTH:
-            scaled_height = -1
-        else:
-            scaled_height = area_height
-
-        scale_up = prefs['stretch']
         self.is_virtual_double_page = \
             self.imagehandler.get_virtual_double_page()
 
@@ -321,30 +310,34 @@ class MainWindow(gtk.Window):
                 right_rotation += image_tools.get_implied_rotation(right_pixbuf)
                 right_rotation = right_rotation % 360
 
-            if prefs['zoom mode'] == constants.ZOOM_MODE_MANUAL:
+            if left_rotation in (90, 270):
+                total_width = left_unscaled_y
+                total_height = left_unscaled_x
+            else:
+                total_width = left_unscaled_x
+                total_height = left_unscaled_y
 
-                if left_rotation in (90, 270):
-                    total_width = left_unscaled_y
-                    total_height = left_unscaled_x
-                else:
-                    total_width = left_unscaled_x
-                    total_height = left_unscaled_y
+            if right_rotation in (90, 270):
+                total_width += right_unscaled_y
+                total_height = max(total_height, right_unscaled_x)
+            else:
+                total_width += right_unscaled_x
+                total_height = max(total_height, right_unscaled_y)
 
-                if right_rotation in (90, 270):
-                    total_width += right_unscaled_y
-                    total_height += right_unscaled_x
-                else:
-                    total_width += right_unscaled_x
-                    total_height += right_unscaled_y
+            total_width += 2  # For the 2 px gap between images.
+            scaled_width, scaled_height = self.zoom.get_zoomed_size(
+                (total_width, total_height), self.get_visible_area_size())
 
-                total_width += 2  # For the 2 px gap between images.
-                scaled_width = int(self._manual_zoom * total_width / 100)
-                scaled_height = int(self._manual_zoom * total_height / 100)
-                scale_up = True
+            # Visible area size is recomputed depending on scrollbar visibility
+            self._show_scrollbars((scaled_width, scaled_height),
+                self.get_visible_area_size())
+            area_width, area_height = self.get_visible_area_size()
+            scaled_width, scaled_height = self.zoom.get_zoomed_size(
+                (total_width, total_height), (area_width, area_height))
 
             left_pixbuf, right_pixbuf = image_tools.fit_2_in_rectangle(
                 left_pixbuf, right_pixbuf, scaled_width, scaled_height,
-                scale_up=scale_up, rotation1=left_rotation,
+                scale_up=True, rotation1=left_rotation,
                 rotation2=right_rotation)
 
             if prefs['horizontal flip']:
@@ -386,28 +379,28 @@ class MainWindow(gtk.Window):
 
         elif not skip_pixbuf:
             pixbuf = self.imagehandler.get_pixbufs(single=True)[ 0 ]
-            unscaled_x = pixbuf.get_width()
-            unscaled_y = pixbuf.get_height()
+            width, height = pixbuf.get_width(), pixbuf.get_height()
 
             rotation = prefs['rotation']
             if prefs['auto rotate from exif']:
                 rotation += image_tools.get_implied_rotation(pixbuf)
                 rotation = rotation % 360
 
-            if prefs['zoom mode'] == constants.ZOOM_MODE_MANUAL:
-                # If 'Scale small images' is true, scale up the image's base size
-                scale_x = max(scale_up and scaled_width or unscaled_x, unscaled_x)
-                scale_y = max(scale_up and scaled_height or unscaled_y, unscaled_y)
-                scaled_width = int(self._manual_zoom * scale_x / 100)
-                scaled_height = int(self._manual_zoom * scale_y / 100)
+            if rotation in (90, 270):
+                width, height = height, width
 
-                if rotation in (90, 270):
-                    scaled_width, scaled_height = scaled_height, scaled_width
+            scaled_width, scaled_height = self.zoom.get_zoomed_size(
+                (width, height), self.get_visible_area_size())
 
-                scale_up = True
+            # Visible area size is recomputed depending on scrollbar visibility
+            self._show_scrollbars((scaled_width, scaled_height),
+                self.get_visible_area_size())
+            area_width, area_height = self.get_visible_area_size()
+            scaled_width, scaled_height = self.zoom.get_zoomed_size(
+                (width, height), (area_width, area_height))
 
             pixbuf = image_tools.fit_in_rectangle(pixbuf, scaled_width,
-                scaled_height, scale_up=scale_up, rotation=rotation)
+                scaled_height, scale_up=True, rotation=rotation)
 
             if prefs['horizontal flip']:
                 pixbuf = pixbuf.flip(horizontal=True)
@@ -423,11 +416,11 @@ class MainWindow(gtk.Window):
             y_padding = (area_height - pixbuf.get_height()) / 2
 
             if rotation in (90, 270):
-                scale_percent = 100.0 * pixbuf.get_width() / unscaled_y
+                scale_percent = 100.0 * pixbuf.get_width() / height
             else:
-                scale_percent = 100.0 * pixbuf.get_width() / unscaled_x
+                scale_percent = 100.0 * pixbuf.get_width() / width
 
-            self.statusbar.set_resolution((unscaled_x, unscaled_y,
+            self.statusbar.set_resolution((width, height,
                 scale_percent))
 
         if prefs['smart bg'] and not skip_pixbuf:
@@ -619,19 +612,15 @@ class MainWindow(gtk.Window):
             self.hide_all_forced = False
 
     def change_zoom_mode(self, radioaction, *args):
-        old_mode = prefs['zoom mode']
         prefs['zoom mode'] = radioaction.get_current_value()
-        sensitive = (prefs['zoom mode'] == constants.ZOOM_MODE_MANUAL)
-        self.actiongroup.get_action('zoom_in').set_sensitive(sensitive)
-        self.actiongroup.get_action('zoom_out').set_sensitive(sensitive)
-        self.actiongroup.get_action('zoom_original').set_sensitive(sensitive)
-
-        if old_mode != prefs['zoom mode']:
-            self.draw_image()
+        fitmode = zoom.FitMode.create(prefs['zoom mode'])
+        fitmode.set_scale_up(prefs['stretch'])
+        self.zoom.set_fit_mode(fitmode)
 
     def change_stretch(self, toggleaction, *args):
         """ Toggles stretching small images. """
         prefs['stretch'] = toggleaction.get_active()
+        self.zoom.get_fit_mode().set_scale_up(prefs['stretch'])
         self.draw_image()
 
     def change_toolbar_visibility(self, *args):
@@ -668,26 +657,35 @@ class MainWindow(gtk.Window):
         prefs['keep transformation'] = not prefs['keep transformation']
 
     def manual_zoom_in(self, *args):
-        new_zoom = self._manual_zoom * 1.15
-        if 95 < new_zoom < 105:  # To compensate for rounding errors
-            new_zoom = 100
-        if new_zoom > 1000:
-            return
-        self._manual_zoom = new_zoom
-        self.draw_image()
+        self.zoom.zoom_in()
 
     def manual_zoom_out(self, *args):
-        new_zoom = self._manual_zoom / 1.15
-        if 95 < new_zoom < 105:  # To compensate for rounding errors
-            new_zoom = 100
-        if new_zoom < 10:
-            return
-        self._manual_zoom = new_zoom
-        self.draw_image()
+        self.zoom.zoom_out()
 
     def manual_zoom_original(self, *args):
-        self._manual_zoom = 100
-        self.draw_image()
+        self.zoom.reset_zoom()
+
+    def _show_scrollbars(self, img_size, screen_size):
+        """ Enables scroll bars depending on image size
+        and preferences. """
+
+        self._vscroll.hide_all()
+        self._hscroll.hide_all()
+
+        if prefs['show scrollbar']:
+            if img_size[0] > screen_size[0]:
+                self._hscroll.show_all()
+            else:
+                self._hscroll.hide_all()
+
+            if img_size[1] > screen_size[1]:
+                self._vscroll.show_all()
+            else:
+                self._vscroll.hide_all()
+
+        else:
+            self._vscroll.hide_all()
+            self._hscroll.hide_all()
 
     def scroll_with_flipping(self, x, y):
         """Returns true if able to scroll without flipping to
@@ -878,14 +876,10 @@ class MainWindow(gtk.Window):
 
             if prefs['show scrollbar']:
 
-                if prefs['zoom mode'] == constants.ZOOM_MODE_WIDTH:
+                if self._vscroll.get_visible():
                     width -= self._vscroll.size_request()[0]
 
-                elif prefs['zoom mode'] == constants.ZOOM_MODE_HEIGHT:
-                    height -= self._hscroll.size_request()[1]
-
-                elif prefs['zoom mode'] == constants.ZOOM_MODE_MANUAL:
-                    width -= self._vscroll.size_request()[0]
+                elif self._hscroll.get_visible():
                     height -= self._hscroll.size_request()[1]
 
         return width, height
@@ -959,25 +953,6 @@ class MainWindow(gtk.Window):
                 self.menubar.show_all()
             else:
                 self.menubar.hide_all()
-
-            if (prefs['show scrollbar'] and
-              prefs['zoom mode'] == constants.ZOOM_MODE_WIDTH):
-                self._vscroll.show_all()
-                self._hscroll.hide_all()
-
-            elif (prefs['show scrollbar'] and
-              prefs['zoom mode'] == constants.ZOOM_MODE_HEIGHT):
-                self._vscroll.hide_all()
-                self._hscroll.show_all()
-
-            elif (prefs['show scrollbar'] and
-              prefs['zoom mode'] == constants.ZOOM_MODE_MANUAL):
-                self._vscroll.show_all()
-                self._hscroll.show_all()
-
-            else:
-                self._vscroll.hide_all()
-                self._hscroll.hide_all()
 
             if prefs['show thumbnails'] and self.filehandler.file_loaded:
                 self.thumbnailsidebar.show()

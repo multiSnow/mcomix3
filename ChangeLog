@@ -1,5 +1,8 @@
 MComix 0.99
 
+    - Zoom is now enabled on all fit modes (best fit, fit to width, fit to
+      height).
+
     - Added new preference option for switching between different resizing
       algorithms (higher quality usually means longer page loading times).
 
