@@ -27,15 +27,37 @@ class ZoomModel(object):
         return self._base_zoom + self._user_zoom
 
     def set_zoom(self, zoom):
+        if (self._base_zoom + zoom > 6.0 or
+            self._base_zoom + zoom < 0.05):
+            return False
+
         old_zoom = self._user_zoom
         self._user_zoom = float(zoom)
 
         if zoom != old_zoom:
             self.zoom_changed(self.get_zoom())
 
+        return True
+
+    def zoom_in(self):
+        plus = self.get_zoom_advancement()
+        return self.set_zoom(self._user_zoom + plus)
+
+    def zoom_out(self):
+        minus = self.get_zoom_advancement()
+        return self.set_zoom(self._user_zoom - minus)
+
     def reset_zoom(self):
         self.set_zoom(0.0)
         self.zoom_changed(self.get_zoom())
+
+    def get_zoom_advancement(self):
+        if self.get_zoom() > 2.0:
+            return 0.5
+        elif self.get_zoom() > 1.0:
+            return 0.1
+        else:
+            return 0.05
 
     @callback.Callback
     def zoom_changed(self, zoomlevel):
