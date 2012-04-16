@@ -14,7 +14,7 @@ class ZoomModel(object):
         self._user_zoom = 0.0
         #: Image fit mode. Determines the base zoom level for an image by
         #: calculating its maximum size.
-        self._fitmode = None
+        self._fitmode = NoFitMode()
 
     def get_fit_mode(self):
         return self._fitmode
