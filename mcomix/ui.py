@@ -61,6 +61,8 @@ class MainUI(gtk.UIManager):
                 'KP_Subtract', None, window.manual_zoom_out),
             ('zoom_original', gtk.STOCK_ZOOM_100, _('_Normal Size'),
                 '<Control>0', None, window.manual_zoom_original),
+            ('minimize', gtk.STOCK_LEAVE_FULLSCREEN, _('Mi_nimize'),
+                'n', None, window.minimize),
             ('close', gtk.STOCK_CLOSE, _('_Close'), None,
                 _('Closes all opened files.'), window.filehandler.close_file),
             ('quit', gtk.STOCK_QUIT, _('_Quit'),
@@ -208,6 +210,7 @@ class MainUI(gtk.UIManager):
                     <separator />
                     <menuitem action="delete" />
                     <separator />
+                    <menuitem action="minimize" />
                     <menuitem action="close" />
                     <menuitem action="save_and_quit" />
                     <menuitem action="quit" />
@@ -340,6 +343,7 @@ class MainUI(gtk.UIManager):
                 <separator />
                 <menuitem action="preferences" />
                 <separator />
+                <menuitem action="minimize" />
                 <menuitem action="close" />
                 <menuitem action="quit" />
             </popup>

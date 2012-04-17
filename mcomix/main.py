@@ -1048,6 +1048,10 @@ class MainWindow(gtk.Window):
 
         self.osd.show(filename + "\n\n" + page_text)
 
+    def minimize(self, *args):
+        """ Minimizes the MComix window. """
+        self.iconify()
+
     def write_config_files(self):
 
         self.filehandler.write_fileinfo_file()

@@ -15,6 +15,9 @@ MComix 0.99
     - Added an option to quit the program when the ESC key is pressed. When
       disabled, ESC only exits fullscreen mode.
 
+    - Added a new menu item to minimize the MComix window, bound to "N" by
+      default.
+
     - Updated traditional Chinese translation (by Wayne Su).
 
 MComix 0.98
