@@ -313,10 +313,19 @@ class _PreferencesDialog(gtk.Dialog):
         # ----------------------------------------------------------------
         page = preferences_page._PreferencePage(None)
 
-        page.new_section(_('User interface language'))
+        page.new_section(_('User interface'))
         label = gtk.Label(_('Language (needs restart):'))
         language_box = self._create_language_control()
         page.add_row(label, language_box)
+
+        esc_quits = gtk.CheckButton(_('Escape key closes program'))
+        esc_quits.set_active(prefs['escape quits'])
+        esc_quits.connect('toggled', self._check_button_cb,
+            'escape quits')
+        esc_quits.set_tooltip_text(
+            _('When active, the ESC key closes the program, instead of only '
+              'disabling fullscreen mode.'))
+        page.add_row(esc_quits)
 
         page.new_section(_('File order'))
 

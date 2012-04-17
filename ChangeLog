@@ -12,6 +12,9 @@ MComix 0.99
     - Added "Scan now" button to library watch list dialog to trigger
       immediate update.
 
+    - Added an option to quit the program when the ESC key is pressed. When
+      disabled, ESC only exits fullscreen mode.
+
     - Updated traditional Chinese translation (by Wayne Su).
 
 MComix 0.98

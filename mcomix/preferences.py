@@ -89,7 +89,8 @@ prefs = {
                         constants.STATUS_PATH | constants.STATUS_FILENAME,
     'max threads': 3,
     'wrap mouse scroll': False,
-    'scaling quality': 1  # gtk.gdk.INTERP_TILES
+    'scaling quality': 1,  # gtk.gdk.INTERP_TILES
+    'escape quits': False
 }
 
 def read_preferences_file():

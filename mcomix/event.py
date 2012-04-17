@@ -96,8 +96,7 @@ class EventHandler:
         # Enter/exit fullscreen.
         manager.register('exit fullscreen',
             ['Escape'],
-            self._window.actiongroup.get_action('fullscreen').set_active,
-            args=(False,))
+            self.escape_event)
         manager.register('toggle fullscreen',
             ['F11'],
             self._window.actiongroup.get_action('fullscreen').activate)
@@ -183,6 +182,13 @@ class EventHandler:
         # ---------------------------------------------------------------
         if event.keyval in (gtk.keysyms.Control_L, gtk.keysyms.Control_R):
             self._window.imagehandler.force_single_step = False
+
+    def escape_event(self):
+        """ Determines the behavior of the ESC key. """
+        if prefs['escape quits']:
+            self._window.close_program()
+        else:
+            self._window.actiongroup.get_action('fullscreen').set_active(False)
 
     def scroll_wheel_event(self, widget, event, *args):
         """Handle scroll wheel events on the main layout area. The scroll
