@@ -117,7 +117,8 @@ class FitMode(object):
 
     @staticmethod
     def create(fitmode):
-        for cls in (NoFitMode, BestFitMode, FitToWidthMode, FitToHeightMode):
+        for cls in (NoFitMode, BestFitMode, FitToWidthMode, FitToHeightMode,
+                    FitToSizeMode):
             if cls.get_mode_identifier() == fitmode:
                 return cls()
 
@@ -186,6 +187,28 @@ class FitToHeightMode(BestFitMode):
 
     def get_scaled_size(self, img_size, screen_size):
         scale = self.get_scale_y(img_size[1], screen_size[1])
+        return int(img_size[0] * scale), int(img_size[1] * scale)
+
+
+class FitToSizeMode(FitMode):
+    """ Scales to a fix size (either height or width). This mode
+    ignores "Strech small images", as it is the default behaviour. """
+
+    ID = constants.ZOOM_MODE_SIZE
+
+    def __init__(self):
+        super(FitToSizeMode, self).__init__()
+        # TODO: Make these configurable
+        self.size = 1800
+        self.mode = 'height'
+
+    def get_scaled_size(self, img_size, screen_size):
+        if self.mode == 'width':
+            side = img_size[0]
+        else:
+            side = img_size[1]
+
+        scale = self.get_scale_percentage(side, self.size)
         return int(img_size[0] * scale), int(img_size[1] * scale)
 
 
