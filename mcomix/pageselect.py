@@ -45,6 +45,8 @@ class Pageselector(gtk.Dialog):
             prefs['thumbnail size'], prefs['thumbnail size'])
 
         self.connect('configure-event', self._size_changed_cb)
+        self.set_size_request(prefs['pageselector width'],
+                prefs['pageselector height'])
 
         # Group preview image and page selector next to each other
         preview_box = gtk.HBox()
@@ -73,6 +75,12 @@ class Pageselector(gtk.Dialog):
         self._set_thumbnail(int(self._selector_adjustment.value) - 1)
 
     def _size_changed_cb(self, *args):
+        # Window cannot be scaled down unless the size request is reset
+        self.set_size_request(-1, -1)
+        # Store dialog size
+        prefs['pageselector width'] = self.get_allocation().width
+        prefs['pageselector height'] = self.get_allocation().height
+
         self._set_thumbnail(int(self._selector_adjustment.value) - 1)
 
     def _page_text_changed(self, control, *args):
