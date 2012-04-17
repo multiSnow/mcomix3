@@ -2,6 +2,9 @@
 
 import gtk
 
+from mcomix.preferences import prefs
+
+
 class Pageselector(gtk.Dialog):
 
     """The Pageselector takes care of the popup page selector
@@ -38,7 +41,10 @@ class Pageselector(gtk.Dialog):
         self._pages_label.set_alignment(0, 0.5)
 
         self._image_preview = gtk.Image()
-        self._set_thumbnail(int(self._selector_adjustment.value) - 1)
+        self._image_preview.set_size_request(
+            prefs['thumbnail size'], prefs['thumbnail size'])
+
+        self.connect('configure-event', self._size_changed_cb)
 
         # Group preview image and page selector next to each other
         preview_box = gtk.HBox()
@@ -60,8 +66,13 @@ class Pageselector(gtk.Dialog):
         self._page_spinner.select_region(0, -1)
         self._page_spinner.grab_focus()
 
+        self._set_thumbnail(int(self._selector_adjustment.value) - 1)
+
     def _cb_value_changed(self, *args):
         """ Called whenever the spinbox value changes. Updates the preview thumbnail. """
+        self._set_thumbnail(int(self._selector_adjustment.value) - 1)
+
+    def _size_changed_cb(self, *args):
         self._set_thumbnail(int(self._selector_adjustment.value) - 1)
 
     def _page_text_changed(self, control, *args):
@@ -82,7 +93,10 @@ class Pageselector(gtk.Dialog):
         """ Set the preview thumbnail for the page selector.
         If a thumbnail isn't cached yet, use a transparent image. """
 
-        pixbuf = self._window.imagehandler.get_thumbnail(index + 1)
+        width = self._image_preview.get_allocation().width
+        height = self._image_preview.get_allocation().height
+        pixbuf = self._window.imagehandler.get_thumbnail(index + 1,
+            width=width, height=height)
         self._image_preview.set_from_pixbuf(pixbuf)
 
 # vim: expandtab:sw=4:ts=4
