@@ -199,33 +199,10 @@ class EventHandler:
             return
 
         if event.direction == gtk.gdk.SCROLL_UP:
-
-            if prefs['zoom mode'] == constants.ZOOM_MODE_BEST:
-                self._window.previous_page()
-
-            elif prefs['zoom mode'] == constants.ZOOM_MODE_HEIGHT:
-
-                if self._window.is_manga_mode:
-                    self._scroll_with_flipping(prefs['number of pixels to scroll per mouse wheel event'], 0)
-                else:
-                    self._scroll_with_flipping(-prefs['number of pixels to scroll per mouse wheel event'], 0)
-
-            else:
-                self._scroll_with_flipping(0, -prefs['number of pixels to scroll per mouse wheel event'])
+            self._scroll_with_flipping(0, -prefs['number of pixels to scroll per mouse wheel event'])
 
         elif event.direction == gtk.gdk.SCROLL_DOWN:
-
-            if prefs['zoom mode'] == constants.ZOOM_MODE_BEST:
-                self._window.next_page()
-
-            elif prefs['zoom mode'] == constants.ZOOM_MODE_HEIGHT:
-
-                if self._window.is_manga_mode:
-                    self._scroll_with_flipping(-prefs['number of pixels to scroll per mouse wheel event'], 0)
-                else:
-                    self._scroll_with_flipping(prefs['number of pixels to scroll per mouse wheel event'], 0)
-            else:
-                self._scroll_with_flipping(0, prefs['number of pixels to scroll per mouse wheel event'])
+            self._scroll_with_flipping(0, prefs['number of pixels to scroll per mouse wheel event'])
 
         elif event.direction == gtk.gdk.SCROLL_RIGHT:
             self._window.next_page()
@@ -381,36 +358,20 @@ class EventHandler:
             return True
 
     def _scroll_down(self):
-        """ In best fit mode, skip right to the  next page. In other modes,
-        scroll first. """
-        if not prefs['zoom mode'] == constants.ZOOM_MODE_BEST:
-            self._scroll_with_flipping(0, prefs['number of pixels to scroll per key event'])
-        else:
-            self._window.next_page()
+        """ Scrolls down. """
+        self._scroll_with_flipping(0, prefs['number of pixels to scroll per key event'])
 
     def _scroll_up(self):
-        """ In best fit mode, skip right to the  previous page. In other modes,
-        scroll first. """
-        if not prefs['zoom mode'] == constants.ZOOM_MODE_BEST:
-            self._scroll_with_flipping(0, -prefs['number of pixels to scroll per key event'])
-        else:
-            self._window.previous_page()
+        """ Scrolls up. """
+        self._scroll_with_flipping(0, -prefs['number of pixels to scroll per key event'])
 
     def _scroll_right(self):
-        """ In best fit mode, skip right to the  next page. In other modes,
-        scroll first. """
-        if not prefs['zoom mode'] == constants.ZOOM_MODE_BEST:
-            self._scroll_with_flipping(prefs['number of pixels to scroll per key event'], 0)
-        else:
-            self._window.next_page()
+        """ Scrolls right. """
+        self._scroll_with_flipping(prefs['number of pixels to scroll per key event'], 0)
 
     def _scroll_left(self):
-        """ In best fit mode, skip right to the  previous page. In other modes,
-        scroll first. """
-        if not prefs['zoom mode'] == constants.ZOOM_MODE_BEST:
-            self._scroll_with_flipping(-prefs['number of pixels to scroll per key event'], 0)
-        else:
-            self._window.previous_page()
+        """ Scrolls left. """
+        self._scroll_with_flipping(-prefs['number of pixels to scroll per key event'], 0)
 
     def _smart_scroll_down(self):
         """ Smart scrolling. """
@@ -424,8 +385,7 @@ class EventHandler:
             x_step *= -1
 
         if not prefs["smart space scroll"]:
-            if (prefs['zoom mode'] == constants.ZOOM_MODE_BEST or
-                not self._window.scroll(0, y_step)):
+            if not self._window.scroll(0, y_step):
                 self._window.next_page()
             return
 
@@ -489,8 +449,7 @@ class EventHandler:
             x_step *= -1
 
         if not prefs["smart space scroll"]:
-            if (prefs['zoom mode'] == constants.ZOOM_MODE_BEST or
-                not self._window.scroll(0, -y_step)):
+            if not self._window.scroll(0, -y_step):
                 self._window.previous_page()
             return
 
