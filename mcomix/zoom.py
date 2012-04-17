@@ -70,11 +70,8 @@ class ZoomModel(object):
             self._base_zoom = float(scaled_size[0]) / float(image_size[0])
 
         # Prevent overflow from negative zoom factors
-        if self.get_zoom() < 0.05:
+        if self.get_zoom() <= 0.001:
             self._user_zoom = 0.05 - self._base_zoom
-        # Also, too large zoom factors
-        elif self.get_zoom() > 6.0:
-            self._user_zoom = 6.0 - self._base_zoom
 
         return self._base_zoom
 
