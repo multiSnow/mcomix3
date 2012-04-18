@@ -140,6 +140,8 @@ class MainUI(gtk.UIManager):
                 'w', _('Fit width mode'), constants.ZOOM_MODE_WIDTH),
             ('fit_height_mode', 'mcomix-fitheight', _('Fit _height mode'),
                 'h', _('Fit height mode'), constants.ZOOM_MODE_HEIGHT),
+            ('fit_size_mode', 'mcomix-fitsize', _('Fit _size mode'),
+                's', _('Fit to size mode'), constants.ZOOM_MODE_SIZE),
             ('fit_manual_mode', 'mcomix-fitmanual', _('M_anual zoom mode'),
                 'a', _('Manual zoom mode'), constants.ZOOM_MODE_MANUAL)],
             3, window.change_zoom_mode)
@@ -190,6 +192,7 @@ class MainUI(gtk.UIManager):
                 <toolitem action="best_fit_mode" />
                 <toolitem action="fit_width_mode" />
                 <toolitem action="fit_height_mode" />
+                <toolitem action="fit_size_mode" />
                 <toolitem action="fit_manual_mode" />
                 <separator />
                 <toolitem action="double_page" />
@@ -231,6 +234,7 @@ class MainUI(gtk.UIManager):
                     <menuitem action="best_fit_mode" />
                     <menuitem action="fit_width_mode" />
                     <menuitem action="fit_height_mode" />
+                    <menuitem action="fit_size_mode" />
                     <menuitem action="fit_manual_mode" />
                     <separator />
                     <menuitem action="slideshow" />
@@ -309,6 +313,7 @@ class MainUI(gtk.UIManager):
                     <menuitem action="best_fit_mode" />
                     <menuitem action="fit_width_mode" />
                     <menuitem action="fit_height_mode" />
+                    <menuitem action="fit_size_mode" />
                     <menuitem action="fit_manual_mode" />
                     <separator />
                     <menuitem action="slideshow" />

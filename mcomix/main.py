@@ -144,6 +144,7 @@ class MainWindow(gtk.Window):
         zoom_actions = { constants.ZOOM_MODE_BEST : 'best_fit_mode',
                 constants.ZOOM_MODE_WIDTH : 'fit_width_mode',
                 constants.ZOOM_MODE_HEIGHT : 'fit_height_mode',
+                constants.ZOOM_MODE_SIZE : 'fit_size_mode',
                 constants.ZOOM_MODE_MANUAL : 'fit_manual_mode' }
 
         if zoom_mode is not None:
