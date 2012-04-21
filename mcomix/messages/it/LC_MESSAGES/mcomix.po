@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2012-04-21 16:05+0200\n"
+"POT-Creation-Date: 2012-04-21 16:28+0200\n"
 "PO-Revision-Date: 2012-02-14 13:00+0100\n"
 "Last-Translator: Giovanni Scafora <giovanni@archlinux.org>\n"
 "Language-Team: Arch Linux Italian Team <giovanni@archlinux.org>\n"
@@ -2177,19 +2177,22 @@ msgstr "Libreria"
 msgid "Scanning for new books..."
 msgstr ""
 
-#: mcomix/library/main_dialog.py:99
+#: mcomix/library/main_dialog.py:100
 #, python-format
 msgid "Added new book '%(bookname)s' from directory '%(directory)s'."
-msgid_plural "Added %(count)d new books from directory '%(directory)s'."
-msgstr[0] ""
-msgstr[1] ""
+msgstr ""
 
-#: mcomix/library/main_dialog.py:106
+#: mcomix/library/main_dialog.py:103
+#, fuzzy, python-format
+msgid "Added %(count)d new books from directory '%(directory)s'."
+msgstr "Rimosso(i) %(num)d libro(i) da '%(collection)s'."
+
+#: mcomix/library/main_dialog.py:110
 #, python-format
 msgid "No new books found in directory '%s'."
 msgstr ""
 
-#: mcomix/library/main_dialog.py:159
+#: mcomix/library/main_dialog.py:163
 msgid "! You need an sqlite wrapper to use the library."
 msgstr "! Per usare la libreria è necessario disporre di un wrapper sqlite."
 

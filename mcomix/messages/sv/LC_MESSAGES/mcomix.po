@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.90.4\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2012-04-21 16:05+0200\n"
+"POT-Creation-Date: 2012-04-21 16:28+0200\n"
 "PO-Revision-Date: 2011-04-13 22:59+0100\n"
 "Last-Translator: Martin Karlsson <h.m.j.karlsson@gmail.com>\n"
 "Language-Team: Swedish <LL@li.org>\n"
@@ -2660,19 +2660,24 @@ msgstr "Bibliotek"
 msgid "Scanning for new books..."
 msgstr "Letar efter arkiv..."
 
-#: mcomix/library/main_dialog.py:99
+#: mcomix/library/main_dialog.py:100
 #, python-format
 msgid "Added new book '%(bookname)s' from directory '%(directory)s'."
-msgid_plural "Added %(count)d new books from directory '%(directory)s'."
-msgstr[0] ""
-msgstr[1] ""
+msgstr ""
 
-#: mcomix/library/main_dialog.py:106
+#
+# File: src/library.py, line: 588
+#: mcomix/library/main_dialog.py:103
+#, fuzzy, python-format
+msgid "Added %(count)d new books from directory '%(directory)s'."
+msgstr "Tog bort %(num)d antal böcker från '%(collection)s'."
+
+#: mcomix/library/main_dialog.py:110
 #, python-format
 msgid "No new books found in directory '%s'."
 msgstr ""
 
-#: mcomix/library/main_dialog.py:159
+#: mcomix/library/main_dialog.py:163
 msgid "! You need an sqlite wrapper to use the library."
 msgstr "! Du behöver en sqlite wrapper för att använda biblioteket."
 

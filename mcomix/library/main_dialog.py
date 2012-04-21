@@ -95,10 +95,14 @@ class _LibraryDialog(gtk.Window):
                 collection_name = None
 
             self.add_books(filelist, collection_name)
-            message = i18n.get_translation().ungettext(
-                "Added new book '%(bookname)s' from directory '%(directory)s'.",
-                "Added %(count)d new books from directory '%(directory)s'.",
-                len(filelist))
+
+            if len(filelist) == 1:
+                message = _("Added new book '%(bookname)s' "
+                    "from directory '%(directory)s'.")
+            else:
+                message = _("Added %(count)d new books "
+                    "from directory '%(directory)s'.")
+
             self.set_status_message(message % {'directory': watchentry.directory,
                 'count': len(filelist), 'bookname': os.path.basename(filelist[0])})
         else:

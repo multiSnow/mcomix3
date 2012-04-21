@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: comix 3.6.4\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2012-04-21 16:05+0200\n"
+"POT-Creation-Date: 2012-04-21 16:28+0200\n"
 "PO-Revision-Date: 2008-05-21 12:40+0330\n"
 "Last-Translator: Meelad Zakaria <meelad@farsiweb.info>\n"
 "Language-Team: Persian \n"
@@ -2523,19 +2523,22 @@ msgstr "کتاب‌خانه"
 msgid "Scanning for new books..."
 msgstr ""
 
-#: mcomix/library/main_dialog.py:99
+#: mcomix/library/main_dialog.py:100
 #, python-format
 msgid "Added new book '%(bookname)s' from directory '%(directory)s'."
-msgid_plural "Added %(count)d new books from directory '%(directory)s'."
-msgstr[0] ""
-msgstr[1] ""
+msgstr ""
 
-#: mcomix/library/main_dialog.py:106
+#: mcomix/library/main_dialog.py:103
+#, python-format
+msgid "Added %(count)d new books from directory '%(directory)s'."
+msgstr ""
+
+#: mcomix/library/main_dialog.py:110
 #, python-format
 msgid "No new books found in directory '%s'."
 msgstr ""
 
-#: mcomix/library/main_dialog.py:159
+#: mcomix/library/main_dialog.py:163
 msgid "! You need an sqlite wrapper to use the library."
 msgstr ""
 
