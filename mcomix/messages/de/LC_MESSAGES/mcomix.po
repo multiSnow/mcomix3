@@ -38,7 +38,7 @@ msgstr "%s ist unter der \"GNU General Public License\" lizensiert."
 #: mcomix/about_dialog.py:35
 #, python-format
 msgid "A copy of this license can be obtained from %s"
-msgstr "Eine Kopie dieser Lizenz kann unter %s bezogen werden."
+msgstr "Eine Kopie dieser Lizenz kann unter %s bezogen werden"
 
 #: mcomix/archive_extractor.py:51
 #, python-format
@@ -291,33 +291,27 @@ msgstr "Bücher hinzufügen"
 msgid "Add to this collection:"
 msgstr "Zu Sammlung hinzufügen:"
 
-#: mcomix/file_chooser_main_dialog.py:22
-#: mcomix/file_chooser_simple_dialog.py:23
+#: mcomix/file_chooser_main_dialog.py:22 mcomix/file_chooser_simple_dialog.py:23
 msgid "All images"
 msgstr "Alle Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:24
-#: mcomix/file_chooser_simple_dialog.py:25
+#: mcomix/file_chooser_main_dialog.py:24 mcomix/file_chooser_simple_dialog.py:25
 msgid "JPEG images"
 msgstr "JPEG-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:25
-#: mcomix/file_chooser_simple_dialog.py:26
+#: mcomix/file_chooser_main_dialog.py:25 mcomix/file_chooser_simple_dialog.py:26
 msgid "PNG images"
 msgstr "PNG-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:26
-#: mcomix/file_chooser_simple_dialog.py:27
+#: mcomix/file_chooser_main_dialog.py:26 mcomix/file_chooser_simple_dialog.py:27
 msgid "GIF images"
 msgstr "GIF-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:27
-#: mcomix/file_chooser_simple_dialog.py:28
+#: mcomix/file_chooser_main_dialog.py:27 mcomix/file_chooser_simple_dialog.py:28
 msgid "TIFF images"
 msgstr "TIFF-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:28
-#: mcomix/file_chooser_simple_dialog.py:29
+#: mcomix/file_chooser_main_dialog.py:28 mcomix/file_chooser_simple_dialog.py:29
 msgid "BMP images"
 msgstr "BMP-Bilder"
 
@@ -368,7 +362,7 @@ msgstr "Vorherige Seite"
 #: mcomix/keybindings.py:59 mcomix/keybindings.py:60 mcomix/keybindings.py:61
 #: mcomix/keybindings.py:63 mcomix/keybindings.py:64
 msgid "Reading"
-msgstr ""
+msgstr "Lesen"
 
 #: mcomix/keybindings.py:37 mcomix/ui.py:38
 msgid "Next page"
@@ -376,98 +370,98 @@ msgstr "Nächste Seite"
 
 #: mcomix/keybindings.py:39
 msgid "Scroll to bottom left"
-msgstr ""
+msgstr "Nach links unten rollen"
 
 #: mcomix/keybindings.py:39 mcomix/keybindings.py:40 mcomix/keybindings.py:41
 #: mcomix/keybindings.py:43 mcomix/keybindings.py:44 mcomix/keybindings.py:45
 #: mcomix/keybindings.py:47 mcomix/keybindings.py:48 mcomix/keybindings.py:49
 #: mcomix/keybindings.py:54 mcomix/keybindings.py:55 mcomix/keybindings.py:56
 msgid "Page orientation and zoom"
-msgstr ""
+msgstr "Seitenausrichtung und Vergrößerung"
 
 #: mcomix/keybindings.py:40
 msgid "Scroll to bottom center"
-msgstr ""
+msgstr "Nach unten zur Mitte rollen"
 
 #: mcomix/keybindings.py:41
 msgid "Scroll to bottom right"
-msgstr ""
+msgstr "Nach unten rechts rollen"
 
 #: mcomix/keybindings.py:43
 msgid "Scroll to middle left"
-msgstr ""
+msgstr "Zur Mitte links rollen"
 
 #: mcomix/keybindings.py:44
 msgid "Scroll to center"
-msgstr ""
+msgstr "Zentrieren"
 
 #: mcomix/keybindings.py:45
 msgid "Scroll to middle right"
-msgstr ""
+msgstr "Zur Mitte rechts rollen"
 
 #: mcomix/keybindings.py:47
 msgid "Scroll to top left"
-msgstr ""
+msgstr "Nach links oben rollen"
 
 #: mcomix/keybindings.py:48
 msgid "Scroll to top center"
-msgstr ""
+msgstr "Nach oben zur Mitte rollen"
 
 #: mcomix/keybindings.py:49
 msgid "Scroll to top right"
-msgstr ""
+msgstr "Nach oben rechts rollen"
 
 #: mcomix/keybindings.py:51
 msgid "Exit from fullscreen"
-msgstr ""
+msgstr "Vollbildmodus verlassen"
 
 #: mcomix/keybindings.py:52
 msgid "Toggle fullscreen"
-msgstr ""
+msgstr "Vollbildmodus an-/ausschalten"
 
 #: mcomix/keybindings.py:52 mcomix/preferences_dialog.py:316
 msgid "User interface"
-msgstr ""
+msgstr "Benutzeroberfläche"
 
 #: mcomix/keybindings.py:54
 msgid "Zoom in"
-msgstr ""
+msgstr "Vergrößern"
 
 #: mcomix/keybindings.py:55
 msgid "Zoom out"
-msgstr ""
+msgstr "Verkleinern"
 
 #: mcomix/keybindings.py:56
 msgid "Normal size"
-msgstr ""
+msgstr "Orginalgröße"
 
 #: mcomix/keybindings.py:58
 msgid "Scroll down"
-msgstr ""
+msgstr "Nach unten rollen"
 
 #: mcomix/keybindings.py:59
 msgid "Scroll up"
-msgstr ""
+msgstr "Nach oben rollen"
 
 #: mcomix/keybindings.py:60
 msgid "Scroll right"
-msgstr ""
+msgstr "Nach rechts rollen"
 
 #: mcomix/keybindings.py:61
 msgid "Scroll left"
-msgstr ""
+msgstr "Nach links rollen"
 
 #: mcomix/keybindings.py:63
 msgid "Smart scroll up"
-msgstr ""
+msgstr "Intelligent nach oben rollen"
 
 #: mcomix/keybindings.py:64
 msgid "Smart scroll down"
-msgstr ""
+msgstr "Intelligent nach unten rollen"
 
 #: mcomix/keybindings.py:66
 msgid "Show OSD panel"
-msgstr ""
+msgstr "Informationsbereich anzeigen"
 
 #: mcomix/keybindings.py:66
 msgid "User Interface"
@@ -861,13 +855,15 @@ msgstr "Sprache (erfordert Neustart):"
 
 #: mcomix/preferences_dialog.py:321
 msgid "Escape key closes program"
-msgstr ""
+msgstr "Escape-Taste beendet das Programm"
 
 #: mcomix/preferences_dialog.py:326
 msgid ""
 "When active, the ESC key closes the program, instead of only disabling "
 "fullscreen mode."
 msgstr ""
+"Wenn aktiv, wird das Programm durch Drücken der Escape-Taste beendet. "
+"Ansonsten wird nur der Vollbildmodus verlassen."
 
 #: mcomix/preferences_dialog.py:330
 msgid "File order"
@@ -891,9 +887,9 @@ msgid ""
 "specification. These thumbnails are shared by many other applications, such "
 "as most file managers."
 msgstr ""
-"Vorschaubilder für geöffnete Dateien gemäß der Spezifikation von freedesktop."
-"org speichern. Diese Vorschaubilder werden mit vielen anderen Anwendungen, "
-"zumeist Dateimanagern, gemeinsam benutzt."
+"Vorschaubilder für geöffnete Dateien gemäß der Spezifikation von "
+"freedesktop.org speichern. Diese Vorschaubilder werden mit vielen anderen "
+"Anwendungen, zumeist Dateimanagern, gemeinsam benutzt."
 
 #: mcomix/preferences_dialog.py:346
 msgid "Maximum number of pages to store in the cache:"
@@ -1560,7 +1556,7 @@ msgstr "_Normale Größe"
 
 #: mcomix/ui.py:64
 msgid "Mi_nimize"
-msgstr ""
+msgstr "Mi_nimieren"
 
 #: mcomix/ui.py:66
 msgid "_Close"
@@ -1757,14 +1753,12 @@ msgid "Fit height mode"
 msgstr "Modus mit angepasster Höhe"
 
 #: mcomix/ui.py:143
-#, fuzzy
 msgid "Fit _size mode"
-msgstr "Modus mit angepasster _Breite"
+msgstr "Modus mit fester Grö_sse"
 
 #: mcomix/ui.py:144
-#, fuzzy
 msgid "Fit to size mode"
-msgstr "Modus mit angepasster Breite"
+msgstr "Modus mit fester Größe"
 
 #: mcomix/ui.py:145
 msgid "M_anual zoom mode"
@@ -2165,17 +2159,17 @@ msgid "Scanning for new books..."
 msgstr "Suche nach neuen Büchern..."
 
 #: mcomix/library/main_dialog.py:100
-#, fuzzy, python-format
+#, python-format
 msgid "Added new book '%(bookname)s' from directory '%(directory)s'."
 msgstr ""
 "Neues Buch '%(bookname)s' wurde aus dem Verzeichnis '%(directory)s' "
 "hinzugefügt."
 
 #: mcomix/library/main_dialog.py:103
-#, fuzzy, python-format
+#, python-format
 msgid "Added %(count)d new books from directory '%(directory)s'."
 msgstr ""
-"Neues Buch '%(bookname)s' wurde aus dem Verzeichnis '%(directory)s' "
+"Es wurden %(count)d neue Bücher aus dem Verzeichnis '%(directory)s' "
 "hinzugefügt."
 
 #: mcomix/library/main_dialog.py:110
@@ -2503,8 +2497,8 @@ msgstr "_Hinzufügen"
 
 #~ msgid ""
 #~ "Crash recovery saves the current configuration information every "
-#~ "specified seconds.  In case of a crash the previous file will be re-"
-#~ "loaded."
+#~ "specified seconds.  In case of a crash the previous file will be "
+#~ "re-loaded."
 #~ msgstr ""
 #~ "Automatische Wiederherstellung speichert die derzeitige Konfiguration in "
 #~ "spezifizierten Abständen. Sollte MComix abstürzen, wird die zuletzt "
