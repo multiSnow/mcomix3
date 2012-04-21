@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: MComix\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
 "POT-Creation-Date: 2012-04-21 16:28+0200\n"
-"PO-Revision-Date: 2012-02-14 13:00+0100\n"
+"PO-Revision-Date: 2012-04-21 20:00+0100\n"
 "Last-Translator: Giovanni Scafora <giovanni@archlinux.org>\n"
 "Language-Team: Arch Linux Italian Team <giovanni@archlinux.org>\n"
 "Language: it\n"
@@ -347,7 +347,7 @@ msgstr "! Il file delle preferenze \"%s\" è corrotto, eliminazione in corso..."
 #: mcomix/file_provider.py:93
 #, python-format
 msgid "Invalid path: '%s'"
-msgstr "Il path non è esatto: '%s'"
+msgstr "Il percorso non è esatto: '%s'"
 
 #: mcomix/icons.py:66
 #, python-format
@@ -417,11 +417,11 @@ msgstr "Scorri in alto a destra"
 
 #: mcomix/keybindings.py:51
 msgid "Exit from fullscreen"
-msgstr "Esci dalla modalità a tutto schermo"
+msgstr "Esci dalla modalità a schermo intero"
 
 #: mcomix/keybindings.py:52
 msgid "Toggle fullscreen"
-msgstr "Passa alla modalità a tutto schermo"
+msgstr "Passa alla modalità a schermo intero"
 
 #: mcomix/keybindings.py:52 mcomix/preferences_dialog.py:316
 msgid "User interface"
@@ -729,7 +729,7 @@ msgstr "Modalità pagina doppia"
 
 #: mcomix/preferences_dialog.py:207
 msgid "Flip two pages in double page mode"
-msgstr "Capovolge due pagine in modalità pagina doppia"
+msgstr "Capovolgi due pagine in modalità pagina doppia"
 
 #: mcomix/preferences_dialog.py:212
 msgid ""
@@ -757,7 +757,7 @@ msgstr "File"
 #: mcomix/preferences_dialog.py:224
 msgid "Automatically open the last viewed file on startup"
 msgstr ""
-"Apre automaticamente l'ultimo file visualizzato all'apertura del programma"
+"Apri automaticamente l'ultimo file visualizzato all'apertura del programma"
 
 #: mcomix/preferences_dialog.py:229
 msgid ""
@@ -781,7 +781,7 @@ msgstr ""
 
 #: mcomix/preferences_dialog.py:246
 msgid "Fullscreen"
-msgstr "A tutto schermo"
+msgstr "Schermo intero"
 
 #: mcomix/preferences_dialog.py:248
 msgid "Use fullscreen by default"
@@ -789,9 +789,7 @@ msgstr "Usa la modalità a schermo intero di default"
 
 #: mcomix/preferences_dialog.py:255
 msgid "Automatically hide all toolbars in fullscreen"
-msgstr ""
-"Nasconde automaticamente tutte le barre degli strumenti in modalità a tutto "
-"schermo"
+msgstr "Nascondi automaticamente tutte le barre degli strumenti in modalità a schermo intero"
 
 #: mcomix/preferences_dialog.py:261
 msgid "Slideshow"
@@ -845,18 +843,19 @@ msgstr ""
 
 #: mcomix/preferences_dialog.py:301
 msgid "Image quality"
-msgstr ""
+msgstr "Qualità dell'immagine"
 
 #: mcomix/preferences_dialog.py:302
-#, fuzzy
 msgid "Scaling mode"
-msgstr "Modalità manga"
+msgstr "Modalità di ridimensionamento"
 
 #: mcomix/preferences_dialog.py:305
 msgid ""
 "Changes how images are scaled. Slower algorithms result in higher quality "
 "resizing, but longer page loading times."
 msgstr ""
+"Cambia in base a come le immagini sono ridimensionate. Algoritmi più lenti producono un ridimensionamento di qualità "
+"superiore, ma tempi più lunghi per il caricamento delle pagine."
 
 #: mcomix/preferences_dialog.py:317
 msgid "Language (needs restart):"
@@ -864,13 +863,15 @@ msgstr "Lingua (necessita di riavvio):"
 
 #: mcomix/preferences_dialog.py:321
 msgid "Escape key closes program"
-msgstr ""
+msgstr "Il tasto escape chiude il programma"
 
 #: mcomix/preferences_dialog.py:326
 msgid ""
 "When active, the ESC key closes the program, instead of only disabling "
 "fullscreen mode."
 msgstr ""
+"Quando è attivo, il tasto ESC chiude il programma, invece di disabilitare solo "
+"la modalità a schermo intero."
 
 #: mcomix/preferences_dialog.py:330
 msgid "File order"
@@ -1111,17 +1112,16 @@ msgstr ""
 "informazioni delle ultime pagine lette."
 
 #: mcomix/preferences_dialog.py:566
-#, fuzzy
 msgid "Normal (fast)"
-msgstr "Dimensione reale"
+msgstr "Normale (veloce)"
 
 #: mcomix/preferences_dialog.py:567
 msgid "Bilinear"
-msgstr ""
+msgstr "Bilineare"
 
 #: mcomix/preferences_dialog.py:568
 msgid "Hyperbolic (slow)"
-msgstr ""
+msgstr "Iperbolico (lento)"
 
 #: mcomix/process.py:50
 #, python-format
@@ -1134,7 +1134,7 @@ msgstr ""
 #, python-format
 msgid "\"%(command)s\" must be on your system PATH to be found."
 msgstr ""
-"\"%(command)s\" il PATH deve essere nel tuo sistema per essere trovato."
+"\"%(command)s\" il PERCORSO deve essere nel tuo sistema per essere trovato."
 
 #: mcomix/properties_dialog.py:21
 msgid "Properties"
@@ -1176,7 +1176,7 @@ msgstr "Immagine"
 
 #: mcomix/run.py:41
 msgid "[OPTION...] [PATH]"
-msgstr "[OPZIONE...] [PATH]"
+msgstr "[OPZIONE...] [PERCORSO]"
 
 #: mcomix/run.py:42
 msgid "View images and comic book archives."
@@ -1204,7 +1204,7 @@ msgstr "Modalità di visualizzazione"
 
 #: mcomix/run.py:55
 msgid "Start the application in fullscreen mode."
-msgstr "Avvia l'applicazione in modalità a tutto schermo."
+msgstr "Avvia l'applicazione in modalità a schermo intero."
 
 #: mcomix/run.py:57
 msgid "Start the application in manga mode."
@@ -1321,7 +1321,7 @@ msgstr "Mostra la risoluzione"
 
 #: mcomix/status.py:46
 msgid "Show path"
-msgstr "Mostra il path"
+msgstr "Mostra il percorso"
 
 #: mcomix/status.py:48
 msgid "Show filename"
@@ -1516,11 +1516,11 @@ msgstr "Ultima pagina"
 
 #: mcomix/ui.py:45
 msgid "_Go to page..."
-msgstr "_Vai a pagina..."
+msgstr "_Vai alla pagina..."
 
 #: mcomix/ui.py:46
 msgid "Go to page..."
-msgstr "Vai a pagina..."
+msgstr "Vai alla pagina..."
 
 #: mcomix/ui.py:47
 msgid "Re_fresh"
@@ -1568,7 +1568,7 @@ msgstr "_Dimensione normale"
 
 #: mcomix/ui.py:64
 msgid "Mi_nimize"
-msgstr ""
+msgstr "Mi_nimizza"
 
 #: mcomix/ui.py:66
 msgid "_Close"
@@ -1663,7 +1663,7 @@ msgstr "_Schermo intero"
 
 #: mcomix/ui.py:104
 msgid "Fullscreen mode"
-msgstr "Modalità schermo intero"
+msgstr "Modalità a schermo intero"
 
 #: mcomix/ui.py:105
 msgid "_Double page mode"
@@ -1765,14 +1765,12 @@ msgid "Fit height mode"
 msgstr "Modalità adatta all'altezza"
 
 #: mcomix/ui.py:143
-#, fuzzy
 msgid "Fit _size mode"
-msgstr "Mo_dalità adatta alla larghezza"
+msgstr "A_datta modalità di ridimensionamento"
 
 #: mcomix/ui.py:144
-#, fuzzy
 msgid "Fit to size mode"
-msgstr "Modalità adatta alla larghezza"
+msgstr "Adatta modalità di ridimensionamento"
 
 #: mcomix/ui.py:145
 msgid "M_anual zoom mode"
@@ -1954,9 +1952,8 @@ msgid "Deletes the selected books from disk."
 msgstr "Elimina i libri selezionati dal disco."
 
 #: mcomix/library/book_area.py:152
-#, fuzzy
 msgid "Copies the selected book's path to clipboard."
-msgstr "Copia la pagina attuale negli appunti."
+msgstr "Copia negli appunti il percorso del libro selezionato."
 
 #: mcomix/library/book_area.py:154
 msgid "_Sort"
@@ -1984,7 +1981,7 @@ msgstr "Percorso completo"
 
 #: mcomix/library/book_area.py:164
 msgid "Date added"
-msgstr ""
+msgstr "Data di inserimento"
 
 #: mcomix/library/book_area.py:175
 msgid "Huge"
@@ -2015,11 +2012,11 @@ msgid "Set library cover size"
 msgstr "Imposta la dimensione della copertina della libreria"
 
 #: mcomix/library/book_area.py:445
-#, fuzzy, python-format
+#, python-format
 msgid "Removed %(num)d book from '%(collection)s'."
 msgid_plural "Removed %(num)d books from '%(collection)s'."
-msgstr[0] "Rimosso(i) %(num)d libro(i) da '%(collection)s'."
-msgstr[1] "Rimosso(i) %(num)d libro(i) da '%(collection)s'."
+msgstr[0] "Rimosso %(num)d libro da '%(collection)s'."
+msgstr[1] "Rimossi %(num)d libri da '%(collection)s'."
 
 #: mcomix/library/book_area.py:464 mcomix/library/collection_area.py:189
 #, python-format
@@ -2156,14 +2153,12 @@ msgstr ""
 "loro percorso completo. La ricerca non è case sensitive."
 
 #: mcomix/library/control_area.py:83
-#, fuzzy
 msgid "_Watch list"
-msgstr "Collezioni della libreria"
+msgstr "_Watch list"
 
 #: mcomix/library/control_area.py:89
-#, fuzzy
 msgid "Open the watchlist management dialog."
-msgstr "Apri l'editor dell'archivio."
+msgstr "Apri la finestra di dialogo della watchlist."
 
 #: mcomix/library/control_area.py:95
 msgid "Open the selected book."
@@ -2175,60 +2170,43 @@ msgstr "Libreria"
 
 #: mcomix/library/main_dialog.py:85
 msgid "Scanning for new books..."
-msgstr ""
+msgstr "Ricerca di nuovi libri in corso..."
 
 #: mcomix/library/main_dialog.py:100
 #, python-format
 msgid "Added new book '%(bookname)s' from directory '%(directory)s'."
-msgstr ""
+msgstr "Aggiunto un nuovo libro '%(bookname)s' dalla cartella '%(directory)s'."
 
 #: mcomix/library/main_dialog.py:103
-#, fuzzy, python-format
+#, python-format
 msgid "Added %(count)d new books from directory '%(directory)s'."
-msgstr "Rimosso(i) %(num)d libro(i) da '%(collection)s'."
+msgstr "Aggiunti %(count)d nuovi libri dalla cartella '%(directory)s'."
 
 #: mcomix/library/main_dialog.py:110
 #, python-format
 msgid "No new books found in directory '%s'."
-msgstr ""
+msgstr "Non ci sono nuovi libri nella cartella '%s'."
 
 #: mcomix/library/main_dialog.py:163
 msgid "! You need an sqlite wrapper to use the library."
 msgstr "! Per usare la libreria è necessario disporre di un wrapper sqlite."
 
 #: mcomix/library/watchlist.py:24
-#, fuzzy
 msgid "Library watch list"
-msgstr "Collezioni della libreria"
+msgstr "Lista delle collezioni da guardare"
 
 #: mcomix/library/watchlist.py:26
 msgid "_Scan now"
-msgstr ""
+msgstr "_Cerca adesso"
 
 #: mcomix/library/watchlist.py:42
-#, fuzzy
 msgid "Directory"
-msgstr "Cartella successiva"
+msgstr "Cartella"
 
 #: mcomix/library/watchlist.py:53
-#, fuzzy
 msgid "Collection"
-msgstr "Posizione"
+msgstr "Collezione"
 
 #: mcomix/library/watchlist.py:58
-#, fuzzy
 msgid "_Add"
-msgstr "_Aggiungi..."
-
-#~ msgid "User interface language"
-#~ msgstr "Lingua dell'interfaccia utente"
-
-#~ msgid "Delay thumbnail generation"
-#~ msgstr "Ritardo della generazione dell'anteprima"
-
-#~ msgid ""
-#~ "Thumbnails are generated only when required, instead of directly after "
-#~ "opening a new file."
-#~ msgstr ""
-#~ "Le miniature sono generate solo quando richiesto, anziché direttamente "
-#~ "dopo l'apertura di un nuovo file."
+msgstr "_Aggiungi"
