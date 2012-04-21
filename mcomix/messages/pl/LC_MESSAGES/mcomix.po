@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2012-04-12 17:29+0200\n"
+"POT-Creation-Date: 2012-04-21 16:05+0200\n"
 "PO-Revision-Date: 2009-02-02 14:19+0100\n"
 "Last-Translator: Dariusz Jakoniuk <pipaceliny@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -113,7 +113,7 @@ msgstr "Imię"
 
 #
 # File: src/bookmark.py, line: 256
-#: mcomix/bookmark_dialog.py:53 mcomix/main.py:1070
+#: mcomix/bookmark_dialog.py:53 mcomix/main.py:1046
 msgid "Page"
 msgstr "Strona"
 
@@ -146,7 +146,7 @@ msgstr ""
 #
 # File: src/comment.py, line: 16
 # File: src/preferences.py, line: 288
-#: mcomix/comment_dialog.py:11 mcomix/preferences_dialog.py:366
+#: mcomix/comment_dialog.py:11 mcomix/preferences_dialog.py:375
 msgid "Comments"
 msgstr "Uwagi"
 
@@ -447,7 +447,7 @@ msgstr ""
 msgid "Invalid path: '%s'"
 msgstr ""
 
-#: mcomix/icons.py:65
+#: mcomix/icons.py:66
 #, python-format
 msgid "! Could not load icon \"%s\""
 msgstr ""
@@ -527,7 +527,7 @@ msgstr ""
 msgid "Toggle fullscreen"
 msgstr ""
 
-#: mcomix/keybindings.py:52
+#: mcomix/keybindings.py:52 mcomix/preferences_dialog.py:316
 msgid "User interface"
 msgstr ""
 
@@ -591,37 +591,37 @@ msgstr ""
 
 #
 # File: src/main.py, line: 666
-#: mcomix/main.py:926
+#: mcomix/main.py:921
 msgid "SLIDESHOW"
 msgstr "POKAZ SLAJDÓW"
 
-#: mcomix/main.py:1006
+#: mcomix/main.py:982
 msgid "Save page as"
 msgstr ""
 
-#: mcomix/main.py:1025
+#: mcomix/main.py:1001
 #, python-format
 msgid "Delete \"%s\"?"
 msgstr ""
 
-#: mcomix/main.py:1027
+#: mcomix/main.py:1003
 msgid "The file will be deleted from your harddisk."
 msgstr ""
 
 #
 # File: src/ui.py, line: 69
-#: mcomix/pageselect.py:14 mcomix/ui.py:93 mcomix/ui.py:94
+#: mcomix/pageselect.py:17 mcomix/ui.py:95 mcomix/ui.py:96
 msgid "_Go"
 msgstr "_Przejdź"
 
 #
 # File: src/preferences.py, line: 230
-#: mcomix/pageselect.py:15
+#: mcomix/pageselect.py:18
 #, fuzzy
 msgid "_Cancel"
 msgstr "Pamięć podręczna"
 
-#: mcomix/pageselect.py:37
+#: mcomix/pageselect.py:40
 #, python-format
 msgid " of %s"
 msgstr ""
@@ -878,7 +878,7 @@ msgstr ""
 #
 # File: src/preferences.py, line: 177
 # File: src/ui.py, line: 296
-#: mcomix/preferences_dialog.py:204 mcomix/ui.py:104
+#: mcomix/preferences_dialog.py:204 mcomix/ui.py:106
 msgid "Double page mode"
 msgstr "Tryb dwóch stron"
 
@@ -1049,38 +1049,44 @@ msgid ""
 "resizing, but longer page loading times."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:316
-msgid "User interface language"
-msgstr ""
-
 #: mcomix/preferences_dialog.py:317
 msgid "Language (needs restart):"
 msgstr ""
 
 #: mcomix/preferences_dialog.py:321
+msgid "Escape key closes program"
+msgstr ""
+
+#: mcomix/preferences_dialog.py:326
+msgid ""
+"When active, the ESC key closes the program, instead of only disabling "
+"fullscreen mode."
+msgstr ""
+
+#: mcomix/preferences_dialog.py:330
 msgid "File order"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:323
+#: mcomix/preferences_dialog.py:332
 msgid "Order files by:"
 msgstr ""
 
 #
 # File: src/preferences.py, line: 230
-#: mcomix/preferences_dialog.py:326
+#: mcomix/preferences_dialog.py:335
 msgid "Cache"
 msgstr "Pamięć podręczna"
 
 #
 # File: src/preferences.py, line: 222
-#: mcomix/preferences_dialog.py:329
+#: mcomix/preferences_dialog.py:338
 #, fuzzy
 msgid "Store thumbnails for opened files"
 msgstr "Przechowuj miniatury dla otwartych plików."
 
 #
 # File: src/preferences.py, line: 227
-#: mcomix/preferences_dialog.py:334
+#: mcomix/preferences_dialog.py:343
 msgid ""
 "Store thumbnails for opened files according to the freedesktop.org "
 "specification. These thumbnails are shared by many other applications, such "
@@ -1090,11 +1096,11 @@ msgstr ""
 "freedesktop.org. Te miniatury są współdzielone przez wiele innych programów, "
 "takich jak wiekszość menadżerów plików."
 
-#: mcomix/preferences_dialog.py:337
+#: mcomix/preferences_dialog.py:346
 msgid "Maximum number of pages to store in the cache:"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:343
+#: mcomix/preferences_dialog.py:352
 msgid ""
 "Set the max number of pages to cache. A value of -1 will cache the entire "
 "archive."
@@ -1102,20 +1108,20 @@ msgstr ""
 
 #
 # File: src/preferences.py, line: 124
-#: mcomix/preferences_dialog.py:346
+#: mcomix/preferences_dialog.py:355
 msgid "Magnifying Lens"
 msgstr "Lupa"
 
 #
 # File: src/preferences.py, line: 125
-#: mcomix/preferences_dialog.py:348
+#: mcomix/preferences_dialog.py:357
 #, fuzzy
 msgid "Magnifying lens size (in pixels):"
 msgstr "Wielkość lupy (w pikselach)"
 
 #
 # File: src/preferences.py, line: 131
-#: mcomix/preferences_dialog.py:354
+#: mcomix/preferences_dialog.py:363
 msgid ""
 "Set the size of the magnifying lens. It is a square with a side of this many "
 "pixels."
@@ -1124,27 +1130,27 @@ msgstr ""
 
 #
 # File: src/preferences.py, line: 133
-#: mcomix/preferences_dialog.py:356
+#: mcomix/preferences_dialog.py:365
 #, fuzzy
 msgid "Magnification factor:"
 msgstr "Współczynnik powiększenia"
 
 #
 # File: src/preferences.py, line: 140
-#: mcomix/preferences_dialog.py:363
+#: mcomix/preferences_dialog.py:372
 msgid "Set the magnification factor of the magnifying lens."
 msgstr "Ustaw współczynnik lupy."
 
 #
 # File: src/preferences.py, line: 289
-#: mcomix/preferences_dialog.py:367
+#: mcomix/preferences_dialog.py:376
 #, fuzzy
 msgid "Comment extensions:"
 msgstr "Rozszerzenia komentarzy"
 
 #
 # File: src/preferences.py, line: 295
-#: mcomix/preferences_dialog.py:374
+#: mcomix/preferences_dialog.py:383
 msgid ""
 "Treat all files found within archives, that have one of these file endings, "
 "as comments."
@@ -1152,178 +1158,178 @@ msgstr ""
 "Traktuj wszystkie pliki znalezione wewnątrz archiwów, jeśli mają jedno z "
 "tych zakończeń, jako komentarze."
 
-#: mcomix/preferences_dialog.py:394
+#: mcomix/preferences_dialog.py:403
 msgid "Auto-detect (Default)"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:395
+#: mcomix/preferences_dialog.py:404
 msgid "Catalan"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:396
+#: mcomix/preferences_dialog.py:405
 msgid "Czech"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:397
+#: mcomix/preferences_dialog.py:406
 msgid "German"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:398
+#: mcomix/preferences_dialog.py:407
 msgid "Greek"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:399
+#: mcomix/preferences_dialog.py:408
 msgid "English"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:400
+#: mcomix/preferences_dialog.py:409
 msgid "Spanish"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:401
+#: mcomix/preferences_dialog.py:410
 msgid "Persian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:402
+#: mcomix/preferences_dialog.py:411
 msgid "French"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:403
+#: mcomix/preferences_dialog.py:412
 msgid "Galician"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:404
+#: mcomix/preferences_dialog.py:413
 msgid "Croatian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:405
+#: mcomix/preferences_dialog.py:414
 msgid "Hungarian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:406
+#: mcomix/preferences_dialog.py:415
 msgid "Indonesian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:407
+#: mcomix/preferences_dialog.py:416
 msgid "Italian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:408
+#: mcomix/preferences_dialog.py:417
 msgid "Japanese"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:409
+#: mcomix/preferences_dialog.py:418
 msgid "Korean"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:410
+#: mcomix/preferences_dialog.py:419
 msgid "Dutch"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:411
+#: mcomix/preferences_dialog.py:420
 msgid "Polish"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:412
+#: mcomix/preferences_dialog.py:421
 msgid "Portuguese"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:413
+#: mcomix/preferences_dialog.py:422
 msgid "Russian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:414
+#: mcomix/preferences_dialog.py:423
 msgid "Swedish"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:415
+#: mcomix/preferences_dialog.py:424
 msgid "Ukrainian"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:416
+#: mcomix/preferences_dialog.py:425
 msgid "Chinese (simplified)"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:417
+#: mcomix/preferences_dialog.py:426
 msgid "Chinese (traditional)"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:436 mcomix/preferences_dialog.py:506
+#: mcomix/preferences_dialog.py:445 mcomix/preferences_dialog.py:515
 msgid "Never"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:437
+#: mcomix/preferences_dialog.py:446
 msgid "Only for title pages"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:438
+#: mcomix/preferences_dialog.py:447
 msgid "Only for wide images"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:439
+#: mcomix/preferences_dialog.py:448
 msgid "Always"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:458
+#: mcomix/preferences_dialog.py:467
 msgid "No sorting"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:459
+#: mcomix/preferences_dialog.py:468
 msgid "File name"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:460 mcomix/library/book_area.py:163
+#: mcomix/preferences_dialog.py:469 mcomix/library/book_area.py:163
 msgid "File size"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:461
+#: mcomix/preferences_dialog.py:470
 msgid "Last modified"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:467 mcomix/library/book_area.py:167
+#: mcomix/preferences_dialog.py:476 mcomix/library/book_area.py:167
 msgid "Ascending"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:468 mcomix/library/book_area.py:169
+#: mcomix/preferences_dialog.py:477 mcomix/library/book_area.py:169
 msgid "Descending"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:478
+#: mcomix/preferences_dialog.py:487
 msgid ""
 "Files will be opened and displayed according to the sort order specified "
 "here. This option does not affect ordering within archives."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:507
+#: mcomix/preferences_dialog.py:516
 msgid "Only file names"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:508
+#: mcomix/preferences_dialog.py:517
 msgid "File names and last read page"
 msgstr ""
 
 #
 # File: src/preferences.py, line: 214
-#: mcomix/preferences_dialog.py:542
+#: mcomix/preferences_dialog.py:551
 #, fuzzy
 msgid "Delete information about recently opened files?"
 msgstr "Przechowuj informację o ostatnio otwieranych plikach."
 
-#: mcomix/preferences_dialog.py:545
+#: mcomix/preferences_dialog.py:554
 msgid ""
 "This will remove all entries from the \"Recent\" menu, and clear information "
 "about last read pages."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:557
+#: mcomix/preferences_dialog.py:566
 msgid "Normal (fast)"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:558
+#: mcomix/preferences_dialog.py:567
 msgid "Bilinear"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:559
+#: mcomix/preferences_dialog.py:568
 msgid "Hyperbolic (slow)"
 msgstr ""
 
@@ -1526,7 +1532,7 @@ msgstr "Pokaz slajdów"
 
 #
 # File: src/preferences.py, line: 279
-#: mcomix/slideshow.py:47 mcomix/ui.py:125
+#: mcomix/slideshow.py:47 mcomix/ui.py:127
 #, fuzzy
 msgid "Start slideshow"
 msgstr "Pokaz slajdów"
@@ -1871,324 +1877,343 @@ msgstr ""
 msgid "_Normal Size"
 msgstr ""
 
+#: mcomix/ui.py:64
+msgid "Mi_nimize"
+msgstr ""
+
 #
 # File: src/ui.py, line: 48
-#: mcomix/ui.py:64
+#: mcomix/ui.py:66
 msgid "_Close"
 msgstr "_Zamknij"
 
-#: mcomix/ui.py:65
+#: mcomix/ui.py:67
 msgid "Closes all opened files."
 msgstr ""
 
 #
 # File: src/ui.py, line: 50
-#: mcomix/ui.py:66
+#: mcomix/ui.py:68
 msgid "_Quit"
 msgstr "_Wyjdź"
 
-#: mcomix/ui.py:68
+#: mcomix/ui.py:70
 msgid "_Save and quit"
 msgstr ""
 
-#: mcomix/ui.py:70
+#: mcomix/ui.py:72
 msgid ""
 "Quits and restores the currently opened file next time the program starts."
 msgstr ""
 
 #
 # File: src/ui.py, line: 52
-#: mcomix/ui.py:72
+#: mcomix/ui.py:74
 msgid "_Rotate 90 degrees CW"
 msgstr "Obróć o 90° w kierunku ruchu wskazówek zegara"
 
 #
 # File: src/ui.py, line: 54
-#: mcomix/ui.py:74
+#: mcomix/ui.py:76
 msgid "Rotate 180 de_grees"
 msgstr "Obróć o 180°"
 
 #
 # File: src/ui.py, line: 56
-#: mcomix/ui.py:76
+#: mcomix/ui.py:78
 msgid "Rotat_e 90 degrees CCW"
 msgstr "Obróć o 90° przeciwnie do ruchu wskazówek zegara"
 
 #
 # File: src/ui.py, line: 58
-#: mcomix/ui.py:78
+#: mcomix/ui.py:80
 msgid "Fli_p horizontally"
 msgstr "Przewróć w poziomie"
 
 #
 # File: src/ui.py, line: 60
-#: mcomix/ui.py:80
+#: mcomix/ui.py:82
 msgid "Flip _vertically"
 msgstr "Przewróć w pionie"
 
-#: mcomix/ui.py:82
+#: mcomix/ui.py:84
 msgid "Save _As"
 msgstr ""
 
-#: mcomix/ui.py:84
+#: mcomix/ui.py:86
 msgid "_Zoom"
 msgstr ""
 
-#: mcomix/ui.py:85
+#: mcomix/ui.py:87
 msgid "_Recent"
 msgstr ""
 
 #
 # File: src/ui.py, line: 64
-#: mcomix/ui.py:86 mcomix/ui.py:87
+#: mcomix/ui.py:88 mcomix/ui.py:89
 msgid "_Bookmarks"
 msgstr "_Zakładki"
 
 #
 # File: src/ui.py, line: 65
-#: mcomix/ui.py:88
+#: mcomix/ui.py:90
 msgid "T_oolbars"
 msgstr "_Paski narzędziowe"
 
 #
 # File: src/ui.py, line: 66
-#: mcomix/ui.py:89
+#: mcomix/ui.py:91
 msgid "_Edit"
 msgstr "_Edycja"
 
 #
 # File: src/ui.py, line: 67
-#: mcomix/ui.py:90
+#: mcomix/ui.py:92
 msgid "_File"
 msgstr "_Plik"
 
 #
 # File: src/ui.py, line: 68
-#: mcomix/ui.py:91 mcomix/ui.py:92
+#: mcomix/ui.py:93 mcomix/ui.py:94
 msgid "_View"
 msgstr "_Widok"
 
 #
 # File: src/ui.py, line: 79
-#: mcomix/ui.py:95
+#: mcomix/ui.py:97
 #, fuzzy
 msgid "_Tools"
 msgstr "_Pasek narzędzi"
 
 #
 # File: src/ui.py, line: 70
-#: mcomix/ui.py:96
+#: mcomix/ui.py:98
 msgid "_Help"
 msgstr "_Pomoc"
 
-#: mcomix/ui.py:97
+#: mcomix/ui.py:99
 msgid "_Transform image"
 msgstr ""
 
 #
 # File: src/ui.py, line: 75
-#: mcomix/ui.py:101
+#: mcomix/ui.py:103
 msgid "_Fullscreen"
 msgstr "_Pełen ekran"
 
-#: mcomix/ui.py:102
+#: mcomix/ui.py:104
 msgid "Fullscreen mode"
 msgstr ""
 
 #
 # File: src/ui.py, line: 77
-#: mcomix/ui.py:103
+#: mcomix/ui.py:105
 msgid "_Double page mode"
 msgstr "_Tryb podwójnej strony"
 
 #
 # File: src/ui.py, line: 79
-#: mcomix/ui.py:105
+#: mcomix/ui.py:107
 msgid "_Toolbar"
 msgstr "_Pasek narzędzi"
 
 #
 # File: src/ui.py, line: 81
-#: mcomix/ui.py:107
+#: mcomix/ui.py:109
 msgid "_Menubar"
 msgstr "Pasek menu"
 
 #
 # File: src/ui.py, line: 83
-#: mcomix/ui.py:109
+#: mcomix/ui.py:111
 msgid "St_atusbar"
 msgstr "_Pasek stanu"
 
 #
 # File: src/ui.py, line: 85
-#: mcomix/ui.py:111
+#: mcomix/ui.py:113
 msgid "S_crollbars"
 msgstr "_Paski przesuwania"
 
 #
 # File: src/ui.py, line: 87
-#: mcomix/ui.py:113
+#: mcomix/ui.py:115
 msgid "Th_umbnails"
 msgstr "_Miniatury"
 
 #
 # File: src/ui.py, line: 89
-#: mcomix/ui.py:115
+#: mcomix/ui.py:117
 msgid "H_ide all"
 msgstr "_Ukryj wszystkie"
 
 #
 # File: src/ui.py, line: 91
-#: mcomix/ui.py:117
+#: mcomix/ui.py:119
 msgid "_Manga mode"
 msgstr "_Tryb manga"
 
 #
 # File: src/ui.py, line: 297
-#: mcomix/ui.py:118
+#: mcomix/ui.py:120
 msgid "Manga mode"
 msgstr "Tryb manga"
 
-#: mcomix/ui.py:119
+#: mcomix/ui.py:121
 msgid "Invert smart scroll"
 msgstr ""
 
-#: mcomix/ui.py:120
+#: mcomix/ui.py:122
 msgid "Invert smart scrolling direction."
 msgstr ""
 
 #
 # File: src/ui.py, line: 93
-#: mcomix/ui.py:121
+#: mcomix/ui.py:123
 msgid "_Keep transformation"
 msgstr "_Utrzymaj transformację"
 
-#: mcomix/ui.py:122
+#: mcomix/ui.py:124
 msgid "Keeps the currently selected transformation for the next pages."
 msgstr ""
 
 #
 # File: src/ui.py, line: 95
-#: mcomix/ui.py:124
+#: mcomix/ui.py:126
 #, fuzzy
 msgid "Start _slideshow"
 msgstr "_Uruchom pokaz"
 
 #
 # File: src/ui.py, line: 97
-#: mcomix/ui.py:126
+#: mcomix/ui.py:128
 msgid "Magnifying _lens"
 msgstr "_Lupa"
 
 #
 # File: src/ui.py, line: 298
-#: mcomix/ui.py:127
+#: mcomix/ui.py:129
 msgid "Magnifying lens"
 msgstr "Lupa"
 
-#: mcomix/ui.py:128
+#: mcomix/ui.py:130
 msgid "Stretch small images"
 msgstr ""
 
-#: mcomix/ui.py:129
+#: mcomix/ui.py:131
 msgid "Stretch images to fit to the screen, depending on zoom mode."
 msgstr ""
 
 #
 # File: src/ui.py, line: 101
-#: mcomix/ui.py:135
+#: mcomix/ui.py:137
 msgid "_Best fit mode"
 msgstr "_Tryb optymalnego przybliżenia"
 
 #
 # File: src/preferences.py, line: 262
 # File: src/ui.py, line: 288
-#: mcomix/ui.py:136
+#: mcomix/ui.py:138
 msgid "Best fit mode"
 msgstr "Tryb najlepszego dopasowania"
 
 #
 # File: src/ui.py, line: 103
-#: mcomix/ui.py:137
+#: mcomix/ui.py:139
 msgid "Fit _width mode"
 msgstr "Dopasuj na szerokość"
 
 #
 # File: src/preferences.py, line: 263
 # File: src/ui.py, line: 290
-#: mcomix/ui.py:138
+#: mcomix/ui.py:140
 msgid "Fit width mode"
 msgstr "Tryb dopasowania szerokości"
 
 #
 # File: src/ui.py, line: 105
-#: mcomix/ui.py:139
+#: mcomix/ui.py:141
 msgid "Fit _height mode"
 msgstr "Dopasuj na wysokość"
 
 #
 # File: src/preferences.py, line: 264
 # File: src/ui.py, line: 292
-#: mcomix/ui.py:140
+#: mcomix/ui.py:142
 msgid "Fit height mode"
 msgstr "Tryb dopasowania wysokości"
 
 #
+# File: src/ui.py, line: 103
+#: mcomix/ui.py:143
+#, fuzzy
+msgid "Fit _size mode"
+msgstr "Dopasuj na szerokość"
+
+#
+# File: src/preferences.py, line: 263
+# File: src/ui.py, line: 290
+#: mcomix/ui.py:144
+#, fuzzy
+msgid "Fit to size mode"
+msgstr "Tryb dopasowania szerokości"
+
+#
 # File: src/ui.py, line: 107
-#: mcomix/ui.py:141
+#: mcomix/ui.py:145
 msgid "M_anual zoom mode"
 msgstr "Tryb ręcznego przybliżenia"
 
 #
 # File: src/preferences.py, line: 265
 # File: src/ui.py, line: 294
-#: mcomix/ui.py:142
+#: mcomix/ui.py:146
 msgid "Manual zoom mode"
 msgstr "Ręczny tryb zoomu"
 
 #
 # File: src/ui.py, line: 113
-#: mcomix/ui.py:146
+#: mcomix/ui.py:150
 msgid "_About"
 msgstr "_O programie"
 
-#: mcomix/ui.py:150
+#: mcomix/ui.py:154
 msgid "Co_mments..."
 msgstr ""
 
-#: mcomix/ui.py:154
+#: mcomix/ui.py:158
 msgid "Proper_ties"
 msgstr ""
 
 #
 # File: src/ui.py, line: 128
-#: mcomix/ui.py:158
+#: mcomix/ui.py:162
 msgid "Pr_eferences"
 msgstr "_Ustawienia"
 
 #
 # File: src/ui.py, line: 117
-#: mcomix/ui.py:163
+#: mcomix/ui.py:167
 msgid "_Edit archive..."
 msgstr "Edytuj archiwum"
 
-#: mcomix/ui.py:164
+#: mcomix/ui.py:168
 msgid "Opens the archive editor."
 msgstr ""
 
 #
 # File: src/ui.py, line: 119
-#: mcomix/ui.py:166
+#: mcomix/ui.py:170
 msgid "_Open..."
 msgstr "_Otwórz…"
 
-#: mcomix/ui.py:168
+#: mcomix/ui.py:172
 msgid "En_hance image..."
 msgstr ""
 
 #
 # File: src/ui.py, line: 132
-#: mcomix/ui.py:172
+#: mcomix/ui.py:176
 msgid "_Library..."
 msgstr "_Biblioteka"
 
