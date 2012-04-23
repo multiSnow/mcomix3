@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.95-SVN\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2012-04-21 16:28+0200\n"
+"POT-Creation-Date: 2012-04-23 16:57+0200\n"
 "PO-Revision-Date: 2012-02-25 17:54+0900\n"
 "Last-Translator: Toshiharu Kudoh <toshi.kd2@gmail.com>\n"
 "Language-Team: Japanese\n"
@@ -117,7 +117,7 @@ msgstr "種類"
 msgid "Name"
 msgstr "名前"
 
-#: mcomix/bookmark_dialog.py:53 mcomix/main.py:1046
+#: mcomix/bookmark_dialog.py:53 mcomix/main.py:1048
 msgid "Page"
 msgstr "ページ"
 
@@ -144,7 +144,7 @@ msgstr "ブックマークの編集(_E)..."
 msgid "! Callback %(function)r failed: %(error)s"
 msgstr "! %(function)r のコールバックに失敗しました: %(error)s"
 
-#: mcomix/comment_dialog.py:11 mcomix/preferences_dialog.py:375
+#: mcomix/comment_dialog.py:11 mcomix/preferences_dialog.py:389
 msgid "Comments"
 msgstr "コメント"
 
@@ -424,7 +424,7 @@ msgstr "全画面表示"
 msgid "Toggle fullscreen"
 msgstr "全画面表示"
 
-#: mcomix/keybindings.py:52 mcomix/preferences_dialog.py:316
+#: mcomix/keybindings.py:52 mcomix/preferences_dialog.py:330
 #, fuzzy
 msgid "User interface"
 msgstr "インターフェースの言語を使用する"
@@ -498,20 +498,20 @@ msgstr "! アイコン \"%s\" を読めませんでした"
 msgid "! Could neither find pysqlite2 nor sqlite3."
 msgstr "! pysqlite2 もしくは sqlite3 が見つかりませんでした。"
 
-#: mcomix/main.py:921
+#: mcomix/main.py:923
 msgid "SLIDESHOW"
 msgstr ""
 
-#: mcomix/main.py:982
+#: mcomix/main.py:984
 msgid "Save page as"
 msgstr "別名でページを保存"
 
-#: mcomix/main.py:1001
+#: mcomix/main.py:1003
 #, python-format
 msgid "Delete \"%s\"?"
 msgstr "\"%s\" を削除しますか？"
 
-#: mcomix/main.py:1003
+#: mcomix/main.py:1005
 msgid "The file will be deleted from your harddisk."
 msgstr "ファイルはあなたのハードディスクから削除されます。"
 
@@ -777,45 +777,60 @@ msgstr "デフォルトで全画面表示にする"
 msgid "Automatically hide all toolbars in fullscreen"
 msgstr "全画面表示時に自動的に全てのツールバーを隠す"
 
-#: mcomix/preferences_dialog.py:261
+#: mcomix/preferences_dialog.py:261 mcomix/ui.py:144
+#, fuzzy
+msgid "Fit to size mode"
+msgstr "横幅に合わせる"
+
+#: mcomix/preferences_dialog.py:263
+#, fuzzy
+msgid "Fit to width or height:"
+msgstr "横幅に合わせる"
+
+#: mcomix/preferences_dialog.py:267
+#, fuzzy
+msgid "Fixed size for this mode:"
+msgstr "横幅に合わせる(_W)"
+
+#: mcomix/preferences_dialog.py:275
 msgid "Slideshow"
 msgstr "スライドショー"
 
-#: mcomix/preferences_dialog.py:262
+#: mcomix/preferences_dialog.py:276
 msgid "Slideshow delay (in seconds):"
 msgstr "スライドショーの間隔（秒単位）:"
 
-#: mcomix/preferences_dialog.py:271
+#: mcomix/preferences_dialog.py:285
 msgid "Slideshow step (in pixels):"
 msgstr "スライドショーの間隔（ピクセル数）:"
 
-#: mcomix/preferences_dialog.py:279
+#: mcomix/preferences_dialog.py:293
 msgid ""
 "Specify the number of pixels to scroll while in slideshow mode. A positive "
 "value will scroll forward, a negative value will scroll backwards, and a "
 "value of 0 will cause the slideshow to always flip to a new page."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:283
+#: mcomix/preferences_dialog.py:297
 msgid "During a slideshow automatically open the next archive"
 msgstr "スライドショーの間、次のアーカイブファイルを自動的に開く"
 
-#: mcomix/preferences_dialog.py:288
+#: mcomix/preferences_dialog.py:302
 msgid ""
 "While in slideshow mode allow the next archive to automatically be opened."
 msgstr ""
 "スライドショーモードの間、次のアーカイブファイルが自動的に開かれるのを許可し"
 "ます。"
 
-#: mcomix/preferences_dialog.py:291
+#: mcomix/preferences_dialog.py:305
 msgid "Rotation"
 msgstr "回転"
 
-#: mcomix/preferences_dialog.py:293
+#: mcomix/preferences_dialog.py:307
 msgid "Automatically rotate images according to their metadata"
 msgstr "メタデータに従い画像を自動的に回転する"
 
-#: mcomix/preferences_dialog.py:298
+#: mcomix/preferences_dialog.py:312
 msgid ""
 "Automatically rotate images when an orientation is specified in the image "
 "metadata, such as in an Exif tag."
@@ -823,53 +838,53 @@ msgstr ""
 "Exif タグのようなメタデータに画像の回転方向が示されている時は、自動的に画像を"
 "回転します。"
 
-#: mcomix/preferences_dialog.py:301
+#: mcomix/preferences_dialog.py:315
 msgid "Image quality"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:302
+#: mcomix/preferences_dialog.py:316
 #, fuzzy
 msgid "Scaling mode"
 msgstr "マンガのページ順に表示"
 
-#: mcomix/preferences_dialog.py:305
+#: mcomix/preferences_dialog.py:319
 msgid ""
 "Changes how images are scaled. Slower algorithms result in higher quality "
 "resizing, but longer page loading times."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:317
+#: mcomix/preferences_dialog.py:331
 msgid "Language (needs restart):"
 msgstr "言語（要再起動）:"
 
-#: mcomix/preferences_dialog.py:321
+#: mcomix/preferences_dialog.py:335
 msgid "Escape key closes program"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:326
+#: mcomix/preferences_dialog.py:340
 msgid ""
 "When active, the ESC key closes the program, instead of only disabling "
 "fullscreen mode."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:330
+#: mcomix/preferences_dialog.py:344
 #, fuzzy
 msgid "File order"
 msgstr "ファイルサイズ"
 
-#: mcomix/preferences_dialog.py:332
+#: mcomix/preferences_dialog.py:346
 msgid "Order files by:"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:335
+#: mcomix/preferences_dialog.py:349
 msgid "Cache"
 msgstr "キャッシュ"
 
-#: mcomix/preferences_dialog.py:338
+#: mcomix/preferences_dialog.py:352
 msgid "Store thumbnails for opened files"
 msgstr "開いたファイルのサムネイルを保存する"
 
-#: mcomix/preferences_dialog.py:343
+#: mcomix/preferences_dialog.py:357
 msgid ""
 "Store thumbnails for opened files according to the freedesktop.org "
 "specification. These thumbnails are shared by many other applications, such "
@@ -879,11 +894,11 @@ msgstr ""
 "のサムネイルは、ほとんどのファイルマネージャー等、多くのアプリケーションが共"
 "有して使うことができます。"
 
-#: mcomix/preferences_dialog.py:346
+#: mcomix/preferences_dialog.py:360
 msgid "Maximum number of pages to store in the cache:"
 msgstr "キャッシュに蓄積するページの最大数:"
 
-#: mcomix/preferences_dialog.py:352
+#: mcomix/preferences_dialog.py:366
 msgid ""
 "Set the max number of pages to cache. A value of -1 will cache the entire "
 "archive."
@@ -891,15 +906,15 @@ msgstr ""
 "キャッシュするページの最高数を設定します。-1の値はアーカイブ全てをキャッシュ"
 "します。"
 
-#: mcomix/preferences_dialog.py:355
+#: mcomix/preferences_dialog.py:369
 msgid "Magnifying Lens"
 msgstr "拡大レンズ"
 
-#: mcomix/preferences_dialog.py:357
+#: mcomix/preferences_dialog.py:371
 msgid "Magnifying lens size (in pixels):"
 msgstr "拡大するサイズ（ピクセル数）:"
 
-#: mcomix/preferences_dialog.py:363
+#: mcomix/preferences_dialog.py:377
 msgid ""
 "Set the size of the magnifying lens. It is a square with a side of this many "
 "pixels."
@@ -907,19 +922,19 @@ msgstr ""
 "レンズが拡大する範囲のサイズを設定します。一辺がこのピクセル数の正方形状の範"
 "囲が拡大されます。"
 
-#: mcomix/preferences_dialog.py:365
+#: mcomix/preferences_dialog.py:379
 msgid "Magnification factor:"
 msgstr "拡大率:"
 
-#: mcomix/preferences_dialog.py:372
+#: mcomix/preferences_dialog.py:386
 msgid "Set the magnification factor of the magnifying lens."
 msgstr "レンズの拡大率を設定します。"
 
-#: mcomix/preferences_dialog.py:376
+#: mcomix/preferences_dialog.py:390
 msgid "Comment extensions:"
 msgstr "コメントファイルの拡張子:"
 
-#: mcomix/preferences_dialog.py:383
+#: mcomix/preferences_dialog.py:397
 msgid ""
 "Treat all files found within archives, that have one of these file endings, "
 "as comments."
@@ -927,180 +942,190 @@ msgstr ""
 "アーカイブファイルの中にある、これらの拡張子を持つファイルを全てコメントとし"
 "て扱います。"
 
-#: mcomix/preferences_dialog.py:403
+#: mcomix/preferences_dialog.py:417
 msgid "Auto-detect (Default)"
 msgstr "自動判別（デフォルト）"
 
-#: mcomix/preferences_dialog.py:404
+#: mcomix/preferences_dialog.py:418
 msgid "Catalan"
 msgstr "カタロニア語"
 
-#: mcomix/preferences_dialog.py:405
+#: mcomix/preferences_dialog.py:419
 msgid "Czech"
 msgstr "チェコ語"
 
-#: mcomix/preferences_dialog.py:406
+#: mcomix/preferences_dialog.py:420
 msgid "German"
 msgstr "ドイツ語"
 
-#: mcomix/preferences_dialog.py:407
+#: mcomix/preferences_dialog.py:421
 msgid "Greek"
 msgstr "ギリシア語"
 
-#: mcomix/preferences_dialog.py:408
+#: mcomix/preferences_dialog.py:422
 msgid "English"
 msgstr "英語"
 
-#: mcomix/preferences_dialog.py:409
+#: mcomix/preferences_dialog.py:423
 msgid "Spanish"
 msgstr "スペイン語"
 
-#: mcomix/preferences_dialog.py:410
+#: mcomix/preferences_dialog.py:424
 msgid "Persian"
 msgstr "ペルシア語"
 
-#: mcomix/preferences_dialog.py:411
+#: mcomix/preferences_dialog.py:425
 msgid "French"
 msgstr "フランス語"
 
-#: mcomix/preferences_dialog.py:412
+#: mcomix/preferences_dialog.py:426
 msgid "Galician"
 msgstr "ガリシア語"
 
-#: mcomix/preferences_dialog.py:413
+#: mcomix/preferences_dialog.py:427
 msgid "Croatian"
 msgstr "クロアチア語"
 
-#: mcomix/preferences_dialog.py:414
+#: mcomix/preferences_dialog.py:428
 msgid "Hungarian"
 msgstr "ハンガリー語"
 
-#: mcomix/preferences_dialog.py:415
+#: mcomix/preferences_dialog.py:429
 msgid "Indonesian"
 msgstr "インドネシア語"
 
-#: mcomix/preferences_dialog.py:416
+#: mcomix/preferences_dialog.py:430
 msgid "Italian"
 msgstr "イタリア語"
 
-#: mcomix/preferences_dialog.py:417
+#: mcomix/preferences_dialog.py:431
 msgid "Japanese"
 msgstr "日本語"
 
-#: mcomix/preferences_dialog.py:418
+#: mcomix/preferences_dialog.py:432
 msgid "Korean"
 msgstr "朝鮮語"
 
-#: mcomix/preferences_dialog.py:419
+#: mcomix/preferences_dialog.py:433
 msgid "Dutch"
 msgstr "オランダ語"
 
-#: mcomix/preferences_dialog.py:420
+#: mcomix/preferences_dialog.py:434
 msgid "Polish"
 msgstr "ポーランド語"
 
-#: mcomix/preferences_dialog.py:421
+#: mcomix/preferences_dialog.py:435
 msgid "Portuguese"
 msgstr "ポルトガル語"
 
-#: mcomix/preferences_dialog.py:422
+#: mcomix/preferences_dialog.py:436
 msgid "Russian"
 msgstr "ロシア語"
 
-#: mcomix/preferences_dialog.py:423
+#: mcomix/preferences_dialog.py:437
 msgid "Swedish"
 msgstr "スウェーデン語"
 
-#: mcomix/preferences_dialog.py:424
+#: mcomix/preferences_dialog.py:438
 msgid "Ukrainian"
 msgstr "ウクライナ語"
 
-#: mcomix/preferences_dialog.py:425
+#: mcomix/preferences_dialog.py:439
 msgid "Chinese (simplified)"
 msgstr "中国語（簡体字）"
 
-#: mcomix/preferences_dialog.py:426
+#: mcomix/preferences_dialog.py:440
 msgid "Chinese (traditional)"
 msgstr "中国語（繁体字）"
 
-#: mcomix/preferences_dialog.py:445 mcomix/preferences_dialog.py:515
+#: mcomix/preferences_dialog.py:459 mcomix/preferences_dialog.py:551
 msgid "Never"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:446
+#: mcomix/preferences_dialog.py:460
 msgid "Only for title pages"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:447
+#: mcomix/preferences_dialog.py:461
 msgid "Only for wide images"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:448
+#: mcomix/preferences_dialog.py:462
 msgid "Always"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:467
+#: mcomix/preferences_dialog.py:481
+#, fuzzy
+msgid "Fit to width"
+msgstr "横幅に合わせる"
+
+#: mcomix/preferences_dialog.py:482
+#, fuzzy
+msgid "Fit to height"
+msgstr "縦幅に合わせる"
+
+#: mcomix/preferences_dialog.py:503
 msgid "No sorting"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:468
+#: mcomix/preferences_dialog.py:504
 #, fuzzy
 msgid "File name"
 msgstr "ファイルサイズ"
 
-#: mcomix/preferences_dialog.py:469 mcomix/library/book_area.py:163
+#: mcomix/preferences_dialog.py:505 mcomix/library/book_area.py:163
 msgid "File size"
 msgstr "ファイルサイズ"
 
-#: mcomix/preferences_dialog.py:470
+#: mcomix/preferences_dialog.py:506
 #, fuzzy
 msgid "Last modified"
 msgstr "最終修正時"
 
-#: mcomix/preferences_dialog.py:476 mcomix/library/book_area.py:167
+#: mcomix/preferences_dialog.py:512 mcomix/library/book_area.py:167
 msgid "Ascending"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:477 mcomix/library/book_area.py:169
+#: mcomix/preferences_dialog.py:513 mcomix/library/book_area.py:169
 msgid "Descending"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:487
+#: mcomix/preferences_dialog.py:523
 msgid ""
 "Files will be opened and displayed according to the sort order specified "
 "here. This option does not affect ordering within archives."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:516
+#: mcomix/preferences_dialog.py:552
 #, fuzzy
 msgid "Only file names"
 msgstr "ファイル名を表示"
 
-#: mcomix/preferences_dialog.py:517
+#: mcomix/preferences_dialog.py:553
 msgid "File names and last read page"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:551
+#: mcomix/preferences_dialog.py:587
 #, fuzzy
 msgid "Delete information about recently opened files?"
 msgstr "最近開いたファイルの情報を保存する"
 
-#: mcomix/preferences_dialog.py:554
+#: mcomix/preferences_dialog.py:590
 msgid ""
 "This will remove all entries from the \"Recent\" menu, and clear information "
 "about last read pages."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:566
+#: mcomix/preferences_dialog.py:602
 #, fuzzy
 msgid "Normal (fast)"
 msgstr "通常サイズ(_N)"
 
-#: mcomix/preferences_dialog.py:567
+#: mcomix/preferences_dialog.py:603
 msgid "Bilinear"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:568
+#: mcomix/preferences_dialog.py:604
 msgid "Hyperbolic (slow)"
 msgstr ""
 
@@ -1746,11 +1771,6 @@ msgstr "縦幅に合わせる"
 #, fuzzy
 msgid "Fit _size mode"
 msgstr "横幅に合わせる(_W)"
-
-#: mcomix/ui.py:144
-#, fuzzy
-msgid "Fit to size mode"
-msgstr "横幅に合わせる"
 
 #: mcomix/ui.py:145
 msgid "M_anual zoom mode"
