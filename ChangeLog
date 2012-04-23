@@ -6,6 +6,10 @@ MComix 0.99
     - Zoom is now enabled in all fit modes (best fit, fit to width, fit to
       height).
 
+    - Added new zoom mode 'Fit to size'. This mode always stretches an image
+      to a given height or width. By default, a height of 1800px is set.
+      This can be changed in the preferences dialog.
+
     - Added new preference option for switching between different resizing
       algorithms (higher quality usually means longer page loading times).
 
