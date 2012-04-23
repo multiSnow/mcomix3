@@ -385,11 +385,8 @@ def combine_pixbufs( pixbuf1, pixbuf2, are_in_manga_mode ):
 def is_image_file(path):
     """Return True if the file at <path> is an image file recognized by PyGTK.
     """
-    if os.path.isfile(path):
-        ext = os.path.splitext(path)[1][1:].lower()
-        ext_index = bisect.bisect_left(_supported_formats, ext)
-        return ext_index != len(_supported_formats) and _supported_formats[ext_index] == ext
-    else:
-        return False
+    ext = os.path.splitext(path)[1][1:].lower()
+    ext_index = bisect.bisect_left(_supported_formats, ext)
+    return ext_index != len(_supported_formats) and _supported_formats[ext_index] == ext
 
 # vim: expandtab:sw=4:ts=4
