@@ -2,7 +2,7 @@
 
 from mcomix import constants
 from mcomix import callback
-
+from mcomix.preferences import prefs
 
 class ZoomModel(object):
     """ Handles zoom and fit modes. """
@@ -198,15 +198,16 @@ class FitToSizeMode(FitMode):
 
     def __init__(self):
         super(FitToSizeMode, self).__init__()
-        # TODO: Make these configurable
-        self.size = 1800
-        self.mode = 'height'
+        self.size = int(prefs['fit to size px'])
+        self.mode = prefs['fit to size mode']
 
     def get_scaled_size(self, img_size, screen_size):
-        if self.mode == 'width':
+        if self.mode == constants.ZOOM_MODE_WIDTH:
             side = img_size[0]
-        else:
+        elif self.mode == constants.ZOOM_MODE_HEIGHT:
             side = img_size[1]
+        else:
+            assert False, 'Invalid fit to size mode specified in preferences'
 
         scale = self.get_scale_percentage(side, self.size)
         return int(img_size[0] * scale), int(img_size[1] * scale)

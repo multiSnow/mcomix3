@@ -612,8 +612,10 @@ class MainWindow(gtk.Window):
 
             self.hide_all_forced = False
 
-    def change_zoom_mode(self, radioaction, *args):
-        prefs['zoom mode'] = radioaction.get_current_value()
+    def change_zoom_mode(self, radioaction=None, *args):
+        if radioaction:
+            prefs['zoom mode'] = radioaction.get_current_value()
+
         fitmode = zoom.FitMode.create(prefs['zoom mode'])
         fitmode.set_scale_up(prefs['stretch'])
         self.zoom.set_fit_mode(fitmode)

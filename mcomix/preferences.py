@@ -90,7 +90,9 @@ prefs = {
     'max threads': 3,
     'wrap mouse scroll': False,
     'scaling quality': 1,  # gtk.gdk.INTERP_TILES
-    'escape quits': False
+    'escape quits': False,
+    'fit to size mode': constants.ZOOM_MODE_HEIGHT,
+    'fit to size px': 1800
 }
 
 def read_preferences_file():

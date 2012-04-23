@@ -258,6 +258,20 @@ class _PreferencesDialog(gtk.Dialog):
             'hide all in fullscreen')
         page.add_row(hide_in_fullscreen_button)
 
+        page.new_section(_('Fit to size mode'))
+
+        fitside_label = gtk.Label(_('Fit to width or height:'))
+        fitmode = self._create_fitmode_control()
+        page.add_row(fitside_label, fitmode)
+
+        fitsize_label = gtk.Label(_('Fixed size for this mode:'))
+        adjustment = gtk.Adjustment(prefs['fit to size px'], 10, 10000, 10, 50)
+        fitsize_spinner = gtk.SpinButton(adjustment, digits=0)
+        fitsize_spinner.set_size_request(80, -1)
+        fitsize_spinner.connect('value-changed', self._spinner_cb,
+            'fit to size px')
+        page.add_row(fitsize_label, fitsize_spinner)
+
         page.new_section(_('Slideshow'))
         label = gtk.Label(_('Slideshow delay (in seconds):'))
         adjustment = gtk.Adjustment(prefs['slideshow delay'] / 1000.0,
@@ -460,6 +474,28 @@ class _PreferencesDialog(gtk.Dialog):
             value = combobox.get_model().get_value(iter, 1)
             prefs['virtual double page for fitting images'] = value
             self._window.draw_image()
+
+    def _create_fitmode_control(self):
+        """ Combobox for fit to size mode """
+        items = (
+                (_('Fit to width'), constants.ZOOM_MODE_WIDTH),
+                (_('Fit to height'), constants.ZOOM_MODE_HEIGHT))
+
+        box = self._create_combobox(items,
+                prefs['fit to size mode'],
+                self._fit_to_size_changed_cb)
+
+        return box
+
+    def _fit_to_size_changed_cb(self, combobox, *args):
+        """ Change to 'Fit to size' pixels """
+        iter = combobox.get_active_iter()
+        if combobox.get_model().iter_is_valid(iter):
+            value = combobox.get_model().get_value(iter, 1)
+
+            if prefs['fit to size mode'] != value:
+                prefs['fit to size mode'] = value
+                self._window.change_zoom_mode()
 
     def _create_sort_by_control(self):
         """ Creates the ComboBox control for selecting archive sort by options. """
@@ -726,6 +762,11 @@ class _PreferencesDialog(gtk.Dialog):
         elif preference == 'number of key presses before page turn':
             prefs['number of key presses before page turn'] = int(value)
             self._window._event_handler._extra_scroll_events = 0
+
+        elif preference == 'fit to size px':
+            prefs[preference] = int(value)
+            self._window.change_zoom_mode()
+
 
     def _entry_cb(self, entry, event=None):
         """Callback for entry-type preferences."""
