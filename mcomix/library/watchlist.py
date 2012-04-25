@@ -94,13 +94,16 @@ class WatchListDialog(gtk.Dialog):
         model, iter = selection.get_selected()
         if iter is not None:
             path = model.get_value(iter, COL_DIRECTORY)
-            for entry in self.library.backend.watchlist.get_watchlist():
-                if path == entry.directory:
-                    return entry
-            
-            return None
+            return self.library.backend.watchlist.get_watchlist_entry(path)
         else:
             return None
+
+    def get_watchlist_entry_for_treepath(self, treepath):
+        """ Converts a tree path to WatchlistEntry object. """
+        model = self._treeview.get_model()
+        iter = model.get_iter(treepath)
+        dirpath = model.get_value(iter, COL_DIRECTORY)
+        return self.library.backend.watchlist.get_watchlist_entry(dirpath)
 
     def _create_model(self):
         """ Creates a model containing all watched directories. """
@@ -140,7 +143,7 @@ class WatchListDialog(gtk.Dialog):
         collection = self.library.backend.get_collection_by_id(new_id)
 
         # Update database
-        self.get_selected_watchlist_entry().set_collection(collection)
+        self.get_watchlist_entry_for_treepath(path).set_collection(collection)
 
         # Update collection ID in watchlist model
         model = self._treeview.get_model()
@@ -152,7 +155,7 @@ class WatchListDialog(gtk.Dialog):
     def _recursive_changed_cb(self, toggle_renderer, path, *args):
         """ Recursive reading was enabled or disabled. """
         status = not toggle_renderer.get_active()
-        self.get_selected_watchlist_entry().set_recursive(status)
+        self.get_watchlist_entry_for_treepath(path).set_recursive(status)
 
         # Update recursive status in watchlist model
         model = self._treeview.get_model()

@@ -204,17 +204,29 @@ class _WatchList(object):
                  LEFT JOIN collection ON watchlist.collection = collection.id"""
 
         cursor = self.backend.execute(sql)
-        entries = []
-        for row in cursor.fetchall():
-            collection_id = row[2]
-            if collection_id:
-                collection = _Collection(*row[2:])
-            else:
-                collection = DefaultCollection
-
-            entries.append(_WatchListEntry(row[0], row[1], collection))
+        entries = [self._result_row_to_watchlist_entry(row) for row in cursor.fetchall()]
+        cursor.close()
 
         return entries
+
+    def get_watchlist_entry(self, path):
+        """ Returns a single watchlist entry, specified by C{path} """
+        sql = """SELECT watchlist.path,
+                        watchlist.recursive,
+                        collection.id, collection.name,
+                        collection.supercollection
+                 FROM watchlist
+                 LEFT JOIN collection ON watchlist.collection = collection.id
+                 WHERE watchlist.path = ?"""
+
+        cursor = self.backend.execute(sql, (path, ))
+        result = cursor.fetchone()
+        cursor.close()
+
+        if result:
+            return self._result_row_to_watchlist_entry(result)
+        else:
+            raise ValueError("Watchlist entry doesn't exist")
 
     def scan_for_new_files(self):
         """ Begins scanning for new files in the watched directories.
@@ -229,6 +241,17 @@ class _WatchList(object):
         for entry in self.get_watchlist():
             new_files = entry.get_new_files(existing_books)
             self.new_files_found(new_files, entry)
+
+    def _result_row_to_watchlist_entry(self, row):
+        """ Converts the result of a SELECT statement to a WatchListEntry. """
+        collection_id = row[2]
+        if collection_id:
+            collection = _Collection(*row[2:])
+        else:
+            collection = DefaultCollection
+
+        return _WatchListEntry(row[0], row[1], collection)
+
 
     @callback.Callback
     def new_files_found(self, paths, watchentry):
