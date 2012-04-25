@@ -183,13 +183,13 @@ class _WatchList(object):
     def __init__(self, backend):
         self.backend = backend
 
-    def add_directory(self, path, collection=DefaultCollection):
+    def add_directory(self, path, collection=DefaultCollection, recursive=False):
         """ Adds a new watched directory. """
 
         directory = os.path.abspath(path)
-        sql = """INSERT OR IGNORE INTO watchlist (path, collection)
-                 VALUES (?, ?)"""
-        cursor = self.backend.execute(sql, [directory, collection.id])
+        sql = """INSERT OR IGNORE INTO watchlist (path, collection, recursive)
+                 VALUES (?, ?, ?)"""
+        cursor = self.backend.execute(sql, [directory, collection.id, recursive])
         cursor.close()
 
     def get_watchlist(self):
@@ -197,6 +197,7 @@ class _WatchList(object):
         @return: List of L{_WatchListEntry} objects. """
 
         sql = """SELECT watchlist.path,
+                        watchlist.recursive,
                         collection.id, collection.name,
                         collection.supercollection
                  FROM watchlist
@@ -205,13 +206,13 @@ class _WatchList(object):
         cursor = self.backend.execute(sql)
         entries = []
         for row in cursor.fetchall():
-            collection_id = row[1]
+            collection_id = row[2]
             if collection_id:
-                collection = _Collection(*row[1:])
+                collection = _Collection(*row[2:])
             else:
                 collection = DefaultCollection
 
-            entries.append(_WatchListEntry(row[0], collection))
+            entries.append(_WatchListEntry(row[0], row[1], collection))
 
         return entries
 
@@ -242,8 +243,9 @@ class _WatchList(object):
 class _WatchListEntry(_BackendObject):
     """ A watched directory. """
 
-    def __init__(self, directory, collection):
+    def __init__(self, directory, recursive, collection):
         self.directory = os.path.abspath(directory)
+        self.recursive = bool(recursive)
         self.collection = collection
 
     def get_new_files(self, filelist):
@@ -254,9 +256,19 @@ class _WatchListEntry(_BackendObject):
             return []
 
         old_files = frozenset([os.path.abspath(path) for path in filelist])
-        available_files = frozenset([os.path.join(self.directory, filename)
-            for filename in os.listdir(self.directory)
-            if constants.SUPPORTED_ARCHIVE_REGEX.search(filename)])
+
+        if not self.recursive:
+            available_files = frozenset([os.path.join(self.directory, filename)
+                for filename in os.listdir(self.directory)
+                if constants.SUPPORTED_ARCHIVE_REGEX.search(filename)])
+        else:
+            available_files = []
+            for dirpath, dirnames, filenames in os.walk(self.directory):
+                for filename in filter(constants.SUPPORTED_ARCHIVE_REGEX.search, filenames):
+                    path = os.path.join(dirpath, filename)
+                    available_files.append(path)
+
+            available_files = frozenset(available_files)
 
         return list(available_files.difference(old_files))
 
@@ -282,6 +294,15 @@ class _WatchListEntry(_BackendObject):
                     (new_collection.id, self.directory))
             cursor.close()
             self.collection = new_collection
+
+    def set_recursive(self, recursive):
+        """ Enables or disables recursive scanning. """
+        if recursive != self.recursive:
+            sql = """UPDATE watchlist SET recursive = ? WHERE path = ?"""
+            cursor = self.get_backend().execute(sql,
+                    (recursive, self.directory))
+            cursor.close()
+            self.recursive = recursive
 
 
 # vim: expandtab:sw=4:ts=4

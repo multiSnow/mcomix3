@@ -28,7 +28,7 @@ class _LibraryBackend:
 
     #: Current version of the library database structure.
     # See method _upgrade_database() for changes between versions.
-    DB_VERSION = 3
+    DB_VERSION = 4
 
     def __init__(self):
 
@@ -496,6 +496,14 @@ class _LibraryBackend:
                     from book_old''')
                 self._con.execute('''drop table book_old''')
 
+            if 3 in upgrades:
+                # Added field 'recursive' to table 'watchlist'
+                self._con.execute('''alter table watchlist rename to watchlist_old''')
+                self._create_table_watchlist()
+                self._con.execute('''insert into watchlist
+                    (path, collection, recursive)
+                    select path, collection, 0 from watchlist_old''')
+                self._con.execute('''drop table watchlist_old''')
 
             self._con.execute('''update info set value = ? where key = 'version' ''',
                               (str(_LibraryBackend.DB_VERSION),))
@@ -533,7 +541,8 @@ class _LibraryBackend:
     def _create_table_watchlist(self):
         self._con.execute('''create table if not exists watchlist (
             path text primary key,
-            collection integer references collection (id) on delete set null)''')
+            collection integer references collection (id) on delete set null,
+            recursive boolean not null)''')
 
 
 _backend = None

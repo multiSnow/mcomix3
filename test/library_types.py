@@ -124,7 +124,7 @@ class CollectionTest(unittest.TestCase):
 class WatchListEntryTest(unittest.TestCase):
 
     def test_invalid_dir(self):
-        entry = backend_types._WatchListEntry("/root/invalid-directory", None)
+        entry = backend_types._WatchListEntry("/root/invalid-directory", False, None)
 
         self.assertFalse(entry.is_valid())
         self.assertIsInstance(entry.get_new_files([]), list)
@@ -137,7 +137,7 @@ class WatchListEntryTest(unittest.TestCase):
         others = [os.path.join(directory, u'03-RAR-Normal.rar'),
                   os.path.join(directory, u'04-7Z-Normal.7z')]
 
-        entry = backend_types._WatchListEntry(directory, None)
+        entry = backend_types._WatchListEntry(directory, True, None)
         new_files = entry.get_new_files(available)
         new_files.sort()
 
