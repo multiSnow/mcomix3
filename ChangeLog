@@ -14,7 +14,7 @@ MComix 0.99
       algorithms (higher quality usually means longer page loading times).
 
     - Added "Scan now" button to library watch list dialog to trigger
-      immediate update.
+      immediate update. Also added an option to scan directories recursively.
 
     - Added an option to quit the program when the ESC key is pressed. When
       disabled, ESC only exits fullscreen mode.

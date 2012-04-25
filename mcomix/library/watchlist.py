@@ -41,6 +41,7 @@ class WatchListDialog(gtk.Dialog):
         dir_renderer = gtk.CellRendererText()
         dir_column = gtk.TreeViewColumn(_("Directory"), dir_renderer)
         dir_column.set_attributes(dir_renderer, text=COL_DIRECTORY)
+        dir_column.set_expand(True)
         self._treeview.append_column(dir_column)
 
         collection_model = self._create_collection_model()
@@ -54,6 +55,14 @@ class WatchListDialog(gtk.Dialog):
         collection_column.set_cell_data_func(collection_renderer,
                 self._treeview_collection_id_to_name)
         self._treeview.append_column(collection_column)
+
+        recursive_renderer = gtk.CellRendererToggle()
+        recursive_renderer.set_activatable(True)
+        recursive_renderer.connect('toggled', self._recursive_changed_cb)
+        recursive_column = gtk.TreeViewColumn(_("With subdirectories"),
+                recursive_renderer)
+        recursive_column.add_attribute(recursive_renderer, 'active', COL_RECURSIVE)
+        self._treeview.append_column(recursive_column)
 
         add_button = gtk.Button(_("_Add"), gtk.STOCK_ADD)
         add_button.connect('clicked', self._add_cb)
@@ -73,7 +82,7 @@ class WatchListDialog(gtk.Dialog):
         main_box.pack_end(button_box, expand=False)
         self.vbox.pack_start(main_box)
 
-        self.resize(400, 350)
+        self.resize(475, 350)
         self.connect('response', self._close_cb)
         self.show_all()
 
@@ -85,10 +94,11 @@ class WatchListDialog(gtk.Dialog):
         model, iter = selection.get_selected()
         if iter is not None:
             path = model.get_value(iter, COL_DIRECTORY)
-            collection_id = model.get_value(iter, COL_COLLECTION_ID)
-            collection = self.library.backend.get_collection_by_id(collection_id)
-
-            return backend_types._WatchListEntry(path, collection)
+            for entry in self.library.backend.watchlist.get_watchlist():
+                if path == entry.directory:
+                    return entry
+            
+            return None
         else:
             return None
 
@@ -136,6 +146,18 @@ class WatchListDialog(gtk.Dialog):
         model = self._treeview.get_model()
         iter = model.get_iter(path)
         model.set_value(iter, COL_COLLECTION_ID, new_id)
+
+        self._changed = True
+
+    def _recursive_changed_cb(self, toggle_renderer, path, *args):
+        """ Recursive reading was enabled or disabled. """
+        status = not toggle_renderer.get_active()
+        self.get_selected_watchlist_entry().set_recursive(status)
+
+        # Update recursive status in watchlist model
+        model = self._treeview.get_model()
+        iter = model.get_iter(path)
+        model.set_value(iter, COL_RECURSIVE, status)
 
         self._changed = True
 
