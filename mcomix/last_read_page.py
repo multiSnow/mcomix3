@@ -150,7 +150,7 @@ class LastReadPage(object):
 
         if date:
             # cursor.fetchone() returns a tuple
-            return date[0]
+            return datetime.datetime.strptime(date[0], '%Y-%m-%d %H:%M:%S.%f')
         else:
             return None
 

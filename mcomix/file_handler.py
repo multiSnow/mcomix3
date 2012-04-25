@@ -63,6 +63,8 @@ class FileHandler(object):
         #: Regexp used for determining which archive files are comment files.
         self._comment_re = None
         self.update_comment_extensions()
+        #: Forces call to window.draw_image (if loading is delayed by user interaction)
+        self._must_call_draw = False
 
         self.last_read_page.set_enabled(
             prefs['store recent file info'] == constants.STORE_LAST_PATH_AND_PAGE)
@@ -184,8 +186,10 @@ class FileHandler(object):
         tools.alphanumeric_sort(self._comment_files)
 
         self._window.uimanager.recent.add(self._current_file)
-        # _window.draw_image is called as soon as the currently opened
-        # page is extracted/read via callback function.
+
+        if self._must_call_draw:
+            self._must_call_draw = False
+            self._window.draw_image()
 
         return result
 
@@ -381,7 +385,7 @@ class FileHandler(object):
 
             # Image index may have changed after additional files were extracted.
             current_image_index = self._get_index_for_page(start_page,
-                len(image_files), path)
+                len(image_files), path, confirm=True)
 
             return image_files, current_image_index
 
@@ -406,7 +410,7 @@ class FileHandler(object):
         for key, value in state.iteritems():
             setattr(self, key, value)
 
-    def _get_index_for_page(self, start_page, num_of_pages, path):
+    def _get_index_for_page(self, start_page, num_of_pages, path, confirm=False):
         """ Returns the page that should be displayed for an archive.
         @param start_page: If -1, show last page. If 0, show either first page
                            or last read page. If > 0, show C{start_page}.
@@ -418,12 +422,44 @@ class FileHandler(object):
         elif start_page < 0 and not self._window.is_double_page:
             current_image_index = num_of_pages - 1
         elif start_page == 0:
-            # get_page returns either a page number (starting from 1) or None
-            current_image_index = (self.last_read_page.get_page(path) or 1) - 1
+            if confirm:
+                current_image_index = self._get_last_read_page(path) - 1
+            else:
+                current_image_index = (self.last_read_page.get_page(path) or 1) - 1
         else:
             current_image_index = start_page - 1
 
         return min(max(0, current_image_index), num_of_pages - 1)
+
+    def _get_last_read_page(self, path):
+        """ If the user read an archive previously, ask to continue from
+        that time, or from page 1. This method returns a page index, that is,
+        index + 1. """
+        
+        last_read_page = self.last_read_page.get_page(path)
+        if last_read_page is not None:
+            read_date = self.last_read_page.get_date(path)
+
+            dialog = gtk.MessageDialog(self._window, gtk.DIALOG_MODAL, gtk.MESSAGE_INFO,
+                gtk.BUTTONS_YES_NO)
+            dialog.set_markup('<span weight="bold" size="larger">' +
+                (_('Continue reading from page %d?') % last_read_page) +
+                '</span>')
+            dialog.format_secondary_markup(_('You stopped reading here on %(date)s, %(time)s. '
+                'If you choose "Yes", reading will resume on page %(page)d. Otherwise, '
+                'the first page will be loaded.') % {'date': read_date.date().strftime("%x"),
+                    'time': read_date.time().strftime("%X"), 'page': last_read_page})
+            result = dialog.run()
+            dialog.destroy()
+
+            self._must_call_draw = True
+
+            if result == gtk.RESPONSE_YES:
+                return last_read_page
+            else:
+                return 1
+        else:
+            return 1
 
     def _sort_archive_files(self, archive_images, current_image_index):
         """ Sorts the list C{archive_images} in place based on a priority order
