@@ -10,7 +10,7 @@ from mcomix.library import backend_types
 COL_DIRECTORY = 0
 COL_COLLECTION = 0
 COL_COLLECTION_ID = 1
-
+COL_RECURSIVE = 2
 
 class WatchListDialog(gtk.Dialog):
     """ Dialog for managing watched directories. """
@@ -95,7 +95,7 @@ class WatchListDialog(gtk.Dialog):
     def _create_model(self):
         """ Creates a model containing all watched directories. """
         # Watched directory, associated library collection ID
-        model = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_INT)
+        model = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_INT, gobject.TYPE_BOOLEAN)
         self._fill_model(model)
         return model
 
@@ -108,7 +108,7 @@ class WatchListDialog(gtk.Dialog):
             else:
                 id = entry.collection.id
 
-            model.append((entry.directory, id))
+            model.append((entry.directory, id, entry.recursive))
 
     def _create_collection_model(self):
         """ Creates a model containing all available collections. """
