@@ -67,6 +67,9 @@ def install_gettext():
     # explicitly installing the package.
     sys.path.append(constants.BASE_PATH)
 
+    # Initialize default locale
+    locale.setlocale(locale.LC_ALL, '')
+
     if preferences.prefs['language'] != 'auto':
         lang_identifiers = [ preferences.prefs['language'] ]
     else:
