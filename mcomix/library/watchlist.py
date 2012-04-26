@@ -148,7 +148,9 @@ class WatchListDialog(gtk.Dialog):
         # Update collection ID in watchlist model
         model = self._treeview.get_model()
         iter = model.get_iter(path)
-        model.set_value(iter, COL_COLLECTION_ID, new_id)
+        # Editing the model in the CellRendererCombo callback stops the editing
+        # operation, causing GTK warnings. Delay until callback is finished.
+        gobject.idle_add(model.set_value, iter, COL_COLLECTION_ID, new_id)
 
         self._changed = True
 
