@@ -87,7 +87,7 @@ def get_default_locale():
 
         return u"%s_%s" % (lang, country)
     else:
-        lang, _ = locale.getdefaultlocale(['LANGUAGE', 'LC_ALL', 'LC_CTYPE', 'LANG'])
+        lang, _ = locale.getdefaultlocale(['LANGUAGE', 'LC_ALL', 'LC_MESSAGE', 'LANG'])
         if lang:
             return unicode(lang)
         else:
