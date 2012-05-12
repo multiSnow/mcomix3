@@ -3,6 +3,10 @@ MComix 0.99
     - Fixed "Go to page" dialog's thumbnail not scaling depending on dialog
       size.
 
+    - Using the mouse wheel to scroll left now correctly advances to the
+      next page in manga mode, instead of going back one page. Scrolling right
+      has also been fixed.
+
     - Zoom is now enabled in all fit modes (best fit, fit to width, fit to
       height).
 
