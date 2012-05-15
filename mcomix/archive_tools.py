@@ -28,15 +28,19 @@ def archive_mime_type(path):
             magic = fd.read(4)
             fd.close()
 
-            if tarfile.is_tarfile(path) and os.path.getsize(path) > 0:
+            try:
+                istarfile = tarfile.is_tarfile(path)
+            except IOError:
+                # Tarfile raises an error when accessing certain network shares
+                istarfile = False
 
+            if istarfile and os.path.getsize(path) > 0:
                 if magic.startswith('BZh'):
                     return constants.BZIP2
-
-                if magic.startswith('\037\213'):
+                elif magic.startswith('\037\213'):
                     return constants.GZIP
-
-                return constants.TAR
+                else:
+                    return constants.TAR
 
             if magic == 'Rar!':
                 return constants.RAR
