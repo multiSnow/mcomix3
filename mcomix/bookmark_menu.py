@@ -51,13 +51,16 @@ class BookmarksMenu(gtk.Menu):
             if item not in (self.add_button, self.edit_button):
                 self.remove(item)
 
+        bookmarks = self._bookmarks_store.get_bookmarks()
+
         # Add separator
-        separator = gtk.SeparatorMenuItem()
-        separator.show()
-        self.append(separator)
+        if bookmarks:
+            separator = gtk.SeparatorMenuItem()
+            separator.show()
+            self.append(separator)
 
         # Add new bookmarks
-        for bookmark in self._bookmarks_store.get_bookmarks():
+        for bookmark in bookmarks:
             self.add_bookmark(bookmark)
 
     def add_bookmark(self, bookmark):
