@@ -5,6 +5,7 @@ import cPickle
 import gtk
 import operator
 import datetime
+import time
 
 from mcomix.preferences import prefs
 from mcomix import constants
@@ -24,31 +25,13 @@ class __BookmarksStore:
         self._window = None
         self._file_handler = None
         self._image_handler = None
-        self._bookmarks = []
 
-        if os.path.isfile(constants.BOOKMARK_PICKLE_PATH):
+        bookmarks, mtime = self.load_bookmarks()
 
-            try:
-                fd = open(constants.BOOKMARK_PICKLE_PATH, 'rb')
-                version = cPickle.load(fd)
-                packs = cPickle.load(fd)
-
-                for pack in packs:
-                    # Handle old bookmarks without date_added attribute
-                    if len(pack) == 5:
-                        pack = pack + (datetime.datetime.now(),)
-
-                    self.add_bookmark_by_values(*pack)
-
-                fd.close()
-
-            except Exception:
-                log.error(_('! Could not parse bookmarks file %s'),
-                          constants.BOOKMARK_PICKLE_PATH)
-                log.error(_('! Deleting corrupt bookmarks file.'))
-                fd.close()
-                os.remove(constants.BOOKMARK_PICKLE_PATH)
-                self.clear_bookmarks()
+        #: List of bookmarks
+        self._bookmarks = bookmarks
+        #: Modification date of bookmarks file
+        self._bookmarks_mtime = mtime
 
     def initialize(self, window):
         """ Initializes references to the main window and file/image handlers. """
@@ -74,11 +57,13 @@ class __BookmarksStore:
     def add_bookmark(self, bookmark):
         """Add the <bookmark> to the list."""
         self._bookmarks.append(bookmark)
+        self.write_bookmarks_file()
 
     @callback.Callback
     def remove_bookmark(self, bookmark):
         """Remove the <bookmark> from the list."""
         self._bookmarks.remove(bookmark)
+        self.write_bookmarks_file()
 
     def add_current_to_bookmarks(self):
         """Add the currently viewed page to the list."""
@@ -123,6 +108,106 @@ class __BookmarksStore:
             RESPONSE_NO to create a new bookmark, RESPONSE_CANCEL to abort creating
             a new bookmark.
         """
+        interface = BookmarkInterface()
+        return interface.show_replace_bookmark_dialog(old_bookmarks, new_page)        
+
+    def clear_bookmarks(self):
+        """Remove all bookmarks from the list."""
+
+        while not self.is_empty():
+            self.remove_bookmark(self._bookmarks[-1])
+
+    def get_bookmarks(self):
+        """Return all the bookmarks in the list."""
+        if not self.file_was_modified():
+            return self._bookmarks
+        else:
+            self._bookmarks, self._bookmarks_mtime = self.load_bookmarks()
+            return self._bookmarks
+
+    def is_empty(self):
+        """Return True if the bookmark list is empty."""
+        return len(self._bookmarks) == 0
+
+    def load_bookmarks(self):
+        """ Loads persisted bookmarks from a local file.
+        @return: Tuple of (bookmarks, file mtime)
+        """
+
+        path = constants.BOOKMARK_PICKLE_PATH
+        bookmarks = []
+        mtime = 0L
+
+        if os.path.isfile(path):
+            fd = None
+            try:
+                mtime = long(os.stat(path).st_mtime)
+                fd = open(path, 'rb')
+                version = cPickle.load(fd)
+                packs = cPickle.load(fd)
+
+                for pack in packs:
+                    # Handle old bookmarks without date_added attribute
+                    if len(pack) == 5:
+                        pack = pack + (datetime.datetime.now(),)
+
+                    bookmark = bookmark_menu_item._Bookmark(self._window,
+                            self._file_handler, *pack)
+                    bookmarks.append(bookmark)
+
+            except Exception:
+                log.error(_('! Could not parse bookmarks file %s'), path)
+            finally:
+                try:
+                    if fd:
+                        fd.close()
+                except IOError:
+                    pass
+
+        return bookmarks, mtime
+
+    def file_was_modified(self):
+        """ Checks the bookmark store's mtime to see if it has been modified
+        since it was last read. """
+        path = constants.BOOKMARK_PICKLE_PATH
+        if os.path.isfile(path):
+            try:
+                mtime = long(os.stat(path).st_mtime)
+            except IOError:
+                mtime = 0L
+
+            if mtime > self._bookmarks_mtime:
+                return True
+            else:
+                return False
+        else:
+            return True
+
+    def write_bookmarks_file(self):
+        """Store relevant bookmark info in the mcomix directory."""
+        
+        # Merge changes in case file was modified from within other instances
+        if self.file_was_modified():
+            new_bookmarks, _ = self.load_bookmarks()
+            self._bookmarks = list(set(self._bookmarks + new_bookmarks))
+
+        fd = open(constants.BOOKMARK_PICKLE_PATH, 'wb')
+        cPickle.dump(constants.VERSION, fd, cPickle.HIGHEST_PROTOCOL)
+
+        packs = [bookmark.pack() for bookmark in self._bookmarks]
+        cPickle.dump(packs, fd, cPickle.HIGHEST_PROTOCOL)
+        fd.close()
+
+        self._bookmarks_mtime = long(time.time())
+
+
+class BookmarkInterface(object):
+
+    def show_replace_bookmark_dialog(self, old_bookmarks, new_page):
+        """ Present a confirmation dialog to replace old bookmarks.
+        @return RESPONSE_YES to create replace bookmarks,
+            RESPONSE_NO to create a new bookmark, RESPONSE_CANCEL to abort creating
+            a new bookmark. """
 
         dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL, gtk.MESSAGE_INFO,
                 gtk.BUTTONS_NONE)
@@ -163,28 +248,6 @@ class __BookmarksStore:
 
         return result
 
-    def clear_bookmarks(self):
-        """Remove all bookmarks from the list."""
-
-        while not self.is_empty():
-            self.remove_bookmark(self._bookmarks[-1])
-
-    def get_bookmarks(self):
-        """Return all the bookmarks in the list."""
-        return self._bookmarks
-
-    def is_empty(self):
-        """Return True if the bookmark list is empty."""
-        return len(self._bookmarks) == 0
-
-    def write_bookmarks_file(self):
-        """Store relevant bookmark info in the mcomix directory."""
-        fd = open(constants.BOOKMARK_PICKLE_PATH, 'wb')
-        cPickle.dump(constants.VERSION, fd, cPickle.HIGHEST_PROTOCOL)
-
-        packs = [bookmark.pack() for bookmark in self._bookmarks]
-        cPickle.dump(packs, fd, cPickle.HIGHEST_PROTOCOL)
-        fd.close()
 
 # Singleton instance of the bookmarks store.
 BookmarksStore = __BookmarksStore()

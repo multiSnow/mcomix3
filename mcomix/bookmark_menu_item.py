@@ -90,4 +90,8 @@ class _Bookmark(gtk.ImageMenuItem):
         else:
             return False
 
+    def __hash__(self):
+        """ Hash for this object. """
+        return hash(self._path) | hash(self._page)
+
 # vim: expandtab:sw=4:ts=4

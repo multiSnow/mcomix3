@@ -7,6 +7,9 @@ MComix 0.99
       next page in manga mode, instead of going back one page. Scrolling right
       has also been fixed.
 
+    - Multiple open instances of MComix no longer overwrite each others'
+      bookmarks when closed.
+
     - Zoom is now enabled in all fit modes (best fit, fit to width, fit to
       height).
 
