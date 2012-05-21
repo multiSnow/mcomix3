@@ -27,6 +27,7 @@ from mcomix import pageselect
 from mcomix import osd
 from mcomix import keybindings
 from mcomix import zoom
+from mcomix import bookmark_backend
 
 
 class MainWindow(gtk.Window):
@@ -1059,7 +1060,7 @@ class MainWindow(gtk.Window):
 
         self.filehandler.write_fileinfo_file()
         preferences.write_preferences_file()
-        self.uimanager.bookmarks.write_bookmarks_file()
+        bookmark_backend.BookmarksStore.write_bookmarks_file()
 
         # Write keyboard accelerator map
         gtk.accel_map_save(constants.KEYBINDINGS_PATH)
