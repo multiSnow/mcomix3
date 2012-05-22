@@ -13,6 +13,7 @@ from mcomix import image_tools
 from mcomix import edit_image_area
 from mcomix import edit_comment_area
 from mcomix import constants
+from mcomix import message_dialog
 
 _dialog = None
 
@@ -66,14 +67,14 @@ class _EditArchiveDialog(gtk.Dialog):
         """
         self._save_button.set_sensitive(False)
         self._import_button.set_sensitive(False)
-        self.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
+        self._window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
         self._image_area.fetch_images()
 
         if self.kill: # fetch_images() allows pending events to be handled.
             return False
 
         self._comment_area.fetch_comments()
-        self.window.set_cursor(None)
+        self._window.set_cursor(None)
         self._save_button.set_sensitive(True)
         self._import_button.set_sensitive(True)
 
@@ -82,7 +83,7 @@ class _EditArchiveDialog(gtk.Dialog):
     def _pack_archive(self, archive_path):
         """Create a new archive with the chosen files."""
         self.set_sensitive(False)
-        self.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
+        self._window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
 
         while gtk.events_pending():
             gtk.main_iteration(False)
@@ -125,16 +126,15 @@ class _EditArchiveDialog(gtk.Dialog):
                 _close_dialog()
             else:
                 fail = True
-
+        
+        self._window.set_cursor(None)
         if fail:
-            self.window.set_cursor(None)
-
-            dialog = gtk.MessageDialog(self._window, 0, gtk.MESSAGE_ERROR,
-                gtk.BUTTONS_CLOSE, _("The new archive could not be saved!"))
-            dialog.format_secondary_text(
+            dialog = message_dialog.MessageDialog(self._window, 0, gtk.MESSAGE_ERROR,
+                gtk.BUTTONS_CLOSE)
+            dialog.set_text(
+                _("The new archive could not be saved!"),
                 _("The original files have not been removed."))
             dialog.run()
-            dialog.destroy()
 
             self.set_sensitive(True)
 

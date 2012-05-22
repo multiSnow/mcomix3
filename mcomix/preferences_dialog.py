@@ -8,6 +8,7 @@ from mcomix.preferences import prefs
 from mcomix import preferences_page
 from mcomix import image_tools
 from mcomix import constants
+from mcomix import message_dialog
 
 _dialog = None
 
@@ -582,17 +583,14 @@ class _PreferencesDialog(gtk.Dialog):
             and (self._window.uimanager.recent.count() > 0
                  or self._window.filehandler.last_read_page.count() > 0)):
 
-            dialog = gtk.MessageDialog(self, gtk.DIALOG_MODAL,
+            dialog = message_dialog.MessageDialog(self, gtk.DIALOG_MODAL,
                 gtk.MESSAGE_INFO, gtk.BUTTONS_YES_NO)
             dialog.set_default_response(gtk.RESPONSE_YES)
-            dialog.set_markup('<span weight="bold" size="larger">' +
-                _('Delete information about recently opened files?') +
-                '</span>')
-            dialog.format_secondary_text(
+            dialog.set_text(
+                _('Delete information about recently opened files?'),
                 _('This will remove all entries from the "Recent" menu,'
                   ' and clear information about last read pages.'))
             response = dialog.run()
-            dialog.destroy()
 
             if response == gtk.RESPONSE_YES:
                 self._window.uimanager.recent.remove_all()

@@ -10,12 +10,18 @@ MComix 0.99
     - Multiple open instances of MComix no longer overwrite each others'
       bookmarks when closed.
 
+    - Fixed exception when trying to pack an archive using the archive editor.
+
     - Zoom is now enabled in all fit modes (best fit, fit to width, fit to
       height).
 
     - Added new zoom mode 'Fit to size'. This mode always stretches an image
       to a given height or width. By default, a height of 1800px is set.
       This can be changed in the preferences dialog.
+
+    - Most confirmation dialogs can now be permanently disabled by activating
+      the "Do not ask again" checkbox in each dialog. This action can be
+      undone by clicking on "Clear dialog choices" in the preferences dialog.
 
     - Added new preference option for switching between different resizing
       algorithms (higher quality usually means longer page loading times).

@@ -28,6 +28,7 @@ from mcomix import osd
 from mcomix import keybindings
 from mcomix import zoom
 from mcomix import bookmark_backend
+from mcomix import message_dialog
 
 
 class MainWindow(gtk.Window):
@@ -998,18 +999,16 @@ class MainWindow(gtk.Window):
         a confirmation dialog. """
 
         current_file = self.imagehandler.get_real_path()
-        dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL, gtk.MESSAGE_QUESTION,
+        dialog = message_dialog.MessageDialog(None, gtk.DIALOG_MODAL, gtk.MESSAGE_QUESTION,
                 gtk.BUTTONS_NONE)
-        dialog.set_markup('<span weight="bold" size="larger">'
-                + _('Delete "%s"?') % os.path.basename(current_file)
-                + '</span>')
-        dialog.format_secondary_markup(_('The file will be deleted from your harddisk.'))
+        dialog.set_should_remember_choice('delete-opend-file', (gtk.RESPONSE_OK,))
+        dialog.set_text(
+                _('Delete "%s"?') % os.path.basename(current_file),
+                _('The file will be deleted from your harddisk.'))
         dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
         dialog.add_button(gtk.STOCK_DELETE, gtk.RESPONSE_OK)
         dialog.set_default_response(gtk.RESPONSE_OK)
-
         result = dialog.run()
-        dialog.destroy()
 
         if result == gtk.RESPONSE_OK:
             # Go to next page/archive, and delete current file

@@ -12,6 +12,7 @@ from mcomix import labels
 from mcomix import constants
 from mcomix import log
 from mcomix import thumbnail_tools
+from mcomix import message_dialog
 
 mimetypes.init()
 
@@ -221,15 +222,13 @@ class _BaseFileChooserDialog(gtk.Dialog):
                 not os.path.isdir(first_path) and
                 os.path.exists(first_path)):
 
-                overwrite_dialog = gtk.MessageDialog(None, 0,
-                    gtk.MESSAGE_QUESTION, gtk.BUTTONS_OK_CANCEL,
+                overwrite_dialog = message_dialog.MessageDialog(None, 0,
+                    gtk.MESSAGE_QUESTION, gtk.BUTTONS_OK_CANCEL)
+                overwrite_dialog.set_text(
                     _("A file named '%s' already exists. Do you want to replace it?") %
-                    os.path.basename(first_path))
-
-                overwrite_dialog.format_secondary_text(
+                        os.path.basename(first_path),
                     _('Replacing it will overwrite its contents.'))
                 response = overwrite_dialog.run()
-                overwrite_dialog.destroy()
 
                 if response != gtk.RESPONSE_OK:
                     self.emit_stop_by_name('response')

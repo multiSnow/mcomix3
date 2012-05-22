@@ -19,6 +19,7 @@ from mcomix import file_provider
 from mcomix import callback
 from mcomix import log
 from mcomix import last_read_page
+from mcomix import message_dialog
 
 class FileHandler(object):
 
@@ -440,17 +441,17 @@ class FileHandler(object):
         if last_read_page is not None:
             read_date = self.last_read_page.get_date(path)
 
-            dialog = gtk.MessageDialog(self._window, gtk.DIALOG_MODAL, gtk.MESSAGE_INFO,
+            dialog = message_dialog.MessageDialog(self._window, gtk.DIALOG_MODAL, gtk.MESSAGE_INFO,
                 gtk.BUTTONS_YES_NO)
-            dialog.set_markup('<span weight="bold" size="larger">' +
-                (_('Continue reading from page %d?') % last_read_page) +
-                '</span>')
-            dialog.format_secondary_markup(_('You stopped reading here on %(date)s, %(time)s. '
+            dialog.set_should_remember_choice('resume-from-last-read-page',
+                (gtk.RESPONSE_YES, gtk.RESPONSE_NO))
+            dialog.set_text(
+                (_('Continue reading from page %d?') % last_read_page),
+                _('You stopped reading here on %(date)s, %(time)s. '
                 'If you choose "Yes", reading will resume on page %(page)d. Otherwise, '
                 'the first page will be loaded.') % {'date': read_date.date().strftime("%x"),
                     'time': read_date.time().strftime("%X"), 'page': last_read_page})
             result = dialog.run()
-            dialog.destroy()
 
             self._must_call_draw = True
 

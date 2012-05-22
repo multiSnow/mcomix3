@@ -9,6 +9,7 @@ from mcomix import constants
 from mcomix import i18n
 from mcomix import status
 from mcomix import file_chooser_library_dialog
+from mcomix import message_dialog
 
 _dialog = None
 # The "All books" collection is not a real collection stored in the library,
@@ -143,16 +144,14 @@ class _CollectionArea(gtk.ScrolledWindow):
 
     def add_collection(self, *args):
         """Add a new collection to the library, through a dialog."""
-        add_dialog = gtk.MessageDialog(None, 0, gtk.MESSAGE_INFO,
+        add_dialog = message_dialog.MessageDialog(None, 0, gtk.MESSAGE_INFO,
             gtk.BUTTONS_OK_CANCEL)
-        add_dialog.set_markup('<span weight="bold" size="larger">' +
-            _('Add new collection?') +
-            '</span>'
-        )
-        add_dialog.format_secondary_text(
+        add_dialog.set_auto_destroy(False)
+        add_dialog.set_default_response(gtk.RESPONSE_OK)
+        add_dialog.set_text(
+            _('Add new collection?'),
             _('Please enter a name for the new collection.')
         )
-        add_dialog.set_default_response(gtk.RESPONSE_OK)
 
         box = gtk.HBox() # To get nice line-ups with the padding.
         add_dialog.vbox.pack_start(box)
@@ -238,13 +237,11 @@ class _CollectionArea(gtk.ScrolledWindow):
             old_name = self._library.backend.get_collection_name(collection)
         except Exception:
             return
-        rename_dialog = gtk.MessageDialog(self._library, 0,
+        rename_dialog = message_dialog.MessageDialog(self._library, 0,
             gtk.MESSAGE_INFO, gtk.BUTTONS_OK_CANCEL)
-        rename_dialog.set_markup('<span weight="bold" size="larger">' +
-            _('Rename collection?') +
-            '</span>'
-        )
-        rename_dialog.format_secondary_text(
+        rename_dialog.set_auto_destroy(False)
+        rename_dialog.set_text(
+            _('Rename collection?'),
             _('Please enter a new name for the selected collection.')
         )
         rename_dialog.set_default_response(gtk.RESPONSE_OK)
