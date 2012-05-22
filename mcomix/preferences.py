@@ -66,7 +66,7 @@ prefs = {
     'vertical flip': False,
     'horizontal flip': False,
     'keep transformation': False,
-    'replace bookmark response': None,
+    'stored dialog choices': {},
     'brightness': 1.0,
     'contrast': 1.0,
     'saturation': 1.0,

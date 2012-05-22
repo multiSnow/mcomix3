@@ -405,7 +405,7 @@ class _PreferencesDialog(gtk.Dialog):
 
         elif response == constants.RESPONSE_REVERT_TO_DEFAULT:
             # Reset stored choices
-            prefs['replace bookmark response'] = None
+            prefs['stored dialog choices'] = {}
 
         else:
             # Other responses close the dialog, e.g. clicking the X icon on the dialog.
