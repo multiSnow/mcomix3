@@ -204,7 +204,8 @@ class BookmarkInterface(object):
              gtk.STOCK_NO, gtk.RESPONSE_NO,
              gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
         dialog.set_default_response(gtk.RESPONSE_YES)
-        dialog.set_should_remember_choice('replace-existing-bookmark')
+        dialog.set_should_remember_choice('replace-existing-bookmark',
+            (gtk.RESPONSE_YES, gtk.RESPONSE_NO))
 
         pages = map(str, sorted(map(operator.attrgetter('_page'), old_bookmarks)))
         dialog.set_text(

@@ -16,6 +16,7 @@ from mcomix import portability
 from mcomix import i18n
 from mcomix import status
 from mcomix import log
+from mcomix import message_dialog
 from mcomix.library.pixbuf_cache import get_pixbuf_cache
 
 _dialog = None
@@ -353,11 +354,10 @@ class _BookArea(gtk.ScrolledWindow):
         elif name == 'tiny':
             prefs['library cover size'] = constants.SIZE_TINY
         elif name == 'custom':
-            dialog = gtk.MessageDialog(self._library, gtk.DIALOG_DESTROY_WITH_PARENT,
-                    gtk.MESSAGE_INFO, gtk.BUTTONS_OK)
-            dialog.set_markup('<span weight="bold" size="larger">' +
-                _('Set library cover size') +
-                '</span>')
+            dialog = message_dialog.MessageDialog(self._library, gtk.DIALOG_DESTROY_WITH_PARENT,
+                gtk.MESSAGE_INFO, buttons=gtk.BUTTONS_OK)
+            dialog.set_auto_destroy(False)
+            dialog.set_text(_('Set library cover size'))
 
             # Add adjustment scale
             adjustment = gtk.Adjustment(prefs['library cover size'], 20,
@@ -373,7 +373,6 @@ class _BookArea(gtk.ScrolledWindow):
                 cover_size_scale.add_mark(mark, gtk.POS_TOP, None)
 
             dialog.get_message_area().pack_end(cover_size_scale)
-            dialog.show_all()
             response = dialog.run()
             size = int(adjustment.get_value())
             dialog.destroy()
@@ -473,19 +472,17 @@ class _BookArea(gtk.ScrolledWindow):
 
         if request_response:
 
-            choice_dialog = gtk.MessageDialog(self._library, 0,
+            choice_dialog = message_dialog.MessageDialog(self._library, 0,
                 gtk.MESSAGE_QUESTION, gtk.BUTTONS_YES_NO)
-            choice_dialog.set_markup('<span weight="bold" size="larger">' +
-                _('Remove books from the library?') +
-                '</span>'
-            )
-            choice_dialog.format_secondary_text(
+            choice_dialog.set_default_response(gtk.RESPONSE_YES)
+            choice_dialog.set_should_remember_choice('library-remove-book-from-disk',
+                (gtk.RESPONSE_YES,))
+            choice_dialog.set_text(
+                _('Remove books from the library?'),
                 _('The selected books will be removed from the library and '
                   'permanently deleted. Are you sure that you want to continue?')
             )
-            choice_dialog.set_default_response(gtk.RESPONSE_YES)
             response = choice_dialog.run()
-            choice_dialog.destroy()
 
         # if no request is needed or the user has told us they definitely want to delete the book
         if not request_response or (request_response and response == gtk.RESPONSE_YES):

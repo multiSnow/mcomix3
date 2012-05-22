@@ -20,6 +20,10 @@ class MessageDialog(gtk.MessageDialog):
 
         #: Unique dialog identifier (for storing 'Do not ask again')
         self.dialog_id = None
+        #: List of response IDs that should be remembered
+        self.choices = []
+        #: Automatically destroy dialog after run?
+        self.auto_destroy = True
 
         # FIXME: This really shouldn't depend on MessageDialog's internal layout implementation
         self.remember_checkbox = gtk.CheckButton(_('Do not ask again.'))
@@ -38,19 +42,24 @@ class MessageDialog(gtk.MessageDialog):
                 primary + '</span>')
         if secondary:
             self.format_secondary_markup(secondary)
-        else:
-            self.format_secondary_text("")
 
     def should_remember_choice(self):
         """ Returns True when the dialog choice should be remembered. """
         return self.remember_checkbox.get_active()
 
-    def set_should_remember_choice(self, dialog_id):
+    def set_should_remember_choice(self, dialog_id, choices):
         """ This method enables the 'Do not ask again' checkbox.
         @param dialog_id: Unique identifier for the dialog (a string).
+        @param choices: List of response IDs that should be remembered
         """
         self.remember_checkbox.show()
         self.dialog_id = dialog_id
+        self.choices = [int(choice) for choice in choices]
+
+    def set_auto_destroy(self, auto_destroy):
+        """ Determines if the dialog should automatically destroy itself
+        after run(). """
+        self.auto_destroy = auto_destroy
 
     def run(self):
         """ Makes the dialog visible and waits for a result. Also destroys
@@ -65,11 +74,11 @@ class MessageDialog(gtk.MessageDialog):
             self.remember_checkbox.set_can_focus(True)
             result = super(MessageDialog, self).run()
 
-            if (self.should_remember_choice() and
-                result not in (gtk.RESPONSE_DELETE_EVENT, gtk.RESPONSE_CANCEL)):
+            if (self.should_remember_choice() and int(result) in self.choices):
                 prefs['stored dialog choices'][self.dialog_id] = int(result)
 
-            self.destroy()
+            if self.auto_destroy:
+                self.destroy()
             return result
 
 
