@@ -407,6 +407,8 @@ class _PreferencesDialog(gtk.Dialog):
         elif response == constants.RESPONSE_REVERT_TO_DEFAULT:
             # Reset stored choices
             prefs['stored dialog choices'] = {}
+            self.get_widget_for_response(constants.RESPONSE_REVERT_TO_DEFAULT)\
+                .set_sensitive(False)
 
         else:
             # Other responses close the dialog, e.g. clicking the X icon on the dialog.
