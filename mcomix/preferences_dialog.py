@@ -20,7 +20,7 @@ class _PreferencesDialog(gtk.Dialog):
     def __init__(self, window):
         gtk.Dialog.__init__(self, _('Preferences'), window, gtk.DIALOG_MODAL)
 
-        reset = self.add_button(_('Clear dialog choices'), constants.RESPONSE_REVERT_TO_DEFAULT)
+        self.reset_button = reset = self.add_button(_('Clear dialog choices'), constants.RESPONSE_REVERT_TO_DEFAULT)
         reset.set_tooltip_text(_('Clears all dialog choices that you have previously chosen not to be asked again.'))
         reset.set_sensitive(len(prefs['stored dialog choices']) > 0)
         self.add_button(gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
@@ -407,8 +407,7 @@ class _PreferencesDialog(gtk.Dialog):
         elif response == constants.RESPONSE_REVERT_TO_DEFAULT:
             # Reset stored choices
             prefs['stored dialog choices'] = {}
-            self.get_widget_for_response(constants.RESPONSE_REVERT_TO_DEFAULT)\
-                .set_sensitive(False)
+            self.reset_button.set_sensitive(False)
 
         else:
             # Other responses close the dialog, e.g. clicking the X icon on the dialog.
