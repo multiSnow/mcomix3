@@ -13,6 +13,7 @@ from mcomix import log
 from mcomix import bookmark_menu_item
 from mcomix import callback
 from mcomix import i18n
+from mcomix import message_dialog
 
 class __BookmarksStore:
 
@@ -87,29 +88,19 @@ class __BookmarksStore:
         # If the same file was already bookmarked, ask to replace
         # the existing bookmarks before deleting them.
         if len(same_file_bookmarks) > 0:
-            response = prefs['replace bookmark response'] or \
-                self._should_replace_bookmarks(same_file_bookmarks, page)
+            interface = BookmarkInterface()
+            response = interface.show_replace_bookmark_dialog(same_file_bookmarks, page)
 
             # Delete old bookmarks
-            if response == constants.RESPONSE_REPLACE:
+            if response == gtk.RESPONSE_YES:
                 for bookmark in same_file_bookmarks:
                     self.remove_bookmark(bookmark)
             # Perform no action
-            elif response == gtk.RESPONSE_CANCEL:
+            elif response not in (gtk.RESPONSE_YES, gtk.RESPONSE_NO):
                 return
 
         self.add_bookmark_by_values(name, path, page, numpages,
             archive_type, date_added)
-
-    def _should_replace_bookmarks(self, old_bookmarks, new_page):
-        """ Present a confirmation dialog to replace old bookmarks.
-
-        @return RESPONSE_YES to create replace bookmarks,
-            RESPONSE_NO to create a new bookmark, RESPONSE_CANCEL to abort creating
-            a new bookmark.
-        """
-        interface = BookmarkInterface()
-        return interface.show_replace_bookmark_dialog(old_bookmarks, new_page)        
 
     def clear_bookmarks(self):
         """Remove all bookmarks from the list."""
@@ -208,45 +199,27 @@ class BookmarkInterface(object):
         @return RESPONSE_YES to create replace bookmarks,
             RESPONSE_NO to create a new bookmark, RESPONSE_CANCEL to abort creating
             a new bookmark. """
-
-        dialog = gtk.MessageDialog(None, gtk.DIALOG_MODAL, gtk.MESSAGE_INFO,
-                gtk.BUTTONS_NONE)
-        dialog.add_button(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
-        dialog.add_button(gtk.STOCK_NO, constants.RESPONSE_NEW)
-        replace_button = dialog.add_button(gtk.STOCK_YES, constants.RESPONSE_REPLACE)
-        dialog.set_default_response(constants.RESPONSE_REPLACE)
+        dialog = message_dialog.MessageDialog(None, gtk.DIALOG_MODAL, gtk.MESSAGE_INFO)
+        dialog.add_buttons(gtk.STOCK_YES, gtk.RESPONSE_YES,
+             gtk.STOCK_NO, gtk.RESPONSE_NO,
+             gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
+        dialog.set_default_response(gtk.RESPONSE_YES)
+        dialog.set_should_remember_choice('replace-existing-bookmark')
 
         pages = map(str, sorted(map(operator.attrgetter('_page'), old_bookmarks)))
-        dialog.set_markup('<span weight="bold" size="larger">' +
+        dialog.set_text(
             i18n.get_translation().ungettext(
                 'Replace existing bookmark on page %s?',
                 'Replace existing bookmarks on pages %s?',
                 len(pages)
-            ) % ", ".join(pages) +
-            '</span>')
-        dialog.format_secondary_markup(
+            ) % ", ".join(pages),
+
             _('The current book already contains marked pages. '
               'Do you want to replace them with a new bookmark on page %d? ') % new_page +
-            '\n\n' +
-            _('Selecting "No" will create a new bookmark without affecting the other bookmarks.')
-        )
+              '\n\n' +
+            _('Selecting "No" will create a new bookmark without affecting the other bookmarks.'))
 
-        checkbox = gtk.CheckButton(_('Do not ask again.'))
-        # FIXME: This really shouldn't depend on MessageDialog's internal layout implementation
-        labels_box = dialog.get_content_area().get_children()[0].get_children()[1]
-        labels_box.pack_end(checkbox, padding=6)
-
-        dialog.show_all()
-        replace_button.grab_focus()
-        result = dialog.run()
-        store_choice = checkbox.get_active()
-        dialog.destroy()
-
-        # Remember the selection
-        if store_choice and result in (constants.RESPONSE_NEW, constants.RESPONSE_REPLACE):
-            prefs['replace bookmark response'] = result
-
-        return result
+        return dialog.run()
 
 
 # Singleton instance of the bookmarks store.
