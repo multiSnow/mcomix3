@@ -206,10 +206,16 @@ class EventHandler:
         self._scroll_protection = True
 
         if event.direction == gtk.gdk.SCROLL_UP:
-            self._scroll_with_flipping(0, -prefs['number of pixels to scroll per mouse wheel event'])
+            if prefs['smart space scroll']:
+                self._smart_scroll_up(prefs['number of pixels to scroll per mouse wheel event'])
+            else:
+                self._scroll_with_flipping(0, -prefs['number of pixels to scroll per mouse wheel event'])
 
         elif event.direction == gtk.gdk.SCROLL_DOWN:
-            self._scroll_with_flipping(0, prefs['number of pixels to scroll per mouse wheel event'])
+            if prefs['smart space scroll']:
+                self._smart_scroll_down(prefs['number of pixels to scroll per mouse wheel event'])
+            else:
+                self._scroll_with_flipping(0, prefs['number of pixels to scroll per mouse wheel event'])
 
         elif event.direction == gtk.gdk.SCROLL_RIGHT:
             if not self._window.is_manga_mode:
@@ -370,13 +376,21 @@ class EventHandler:
         """ Scrolls left. """
         self._scroll_with_flipping(-prefs['number of pixels to scroll per key event'], 0)
 
-    def _smart_scroll_down(self):
+    def _smart_scroll_down(self, step=None):
         """ Smart scrolling. """
 
         x_step, y_step = self._window.get_visible_area_size()
         distance = prefs['scroll step distance']
-        x_step = int(x_step * distance)
-        y_step = int(y_step * distance)
+
+        if step is None:
+            x_step = int(x_step * distance)
+            y_step = int(y_step * distance)
+        else:
+            x_step = step
+            y_step = int(y_step * distance)
+
+            if prefs['invert smart scroll']:
+                x_step, y_step = y_step, x_step
 
         if self._window.is_manga_mode:
             x_step *= -1
@@ -435,13 +449,22 @@ class EventHandler:
                             horiz='startsecond', vert='top')
 
 
-    def _smart_scroll_up(self):
+    def _smart_scroll_up(self, step=None):
         """ Reversed smart scrolling. """
 
         x_step, y_step = self._window.get_visible_area_size()
         distance = prefs['scroll step distance']
-        x_step = int(x_step * distance)
         y_step = int(y_step * distance)
+
+        if step is None:
+            x_step = int(x_step * distance)
+            y_step = int(y_step * distance)
+        else:
+            x_step = step
+            y_step = int(y_step * distance)
+
+            if prefs['invert smart scroll']:
+                x_step, y_step = y_step, x_step
 
         if self._window.is_manga_mode:
             x_step *= -1
