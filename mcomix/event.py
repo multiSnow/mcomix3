@@ -206,13 +206,13 @@ class EventHandler:
         self._scroll_protection = True
 
         if event.direction == gtk.gdk.SCROLL_UP:
-            if prefs['smart space scroll']:
+            if prefs['smart scroll']:
                 self._smart_scroll_up(prefs['number of pixels to scroll per mouse wheel event'])
             else:
                 self._scroll_with_flipping(0, -prefs['number of pixels to scroll per mouse wheel event'])
 
         elif event.direction == gtk.gdk.SCROLL_DOWN:
-            if prefs['smart space scroll']:
+            if prefs['smart scroll']:
                 self._smart_scroll_down(prefs['number of pixels to scroll per mouse wheel event'])
             else:
                 self._scroll_with_flipping(0, prefs['number of pixels to scroll per mouse wheel event'])
@@ -395,8 +395,7 @@ class EventHandler:
         if self._window.is_manga_mode:
             x_step *= -1
 
-        # FIXME: Rename smart space scroll to 'smart scroll' in general
-        if not prefs["smart space scroll"]:
+        if not prefs["smart scroll"]:
             if not self._window.scroll(0, y_step):
                 self._next_page_with_protection()
             return
@@ -469,7 +468,7 @@ class EventHandler:
         if self._window.is_manga_mode:
             x_step *= -1
 
-        if not prefs["smart space scroll"]:
+        if not prefs["smart scroll"]:
             if not self._window.scroll(0, -y_step):
                 self._previous_page_with_protection()
             return

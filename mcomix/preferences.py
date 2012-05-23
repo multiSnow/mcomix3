@@ -44,7 +44,7 @@ prefs = {
     'slideshow delay': 3000,
     'slideshow can go to next archive': True,
     'number of pixels to scroll per slideshow event': 50,
-    'smart space scroll': True,
+    'smart scroll': True,
     'invert smart scroll': False,
     'scroll step distance': 0.9,
     'flip with wheel': True,

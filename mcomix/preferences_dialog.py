@@ -141,12 +141,14 @@ class _PreferencesDialog(gtk.Dialog):
         page = preferences_page._PreferencePage(None)
         page.new_section(_('Scroll'))
         smart_space_button = gtk.CheckButton(
-            _('Use smart space key scrolling'))
-        smart_space_button.set_active(prefs['smart space scroll'])
+            _('Use smart scrolling'))
+        smart_space_button.set_active(prefs['smart scroll'])
         smart_space_button.connect('toggled', self._check_button_cb,
-            'smart space scroll')
+            'smart scroll')
         smart_space_button.set_tooltip_text(
-            _('Use smart scrolling with the space key. Normally the space key scrolls only right down (or up when shift is pressed), but with this preference set it also scrolls sideways and so tries to follow the natural reading order of the comic book.'))
+            _('With this preference set, the space key and mouse wheel '
+              'do not only scroll down or up, but also sideways and so '
+              'try to follow the natural reading order of the comic book.'))
         page.add_row(smart_space_button)
 
         flip_with_wheel_button = gtk.CheckButton(
