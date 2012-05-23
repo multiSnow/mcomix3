@@ -22,6 +22,8 @@ class EventHandler:
 
         #: For scrolling "off the page".
         self._extra_scroll_events = 0
+        #: If True, increment _extra_scroll_events before switchting pages
+        self._scroll_protection = False
 
     def resize_event(self, widget, event):
         """Handle events from resizing and moving the main window."""
@@ -48,7 +50,7 @@ class EventHandler:
         # Navigation keys that work in addition to the accelerators in ui.py
         manager.register('previous page',
             ['KP_Page_Up', 'BackSpace', '<Mod1>Left'],
-            self._window.previous_page)
+            self._previous_page_with_protection)
         manager.register('next page',
             ['KP_Page_Down', '<Mod1>Right'],
             self._window.next_page)
@@ -149,6 +151,9 @@ class EventHandler:
     def key_press_event(self, widget, event, *args):
         """Handle key press events on the main window."""
 
+        # This is set on demand by callback functions
+        self._scroll_protection = False
+
         # Dispatch keyboard input handling
         manager = keybindings.keybinding_manager()
         manager.execute((event.keyval, event.state))
@@ -198,6 +203,8 @@ class EventHandler:
         if 'GDK_BUTTON2_MASK' in event.state.value_names:
             return
 
+        self._scroll_protection = True
+
         if event.direction == gtk.gdk.SCROLL_UP:
             self._scroll_with_flipping(0, -prefs['number of pixels to scroll per mouse wheel event'])
 
@@ -208,11 +215,11 @@ class EventHandler:
             if not self._window.is_manga_mode:
                 self._window.next_page()
             else:
-                self._window.previous_page()
+                self._previous_page_with_protection()
 
         elif event.direction == gtk.gdk.SCROLL_LEFT:
             if not self._window.is_manga_mode:
-                self._window.previous_page()
+                self._previous_page_with_protection()
             else:
                 self._window.next_page()
 
@@ -255,7 +262,7 @@ class EventHandler:
             self._window.actiongroup.get_action('lens').set_active(False)
 
         elif event.button == 3 and event.state & gtk.gdk.MOD1_MASK:
-            self._window.previous_page()
+            self._previous_page_with_protection()
 
     def mouse_move_event(self, widget, event):
         """Handle mouse pointer movement events."""
@@ -329,9 +336,10 @@ class EventHandler:
         to.
         """
 
-        if self._window.scroll(x, y) or not prefs['flip with wheel']:
-            self._extra_scroll_events = 0
+        self._scroll_protection = True
 
+        if self._window.scroll(x, y):
+            self._extra_scroll_events = 0
             return True
 
         if y > 0 or (self._window.is_manga_mode and x < 0) or (
@@ -342,26 +350,9 @@ class EventHandler:
             forwards_scroll = False
 
         if forwards_scroll:
-            self._extra_scroll_events = max(1, self._extra_scroll_events + 1)
-
-            if self._extra_scroll_events >= prefs['number of key presses before page turn']:
-                self._extra_scroll_events = 0
-                self._window.next_page()
-
-                return False
-
-            return True
+            return not self._next_page_with_protection()
         else:
-            self._extra_scroll_events = min(-1, self._extra_scroll_events - 1)
-
-            if self._extra_scroll_events <= -prefs['number of key presses before page turn']:
-                self._extra_scroll_events = 0
-
-                self._window.previous_page()
-
-                return False
-
-            return True
+            return not self._previous_page_with_protection()
 
     def _scroll_down(self):
         """ Scrolls down. """
@@ -390,9 +381,10 @@ class EventHandler:
         if self._window.is_manga_mode:
             x_step *= -1
 
+        # FIXME: Rename smart space scroll to 'smart scroll' in general
         if not prefs["smart space scroll"]:
             if not self._window.scroll(0, y_step):
-                self._window.next_page()
+                self._next_page_with_protection()
             return
 
         if self._window.displayed_double():
@@ -404,7 +396,7 @@ class EventHandler:
 
                         if not self._window.scroll_to_fixed(
                           horiz='startsecond'):
-                            self._window.next_page()
+                            self._next_page_with_protection()
                         else:
                             self._window.scroll_to_fixed(
                                     vert='top')
@@ -418,7 +410,7 @@ class EventHandler:
                 if not self._window.scroll(x_step, 0, 'second'):
 
                     if not self._window.scroll(0, y_step):
-                        self._window.next_page()
+                        self._next_page_with_protection()
                     else:
                         self._window.scroll_to_fixed(
                             horiz='startsecond')
@@ -429,7 +421,7 @@ class EventHandler:
                 if not self._window.scroll(x_step, 0):
 
                     if not self._window.scroll(0, y_step):
-                        self._window.next_page()
+                        self._next_page_with_protection()
                     else:
                         self._window.scroll_to_fixed(
                             horiz='startfirst')
@@ -437,7 +429,7 @@ class EventHandler:
             else:
                 if not self._window.scroll(0, y_step):
                     if not self._window.scroll(x_step, 0):
-                        self._window.next_page()
+                        self._next_page_with_protection()
                     else:
                         self._window.scroll_to_fixed(
                             horiz='startsecond', vert='top')
@@ -456,7 +448,7 @@ class EventHandler:
 
         if not prefs["smart space scroll"]:
             if not self._window.scroll(0, -y_step):
-                self._window.previous_page()
+                self._previous_page_with_protection()
             return
 
         if self._window.displayed_double():
@@ -465,7 +457,7 @@ class EventHandler:
                 if not self._window.scroll(-x_step, 0, 'first'):
 
                     if not self._window.scroll(0, -y_step):
-                        self._window.previous_page()
+                        self._previous_page_with_protection()
                     else:
                         self._window.scroll_to_fixed(
                             horiz='endfirst')
@@ -477,7 +469,7 @@ class EventHandler:
 
                         if not self._window.scroll_to_fixed(
                           horiz='endfirst'):
-                            self._window.previous_page()
+                            self._previous_page_with_protection()
 
                         else:
                             self._window.scroll_to_fixed(
@@ -493,17 +485,68 @@ class EventHandler:
                 if not self._window.scroll(-x_step, 0):
 
                     if not self._window.scroll(0, -y_step):
-                        self._window.previous_page()
+                        self._previous_page_with_protection()
                     else:
                         self._window.scroll_to_fixed(horiz='endfirst')
             # Scroll top/bottom, then left/right
             else:
                 if not self._window.scroll(0, -y_step):
                     if not self._window.scroll(-x_step, 0):
-                        self._window.previous_page()
+                        self._previous_page_with_protection()
                     else:
                         self._window.scroll_to_fixed(
                             horiz='startfirst', vert='bottom')
+
+    def _next_page_with_protection(self):
+        """ Advances to the next page. If L{_scroll_protection} is enabled,
+        this method will only advance if enough scrolling attempts have been made.
+
+        @return: True when the page was flipped."""
+
+        if not prefs['flip with wheel']:
+            self._extra_scroll_events = 0
+            return False
+
+        if (not self._scroll_protection or
+            self._extra_scroll_events >= prefs['number of key presses before page turn']):
+
+            self._extra_scroll_events = 0
+            self._window.next_page()
+            return True
+
+        elif (self._scroll_protection):
+            self._extra_scroll_events = max(1, self._extra_scroll_events + 1)
+            return False
+
+        else:
+            # This path should not be reached.
+            assert False, "Programmer is moron, incorrect assertion."
+
+    def _previous_page_with_protection(self):
+        """ Goes back to the previous page. If L{_scroll_protection} is enabled,
+        this method will only go back if enough scrolling attempts have been made.
+
+        @return: True when the page was flipped."""
+
+        if not prefs['flip with wheel']:
+            self._extra_scroll_events = 0
+            return False
+
+        if (not self._scroll_protection or
+            self._extra_scroll_events <= -prefs['number of key presses before page turn']):
+
+            self._extra_scroll_events = 0
+            self._window.previous_page()
+            return True
+
+        elif (self._scroll_protection):
+            self._extra_scroll_events = min(-1, self._extra_scroll_events - 1)
+            return False
+
+        else:
+            # This path should not be reached.
+            assert False, "Programmer is moron, incorrect assertion."
+
 
 def _get_latest_event_of_same_type(event):
     """Return the latest event in the event queue that is of the same type
