@@ -12,6 +12,12 @@ MComix 0.99
 
     - Fixed exception when trying to pack an archive using the archive editor.
 
+    - "Smart scrolling" now also works with the mouse wheel. In smart
+      scrolling mode, MComix tries to follow the natural reading flow of a
+      comic book by not only scrolling up or down, but also sideways.
+      Please not that smart scrolling does not work in "Fit to width" or "Best
+      fit mode", as there is no need to scroll sideways in these modes.
+
     - Zoom is now enabled in all fit modes (best fit, fit to width, fit to
       height).
 
