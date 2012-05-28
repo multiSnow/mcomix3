@@ -806,7 +806,7 @@ msgstr "Nach Breite oder Höhe anpassen:"
 
 #: mcomix/preferences_dialog.py:271
 msgid "Fixed size for this mode:"
-msgstr "Fester Grösse für diesen Modus:"
+msgstr "Feste Größe für diesen Modus:"
 
 #: mcomix/preferences_dialog.py:279
 msgid "Slideshow"
