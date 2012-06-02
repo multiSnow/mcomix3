@@ -92,7 +92,8 @@ prefs = {
     'scaling quality': 1,  # gtk.gdk.INTERP_TILES
     'escape quits': False,
     'fit to size mode': constants.ZOOM_MODE_HEIGHT,
-    'fit to size px': 1800
+    'fit to size px': 1800,
+    'scan for new books on library startup': True
 }
 
 def read_preferences_file():

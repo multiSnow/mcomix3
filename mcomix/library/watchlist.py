@@ -5,6 +5,7 @@ import gtk
 import gobject
 
 from mcomix.library import backend_types
+from mcomix.preferences import prefs
 
 
 COL_DIRECTORY = 0
@@ -81,6 +82,12 @@ class WatchListDialog(gtk.Dialog):
         main_box.pack_start(scroll_window, padding=2)
         main_box.pack_end(button_box, expand=False)
         self.vbox.pack_start(main_box)
+
+        auto_checkbox = gtk.CheckButton(
+            _('Automatically scan for new books when library is _opened'), True)
+        auto_checkbox.set_active(prefs['scan for new books on library startup'])
+        auto_checkbox.connect('toggled', self._auto_scan_toggled_cb)
+        self.vbox.pack_end(auto_checkbox, False, False, 5)
 
         self.resize(475, 350)
         self.connect('response', self._close_cb)
@@ -202,6 +209,10 @@ class WatchListDialog(gtk.Dialog):
         """ Called when an item is selected. Enables or disables the "Remove"
         button. """
         self._remove_button.set_sensitive(selection.count_selected_rows() > 0)
+
+    def _auto_scan_toggled_cb(self, checkbox, *args):
+        """ Toggles automatic library book scanning. """
+        prefs['scan for new books on library startup'] = checkbox.get_active()
 
     def _treeview_collection_id_to_name(self, column, cell, model, iter, *args):
         """ Maps a collection ID to the corresponding collection name. """

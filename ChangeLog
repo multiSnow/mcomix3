@@ -34,6 +34,8 @@ MComix 0.99
 
     - Added "Scan now" button to library watch list dialog to trigger
       immediate update. Also added an option to scan directories recursively.
+      Automatically scanning for new books every time the library is opened
+      can now be disabled in the watch list dialog.
 
     - Added an option to quit the program when the ESC key is pressed. When
       disabled, ESC only exits fullscreen mode.
