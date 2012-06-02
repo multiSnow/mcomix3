@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix zh_TW\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2012-05-23 18:57+0200\n"
+"POT-Creation-Date: 2012-06-02 10:22+0200\n"
 "PO-Revision-Date: 2012-04-17 11:40+0800\n"
 "Last-Translator: Wayne Su <mstarmstar@gmail.com>\n"
 "Language-Team: \n"
@@ -2030,7 +2030,7 @@ msgstr "清除(_C)"
 msgid "Removes no longer existant books from the collection."
 msgstr "從書集中移除已不存在的書。"
 
-#: mcomix/library/collection_area.py:91 mcomix/library/watchlist.py:69
+#: mcomix/library/collection_area.py:91 mcomix/library/watchlist.py:70
 msgid "_Remove"
 msgstr "移除(_R)"
 
@@ -2120,53 +2120,58 @@ msgstr "開啟選取的書籍。"
 msgid "Library"
 msgstr "書庫"
 
-#: mcomix/library/main_dialog.py:85
+#: mcomix/library/main_dialog.py:86
 msgid "Scanning for new books..."
 msgstr "正在掃描新書..."
 
-#: mcomix/library/main_dialog.py:100
+#: mcomix/library/main_dialog.py:101
 #, fuzzy, python-format
 msgid "Added new book '%(bookname)s' from directory '%(directory)s'."
 msgstr "已經將新書「%(bookname)s」從 %(directory)s 目錄加到書庫了。"
 
-#: mcomix/library/main_dialog.py:103
+#: mcomix/library/main_dialog.py:104
 #, fuzzy, python-format
 msgid "Added %(count)d new books from directory '%(directory)s'."
 msgstr "已經將新書「%(bookname)s」從 %(directory)s 目錄加到書庫了。"
 
-#: mcomix/library/main_dialog.py:110
+#: mcomix/library/main_dialog.py:111
 #, python-format
 msgid "No new books found in directory '%s'."
 msgstr "在 %s 目錄裏沒有找到新書。"
 
-#: mcomix/library/main_dialog.py:163
+#: mcomix/library/main_dialog.py:164
 msgid "! You need an sqlite wrapper to use the library."
 msgstr "！ 你必須有 sqlite wrapper 才能使用這個書庫。"
 
-#: mcomix/library/watchlist.py:24
+#: mcomix/library/watchlist.py:25
 msgid "Library watch list"
 msgstr "書庫觀看清單"
 
-#: mcomix/library/watchlist.py:26
+#: mcomix/library/watchlist.py:27
 msgid "_Scan now"
 msgstr "立即掃描(_S)"
 
-#: mcomix/library/watchlist.py:42
+#: mcomix/library/watchlist.py:43
 msgid "Directory"
 msgstr "目錄"
 
-#: mcomix/library/watchlist.py:54
+#: mcomix/library/watchlist.py:55
 msgid "Collection"
 msgstr "書集"
 
-#: mcomix/library/watchlist.py:62
+#: mcomix/library/watchlist.py:63
 #, fuzzy
 msgid "With subdirectories"
 msgstr "下一個目錄"
 
-#: mcomix/library/watchlist.py:67
+#: mcomix/library/watchlist.py:68
 msgid "_Add"
 msgstr "加入(_A)..."
+
+#: mcomix/library/watchlist.py:87
+#, fuzzy
+msgid "Automatically scan for new books when library is _opened"
+msgstr "自動將這個書籍加入書集"
 
 #~ msgid "! Deleting corrupt bookmarks file."
 #~ msgstr "！ 正在刪除損壞的書籤檔。"
@@ -2327,9 +2332,6 @@ msgstr "加入(_A)..."
 
 #~ msgid "Defaults"
 #~ msgstr "預設值"
-
-#~ msgid "Automatically add the books to this collection"
-#~ msgstr "自動將這個書籍加入書集"
 
 #~ msgid "Could not open %s: Is a directory."
 #~ msgstr "無法開啟 %s：它是目錄。"

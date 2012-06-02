@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Comix-4.0.1\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2012-05-23 18:57+0200\n"
+"POT-Creation-Date: 2012-06-02 10:22+0200\n"
 "PO-Revision-Date: 2008-12-13 21:23+0700\n"
 "Last-Translator: Andhika Padmawan <andhika.padmawan@gmail.com>\n"
 "Language-Team: Indonesia <id@li.org>\n"
@@ -2533,7 +2533,7 @@ msgstr ""
 msgid "Removes no longer existant books from the collection."
 msgstr ""
 
-#: mcomix/library/collection_area.py:91 mcomix/library/watchlist.py:69
+#: mcomix/library/collection_area.py:91 mcomix/library/watchlist.py:70
 msgid "_Remove"
 msgstr ""
 
@@ -2660,57 +2660,64 @@ msgstr "Buka buku terpilih."
 msgid "Library"
 msgstr "Perpustakan"
 
-#: mcomix/library/main_dialog.py:85
+#: mcomix/library/main_dialog.py:86
 msgid "Scanning for new books..."
 msgstr ""
 
-#: mcomix/library/main_dialog.py:100
+#: mcomix/library/main_dialog.py:101
 #, python-format
 msgid "Added new book '%(bookname)s' from directory '%(directory)s'."
 msgstr ""
 
 #
 # File: src/library.py, line: 588
-#: mcomix/library/main_dialog.py:103
+#: mcomix/library/main_dialog.py:104
 #, fuzzy, python-format
 msgid "Added %(count)d new books from directory '%(directory)s'."
 msgstr "Hapus %(num)d buku dari '%(collection)s'."
 
-#: mcomix/library/main_dialog.py:110
+#: mcomix/library/main_dialog.py:111
 #, python-format
 msgid "No new books found in directory '%s'."
 msgstr ""
 
-#: mcomix/library/main_dialog.py:163
+#: mcomix/library/main_dialog.py:164
 msgid "! You need an sqlite wrapper to use the library."
 msgstr ""
 
-#: mcomix/library/watchlist.py:24
+#: mcomix/library/watchlist.py:25
 msgid "Library watch list"
 msgstr ""
 
-#: mcomix/library/watchlist.py:26
+#: mcomix/library/watchlist.py:27
 msgid "_Scan now"
 msgstr ""
 
-#: mcomix/library/watchlist.py:42
+#: mcomix/library/watchlist.py:43
 msgid "Directory"
 msgstr ""
 
 #
 # File: src/library.py, line: 862
-#: mcomix/library/watchlist.py:54
+#: mcomix/library/watchlist.py:55
 #, fuzzy
 msgid "Collection"
 msgstr "Koleksi baru"
 
-#: mcomix/library/watchlist.py:62
+#: mcomix/library/watchlist.py:63
 msgid "With subdirectories"
 msgstr ""
 
-#: mcomix/library/watchlist.py:67
+#: mcomix/library/watchlist.py:68
 msgid "_Add"
 msgstr ""
+
+#
+# File: src/filechooser.py, line: 195
+#: mcomix/library/watchlist.py:87
+#, fuzzy
+msgid "Automatically scan for new books when library is _opened"
+msgstr "Otomatis menambah buku ke koleksi ini"
 
 #
 # File: src/preferences.py, line: 187
@@ -2939,11 +2946,6 @@ msgstr ""
 # File: src/enhance.py, line: 52
 #~ msgid "Defaults"
 #~ msgstr "Standar"
-
-#
-# File: src/filechooser.py, line: 195
-#~ msgid "Automatically add the books to this collection"
-#~ msgstr "Otomatis menambah buku ke koleksi ini"
 
 #
 # File: src/filehandler.py, line: 209

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2012-05-23 18:57+0200\n"
+"POT-Creation-Date: 2012-06-02 10:22+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Marcelo Góes <vanquirius@gentoo.org>\n"
 "Language-Team: \n"
@@ -2084,7 +2084,7 @@ msgstr ""
 msgid "Removes no longer existant books from the collection."
 msgstr ""
 
-#: mcomix/library/collection_area.py:91 mcomix/library/watchlist.py:69
+#: mcomix/library/collection_area.py:91 mcomix/library/watchlist.py:70
 msgid "_Remove"
 msgstr ""
 
@@ -2179,53 +2179,58 @@ msgstr "Abrir o livro selecionado."
 msgid "Library"
 msgstr "Biblioteca"
 
-#: mcomix/library/main_dialog.py:85
+#: mcomix/library/main_dialog.py:86
 msgid "Scanning for new books..."
 msgstr ""
 
-#: mcomix/library/main_dialog.py:100
+#: mcomix/library/main_dialog.py:101
 #, python-format
 msgid "Added new book '%(bookname)s' from directory '%(directory)s'."
 msgstr ""
 
-#: mcomix/library/main_dialog.py:103
+#: mcomix/library/main_dialog.py:104
 #, fuzzy, python-format
 msgid "Added %(count)d new books from directory '%(directory)s'."
 msgstr "Foram removidos %(num)d livro(s) de '%(collection)s'."
 
-#: mcomix/library/main_dialog.py:110
+#: mcomix/library/main_dialog.py:111
 #, python-format
 msgid "No new books found in directory '%s'."
 msgstr ""
 
-#: mcomix/library/main_dialog.py:163
+#: mcomix/library/main_dialog.py:164
 msgid "! You need an sqlite wrapper to use the library."
 msgstr ""
 
-#: mcomix/library/watchlist.py:24
+#: mcomix/library/watchlist.py:25
 msgid "Library watch list"
 msgstr ""
 
-#: mcomix/library/watchlist.py:26
+#: mcomix/library/watchlist.py:27
 msgid "_Scan now"
 msgstr ""
 
-#: mcomix/library/watchlist.py:42
+#: mcomix/library/watchlist.py:43
 msgid "Directory"
 msgstr ""
 
-#: mcomix/library/watchlist.py:54
+#: mcomix/library/watchlist.py:55
 #, fuzzy
 msgid "Collection"
 msgstr "Nova coleção"
 
-#: mcomix/library/watchlist.py:62
+#: mcomix/library/watchlist.py:63
 msgid "With subdirectories"
 msgstr ""
 
-#: mcomix/library/watchlist.py:67
+#: mcomix/library/watchlist.py:68
 msgid "_Add"
 msgstr ""
+
+#: mcomix/library/watchlist.py:87
+#, fuzzy
+msgid "Automatically scan for new books when library is _opened"
+msgstr "Adicionar livros a esta coleção automaticamente"
 
 #, fuzzy
 #~ msgid "Show only one wide image in double page mode"
@@ -2385,9 +2390,6 @@ msgstr ""
 
 #~ msgid "Defaults"
 #~ msgstr "Padrões"
-
-#~ msgid "Automatically add the books to this collection"
-#~ msgstr "Adicionar livros a esta coleção automaticamente"
 
 #~ msgid "Could not open %s: Is a directory."
 #~ msgstr "Impossível abrir %s: É um diretório."

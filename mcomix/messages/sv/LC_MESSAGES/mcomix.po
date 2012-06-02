@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.90.4\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2012-05-23 18:57+0200\n"
+"POT-Creation-Date: 2012-06-02 10:22+0200\n"
 "PO-Revision-Date: 2011-04-13 22:59+0100\n"
 "Last-Translator: Martin Karlsson <h.m.j.karlsson@gmail.com>\n"
 "Language-Team: Swedish <LL@li.org>\n"
@@ -2568,7 +2568,7 @@ msgstr ""
 msgid "Removes no longer existant books from the collection."
 msgstr ""
 
-#: mcomix/library/collection_area.py:91 mcomix/library/watchlist.py:69
+#: mcomix/library/collection_area.py:91 mcomix/library/watchlist.py:70
 msgid "_Remove"
 msgstr ""
 
@@ -2695,58 +2695,65 @@ msgstr "Öppna den markerade boken."
 msgid "Library"
 msgstr "Bibliotek"
 
-#: mcomix/library/main_dialog.py:85
+#: mcomix/library/main_dialog.py:86
 #, fuzzy
 msgid "Scanning for new books..."
 msgstr "Letar efter arkiv..."
 
-#: mcomix/library/main_dialog.py:100
+#: mcomix/library/main_dialog.py:101
 #, python-format
 msgid "Added new book '%(bookname)s' from directory '%(directory)s'."
 msgstr ""
 
 #
 # File: src/library.py, line: 588
-#: mcomix/library/main_dialog.py:103
+#: mcomix/library/main_dialog.py:104
 #, fuzzy, python-format
 msgid "Added %(count)d new books from directory '%(directory)s'."
 msgstr "Tog bort %(num)d antal böcker från '%(collection)s'."
 
-#: mcomix/library/main_dialog.py:110
+#: mcomix/library/main_dialog.py:111
 #, python-format
 msgid "No new books found in directory '%s'."
 msgstr ""
 
-#: mcomix/library/main_dialog.py:163
+#: mcomix/library/main_dialog.py:164
 msgid "! You need an sqlite wrapper to use the library."
 msgstr "! Du behöver en sqlite wrapper för att använda biblioteket."
 
-#: mcomix/library/watchlist.py:24
+#: mcomix/library/watchlist.py:25
 msgid "Library watch list"
 msgstr ""
 
-#: mcomix/library/watchlist.py:26
+#: mcomix/library/watchlist.py:27
 msgid "_Scan now"
 msgstr ""
 
-#: mcomix/library/watchlist.py:42
+#: mcomix/library/watchlist.py:43
 msgid "Directory"
 msgstr ""
 
 #
 # File: src/library.py, line: 862
-#: mcomix/library/watchlist.py:54
+#: mcomix/library/watchlist.py:55
 #, fuzzy
 msgid "Collection"
 msgstr "Ny samling"
 
-#: mcomix/library/watchlist.py:62
+#: mcomix/library/watchlist.py:63
 msgid "With subdirectories"
 msgstr ""
 
-#: mcomix/library/watchlist.py:67
+#: mcomix/library/watchlist.py:68
 msgid "_Add"
 msgstr ""
+
+#
+# File: src/filechooser.py, line: 195
+#: mcomix/library/watchlist.py:87
+#, fuzzy
+msgid "Automatically scan for new books when library is _opened"
+msgstr "Lägg automatiskt till böckerna till denna samling"
 
 #~ msgid "! Deleting corrupt bookmarks file."
 #~ msgstr "! Raderar korrupt bokmärkesfil."
@@ -2979,11 +2986,6 @@ msgstr ""
 # File: src/enhance.py, line: 52
 #~ msgid "Defaults"
 #~ msgstr "Återställ"
-
-#
-# File: src/filechooser.py, line: 195
-#~ msgid "Automatically add the books to this collection"
-#~ msgstr "Lägg automatiskt till böckerna till denna samling"
 
 #
 # File: src/filehandler.py, line: 209

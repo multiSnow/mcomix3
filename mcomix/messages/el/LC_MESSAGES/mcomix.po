@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2012-05-23 18:57+0200\n"
+"POT-Creation-Date: 2012-06-02 10:22+0200\n"
 "PO-Revision-Date: 2006-09-27 10:18+0200\n"
 "Last-Translator: Paul Chatzidimitriou <paulmedic555@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2436,7 +2436,7 @@ msgstr ""
 msgid "Removes no longer existant books from the collection."
 msgstr ""
 
-#: mcomix/library/collection_area.py:91 mcomix/library/watchlist.py:69
+#: mcomix/library/collection_area.py:91 mcomix/library/watchlist.py:70
 msgid "_Remove"
 msgstr ""
 
@@ -2557,39 +2557,39 @@ msgstr ""
 msgid "Library"
 msgstr "Βιβλιοθήκη"
 
-#: mcomix/library/main_dialog.py:85
+#: mcomix/library/main_dialog.py:86
 msgid "Scanning for new books..."
 msgstr ""
 
-#: mcomix/library/main_dialog.py:100
+#: mcomix/library/main_dialog.py:101
 #, python-format
 msgid "Added new book '%(bookname)s' from directory '%(directory)s'."
 msgstr ""
 
-#: mcomix/library/main_dialog.py:103
+#: mcomix/library/main_dialog.py:104
 #, python-format
 msgid "Added %(count)d new books from directory '%(directory)s'."
 msgstr ""
 
-#: mcomix/library/main_dialog.py:110
+#: mcomix/library/main_dialog.py:111
 #, python-format
 msgid "No new books found in directory '%s'."
 msgstr ""
 
-#: mcomix/library/main_dialog.py:163
+#: mcomix/library/main_dialog.py:164
 msgid "! You need an sqlite wrapper to use the library."
 msgstr ""
 
-#: mcomix/library/watchlist.py:24
+#: mcomix/library/watchlist.py:25
 msgid "Library watch list"
 msgstr ""
 
-#: mcomix/library/watchlist.py:26
+#: mcomix/library/watchlist.py:27
 msgid "_Scan now"
 msgstr ""
 
 #
-#: mcomix/library/watchlist.py:42
+#: mcomix/library/watchlist.py:43
 #, fuzzy
 msgid "Directory"
 msgstr "Κατάλογοι"
@@ -2597,17 +2597,21 @@ msgstr "Κατάλογοι"
 #
 # File: src/properties.py, line: 124
 # File: src/properties.py, line: 159
-#: mcomix/library/watchlist.py:54
+#: mcomix/library/watchlist.py:55
 #, fuzzy
 msgid "Collection"
 msgstr "Τοποθεσία"
 
-#: mcomix/library/watchlist.py:62
+#: mcomix/library/watchlist.py:63
 msgid "With subdirectories"
 msgstr ""
 
-#: mcomix/library/watchlist.py:67
+#: mcomix/library/watchlist.py:68
 msgid "_Add"
+msgstr ""
+
+#: mcomix/library/watchlist.py:87
+msgid "Automatically scan for new books when library is _opened"
 msgstr ""
 
 #

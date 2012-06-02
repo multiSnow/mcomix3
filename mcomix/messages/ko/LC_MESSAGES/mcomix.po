@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2012-05-23 18:57+0200\n"
+"POT-Creation-Date: 2012-06-02 10:22+0200\n"
 "PO-Revision-Date: 2008-12-13 14:48+0900\n"
 "Last-Translator: Lv5doraki <kmk1290@gmail.com>\n"
 "Language-Team: \n"
@@ -2507,7 +2507,7 @@ msgstr ""
 msgid "Removes no longer existant books from the collection."
 msgstr ""
 
-#: mcomix/library/collection_area.py:91 mcomix/library/watchlist.py:69
+#: mcomix/library/collection_area.py:91 mcomix/library/watchlist.py:70
 msgid "_Remove"
 msgstr ""
 
@@ -2634,57 +2634,64 @@ msgstr "선택한 만화책 열기"
 msgid "Library"
 msgstr "라이브러리"
 
-#: mcomix/library/main_dialog.py:85
+#: mcomix/library/main_dialog.py:86
 msgid "Scanning for new books..."
 msgstr ""
 
-#: mcomix/library/main_dialog.py:100
+#: mcomix/library/main_dialog.py:101
 #, python-format
 msgid "Added new book '%(bookname)s' from directory '%(directory)s'."
 msgstr ""
 
 #
 # File: src/library.py, line: 588
-#: mcomix/library/main_dialog.py:103
+#: mcomix/library/main_dialog.py:104
 #, fuzzy, python-format
 msgid "Added %(count)d new books from directory '%(directory)s'."
 msgstr "'%(collection)s' 에서 %(num)d  만화책 제거."
 
-#: mcomix/library/main_dialog.py:110
+#: mcomix/library/main_dialog.py:111
 #, python-format
 msgid "No new books found in directory '%s'."
 msgstr ""
 
-#: mcomix/library/main_dialog.py:163
+#: mcomix/library/main_dialog.py:164
 msgid "! You need an sqlite wrapper to use the library."
 msgstr ""
 
-#: mcomix/library/watchlist.py:24
+#: mcomix/library/watchlist.py:25
 msgid "Library watch list"
 msgstr ""
 
-#: mcomix/library/watchlist.py:26
+#: mcomix/library/watchlist.py:27
 msgid "_Scan now"
 msgstr ""
 
-#: mcomix/library/watchlist.py:42
+#: mcomix/library/watchlist.py:43
 msgid "Directory"
 msgstr ""
 
 #
 # File: src/library.py, line: 862
-#: mcomix/library/watchlist.py:54
+#: mcomix/library/watchlist.py:55
 #, fuzzy
 msgid "Collection"
 msgstr "새 모음집"
 
-#: mcomix/library/watchlist.py:62
+#: mcomix/library/watchlist.py:63
 msgid "With subdirectories"
 msgstr ""
 
-#: mcomix/library/watchlist.py:67
+#: mcomix/library/watchlist.py:68
 msgid "_Add"
 msgstr ""
+
+#
+# File: src/filechooser.py, line: 195
+#: mcomix/library/watchlist.py:87
+#, fuzzy
+msgid "Automatically scan for new books when library is _opened"
+msgstr "모음집에 자동으로 만화책을 추가"
 
 #
 # File: src/preferences.py, line: 187
@@ -2901,11 +2908,6 @@ msgstr ""
 # File: src/enhance.py, line: 52
 #~ msgid "Defaults"
 #~ msgstr "기본값"
-
-#
-# File: src/filechooser.py, line: 195
-#~ msgid "Automatically add the books to this collection"
-#~ msgstr "모음집에 자동으로 만화책을 추가"
 
 #
 # File: src/filehandler.py, line: 209

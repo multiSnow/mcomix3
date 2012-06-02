@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.98\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2012-05-23 18:57+0200\n"
+"POT-Creation-Date: 2012-06-02 10:22+0200\n"
 "PO-Revision-Date: 2012-04-03 16:41+GMT\n"
 "Last-Translator: Moritz Brunner <oddegamra@gmx.org>\n"
 "Language-Team: \n"
@@ -23,7 +23,7 @@ msgstr ""
 #, python-format
 msgid "%s is an image viewer specifically designed to handle comic books."
 msgstr ""
-"%s ist ein Bildbetrachter, der extra für den Umgang mit Comicbüchern "
+"%s ist ein Bildbetrachter, der speziell für den Umgang mit Comicbüchern "
 "entworfen wurde."
 
 #: mcomix/about_dialog.py:29
@@ -150,8 +150,8 @@ msgid ""
 "Please note that the only files that are automatically added to this list "
 "are those files in archives that MComix recognizes as comments."
 msgstr ""
-"Bitte beachten Sie, dass nur Dateien zu dieser Liste automatisch hinzugefügt "
-"werden, die sich in Archiven befinden, die MComix als Kommentare erkennt."
+"Bitte beachten Sie, dass nur Dateien in Archiven automatisch zu dieser Liste "
+"hinzugefügt werden, die MComix als Kommentare erkennt."
 
 #: mcomix/edit_comment_area.py:35
 msgid "Size"
@@ -159,7 +159,7 @@ msgstr "Größe"
 
 #: mcomix/edit_comment_area.py:52 mcomix/edit_image_area.py:54
 msgid "Remove from archive"
-msgstr "Aus dem Archiv entfernen"
+msgstr "Aus Archiv entfernen"
 
 #: mcomix/edit_dialog.py:28
 msgid "Edit archive"
@@ -167,7 +167,7 @@ msgstr "Archiv bearbeiten"
 
 #: mcomix/edit_dialog.py:40
 msgid "_Import"
-msgstr "_Import"
+msgstr "_Importieren"
 
 #: mcomix/edit_dialog.py:56
 msgid "Images"
@@ -187,7 +187,7 @@ msgstr "Die Originaldateien wurden nicht entfernt."
 
 #: mcomix/edit_dialog.py:154
 msgid "Archives are stored as ZIP files."
-msgstr "Archive sind als ZIP-Dateien gespeichert."
+msgstr "Archive werden als ZIP-Dateien gespeichert."
 
 #: mcomix/enhance_dialog.py:17
 msgid "Enhance image"
@@ -273,7 +273,7 @@ msgstr ""
 
 #: mcomix/file_chooser_base_dialog.py:230
 msgid "Replacing it will overwrite its contents."
-msgstr "Sie zu ersetzen, wird ihre Inhalte überschreiben."
+msgstr "Durch Ersetzen geht ihr alter Inhalt verloren."
 
 #: mcomix/file_chooser_library_dialog.py:18
 msgid "Add books"
@@ -2084,7 +2084,7 @@ msgstr "_Säubern"
 msgid "Removes no longer existant books from the collection."
 msgstr "Entfernt Bücher aus der Bibliothek, die nicht mehr existieren."
 
-#: mcomix/library/collection_area.py:91 mcomix/library/watchlist.py:69
+#: mcomix/library/collection_area.py:91 mcomix/library/watchlist.py:70
 msgid "_Remove"
 msgstr "_Entfernen"
 
@@ -2181,57 +2181,61 @@ msgstr "Das ausgewählte Buch öffnen."
 msgid "Library"
 msgstr "Bibliothek"
 
-#: mcomix/library/main_dialog.py:85
+#: mcomix/library/main_dialog.py:86
 msgid "Scanning for new books..."
 msgstr "Suche nach neuen Büchern..."
 
-#: mcomix/library/main_dialog.py:100
+#: mcomix/library/main_dialog.py:101
 #, python-format
 msgid "Added new book '%(bookname)s' from directory '%(directory)s'."
 msgstr ""
 "Neues Buch '%(bookname)s' wurde aus dem Verzeichnis '%(directory)s' "
 "hinzugefügt."
 
-#: mcomix/library/main_dialog.py:103
+#: mcomix/library/main_dialog.py:104
 #, python-format
 msgid "Added %(count)d new books from directory '%(directory)s'."
 msgstr ""
 "Es wurden %(count)d neue Bücher aus dem Verzeichnis '%(directory)s' "
 "hinzugefügt."
 
-#: mcomix/library/main_dialog.py:110
+#: mcomix/library/main_dialog.py:111
 #, python-format
 msgid "No new books found in directory '%s'."
 msgstr "Keine neuen Bücher im Verzeichnis '%s' gefunden."
 
-#: mcomix/library/main_dialog.py:163
+#: mcomix/library/main_dialog.py:164
 msgid "! You need an sqlite wrapper to use the library."
 msgstr ""
 "! Sie benötigen ein sqlite-Modul, um die Bibliothek benutzen zu können."
 
-#: mcomix/library/watchlist.py:24
+#: mcomix/library/watchlist.py:25
 msgid "Library watch list"
 msgstr "Überwachte Verzeichnisse"
 
-#: mcomix/library/watchlist.py:26
+#: mcomix/library/watchlist.py:27
 msgid "_Scan now"
 msgstr "Jetzt _suchen"
 
-#: mcomix/library/watchlist.py:42
+#: mcomix/library/watchlist.py:43
 msgid "Directory"
 msgstr "Verzeichnis"
 
-#: mcomix/library/watchlist.py:54
+#: mcomix/library/watchlist.py:55
 msgid "Collection"
 msgstr "Sammlung"
 
-#: mcomix/library/watchlist.py:62
+#: mcomix/library/watchlist.py:63
 msgid "With subdirectories"
 msgstr "Mit Unterverzeichnissen"
 
-#: mcomix/library/watchlist.py:67
+#: mcomix/library/watchlist.py:68
 msgid "_Add"
 msgstr "_Hinzufügen"
+
+#: mcomix/library/watchlist.py:87
+msgid "Automatically scan for new books when library is _opened"
+msgstr "Aut_omatisch nach Büchern suchen, wenn Bibliothek geöffnet wird"
 
 #~ msgid "! Deleting corrupt bookmarks file."
 #~ msgstr "! Korrupter Lesezeichen-Speicher wird gelöscht."
@@ -2389,9 +2393,6 @@ msgstr "_Hinzufügen"
 
 #~ msgid "! Could not remove %s"
 #~ msgstr "! Konnte %s nicht entfernen"
-
-#~ msgid "Automatically add the books to this collection"
-#~ msgstr "Die Bücher automatisch zu dieser Sammlung hinzufügen"
 
 #~ msgid "_Reset"
 #~ msgstr "_Zurücksetzen"

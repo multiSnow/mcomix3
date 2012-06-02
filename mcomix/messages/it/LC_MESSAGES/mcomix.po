@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2012-05-23 18:57+0200\n"
+"POT-Creation-Date: 2012-06-02 10:22+0200\n"
 "PO-Revision-Date: 2012-04-21 20:00+0100\n"
 "Last-Translator: Giovanni Scafora <giovanni@archlinux.org>\n"
 "Language-Team: Arch Linux Italian Team <giovanni@archlinux.org>\n"
@@ -2106,7 +2106,7 @@ msgstr "_Pulisci"
 msgid "Removes no longer existant books from the collection."
 msgstr "Rimuove dalla collezione i libri che non ci sono più."
 
-#: mcomix/library/collection_area.py:91 mcomix/library/watchlist.py:69
+#: mcomix/library/collection_area.py:91 mcomix/library/watchlist.py:70
 msgid "_Remove"
 msgstr "_Rimuovi"
 
@@ -2201,53 +2201,57 @@ msgstr "Apri il libro selezionato."
 msgid "Library"
 msgstr "Libreria"
 
-#: mcomix/library/main_dialog.py:85
+#: mcomix/library/main_dialog.py:86
 msgid "Scanning for new books..."
 msgstr "Ricerca di nuovi libri in corso..."
 
-#: mcomix/library/main_dialog.py:100
+#: mcomix/library/main_dialog.py:101
 #, python-format
 msgid "Added new book '%(bookname)s' from directory '%(directory)s'."
 msgstr "Aggiunto un nuovo libro '%(bookname)s' dalla cartella '%(directory)s'."
 
-#: mcomix/library/main_dialog.py:103
+#: mcomix/library/main_dialog.py:104
 #, python-format
 msgid "Added %(count)d new books from directory '%(directory)s'."
 msgstr "Aggiunti %(count)d nuovi libri dalla cartella '%(directory)s'."
 
-#: mcomix/library/main_dialog.py:110
+#: mcomix/library/main_dialog.py:111
 #, python-format
 msgid "No new books found in directory '%s'."
 msgstr "Non ci sono nuovi libri nella cartella '%s'."
 
-#: mcomix/library/main_dialog.py:163
+#: mcomix/library/main_dialog.py:164
 msgid "! You need an sqlite wrapper to use the library."
 msgstr "! Per usare la libreria è necessario disporre di un wrapper sqlite."
 
-#: mcomix/library/watchlist.py:24
+#: mcomix/library/watchlist.py:25
 msgid "Library watch list"
 msgstr "Lista delle collezioni da guardare"
 
-#: mcomix/library/watchlist.py:26
+#: mcomix/library/watchlist.py:27
 msgid "_Scan now"
 msgstr "_Cerca adesso"
 
-#: mcomix/library/watchlist.py:42
+#: mcomix/library/watchlist.py:43
 msgid "Directory"
 msgstr "Cartella"
 
-#: mcomix/library/watchlist.py:54
+#: mcomix/library/watchlist.py:55
 msgid "Collection"
 msgstr "Collezione"
 
-#: mcomix/library/watchlist.py:62
+#: mcomix/library/watchlist.py:63
 #, fuzzy
 msgid "With subdirectories"
 msgstr "Cartella successiva"
 
-#: mcomix/library/watchlist.py:67
+#: mcomix/library/watchlist.py:68
 msgid "_Add"
 msgstr "_Aggiungi"
+
+#: mcomix/library/watchlist.py:87
+msgid "Automatically scan for new books when library is _opened"
+msgstr ""
 
 #~ msgid "! Deleting corrupt bookmarks file."
 #~ msgstr "! Eliminazione in corso del file danneggiato dei segnalibri."
