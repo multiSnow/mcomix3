@@ -385,7 +385,7 @@ class EventHandler:
         """ Smart scrolling. """
 
         width, height = self._window.get_visible_area_size()
-        distance = prefs['scroll step distance']
+        distance = prefs['smart scroll percentage']
 
         if small_step is None:
             x_step_small = x_step_large = int(width * distance)
@@ -469,7 +469,7 @@ class EventHandler:
         """ Reversed smart scrolling. """
 
         width, height = self._window.get_visible_area_size()
-        distance = prefs['scroll step distance']
+        distance = prefs['smart scroll percentage']
 
         if small_step is None:
             x_step_small = x_step_large = int(width * distance)
