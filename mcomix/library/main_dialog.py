@@ -70,7 +70,7 @@ class _LibraryDialog(gtk.Window):
         paths = [ self.backend.get_book_path(book) for book in books ]
 
         if not keep_library_open:
-            self.close()
+            self.hide()
 
         self._window.present()
 
