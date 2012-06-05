@@ -677,7 +677,9 @@ class MainWindow(gtk.Window):
         self._vscroll.hide_all()
         self._hscroll.hide_all()
 
-        if prefs['show scrollbar']:
+        if (prefs['show scrollbar']
+            and not prefs['hide all']
+            and not (self.is_fullscreen and prefs['hide all in fullscreen'])):
             if img_size[0] > screen_size[0]:
                 self._hscroll.show_all()
             else:
