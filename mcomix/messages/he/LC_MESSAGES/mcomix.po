@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mcomix 0.98\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2012-04-03 15:58+0200\n"
+"POT-Creation-Date: 2012-06-11 21:20+0200\n"
 "PO-Revision-Date: 2012-06-11 21:28+0200\n"
 "Last-Translator: Isratine Citizen <genghiskhan@gmx.ca>\n"
 "Language-Team: Hebrew <eliz@gnu.org>\n"
@@ -56,32 +56,27 @@ msgid "! Could not create archive at path \"%s\""
 msgstr "! לא ניתן ליצור ארכיון בנתיב \"%s\""
 
 # ! לא ניתן להוסיף את הקובץ %(sourcefile)s אל הארכיון %(archivefile)s, נוטש כעת...
-#: mcomix/archive_packer.py:71
-#: mcomix/archive_packer.py:96
+#: mcomix/archive_packer.py:71 mcomix/archive_packer.py:96
 #, python-format
-msgid "! Could not add file %(sourcefile)s to archive %(archivefile)s, aborting..."
-msgstr "! Could not add file %(sourcefile)s to archive %(archivefile)s, aborting..."
+msgid ""
+"! Could not add file %(sourcefile)s to archive %(archivefile)s, aborting..."
+msgstr ""
+"! Could not add file %(sourcefile)s to archive %(archivefile)s, aborting..."
 
 # ! לא ניתן לקרוא את %s
-#: mcomix/archive_tools.py:54
-#: mcomix/last_read_page.py:87
+#: mcomix/archive_tools.py:58 mcomix/last_read_page.py:90
 #, python-format
 msgid "! Could not read %s"
 msgstr "! Could not read %s"
 
 # ! לא ניתן לנתח את קובץ הסימניות %s
-#: mcomix/bookmark_backend.py:46
+#: mcomix/bookmark_backend.py:150
 #, python-format
 msgid "! Could not parse bookmarks file %s"
 msgstr "! Could not parse bookmarks file %s"
 
-# ! צוחק כעת קובץ סימניות פגום.
-#: mcomix/bookmark_backend.py:48
-msgid "! Deleting corrupt bookmarks file."
-msgstr "! Deleting corrupt bookmarks file."
-
 # האם להחליף סימניות קיימות בעמודים %s?
-#: mcomix/bookmark_backend.py:137
+#: mcomix/bookmark_backend.py:213
 #, python-format
 msgid "Replace existing bookmark on page %s?"
 msgid_plural "Replace existing bookmarks on pages %s?"
@@ -90,20 +85,21 @@ msgstr[1] "האם להחליף את הסימניות שבעמודים %s?"
 
 # החוברת הנוכחית
 # להחליפן (סימניות קיימות)
-#: mcomix/bookmark_backend.py:143
+#: mcomix/bookmark_backend.py:218
 #, python-format
-msgid "The current book already contains marked pages. Do you want to replace them with a new bookmark on page %d? "
-msgstr "חוברת זו כבר מכילה עמודים מסומנים. האם ברצונך להחליפם עם עם סימנייה חדשה בעמוד %d? "
+msgid ""
+"The current book already contains marked pages. Do you want to replace them "
+"with a new bookmark on page %d? "
+msgstr ""
+"חוברת זו כבר מכילה עמודים מסומנים. האם ברצונך להחליפם עם עם סימנייה חדשה "
+"בעמוד %d? "
 
 # מבלי לשנות
-#: mcomix/bookmark_backend.py:146
-msgid "Selecting \"No\" will create a new bookmark without affecting the other bookmarks."
+#: mcomix/bookmark_backend.py:221
+msgid ""
+"Selecting \"No\" will create a new bookmark without affecting the other "
+"bookmarks."
 msgstr "בבוחרך \"לא\" תיווצר סימנייה חדשה וזאת מבלי להשפיע על הסימניות האחרות."
-
-# אל תשאל אותי שנית.
-#: mcomix/bookmark_backend.py:149
-msgid "Do not ask again."
-msgstr "לא לשאול אותי שנית."
 
 #: mcomix/bookmark_dialog.py:16
 msgid "Edit Bookmarks"
@@ -113,18 +109,15 @@ msgstr "עריכת סמניות"
 msgid "Type"
 msgstr "סוג"
 
-#: mcomix/bookmark_dialog.py:52
-#: mcomix/edit_comment_area.py:31
+#: mcomix/bookmark_dialog.py:52 mcomix/edit_comment_area.py:31
 msgid "Name"
 msgstr "שם"
 
-#: mcomix/bookmark_dialog.py:53
-#: mcomix/main.py:1070
+#: mcomix/bookmark_dialog.py:53 mcomix/main.py:1050
 msgid "Page"
 msgstr "עמוד"
 
-#: mcomix/bookmark_dialog.py:54
-#: mcomix/properties_dialog.py:60
+#: mcomix/bookmark_dialog.py:54 mcomix/properties_dialog.py:60
 #: mcomix/properties_dialog.py:98
 msgid "Location"
 msgstr "מיקום"
@@ -134,11 +127,11 @@ msgstr "מיקום"
 msgid "Added"
 msgstr "תאריך הוספה"
 
-#: mcomix/bookmark_menu.py:28
+#: mcomix/bookmark_menu.py:24
 msgid "Add _Bookmark"
 msgstr "הוספת _סימניה"
 
-#: mcomix/bookmark_menu.py:30
+#: mcomix/bookmark_menu.py:26
 msgid "_Edit Bookmarks..."
 msgstr "_עריכת סימניות..."
 
@@ -147,8 +140,7 @@ msgstr "_עריכת סימניות..."
 msgid "! Callback %(function)r failed: %(error)s"
 msgstr "! Callback %(function)r failed: %(error)s"
 
-#: mcomix/comment_dialog.py:11
-#: mcomix/preferences_dialog.py:359
+#: mcomix/comment_dialog.py:11 mcomix/preferences_dialog.py:395
 msgid "Comments"
 msgstr "הערות"
 
@@ -161,40 +153,43 @@ msgstr "לא ניתן לקרוא את %s"
 
 # מזהם = מזהה אותם
 #: mcomix/edit_comment_area.py:18
-msgid "Please note that the only files that are automatically added to this list are those files in archives that MComix recognizes as comments."
-msgstr "נא לשים לב שהקבצים היחידים שייווספו אוטומטית אל רשימה זו יהיו קבצים בארכיונים שהיישום MComix מזהם כהערות."
+msgid ""
+"Please note that the only files that are automatically added to this list "
+"are those files in archives that MComix recognizes as comments."
+msgstr ""
+"נא לשים לב שהקבצים היחידים שייווספו אוטומטית אל רשימה זו יהיו קבצים "
+"בארכיונים שהיישום MComix מזהם כהערות."
 
 #: mcomix/edit_comment_area.py:35
 msgid "Size"
 msgstr "גודל"
 
-#: mcomix/edit_comment_area.py:52
-#: mcomix/edit_image_area.py:54
+#: mcomix/edit_comment_area.py:52 mcomix/edit_image_area.py:54
 msgid "Remove from archive"
 msgstr "הסרה מן הארכיון"
 
-#: mcomix/edit_dialog.py:27
+#: mcomix/edit_dialog.py:28
 msgid "Edit archive"
 msgstr "עריכת ארכיון"
 
-#: mcomix/edit_dialog.py:39
+#: mcomix/edit_dialog.py:40
 msgid "_Import"
 msgstr "_ייבוא"
 
-#: mcomix/edit_dialog.py:55
+#: mcomix/edit_dialog.py:56
 msgid "Images"
 msgstr "תמונות"
 
-#: mcomix/edit_dialog.py:56
+#: mcomix/edit_dialog.py:57
 msgid "Comment files"
 msgstr "קבצי הערות"
 
 # מאחר ונרשם שמירה (saved) בנטיה לעבר, יש הכרח לציין את המילה "היה" (לשמור) בהתאמה
-#: mcomix/edit_dialog.py:133
+#: mcomix/edit_dialog.py:135
 msgid "The new archive could not be saved!"
 msgstr "לא ניתן היה לשמור את הארכיון החדש!"
 
-#: mcomix/edit_dialog.py:135
+#: mcomix/edit_dialog.py:136
 msgid "The original files have not been removed."
 msgstr "הקבצים הנוכחיים לא הוסרו."
 
@@ -236,46 +231,49 @@ msgstr "התאמה _אוטומטית של ניגודיות"
 
 # עבור כל ערוץ/רצועת
 #: mcomix/enhance_dialog.py:111
-msgid "Automatically adjust contrast (both lightness and darkness), separately for each colour band."
-msgstr "התאמה אוטומטית של ניגודיות (הן אפילה והן בהירות), באופן נפרד עבור כל פס צבע."
+msgid ""
+"Automatically adjust contrast (both lightness and darkness), separately for "
+"each colour band."
+msgstr ""
+"התאמה אוטומטית של ניגודיות (הן אפילה והן בהירות), באופן נפרד עבור כל פס צבע."
 
-#: mcomix/file_chooser_base_dialog.py:40
+#: mcomix/file_chooser_base_dialog.py:41
 msgid "Open"
 msgstr "פתיחה"
 
-#: mcomix/file_chooser_base_dialog.py:45
+#: mcomix/file_chooser_base_dialog.py:46
 msgid "Save"
 msgstr "שמירה"
 
-#: mcomix/file_chooser_base_dialog.py:82
+#: mcomix/file_chooser_base_dialog.py:83
 msgid "All files"
 msgstr "כל הקבצים"
 
-#: mcomix/file_chooser_base_dialog.py:98
+#: mcomix/file_chooser_base_dialog.py:99
 msgid "All Archives"
 msgstr "כל הארכיונים"
 
-#: mcomix/file_chooser_base_dialog.py:101
+#: mcomix/file_chooser_base_dialog.py:102
 msgid "ZIP archives"
 msgstr "ארכיוני ZIP"
 
-#: mcomix/file_chooser_base_dialog.py:104
+#: mcomix/file_chooser_base_dialog.py:105
 msgid "Tar archives"
 msgstr "ארכיוני Tar"
 
-#: mcomix/file_chooser_base_dialog.py:108
+#: mcomix/file_chooser_base_dialog.py:109
 msgid "RAR archives"
 msgstr "ארכיוני RAR"
 
-#: mcomix/file_chooser_base_dialog.py:112
+#: mcomix/file_chooser_base_dialog.py:113
 msgid "7z archives"
 msgstr "ארכיוני 7z"
 
-#: mcomix/file_chooser_base_dialog.py:116
+#: mcomix/file_chooser_base_dialog.py:117
 msgid "LHA archives"
 msgstr "ארכיוני LHA"
 
-#: mcomix/file_chooser_base_dialog.py:226
+#: mcomix/file_chooser_base_dialog.py:228
 #, python-format
 msgid "A file named '%s' already exists. Do you want to replace it?"
 msgstr "קובץ בשם '%s' כבר קיים. האם ברצונך להחליפו?"
@@ -323,8 +321,7 @@ msgstr "תמונות TIFF"
 msgid "BMP images"
 msgstr "תמונות BMP"
 
-#: mcomix/file_handler.py:154
-#: mcomix/file_handler.py:262
+#: mcomix/file_handler.py:157 mcomix/file_handler.py:267
 #, python-format
 msgid "No images in '%s'"
 msgstr "לא קיימות תמונות בתוך '%s'"
@@ -332,23 +329,35 @@ msgstr "לא קיימות תמונות בתוך '%s'"
 # לא ניתן לפתוח את ‫%s: הקובץ אינו קיים.
 # לא ניתן לפתוח את %s\n
 # קובץ לא קיים.
-#: mcomix/file_handler.py:256
+#: mcomix/file_handler.py:261
 #, python-format
 msgid "Could not open %s: No such file."
 msgstr "לא ניתן לפתוח את הקובץ ‫%s: קובץ לא קיים."
 
-#: mcomix/file_handler.py:259
-#: mcomix/file_provider.py:135
+#: mcomix/file_handler.py:264 mcomix/file_provider.py:135
 #, python-format
 msgid "Could not open %s: Permission denied."
 msgstr "לא ניתן לפתוח את הקובץ ‫%s ההרשאה נדחתה."
 
-#: mcomix/file_handler.py:267
+#: mcomix/file_handler.py:272
 #, python-format
 msgid "Could not open %s: Unknown file type."
 msgstr "לא ניתן לפתוח את הקובץ ‫%s סוג קובץ לא מוכר."
 
-#: mcomix/file_handler.py:726
+#: mcomix/file_handler.py:449
+#, python-format
+msgid "Continue reading from page %d?"
+msgstr ""
+
+#: mcomix/file_handler.py:450
+#, python-format
+msgid ""
+"You stopped reading here on %(date)s, %(time)s. If you choose \"Yes\", "
+"reading will resume on page %(page)d. Otherwise, the first page will be "
+"loaded."
+msgstr ""
+
+#: mcomix/file_handler.py:763
 #, python-format
 msgid "! Corrupt preferences file \"%s\", deleting..."
 msgstr "! קובץ העדפות פגום \"%s\", מוחק כעת..."
@@ -358,7 +367,7 @@ msgstr "! קובץ העדפות פגום \"%s\", מוחק כעת..."
 msgid "Invalid path: '%s'"
 msgstr "נתיב שגוי: '%s'"
 
-#: mcomix/icons.py:65
+#: mcomix/icons.py:66
 #, python-format
 msgid "! Could not load icon \"%s\""
 msgstr "! לא ניתן לטעון את הצלמית \"%s\""
@@ -367,24 +376,17 @@ msgstr "! לא ניתן לטעון את הצלמית \"%s\""
 msgid "Unknown filetype"
 msgstr "סוג קובץ לא מוכר"
 
-#: mcomix/keybindings.py:36
-#: mcomix/ui.py:40
+#: mcomix/keybindings.py:36 mcomix/ui.py:40
 msgid "Previous page"
 msgstr "עמוד קודם"
 
-#: mcomix/keybindings.py:36
-#: mcomix/keybindings.py:37
-#: mcomix/keybindings.py:58
-#: mcomix/keybindings.py:59
-#: mcomix/keybindings.py:60
-#: mcomix/keybindings.py:61
-#: mcomix/keybindings.py:63
-#: mcomix/keybindings.py:64
+#: mcomix/keybindings.py:36 mcomix/keybindings.py:37 mcomix/keybindings.py:58
+#: mcomix/keybindings.py:59 mcomix/keybindings.py:60 mcomix/keybindings.py:61
+#: mcomix/keybindings.py:63 mcomix/keybindings.py:64
 msgid "Reading"
 msgstr "קורא"
 
-#: mcomix/keybindings.py:37
-#: mcomix/ui.py:38
+#: mcomix/keybindings.py:37 mcomix/ui.py:38
 msgid "Next page"
 msgstr "עמוד הבא"
 
@@ -392,18 +394,10 @@ msgstr "עמוד הבא"
 msgid "Scroll to bottom left"
 msgstr "גלילה אל שמאל תחתון"
 
-#: mcomix/keybindings.py:39
-#: mcomix/keybindings.py:40
-#: mcomix/keybindings.py:41
-#: mcomix/keybindings.py:43
-#: mcomix/keybindings.py:44
-#: mcomix/keybindings.py:45
-#: mcomix/keybindings.py:47
-#: mcomix/keybindings.py:48
-#: mcomix/keybindings.py:49
-#: mcomix/keybindings.py:54
-#: mcomix/keybindings.py:55
-#: mcomix/keybindings.py:56
+#: mcomix/keybindings.py:39 mcomix/keybindings.py:40 mcomix/keybindings.py:41
+#: mcomix/keybindings.py:43 mcomix/keybindings.py:44 mcomix/keybindings.py:45
+#: mcomix/keybindings.py:47 mcomix/keybindings.py:48 mcomix/keybindings.py:49
+#: mcomix/keybindings.py:54 mcomix/keybindings.py:55 mcomix/keybindings.py:56
 msgid "Page orientation and zoom"
 msgstr "כיוון הדפסה וזום של עמוד"
 
@@ -449,7 +443,7 @@ msgstr "יציאה ממסך־מלא"
 msgid "Toggle fullscreen"
 msgstr "תצוגת מסך־מלא"
 
-#: mcomix/keybindings.py:52
+#: mcomix/keybindings.py:52 mcomix/preferences_dialog.py:336
 msgid "User interface"
 msgstr "ממשק משתמש"
 
@@ -502,564 +496,592 @@ msgstr "ממשק משתמש"
 msgid "Keybinding for \"%(action)s\" overrides hotkey for another action."
 msgstr ""
 
-#: mcomix/keybindings.py:145
+#: mcomix/keybindings.py:155
 #, python-format
 msgid "Couldn't load keybindings: %s"
 msgstr ""
 
 # ! לא ניתן למצוא pysqlite2 ולא sqlite3.
-#: mcomix/last_read_page.py:11
-#: mcomix/library/backend.py:19
+#: mcomix/last_read_page.py:14 mcomix/library/backend.py:19
 msgid "! Could neither find pysqlite2 nor sqlite3."
 msgstr "! Could neither find pysqlite2 nor sqlite3."
 
-#: mcomix/main.py:926
+#: mcomix/main.py:927
 msgid "SLIDESHOW"
 msgstr "מצגת"
 
-#: mcomix/main.py:1006
+#: mcomix/main.py:988
 msgid "Save page as"
 msgstr "שמירת עמוד בשם"
 
-#: mcomix/main.py:1025
+#: mcomix/main.py:1008
 #, python-format
 msgid "Delete \"%s\"?"
 msgstr "האם למחוק את \"%s\"?"
 
-#: mcomix/main.py:1027
+#: mcomix/main.py:1009
 msgid "The file will be deleted from your harddisk."
 msgstr "הקובץ יימחק מן הכונן הקשיח שלך."
 
-#: mcomix/pageselect.py:14
-#: mcomix/ui.py:93
-#: mcomix/ui.py:94
+# אל תשאל אותי שנית.
+#: mcomix/message_dialog.py:28
+msgid "Do not ask again."
+msgstr "לא לשאול אותי שנית."
+
+#: mcomix/pageselect.py:17 mcomix/ui.py:95 mcomix/ui.py:96
 msgid "_Go"
 msgstr "_מעבר"
 
-#: mcomix/pageselect.py:15
+#: mcomix/pageselect.py:18
 msgid "_Cancel"
 msgstr "_ביטול"
 
-#: mcomix/pageselect.py:37
+#: mcomix/pageselect.py:40
 #, python-format
 msgid " of %s"
 msgstr " של %s"
 
-#: mcomix/preferences_dialog.py:21
+#: mcomix/preferences_dialog.py:24
 msgid "Preferences"
 msgstr "העדפות"
 
 # בחירות
-#: mcomix/preferences_dialog.py:23
+#: mcomix/preferences_dialog.py:26
 msgid "Clear dialog choices"
 msgstr "איפוס ברירות דו־שיח"
 
-#: mcomix/preferences_dialog.py:24
-msgid "Clears all dialog choices that you have previously chosen not to be asked again."
+#: mcomix/preferences_dialog.py:27
+msgid ""
+"Clears all dialog choices that you have previously chosen not to be asked "
+"again."
 msgstr "איפוס כל ברירות דו־שיח שבעבר בחרת שלא להישאל עליהם בשנית."
 
-#: mcomix/preferences_dialog.py:40
+#: mcomix/preferences_dialog.py:44
 msgid "Appearance"
 msgstr "הופעה"
 
-#: mcomix/preferences_dialog.py:42
+#: mcomix/preferences_dialog.py:46
 msgid "Behaviour"
 msgstr "התנהגות"
 
-#: mcomix/preferences_dialog.py:44
+#: mcomix/preferences_dialog.py:48
 msgid "Display"
 msgstr "תצוגה"
 
-#: mcomix/preferences_dialog.py:46
+#: mcomix/preferences_dialog.py:50
 msgid "Advanced"
 msgstr "מתקדם"
 
-#: mcomix/preferences_dialog.py:55
+#: mcomix/preferences_dialog.py:59
 msgid "Background"
 msgstr "רקע"
 
-#: mcomix/preferences_dialog.py:58
+#: mcomix/preferences_dialog.py:62
 msgid "Use this colour as background:"
 msgstr "שימוש בצבע זה כרקע:"
 
-#: mcomix/preferences_dialog.py:60
+#: mcomix/preferences_dialog.py:64
 msgid "Always use this selected colour as the background colour."
 msgstr "שימוש תמידי בצבע הנבחר כצבע הרקע."
 
-#: mcomix/preferences_dialog.py:68
-#: mcomix/preferences_dialog.py:89
+#: mcomix/preferences_dialog.py:72 mcomix/preferences_dialog.py:93
 msgid "Use dynamic background colour"
 msgstr "שימוש בצבע רקע משתנה (דינמי)"
 
 # שמוצגת
-#: mcomix/preferences_dialog.py:72
+#: mcomix/preferences_dialog.py:76
 msgid "Automatically pick a background colour that fits the viewed image."
 msgstr "בחירה אוטומטית של צבע רקע שמתאים לתמונה שנצפית."
 
-#: mcomix/preferences_dialog.py:76
+#: mcomix/preferences_dialog.py:80
 msgid "Thumbnails"
 msgstr "תמונות־ציפורן"
 
-#: mcomix/preferences_dialog.py:79
+#: mcomix/preferences_dialog.py:83
 msgid "Use this colour as the thumbnail background:"
 msgstr "שימוש בצבע זה כרקע עבור תמונות־ציפורן:"
 
-#: mcomix/preferences_dialog.py:81
+#: mcomix/preferences_dialog.py:85
 msgid "Always use this selected colour as the thumbnail background colour."
 msgstr "שימוש תמידי בצבע הנבחר כצבע רקע תמונות־הציפורן."
 
 # למרקע
-#: mcomix/preferences_dialog.py:92
-msgid "Automatically use the colour that fits the viewed image for the thumbnail background."
+#: mcomix/preferences_dialog.py:96
+msgid ""
+"Automatically use the colour that fits the viewed image for the thumbnail "
+"background."
 msgstr "בחירה אוטומטית של צבע רקע שמתאים לרקע תמונות־הציפורן."
 
 # on the side of, near
-#: mcomix/preferences_dialog.py:98
+#: mcomix/preferences_dialog.py:102
 msgid "Show page numbers on thumbnails"
 msgstr "הצגת מספרי עמודים לצד תמונות־ציפורן"
 
-#: mcomix/preferences_dialog.py:106
+#: mcomix/preferences_dialog.py:110
 msgid "Use archive thumbnail as application icon"
 msgstr "שימוש בתמונות־ציפורן כצלמית יישום"
 
-#: mcomix/preferences_dialog.py:108
-msgid "By enabling this setting, the first page of a book will be used as application icon instead of the standard icon."
-msgstr "בהתרת הגדרה זו, MComix יעשה שימוש בעמוד החוברת הראשון כצלמית יישום במקום הצלמית האופיינית לו."
+#: mcomix/preferences_dialog.py:112
+msgid ""
+"By enabling this setting, the first page of a book will be used as "
+"application icon instead of the standard icon."
+msgstr ""
+"בהתרת הגדרה זו, MComix יעשה שימוש בעמוד החוברת הראשון כצלמית יישום במקום "
+"הצלמית האופיינית לו."
 
-#: mcomix/preferences_dialog.py:115
+#: mcomix/preferences_dialog.py:119
 msgid "Thumbnail size (in pixels):"
 msgstr "גודל תמונות־ציפורן (בפיקסלים):"
 
-#: mcomix/preferences_dialog.py:122
+#: mcomix/preferences_dialog.py:126
 msgid "Transparency"
 msgstr "שקיפות"
 
-#: mcomix/preferences_dialog.py:124
+#: mcomix/preferences_dialog.py:128
 msgid "Use checkered background for transparent images"
 msgstr "שימוש ברקע משובץ עבור תמונות שקופות"
 
 # Omitted: instead
-#: mcomix/preferences_dialog.py:130
-msgid "Use a grey checkered background for transparent images. If this preference is unset, the background is plain white instead."
-msgstr "שימוש ברקע אפור משובץ עבור תמונות שקופות. במידה והעדפה זו אינה מוגדרת, צבע הרקע יהיה לבן."
+#: mcomix/preferences_dialog.py:134
+msgid ""
+"Use a grey checkered background for transparent images. If this preference "
+"is unset, the background is plain white instead."
+msgstr ""
+"שימוש ברקע אפור משובץ עבור תמונות שקופות. במידה והעדפה זו אינה מוגדרת, צבע "
+"הרקע יהיה לבן."
 
-#: mcomix/preferences_dialog.py:140
+#: mcomix/preferences_dialog.py:144
 msgid "Scroll"
 msgstr "גלילה"
 
 # שימוש בגלילה חכמה עם המקש רווח
-#: mcomix/preferences_dialog.py:142
-msgid "Use smart space key scrolling"
+#: mcomix/preferences_dialog.py:146
+#, fuzzy
+msgid "Use smart scrolling"
 msgstr "שימוש בגלילה חכמה עם מקש־הרווח"
 
-#: mcomix/preferences_dialog.py:147
-msgid "Use smart scrolling with the space key. Normally the space key scrolls only right down (or up when shift is pressed), but with this preference set it also scrolls sideways and so tries to follow the natural reading order of the comic book."
-msgstr "שימוש בגלילה חכמה עם מקש־הרווח. בדרך כלל הגלילות עם מקש־הרווח הינה כלפי מטה בלבד (או מעלה בעת שהמקש Shift לחוץ), אולם בהגדרת העדפה זו הגלילה תהא גם לצדדים ובכך MComix ינסה לעקוב אחר סדר הקריאה הטבעי של חוברת הקומיקס."
-
 #: mcomix/preferences_dialog.py:151
+#, fuzzy
+msgid ""
+"With this preference set, the space key and mouse wheel do not only scroll "
+"down or up, but also sideways and so try to follow the natural reading order "
+"of the comic book."
+msgstr ""
+"שימוש בגלילה חכמה עם מקש־הרווח. בדרך כלל הגלילות עם מקש־הרווח הינה כלפי מטה "
+"בלבד (או מעלה בעת שהמקש Shift לחוץ), אולם בהגדרת העדפה זו הגלילה תהא גם "
+"לצדדים ובכך MComix ינסה לעקוב אחר סדר הקריאה הטבעי של חוברת הקומיקס."
+
+#: mcomix/preferences_dialog.py:157
 msgid "Flip pages when scrolling off the edges of the page"
 msgstr "דפדוף עמודים בעת גלילה מחוץ לקצוות של העמוד"
 
 # הדבר, העניין
 # על מנת שהעמוד ידופדף
 # Do not use this character ״
-#: mcomix/preferences_dialog.py:156
-msgid "Flip pages when scrolling \"off the page\" with the scroll wheel or with the arrow keys. It takes n consecutive \"steps\" with the scroll wheel or the arrow keys for the pages to be flipped."
-msgstr "דפדוף עמודים בעת גלילה \"מחוץ לקצוות\" באמצעות גולל העכבר או באמצעות מקשי החיצים. הדבר מצריך מספר \"צעדים\" עקביים עם גולל העכבר או מקשי החיצים על מנת לדפדף בעמודים."
+#: mcomix/preferences_dialog.py:162
+msgid ""
+"Flip pages when scrolling \"off the page\" with the scroll wheel or with the "
+"arrow keys. It takes n consecutive \"steps\" with the scroll wheel or the "
+"arrow keys for the pages to be flipped."
+msgstr ""
+"דפדוף עמודים בעת גלילה \"מחוץ לקצוות\" באמצעות גולל העכבר או באמצעות מקשי "
+"החיצים. הדבר מצריך מספר \"צעדים\" עקביים עם גולל העכבר או מקשי החיצים על מנת "
+"לדפדף בעמודים."
 
-#: mcomix/preferences_dialog.py:160
+#: mcomix/preferences_dialog.py:166
 msgid "Automatically open the next archive"
 msgstr "פתיחה אוטומטית של הארכיון הבא"
 
 # past = מעבר = beyond
-#: mcomix/preferences_dialog.py:165
-msgid "Automatically open the next archive in the directory when flipping past the last page, or the previous archive when flipping past the first page."
-msgstr "פתיחה אוטומטית של הארכיון הבא שבמדור הקבצים בעת דפדוף מעבר לעמוד האחרון, או של הארכיון הקודם בעת דפדוף מעבר לעמוד הראשון."
+#: mcomix/preferences_dialog.py:171
+msgid ""
+"Automatically open the next archive in the directory when flipping past the "
+"last page, or the previous archive when flipping past the first page."
+msgstr ""
+"פתיחה אוטומטית של הארכיון הבא שבמדור הקבצים בעת דפדוף מעבר לעמוד האחרון, או "
+"של הארכיון הקודם בעת דפדוף מעבר לעמוד הראשון."
 
-#: mcomix/preferences_dialog.py:169
+#: mcomix/preferences_dialog.py:175
 msgid "Automatically open next directory"
 msgstr "פתיחה אוטומטית של המדור הבא"
 
 # past = מעבר = beyond
-#: mcomix/preferences_dialog.py:174
-msgid "Automatically open the first file in the next sibling directory when flipping past the last page of the last file in a directory, or the previous directory when flipping past the first page of the first file."
-msgstr "פתיחה אוטומטית של הקובץ הבא שבמדור הקבצים המקביל הבא בעת דפדוף מעבר לעמוד האחרון, או של הקובץ האחרון שבמדור, או המדור הקודם בעת דפדוף מעבר לעמוד הראשון של הקובץ הראשון."
+#: mcomix/preferences_dialog.py:180
+msgid ""
+"Automatically open the first file in the next sibling directory when "
+"flipping past the last page of the last file in a directory, or the previous "
+"directory when flipping past the first page of the first file."
+msgstr ""
+"פתיחה אוטומטית של הקובץ הבא שבמדור הקבצים המקביל הבא בעת דפדוף מעבר לעמוד "
+"האחרון, או של הקובץ האחרון שבמדור, או המדור הקודם בעת דפדוף מעבר לעמוד "
+"הראשון של הקובץ הראשון."
 
 # בכל לחיצה
-#: mcomix/preferences_dialog.py:177
+#: mcomix/preferences_dialog.py:183
 msgid "Number of pixels to scroll per arrow key press:"
 msgstr "מספר פיקסלים לגולל לכל לחיצה על מקש חץ:"
 
-#: mcomix/preferences_dialog.py:183
+#: mcomix/preferences_dialog.py:189
 msgid "Set the number of pixels to scroll on a page when using the arrow keys."
 msgstr "הגדרת מספר הפיקסלים לגולל בעמוד בעת שימוש במקשי החצים."
 
-#: mcomix/preferences_dialog.py:186
+#: mcomix/preferences_dialog.py:192
 msgid "Number of pixels to scroll per mouse wheel turn:"
 msgstr "מספר פיקסלים לגולל לכל סיבוב של גלגל העכבר:"
 
-#: mcomix/preferences_dialog.py:192
+#: mcomix/preferences_dialog.py:198
 msgid "Set the number of pixels to scroll on a page when using a mouse wheel."
 msgstr "הגדרת מספר הפיקסלים לגולל בעמוד בעת שימוש בגלגל העכבר."
 
-#: mcomix/preferences_dialog.py:195
+#: mcomix/preferences_dialog.py:201
 msgid "Number of \"steps\" to take before flipping the page:"
 msgstr "מספר של \"צעדים\" שיש לקחת לפני דפדוף העמוד:"
 
 # שדרושים/שנצרכים
-#: mcomix/preferences_dialog.py:201
-msgid "Set the number of \"steps\" needed to flip to the next or previous page.  Less steps will allow for very fast page turning but you might find yourself accidentally turning pages."
-msgstr "הגדרת מספר של \"צעדים\" שדרושים כדי לדפדף אל העמוד הבא או הקודם. פחות צעדים יקנו דפדוף מהיר מאוד של עמודים אולם יש סיכוי שתמצא/י את עצמך מעלעל/ת עמודים באופן מקרי ובלתי מכוון."
+#: mcomix/preferences_dialog.py:207
+msgid ""
+"Set the number of \"steps\" needed to flip to the next or previous page.  "
+"Less steps will allow for very fast page turning but you might find yourself "
+"accidentally turning pages."
+msgstr ""
+"הגדרת מספר של \"צעדים\" שדרושים כדי לדפדף אל העמוד הבא או הקודם. פחות צעדים "
+"יקנו דפדוף מהיר מאוד של עמודים אולם יש סיכוי שתמצא/י את עצמך מעלעל/ת עמודים "
+"באופן מקרי ובלתי מכוון."
 
-#: mcomix/preferences_dialog.py:204
-#: mcomix/ui.py:104
+#: mcomix/preferences_dialog.py:210 mcomix/ui.py:106
 msgid "Double page mode"
 msgstr "מצב עמוד כפול"
 
-#: mcomix/preferences_dialog.py:207
+#: mcomix/preferences_dialog.py:213
 msgid "Flip two pages in double page mode"
 msgstr "דפדוף שני עמודים במצב של עמוד כפול"
 
-#: mcomix/preferences_dialog.py:212
-msgid "Flip two pages, instead of one, each time we flip pages in double page mode."
-msgstr "דפדוף שני עמודים, במקום אחד, בכל פעם שאנחנו מדפדפים עמודים במצב של עמוד כפול."
+#: mcomix/preferences_dialog.py:218
+msgid ""
+"Flip two pages, instead of one, each time we flip pages in double page mode."
+msgstr ""
+"דפדוף שני עמודים, במקום אחד, בכל פעם שאנחנו מדפדפים עמודים במצב של עמוד כפול."
 
-#: mcomix/preferences_dialog.py:215
+#: mcomix/preferences_dialog.py:221
 msgid "Show only one page where appropriate:"
 msgstr "הצגת עמוד אחד בלבד במקום שהדבר הולם:"
 
-#: mcomix/preferences_dialog.py:218
-msgid "When showing the first page of an archive, or an image's width exceeds its height, only a single page will be displayed."
-msgstr "בעת הצגת העמוד הראשון של ארכיון, או כשרוחב התמונה עולה על גובהה, רק עמוד בודד יוצג."
+#: mcomix/preferences_dialog.py:224
+msgid ""
+"When showing the first page of an archive, or an image's width exceeds its "
+"height, only a single page will be displayed."
+msgstr ""
+"בעת הצגת העמוד הראשון של ארכיון, או כשרוחב התמונה עולה על גובהה, רק עמוד "
+"בודד יוצג."
 
-#: mcomix/preferences_dialog.py:221
+#: mcomix/preferences_dialog.py:227
 msgid "Files"
 msgstr "קבצים"
 
-#: mcomix/preferences_dialog.py:224
+#: mcomix/preferences_dialog.py:230
 msgid "Automatically open the last viewed file on startup"
 msgstr "פתיחה אוטומטית של הקובץ האחרון בעת הפעלה"
 
 # באחרונה או בפעם האחרונה?
-#: mcomix/preferences_dialog.py:229
-msgid "Automatically open, on startup, the file that was open when MComix was last closed."
-msgstr "פתיחה אוטומטית, בזמן הפעלה, של הקובץ שהיה פתוח בזמן שהיישום MComix נסגר באחרונה."
+#: mcomix/preferences_dialog.py:235
+msgid ""
+"Automatically open, on startup, the file that was open when MComix was last "
+"closed."
+msgstr ""
+"פתיחה אוטומטית, בזמן הפעלה, של הקובץ שהיה פתוח בזמן שהיישום MComix נסגר "
+"באחרונה."
 
 # זה לא ה-קבצים מאחר שמדובר כאן ברשימה של קבצים ולא בקבצים עצמם שנפתחו לאחרונה!
-#: mcomix/preferences_dialog.py:233
+#: mcomix/preferences_dialog.py:239
 msgid "Store information about recently opened files:"
 msgstr "אחסון מידע אודות קבצים שנפתחו לאחרונה:"
 
 # הרשימת המשותפת של הקבצים שנפתחו לאחרונה
-#: mcomix/preferences_dialog.py:236
-msgid "Add information about all files opened from within MComix to the shared recent files list."
-msgstr "הוספת מידע אודות כל הקבצים שנפתחו מתוך MComix אל רשימת הקבצים האחרונים המשותפת."
+#: mcomix/preferences_dialog.py:242
+msgid ""
+"Add information about all files opened from within MComix to the shared "
+"recent files list."
+msgstr ""
+"הוספת מידע אודות כל הקבצים שנפתחו מתוך MComix אל רשימת הקבצים האחרונים "
+"המשותפת."
 
-#: mcomix/preferences_dialog.py:246
+#: mcomix/preferences_dialog.py:252
 msgid "Fullscreen"
 msgstr "מסך־מלא"
 
 # שימוש במסך
-#: mcomix/preferences_dialog.py:248
+#: mcomix/preferences_dialog.py:254
 msgid "Use fullscreen by default"
 msgstr "החלת מסך־מלא כברירת־מחדל"
 
-#: mcomix/preferences_dialog.py:255
+#: mcomix/preferences_dialog.py:261
 msgid "Automatically hide all toolbars in fullscreen"
 msgstr "הסתרה אוטומטית של כל סרגלי הכלים במסך־מלא"
 
-#: mcomix/preferences_dialog.py:261
+#: mcomix/preferences_dialog.py:267 mcomix/ui.py:144
+#, fuzzy
+msgid "Fit to size mode"
+msgstr "מצב התאמה לרוחב"
+
+#: mcomix/preferences_dialog.py:269
+#, fuzzy
+msgid "Fit to width or height:"
+msgstr "מצב התאמה לרוחב"
+
+#: mcomix/preferences_dialog.py:273
+msgid "Fixed size for this mode:"
+msgstr ""
+
+#: mcomix/preferences_dialog.py:281
 msgid "Slideshow"
 msgstr "מצגת"
 
-#: mcomix/preferences_dialog.py:262
+#: mcomix/preferences_dialog.py:282
 msgid "Slideshow delay (in seconds):"
 msgstr "שיהוי מצגת (בשניות):"
 
 # מדרג
-#: mcomix/preferences_dialog.py:271
+#: mcomix/preferences_dialog.py:291
 msgid "Slideshow step (in pixels):"
 msgstr "צעדי מצגת (בשניות):"
 
-#: mcomix/preferences_dialog.py:279
-msgid "Specify the number of pixels to scroll while in slideshow mode. A positive value will scroll forward, a negative value will scroll backwards, and a value of 0 will cause the slideshow to always flip to a new page."
-msgstr "הגדרת מספר פיקסלים לגולל במהלך מצב מצגת. ערך חיובי יגולל הלאה, ערך שלילי יגולל לאחור, וערך של 0 יגרום למצגת לדפדף תמיד אל עמוד חדש."
+#: mcomix/preferences_dialog.py:299
+msgid ""
+"Specify the number of pixels to scroll while in slideshow mode. A positive "
+"value will scroll forward, a negative value will scroll backwards, and a "
+"value of 0 will cause the slideshow to always flip to a new page."
+msgstr ""
+"הגדרת מספר פיקסלים לגולל במהלך מצב מצגת. ערך חיובי יגולל הלאה, ערך שלילי "
+"יגולל לאחור, וערך של 0 יגרום למצגת לדפדף תמיד אל עמוד חדש."
 
-#: mcomix/preferences_dialog.py:283
+#: mcomix/preferences_dialog.py:303
 msgid "During a slideshow automatically open the next archive"
 msgstr "פתיחה אוטומטית של הארכיון הבא במהלך מצגת."
 
-#: mcomix/preferences_dialog.py:288
-msgid "While in slideshow mode allow the next archive to automatically be opened."
+#: mcomix/preferences_dialog.py:308
+msgid ""
+"While in slideshow mode allow the next archive to automatically be opened."
 msgstr "פתיחה אוטומטית של הארכיון הבא בהיותך במצב מצגת."
 
 # סיבוב
-#: mcomix/preferences_dialog.py:291
+#: mcomix/preferences_dialog.py:311
 msgid "Rotation"
 msgstr "רוטציה"
 
-#: mcomix/preferences_dialog.py:293
+#: mcomix/preferences_dialog.py:313
 msgid "Automatically rotate images according to their metadata"
 msgstr "סיבוב אוטומטי של תמונות בהתאם לנתוני ה־metadata הטמונים בתוכן"
 
-#: mcomix/preferences_dialog.py:298
-msgid "Automatically rotate images when an orientation is specified in the image metadata, such as in an Exif tag."
-msgstr "סיבוב אוטומטי של תמונות במידה ומצוין כיוון בנתוני ה־metadata של התמונה, כמו למשל בתווית Exif."
+#: mcomix/preferences_dialog.py:318
+msgid ""
+"Automatically rotate images when an orientation is specified in the image "
+"metadata, such as in an Exif tag."
+msgstr ""
+"סיבוב אוטומטי של תמונות במידה ומצוין כיוון בנתוני ה־metadata של התמונה, כמו "
+"למשל בתווית Exif."
 
-#: mcomix/preferences_dialog.py:309
-msgid "User interface language"
-msgstr "שפת ממשק המשתמש"
+#: mcomix/preferences_dialog.py:321
+msgid "Image quality"
+msgstr ""
+
+# Tranlated to: Manga mode (Japanese comic brochure)
+#: mcomix/preferences_dialog.py:322
+#, fuzzy
+msgid "Scaling mode"
+msgstr "מצב מנגה (חוברת קומיקס יפנית)"
+
+#: mcomix/preferences_dialog.py:325
+msgid ""
+"Changes how images are scaled. Slower algorithms result in higher quality "
+"resizing, but longer page loading times."
+msgstr ""
 
 # עליך לאתחל את היישום
-#: mcomix/preferences_dialog.py:310
+#: mcomix/preferences_dialog.py:337
 msgid "Language (needs restart):"
 msgstr "שפה (עליך לאתחל את היישום):"
 
-#: mcomix/preferences_dialog.py:314
+#: mcomix/preferences_dialog.py:341
+msgid "Escape key closes program"
+msgstr ""
+
+#: mcomix/preferences_dialog.py:346
+msgid ""
+"When active, the ESC key closes the program, instead of only disabling "
+"fullscreen mode."
+msgstr ""
+
+#: mcomix/preferences_dialog.py:350
 msgid "File order"
 msgstr "מסדר קבצים"
 
-#: mcomix/preferences_dialog.py:316
+#: mcomix/preferences_dialog.py:352
 msgid "Order files by:"
 msgstr "סידור קבצים לפי:"
 
-#: mcomix/preferences_dialog.py:319
+#: mcomix/preferences_dialog.py:355
 msgid "Cache"
 msgstr "מטמון"
 
-#: mcomix/preferences_dialog.py:322
+#: mcomix/preferences_dialog.py:358
 msgid "Store thumbnails for opened files"
 msgstr "אחסון תמונות־ציפורן עבור קבצים פתוחים"
 
-#: mcomix/preferences_dialog.py:327
-msgid "Store thumbnails for opened files according to the freedesktop.org specification. These thumbnails are shared by many other applications, such as most file managers."
-msgstr "אחסון תמונות־ציפורן עבור קבצים פתוחים בהתאם למפרט של freedesktop.org. תמונות־ציפורן אלה משותפות על־ידי יישומים רבים אחרים, כגון רוב מנהלי הקבצים."
+#: mcomix/preferences_dialog.py:363
+msgid ""
+"Store thumbnails for opened files according to the freedesktop.org "
+"specification. These thumbnails are shared by many other applications, such "
+"as most file managers."
+msgstr ""
+"אחסון תמונות־ציפורן עבור קבצים פתוחים בהתאם למפרט של freedesktop.org. תמונות־"
+"ציפורן אלה משותפות על־ידי יישומים רבים אחרים, כגון רוב מנהלי הקבצים."
 
-#: mcomix/preferences_dialog.py:330
+#: mcomix/preferences_dialog.py:366
 msgid "Maximum number of pages to store in the cache:"
 msgstr "מספר עמודים מרבי לאחסון בתוך המטמון:"
 
 # לחלוטין
-#: mcomix/preferences_dialog.py:336
-msgid "Set the max number of pages to cache. A value of -1 will cache the entire archive."
+#: mcomix/preferences_dialog.py:372
+msgid ""
+"Set the max number of pages to cache. A value of -1 will cache the entire "
+"archive."
 msgstr "הגדרת מספר העמודים המרבי להטמנה. ערך של 1- יטמין את הארכיון בשלמותו."
 
-#: mcomix/preferences_dialog.py:339
+#: mcomix/preferences_dialog.py:375
 msgid "Magnifying Lens"
 msgstr "עדשת מגדלת"
 
-#: mcomix/preferences_dialog.py:341
+#: mcomix/preferences_dialog.py:377
 msgid "Magnifying lens size (in pixels):"
 msgstr "גודל עדשת המגדלת (בפיקסלים):"
 
 # עם פיקסלים רבים בצדדיה
-#: mcomix/preferences_dialog.py:347
-msgid "Set the size of the magnifying lens. It is a square with a side of this many pixels."
-msgstr "הגדרת גודל עדשת המגדלת. כעדשת המגדלת היא ריבוע עם מספר פיקסלים זה בצידיה."
+#: mcomix/preferences_dialog.py:383
+msgid ""
+"Set the size of the magnifying lens. It is a square with a side of this many "
+"pixels."
+msgstr ""
+"הגדרת גודל עדשת המגדלת. כעדשת המגדלת היא ריבוע עם מספר פיקסלים זה בצידיה."
 
 # יחס ההגדלה
-#: mcomix/preferences_dialog.py:349
+#: mcomix/preferences_dialog.py:385
 msgid "Magnification factor:"
 msgstr "מידת ההגדלה:"
 
-#: mcomix/preferences_dialog.py:356
+#: mcomix/preferences_dialog.py:392
 msgid "Set the magnification factor of the magnifying lens."
 msgstr "הגדרת מידת ההגדלה של עדשת המגדלת."
 
-#: mcomix/preferences_dialog.py:360
+#: mcomix/preferences_dialog.py:396
 msgid "Comment extensions:"
 msgstr "סיומות הערה:"
 
 # לטפל, לנהוג
-#: mcomix/preferences_dialog.py:367
-msgid "Treat all files found within archives, that have one of these file endings, as comments."
-msgstr "התייחסות אל כל הקבצים הנמצאים בתוך ארכיונים, שלהם יש אחת מסיומות הקבצים הללו, כהערות."
+#: mcomix/preferences_dialog.py:403
+msgid ""
+"Treat all files found within archives, that have one of these file endings, "
+"as comments."
+msgstr ""
+"התייחסות אל כל הקבצים הנמצאים בתוך ארכיונים, שלהם יש אחת מסיומות הקבצים "
+"הללו, כהערות."
 
 # איתור אוטומטי
-#: mcomix/preferences_dialog.py:387
+#: mcomix/preferences_dialog.py:425
 msgid "Auto-detect (Default)"
 msgstr "אוטומטית (ברירת־מחדל)"
 
-# קטלנית
-#: mcomix/preferences_dialog.py:388
-msgid "Catalan"
-msgstr "Català"
-
-# צ'כית
-#: mcomix/preferences_dialog.py:389
-msgid "Czech"
-msgstr "Česky"
-
-# גרמנית
-#: mcomix/preferences_dialog.py:390
-msgid "German"
-msgstr "Deutsch"
-
-# יוונית
-#: mcomix/preferences_dialog.py:391
-msgid "Greek"
-msgstr "ελληνικά"
-
-# אנגלית
-#: mcomix/preferences_dialog.py:392
-msgid "English"
-msgstr "English"
-
-# ספרדית
-#: mcomix/preferences_dialog.py:393
-msgid "Spanish"
-msgstr "Español"
-
-# פרסית
-#: mcomix/preferences_dialog.py:394
-msgid "Persian"
-msgstr "فارسی"
-
-# צרפתית
-#: mcomix/preferences_dialog.py:395
-msgid "French"
-msgstr "Français"
-
-# גליציאנית
-#: mcomix/preferences_dialog.py:396
-msgid "Galician"
-msgstr "Galego"
-
-# קרואטית
-#: mcomix/preferences_dialog.py:397
-msgid "Croatian"
-msgstr "Hrvatski"
-
-# הונגרית
-#: mcomix/preferences_dialog.py:398
-msgid "Hungarian"
-msgstr "Magyar"
-
-# אינדונזית
-#: mcomix/preferences_dialog.py:399
-msgid "Indonesian"
-msgstr "Bahasa"
-
-# איטלקית
-#: mcomix/preferences_dialog.py:400
-msgid "Italian"
-msgstr "Italiano"
-
-# יפנית
-#: mcomix/preferences_dialog.py:401
-msgid "Japanese"
-msgstr "日本語"
-
-# קוריאנית
-#: mcomix/preferences_dialog.py:402
-msgid "Korean"
-msgstr "한국어"
-
-# הולנדית
-#: mcomix/preferences_dialog.py:403
-msgid "Dutch"
-msgstr "Nederlands"
-
-# פולנית
-#: mcomix/preferences_dialog.py:404
-msgid "Polish"
-msgstr "Polski"
-
-# פורטוגזית
-#: mcomix/preferences_dialog.py:405
-msgid "Portuguese"
-msgstr "Português"
-
-# רוסית
-#: mcomix/preferences_dialog.py:406
-msgid "Russian"
-msgstr "Русский"
-
-# שוודית
-#: mcomix/preferences_dialog.py:407
-msgid "Swedish"
-msgstr "Svenska"
-
-# אוקראינית
-#: mcomix/preferences_dialog.py:408
-msgid "Ukrainian"
-msgstr "украї́нська"
-
-# 中文
-#: mcomix/preferences_dialog.py:409
-msgid "Chinese (simplified)"
-msgstr "סינית (מפושטת)"
-
-# 文言
-#: mcomix/preferences_dialog.py:410
-msgid "Chinese (traditional)"
-msgstr "סינית (מסורתית)"
-
-#: mcomix/preferences_dialog.py:429
-#: mcomix/preferences_dialog.py:499
+#: mcomix/preferences_dialog.py:468 mcomix/preferences_dialog.py:560
 msgid "Never"
 msgstr "לעולם לא"
 
-#: mcomix/preferences_dialog.py:430
+#: mcomix/preferences_dialog.py:469
 msgid "Only for title pages"
 msgstr "עבור כותרות עמודים בלבד"
 
-#: mcomix/preferences_dialog.py:431
+#: mcomix/preferences_dialog.py:470
 msgid "Only for wide images"
 msgstr "עבור תמונות רחבות בלבד"
 
-#: mcomix/preferences_dialog.py:432
+#: mcomix/preferences_dialog.py:471
 msgid "Always"
 msgstr "תמיד"
 
-#: mcomix/preferences_dialog.py:451
+#: mcomix/preferences_dialog.py:490
+#, fuzzy
+msgid "Fit to width"
+msgstr "מצב התאמה לרוחב"
+
+#: mcomix/preferences_dialog.py:491
+#, fuzzy
+msgid "Fit to height"
+msgstr "מצב התאמה לגובה"
+
+#: mcomix/preferences_dialog.py:512
 msgid "No sorting"
 msgstr "ללא מיון"
 
-#: mcomix/preferences_dialog.py:452
+#: mcomix/preferences_dialog.py:513
 msgid "File name"
 msgstr "שם קובץ"
 
-#: mcomix/preferences_dialog.py:453
-#: mcomix/library/book_area.py:163
+#: mcomix/preferences_dialog.py:514 mcomix/library/book_area.py:164
 msgid "File size"
 msgstr "גודל קובץ"
 
-#: mcomix/preferences_dialog.py:454
+#: mcomix/preferences_dialog.py:515
 msgid "Last modified"
 msgstr "שונה לאחרונה"
 
-#: mcomix/preferences_dialog.py:460
-#: mcomix/library/book_area.py:167
+#: mcomix/preferences_dialog.py:521 mcomix/library/book_area.py:168
 msgid "Ascending"
 msgstr "סדר מיון עולה"
 
-#: mcomix/preferences_dialog.py:461
-#: mcomix/library/book_area.py:169
+#: mcomix/preferences_dialog.py:522 mcomix/library/book_area.py:170
 msgid "Descending"
 msgstr "סדר מיון יורד"
 
-#: mcomix/preferences_dialog.py:471
-msgid "Files will be opened and displayed according to the sort order specified here. This option does not affect ordering within archives."
-msgstr "קבצים יפתחו ויוצגו בהתאם אל סדר המיון שמצוין כאן. אפשרות זו לא משפיעה על הסדר שכבר מצוי בתוך ארכיונים."
+#: mcomix/preferences_dialog.py:532
+msgid ""
+"Files will be opened and displayed according to the sort order specified "
+"here. This option does not affect ordering within archives."
+msgstr ""
+"קבצים יפתחו ויוצגו בהתאם אל סדר המיון שמצוין כאן. אפשרות זו לא משפיעה על "
+"הסדר שכבר מצוי בתוך ארכיונים."
 
-#: mcomix/preferences_dialog.py:500
+#: mcomix/preferences_dialog.py:561
 msgid "Only file names"
 msgstr "שמות קבצים בלבד"
 
 # האחרון שנקרא
-#: mcomix/preferences_dialog.py:501
+#: mcomix/preferences_dialog.py:562
 msgid "File names and last read page"
 msgstr "שמות קבצים והעמוד הנקרא האחרון"
 
 # האם למחוק מידע אודות קבצים שנפתחו לאחרונה?
-#: mcomix/preferences_dialog.py:535
+#: mcomix/preferences_dialog.py:596
 msgid "Delete information about recently opened files?"
 msgstr "מחיקת מידע אודות קבצים שנפתחו לאחרונה?"
 
-#: mcomix/preferences_dialog.py:538
-msgid "This will remove all entries from the \"Recent\" menu, and clear information about last read pages."
-msgstr "אפשרות זו תסיר את כל הרשומות שבתפריט \"קבצים אחרונים\", ותאפס מידע אודות עמודים שנקראו לאחרונה."
+#: mcomix/preferences_dialog.py:597
+msgid ""
+"This will remove all entries from the \"Recent\" menu, and clear information "
+"about last read pages."
+msgstr ""
+"אפשרות זו תסיר את כל הרשומות שבתפריט \"קבצים אחרונים\", ותאפס מידע אודות "
+"עמודים שנקראו לאחרונה."
+
+#: mcomix/preferences_dialog.py:608
+#, fuzzy
+msgid "Normal (fast)"
+msgstr "גודל מקורי"
+
+#: mcomix/preferences_dialog.py:609
+msgid "Bilinear"
+msgstr ""
+
+#: mcomix/preferences_dialog.py:610
+msgid "Hyperbolic (slow)"
+msgstr ""
 
 #: mcomix/process.py:50
 #, python-format
@@ -1075,8 +1097,7 @@ msgstr ""
 msgid "Properties"
 msgstr "מאפיינים"
 
-#: mcomix/properties_dialog.py:46
-#: mcomix/library/control_area.py:127
+#: mcomix/properties_dialog.py:46 mcomix/library/control_area.py:128
 #, python-format
 msgid "%d pages"
 msgstr "%d עמודים"
@@ -1087,23 +1108,19 @@ msgid "%d comments"
 msgstr "%d הערות"
 
 # הונגש
-#: mcomix/properties_dialog.py:62
-#: mcomix/properties_dialog.py:99
+#: mcomix/properties_dialog.py:62 mcomix/properties_dialog.py:99
 msgid "Accessed"
 msgstr "נוגש לאחרונה"
 
-#: mcomix/properties_dialog.py:64
-#: mcomix/properties_dialog.py:101
+#: mcomix/properties_dialog.py:64 mcomix/properties_dialog.py:101
 msgid "Modified"
 msgstr "שונה לאחרונה"
 
-#: mcomix/properties_dialog.py:66
-#: mcomix/properties_dialog.py:103
+#: mcomix/properties_dialog.py:66 mcomix/properties_dialog.py:103
 msgid "Permissions"
 msgstr "הרשאות"
 
-#: mcomix/properties_dialog.py:67
-#: mcomix/properties_dialog.py:104
+#: mcomix/properties_dialog.py:67 mcomix/properties_dialog.py:104
 msgid "Owner"
 msgstr "בעלים"
 
@@ -1198,8 +1215,7 @@ msgstr "Required GTK+ version is: 2.12.0 or higher\n"
 msgid "Installed PyGTK version is: %s"
 msgstr "Installed PyGTK version is: %s"
 
-#: mcomix/run.py:130
-#: mcomix/run.py:134
+#: mcomix/run.py:130 mcomix/run.py:134
 msgid "Required PyGTK version is: 2.12.0 or higher"
 msgstr "Required PyGTK version is: 2.12.0 or higher"
 
@@ -1241,8 +1257,7 @@ msgstr "No version of the Python Imaging Library was found on your system."
 msgid "Stop slideshow"
 msgstr "הפסקת מצגת"
 
-#: mcomix/slideshow.py:47
-#: mcomix/ui.py:125
+#: mcomix/slideshow.py:47 mcomix/ui.py:127
 msgid "Start slideshow"
 msgstr "הפעלת מצגת"
 
@@ -1298,13 +1313,11 @@ msgstr "ארכיון LHA"
 msgid "Original vision/developer of Comix"
 msgstr "המפתח המקורי של Comix"
 
-#: mcomix/strings.py:20
-#: mcomix/strings.py:21
+#: mcomix/strings.py:20 mcomix/strings.py:21
 msgid "MComix developer"
 msgstr "מפתח MComix"
 
-#: mcomix/strings.py:24
-#: mcomix/strings.py:25
+#: mcomix/strings.py:24 mcomix/strings.py:25
 msgid "Simplified Chinese translation"
 msgstr "תרגום לסינית מפושטת"
 
@@ -1325,9 +1338,7 @@ msgstr "תרגום לגרמנית וגם מחולל תמונות־ציפורן �
 msgid "German translation"
 msgstr "תרגום לגרמנית"
 
-#: mcomix/strings.py:30
-#: mcomix/strings.py:31
-#: mcomix/strings.py:32
+#: mcomix/strings.py:30 mcomix/strings.py:31 mcomix/strings.py:32
 msgid "Italian translation"
 msgstr "תרגום לאיטלקית"
 
@@ -1335,9 +1346,7 @@ msgstr "תרגום לאיטלקית"
 msgid "Dutch translation"
 msgstr "תרגום להולנדית"
 
-#: mcomix/strings.py:34
-#: mcomix/strings.py:35
-#: mcomix/strings.py:36
+#: mcomix/strings.py:34 mcomix/strings.py:35 mcomix/strings.py:36
 #: mcomix/strings.py:37
 msgid "French translation"
 msgstr "תרגום לצרפתית"
@@ -1358,14 +1367,11 @@ msgstr "תרגום ליוונית"
 msgid "Catalan translation"
 msgstr "תרגום לקטלנית"
 
-#: mcomix/strings.py:42
-#: mcomix/strings.py:43
+#: mcomix/strings.py:42 mcomix/strings.py:43
 msgid "Traditional Chinese translation"
 msgstr "תרגום לסינית מסורתית"
 
-#: mcomix/strings.py:44
-#: mcomix/strings.py:45
-#: mcomix/strings.py:46
+#: mcomix/strings.py:44 mcomix/strings.py:45 mcomix/strings.py:46
 msgid "Japanese translation"
 msgstr "תרגום ליפנית"
 
@@ -1373,8 +1379,7 @@ msgstr "תרגום ליפנית"
 msgid "Hungarian translation"
 msgstr "תרגום להונגרית"
 
-#: mcomix/strings.py:48
-#: mcomix/strings.py:49
+#: mcomix/strings.py:48 mcomix/strings.py:49
 msgid "Russian translation"
 msgstr "תרגום לרוסית"
 
@@ -1410,12 +1415,16 @@ msgstr "תרגום לגליציאנית"
 msgid "Swedish translation"
 msgstr "תרגום לשוודית"
 
-#: mcomix/strings.py:60
+#: mcomix/strings.py:58
+#, fuzzy
+msgid "Hebrew translation"
+msgstr "תרגום ליוונית"
+
+#: mcomix/strings.py:61
 msgid "Icon design"
 msgstr "עיצוב צלמית"
 
-#: mcomix/thumbnail_tools.py:110
-#: mcomix/library/book_area.py:509
+#: mcomix/thumbnail_tools.py:110 mcomix/library/book_area.py:506
 #, python-format
 msgid "! Could not remove file \"%s\""
 msgstr "! לא ניתן להסיר את הקובץ \"%s\""
@@ -1426,8 +1435,7 @@ msgid "! Could not save thumbnail \"%(thumbpath)s\": %(error)s"
 msgstr "! לא ניתן לשמור תמונות־ציפורן \"%(thumbpath)s\": %(error)s"
 
 # (עותק)
-#: mcomix/ui.py:31
-#: mcomix/library/book_area.py:151
+#: mcomix/ui.py:31 mcomix/library/book_area.py:152
 msgid "_Copy"
 msgstr "_העתקה"
 
@@ -1499,13 +1507,11 @@ msgstr "א_רכיון קודם"
 msgid "Previous archive"
 msgstr "ארכיון קודם"
 
-#: mcomix/ui.py:54
-#: mcomix/ui.py:55
+#: mcomix/ui.py:54 mcomix/ui.py:55
 msgid "Next directory"
 msgstr "מדור הבא"
 
-#: mcomix/ui.py:56
-#: mcomix/ui.py:57
+#: mcomix/ui.py:56 mcomix/ui.py:57
 msgid "Previous directory"
 msgstr "מדור קודם"
 
@@ -1523,261 +1529,275 @@ msgid "_Normal Size"
 msgstr "גודל _מקורי"
 
 #: mcomix/ui.py:64
+msgid "Mi_nimize"
+msgstr ""
+
+#: mcomix/ui.py:66
 msgid "_Close"
 msgstr "_סגירה"
 
-#: mcomix/ui.py:65
+#: mcomix/ui.py:67
 msgid "Closes all opened files."
 msgstr "סגירת כל הקבצים הפתוחים."
 
-#: mcomix/ui.py:66
+#: mcomix/ui.py:68
 msgid "_Quit"
 msgstr "י_ציאה"
 
-#: mcomix/ui.py:68
+#: mcomix/ui.py:70
 msgid "_Save and quit"
 msgstr "_שמירה ויציאה"
 
-#: mcomix/ui.py:70
-msgid "Quits and restores the currently opened file next time the program starts."
+#: mcomix/ui.py:72
+msgid ""
+"Quits and restores the currently opened file next time the program starts."
 msgstr "יציאה ושחזור הקובץ שפתוח כעת בפעם הבאה בה התוכנית תופעל."
 
 # ימינה
-#: mcomix/ui.py:72
+#: mcomix/ui.py:74
 msgid "_Rotate 90 degrees CW"
 msgstr "סיבוב של 90 מעלות _עם כיוון השעון"
 
-#: mcomix/ui.py:74
+#: mcomix/ui.py:76
 msgid "Rotate 180 de_grees"
 msgstr "_סיבוב של 180 מעלות"
 
 # שמאלה
-#: mcomix/ui.py:76
+#: mcomix/ui.py:78
 msgid "Rotat_e 90 degrees CCW"
 msgstr "סיבוב של 90 מעלות _נגד כיוון השעון"
 
-#: mcomix/ui.py:78
+#: mcomix/ui.py:80
 msgid "Fli_p horizontally"
 msgstr "היפוך במאו_זן"
 
-#: mcomix/ui.py:80
+#: mcomix/ui.py:82
 msgid "Flip _vertically"
 msgstr "היפוך במאו_נך"
 
-#: mcomix/ui.py:82
+#: mcomix/ui.py:84
 msgid "Save _As"
 msgstr "שמירה _בשם"
 
-#: mcomix/ui.py:84
+#: mcomix/ui.py:86
 msgid "_Zoom"
 msgstr "_זום"
 
 # Tranlated to: Recent files
-#: mcomix/ui.py:85
+#: mcomix/ui.py:87
 msgid "_Recent"
 msgstr "קבצים _אחרונים"
 
-#: mcomix/ui.py:86
-#: mcomix/ui.py:87
+#: mcomix/ui.py:88 mcomix/ui.py:89
 msgid "_Bookmarks"
 msgstr "_סימניות"
 
-#: mcomix/ui.py:88
+#: mcomix/ui.py:90
 msgid "T_oolbars"
 msgstr "_סרגלי כלים"
 
-#: mcomix/ui.py:89
+#: mcomix/ui.py:91
 msgid "_Edit"
 msgstr "ע_ריכה"
 
-#: mcomix/ui.py:90
+#: mcomix/ui.py:92
 msgid "_File"
 msgstr "_קובץ"
 
-#: mcomix/ui.py:91
-#: mcomix/ui.py:92
+#: mcomix/ui.py:93 mcomix/ui.py:94
 msgid "_View"
 msgstr "_תצוגה"
 
-#: mcomix/ui.py:95
+#: mcomix/ui.py:97
 msgid "_Tools"
 msgstr "_כלים"
 
-#: mcomix/ui.py:96
+#: mcomix/ui.py:98
 msgid "_Help"
 msgstr "_עזרה"
 
-#: mcomix/ui.py:97
+#: mcomix/ui.py:99
 msgid "_Transform image"
 msgstr "_שינוי תמונה"
 
-#: mcomix/ui.py:101
+#: mcomix/ui.py:103
 msgid "_Fullscreen"
 msgstr "מ_סך־מלא"
 
-#: mcomix/ui.py:102
+#: mcomix/ui.py:104
 msgid "Fullscreen mode"
 msgstr "מצב מסך־מלא"
 
 # מצב עמוד _זוגי
-#: mcomix/ui.py:103
+#: mcomix/ui.py:105
 msgid "_Double page mode"
 msgstr "מצב עמוד _כפול"
 
-#: mcomix/ui.py:105
+#: mcomix/ui.py:107
 msgid "_Toolbar"
 msgstr "סרגל _כלים"
 
-#: mcomix/ui.py:107
+#: mcomix/ui.py:109
 msgid "_Menubar"
 msgstr "שורת _תפריט"
 
-#: mcomix/ui.py:109
+#: mcomix/ui.py:111
 msgid "St_atusbar"
 msgstr "שורת _מצב"
 
-#: mcomix/ui.py:111
+#: mcomix/ui.py:113
 msgid "S_crollbars"
 msgstr "סרגלי _גלילה"
 
-#: mcomix/ui.py:113
+#: mcomix/ui.py:115
 msgid "Th_umbnails"
 msgstr "תמונות־_ציפורן"
 
-#: mcomix/ui.py:115
+#: mcomix/ui.py:117
 msgid "H_ide all"
 msgstr "ה_סתרה מוחלטת"
 
-#: mcomix/ui.py:117
+#: mcomix/ui.py:119
 msgid "_Manga mode"
 msgstr "מצב _מנגה"
 
 # Tranlated to: Manga mode (Japanese comic brochure)
-#: mcomix/ui.py:118
+#: mcomix/ui.py:120
 msgid "Manga mode"
 msgstr "מצב מנגה (חוברת קומיקס יפנית)"
 
-#: mcomix/ui.py:119
+#: mcomix/ui.py:121
 msgid "Invert smart scroll"
 msgstr "היפוך גלילה חכמה"
 
-#: mcomix/ui.py:120
+#: mcomix/ui.py:122
 msgid "Invert smart scrolling direction."
 msgstr "היפוך כיוון גלילה חכמה."
 
 # החלת
-#: mcomix/ui.py:121
+#: mcomix/ui.py:123
 msgid "_Keep transformation"
 msgstr "ה_שארת שינויים"
 
-#: mcomix/ui.py:122
+#: mcomix/ui.py:124
 msgid "Keeps the currently selected transformation for the next pages."
 msgstr "השארת השינוי הנבחר הנוכחי עבור בעמודים הבאים."
 
 # התחלת (Begin/Start)
-#: mcomix/ui.py:124
+#: mcomix/ui.py:126
 msgid "Start _slideshow"
 msgstr "הפעלת _מצגת"
 
-#: mcomix/ui.py:126
+#: mcomix/ui.py:128
 msgid "Magnifying _lens"
 msgstr "עדשת מ_גדלת"
 
-#: mcomix/ui.py:127
+#: mcomix/ui.py:129
 msgid "Magnifying lens"
 msgstr "עדשת מגדלת"
 
-#: mcomix/ui.py:128
+#: mcomix/ui.py:130
 msgid "Stretch small images"
 msgstr "מתיחת תמונות קטנות"
 
-#: mcomix/ui.py:129
+#: mcomix/ui.py:131
 msgid "Stretch images to fit to the screen, depending on zoom mode."
 msgstr "מתיחת תמונות כדי התאמה למסך, תלוי במצב הזום."
 
 # מצב ההתאמה ה_טובה ביותר
-#: mcomix/ui.py:135
+#: mcomix/ui.py:137
 msgid "_Best fit mode"
 msgstr "מצב התאמה מי_טבית"
 
 # ההתאמה הטובה ביותר
-#: mcomix/ui.py:136
+#: mcomix/ui.py:138
 msgid "Best fit mode"
 msgstr "מצב התאמה מיטבית"
 
-#: mcomix/ui.py:137
+#: mcomix/ui.py:139
 msgid "Fit _width mode"
 msgstr "מצב התאמה ל_רוחב"
 
-#: mcomix/ui.py:138
+#: mcomix/ui.py:140
 msgid "Fit width mode"
 msgstr "מצב התאמה לרוחב"
 
-#: mcomix/ui.py:139
+#: mcomix/ui.py:141
 msgid "Fit _height mode"
 msgstr "מצב התאמה ל_גובה"
 
-#: mcomix/ui.py:140
+#: mcomix/ui.py:142
 msgid "Fit height mode"
 msgstr "מצב התאמה לגובה"
 
-#: mcomix/ui.py:141
+#: mcomix/ui.py:143
+#, fuzzy
+msgid "Fit _size mode"
+msgstr "מצב התאמה ל_רוחב"
+
+#: mcomix/ui.py:145
 msgid "M_anual zoom mode"
 msgstr "מצב זום י_דני"
 
-#: mcomix/ui.py:142
+#: mcomix/ui.py:146
 msgid "Manual zoom mode"
 msgstr "מצב זום ידני"
 
-#: mcomix/ui.py:146
+#: mcomix/ui.py:150
 msgid "_About"
 msgstr "_אודות"
 
-#: mcomix/ui.py:150
+#: mcomix/ui.py:154
 msgid "Co_mments..."
 msgstr "הע_רות"
 
-#: mcomix/ui.py:154
+#: mcomix/ui.py:158
 msgid "Proper_ties"
 msgstr "מ_אפיינים"
 
-#: mcomix/ui.py:158
+#: mcomix/ui.py:162
 msgid "Pr_eferences"
 msgstr "ה_עדפות"
 
-#: mcomix/ui.py:163
+#: mcomix/ui.py:167
 msgid "_Edit archive..."
 msgstr "עריכת _ארכיון..."
 
-#: mcomix/ui.py:164
+#: mcomix/ui.py:168
 msgid "Opens the archive editor."
 msgstr "פתיחת עורך הארכיון."
 
-#: mcomix/ui.py:166
+#: mcomix/ui.py:170
 msgid "_Open..."
 msgstr "_פתיחה..."
 
-#: mcomix/ui.py:168
+#: mcomix/ui.py:172
 msgid "En_hance image..."
 msgstr "שי_פור תמונה..."
 
-#: mcomix/ui.py:172
+#: mcomix/ui.py:176
 msgid "_Library..."
 msgstr "_ספריה..."
 
-#: mcomix/archive/__init__.py:11
+#: mcomix/archive/__init__.py:13
 msgid "The archive is password-protected."
 msgstr "הארכיון מוגן בסיסמא"
 
-#: mcomix/archive/__init__.py:13
+#: mcomix/archive/__init__.py:14
 msgid "Please enter the password to continue:"
 msgstr "נא להזין את הסיסמא כדי להמשיך."
 
 # צריך להיות
 #: mcomix/archive/zip.py:50
 #, python-format
-msgid "%(filename)s's extracted size is %(actual_size)d bytes, but should be %(expected_size)d bytes. The archive might be corrupt or in an unsupported format."
-msgstr "גודלו המחולץ של הקובץ %(filename)s הינו %(actual_size)d בתים, אולם גודלו אמור להיות %(expected_size)d בתים. הארכיון עשוי להיות פגום או שסוג ארכיון זה אינו נתמך."
+msgid ""
+"%(filename)s's extracted size is %(actual_size)d bytes, but should be "
+"%(expected_size)d bytes. The archive might be corrupt or in an unsupported "
+"format."
+msgstr ""
+"גודלו המחולץ של הקובץ %(filename)s הינו %(actual_size)d בתים, אולם גודלו "
+"אמור להיות %(expected_size)d בתים. הארכיון עשוי להיות פגום או שסוג ארכיון זה "
+"אינו נתמך."
 
 #: mcomix/library/add_progress_dialog.py:21
 msgid "Adding books"
@@ -1794,8 +1814,7 @@ msgid "Adding '%s'..."
 msgstr "מתווספות כעת '%s'..."
 
 # ! חוברת שלא קיימת #%i
-#: mcomix/library/backend.py:88
-#: mcomix/library/backend.py:101
+#: mcomix/library/backend.py:88 mcomix/library/backend.py:101
 #, python-format
 msgid "! Non-existant book #%i"
 msgstr "! Non-existant book #%i"
@@ -1825,8 +1844,7 @@ msgstr "! לא ניתן להוסיף את החוברת %(book)s אל האוסף 
 msgid "! Could not rename collection to \"%s\""
 msgstr "! לא ניתן לשנות את שם האוסף אל \"%s\""
 
-#: mcomix/library/backend.py:359
-#: mcomix/library/backend.py:361
+#: mcomix/library/backend.py:359 mcomix/library/backend.py:361
 msgid "(Copy)"
 msgstr "(עותק)"
 
@@ -1839,142 +1857,138 @@ msgstr "Could not determine library database version!"
 msgid "Upgrading library database version from %(from)d to %(to)d."
 msgstr ""
 
-#: mcomix/library/backend_types.py:130
-#: mcomix/library/collection_area.py:139
+#: mcomix/library/backend_types.py:130 mcomix/library/collection_area.py:140
 msgid "All books"
 msgstr "כל החוברות"
 
 # ספריית חוברות
 # חוברות ספריה
-#: mcomix/library/book_area.py:126
+#: mcomix/library/book_area.py:127
 msgid "Library books"
 msgstr "ספריית חוברות"
 
-#: mcomix/library/book_area.py:128
+#: mcomix/library/book_area.py:129
 msgid "_Open"
 msgstr "_פתיחה"
 
-#: mcomix/library/book_area.py:129
+#: mcomix/library/book_area.py:130
 msgid "Opens the selected books for viewing."
 msgstr "פתיחת החוברת הנבחרת לצפיה."
 
 # פתיחה (מ_בלי לסגור את הספריה)
 # פתיחה מ_בלי לסגור את הספריה
-#: mcomix/library/book_area.py:132
+#: mcomix/library/book_area.py:133
 msgid "Open _without closing library"
 msgstr "פתיחה _ללא סגירת הספריה"
 
 # והשאר את
-#: mcomix/library/book_area.py:133
+#: mcomix/library/book_area.py:134
 msgid "Opens the selected books, but keeps the library window open."
 msgstr "פתיחת החוברות הנבחרות, והשארת חלון הספריה פתוח."
 
-#: mcomix/library/book_area.py:135
-#: mcomix/library/collection_area.py:75
+#: mcomix/library/book_area.py:136 mcomix/library/collection_area.py:76
 msgid "_Add..."
 msgstr "הו_ספה..."
 
-#: mcomix/library/book_area.py:136
-#: mcomix/library/collection_area.py:76
+#: mcomix/library/book_area.py:137 mcomix/library/collection_area.py:77
 msgid "Add more books to the library."
 msgstr "הוספת חוברת חדשה אל הספריה."
 
-#: mcomix/library/book_area.py:139
+#: mcomix/library/book_area.py:140
 msgid "Remove from this _collection"
 msgstr "הסרה מ_אוסף זה"
 
 # אולי מוטב יהיה להחליף את המילה from "מן" אל "מהאוסף"
-#: mcomix/library/book_area.py:140
+#: mcomix/library/book_area.py:141
 msgid "Removes the selected books from the current collection."
 msgstr "הסרת החוברות הנבחרות מן האוסף הנוכחי."
 
-#: mcomix/library/book_area.py:143
+#: mcomix/library/book_area.py:144
 msgid "Remove from the _library"
 msgstr "הסרה מן ה_ספריה"
 
-#: mcomix/library/book_area.py:144
+#: mcomix/library/book_area.py:145
 msgid "Completely removes the selected books from the library."
 msgstr "הסרה מוחלטת של החוברות הנבחרות מן הספריה."
 
-#: mcomix/library/book_area.py:147
+#: mcomix/library/book_area.py:148
 msgid "_Remove and delete from disk"
 msgstr "הסרה ומחיקה מן ה_כונן"
 
-#: mcomix/library/book_area.py:148
+#: mcomix/library/book_area.py:149
 msgid "Deletes the selected books from disk."
 msgstr "מחיקת החוברות הנבחרות מן הכונן."
 
-#: mcomix/library/book_area.py:152
+#: mcomix/library/book_area.py:153
 msgid "Copies the selected book's path to clipboard."
 msgstr "העתקת נתיב החוברת הנבחרת אל לוח־הגזירים."
 
-#: mcomix/library/book_area.py:154
+#: mcomix/library/book_area.py:155
 msgid "_Sort"
 msgstr "_מיון"
 
-#: mcomix/library/book_area.py:155
+#: mcomix/library/book_area.py:156
 msgid "Changes the sort order of the library."
 msgstr "שינוי סדר המיון של הספריה."
 
-#: mcomix/library/book_area.py:156
+#: mcomix/library/book_area.py:157
 msgid "Cover si_ze"
 msgstr "_גודל כריכה"
 
-#: mcomix/library/book_area.py:157
+#: mcomix/library/book_area.py:158
 msgid "Changes the book cover size."
 msgstr "שינוי גודל כריכת החוברת."
 
-#: mcomix/library/book_area.py:161
+#: mcomix/library/book_area.py:162
 msgid "Book name"
 msgstr "שם חוברת"
 
-#: mcomix/library/book_area.py:162
+#: mcomix/library/book_area.py:163
 msgid "Full path"
 msgstr "נתיב מלא"
 
-#: mcomix/library/book_area.py:164
+#: mcomix/library/book_area.py:165
 msgid "Date added"
 msgstr "תאריך הוספה"
 
-#: mcomix/library/book_area.py:175
+#: mcomix/library/book_area.py:176
 msgid "Huge"
 msgstr "ענק"
 
-#: mcomix/library/book_area.py:177
+#: mcomix/library/book_area.py:178
 msgid "Large"
 msgstr "גדול"
 
 # מקורי
-#: mcomix/library/book_area.py:179
+#: mcomix/library/book_area.py:180
 msgid "Normal"
 msgstr "רגיל"
 
-#: mcomix/library/book_area.py:181
+#: mcomix/library/book_area.py:182
 msgid "Small"
 msgstr "קטן"
 
-#: mcomix/library/book_area.py:183
+#: mcomix/library/book_area.py:184
 msgid "Tiny"
 msgstr "זעיר"
 
-#: mcomix/library/book_area.py:185
+#: mcomix/library/book_area.py:186
 msgid "Custom..."
 msgstr "מותאם..."
 
-#: mcomix/library/book_area.py:359
+#: mcomix/library/book_area.py:360
 msgid "Set library cover size"
 msgstr "הגדרת כריכה עבור הספריה"
 
 # אולי מוטב יהיה להחליף את המילה from "מן" אל "מהאוסף"
-#: mcomix/library/book_area.py:445
+#: mcomix/library/book_area.py:444
 #, python-format
 msgid "Removed %(num)d book from '%(collection)s'."
 msgid_plural "Removed %(num)d books from '%(collection)s'."
 msgstr[0] "הוסרה חוברת %(num)d מהאוסף '%(collection)s'."
 msgstr[1] "הוסרו %(num)d חוברות מהאוסף '%(collection)s'."
 
-#: mcomix/library/book_area.py:464
-#: mcomix/library/collection_area.py:189
+#: mcomix/library/book_area.py:463 mcomix/library/collection_area.py:188
 #, python-format
 msgid "Removed %d book from the library."
 msgid_plural "Removed %d books from the library."
@@ -1982,69 +1996,71 @@ msgstr[0] "הוסרה חוברת %d מן הספריה."
 msgstr[1] "הוסרו %d חוברות מן הספריה."
 
 # האם להסיר את החוברות מן הספריה?
-#: mcomix/library/book_area.py:479
+#: mcomix/library/book_area.py:481
 msgid "Remove books from the library?"
 msgstr "הסרת חוברות מן הספריה?"
 
-#: mcomix/library/book_area.py:483
-msgid "The selected books will be removed from the library and permanently deleted. Are you sure that you want to continue?"
-msgstr "החוברות הנבחרות יוסרו מן הספריה וימחקו לצמיתות. האם עדיין ברצונך להמשיך?"
+#: mcomix/library/book_area.py:482
+msgid ""
+"The selected books will be removed from the library and permanently deleted. "
+"Are you sure that you want to continue?"
+msgstr ""
+"החוברות הנבחרות יוסרו מן הספריה וימחקו לצמיתות. האם עדיין ברצונך להמשיך?"
 
 # ספריית אוספים
 # אוספי ספריה
-#: mcomix/library/collection_area.py:73
+#: mcomix/library/collection_area.py:74
 msgid "Library collections"
 msgstr "ספריית אוספים"
 
-#: mcomix/library/collection_area.py:78
+#: mcomix/library/collection_area.py:79
 msgid "New"
 msgstr "חדש"
 
-#: mcomix/library/collection_area.py:79
+#: mcomix/library/collection_area.py:80
 msgid "Add a new empty collection."
 msgstr "הוספת אוסף ריק חדש."
 
-#: mcomix/library/collection_area.py:81
+#: mcomix/library/collection_area.py:82
 msgid "Re_name"
 msgstr "_שינוי שם..."
 
-#: mcomix/library/collection_area.py:82
+#: mcomix/library/collection_area.py:83
 msgid "Renames the selected collection."
 msgstr "שינוי שם האוסף הנבחר."
 
-#: mcomix/library/collection_area.py:84
+#: mcomix/library/collection_area.py:85
 msgid "_Duplicate"
 msgstr "ש_כפול"
 
 # אוסף זהה
 # עותק זהה
-#: mcomix/library/collection_area.py:85
+#: mcomix/library/collection_area.py:86
 msgid "Creates a duplicate of the selected collection."
 msgstr "יצירת עותק זהה של האוסף הנוכחי."
 
 # ניקוי/איפוס
-#: mcomix/library/collection_area.py:87
+#: mcomix/library/collection_area.py:88
 msgid "_Clean up"
 msgstr "_טיהור"
 
 # שכבר לא קיימות
 # שאינן קיימות עוד
 # שלא קיימות עוד
-#: mcomix/library/collection_area.py:88
+#: mcomix/library/collection_area.py:89
 msgid "Removes no longer existant books from the collection."
 msgstr "הסרת חוברות שאינן קיימות עוד מהאוסף."
 
-#: mcomix/library/collection_area.py:90
-#: mcomix/library/watchlist.py:57
+#: mcomix/library/collection_area.py:91 mcomix/library/watchlist.py:70
 msgid "_Remove"
 msgstr "ה_סרה"
 
-#: mcomix/library/collection_area.py:91
+#: mcomix/library/collection_area.py:92
 msgid "Deletes the selected collection."
 msgstr "מחיקת האוסף הנבחר."
 
 # האם להוסיף אוסף חדש?
-#: mcomix/library/collection_area.py:149
+#: mcomix/library/collection_area.py:152
 msgid "Add new collection?"
 msgstr "הוספת אוסף חדש?"
 
@@ -2053,13 +2069,12 @@ msgid "Please enter a name for the new collection."
 msgstr "נא להזין שם עבור האוסף החדש."
 
 # בשם, שנקרא
-#: mcomix/library/collection_area.py:173
+#: mcomix/library/collection_area.py:172
 #, python-format
 msgid "Could not add a new collection called '%s'."
 msgstr "לא ניתן להוסיף אוסף חדש בשם '%s'."
 
-#: mcomix/library/collection_area.py:178
-#: mcomix/library/collection_area.py:271
+#: mcomix/library/collection_area.py:177 mcomix/library/collection_area.py:268
 msgid "A collection by that name already exists."
 msgstr "אוסף הקרוי בשם זה כבר קיים."
 
@@ -2068,39 +2083,44 @@ msgstr "אוסף הקרוי בשם זה כבר קיים."
 msgid "Rename collection?"
 msgstr "שינוי שם אוסף?"
 
-#: mcomix/library/collection_area.py:248
+#: mcomix/library/collection_area.py:245
 msgid "Please enter a new name for the selected collection."
 msgstr "נא להזין שם חדש עבור האוסף הנוכחי."
 
-#: mcomix/library/collection_area.py:267
+#: mcomix/library/collection_area.py:264
 #, python-format
 msgid "Could not change the name to '%s'."
 msgstr "לא ניתן לשנות את השם אל '%s'."
 
-#: mcomix/library/collection_area.py:281
+#: mcomix/library/collection_area.py:278
 msgid "Could not duplicate collection."
 msgstr "לא ניתן לשכפל אוסף."
 
 # מקור
-#: mcomix/library/collection_area.py:407
+#: mcomix/library/collection_area.py:404
 msgid "Root"
 msgstr "שורש"
 
-#: mcomix/library/collection_area.py:411
+#: mcomix/library/collection_area.py:408
 #, python-format
-msgid "Put the collection '%(subcollection)s' in the collection '%(supercollection)s'."
+msgid ""
+"Put the collection '%(subcollection)s' in the collection "
+"'%(supercollection)s'."
 msgstr "השמת האוסף '%(subcollection)s' בתוך האוסף '%(supercollection)s'."
 
-#: mcomix/library/collection_area.py:432
+#: mcomix/library/collection_area.py:429
 #, python-format
 msgid "Add books to '%s'."
 msgstr "הוספת חוברות אל '%s'."
 
 # אולי מוטב יהיה להחליף את המילה from "מן" אל "מהאוסף" ואת המילה to "אל" אל "אל האוסף"
-#: mcomix/library/collection_area.py:436
+#: mcomix/library/collection_area.py:433
 #, python-format
-msgid "Move books from '%(source collection)s' to '%(destination collection)s'."
-msgstr "העברת חוברות מהאוסף '%(source collection)s' אל האוסף '%(destination collection)s'."
+msgid ""
+"Move books from '%(source collection)s' to '%(destination collection)s'."
+msgstr ""
+"העברת חוברות מהאוסף '%(source collection)s' אל האוסף "
+"'%(destination collection)s'."
 
 #: mcomix/library/control_area.py:68
 msgid "_Search:"
@@ -2108,19 +2128,23 @@ msgstr "_חיפוש:"
 
 # התאמת אותיות גדולות/קטנות
 #: mcomix/library/control_area.py:74
-msgid "Display only those books that have the specified text string in their full path. The search is not case sensitive."
-msgstr "הצגה של חוברות שלהן מחרוזת התמליל שמצוינת בנתיב המלא שלהן, בלבד. החיפוש אינו תלוי־רישיות."
+msgid ""
+"Display only those books that have the specified text string in their full "
+"path. The search is not case sensitive."
+msgstr ""
+"הצגה של חוברות שלהן מחרוזת התמליל שמצוינת בנתיב המלא שלהן, בלבד. החיפוש אינו "
+"תלוי־רישיות."
 
-#: mcomix/library/control_area.py:82
+#: mcomix/library/control_area.py:83
 msgid "_Watch list"
 msgstr "רשימת _צפיה"
 
 # פתיחת דו־שיח
-#: mcomix/library/control_area.py:88
+#: mcomix/library/control_area.py:89
 msgid "Open the watchlist management dialog."
 msgstr "ניהול רשימת צפיה."
 
-#: mcomix/library/control_area.py:94
+#: mcomix/library/control_area.py:95
 msgid "Open the selected book."
 msgstr "פתיחת החוברת הנבחרת."
 
@@ -2128,41 +2152,156 @@ msgstr "פתיחת החוברת הנבחרת."
 msgid "Library"
 msgstr "ספריה"
 
-#: mcomix/library/main_dialog.py:85
+#: mcomix/library/main_dialog.py:86
 msgid "Scanning for new books..."
 msgstr "סורק כעת עבור חוברות חדשות..."
 
-#: mcomix/library/main_dialog.py:99
-#, python-format
+#: mcomix/library/main_dialog.py:101
+#, fuzzy, python-format
 msgid "Added new book '%(bookname)s' from directory '%(directory)s'."
-msgid_plural "Added %(count)d new books from directory '%(directory)s'."
-msgstr[0] "התווספה חוברת חדשה '%(bookname)s' מן המדור '%(directory)s'."
-msgstr[1] "התווספו %(count)d חוברות חדשות מן המדור '%(directory)s'."
+msgstr "התווספה חוברת חדשה '%(bookname)s' מן המדור '%(directory)s'."
 
-#: mcomix/library/main_dialog.py:106
+#: mcomix/library/main_dialog.py:104
+#, fuzzy, python-format
+msgid "Added %(count)d new books from directory '%(directory)s'."
+msgstr "התווספה חוברת חדשה '%(bookname)s' מן המדור '%(directory)s'."
+
+#: mcomix/library/main_dialog.py:111
 #, python-format
 msgid "No new books found in directory '%s'."
 msgstr "לא נמצאו חוברות חדשות במדור '%s'."
 
-#: mcomix/library/main_dialog.py:159
+#: mcomix/library/main_dialog.py:164
 msgid "! You need an sqlite wrapper to use the library."
 msgstr "! You need an sqlite wrapper to use the library."
 
-#: mcomix/library/watchlist.py:22
+#: mcomix/library/watchlist.py:25
 msgid "Library watch list"
 msgstr "רשימת צפיה"
 
-#: mcomix/library/watchlist.py:39
+#: mcomix/library/watchlist.py:27
+msgid "_Scan now"
+msgstr ""
+
+#: mcomix/library/watchlist.py:43
 msgid "Directory"
 msgstr "מדור"
 
-#: mcomix/library/watchlist.py:50
+#: mcomix/library/watchlist.py:55
 msgid "Collection"
 msgstr "אוסף"
 
-#: mcomix/library/watchlist.py:55
+#: mcomix/library/watchlist.py:63
+#, fuzzy
+msgid "With subdirectories"
+msgstr "מדור הבא"
+
+#: mcomix/library/watchlist.py:68
 msgid "_Add"
 msgstr "הו_ספה"
+
+#: mcomix/library/watchlist.py:87
+msgid "Automatically scan for new books when library is _opened"
+msgstr ""
+
+# ! צוחק כעת קובץ סימניות פגום.
+#~ msgid "! Deleting corrupt bookmarks file."
+#~ msgstr "! Deleting corrupt bookmarks file."
+
+#~ msgid "User interface language"
+#~ msgstr "שפת ממשק המשתמש"
+
+# קטלנית
+#~ msgid "Catalan"
+#~ msgstr "Català"
+
+# צ'כית
+#~ msgid "Czech"
+#~ msgstr "Česky"
+
+# גרמנית
+#~ msgid "German"
+#~ msgstr "Deutsch"
+
+# יוונית
+#~ msgid "Greek"
+#~ msgstr "ελληνικά"
+
+# אנגלית
+#~ msgid "English"
+#~ msgstr "English"
+
+# ספרדית
+#~ msgid "Spanish"
+#~ msgstr "Español"
+
+# פרסית
+#~ msgid "Persian"
+#~ msgstr "فارسی"
+
+# צרפתית
+#~ msgid "French"
+#~ msgstr "Français"
+
+# גליציאנית
+#~ msgid "Galician"
+#~ msgstr "Galego"
+
+# קרואטית
+#~ msgid "Croatian"
+#~ msgstr "Hrvatski"
+
+# הונגרית
+#~ msgid "Hungarian"
+#~ msgstr "Magyar"
+
+# אינדונזית
+#~ msgid "Indonesian"
+#~ msgstr "Bahasa"
+
+# איטלקית
+#~ msgid "Italian"
+#~ msgstr "Italiano"
+
+# יפנית
+#~ msgid "Japanese"
+#~ msgstr "日本語"
+
+# קוריאנית
+#~ msgid "Korean"
+#~ msgstr "한국어"
+
+# הולנדית
+#~ msgid "Dutch"
+#~ msgstr "Nederlands"
+
+# פולנית
+#~ msgid "Polish"
+#~ msgstr "Polski"
+
+# פורטוגזית
+#~ msgid "Portuguese"
+#~ msgstr "Português"
+
+# רוסית
+#~ msgid "Russian"
+#~ msgstr "Русский"
+
+# שוודית
+#~ msgid "Swedish"
+#~ msgstr "Svenska"
+
+# אוקראינית
+#~ msgid "Ukrainian"
+#~ msgstr "украї́нська"
+
+# 中文
+#~ msgid "Chinese (simplified)"
+#~ msgstr "סינית (מפושטת)"
+
+# 文言
+#~ msgid "Chinese (traditional)"
+#~ msgstr "סינית (מסורתית)"
 
 #~ msgid "About"
 #~ msgstr "אודות"

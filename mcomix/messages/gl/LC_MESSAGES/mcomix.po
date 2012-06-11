@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2012-06-02 10:22+0200\n"
+"POT-Creation-Date: 2012-06-11 21:20+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Marcelo Góes <vanquirius@gentoo.org>\n"
 "Language-Team: \n"
@@ -93,7 +93,7 @@ msgstr ""
 msgid "Name"
 msgstr "Nome"
 
-#: mcomix/bookmark_dialog.py:53 mcomix/main.py:1048
+#: mcomix/bookmark_dialog.py:53 mcomix/main.py:1050
 msgid "Page"
 msgstr "Páxina"
 
@@ -120,7 +120,7 @@ msgstr ""
 msgid "! Callback %(function)r failed: %(error)s"
 msgstr ""
 
-#: mcomix/comment_dialog.py:11 mcomix/preferences_dialog.py:393
+#: mcomix/comment_dialog.py:11 mcomix/preferences_dialog.py:395
 msgid "Comments"
 msgstr "Comentarios"
 
@@ -424,7 +424,7 @@ msgstr ""
 msgid "Toggle fullscreen"
 msgstr ""
 
-#: mcomix/keybindings.py:52 mcomix/preferences_dialog.py:334
+#: mcomix/keybindings.py:52 mcomix/preferences_dialog.py:336
 msgid "User interface"
 msgstr ""
 
@@ -486,20 +486,20 @@ msgstr ""
 msgid "! Could neither find pysqlite2 nor sqlite3."
 msgstr ""
 
-#: mcomix/main.py:925
+#: mcomix/main.py:927
 msgid "SLIDESHOW"
 msgstr "Presentación de imaxes"
 
-#: mcomix/main.py:986
+#: mcomix/main.py:988
 msgid "Save page as"
 msgstr ""
 
-#: mcomix/main.py:1006
+#: mcomix/main.py:1008
 #, python-format
 msgid "Delete \"%s\"?"
 msgstr ""
 
-#: mcomix/main.py:1007
+#: mcomix/main.py:1009
 msgid "The file will be deleted from your harddisk."
 msgstr ""
 
@@ -521,74 +521,74 @@ msgstr "Caché"
 msgid " of %s"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:22
+#: mcomix/preferences_dialog.py:24
 msgid "Preferences"
 msgstr "Preferencias"
 
-#: mcomix/preferences_dialog.py:24
+#: mcomix/preferences_dialog.py:26
 msgid "Clear dialog choices"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:25
+#: mcomix/preferences_dialog.py:27
 msgid ""
 "Clears all dialog choices that you have previously chosen not to be asked "
 "again."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:42
+#: mcomix/preferences_dialog.py:44
 msgid "Appearance"
 msgstr "Aparencia"
 
-#: mcomix/preferences_dialog.py:44
+#: mcomix/preferences_dialog.py:46
 msgid "Behaviour"
 msgstr "Comportamento"
 
-#: mcomix/preferences_dialog.py:46
+#: mcomix/preferences_dialog.py:48
 msgid "Display"
 msgstr "Superficie de visualización"
 
-#: mcomix/preferences_dialog.py:48
+#: mcomix/preferences_dialog.py:50
 msgid "Advanced"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:57
+#: mcomix/preferences_dialog.py:59
 msgid "Background"
 msgstr "Fondo da pantalla"
 
-#: mcomix/preferences_dialog.py:60
+#: mcomix/preferences_dialog.py:62
 #, fuzzy
 msgid "Use this colour as background:"
 msgstr "Usar esa cor no fondo da pantalla"
 
-#: mcomix/preferences_dialog.py:62
+#: mcomix/preferences_dialog.py:64
 msgid "Always use this selected colour as the background colour."
 msgstr "Sempre usar esa cor como cor de fondo."
 
-#: mcomix/preferences_dialog.py:70 mcomix/preferences_dialog.py:91
+#: mcomix/preferences_dialog.py:72 mcomix/preferences_dialog.py:93
 #, fuzzy
 msgid "Use dynamic background colour"
 msgstr "Usar cor de fondo dinámica."
 
-#: mcomix/preferences_dialog.py:74
+#: mcomix/preferences_dialog.py:76
 msgid "Automatically pick a background colour that fits the viewed image."
 msgstr ""
 "Escoller unha cor de fondo compatíbel coa imaxe visualizada automaticamente."
 
-#: mcomix/preferences_dialog.py:78
+#: mcomix/preferences_dialog.py:80
 msgid "Thumbnails"
 msgstr "Miniaturas"
 
-#: mcomix/preferences_dialog.py:81
+#: mcomix/preferences_dialog.py:83
 #, fuzzy
 msgid "Use this colour as the thumbnail background:"
 msgstr "Usar esa cor no fondo da pantalla"
 
-#: mcomix/preferences_dialog.py:83
+#: mcomix/preferences_dialog.py:85
 #, fuzzy
 msgid "Always use this selected colour as the thumbnail background colour."
 msgstr "Sempre usar esa cor como cor de fondo."
 
-#: mcomix/preferences_dialog.py:94
+#: mcomix/preferences_dialog.py:96
 #, fuzzy
 msgid ""
 "Automatically use the colour that fits the viewed image for the thumbnail "
@@ -596,36 +596,36 @@ msgid ""
 msgstr ""
 "Escoller unha cor de fondo compatíbel coa imaxe visualizada automaticamente."
 
-#: mcomix/preferences_dialog.py:100
+#: mcomix/preferences_dialog.py:102
 #, fuzzy
 msgid "Show page numbers on thumbnails"
 msgstr "Mostrar números de páxina nas miniaturas."
 
-#: mcomix/preferences_dialog.py:108
+#: mcomix/preferences_dialog.py:110
 msgid "Use archive thumbnail as application icon"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:110
+#: mcomix/preferences_dialog.py:112
 msgid ""
 "By enabling this setting, the first page of a book will be used as "
 "application icon instead of the standard icon."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:117
+#: mcomix/preferences_dialog.py:119
 #, fuzzy
 msgid "Thumbnail size (in pixels):"
 msgstr "Tamaño da miniatura (en pixels)"
 
-#: mcomix/preferences_dialog.py:124
+#: mcomix/preferences_dialog.py:126
 msgid "Transparency"
 msgstr "Transparencia"
 
-#: mcomix/preferences_dialog.py:126
+#: mcomix/preferences_dialog.py:128
 #, fuzzy
 msgid "Use checkered background for transparent images"
 msgstr "Usar un fondo cuadriculado para as imaxes transparentes."
 
-#: mcomix/preferences_dialog.py:132
+#: mcomix/preferences_dialog.py:134
 msgid ""
 "Use a grey checkered background for transparent images. If this preference "
 "is unset, the background is plain white instead."
@@ -633,16 +633,16 @@ msgstr ""
 "Usar un fondo cuadriculado cinza para as imaxes transparentes. Se esta "
 "preferencia non estiver marcada, o fondo usado será branco."
 
-#: mcomix/preferences_dialog.py:142
+#: mcomix/preferences_dialog.py:144
 msgid "Scroll"
 msgstr "Progresión das imaxes"
 
-#: mcomix/preferences_dialog.py:144
+#: mcomix/preferences_dialog.py:146
 #, fuzzy
 msgid "Use smart scrolling"
 msgstr "Usar a progresión intelixente de imaxes coa tecla de espazo."
 
-#: mcomix/preferences_dialog.py:149
+#: mcomix/preferences_dialog.py:151
 #, fuzzy
 msgid ""
 "With this preference set, the space key and mouse wheel do not only scroll "
@@ -654,12 +654,12 @@ msgstr ""
 "tecla de maiúsculas). No entanto, con esta preferencia tamén avanzará para "
 "os lados e tentará seguir a orde natural de lectura dunha banda deseñada."
 
-#: mcomix/preferences_dialog.py:155
+#: mcomix/preferences_dialog.py:157
 #, fuzzy
 msgid "Flip pages when scrolling off the edges of the page"
 msgstr "Pasar as páxinas cando se avance fóra do bordo da páxina."
 
-#: mcomix/preferences_dialog.py:160
+#: mcomix/preferences_dialog.py:162
 #, fuzzy
 msgid ""
 "Flip pages when scrolling \"off the page\" with the scroll wheel or with the "
@@ -670,12 +670,12 @@ msgstr ""
 "ou coas teclas do cursor. Serán necesarios tres \"pasos\" consecutivos coa "
 "roda do rato ou coas teclas do cursor para pasar as páxinas."
 
-#: mcomix/preferences_dialog.py:164
+#: mcomix/preferences_dialog.py:166
 #, fuzzy
 msgid "Automatically open the next archive"
 msgstr "Abrir o próximo arquivo automaticamente."
 
-#: mcomix/preferences_dialog.py:169
+#: mcomix/preferences_dialog.py:171
 msgid ""
 "Automatically open the next archive in the directory when flipping past the "
 "last page, or the previous archive when flipping past the first page."
@@ -684,81 +684,81 @@ msgstr ""
 "derradeira páxina, ou o arquivo anterior cando se pase atrás antes da "
 "primeira páxina."
 
-#: mcomix/preferences_dialog.py:173
+#: mcomix/preferences_dialog.py:175
 #, fuzzy
 msgid "Automatically open next directory"
 msgstr "Abrir o próximo arquivo automaticamente."
 
-#: mcomix/preferences_dialog.py:178
+#: mcomix/preferences_dialog.py:180
 msgid ""
 "Automatically open the first file in the next sibling directory when "
 "flipping past the last page of the last file in a directory, or the previous "
 "directory when flipping past the first page of the first file."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:181
+#: mcomix/preferences_dialog.py:183
 msgid "Number of pixels to scroll per arrow key press:"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:187
+#: mcomix/preferences_dialog.py:189
 msgid "Set the number of pixels to scroll on a page when using the arrow keys."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:190
+#: mcomix/preferences_dialog.py:192
 msgid "Number of pixels to scroll per mouse wheel turn:"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:196
+#: mcomix/preferences_dialog.py:198
 msgid "Set the number of pixels to scroll on a page when using a mouse wheel."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:199
+#: mcomix/preferences_dialog.py:201
 msgid "Number of \"steps\" to take before flipping the page:"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:205
+#: mcomix/preferences_dialog.py:207
 msgid ""
 "Set the number of \"steps\" needed to flip to the next or previous page.  "
 "Less steps will allow for very fast page turning but you might find yourself "
 "accidentally turning pages."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:208 mcomix/ui.py:106
+#: mcomix/preferences_dialog.py:210 mcomix/ui.py:106
 msgid "Double page mode"
 msgstr "Modo de páxina dobre"
 
-#: mcomix/preferences_dialog.py:211
+#: mcomix/preferences_dialog.py:213
 #, fuzzy
 msgid "Flip two pages in double page mode"
 msgstr "Pasar dúas páxinas no modo de páxina dobre."
 
-#: mcomix/preferences_dialog.py:216
+#: mcomix/preferences_dialog.py:218
 msgid ""
 "Flip two pages, instead of one, each time we flip pages in double page mode."
 msgstr ""
 "Pasar dúas páxinas, en lugar dunha, cada vez que se pase páxina no modo de "
 "páxina dobre."
 
-#: mcomix/preferences_dialog.py:219
+#: mcomix/preferences_dialog.py:221
 msgid "Show only one page where appropriate:"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:222
+#: mcomix/preferences_dialog.py:224
 msgid ""
 "When showing the first page of an archive, or an image's width exceeds its "
 "height, only a single page will be displayed."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:225
+#: mcomix/preferences_dialog.py:227
 msgid "Files"
 msgstr "Arquivos"
 
-#: mcomix/preferences_dialog.py:228
+#: mcomix/preferences_dialog.py:230
 #, fuzzy
 msgid "Automatically open the last viewed file on startup"
 msgstr "Abrir o último arquivo visto automaticamente ao iniciar."
 
-#: mcomix/preferences_dialog.py:233
+#: mcomix/preferences_dialog.py:235
 #, fuzzy
 msgid ""
 "Automatically open, on startup, the file that was open when MComix was last "
@@ -767,12 +767,12 @@ msgstr ""
 "Abre, cando se inicia, o arquivo que estaba aberto cando o Comix foi fechado "
 "por última vez."
 
-#: mcomix/preferences_dialog.py:237
+#: mcomix/preferences_dialog.py:239
 #, fuzzy
 msgid "Store information about recently opened files:"
 msgstr "Garda informacións sobre arquivos abertos recentemente."
 
-#: mcomix/preferences_dialog.py:240
+#: mcomix/preferences_dialog.py:242
 #, fuzzy
 msgid ""
 "Add information about all files opened from within MComix to the shared "
@@ -781,78 +781,78 @@ msgstr ""
 "Engadir informacións sobre todos os arquivos abertos dentro do Comix para a "
 "lista de arquivos compartidos recentemente."
 
-#: mcomix/preferences_dialog.py:250
+#: mcomix/preferences_dialog.py:252
 msgid "Fullscreen"
 msgstr "Pantalla completa"
 
-#: mcomix/preferences_dialog.py:252
+#: mcomix/preferences_dialog.py:254
 #, fuzzy
 msgid "Use fullscreen by default"
 msgstr "Usar a pantalla completa por defecto."
 
-#: mcomix/preferences_dialog.py:259
+#: mcomix/preferences_dialog.py:261
 #, fuzzy
 msgid "Automatically hide all toolbars in fullscreen"
 msgstr ""
 "Esconder todas as barras de ferramentas por defecto no modo de pantalla "
 "completa."
 
-#: mcomix/preferences_dialog.py:265 mcomix/ui.py:144
+#: mcomix/preferences_dialog.py:267 mcomix/ui.py:144
 #, fuzzy
 msgid "Fit to size mode"
 msgstr "Modo de axustar a largura"
 
-#: mcomix/preferences_dialog.py:267
+#: mcomix/preferences_dialog.py:269
 #, fuzzy
 msgid "Fit to width or height:"
 msgstr "Modo de axustar a largura"
 
-#: mcomix/preferences_dialog.py:271
+#: mcomix/preferences_dialog.py:273
 #, fuzzy
 msgid "Fixed size for this mode:"
 msgstr "Modo de axuste de la_rgura"
 
-#: mcomix/preferences_dialog.py:279
+#: mcomix/preferences_dialog.py:281
 msgid "Slideshow"
 msgstr "Presentación de imaxes"
 
-#: mcomix/preferences_dialog.py:280
+#: mcomix/preferences_dialog.py:282
 #, fuzzy
 msgid "Slideshow delay (in seconds):"
 msgstr "Espera da presentación de imaxes (en segundos)"
 
-#: mcomix/preferences_dialog.py:289
+#: mcomix/preferences_dialog.py:291
 #, fuzzy
 msgid "Slideshow step (in pixels):"
 msgstr "Espera da presentación de imaxes (en segundos)"
 
-#: mcomix/preferences_dialog.py:297
+#: mcomix/preferences_dialog.py:299
 msgid ""
 "Specify the number of pixels to scroll while in slideshow mode. A positive "
 "value will scroll forward, a negative value will scroll backwards, and a "
 "value of 0 will cause the slideshow to always flip to a new page."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:301
+#: mcomix/preferences_dialog.py:303
 #, fuzzy
 msgid "During a slideshow automatically open the next archive"
 msgstr "Abrir o próximo arquivo automaticamente."
 
-#: mcomix/preferences_dialog.py:306
+#: mcomix/preferences_dialog.py:308
 msgid ""
 "While in slideshow mode allow the next archive to automatically be opened."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:309
+#: mcomix/preferences_dialog.py:311
 msgid "Rotation"
 msgstr "Rotación"
 
-#: mcomix/preferences_dialog.py:311
+#: mcomix/preferences_dialog.py:313
 #, fuzzy
 msgid "Automatically rotate images according to their metadata"
 msgstr "Rotar automaticamente as imaxes segundo os seus metadatos"
 
-#: mcomix/preferences_dialog.py:316
+#: mcomix/preferences_dialog.py:318
 msgid ""
 "Automatically rotate images when an orientation is specified in the image "
 "metadata, such as in an Exif tag."
@@ -860,54 +860,54 @@ msgstr ""
 "Rotar automaticamente as imaxes cando a orientación se especifique nos "
 "metadatos, como no caso dos tag Exif."
 
-#: mcomix/preferences_dialog.py:319
+#: mcomix/preferences_dialog.py:321
 #, fuzzy
 msgid "Image quality"
 msgstr "Escala da imaxe"
 
-#: mcomix/preferences_dialog.py:320
+#: mcomix/preferences_dialog.py:322
 #, fuzzy
 msgid "Scaling mode"
 msgstr "Modo manga"
 
-#: mcomix/preferences_dialog.py:323
+#: mcomix/preferences_dialog.py:325
 msgid ""
 "Changes how images are scaled. Slower algorithms result in higher quality "
 "resizing, but longer page loading times."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:335
+#: mcomix/preferences_dialog.py:337
 msgid "Language (needs restart):"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:339
+#: mcomix/preferences_dialog.py:341
 msgid "Escape key closes program"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:344
+#: mcomix/preferences_dialog.py:346
 msgid ""
 "When active, the ESC key closes the program, instead of only disabling "
 "fullscreen mode."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:348
+#: mcomix/preferences_dialog.py:350
 msgid "File order"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:350
+#: mcomix/preferences_dialog.py:352
 msgid "Order files by:"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:353
+#: mcomix/preferences_dialog.py:355
 msgid "Cache"
 msgstr "Caché"
 
-#: mcomix/preferences_dialog.py:356
+#: mcomix/preferences_dialog.py:358
 #, fuzzy
 msgid "Store thumbnails for opened files"
 msgstr "Gardar as miniaturas para os arquivos abertos."
 
-#: mcomix/preferences_dialog.py:361
+#: mcomix/preferences_dialog.py:363
 msgid ""
 "Store thumbnails for opened files according to the freedesktop.org "
 "specification. These thumbnails are shared by many other applications, such "
@@ -917,47 +917,47 @@ msgstr ""
 "freedesktop.org. Esas miniaturas son compartidas por varios outros "
 "programas, como a maior parte dos xestores de arquivos."
 
-#: mcomix/preferences_dialog.py:364
+#: mcomix/preferences_dialog.py:366
 msgid "Maximum number of pages to store in the cache:"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:370
+#: mcomix/preferences_dialog.py:372
 msgid ""
 "Set the max number of pages to cache. A value of -1 will cache the entire "
 "archive."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:373
+#: mcomix/preferences_dialog.py:375
 msgid "Magnifying Lens"
 msgstr "Lente de aumento"
 
-#: mcomix/preferences_dialog.py:375
+#: mcomix/preferences_dialog.py:377
 #, fuzzy
 msgid "Magnifying lens size (in pixels):"
 msgstr "Tamaño da lente de aumento (en pixels)"
 
-#: mcomix/preferences_dialog.py:381
+#: mcomix/preferences_dialog.py:383
 msgid ""
 "Set the size of the magnifying lens. It is a square with a side of this many "
 "pixels."
 msgstr ""
 "Axustar o tamaño da lente de aumento. É un cadrado con ese tamaño de pixels."
 
-#: mcomix/preferences_dialog.py:383
+#: mcomix/preferences_dialog.py:385
 #, fuzzy
 msgid "Magnification factor:"
 msgstr "Factor de aumento"
 
-#: mcomix/preferences_dialog.py:390
+#: mcomix/preferences_dialog.py:392
 msgid "Set the magnification factor of the magnifying lens."
 msgstr "Axustar o factor da lente de aumento."
 
-#: mcomix/preferences_dialog.py:394
+#: mcomix/preferences_dialog.py:396
 #, fuzzy
 msgid "Comment extensions:"
 msgstr "Comentar as extensións"
 
-#: mcomix/preferences_dialog.py:401
+#: mcomix/preferences_dialog.py:403
 msgid ""
 "Treat all files found within archives, that have one of these file endings, "
 "as comments."
@@ -965,186 +965,94 @@ msgstr ""
 "Tratar todos os documentos atopados dentro de arquivos, incluíndo os que "
 "teñen estas terminacións de arquivo, como comentarios."
 
-#: mcomix/preferences_dialog.py:422
+#: mcomix/preferences_dialog.py:425
 msgid "Auto-detect (Default)"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:423
-msgid "Catalan"
-msgstr ""
-
-#: mcomix/preferences_dialog.py:424
-msgid "Czech"
-msgstr ""
-
-#: mcomix/preferences_dialog.py:425
-msgid "German"
-msgstr ""
-
-#: mcomix/preferences_dialog.py:426
-msgid "Greek"
-msgstr ""
-
-#: mcomix/preferences_dialog.py:427
-msgid "English"
-msgstr ""
-
-#: mcomix/preferences_dialog.py:428
-msgid "Spanish"
-msgstr ""
-
-#: mcomix/preferences_dialog.py:429
-msgid "Persian"
-msgstr ""
-
-#: mcomix/preferences_dialog.py:430
-msgid "French"
-msgstr ""
-
-#: mcomix/preferences_dialog.py:431
-msgid "Galician"
-msgstr ""
-
-#: mcomix/preferences_dialog.py:432
-msgid "Croatian"
-msgstr ""
-
-#: mcomix/preferences_dialog.py:433
-msgid "Hungarian"
-msgstr ""
-
-#: mcomix/preferences_dialog.py:434
-msgid "Indonesian"
-msgstr ""
-
-#: mcomix/preferences_dialog.py:435
-msgid "Italian"
-msgstr ""
-
-#: mcomix/preferences_dialog.py:436
-msgid "Japanese"
-msgstr ""
-
-#: mcomix/preferences_dialog.py:437
-msgid "Korean"
-msgstr ""
-
-#: mcomix/preferences_dialog.py:438
-msgid "Dutch"
-msgstr ""
-
-#: mcomix/preferences_dialog.py:439
-msgid "Polish"
-msgstr ""
-
-#: mcomix/preferences_dialog.py:440
-msgid "Portuguese"
-msgstr ""
-
-#: mcomix/preferences_dialog.py:441
-msgid "Russian"
-msgstr ""
-
-#: mcomix/preferences_dialog.py:442
-msgid "Swedish"
-msgstr ""
-
-#: mcomix/preferences_dialog.py:443
-msgid "Ukrainian"
-msgstr ""
-
-#: mcomix/preferences_dialog.py:444
-msgid "Chinese (simplified)"
-msgstr ""
-
-#: mcomix/preferences_dialog.py:445
-msgid "Chinese (traditional)"
-msgstr ""
-
-#: mcomix/preferences_dialog.py:464 mcomix/preferences_dialog.py:556
+#: mcomix/preferences_dialog.py:468 mcomix/preferences_dialog.py:560
 msgid "Never"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:465
+#: mcomix/preferences_dialog.py:469
 msgid "Only for title pages"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:466
+#: mcomix/preferences_dialog.py:470
 msgid "Only for wide images"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:467
+#: mcomix/preferences_dialog.py:471
 msgid "Always"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:486
+#: mcomix/preferences_dialog.py:490
 #, fuzzy
 msgid "Fit to width"
 msgstr "Modo de axustar a largura"
 
-#: mcomix/preferences_dialog.py:487
+#: mcomix/preferences_dialog.py:491
 #, fuzzy
 msgid "Fit to height"
 msgstr "Modo de axustar a altura"
 
-#: mcomix/preferences_dialog.py:508
+#: mcomix/preferences_dialog.py:512
 msgid "No sorting"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:509
+#: mcomix/preferences_dialog.py:513
 msgid "File name"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:510 mcomix/library/book_area.py:164
+#: mcomix/preferences_dialog.py:514 mcomix/library/book_area.py:164
 msgid "File size"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:511
+#: mcomix/preferences_dialog.py:515
 msgid "Last modified"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:517 mcomix/library/book_area.py:168
+#: mcomix/preferences_dialog.py:521 mcomix/library/book_area.py:168
 msgid "Ascending"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:518 mcomix/library/book_area.py:170
+#: mcomix/preferences_dialog.py:522 mcomix/library/book_area.py:170
 msgid "Descending"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:528
+#: mcomix/preferences_dialog.py:532
 msgid ""
 "Files will be opened and displayed according to the sort order specified "
 "here. This option does not affect ordering within archives."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:557
+#: mcomix/preferences_dialog.py:561
 msgid "Only file names"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:558
+#: mcomix/preferences_dialog.py:562
 msgid "File names and last read page"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:592
+#: mcomix/preferences_dialog.py:596
 #, fuzzy
 msgid "Delete information about recently opened files?"
 msgstr "Garda informacións sobre arquivos abertos recentemente."
 
-#: mcomix/preferences_dialog.py:593
+#: mcomix/preferences_dialog.py:597
 msgid ""
 "This will remove all entries from the \"Recent\" menu, and clear information "
 "about last read pages."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:604
+#: mcomix/preferences_dialog.py:608
 msgid "Normal (fast)"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:605
+#: mcomix/preferences_dialog.py:609
 msgid "Bilinear"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:606
+#: mcomix/preferences_dialog.py:610
 msgid "Hyperbolic (slow)"
 msgstr ""
 
@@ -1482,7 +1390,12 @@ msgstr "Tradución ao italiano"
 msgid "Swedish translation"
 msgstr ""
 
-#: mcomix/strings.py:60
+#: mcomix/strings.py:58
+#, fuzzy
+msgid "Hebrew translation"
+msgstr "Tradución ao grego"
+
+#: mcomix/strings.py:61
 msgid "Icon design"
 msgstr "Deseño das iconas"
 
