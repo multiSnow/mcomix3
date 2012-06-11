@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """preferences_dialog.py - Preferences dialog."""
 
 import operator
@@ -418,32 +420,33 @@ class _PreferencesDialog(gtk.Dialog):
 
     def _create_language_control(self):
         """ Creates and returns the combobox for language selection. """
+        # Source: http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
         languages = [
             (_('Auto-detect (Default)'), 'auto'),
-            (_('Catalan'), 'ca'),
-            (_('Czech'), 'cs'),
-            (_('German'), 'de'),
-            (_('Greek'), 'el'),
-            (_('English'), 'en'),
-            (_('Spanish'), 'es'),
-            (_('Persian'), 'fa'),
-            (_('French'), 'fr'),
-            (_('Galician'), 'gl'),
-            (_('Hebrew'), 'he'),
-            (_('Croatian'), 'hr'),
-            (_('Hungarian'), 'hu'),
-            (_('Indonesian'), 'id'),
-            (_('Italian'), 'it'),
-            (_('Japanese'), 'ja'),
-            (_('Korean'), 'ko'),
-            (_('Dutch'), 'nl'),
-            (_('Polish'), 'pl'),
-            (_('Portuguese'), 'pt_BR'),
-            (_('Russian'), 'ru'),
-            (_('Swedish'), 'sv'),
-            (_('Ukrainian'), 'uk'),
-            (_('Chinese (simplified)'), 'zh_CN'),
-            (_('Chinese (traditional)'), 'zh_TW')]
+            ('Català', 'ca'),  # Catalan
+            ('čeština', 'cs'),  # Czech
+            ('Deutsch', 'de'),  # German
+            ('ελληνικά', 'el'),  # Greek
+            ('English', 'en'),  # English
+            ('Español', 'es'),  # Spanish
+            ('فارسی', 'fa'),  # Persian
+            ('Français', 'fr'), # French
+            ('Galego', 'gl'),  # Galician
+            ('עברית', 'he'),  # Hebrew
+            ('Hrvatski jezik', 'hr'),  # Croatian
+            ('Magyar', 'hu'),  # Hungarian
+            ('Bahasa Indonesia', 'id'),  # Indonesian
+            ('Italiano', 'it'),  # Italian
+            ('日本語', 'ja'),  # Japanese
+            ('한국어', 'ko'),  # Korean
+            ('Nederlands', 'nl'),  # Dutch
+            ('Język polski', 'pl'),  # Polish
+            ('Português', 'pt_BR'),  # Portuguese
+            ('pусский язык', 'ru'),  # Russian
+            ('Svenska', 'sv'),  # Swedish
+            ('українська мова', 'uk'),  # Ukrainian
+            ('簡體中文', 'zh_CN'),  # Chinese (simplified)
+            ('正體中文', 'zh_TW')]  # Chinese (traditional)
         languages.sort(key=operator.itemgetter(0))
 
         box = self._create_combobox(languages, prefs['language'],
