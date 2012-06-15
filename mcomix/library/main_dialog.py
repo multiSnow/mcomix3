@@ -61,9 +61,6 @@ class _LibraryDialog(gtk.Window):
         self.show_all()
         self.present()
 
-        if prefs['scan for new books on library startup']:
-            self.scan_for_new_files()
-
     def open_book(self, books, keep_library_open=False):
         """Open the book with ID <book>."""
 
@@ -168,6 +165,10 @@ def open_dialog(action, window):
 
     else:
         _dialog.present()
+
+    if prefs['scan for new books on library startup']:
+        _dialog.scan_for_new_files()
+
 
 def _close_dialog(*args):
     global _dialog
