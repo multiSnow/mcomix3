@@ -278,7 +278,7 @@ class _LibraryBackend:
 
                 book = backend_types._Book(book_id, name, path, pages,
                         format, size, datetime.datetime.now().isoformat())
-                self.book_added(book)
+                self.book_added(book, collection)
 
             cursor.close()
 
@@ -291,7 +291,7 @@ class _LibraryBackend:
             return False
 
     @callback.Callback
-    def book_added(self, book):
+    def book_added(self, book, collection):
         """ Event that triggers when a new book is successfully added to the
         library.
         @param book: L{_Book} instance of the newly added book.

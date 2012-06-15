@@ -241,9 +241,13 @@ class _BookArea(gtk.ScrolledWindow):
 
         self._iconview.draw_thumbnails_on_screen()
 
-    def _new_book_added(self, book):
+    def _new_book_added(self, book, collection):
         """ Callback function for L{LibraryBackend.book_added}. """
-        self.add_books([book])
+        if collection is None:
+            collection = _COLLECTION_ALL
+
+        if collection == self._library.collection_area.get_current_collection():
+            self.add_books([book])
 
     def remove_book_at_path(self, path):
         """Remove the book at <path> from the ListStore (and thus from

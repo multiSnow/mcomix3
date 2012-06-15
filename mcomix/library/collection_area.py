@@ -99,10 +99,11 @@ class _CollectionArea(gtk.ScrolledWindow):
         """Return the collection ID for the currently selected collection,
         or None if no collection is selected.
         """
-        cursor = self._treeview.get_cursor()
-        if cursor is None:
-            return
-        return self._get_collection_at_path(cursor[0])
+        treepath, focuspath = self._treeview.get_cursor()
+        if treepath is not None:
+            return self._get_collection_at_path(treepath)
+        else:
+            return None
 
     def display_collections(self):
         """Display the library collections by redrawing them from the
