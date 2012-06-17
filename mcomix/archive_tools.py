@@ -26,18 +26,19 @@ def get_supported_archive_regex():
     """ Returns a compiled regular expression that contains extensions
     of all currently supported file types, based on available applications.
     """
-    formats = ['zip', 'cbz', 'tar', 'cbt', 'gz', 'bz2', 'bzip2']
+    formats = list(constants.ZIP_FORMATS[1] + constants.TAR_FORMATS[1])
 
     if szip_available():
-        formats.append('7z')
+        formats.extend(constants.SZIP_FORMATS[1])
 
     if rar_available():
-        formats.extend(['rar', 'cbr'])
+        formats.extend(constants.RAR_FORMATS[1])
 
     if lha_available():
-        # XXX: Is 'lza' actually a valid extension for this format?
-        formats.extend(['lha', 'lzh', 'lzs', 'lza'])
+        formats.extend(constants.LHA_FORMATS[1])
 
+    # Strip leading glob characters "*." from file extensions
+    formats = [format[2:] for format in formats]
     return re.compile(r'\.(' + '|'.join(formats) + r')\s*$', re.I)
 
 def archive_mime_type(path):
