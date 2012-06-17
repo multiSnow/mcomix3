@@ -119,6 +119,10 @@ class CollectionTest(unittest.TestCase):
 
         self.assertEqual(len(backend_types.DefaultCollection.get_all_collections()), 3)
         self.assertEqual(len(col.get_all_collections()), 2)
+
+    def test_get_default_collection(self):
+        collection = self.library.get_collection_by_id(None)
+        self.assertEqual(collection, backend_types.DefaultCollection)
     
 
 class WatchListEntryTest(unittest.TestCase):
