@@ -1,6 +1,7 @@
 """archive_tools.py - Archive tool functions."""
 
 import os
+import re
 import zipfile
 import tarfile
 
@@ -11,6 +12,33 @@ from mcomix.archive import rar
 from mcomix.archive import tar
 from mcomix.archive import sevenzip
 from mcomix.archive import lha
+
+def szip_available():
+    return sevenzip.SevenZipArchive.is_available()
+
+def rar_available():
+    return rar.RarArchive.is_available() or szip_available()
+
+def lha_available():
+    return lha.LhaArchive.is_available() or szip_available()
+
+def get_supported_archive_regex():
+    """ Returns a compiled regular expression that contains extensions
+    of all currently supported file types, based on available applications.
+    """
+    formats = ['zip', 'cbz', 'tar', 'cbt', 'gz', 'bz2', 'bzip2']
+
+    if szip_available():
+        formats.append('7z')
+
+    if rar_available():
+        formats.extend(['rar', 'cbr'])
+
+    if lha_available():
+        # XXX: Is 'lza' actually a valid extension for this format?
+        formats.extend(['lha', 'lzh', 'lzs', 'lza'])
+
+    return re.compile(r'\.(' + '|'.join(formats) + r')\s*$', re.I)
 
 def archive_mime_type(path):
     """Return the archive type of <path> or None for non-archives."""

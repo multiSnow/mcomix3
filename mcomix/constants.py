@@ -52,7 +52,6 @@ SIZE_HUGE, SIZE_LARGE, SIZE_NORMAL, SIZE_SMALL, SIZE_TINY = MAX_LIBRARY_COVER_SI
 
 ACCEPTED_COMMENT_EXTENSIONS = ['txt', 'nfo', 'xml']
 SUPPORTED_IMAGE_REGEX = re.compile(r'\.(jpg|jpeg|png|gif|tif|tiff|bmp|ppm|pgm|pbm)\s*$', re.I)
-SUPPORTED_ARCHIVE_REGEX = re.compile(r'\.(cbz|cbr|cbt|zip|rar|tar|gz|bz2|bzip2|7z|lza|lzh)\s*$', re.I)
 
 ZIP_FORMATS = (
         ('application/x-zip', 'application/zip', 'application/x-zip-compressed', 'application/x-cbz'),
@@ -70,17 +69,7 @@ LHA_FORMATS = (
         ('application/x-lzh', 'application/x-lha', 'application/x-lzh-compressed'),
         ('*.lha', '*.lzh'))
 
-def SZIP_AVAILABLE():
-    import archive.sevenzip
-    return archive.sevenzip.SevenZipArchive.is_available()
 
-def RAR_AVAILABLE():
-    import archive.rar
-    return archive.rar.RarArchive.is_available() or SZIP_AVAILABLE()
-
-def LHA_AVAILABLE():
-    import archive.lha
-    return archive.lha.LhaArchive.is_available() or SZIP_AVAILABLE()
 
 MISSING_IMAGE_ICON = None
 try:

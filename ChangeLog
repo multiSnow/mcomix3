@@ -37,6 +37,10 @@ MComix 0.99
       Automatically scanning for new books every time the library is opened
       can now be disabled in the watch list dialog.
 
+    - The watch list feature no longer tries to add archive formats that
+      aren't currently supported, i.e. no .7z archives when 7z isn't
+      installed or found.
+
     - Added an option to quit the program when the ESC key is pressed. When
       disabled, ESC only exits fullscreen mode.
 

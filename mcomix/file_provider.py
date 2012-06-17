@@ -103,7 +103,7 @@ class OrderedFileProvider(FileProvider):
             should_accept = lambda file: image_tools.is_image_file(file)
         elif mode == FileProvider.ARCHIVES:
             should_accept = lambda file: \
-                constants.SUPPORTED_ARCHIVE_REGEX.search(file, re.I) is not None
+                archive_tools.get_supported_archive_regex().search(file, re.I) is not None
         else:
             should_accept = lambda file: True
 
@@ -212,9 +212,10 @@ class PreDefinedFileProvider(FileProvider):
                 return lambda file: \
                         image_tools.is_image_file(file)
 
-            elif os.path.isfile(file) and constants.SUPPORTED_ARCHIVE_REGEX.search(file, re.I) is not None:
+            elif (os.path.isfile(file) and
+                  archive_tools.get_supported_archive_regex().search(file, re.I) is not None):
                 return lambda file: \
-                        constants.SUPPORTED_ARCHIVE_REGEX.search(file, re.I) is not None
+                        archive_tools.get_supported_archive_regex().search(file, re.I) is not None
 
         # Default filter only accepts images.
         return lambda file: image_tools.is_image_file(file)

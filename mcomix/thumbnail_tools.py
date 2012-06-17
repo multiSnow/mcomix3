@@ -144,7 +144,7 @@ class Thumbnailer(object):
             else:
                 # Then check for subarchives by file extension and
                 # extract only the first...
-                subs = filter(constants.SUPPORTED_ARCHIVE_REGEX.search, files)
+                subs = filter(archive_tools.get_supported_archive_regex().search, files)
                 if subs:
                     extractor.set_files([subs[0]])
                     extractor.extract()

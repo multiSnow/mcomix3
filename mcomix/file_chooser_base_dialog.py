@@ -8,6 +8,7 @@ import pango
 
 from mcomix.preferences import prefs
 from mcomix import image_tools
+from mcomix import archive_tools
 from mcomix import labels
 from mcomix import constants
 from mcomix import log
@@ -86,13 +87,13 @@ class _BaseFileChooserDialog(gtk.Dialog):
         # extractor availability.
         mimetypes = constants.ZIP_FORMATS[0] + constants.TAR_FORMATS[0]
         patterns = constants.ZIP_FORMATS[1] + constants.TAR_FORMATS[1]
-        if constants.RAR_AVAILABLE():
+        if archive_tools.rar_available():
             mimetypes += constants.RAR_FORMATS[0]
             patterns += constants.RAR_FORMATS[1]
-        if constants.SZIP_AVAILABLE():
+        if archive_tools.szip_available():
             mimetypes += constants.SZIP_FORMATS[0]
             patterns += constants.SZIP_FORMATS[1]
-        if constants.LHA_AVAILABLE():
+        if archive_tools.lha_available():
             mimetypes += constants.LHA_FORMATS[0]
             patterns += constants.LHA_FORMATS[1]
 
@@ -105,15 +106,15 @@ class _BaseFileChooserDialog(gtk.Dialog):
         self.add_filter(_('Tar archives'),
             *constants.TAR_FORMATS)
 
-        if constants.RAR_AVAILABLE():
+        if archive_tools.rar_available():
             self.add_filter(_('RAR archives'),
                 *constants.RAR_FORMATS)
 
-        if constants.SZIP_AVAILABLE():
+        if archive_tools.szip_available():
             self.add_filter(_('7z archives'),
                 *constants.SZIP_FORMATS)
 
-        if constants.LHA_AVAILABLE():
+        if archive_tools.lha_available():
             self.add_filter(_('LHA archives'),
                 *constants.LHA_FORMATS)
 

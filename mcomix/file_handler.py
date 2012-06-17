@@ -309,7 +309,8 @@ class FileHandler(object):
                                     for f in comment_files ]
 
             # Allow managing sub-archives by keeping archives based on extension
-            archive_files = filter(constants.SUPPORTED_ARCHIVE_REGEX.search, files)
+            archive_files = filter(
+                    archive_tools.get_supported_archive_regex().search, files)
             archive_files_paths = [ os.path.join(self._tmp_dir, f)
                                     for f in archive_files ]
 
