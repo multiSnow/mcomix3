@@ -246,7 +246,8 @@ class _BookArea(gtk.ScrolledWindow):
         if collection is None:
             collection = _COLLECTION_ALL
 
-        if collection == self._library.collection_area.get_current_collection():
+        if (collection == self._library.collection_area.get_current_collection() or
+            self._library.collection_area.get_current_collection() == _COLLECTION_ALL):
             self.add_books([book])
 
     def remove_book_at_path(self, path):
