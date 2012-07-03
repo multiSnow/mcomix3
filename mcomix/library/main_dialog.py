@@ -34,6 +34,7 @@ class _LibraryDialog(gtk.Window):
         self.resize(prefs['lib window width'], prefs['lib window height'])
         self.set_title(_('Library'))
         self.connect('delete_event', self.close)
+        self.connect('key-press-event', self._key_press_event)
 
         self.filter_string = None
         self._file_handler = file_handler
@@ -150,6 +151,12 @@ class _LibraryDialog(gtk.Window):
 
         if collection_id is not None:
             prefs['last library collection'] = collection_id
+
+    def _key_press_event(self, widget, event, *args):
+        """ Handle key press events for closing the library on Escape press. """
+
+        if event.keyval == gtk.keysyms.Escape:
+            self.hide()
 
 
 def open_dialog(action, window):

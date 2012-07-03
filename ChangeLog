@@ -42,7 +42,8 @@ MComix 0.99
       installed or found.
 
     - Added an option to quit the program when the ESC key is pressed. When
-      disabled, ESC only exits fullscreen mode.
+      disabled, ESC only exits fullscreen mode. ESC now also closes the
+      library.
 
     - Added a new menu item to minimize the MComix window, bound to "N" by
       default.
