@@ -198,6 +198,17 @@ class _PreferencesDialog(gtk.Dialog):
             _('Set the number of pixels to scroll on a page when using a mouse wheel.'))
         page.add_row(label, scroll_key_spinner)
 
+        smart_scroll_label = gtk.Label(_('Fraction of page to scroll '
+            'per space key press (in percent):'))
+        adjustment = gtk.Adjustment(int(prefs['smart scroll percentage'] * 100),
+            1, 100, 1, 5)
+        spinner = gtk.SpinButton(adjustment, digits=0)
+        spinner.connect('value-changed', self._spinner_cb,
+            'smart scroll percentage')
+        spinner.set_tooltip_text(_('Sets the percentage by which the page '
+            'will be scrolled down or up when the space key is pressed.'))
+        page.add_row(smart_scroll_label, spinner)
+
         label = gtk.Label(_('Number of "steps" to take before flipping the page:'))
         adjustment = gtk.Adjustment(prefs['number of key presses before page turn'], 1, 100, 1, 3)
         flipping_spinner = gtk.SpinButton(adjustment, digits=0)
@@ -755,6 +766,9 @@ class _PreferencesDialog(gtk.Dialog):
 
         elif preference == 'number of pixels to scroll per mouse wheel event':
             prefs[preference] = int(value)
+
+        elif preference == 'smart scroll percentage':
+            prefs[preference] = value / 100.0
 
         elif preference == 'thumbnail size':
             prefs[preference] = int(value)
