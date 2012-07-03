@@ -283,33 +283,27 @@ msgstr "Bücher hinzufügen"
 msgid "Add to this collection:"
 msgstr "Zu Sammlung hinzufügen:"
 
-#: mcomix/file_chooser_main_dialog.py:22
-#: mcomix/file_chooser_simple_dialog.py:23
+#: mcomix/file_chooser_main_dialog.py:22 mcomix/file_chooser_simple_dialog.py:23
 msgid "All images"
 msgstr "Alle Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:24
-#: mcomix/file_chooser_simple_dialog.py:25
+#: mcomix/file_chooser_main_dialog.py:24 mcomix/file_chooser_simple_dialog.py:25
 msgid "JPEG images"
 msgstr "JPEG-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:25
-#: mcomix/file_chooser_simple_dialog.py:26
+#: mcomix/file_chooser_main_dialog.py:25 mcomix/file_chooser_simple_dialog.py:26
 msgid "PNG images"
 msgstr "PNG-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:26
-#: mcomix/file_chooser_simple_dialog.py:27
+#: mcomix/file_chooser_main_dialog.py:26 mcomix/file_chooser_simple_dialog.py:27
 msgid "GIF images"
 msgstr "GIF-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:27
-#: mcomix/file_chooser_simple_dialog.py:28
+#: mcomix/file_chooser_main_dialog.py:27 mcomix/file_chooser_simple_dialog.py:28
 msgid "TIFF images"
 msgstr "TIFF-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:28
-#: mcomix/file_chooser_simple_dialog.py:29
+#: mcomix/file_chooser_main_dialog.py:28 mcomix/file_chooser_simple_dialog.py:29
 msgid "BMP images"
 msgstr "BMP-Bilder"
 
@@ -721,15 +715,17 @@ msgstr ""
 "Mausrad benutzt werden."
 
 #: mcomix/preferences_dialog.py:201
-#, fuzzy
 msgid "Fraction of page to scroll per space key press (in percent):"
-msgstr "Anzahl von Pixeln, um die bei Knopfdruck gescrollt wird:"
+msgstr ""
+"Anteil an Seite, um den bei Druck der Leertaste gescrollt wird (in Prozent):"
 
 #: mcomix/preferences_dialog.py:208
 msgid ""
 "Sets the percentage by which the page will be scrolled down or up when the "
 "space key is pressed."
 msgstr ""
+"Setzt den prozentualen Anteil, um den eine Seite nach unten oder oben "
+"gerollt wird, wenn die Leertaste betätigt wird."
 
 #: mcomix/preferences_dialog.py:212
 msgid "Number of \"steps\" to take before flipping the page:"
@@ -926,9 +922,9 @@ msgid ""
 "specification. These thumbnails are shared by many other applications, such "
 "as most file managers."
 msgstr ""
-"Vorschaubilder für geöffnete Dateien gemäß der Spezifikation von freedesktop."
-"org speichern. Diese Vorschaubilder werden mit vielen anderen Anwendungen, "
-"zumeist Dateimanagern, gemeinsam benutzt."
+"Vorschaubilder für geöffnete Dateien gemäß der Spezifikation von "
+"freedesktop.org speichern. Diese Vorschaubilder werden mit vielen anderen "
+"Anwendungen, zumeist Dateimanagern, gemeinsam benutzt."
 
 #: mcomix/preferences_dialog.py:377
 msgid "Maximum number of pages to store in the cache:"
@@ -2530,8 +2526,8 @@ msgstr "Aut_omatisch nach Büchern suchen, wenn Bibliothek geöffnet wird"
 
 #~ msgid ""
 #~ "Crash recovery saves the current configuration information every "
-#~ "specified seconds.  In case of a crash the previous file will be re-"
-#~ "loaded."
+#~ "specified seconds.  In case of a crash the previous file will be "
+#~ "re-loaded."
 #~ msgstr ""
 #~ "Automatische Wiederherstellung speichert die derzeitige Konfiguration in "
 #~ "spezifizierten Abständen. Sollte MComix abstürzen, wird die zuletzt "
