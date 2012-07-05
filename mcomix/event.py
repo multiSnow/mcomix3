@@ -559,8 +559,9 @@ class EventHandler:
             self._extra_scroll_events = 0
             return False
 
-        if (not self._scroll_protection or
-            self._extra_scroll_events >= prefs['number of key presses before page turn'] - 1):
+        if (not self._scroll_protection
+            or self._extra_scroll_events >= prefs['number of key presses before page turn'] - 1
+            or not self._window.is_scrollable_vertically()):
 
             self._extra_scroll_events = 0
             self._window.next_page()
@@ -584,8 +585,9 @@ class EventHandler:
             self._extra_scroll_events = 0
             return False
 
-        if (not self._scroll_protection or
-            self._extra_scroll_events <= -prefs['number of key presses before page turn'] + 1):
+        if (not self._scroll_protection
+            or self._extra_scroll_events <= -prefs['number of key presses before page turn'] + 1
+            or not self._window.is_scrollable_vertically()):
 
             self._extra_scroll_events = 0
             self._window.previous_page()
