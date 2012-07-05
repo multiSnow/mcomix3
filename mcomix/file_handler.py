@@ -33,6 +33,8 @@ class FileHandler(object):
     def __init__(self, window):
         #: Indicates if files/archives are currently loaded.
         self.file_loaded = False
+        #: Indicate if files/archives load has failed.
+        self.file_load_failed = False
         #: None if current file is not an archive, or unrecognized format.
         self.archive_type = None
 
@@ -154,6 +156,7 @@ class FileHandler(object):
 
         if not image_files:
             self.file_loaded = False
+            self.file_load_failed = True
             msg = _("No images in '%s'") % os.path.basename(path)
             self._window.statusbar.set_message(msg)
             self._window.osd.show(msg)
@@ -163,6 +166,7 @@ class FileHandler(object):
 
         else:
             self.file_loaded = True
+            self.file_load_failed = False
             self._window.imagehandler._image_files = image_files
             self._window.imagehandler._current_image_index = current_image_index
             self._window.imagehandler._base_path = self._base_path

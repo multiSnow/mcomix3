@@ -12,6 +12,9 @@ MComix 0.99
 
     - Fixed exception when trying to pack an archive using the archive editor.
 
+    - Fixed a bug that prevented using the "Next archive"/"Previous archive"
+      buttons when an empty archive was loaded (by Gabriel Falcone).
+
     - "Smart scrolling" now also works with the mouse wheel. In smart
       scrolling mode, MComix tries to follow the natural reading flow of a
       comic book by not only scrolling up or down, but also sideways.
