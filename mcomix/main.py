@@ -694,6 +694,19 @@ class MainWindow(gtk.Window):
             self._vscroll.hide_all()
             self._hscroll.hide_all()
 
+    def is_scrollable_vertically(self):
+        """ Returns True when the displayed image does not fit into the display
+        port vertically and must be scrolled to be viewed completely. """
+
+        _, screen_height = self.get_visible_area_size()
+        left_height = self.left_image.get_pixbuf() and \
+                self.left_image.get_pixbuf().get_height() or 0
+        right_height = self.right_image.get_pixbuf() and \
+                self.right_image.get_pixbuf().get_height() or 0
+        image_height = max(left_height, right_height)
+
+        return image_height > screen_height
+
     def scroll_with_flipping(self, x, y):
         """Returns true if able to scroll without flipping to
         a new page and False otherwise."""

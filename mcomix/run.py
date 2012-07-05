@@ -49,7 +49,6 @@ def parse_arguments(argv):
             help=_('Show the library on startup.'))
     parser.add_option('-v', '--version', action='callback', callback=print_version,
             help=_('Show the version number and exit.'))
-    parser.add_option('-o', '--output')
 
     viewmodes = optparse.OptionGroup(parser, _('View modes'))
     viewmodes.add_option('-f', '--fullscreen', dest='fullscreen', action='store_true',
