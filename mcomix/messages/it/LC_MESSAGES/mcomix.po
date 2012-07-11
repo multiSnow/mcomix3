@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: MComix\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
 "POT-Creation-Date: 2012-07-03 20:41+0200\n"
-"PO-Revision-Date: 2012-04-21 20:00+0100\n"
+"PO-Revision-Date: 2012-07-11 12:00+0100\n"
 "Last-Translator: Giovanni Scafora <giovanni@archlinux.org>\n"
 "Language-Team: Arch Linux Italian Team <giovanni@archlinux.org>\n"
 "Language: it\n"
@@ -334,7 +334,7 @@ msgstr "Impossibile aprire %s: tipo di file sconosciuto."
 #: mcomix/file_handler.py:450
 #, python-format
 msgid "Continue reading from page %d?"
-msgstr ""
+msgstr "Continui a leggere da pagina %d?"
 
 #: mcomix/file_handler.py:451
 #, python-format
@@ -343,6 +343,9 @@ msgid ""
 "reading will resume on page %(page)d. Otherwise, the first page will be "
 "loaded."
 msgstr ""
+"Ti sei fermato a leggere qui il %(date)s, %(time)s. Se hai scelto \"Yes\", "
+"la lettura riprenderà dalla pagina %(page)d. Altrimenti, sarà caricata "
+"la prima pagina."
 
 #: mcomix/file_handler.py:764
 #, python-format
@@ -642,22 +645,17 @@ msgid "Scroll"
 msgstr "Scorrimento"
 
 #: mcomix/preferences_dialog.py:146
-#, fuzzy
 msgid "Use smart scrolling"
-msgstr "Usa lo scorrimento intelligente della barra di spazio"
+msgstr "Usa lo scorrimento intelligente"
 
 #: mcomix/preferences_dialog.py:151
-#, fuzzy
 msgid ""
 "With this preference set, the space key and mouse wheel do not only scroll "
 "down or up, but also sideways and so try to follow the natural reading order "
 "of the comic book."
 msgstr ""
-"Usa lo scorrimento intelligente con la barra spaziatrice. Normalmente, la "
-"barra spaziatrice scorre solo in basso a destra (oppure, in alto, quando "
-"viene premuto il tasto shift), ma con questa preferenza si imposta anche lo "
-"scorrimento laterale e cerca così di seguire l'ordine naturale di lettura "
-"del fumetto."
+"Con questa preferenza si imposta anche lo scorrimento laterale e cerca così "
+"di seguire l'ordine naturale di lettura del fumetto."
 
 #: mcomix/preferences_dialog.py:157
 msgid "Flip pages when scrolling off the edges of the page"
@@ -720,15 +718,15 @@ msgstr ""
 "rotellina del mouse."
 
 #: mcomix/preferences_dialog.py:201
-#, fuzzy
 msgid "Fraction of page to scroll per space key press (in percent):"
-msgstr "Numero di pixel da scorrere quando si preme il tasto freccia:"
+msgstr "Frazione di pagina da scorrere quando si preme la barra di spazio (in percentuale):"
 
 #: mcomix/preferences_dialog.py:208
 msgid ""
 "Sets the percentage by which the page will be scrolled down or up when the "
 "space key is pressed."
-msgstr ""
+msgstr "Imposta la percentuale di cui la pagina scorrerà verso il basso o "
+"verso l'alto, quando viene premuta la barra di spazio."
 
 #: mcomix/preferences_dialog.py:212
 msgid "Number of \"steps\" to take before flipping the page:"
@@ -819,14 +817,12 @@ msgid "Fit to size mode"
 msgstr "Adatta modalità di ridimensionamento"
 
 #: mcomix/preferences_dialog.py:280
-#, fuzzy
 msgid "Fit to width or height:"
-msgstr "Modalità adatta alla larghezza"
+msgstr "Adatta alla larghezza o all'altezza:"
 
 #: mcomix/preferences_dialog.py:284
-#, fuzzy
 msgid "Fixed size for this mode:"
-msgstr "A_datta modalità di ridimensionamento"
+msgstr "Ridimensionamento per questa modalità:"
 
 #: mcomix/preferences_dialog.py:292
 msgid "Slideshow"
@@ -1006,14 +1002,12 @@ msgid "Always"
 msgstr "Sempre"
 
 #: mcomix/preferences_dialog.py:501
-#, fuzzy
 msgid "Fit to width"
-msgstr "Modalità adatta alla larghezza"
+msgstr "Adatta alla larghezza"
 
 #: mcomix/preferences_dialog.py:502
-#, fuzzy
 msgid "Fit to height"
-msgstr "Modalità adatta all'altezza"
+msgstr "Adatta all'altezza"
 
 #: mcomix/preferences_dialog.py:523
 msgid "No sorting"
@@ -1417,9 +1411,8 @@ msgid "Swedish translation"
 msgstr "traduzione in svedese"
 
 #: mcomix/strings.py:58
-#, fuzzy
 msgid "Hebrew translation"
-msgstr "traduzione in greco"
+msgstr "traduzione in ebraico"
 
 #: mcomix/strings.py:61
 msgid "Icon design"
@@ -2165,9 +2158,8 @@ msgid "Collection"
 msgstr "Collezione"
 
 #: mcomix/library/watchlist.py:63
-#, fuzzy
 msgid "With subdirectories"
-msgstr "Cartella successiva"
+msgstr "Con le sottodirectory"
 
 #: mcomix/library/watchlist.py:68
 msgid "_Add"
@@ -2175,76 +2167,4 @@ msgstr "_Aggiungi"
 
 #: mcomix/library/watchlist.py:87
 msgid "Automatically scan for new books when library is _opened"
-msgstr ""
-
-#~ msgid "Catalan"
-#~ msgstr "Catalano"
-
-#~ msgid "Czech"
-#~ msgstr "Ceco"
-
-#~ msgid "German"
-#~ msgstr "Tedesco"
-
-#~ msgid "Greek"
-#~ msgstr "Greco"
-
-#~ msgid "English"
-#~ msgstr "Inglese"
-
-#~ msgid "Spanish"
-#~ msgstr "Spagnolo"
-
-#~ msgid "Persian"
-#~ msgstr "Persiano"
-
-#~ msgid "French"
-#~ msgstr "Francese"
-
-#~ msgid "Galician"
-#~ msgstr "Galiziano"
-
-#~ msgid "Croatian"
-#~ msgstr "Croato"
-
-#~ msgid "Hungarian"
-#~ msgstr "Ungherese"
-
-#~ msgid "Indonesian"
-#~ msgstr "Indonesiano"
-
-#~ msgid "Italian"
-#~ msgstr "Italiano"
-
-#~ msgid "Japanese"
-#~ msgstr "Giapponese"
-
-#~ msgid "Korean"
-#~ msgstr "Coreano"
-
-#~ msgid "Dutch"
-#~ msgstr "Olandese"
-
-#~ msgid "Polish"
-#~ msgstr "Polacco"
-
-#~ msgid "Portuguese"
-#~ msgstr "Portoghese"
-
-#~ msgid "Russian"
-#~ msgstr "Russo"
-
-#~ msgid "Swedish"
-#~ msgstr "Svedese"
-
-#~ msgid "Ukrainian"
-#~ msgstr "Ucraino"
-
-#~ msgid "Chinese (simplified)"
-#~ msgstr "Cinese (semplificato)"
-
-#~ msgid "Chinese (traditional)"
-#~ msgstr "Cinese (tradizionale)"
-
-#~ msgid "! Deleting corrupt bookmarks file."
-#~ msgstr "! Eliminazione in corso del file danneggiato dei segnalibri."
+msgstr "Cerca automaticamente nuovi libri quando la libreria è _aperta"
