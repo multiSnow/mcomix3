@@ -54,7 +54,7 @@ class EventHandler:
         # Navigation keys that work in addition to the accelerators in ui.py
         manager.register('previous page',
             ['KP_Page_Up', 'BackSpace', '<Mod1>Left'],
-            self._previous_page_with_protection)
+            self._window.previous_page)
         manager.register('next page',
             ['KP_Page_Down', '<Mod1>Right'],
             self._window.next_page)
