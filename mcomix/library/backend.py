@@ -88,6 +88,8 @@ class _LibraryBackend:
         If the book doesn't exist, None is returned. Otherwise, a
         L{backend_types._Book} instance is returned. """
 
+        path = os.path.abspath(path)
+
         cur = self.execute('''select id, name, path, pages, format,
                                      size, added
                               from book where path = ?''', (path,))
@@ -260,6 +262,11 @@ class _LibraryBackend:
                 return backend_types._Collection(*result)
             else:
                 return None
+
+    def get_recent_collection(self):
+        """ Returns the "Recent" collection, especially created for
+        storing recently opened files. """
+        return self.get_collection_by_id(COLLECTION_RECENT)
 
     def get_supercollection(self, collection):
         """Return the supercollection of <collection>."""

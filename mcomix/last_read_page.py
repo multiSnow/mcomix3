@@ -48,13 +48,7 @@ class LastReadPage(object):
         not affected by setting L{enabled} to false.
         @return: The number of entries stored by this module. """
 
-        raise NotImplementedError()
-
-        if not dbapi2:
-            return 0
-
-        sql = """SELECT COUNT(*) FROM lastread"""
-        cursor = self.db.execute(sql)
+        cursor = self.backend.execute("""SELECT COUNT(*) FROM recent""")
         count = cursor.fetchone()[0]
         cursor.close()
 
@@ -87,25 +81,28 @@ class LastReadPage(object):
         """ Removes stored page for book at C{path}.
         @param path: Path to book.
         """
-        raise NotImplementedError()
         if not self.enabled:
             return
 
         full_path = os.path.abspath(path)
-        sql = """DELETE FROM lastread WHERE path = ?"""
-        cursor = self.db.execute(sql, (full_path,))
-        cursor.close()
+        book = self.backend.get_book_by_path(full_path)
+
+        if book:
+            sql = """DELETE FROM recent WHERE book = ?"""
+            cursor = self.db.execute(sql, (book.id,))
+            cursor.close()
 
     def clear_all(self):
-        """ Removes all stored books. This method is not affected by setting
-        L{enabled} to false. """
-        raise NotImplementedError()
-        if not dbapi2:
-            return
+        """ Removes all stored books from the library's 'Recent' collection,
+        and removes all information from the recent table. This method is
+        not affected by setting L{enabled} to false. """
 
-        sql = """DELETE FROM lastread"""
-        cursor = self.db.execute(sql)
+        cursor = self.db.execute("""DELETE FROM recent""")
         cursor.close()
+        cursor = self.db.execute("""DELETE FROM contain WHERE collection = ?""",
+                                 (self.backend.get_recent_collection().id,))
+        cursor.close()
+
 
     def get_page(self, path):
         """ Gets the last read page for book at C{path}.
