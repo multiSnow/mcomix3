@@ -15,6 +15,7 @@ _dialog = None
 # The "All books" collection is not a real collection stored in the library,
 # but is represented by this ID in the library's TreeModels.
 _COLLECTION_ALL = -1
+_COLLECTION_RECENT = -2
 
 class _CollectionArea(gtk.ScrolledWindow):
 
@@ -227,9 +228,11 @@ class _CollectionArea(gtk.ScrolledWindow):
     def _remove_collection(self, action=None):
         """Remove the currently selected collection from the library."""
         collection = self.get_current_collection()
-        self._library.backend.remove_collection(collection)
-        prefs['last library collection'] = _COLLECTION_ALL
-        self.display_collections()
+
+        if collection not in (_COLLECTION_ALL, _COLLECTION_RECENT):
+            self._library.backend.remove_collection(collection)
+            prefs['last library collection'] = _COLLECTION_ALL
+            self.display_collections()
 
     def _rename_collection(self, action):
         """Rename the currently selected collection, using a dialog."""
@@ -309,7 +312,7 @@ class _CollectionArea(gtk.ScrolledWindow):
         """ Show the library collection popup. Depending on the
         value of C{collection}, menu items will be disabled or enabled. """
 
-        is_collection_all = collection == _COLLECTION_ALL
+        is_collection_all = collection in (_COLLECTION_ALL, _COLLECTION_RECENT)
 
         for path in ('rename', 'duplicate', 'remove'):
             control = self._ui_manager.get_action(
