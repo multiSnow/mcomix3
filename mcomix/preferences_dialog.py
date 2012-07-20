@@ -568,15 +568,14 @@ class _PreferencesDialog(gtk.Dialog):
     def _create_store_recent_combobox(self):
         """ Creates the combobox for "Store recently opened files". """
         items = (
-                (_('Never'), 0),
-                (_('Only file names'), constants.STORE_LAST_PATH),
-                (_('File names and last read page'), constants.STORE_LAST_PATH_AND_PAGE))
+                (_('Never'), False),
+                (_('Always'), True))
 
-        # Map legacy true/false values:
-        if prefs['store recent file info'] is True:
-            selection = constants.STORE_LAST_PATH
-        elif prefs['store recent file info'] is False:
-            selection = 0
+        # Map legacy 0/1/2 values:
+        if prefs['store recent file info'] == 0:
+            selection = False
+        elif prefs['store recent file info'] in (1, 2):
+            selection = True
         else:
             selection = prefs['store recent file info']
 
@@ -592,11 +591,10 @@ class _PreferencesDialog(gtk.Dialog):
         value = combobox.get_model().get_value(iter, 1)
         last_value = prefs['store recent file info']
         prefs['store recent file info'] = value
-        self._window.filehandler.last_read_page.set_enabled(
-            value == constants.STORE_LAST_PATH_AND_PAGE)
+        self._window.filehandler.last_read_page.set_enabled(value)
 
         # If "Never" was selected, ask to purge recent files.
-        if (last_value > 0 and value == 0
+        if (bool(last_value) is True and value is False
             and (self._window.uimanager.recent.count() > 0
                  or self._window.filehandler.last_read_page.count() > 0)):
 

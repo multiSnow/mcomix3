@@ -70,8 +70,7 @@ class FileHandler(object):
         #: Forces call to window.draw_image (if loading is delayed by user interaction)
         self._must_call_draw = False
 
-        self.last_read_page.set_enabled(
-            prefs['store recent file info'] == constants.STORE_LAST_PATH_AND_PAGE)
+        self.last_read_page.set_enabled(bool(prefs['store recent file info']))
 
     def refresh_file(self, *args, **kwargs):
         """ Closes the current file(s)/archive and reloads them. """
