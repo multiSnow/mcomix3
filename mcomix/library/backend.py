@@ -50,12 +50,12 @@ class _LibraryBackend:
             self._con = dbapi2.connect(constants.LIBRARY_DATABASE_PATH,
                 check_same_thread=False, isolation_level=None)
             self._con.row_factory = row_factory
+            self.enabled = True
 
             self.watchlist = backend_types._WatchList(self)
 
             version = self._library_version()
             self._upgrade_database(version, _LibraryBackend.DB_VERSION)
-            self.enabled = True
         else:
             self._con = None
             self.watchlist = None
