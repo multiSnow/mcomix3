@@ -559,11 +559,9 @@ class _LibraryBackend:
                 self._con.execute('''drop table watchlist_old''')
 
             if 4 in upgrades:
-                # Added table 'recent' to store recently viewed book information
+                # Added table 'recent' to store recently viewed book information and
+                # create a collection (-2, Recent)
                 self._create_table_recent()
-                self._con.execute('''insert into collection (id, name)
-                                     values (?, ?)''',
-                                  (COLLECTION_RECENT, _('Recent')))
                 lastread = last_read_page.LastReadPage(self)
                 lastread.migrate_database_to_library(COLLECTION_RECENT)
 
@@ -611,6 +609,8 @@ class _LibraryBackend:
             book integer primary key,
             page integer,
             time_set datetime)''')
+        self._con.execute('''insert into collection (id, name)
+            values (?, ?)''', (COLLECTION_RECENT, _('Recent')))
 
 
 _backend = None
