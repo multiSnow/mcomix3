@@ -125,7 +125,6 @@ class _LibraryDialog(gtk.Window):
         prefs['lib window width'], prefs['lib window height'] = self.get_size()
         self.backend.watchlist.new_files_found -= self._new_files_found
         self.book_area.stop_update()
-        self.backend.close()
         self.book_area.close()
         file_chooser_library_dialog.close_library_filechooser_dialog()
         _close_dialog()

@@ -517,7 +517,6 @@ class FileHandler(object):
             self._condition.release()
 
         self.update_last_read_page()
-        self.last_read_page.cleanup()
 
     def get_number_of_comments(self):
         """Return the number of comments in the current archive."""

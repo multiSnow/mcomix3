@@ -29,6 +29,7 @@ from mcomix import keybindings
 from mcomix import zoom
 from mcomix import bookmark_backend
 from mcomix import message_dialog
+from mcomix.library import backend
 
 
 class MainWindow(gtk.Window):
@@ -1112,6 +1113,7 @@ class MainWindow(gtk.Window):
         self.filehandler.cleanup()
         self.imagehandler.cleanup()
         self.thumbnailsidebar.clear()
+        backend.LibraryBackend().close()
 
         # This hack is to avoid Python issue #1856.
         for thread in threading.enumerate():
