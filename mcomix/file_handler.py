@@ -20,6 +20,7 @@ from mcomix import callback
 from mcomix import log
 from mcomix import last_read_page
 from mcomix import message_dialog
+from mcomix.library import backend
 
 class FileHandler(object):
 
@@ -60,7 +61,7 @@ class FileHandler(object):
         #: Provides a list of available files/archives in the open directory.
         self._file_provider = None
         #: Keeps track of the last read page in archives
-        self.last_read_page = last_read_page.LastReadPage(constants.LASTPAGE_DATABASE_PATH)
+        self.last_read_page = last_read_page.LastReadPage(backend.LibraryBackend())
         #: Regexp used for determining which archive files are images.
         self._image_re = constants.SUPPORTED_IMAGE_REGEX
         #: Regexp used for determining which archive files are comment files.

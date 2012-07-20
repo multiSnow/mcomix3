@@ -4,7 +4,10 @@ import os
 import datetime
 
 from mcomix import log
+from mcomix import constants
 
+# This import is only used for legacy data that is imported
+# into the library at upgrade.
 try:
     from sqlite3 import dbapi2
 except ImportError:
@@ -25,37 +28,27 @@ class LastReadPage(object):
     if the preference option to store pages automatically is enabled.
     """
 
-    def __init__(self, dbfile):
+    def __init__(self, backend):
         """ Constructor.
-        @param dbfile: Path to the SQLite database that should be used.
-                       Will be created if not existant yet.
+        @param backend: Library backend instance.
         """
         #: If disabled, all methods will be no-ops.
         self.enabled = False
-        #: Database storing pages.
-        self.db = self._init_database(dbfile)
-
-    def cleanup(self):
-        """ Closes the database connection used by this class. """
-        if not dbapi2:
-            return
-
-        self.db.close()
-        self.enabled = False
+        #: Library backend.
+        self.backend = backend
 
     def set_enabled(self, enabled):
         """ Enables (or disables) all functionality of this module.
         @type enabled: bool
         """
-        if dbapi2:
-            self.enabled = enabled
-        else:
-            self.enabled = False
+        self.enabled = enabled
 
     def count(self):
         """ Number of stored book/page combinations. This method is
         not affected by setting L{enabled} to false.
         @return: The number of entries stored by this module. """
+
+        raise NotImplementedError()
 
         if not dbapi2:
             return 0
@@ -72,6 +65,7 @@ class LastReadPage(object):
         @param path: Path to book. Raises ValueError if file doesn't exist.
         @param page: Page number.
         """
+        raise NotImplementedError()
         if not self.enabled:
             return
 
@@ -93,6 +87,7 @@ class LastReadPage(object):
         """ Removes stored page for book at C{path}.
         @param path: Path to book.
         """
+        raise NotImplementedError()
         if not self.enabled:
             return
 
@@ -104,6 +99,7 @@ class LastReadPage(object):
     def clear_all(self):
         """ Removes all stored books. This method is not affected by setting
         L{enabled} to false. """
+        raise NotImplementedError()
         if not dbapi2:
             return
 
@@ -118,6 +114,7 @@ class LastReadPage(object):
         @return: Page that was last read, or C{None} if the book
                  wasn't opened before.
         """
+        raise NotImplementedError()
         if not self.enabled:
             return None
 
@@ -139,6 +136,7 @@ class LastReadPage(object):
         @param path: Path to book.
         @return: C{datetime} object, or C{None} if no page was set.
         """
+        raise NotImplementedError()
         if not self.enabled:
             return None
 
@@ -153,6 +151,34 @@ class LastReadPage(object):
             return datetime.datetime.strptime(date[0], '%Y-%m-%d %H:%M:%S.%f')
         else:
             return None
+
+    def migrate_database_to_library(self):
+        """ Moves all information saved in the legacy database
+        constants.LASTPAGE_DATABASE_PATH into the library,
+        and deleting the old database. """
+
+        database = self._init_database(constants.LASTPAGE_DATABASE_PATH)
+
+        if database:
+            cursor = database.execute('''SELECT path, page, time_set
+                                         FROM lastread''')
+            rows = cursor.fetchall()
+            cursor.close()
+            database.close()
+
+            for path, page, time_set in rows:
+                book = self.backend.get_book_by_path(path)
+
+                if not book:
+                    # The path doesn't exist in the library yet
+                    self.backend.add_book(path, None)  # FIXME: Add to 'Recent' collection
+                    book = self.backend.get_book_by_path(path)
+
+                # TODO: Set recent info on retrieved book
+
+
+            # TODO: Delete old database
+            #os.unlink(constants.LASTPAGE_DATABASE_PATH)
 
     def _init_database(self, dbfile):
         """ Creates or opens new SQLite database at C{dbfile}, and initalizes

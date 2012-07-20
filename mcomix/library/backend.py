@@ -9,6 +9,8 @@ from mcomix import thumbnail_tools
 from mcomix import log
 from mcomix import callback
 from mcomix.library import backend_types
+# Only for importing legacy data from last-read module
+from mcomix import last_read_page
 
 try:
     from sqlite3 import dbapi2
@@ -524,7 +526,8 @@ class _LibraryBackend:
             if 4 in upgrades:
                 # Added table 'recent' to store recently viewed book information
                 self._create_table_recent()
-                # TODO: Import information from last_read_page
+                lastread = last_read_page.LastReadPage(self)
+                lastread.migrate_database_to_library()
 
             self._con.execute('''update info set value = ? where key = 'version' ''',
                               (str(_LibraryBackend.DB_VERSION),))
