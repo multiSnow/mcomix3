@@ -123,7 +123,13 @@ class LastReadPage(object):
         full_path = os.path.abspath(path)
         book = self.backend.get_book_by_path(full_path)
         if book:
-            return book.get_last_read_page()
+            page = book.get_last_read_page()
+            if page < book.pages:
+                return page
+            else:
+                # If the last read page was the last in the book,
+                # start from scratch.
+                return None
         else:
             return None
 

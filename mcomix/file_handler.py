@@ -780,10 +780,9 @@ class FileHandler(object):
 
         archive_path = self.get_path_to_base()
         page = self._window.imagehandler.get_current_page()
-        is_last_page = self._window.imagehandler.is_last_page()
-        # Do not store first and last page (last page means archive was finished,
-        # first page is default behaviour and would waste space unnecessarily)
-        if page == 1 or is_last_page:
+        # Do not store first page (first page is default
+        # behaviour and would waste space unnecessarily)
+        if page == 1:
             self.last_read_page.clear_page(archive_path)
         else:
             self.last_read_page.set_page(archive_path, page)
