@@ -6,6 +6,7 @@ import gtk
 import gobject
 import Image
 import ImageDraw
+import pkg_resources
 
 from mcomix.preferences import prefs
 from mcomix import thumbnail_view
@@ -393,7 +394,7 @@ class _BookArea(gtk.ScrolledWindow):
     def _get_pixbuf(self, path, model, model_path):
         """ Get or create the thumbnail for the selected book at <path>. """
         if self._cache.exists(path):
-            return self._cache.get(path)
+            pixbuf = self._cache.get(path)
         else:
             pixbuf = self._library.backend.get_book_thumbnail(path) or constants.MISSING_IMAGE_ICON
             # The ratio (0.67) is just above the normal aspect ratio for books.
@@ -403,7 +404,32 @@ class _BookArea(gtk.ScrolledWindow):
             pixbuf = image_tools.add_border(pixbuf, 1, 0xFFFFFFFF)
             self._cache.add(path, pixbuf)
 
+        # Display indicators of book being currently read or having finished reading it.
+        # This information isn't cached in the pixbuf cache, as it changes frequently.
+
+        # Anything smaller than 30px means that the status icon will not fit
+        if prefs['library cover size'] < 30:
             return pixbuf
+
+        book = self._library.backend.get_book_by_path(path)
+        last_read_page = book.get_last_read_page()
+
+        if last_read_page is None:
+            return pixbuf
+        if last_read_page == book.pages:
+            book_pixbuf = self.render_icon(gtk.STOCK_APPLY, gtk.ICON_SIZE_MENU)
+        else:
+            book_pixbuf = self.render_icon(gtk.STOCK_MEDIA_FORWARD, gtk.ICON_SIZE_MENU)
+
+        # Composite icon on the lower right corner of the book cover pixbuf.
+        translation_x = pixbuf.get_width() - book_pixbuf.get_width() - 1
+        translation_y = pixbuf.get_height() - book_pixbuf.get_height() - 1
+        book_pixbuf.composite(pixbuf, translation_x, translation_y,
+                              book_pixbuf.get_width(), book_pixbuf.get_height(),
+                              translation_x, translation_y,
+                              1.0, 1.0, gtk.gdk.INTERP_NEAREST, 0xFF)
+
+        return pixbuf
 
     def _get_empty_thumbnail(self):
         """ Create an empty filler pixmap. """
