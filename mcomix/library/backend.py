@@ -28,7 +28,7 @@ class _LibraryBackend:
 
     #: Current version of the library database structure.
     # See method _upgrade_database() for changes between versions.
-    DB_VERSION = 4
+    DB_VERSION = 5
 
     def __init__(self):
 
@@ -505,6 +505,11 @@ class _LibraryBackend:
                     select path, collection, 0 from watchlist_old''')
                 self._con.execute('''drop table watchlist_old''')
 
+            if 4 in upgrades:
+                # Added table 'recent' to store recently viewed book information
+                self._create_table_recent()
+                # TODO: Import information from last_read_page
+
             self._con.execute('''update info set value = ? where key = 'version' ''',
                               (str(_LibraryBackend.DB_VERSION),))
 
@@ -543,6 +548,12 @@ class _LibraryBackend:
             path text primary key,
             collection integer references collection (id) on delete set null,
             recursive boolean not null)''')
+
+    def _create_table_recent(self):
+        self._con.execute('''create table if not exists recent (
+            book integer primary key,
+            page integer,
+            time_set datetime)''')
 
 
 _backend = None
