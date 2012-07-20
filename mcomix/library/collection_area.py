@@ -398,7 +398,8 @@ class _CollectionArea(gtk.ScrolledWindow):
                 dest_collection = self._library.backend.get_supercollection(
                     dest_collection)
             if (_COLLECTION_ALL in (src_collection, dest_collection) or
-              src_collection == dest_collection):
+                _COLLECTION_RECENT in (src_collection, dest_collection) or
+                src_collection == dest_collection):
                 self._set_acceptable_drop(False)
                 self._library.set_status_message('')
                 return
