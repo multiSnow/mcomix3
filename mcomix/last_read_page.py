@@ -103,9 +103,8 @@ class LastReadPage(object):
                  WHERE c.collection = ?"""
         cursor = self.backend.execute(sql,
             (self.backend.get_recent_collection().id,))
-        books = cursor.fetchall()
-        cursor.executemany("""DELETE FROM book WHERE id = ?""",
-                           [(book,) for book in books])
+        for book in cursor.fetchall():
+            self.backend.remove_book(book)
         cursor.execute("""DELETE FROM recent""")
         cursor.execute("""DELETE FROM contain WHERE collection = ?""",
                        (self.backend.get_recent_collection().id,))
