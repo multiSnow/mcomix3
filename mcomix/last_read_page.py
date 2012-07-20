@@ -49,7 +49,7 @@ class LastReadPage(object):
         @return: The number of entries stored by this module. """
 
         cursor = self.backend.execute("""SELECT COUNT(*) FROM recent""")
-        count = cursor.fetchone()[0]
+        count = cursor.fetchone()
         cursor.close()
 
         return count
