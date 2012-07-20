@@ -36,6 +36,37 @@ class _Book(_BackendObject):
         self.size = size
         self.added = added
 
+    def get_last_read_page(self):
+        """ Gets the page of this book that was last read when the book was
+        closed. Returns C{None} if no such page exists. """
+        cursor = self.get_backend().execute(
+            '''SELECT page FROM recent WHERE book = ?''', (self.id,))
+        row = cursor.fetchone()
+        cursor.close()
+        if row:
+            return row
+        else:
+            return None
+
+    def set_last_read_page(self, page):
+        """ Sets the page that was last read when the book was closed.
+        Passing C{None} as argument clears the recent information. """
+        if page <= 1:
+            # Avoid wasting memory by creating a recently viewed entry when
+            # an archive was opened on page 1.
+            raise ValueError('The first page cannot be set as recently read.')
+
+        # Remove any old recent row for this book
+        cursor = self.get_backend().execute(
+            '''DELETE FROM recent WHERE book = ?''', (self.id,))
+        # If a new page was passed, set it as recently read
+        if page is not None:
+            cursor.execute('''INSERT INTO recent (book, page, time_set)
+                              VALUES (?, ?, datetime('now'))''',
+                           (self.id, page))
+
+        cursor.close()
+
 
 class _Collection(_BackendObject):
     """ Library collection instance.
