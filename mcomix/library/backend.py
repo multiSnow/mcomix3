@@ -22,6 +22,10 @@ except ImportError:
         dbapi2 = None
 
 
+#: Identifies the 'Recent' collection that stores recently read books.
+COLLECTION_RECENT = -2
+
+
 class _LibraryBackend:
 
     """The LibraryBackend handles the storing and retrieval of library
@@ -527,8 +531,11 @@ class _LibraryBackend:
             if 4 in upgrades:
                 # Added table 'recent' to store recently viewed book information
                 self._create_table_recent()
+                self._con.execute('''insert into collection (id, name)
+                                     values (?, ?)''',
+                                  (COLLECTION_RECENT, _('Recent')))
                 lastread = last_read_page.LastReadPage(self)
-                lastread.migrate_database_to_library()
+                lastread.migrate_database_to_library(COLLECTION_RECENT)
 
             self._con.execute('''update info set value = ? where key = 'version' ''',
                               (str(_LibraryBackend.DB_VERSION),))

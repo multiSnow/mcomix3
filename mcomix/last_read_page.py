@@ -152,7 +152,7 @@ class LastReadPage(object):
         else:
             return None
 
-    def migrate_database_to_library(self):
+    def migrate_database_to_library(self, recent_collection):
         """ Moves all information saved in the legacy database
         constants.LASTPAGE_DATABASE_PATH into the library,
         and deleting the old database. """
@@ -171,8 +171,11 @@ class LastReadPage(object):
 
                 if not book:
                     # The path doesn't exist in the library yet
-                    self.backend.add_book(path, None)  # FIXME: Add to 'Recent' collection
+                    self.backend.add_book(path, recent_collection)
                     book = self.backend.get_book_by_path(path)
+                else:
+                    # The book exists, move into recent collection
+                    self.backend.add_book_to_collection(book.id, recent_collection)
 
                 # TODO: Set recent info on retrieved book
 
