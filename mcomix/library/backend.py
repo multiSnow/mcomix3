@@ -77,6 +77,22 @@ class _LibraryBackend:
                 books.extend(cur.fetchall())
             return books
 
+    def get_book_by_path(self, path):
+        """ Retrieves a book from the library, specified by C{path}.
+        If the book doesn't exist, None is returned. Otherwise, a
+        L{backend_types._Book} instance is returned. """
+
+        cur = self.execute('''select id, name, path, pages, format,
+                                     size, added
+                              from book where path = ?''', (path,))
+        book = cur.fetchone()
+        cur.close()
+
+        if book:
+            return backend_types._Book(*book)
+        else:
+            return None
+
     def get_book_cover(self, book):
         """Return a pixbuf with a thumbnail of the cover of <book>, or
         None if the cover can not be fetched.
