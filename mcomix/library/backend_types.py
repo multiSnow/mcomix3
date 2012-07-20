@@ -2,6 +2,7 @@
 
 import os
 import threading
+import datetime
 
 from mcomix import callback
 from mcomix import archive_tools
@@ -45,6 +46,19 @@ class _Book(_BackendObject):
         cursor.close()
         if row:
             return row
+        else:
+            return None
+
+    def get_last_read_date(self):
+        """ Gets the datetime the book was most recently read. Returns
+        C{None} if no information was set, or a datetime object otherwise. """
+        cursor = self.get_backend().execute(
+            """SELECT time_set FROM recent WHERE book = ?""", (self.id,))
+        date = cursor.fetchone()
+        cursor.close()
+
+        if date:
+            return datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f')
         else:
             return None
 

@@ -111,19 +111,12 @@ class LastReadPage(object):
         @return: Page that was last read, or C{None} if the book
                  wasn't opened before.
         """
-        raise NotImplementedError()
         if not self.enabled:
             return None
 
-        full_path = os.path.abspath(path)
-        sql = """SELECT page FROM lastread WHERE path = ?"""
-        cursor = self.db.execute(sql, (full_path,))
-        page = cursor.fetchone()
-        cursor.close()
-
-        if page:
-            # cursor.fetchone() returns a tuple
-            return page[0]
+        book = self.backend.get_book_by_path(path)
+        if book:
+            return book.get_last_read_page()
         else:
             return None
 
@@ -133,19 +126,12 @@ class LastReadPage(object):
         @param path: Path to book.
         @return: C{datetime} object, or C{None} if no page was set.
         """
-        raise NotImplementedError()
         if not self.enabled:
             return None
 
-        full_path = os.path.abspath(path)
-        sql = """SELECT time_set FROM lastread WHERE path = ?"""
-        cursor = self.db.execute(sql, (full_path,))
-        date = cursor.fetchone()
-        cursor.close()
-
-        if date:
-            # cursor.fetchone() returns a tuple
-            return datetime.datetime.strptime(date[0], '%Y-%m-%d %H:%M:%S.%f')
+        book = self.backend.get_book_by_path(path)
+        if book:
+            return book.get_last_read_date()
         else:
             return None
 
