@@ -102,15 +102,16 @@ class _ControlArea(gtk.HBox):
         """
 
         if selected:
-            book = self._library.book_area.get_book_at_path(selected[0])
-            name = self._library.backend.get_book_name(book)
-            dir_path = os.path.dirname(
-                self._library.backend.get_book_path(book))
-            pages = self._library.backend.get_book_pages(book)
-            size = self._library.backend.get_book_size(book)
-
+            book_id = self._library.book_area.get_book_at_path(selected[0])
+            book = self._library.backend.get_book_by_id(book_id)
+            name = book.name
+            dir_path = os.path.dirname(book.path)
+            pages = book.pages
+            size = book.size
+            last_page = book.get_last_read_page()
+            last_date = book.get_last_read_date()
         else:
-            name = dir_path = pages = size = None
+            name = dir_path = pages = size = last_page = last_date = None
 
         if len(selected) > 0:
             self._open_button.set_sensitive(True)
@@ -124,12 +125,23 @@ class _ControlArea(gtk.HBox):
             self._namelabel.set_text('')
             self._namelabel.set_has_tooltip(False)
 
-        if pages is not None and size is not None:
-            text = '%s, %s' % (_('%d pages') % pages,
-                '%.1f MiB' % (size / 1048576.0))
-            self._filelabel.set_text(text)
-        else:
-            self._filelabel.set_text('')
+        infotext = []
+
+        if last_page is not None and pages is not None and last_page != pages:
+            infotext.append('%s %d/%d' % (_('Page'), last_page, pages))
+        elif pages is not None:
+            infotext.append(_('%d pages') % pages)
+
+        if size is not None:
+            infotext.append('%.1f MiB' % (size / 1048576.0))
+
+        if (pages is not None and last_page is not None and
+            last_date is not None and last_page == pages):
+            infotext.append(_('Finished reading on %(date)s, %(time)s') % {
+                'date': last_date.strftime('%x'),
+                'time': last_date.strftime('%X') })
+
+        self._filelabel.set_text(', '.join(infotext))
 
         if dir_path is not None:
             self._dirlabel.set_text(i18n.to_unicode(dir_path))
