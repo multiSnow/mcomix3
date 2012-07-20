@@ -478,6 +478,7 @@ class _LibraryBackend:
         self._create_table_contain()
         self._create_table_info()
         self._create_table_watchlist()
+        self._create_table_recent()
 
     def _upgrade_database(self, from_version, to_version):
         """ Performs sequential upgrades to the database, bringing
