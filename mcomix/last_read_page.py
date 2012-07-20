@@ -160,8 +160,11 @@ class LastReadPage(object):
                 book.get_backend = lambda: self.backend
                 book.set_last_read_page(page, time_set)
 
-            # TODO: Delete old database
-            #os.unlink(constants.LASTPAGE_DATABASE_PATH)
+            try:
+                os.unlink(constants.LASTPAGE_DATABASE_PATH)
+            except IOError, e:
+                log.error(_('! Could not remove file "%s"'),
+                          constants.LASTPAGE_DATABASE_PATH)
 
     def _init_database(self, dbfile):
         """ Creates or opens new SQLite database at C{dbfile}, and initalizes
