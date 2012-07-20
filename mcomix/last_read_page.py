@@ -93,7 +93,20 @@ class LastReadPage(object):
         and removes all information from the recent table. This method is
         not affected by setting L{enabled} to false. """
 
-        cursor = self.backend.execute("""DELETE FROM recent""")
+        # Collect books that are only present in "Recent" collection
+        # and have an entry in table "recent". Those must be removed.
+        sql = """SELECT c.book FROM contain c
+                 JOIN (SELECT book FROM contain
+                       GROUP BY book HAVING COUNT(*) = 1
+                      ) t ON t.book = c.book
+                 JOIN recent r ON r.book = c.book
+                 WHERE c.collection = ?"""
+        cursor = self.backend.execute(sql,
+            (self.backend.get_recent_collection().id,))
+        books = cursor.fetchall()
+        cursor.executemany("""DELETE FROM book WHERE id = ?""",
+                           [(book,) for book in books])
+        cursor.execute("""DELETE FROM recent""")
         cursor.execute("""DELETE FROM contain WHERE collection = ?""",
                        (self.backend.get_recent_collection().id,))
         cursor.close()
