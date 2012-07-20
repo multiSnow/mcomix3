@@ -70,7 +70,7 @@ class LastReadPage(object):
                                   self.backend.get_recent_collection().id)
             book = self.backend.get_book_by_path(full_path)
 
-        book.set_last_page(page)
+        book.set_last_read_page(page)
 
     def clear_page(self, path):
         """ Removes stored page for book at C{path}.
@@ -90,12 +90,10 @@ class LastReadPage(object):
         and removes all information from the recent table. This method is
         not affected by setting L{enabled} to false. """
 
-        cursor = self.db.execute("""DELETE FROM recent""")
+        cursor = self.backend.execute("""DELETE FROM recent""")
+        cursor.execute("""DELETE FROM contain WHERE collection = ?""",
+                       (self.backend.get_recent_collection().id,))
         cursor.close()
-        cursor = self.db.execute("""DELETE FROM contain WHERE collection = ?""",
-                                 (self.backend.get_recent_collection().id,))
-        cursor.close()
-
 
     def get_page(self, path):
         """ Gets the last read page for book at C{path}.
