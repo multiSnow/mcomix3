@@ -69,10 +69,10 @@ class _Book(_BackendObject):
         @param page: Page number, starting from 1 (page 1 throws ValueError)
         @param time: Time of reading. If None, current time is used. """
 
-        if page is not None and page <= 1:
+        if page is not None and page < 1:
             # Avoid wasting memory by creating a recently viewed entry when
             # an archive was opened on page 1.
-            raise ValueError('The first page cannot be set as recently read.')
+            raise ValueError('Invalid page (must start from 1)')
 
         # Remove any old recent row for this book
         cursor = self.get_backend().execute(

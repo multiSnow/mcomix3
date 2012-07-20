@@ -75,6 +75,9 @@ class LastReadPage(object):
             self.backend.add_book(
                 full_path, self.backend.get_recent_collection().id)
             book = self.backend.get_book_by_path(full_path)
+
+            if not book:
+                raise ValueError("Book doesn't exist")
         else:
             self.backend.add_book_to_collection(
                 book.id, self.backend.get_recent_collection().id)

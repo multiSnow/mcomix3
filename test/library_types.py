@@ -23,6 +23,7 @@ class CollectionTest(unittest.TestCase):
         test_col = self.library.get_collection_by_name("Test")
         sub_col = self.library.get_collection_by_name("Subtest")
         test_col.add_collection(sub_col)
+        # There is also a collection Recent that is added by default!
 
         # Add first two archives to no collection, remaining two
         # to subcollections.
@@ -89,8 +90,8 @@ class CollectionTest(unittest.TestCase):
         col = backend_types.DefaultCollection
         root_collections = col.get_collections()
 
-        self.assertEqual(len(root_collections), 1)
-        self.assertEqual(root_collections[0].name, "Test")
+        self.assertEqual(len(root_collections), 2)
+        self.assertEqual(root_collections[1].name, "Test")
 
     def test_get_collections_normal_collection(self):
         col = self.library.get_collection_by_name("Test")
@@ -109,7 +110,7 @@ class CollectionTest(unittest.TestCase):
 
     def test_get_all_collections(self):
         all_cols = backend_types.DefaultCollection.get_all_collections()
-        self.assertEqual(len(all_cols), 2)
+        self.assertEqual(len(all_cols), 3)
 
         col = self.library.get_collection_by_name("Test")
         subcol = self.library.get_collection_by_name("Subtest")
@@ -117,7 +118,7 @@ class CollectionTest(unittest.TestCase):
         new_col  = self.library.get_collection_by_name("New test")
         subcol.add_collection(new_col)
 
-        self.assertEqual(len(backend_types.DefaultCollection.get_all_collections()), 3)
+        self.assertEqual(len(backend_types.DefaultCollection.get_all_collections()), 4)
         self.assertEqual(len(col.get_all_collections()), 2)
 
     def test_get_default_collection(self):
