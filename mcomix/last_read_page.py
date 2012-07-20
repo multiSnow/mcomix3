@@ -154,6 +154,10 @@ class LastReadPage(object):
                     self.backend.add_book_to_collection(book.id, recent_collection)
 
                 # Set recent info on retrieved book
+                # XXX: If the book calls get_backend during migrate_database,
+                # the library isn't constructed yet and breaks in an
+                # endless recursion.
+                book.get_backend = lambda: self.backend
                 book.set_last_read_page(page, time_set)
 
             # TODO: Delete old database
