@@ -46,14 +46,20 @@ class _LibraryBackend:
                 return row[0]
             return row
 
-        self._con = dbapi2.connect(constants.LIBRARY_DATABASE_PATH,
-            check_same_thread=False, isolation_level=None)
-        self._con.row_factory = row_factory
+        if dbapi2 is not None:
+            self._con = dbapi2.connect(constants.LIBRARY_DATABASE_PATH,
+                check_same_thread=False, isolation_level=None)
+            self._con.row_factory = row_factory
 
-        self.watchlist = backend_types._WatchList(self)
+            self.watchlist = backend_types._WatchList(self)
 
-        version = self._library_version()
-        self._upgrade_database(version, _LibraryBackend.DB_VERSION)
+            version = self._library_version()
+            self._upgrade_database(version, _LibraryBackend.DB_VERSION)
+            self.enabled = True
+        else:
+            self._con = None
+            self.watchlist = None
+            self.enabled = False
 
     def get_books_in_collection(self, collection=None, filter_string=None):
         """Return a sequence with all the books in <collection>, or *ALL*
@@ -441,8 +447,9 @@ class _LibraryBackend:
 
     def close(self):
         """Commit changes and close cleanly."""
-        self._con.commit()
-        self._con.close()
+        if self._con is not None:
+            self._con.commit()
+            self._con.close()
 
         global _backend
         _backend = None

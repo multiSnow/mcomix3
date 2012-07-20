@@ -41,12 +41,18 @@ class LastReadPage(object):
         """ Enables (or disables) all functionality of this module.
         @type enabled: bool
         """
-        self.enabled = enabled
+        if self.backend.enabled:
+            self.enabled = enabled
+        else:
+            self.enabled = False
 
     def count(self):
         """ Number of stored book/page combinations. This method is
         not affected by setting L{enabled} to false.
         @return: The number of entries stored by this module. """
+
+        if not self.backend.enabled:
+            return 0
 
         cursor = self.backend.execute("""SELECT COUNT(*) FROM recent""")
         count = cursor.fetchone()
@@ -92,6 +98,9 @@ class LastReadPage(object):
         """ Removes all stored books from the library's 'Recent' collection,
         and removes all information from the recent table. This method is
         not affected by setting L{enabled} to false. """
+
+        if not self.backend.enabled:
+            return
 
         # Collect books that are only present in "Recent" collection
         # and have an entry in table "recent". Those must be removed.
@@ -153,6 +162,9 @@ class LastReadPage(object):
         """ Moves all information saved in the legacy database
         constants.LASTPAGE_DATABASE_PATH into the library,
         and deleting the old database. """
+
+        if not self.backend.enabled:
+            return
 
         database = self._init_database(constants.LASTPAGE_DATABASE_PATH)
 

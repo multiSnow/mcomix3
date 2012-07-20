@@ -2,7 +2,12 @@ MComix 1.00
 
     - When "Store information about recently opened files" is enabled in
       the preferences dialog, all opened books will automatically be added
-      to the library and moved into the collection "Recent".
+      to the library and moved into the collection "Recent". In addition,
+      the last read page will be stored and recalled the next time the book
+      is opened again.
+
+    - Fixed several malfunctions that could occur if no SQLite library
+      was installed.
 
 MComix 0.99
 Release date: 14.07.2012

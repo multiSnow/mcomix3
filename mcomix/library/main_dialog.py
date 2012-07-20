@@ -159,12 +159,17 @@ class _LibraryDialog(gtk.Window):
 
 
 def open_dialog(action, window):
+    """ Shows the library window. If sqlite is not available, this method
+    does nothing and returns False. Otherwise, True is returned. """
     global _dialog
 
     if _dialog is None:
 
         if library_backend.dbapi2 is None:
-            log.error( _('! You need an sqlite wrapper to use the library.') )
+            text = _('! You need an sqlite wrapper to use the library.')
+            window.osd.show(text)
+            log.error(text)
+            return False
 
         else:
             _dialog = _LibraryDialog(window, window.filehandler)
@@ -174,6 +179,8 @@ def open_dialog(action, window):
 
     if prefs['scan for new books on library startup']:
         _dialog.scan_for_new_files()
+
+    return True
 
 
 def _close_dialog(*args):
