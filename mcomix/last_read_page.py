@@ -59,23 +59,18 @@ class LastReadPage(object):
         @param path: Path to book. Raises ValueError if file doesn't exist.
         @param page: Page number.
         """
-        raise NotImplementedError()
         if not self.enabled:
             return
 
-        if page < 1:
-            raise ValueError()
-
         full_path = os.path.abspath(path)
-        if os.path.isfile(full_path):
-            self.clear_page(full_path)
-            sql = """INSERT INTO lastread (path, page, time_set)
-                VALUES (?, ?, ?)"""
-            cursor = self.db.execute(sql, (full_path, page,
-                datetime.datetime.now()))
-            cursor.close()
-        else:
-            raise ValueError(_("! Could not read %s") % full_path)
+        book = self.backend.get_book_by_path(full_path)
+
+        if not book:
+            self.backend.add_book(full_path,
+                                  self.backend.get_recent_collection().id)
+            book = self.backend.get_book_by_path(full_path)
+
+        book.set_last_page(page)
 
     def clear_page(self, path):
         """ Removes stored page for book at C{path}.
@@ -88,9 +83,7 @@ class LastReadPage(object):
         book = self.backend.get_book_by_path(full_path)
 
         if book:
-            sql = """DELETE FROM recent WHERE book = ?"""
-            cursor = self.db.execute(sql, (book.id,))
-            cursor.close()
+            book.set_last_read_page(None)
 
     def clear_all(self):
         """ Removes all stored books from the library's 'Recent' collection,
@@ -114,7 +107,8 @@ class LastReadPage(object):
         if not self.enabled:
             return None
 
-        book = self.backend.get_book_by_path(path)
+        full_path = os.path.abspath(path)
+        book = self.backend.get_book_by_path(full_path)
         if book:
             return book.get_last_read_page()
         else:
@@ -129,7 +123,8 @@ class LastReadPage(object):
         if not self.enabled:
             return None
 
-        book = self.backend.get_book_by_path(path)
+        full_path = os.path.abspath(path)
+        book = self.backend.get_book_by_path(full_path)
         if book:
             return book.get_last_read_date()
         else:
@@ -160,8 +155,8 @@ class LastReadPage(object):
                     # The book exists, move into recent collection
                     self.backend.add_book_to_collection(book.id, recent_collection)
 
-                # TODO: Set recent info on retrieved book
-
+                # Set recent info on retrieved book
+                book.set_last_read_page(page, time_set)
 
             # TODO: Delete old database
             #os.unlink(constants.LASTPAGE_DATABASE_PATH)

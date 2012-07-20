@@ -62,9 +62,13 @@ class _Book(_BackendObject):
         else:
             return None
 
-    def set_last_read_page(self, page):
+    def set_last_read_page(self, page, time=None):
         """ Sets the page that was last read when the book was closed.
-        Passing C{None} as argument clears the recent information. """
+        Passing C{None} as argument clears the recent information.
+
+        @param page: Page number, starting from 1 (page 1 throws ValueError)
+        @param time: Time of reading. If None, current time is used. """
+
         if page <= 1:
             # Avoid wasting memory by creating a recently viewed entry when
             # an archive was opened on page 1.
@@ -75,9 +79,11 @@ class _Book(_BackendObject):
             '''DELETE FROM recent WHERE book = ?''', (self.id,))
         # If a new page was passed, set it as recently read
         if page is not None:
+            if not time:
+                time = datetime.datetime.now()
             cursor.execute('''INSERT INTO recent (book, page, time_set)
-                              VALUES (?, ?, datetime('now'))''',
-                           (self.id, page))
+                              VALUES (?, ?, ?)''',
+                           (self.id, page, time))
 
         cursor.close()
 
