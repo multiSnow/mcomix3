@@ -609,7 +609,7 @@ class _LibraryBackend:
             book integer primary key,
             page integer,
             time_set datetime)''')
-        self._con.execute('''insert into collection (id, name)
+        self._con.execute('''insert or ignore into collection (id, name)
             values (?, ?)''', (COLLECTION_RECENT, _('Recent')))
 
 
