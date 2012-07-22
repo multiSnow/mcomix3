@@ -9,6 +9,8 @@ MComix 1.00
     - Fixed several malfunctions that could occur if no SQLite library
       was installed.
 
+    - Updated traditional Chinese translation (by Wayne Su).
+
 MComix 0.99
 Release date: 14.07.2012
 
