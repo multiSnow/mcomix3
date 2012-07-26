@@ -13,6 +13,7 @@ from mcomix import dialog_handler
 from mcomix import constants
 from mcomix import status
 from mcomix import file_chooser_main_dialog
+from mcomix.preferences import prefs
 from mcomix.library import main_dialog as library_main_dialog
 
 class MainUI(gtk.UIManager):
@@ -97,6 +98,9 @@ class MainUI(gtk.UIManager):
             ('menu_tools', None, _('_Tools')),
             ('menu_help', None, _('_Help')),
             ('menu_transform', 'mcomix-transform', _('_Transform image')),
+            ('menu_autorotate', None, _('_Auto-rotate image')),
+            ('menu_autorotate_width', None, _('...when width exceeds height')),
+            ('menu_autorotate_height', None, _('...when height exceeds width')),
             ('expander', None, None, None, None, None)])
 
         self._actiongroup.add_toggle_actions([
@@ -145,6 +149,20 @@ class MainUI(gtk.UIManager):
             ('fit_manual_mode', 'mcomix-fitmanual', _('M_anual zoom mode'),
                 'a', _('Manual zoom mode'), constants.ZOOM_MODE_MANUAL)],
             3, window.change_zoom_mode)
+
+        # Automatically rotate image if width>height or height>width
+        self._actiongroup.add_radio_actions([
+            ('no_autorotation', None, _('Never'),
+             None, None, constants.AUTOROTATE_NEVER),
+            ('rotate_90_width', 'mcomix-rotate-90', _('_Rotate 90 degrees CW'),
+             None, None, constants.AUTOROTATE_WIDTH_90),
+            ('rotate_270_width', 'mcomix-rotate-270', _('Rotat_e 90 degrees CCW'),
+             None, None, constants.AUTOROTATE_WIDTH_270),
+            ('rotate_90_height', 'mcomix-rotate-90', _('_Rotate 90 degrees CW'),
+             None, None, constants.AUTOROTATE_HEIGHT_90),
+            ('rotate_270_height', 'mcomix-rotate-270', _('Rotat_e 90 degrees CCW'),
+             None, None, constants.AUTOROTATE_HEIGHT_270)],
+            prefs['auto rotate depending on size'], window.change_autorotation)
 
         self._actiongroup.add_actions([
             ('about', gtk.STOCK_ABOUT, _('_About'),
@@ -279,6 +297,20 @@ class MainUI(gtk.UIManager):
                         <menuitem action="rotate_90" />
                         <menuitem action="rotate_270" />
                         <menuitem action="rotate_180" />
+                        <separator />
+                        <menu action="menu_autorotate">
+                            <menuitem action="no_autorotation" />
+                            <separator />
+                            <menuitem action="menu_autorotate_height" />
+                            <separator />
+                            <menuitem action="rotate_90_height" />
+                            <menuitem action="rotate_270_height" />
+                            <separator />
+                            <menuitem action="menu_autorotate_width" />
+                            <separator />
+                            <menuitem action="rotate_90_width" />
+                            <menuitem action="rotate_270_width" />
+                        </menu>
                         <separator />
                         <menuitem action="flip_horiz" />
                         <menuitem action="flip_vert" />

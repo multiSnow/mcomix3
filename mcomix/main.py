@@ -203,6 +203,9 @@ class MainWindow(gtk.Window):
             prefs['vertical flip'] = False
             prefs['horizontal flip'] = False
 
+        self.actiongroup.get_action('menu_autorotate_width').set_sensitive(False)
+        self.actiongroup.get_action('menu_autorotate_height').set_sensitive(False)
+
         self.add(table)
         table.show()
         self._main_layout.show()
@@ -305,14 +308,8 @@ class MainWindow(gtk.Window):
             right_unscaled_x = right_pixbuf.get_width()
             right_unscaled_y = right_pixbuf.get_height()
 
-            left_rotation = prefs['rotation']
-            right_rotation = prefs['rotation']
-
-            if prefs['auto rotate from exif']:
-                left_rotation += image_tools.get_implied_rotation(left_pixbuf)
-                left_rotation = left_rotation % 360
-                right_rotation += image_tools.get_implied_rotation(right_pixbuf)
-                right_rotation = right_rotation % 360
+            left_rotation = self._get_pixbuf_rotation(left_pixbuf, True)
+            right_rotation = self._get_pixbuf_rotation(right_pixbuf, True)
 
             if left_rotation in (90, 270):
                 total_width = left_unscaled_y
@@ -385,11 +382,7 @@ class MainWindow(gtk.Window):
             pixbuf = self.imagehandler.get_pixbufs(single=True)[ 0 ]
             width, height = pixbuf.get_width(), pixbuf.get_height()
 
-            rotation = prefs['rotation']
-            if prefs['auto rotate from exif']:
-                rotation += image_tools.get_implied_rotation(pixbuf)
-                rotation = rotation % 360
-
+            rotation = self._get_pixbuf_rotation(pixbuf)
             if rotation in (90, 270):
                 width, height = height, width
 
@@ -501,6 +494,37 @@ class MainWindow(gtk.Window):
         self.statusbar.set_root(self.filehandler.get_base_filename())
         self.statusbar.update()
         self.update_title()
+
+    def _get_pixbuf_rotation(self, pixbuf, no_autorotation=False):
+        """ Determines if a pixbuf must be rotated before being displayed.
+        Returns the degree of rotation (0, 90, 180, 270). """
+        
+        width, height = pixbuf.get_width(), pixbuf.get_height()
+        rotation = prefs['rotation']
+        if prefs['auto rotate from exif']:
+            rotation += image_tools.get_implied_rotation(pixbuf)
+            rotation = rotation % 360
+
+        if (height > width and
+            not no_autorotation and
+            prefs['auto rotate depending on size'] in
+                (constants.AUTOROTATE_HEIGHT_90, constants.AUTOROTATE_HEIGHT_270)):
+
+            if prefs['auto rotate depending on size'] == constants.AUTOROTATE_HEIGHT_90:
+                rotation = 90
+            else:
+                rotation = 270
+        elif (width > height and
+              not no_autorotation and
+              prefs['auto rotate depending on size'] in
+                (constants.AUTOROTATE_WIDTH_90, constants.AUTOROTATE_WIDTH_270)):
+
+            if prefs['auto rotate depending on size'] == constants.AUTOROTATE_WIDTH_90:
+                rotation = 90
+            else:
+                rotation = 270
+
+        return rotation
 
     def _page_available(self, page):
         """ Called whenever a new page is ready for displaying. """
@@ -622,6 +646,14 @@ class MainWindow(gtk.Window):
         fitmode = zoom.FitMode.create(prefs['zoom mode'])
         fitmode.set_scale_up(prefs['stretch'])
         self.zoom.set_fit_mode(fitmode)
+
+    def change_autorotation(self, radioaction=None, *args):
+        """ Switches between automatic rotation modes, depending on which
+        radiobutton is currently activated. """
+        if radioaction:
+            prefs['auto rotate depending on size'] = radioaction.get_current_value()
+
+        self.draw_image()
 
     def change_stretch(self, toggleaction, *args):
         """ Toggles stretching small images. """

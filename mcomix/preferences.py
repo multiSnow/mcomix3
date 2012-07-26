@@ -63,6 +63,7 @@ prefs = {
     'show thumbnails': True,
     'rotation': 0,
     'auto rotate from exif': True,
+    'auto rotate depending on size': constants.AUTOROTATE_NEVER,
     'vertical flip': False,
     'horizontal flip': False,
     'keep transformation': False,

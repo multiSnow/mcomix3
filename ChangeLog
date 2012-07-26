@@ -9,6 +9,10 @@ MComix 1.00
     - Fixed several malfunctions that could occur if no SQLite library
       was installed.
 
+    - Added an option to automatically rotate images if their height exceeds
+      their width (or width exceeds height), located in the menu bar under
+      Tools -> Transform image -> Auto-rotate image.
+
     - Updated traditional Chinese translation (by Wayne Su).
 
 MComix 0.99
