@@ -1544,11 +1544,11 @@ msgstr "90 Grad gegen den Uhr_zeigersinn drehen"
 
 #: mcomix/ui.py:80
 msgid "Fli_p horizontally"
-msgstr "_Horizontal blättern"
+msgstr "_Horizontal spiegeln"
 
 #: mcomix/ui.py:82
 msgid "Flip _vertically"
-msgstr "_Vertikal blättern"
+msgstr "_Vertikal spiegeln"
 
 #: mcomix/ui.py:84
 msgid "Save _As"
