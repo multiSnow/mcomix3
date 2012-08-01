@@ -37,6 +37,19 @@ class _Book(_BackendObject):
         self.size = size
         self.added = added
 
+    def get_collections(self):
+        """ Gets a list of collections this book is part of. If it
+        belongs to no collections, [DefaultCollection] is returned. """
+        cursor = self.get_backend().execute(
+            '''SELECT id, name, supercollection FROM collection
+               JOIN contain on contain.collection = collection.id
+               WHERE contain.book = ?''', (self.id,))
+        rows = cursor.fetchall()
+        if rows:
+            return [_Collection(*row) for row in rows]
+        else:
+            return [DefaultCollection]
+
     def get_last_read_page(self):
         """ Gets the page of this book that was last read when the book was
         closed. Returns C{None} if no such page exists. """
