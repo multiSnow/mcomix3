@@ -119,6 +119,8 @@ class _Collection(_BackendObject):
     def __eq__(self, other):
         if isinstance(other, _Collection):
             return self.id == other.id
+        elif isinstance(other, (int, long)):
+            return self.id == other
         else:
             return False
 
@@ -301,7 +303,9 @@ class _WatchList(object):
 
     def _scan_for_new_files_thread(self):
         """ Executes the actual scanning operation in a new thread. """
-        existing_books = [book.path for book in DefaultCollection.get_books()]
+        existing_books = [book.path for book in DefaultCollection.get_books()
+                          # Also add book if it was only found in Recent collection
+                          if book.get_collections() != [-2]]
         for entry in self.get_watchlist():
             new_files = entry.get_new_files(existing_books)
             self.new_files_found(new_files, entry)
