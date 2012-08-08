@@ -9,6 +9,9 @@ MComix 1.00
     - Fixed several malfunctions that could occur if no SQLite library
       was installed.
 
+    - MComix now starts in RTL mode when a RTL language has been manually
+      selected in the preference dialog.
+
     - Added an option to automatically rotate images if their height exceeds
       their width (or width exceeds height), located in the menu bar under
       Tools -> Transform image -> Auto-rotate image.

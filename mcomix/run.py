@@ -186,6 +186,11 @@ def run():
         open_page = preferences.prefs['page of last file']
 
     log.setLevel(opts.loglevel)
+
+    # Some languages require a RTL layout
+    if preferences.prefs['language'] in ('he', 'fa'):
+        gtk.widget_set_default_direction(gtk.TEXT_DIR_RTL)
+
     window = main.MainWindow(fullscreen = opts.fullscreen, is_slideshow = opts.slideshow,
             show_library = opts.library, manga_mode = opts.manga,
             double_page = opts.doublepage, zoom_mode = opts.zoommode,
