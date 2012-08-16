@@ -1061,6 +1061,8 @@ class MainWindow(gtk.Window):
         if result == gtk.RESPONSE_OK:
             # Go to next page/archive, and delete current file
             if self.filehandler.archive_type is not None:
+                self.filehandler.last_read_page.clear_page(current_file)
+
                 next_opened = self.filehandler._open_next_archive()
                 if not next_opened:
                     next_opened = self.filehandler._open_previous_archive()
