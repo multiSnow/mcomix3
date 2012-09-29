@@ -71,7 +71,11 @@ class _Book(_BackendObject):
         cursor.close()
 
         if date:
-            return datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f')
+            try:
+                return datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%f')
+            except ValueError:
+                # Certain operating systems do not store fractions
+                return datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
         else:
             return None
 
