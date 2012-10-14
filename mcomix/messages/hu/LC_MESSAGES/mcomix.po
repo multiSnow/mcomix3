@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Comix 4.0.3\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2012-07-19 17:06+0200\n"
+"POT-Creation-Date: 2012-10-14 09:18+0200\n"
 "PO-Revision-Date: 2009-01-26 19:34+0100\n"
 "Last-Translator: Ernő Drabik <drerno@gmail.com>\n"
 "Language-Team: \n"
@@ -95,7 +95,7 @@ msgstr ""
 msgid "Name"
 msgstr "Név"
 
-#: mcomix/bookmark_dialog.py:53 mcomix/main.py:1064
+#: mcomix/bookmark_dialog.py:53 mcomix/main.py:1098
 #: mcomix/library/control_area.py:131
 msgid "Page"
 msgstr "Oldal"
@@ -123,7 +123,7 @@ msgstr ""
 msgid "! Callback %(function)r failed: %(error)s"
 msgstr ""
 
-#: mcomix/comment_dialog.py:11 mcomix/preferences_dialog.py:406
+#: mcomix/comment_dialog.py:11 mcomix/preferences_dialog.py:409
 msgid "Comments"
 msgstr "Megjegyzések"
 
@@ -330,12 +330,12 @@ msgstr "%s-t nem lehet megnyitni: Hozzáférés megtagadva."
 msgid "Could not open %s: Unknown file type."
 msgstr "%s-t nem lehet megnyitni: Ismeretlen fájltípus."
 
-#: mcomix/file_handler.py:454
+#: mcomix/file_handler.py:472
 #, python-format
 msgid "Continue reading from page %d?"
 msgstr ""
 
-#: mcomix/file_handler.py:455
+#: mcomix/file_handler.py:473
 #, python-format
 msgid ""
 "You stopped reading here on %(date)s, %(time)s. If you choose \"Yes\", "
@@ -343,7 +343,7 @@ msgid ""
 "loaded."
 msgstr ""
 
-#: mcomix/file_handler.py:767
+#: mcomix/file_handler.py:785
 #, python-format
 msgid "! Corrupt preferences file \"%s\", deleting..."
 msgstr ""
@@ -362,7 +362,7 @@ msgstr ""
 msgid "Unknown filetype"
 msgstr "Ismeretlen fájltípus"
 
-#: mcomix/keybindings.py:36 mcomix/ui.py:40
+#: mcomix/keybindings.py:36 mcomix/ui.py:41
 msgid "Previous page"
 msgstr "Előző oldal"
 
@@ -372,7 +372,7 @@ msgstr "Előző oldal"
 msgid "Reading"
 msgstr ""
 
-#: mcomix/keybindings.py:37 mcomix/ui.py:38
+#: mcomix/keybindings.py:37 mcomix/ui.py:39
 msgid "Next page"
 msgstr "Következő oldal"
 
@@ -489,26 +489,26 @@ msgstr ""
 msgid "! Could neither find pysqlite2 nor sqlite3."
 msgstr ""
 
-#: mcomix/last_read_page.py:199 mcomix/thumbnail_tools.py:110
+#: mcomix/last_read_page.py:202 mcomix/thumbnail_tools.py:110
 #: mcomix/library/book_area.py:535
 #, python-format
 msgid "! Could not remove file \"%s\""
 msgstr ""
 
-#: mcomix/main.py:941
+#: mcomix/main.py:973
 msgid "SLIDESHOW"
 msgstr "Diavetítés"
 
-#: mcomix/main.py:1002
+#: mcomix/main.py:1034
 msgid "Save page as"
 msgstr ""
 
-#: mcomix/main.py:1022
+#: mcomix/main.py:1054
 #, python-format
 msgid "Delete \"%s\"?"
 msgstr ""
 
-#: mcomix/main.py:1023
+#: mcomix/main.py:1055
 msgid "The file will be deleted from your harddisk."
 msgstr ""
 
@@ -516,7 +516,7 @@ msgstr ""
 msgid "Do not ask again."
 msgstr ""
 
-#: mcomix/pageselect.py:17 mcomix/ui.py:95 mcomix/ui.py:96
+#: mcomix/pageselect.py:17 mcomix/ui.py:96 mcomix/ui.py:97
 msgid "_Go"
 msgstr "_Ugrás"
 
@@ -741,7 +741,7 @@ msgid ""
 "accidentally turning pages."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:221 mcomix/ui.py:106
+#: mcomix/preferences_dialog.py:221 mcomix/ui.py:110
 msgid "Double page mode"
 msgstr "Dupla lapos mód"
 
@@ -814,7 +814,7 @@ msgid "Automatically hide all toolbars in fullscreen"
 msgstr ""
 "Teljes képernyős módban az összes eszköztár automatikusan legyen elrejtve."
 
-#: mcomix/preferences_dialog.py:278 mcomix/ui.py:144
+#: mcomix/preferences_dialog.py:278 mcomix/ui.py:148
 #, fuzzy
 msgid "Fit to size mode"
 msgstr "Szélességhez igazítás"
@@ -913,19 +913,24 @@ msgid "File order"
 msgstr ""
 
 #: mcomix/preferences_dialog.py:363
-msgid "Order files by:"
+msgid "Sort files and directories by:"
 msgstr ""
 
 #: mcomix/preferences_dialog.py:366
+#, fuzzy
+msgid "Sort archives by:"
+msgstr "Tar archívumok"
+
+#: mcomix/preferences_dialog.py:369
 msgid "Cache"
 msgstr "Gyorsítótár"
 
-#: mcomix/preferences_dialog.py:369
+#: mcomix/preferences_dialog.py:372
 #, fuzzy
 msgid "Store thumbnails for opened files"
 msgstr "A megnyitott fájlok bélyegképeinek eltárolása."
 
-#: mcomix/preferences_dialog.py:374
+#: mcomix/preferences_dialog.py:377
 msgid ""
 "Store thumbnails for opened files according to the freedesktop.org "
 "specification. These thumbnails are shared by many other applications, such "
@@ -935,26 +940,26 @@ msgstr ""
 "előírásainak megfelelően. Ezen bélyegképeket más alkalmazások, például a "
 "legtöbb fájlkezelő is használhatja majd."
 
-#: mcomix/preferences_dialog.py:377
+#: mcomix/preferences_dialog.py:380
 msgid "Maximum number of pages to store in the cache:"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:383
+#: mcomix/preferences_dialog.py:386
 msgid ""
 "Set the max number of pages to cache. A value of -1 will cache the entire "
 "archive."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:386
+#: mcomix/preferences_dialog.py:389
 msgid "Magnifying Lens"
 msgstr "Nagyító"
 
-#: mcomix/preferences_dialog.py:388
+#: mcomix/preferences_dialog.py:391
 #, fuzzy
 msgid "Magnifying lens size (in pixels):"
 msgstr "Nagyító mérete (pixelben)"
 
-#: mcomix/preferences_dialog.py:394
+#: mcomix/preferences_dialog.py:397
 msgid ""
 "Set the size of the magnifying lens. It is a square with a side of this many "
 "pixels."
@@ -962,21 +967,21 @@ msgstr ""
 "A nagyító lencse méreteinek megadása. Ez egy négyzet, aminek az oldalai "
 "megadott pixelszámúak."
 
-#: mcomix/preferences_dialog.py:396
+#: mcomix/preferences_dialog.py:399
 #, fuzzy
 msgid "Magnification factor:"
 msgstr "Nagyítási tényező"
 
-#: mcomix/preferences_dialog.py:403
+#: mcomix/preferences_dialog.py:406
 msgid "Set the magnification factor of the magnifying lens."
 msgstr "A nagyító nagyítási tényezőjének beállítása."
 
-#: mcomix/preferences_dialog.py:407
+#: mcomix/preferences_dialog.py:410
 #, fuzzy
 msgid "Comment extensions:"
 msgstr "Megjegyzésfájlok kiterjesztése"
 
-#: mcomix/preferences_dialog.py:414
+#: mcomix/preferences_dialog.py:417
 msgid ""
 "Treat all files found within archives, that have one of these file endings, "
 "as comments."
@@ -984,86 +989,104 @@ msgstr ""
 "Az itt megadott kiterjesztésű állományokat az arhívumokban "
 "megjegyzésfájlként kezeli majd a program."
 
-#: mcomix/preferences_dialog.py:436
+#: mcomix/preferences_dialog.py:439
 msgid "Auto-detect (Default)"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:479 mcomix/preferences_dialog.py:571
+#: mcomix/preferences_dialog.py:482 mcomix/preferences_dialog.py:623
+#: mcomix/ui.py:155
 msgid "Never"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:480
+#: mcomix/preferences_dialog.py:483
 msgid "Only for title pages"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:481
+#: mcomix/preferences_dialog.py:484
 msgid "Only for wide images"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:482 mcomix/preferences_dialog.py:572
+#: mcomix/preferences_dialog.py:485 mcomix/preferences_dialog.py:624
 msgid "Always"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:501
+#: mcomix/preferences_dialog.py:504
 #, fuzzy
 msgid "Fit to width"
 msgstr "Szélességhez igazítás"
 
-#: mcomix/preferences_dialog.py:502
+#: mcomix/preferences_dialog.py:505
 #, fuzzy
 msgid "Fit to height"
 msgstr "Magassághoz igazítás"
 
-#: mcomix/preferences_dialog.py:523
+#: mcomix/preferences_dialog.py:526 mcomix/preferences_dialog.py:574
 msgid "No sorting"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:524
+#: mcomix/preferences_dialog.py:527
 msgid "File name"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:525 mcomix/library/book_area.py:165
+#: mcomix/preferences_dialog.py:528 mcomix/library/book_area.py:165
 msgid "File size"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:526
+#: mcomix/preferences_dialog.py:529
 msgid "Last modified"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:532 mcomix/library/book_area.py:169
+#: mcomix/preferences_dialog.py:535 mcomix/preferences_dialog.py:582
+#: mcomix/library/book_area.py:169
 msgid "Ascending"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:533 mcomix/library/book_area.py:171
+#: mcomix/preferences_dialog.py:536 mcomix/preferences_dialog.py:583
+#: mcomix/library/book_area.py:171
 msgid "Descending"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:543
+#: mcomix/preferences_dialog.py:546
 msgid ""
 "Files will be opened and displayed according to the sort order specified "
 "here. This option does not affect ordering within archives."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:605
+#: mcomix/preferences_dialog.py:575
+msgid "Natural order"
+msgstr ""
+
+#: mcomix/preferences_dialog.py:576
+msgid "Literal order"
+msgstr ""
+
+#: mcomix/preferences_dialog.py:593
+msgid ""
+"Files within archives will be sorted according to the order specified here. "
+"Natural order will sort numbered files based on their natural order, i.e. 1, "
+"2, ..., 10, while literal order uses standard C sorting, i.e. 1, 2, 34, 5."
+msgstr ""
+
+#: mcomix/preferences_dialog.py:657
 #, fuzzy
 msgid "Delete information about recently opened files?"
 msgstr "Az aktuálisan megnyitott állományok adatainak tárolása."
 
-#: mcomix/preferences_dialog.py:606
+#: mcomix/preferences_dialog.py:658
 msgid ""
 "This will remove all entries from the \"Recent\" menu, and clear information "
 "about last read pages."
 msgstr ""
 
-#: mcomix/preferences_dialog.py:617
+#: mcomix/preferences_dialog.py:669
 msgid "Normal (fast)"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:618
+#: mcomix/preferences_dialog.py:670
 msgid "Bilinear"
 msgstr ""
 
-#: mcomix/preferences_dialog.py:619
+#: mcomix/preferences_dialog.py:671
 msgid "Hyperbolic (slow)"
 msgstr ""
 
@@ -1239,7 +1262,7 @@ msgstr ""
 msgid "Stop slideshow"
 msgstr "Diavetítés"
 
-#: mcomix/slideshow.py:47 mcomix/ui.py:127
+#: mcomix/slideshow.py:47 mcomix/ui.py:131
 #, fuzzy
 msgid "Start slideshow"
 msgstr "Diavetítés"
@@ -1304,108 +1327,108 @@ msgstr ""
 msgid "Simplified Chinese translation"
 msgstr "Egyszerűsített kínai fordítás"
 
-#: mcomix/strings.py:26
+#: mcomix/strings.py:26 mcomix/strings.py:27
 msgid "Spanish translation"
 msgstr "Spanyol fordítás"
 
-#: mcomix/strings.py:27
+#: mcomix/strings.py:28
 msgid "Brazilian Portuguese translation"
 msgstr "Brazíliai portugál fordítás"
 
-#: mcomix/strings.py:28
+#: mcomix/strings.py:29
 msgid "German translation and Nautilus thumbnailer"
 msgstr "Német fordítás, Nautilus bélyegkép modul"
 
-#: mcomix/strings.py:29
+#: mcomix/strings.py:30
 #, fuzzy
 msgid "German translation"
 msgstr "Perzsa fordítás"
 
-#: mcomix/strings.py:30 mcomix/strings.py:31 mcomix/strings.py:32
+#: mcomix/strings.py:31 mcomix/strings.py:32 mcomix/strings.py:33
 msgid "Italian translation"
 msgstr "Olasz fordítás"
 
-#: mcomix/strings.py:33
+#: mcomix/strings.py:34
 msgid "Dutch translation"
 msgstr "Holland fordítás"
 
-#: mcomix/strings.py:34 mcomix/strings.py:35 mcomix/strings.py:36
-#: mcomix/strings.py:37
+#: mcomix/strings.py:35 mcomix/strings.py:36 mcomix/strings.py:37
+#: mcomix/strings.py:38
 msgid "French translation"
 msgstr "Francia fordítás"
 
-#: mcomix/strings.py:38
+#: mcomix/strings.py:39
 #, fuzzy
 msgid "Polish translatin"
 msgstr "Lengyel fordítás"
 
-#: mcomix/strings.py:39
+#: mcomix/strings.py:40
 msgid "Polish translation"
 msgstr "Lengyel fordítás"
 
-#: mcomix/strings.py:40
+#: mcomix/strings.py:41
 msgid "Greek translation"
 msgstr "Görög fordítás"
 
-#: mcomix/strings.py:41
+#: mcomix/strings.py:42
 msgid "Catalan translation"
 msgstr "Katalán fordítás"
 
-#: mcomix/strings.py:42 mcomix/strings.py:43
+#: mcomix/strings.py:43 mcomix/strings.py:44
 msgid "Traditional Chinese translation"
 msgstr "Hagyományos kínai fordítás"
 
-#: mcomix/strings.py:44 mcomix/strings.py:45 mcomix/strings.py:46
+#: mcomix/strings.py:45 mcomix/strings.py:46 mcomix/strings.py:47
 msgid "Japanese translation"
 msgstr "Japán fordítás"
 
-#: mcomix/strings.py:47
+#: mcomix/strings.py:48
 msgid "Hungarian translation"
 msgstr "Magyar fordítás"
 
-#: mcomix/strings.py:48 mcomix/strings.py:49
+#: mcomix/strings.py:49 mcomix/strings.py:50
 msgid "Russian translation"
 msgstr "Orosz fordítás"
 
-#: mcomix/strings.py:50
+#: mcomix/strings.py:51
 msgid "Croatian translation"
 msgstr "Horvát fordítás"
 
-#: mcomix/strings.py:51
+#: mcomix/strings.py:52
 msgid "Korean translation"
 msgstr "Koreai fordítás"
 
-#: mcomix/strings.py:52
+#: mcomix/strings.py:53
 msgid "Persian translation"
 msgstr "Perzsa fordítás"
 
-#: mcomix/strings.py:53
+#: mcomix/strings.py:54
 msgid "Indonesian translation"
 msgstr "Indonéz fordítás"
 
-#: mcomix/strings.py:54
+#: mcomix/strings.py:55
 msgid "Czech translation"
 msgstr "Cseh fordítás"
 
-#: mcomix/strings.py:55
+#: mcomix/strings.py:56
 msgid "Ukrainian translation"
 msgstr ""
 
-#: mcomix/strings.py:56
+#: mcomix/strings.py:57
 #, fuzzy
 msgid "Galician translation"
 msgstr "Olasz fordítás"
 
-#: mcomix/strings.py:57
+#: mcomix/strings.py:58
 msgid "Swedish translation"
 msgstr ""
 
-#: mcomix/strings.py:58
+#: mcomix/strings.py:59
 #, fuzzy
 msgid "Hebrew translation"
 msgstr "Görög fordítás"
 
-#: mcomix/strings.py:61
+#: mcomix/strings.py:62
 msgid "Icon design"
 msgstr "Ikonok kivitelezése"
 
@@ -1414,342 +1437,354 @@ msgstr "Ikonok kivitelezése"
 msgid "! Could not save thumbnail \"%(thumbpath)s\": %(error)s"
 msgstr ""
 
-#: mcomix/ui.py:31 mcomix/library/book_area.py:153
+#: mcomix/ui.py:32 mcomix/library/book_area.py:153
 #, fuzzy
 msgid "_Copy"
 msgstr "(Másolás)"
 
-#: mcomix/ui.py:32
+#: mcomix/ui.py:33
 msgid "Copies the current page to clipboard."
 msgstr ""
 
-#: mcomix/ui.py:34
+#: mcomix/ui.py:35
 msgid "_Delete"
 msgstr ""
 
-#: mcomix/ui.py:35
+#: mcomix/ui.py:36
 msgid "Deletes the current file or archive from disk."
 msgstr ""
 
-#: mcomix/ui.py:37
+#: mcomix/ui.py:38
 msgid "_Next page"
 msgstr "_Következő oldal"
 
-#: mcomix/ui.py:39
+#: mcomix/ui.py:40
 msgid "_Previous page"
 msgstr "Előző _oldal"
 
-#: mcomix/ui.py:41
+#: mcomix/ui.py:42
 msgid "_First page"
 msgstr "_Első oldal"
 
-#: mcomix/ui.py:42
+#: mcomix/ui.py:43
 msgid "First page"
 msgstr "Első oldal"
 
-#: mcomix/ui.py:43
+#: mcomix/ui.py:44
 msgid "_Last page"
 msgstr "_Utolsó oldal"
 
-#: mcomix/ui.py:44
+#: mcomix/ui.py:45
 msgid "Last page"
 msgstr "Utolsó oldal"
 
-#: mcomix/ui.py:45
+#: mcomix/ui.py:46
 msgid "_Go to page..."
 msgstr ""
 
-#: mcomix/ui.py:46
+#: mcomix/ui.py:47
 msgid "Go to page..."
 msgstr ""
 
-#: mcomix/ui.py:47
+#: mcomix/ui.py:48
 msgid "Re_fresh"
 msgstr ""
 
-#: mcomix/ui.py:48
+#: mcomix/ui.py:49
 msgid "Reloads the currently opened files or archive."
 msgstr ""
 
-#: mcomix/ui.py:50
+#: mcomix/ui.py:51
 msgid "Next _archive"
 msgstr ""
 
-#: mcomix/ui.py:51
+#: mcomix/ui.py:52
 #, fuzzy
 msgid "Next archive"
 msgstr "Archívum szerkesztése"
 
-#: mcomix/ui.py:52
+#: mcomix/ui.py:53
 msgid "Previous a_rchive"
 msgstr ""
 
-#: mcomix/ui.py:53
+#: mcomix/ui.py:54
 #, fuzzy
 msgid "Previous archive"
 msgstr "Előző oldal"
 
-#: mcomix/ui.py:54 mcomix/ui.py:55
+#: mcomix/ui.py:55 mcomix/ui.py:56
 msgid "Next directory"
 msgstr ""
 
-#: mcomix/ui.py:56 mcomix/ui.py:57
+#: mcomix/ui.py:57 mcomix/ui.py:58
 msgid "Previous directory"
 msgstr ""
 
-#: mcomix/ui.py:58
+#: mcomix/ui.py:59
 msgid "Zoom _In"
 msgstr ""
 
-#: mcomix/ui.py:60
+#: mcomix/ui.py:61
 msgid "Zoom _Out"
 msgstr ""
 
-#: mcomix/ui.py:62
+#: mcomix/ui.py:63
 msgid "_Normal Size"
 msgstr ""
 
-#: mcomix/ui.py:64
+#: mcomix/ui.py:65
 msgid "Mi_nimize"
 msgstr ""
 
-#: mcomix/ui.py:66
+#: mcomix/ui.py:67
 msgid "_Close"
 msgstr "_Bezárás"
 
-#: mcomix/ui.py:67
+#: mcomix/ui.py:68
 msgid "Closes all opened files."
 msgstr ""
 
-#: mcomix/ui.py:68
+#: mcomix/ui.py:69
 msgid "_Quit"
 msgstr "_Kilépés"
 
-#: mcomix/ui.py:70
+#: mcomix/ui.py:71
 msgid "_Save and quit"
 msgstr ""
 
-#: mcomix/ui.py:72
+#: mcomix/ui.py:73
 msgid ""
 "Quits and restores the currently opened file next time the program starts."
 msgstr ""
 
-#: mcomix/ui.py:74
+#: mcomix/ui.py:75 mcomix/ui.py:157 mcomix/ui.py:161
 msgid "_Rotate 90 degrees CW"
 msgstr "A kép elfo_rgatása 90 fokkal"
 
-#: mcomix/ui.py:76
+#: mcomix/ui.py:77
 msgid "Rotate 180 de_grees"
 msgstr "A kép e_lforgatása 180 fokkal"
 
-#: mcomix/ui.py:78
+#: mcomix/ui.py:79 mcomix/ui.py:159 mcomix/ui.py:163
 msgid "Rotat_e 90 degrees CCW"
 msgstr "A kép _elforgatása -90 fokkal"
 
-#: mcomix/ui.py:80
+#: mcomix/ui.py:81
 msgid "Fli_p horizontally"
 msgstr "Tükrözés _vízszintesen"
 
-#: mcomix/ui.py:82
+#: mcomix/ui.py:83
 msgid "Flip _vertically"
 msgstr "Tükrözés _függőlegesen"
 
-#: mcomix/ui.py:84
+#: mcomix/ui.py:85
 msgid "Save _As"
 msgstr ""
 
-#: mcomix/ui.py:86
+#: mcomix/ui.py:87
 msgid "_Zoom"
 msgstr ""
 
-#: mcomix/ui.py:87
+#: mcomix/ui.py:88
 msgid "_Recent"
 msgstr ""
 
-#: mcomix/ui.py:88 mcomix/ui.py:89
+#: mcomix/ui.py:89 mcomix/ui.py:90
 msgid "_Bookmarks"
 msgstr "_Könyvjelzők"
 
-#: mcomix/ui.py:90
+#: mcomix/ui.py:91
 msgid "T_oolbars"
 msgstr "_Eszköztárak"
 
-#: mcomix/ui.py:91
+#: mcomix/ui.py:92
 msgid "_Edit"
 msgstr "S_zerkesztés"
 
-#: mcomix/ui.py:92
+#: mcomix/ui.py:93
 msgid "_File"
 msgstr "_Fájl"
 
-#: mcomix/ui.py:93 mcomix/ui.py:94
+#: mcomix/ui.py:94 mcomix/ui.py:95
 msgid "_View"
 msgstr "_Nézet"
 
-#: mcomix/ui.py:97
+#: mcomix/ui.py:98
 #, fuzzy
 msgid "_Tools"
 msgstr "_Eszköztár"
 
-#: mcomix/ui.py:98
+#: mcomix/ui.py:99
 msgid "_Help"
 msgstr "_Súgó"
 
-#: mcomix/ui.py:99
+#: mcomix/ui.py:100
 msgid "_Transform image"
 msgstr ""
 
+#: mcomix/ui.py:101
+msgid "_Auto-rotate image"
+msgstr ""
+
+#: mcomix/ui.py:102
+msgid "...when width exceeds height"
+msgstr ""
+
 #: mcomix/ui.py:103
+msgid "...when height exceeds width"
+msgstr ""
+
+#: mcomix/ui.py:107
 msgid "_Fullscreen"
 msgstr "_Teljes képernyő"
 
-#: mcomix/ui.py:104
+#: mcomix/ui.py:108
 msgid "Fullscreen mode"
 msgstr ""
 
-#: mcomix/ui.py:105
+#: mcomix/ui.py:109
 msgid "_Double page mode"
 msgstr "_Dupla lapos mód"
 
-#: mcomix/ui.py:107
+#: mcomix/ui.py:111
 msgid "_Toolbar"
 msgstr "_Eszköztár"
 
-#: mcomix/ui.py:109
+#: mcomix/ui.py:113
 msgid "_Menubar"
 msgstr "_Menüsor"
 
-#: mcomix/ui.py:111
+#: mcomix/ui.py:115
 msgid "St_atusbar"
 msgstr "Állap_otsor"
 
-#: mcomix/ui.py:113
+#: mcomix/ui.py:117
 msgid "S_crollbars"
 msgstr "Gö_rdítősávok"
 
-#: mcomix/ui.py:115
+#: mcomix/ui.py:119
 msgid "Th_umbnails"
 msgstr "_Bélyegképek"
 
-#: mcomix/ui.py:117
+#: mcomix/ui.py:121
 msgid "H_ide all"
 msgstr "M_inden elrejtve"
 
-#: mcomix/ui.py:119
+#: mcomix/ui.py:123
 msgid "_Manga mode"
 msgstr "_Manga mód"
 
-#: mcomix/ui.py:120
+#: mcomix/ui.py:124
 msgid "Manga mode"
 msgstr "Manga mód"
 
-#: mcomix/ui.py:121
+#: mcomix/ui.py:125
 msgid "Invert smart scroll"
 msgstr ""
 
-#: mcomix/ui.py:122
+#: mcomix/ui.py:126
 msgid "Invert smart scrolling direction."
 msgstr ""
 
-#: mcomix/ui.py:123
+#: mcomix/ui.py:127
 msgid "_Keep transformation"
 msgstr "Á_talakítás megtartása"
 
-#: mcomix/ui.py:124
+#: mcomix/ui.py:128
 msgid "Keeps the currently selected transformation for the next pages."
 msgstr ""
 
-#: mcomix/ui.py:126
+#: mcomix/ui.py:130
 #, fuzzy
 msgid "Start _slideshow"
 msgstr "Diavetítés _indítása"
 
-#: mcomix/ui.py:128
+#: mcomix/ui.py:132
 msgid "Magnifying _lens"
 msgstr "N_agyító"
 
-#: mcomix/ui.py:129
+#: mcomix/ui.py:133
 msgid "Magnifying lens"
 msgstr "Nagyító"
 
-#: mcomix/ui.py:130
+#: mcomix/ui.py:134
 msgid "Stretch small images"
 msgstr ""
 
-#: mcomix/ui.py:131
+#: mcomix/ui.py:135
 msgid "Stretch images to fit to the screen, depending on zoom mode."
 msgstr ""
 
-#: mcomix/ui.py:137
+#: mcomix/ui.py:141
 msgid "_Best fit mode"
 msgstr "_Legjobb illeszkedés"
 
-#: mcomix/ui.py:138
+#: mcomix/ui.py:142
 msgid "Best fit mode"
 msgstr "Legjobb illeszkedés"
 
-#: mcomix/ui.py:139
+#: mcomix/ui.py:143
 msgid "Fit _width mode"
 msgstr "_Szélességhez igazítás"
 
-#: mcomix/ui.py:140
+#: mcomix/ui.py:144
 msgid "Fit width mode"
 msgstr "Szélességhez igazítás"
 
-#: mcomix/ui.py:141
+#: mcomix/ui.py:145
 msgid "Fit _height mode"
 msgstr "Magasság_hoz igazítás"
 
-#: mcomix/ui.py:142
+#: mcomix/ui.py:146
 msgid "Fit height mode"
 msgstr "Magassághoz igazítás"
 
-#: mcomix/ui.py:143
+#: mcomix/ui.py:147
 #, fuzzy
 msgid "Fit _size mode"
 msgstr "_Szélességhez igazítás"
 
-#: mcomix/ui.py:145
+#: mcomix/ui.py:149
 msgid "M_anual zoom mode"
 msgstr "Ké_zi nagyítás"
 
-#: mcomix/ui.py:146
+#: mcomix/ui.py:150
 msgid "Manual zoom mode"
 msgstr "Kézi nagyítás"
 
-#: mcomix/ui.py:150
+#: mcomix/ui.py:168
 msgid "_About"
 msgstr "_Névjegy"
 
-#: mcomix/ui.py:154
+#: mcomix/ui.py:172
 msgid "Co_mments..."
 msgstr ""
 
-#: mcomix/ui.py:158
+#: mcomix/ui.py:176
 msgid "Proper_ties"
 msgstr ""
 
-#: mcomix/ui.py:162
+#: mcomix/ui.py:180
 msgid "Pr_eferences"
 msgstr "B_eállítások"
 
-#: mcomix/ui.py:167
+#: mcomix/ui.py:185
 msgid "_Edit archive..."
 msgstr "_Arhívum szerkesztése..."
 
-#: mcomix/ui.py:168
+#: mcomix/ui.py:186
 msgid "Opens the archive editor."
 msgstr ""
 
-#: mcomix/ui.py:170
+#: mcomix/ui.py:188
 msgid "_Open..."
 msgstr "_Megnyitás..."
 
-#: mcomix/ui.py:172
+#: mcomix/ui.py:190
 msgid "En_hance image..."
 msgstr ""
 
-#: mcomix/ui.py:176
+#: mcomix/ui.py:194
 msgid "_Library..."
 msgstr "_Gyűjtemény"
 
@@ -1826,11 +1861,11 @@ msgstr ""
 msgid "Upgrading library database version from %(from)d to %(to)d."
 msgstr ""
 
-#: mcomix/library/backend.py:566
+#: mcomix/library/backend.py:613
 msgid "Recent"
 msgstr ""
 
-#: mcomix/library/backend_types.py:181 mcomix/library/collection_area.py:142
+#: mcomix/library/backend_types.py:200 mcomix/library/collection_area.py:142
 msgid "All books"
 msgstr "Minden könyv"
 
