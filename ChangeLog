@@ -16,6 +16,11 @@ MComix 1.00
       their width (or width exceeds height), located in the menu bar under
       Tools -> Transform image -> Auto-rotate image.
 
+    - Added a new preference option to control sorting of files within
+      archives. Natural sort order is the default ordering, which sorts
+      numbers in file names based on their natural order (e.g. 1, 2, .., 10),
+      while literal order will use standard C sorting (e.g. 1, 23, 4).
+
     - Updated traditional Chinese translation (by Wayne Su).
 
     - Updated Hebrew translation (by Isratine Citizen).

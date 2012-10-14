@@ -304,7 +304,7 @@ class FileHandler(object):
                 # Remove MacOS meta files from image list
                 and not u'__MACOSX' in os.path.normpath(image).split(os.sep)]
 
-            tools.alphanumeric_sort(archive_images)
+            archive_images = self._sort_archive_images(archive_images)
             image_files = [ os.path.join(self._tmp_dir, f)
                             for f in archive_images ]
 
@@ -398,6 +398,24 @@ class FileHandler(object):
         else:
             # No condition was returned from the Extractor, i.e. invalid archive.
             return [], 0
+
+    def _sort_archive_images(self, filelist):
+        """ Sorts the image list passed in C{filelist} based on the sorting
+        preference option, and returns the newly sorted list. """
+        filelist = list(filelist)  # Create a copy of the list
+
+        if prefs['sort archive by'] == constants.SORT_NAME:
+            tools.alphanumeric_sort(filelist)
+        elif prefs['sort archive by'] == constants.SORT_NAME_LITERAL:
+            filelist.sort()
+        else:
+            # No sorting
+            pass
+
+        if prefs['sort archive order'] == constants.SORT_DESCENDING:
+            filelist.reverse()
+
+        return filelist
 
     def _save_state(self):
         """ Saves the FileHandler's internal state and returns it as dict object,

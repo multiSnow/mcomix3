@@ -16,8 +16,10 @@ prefs = {
     'number of key presses before page turn': 3,
     'auto open next archive': True,
     'auto open next directory': True,
-    'sort by': constants.SORT_NAME,
+    'sort by': constants.SORT_NAME,  # Normal files obtained by directory listing
     'sort order': constants.SORT_ASCENDING,
+    'sort archive by': constants.SORT_NAME,  # Files in archives
+    'sort archive order': constants.SORT_ASCENDING,
     'bg colour': [5000, 5000, 5000],
     'thumb bg colour': [5000, 5000, 5000],
     'smart bg': False,

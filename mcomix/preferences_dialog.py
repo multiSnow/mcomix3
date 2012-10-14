@@ -360,8 +360,11 @@ class _PreferencesDialog(gtk.Dialog):
 
         page.new_section(_('File order'))
 
-        label = gtk.Label(_('Order files by:'))
+        label = gtk.Label(_('Sort files and directories by:'))
         page.add_row(label, self._create_sort_by_control())
+
+        label = gtk.Label(_('Sort archives by:'))
+        page.add_row(label, self._create_archive_sort_by_control())
 
         page.new_section(_('Cache'))
 
@@ -518,7 +521,7 @@ class _PreferencesDialog(gtk.Dialog):
                 self._window.change_zoom_mode()
 
     def _create_sort_by_control(self):
-        """ Creates the ComboBox control for selecting archive sort by options. """
+        """ Creates the ComboBox control for selecting file sort by options. """
         sortkey_items = (
                 (_('No sorting'), 0),
                 (_('File name'), constants.SORT_NAME),
@@ -562,6 +565,55 @@ class _PreferencesDialog(gtk.Dialog):
         if combobox.get_model().iter_is_valid(iter):
             value = combobox.get_model().get_value(iter, 1)
             prefs['sort order'] = value
+
+            self._window.filehandler.refresh_file()
+
+    def _create_archive_sort_by_control(self):
+        """ Creates the ComboBox control for selecting archive sort by options. """
+        sortkey_items = (
+                (_('No sorting'), 0),
+                (_('Natural order'), constants.SORT_NAME),
+                (_('Literal order'), constants.SORT_NAME_LITERAL))
+
+        sortkey_box = self._create_combobox(sortkey_items, prefs['sort archive by'],
+            self._sort_archive_by_changed_cb)
+
+        sortorder_items = (
+                (_('Ascending'), constants.SORT_ASCENDING),
+                (_('Descending'), constants.SORT_DESCENDING))
+
+        sortorder_box = self._create_combobox(sortorder_items,
+                prefs['sort archive order'],
+                self._sort_archive_order_changed_cb)
+
+        box = gtk.HBox()
+        box.pack_start(sortkey_box)
+        box.pack_start(sortorder_box)
+
+        label = _("Files within archives will be sorted according to the order specified here. "
+                  "Natural order will sort numbered files based on their natural order, "
+                  "i.e. 1, 2, ..., 10, while literal order uses standard C sorting, "
+                  "i.e. 1, 2, 34, 5.")
+        sortkey_box.set_tooltip_text(label)
+        sortorder_box.set_tooltip_text(label)
+
+        return box
+
+    def _sort_archive_by_changed_cb(self, combobox, *args):
+        """ Called when a new option was selected for the virtual double page option. """
+        iter = combobox.get_active_iter()
+        if combobox.get_model().iter_is_valid(iter):
+            value = combobox.get_model().get_value(iter, 1)
+            prefs['sort archive by'] = value
+
+            self._window.filehandler.refresh_file()
+
+    def _sort_archive_order_changed_cb(self, combobox, *args):
+        """ Called when sort order changes (ascending or descending) """
+        iter = combobox.get_active_iter()
+        if combobox.get_model().iter_is_valid(iter):
+            value = combobox.get_model().get_value(iter, 1)
+            prefs['sort archive order'] = value
 
             self._window.filehandler.refresh_file()
 
