@@ -23,6 +23,7 @@ AUTHORS = (
 TRANSLATORS = (
             ('Emfox Zhou', _('Simplified Chinese translation')),
             ('Xie Yanbo', _('Simplified Chinese translation')),
+            ('Zach Cheung', _('Simplified Chinese translation')),
             ('Manuel Quiñones', _('Spanish translation')),
             ('Carlos Feliu', _('Spanish translation')),
             ('Marcelo Góes', _('Brazilian Portuguese translation')),
