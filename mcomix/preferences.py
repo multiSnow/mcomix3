@@ -96,7 +96,8 @@ prefs = {
     'escape quits': False,
     'fit to size mode': constants.ZOOM_MODE_HEIGHT,
     'fit to size px': 1800,
-    'scan for new books on library startup': True
+    'scan for new books on library startup': True,
+    'openwith commands': []  # (label, command) pairs
 }
 
 def read_preferences_file():

@@ -5,6 +5,7 @@ import os.path
 import gtk
 
 from mcomix import bookmark_menu
+from mcomix import openwith_menu
 from mcomix import edit_dialog
 from mcomix import enhance_dialog
 from mcomix import preferences_dialog
@@ -90,6 +91,7 @@ class MainUI(gtk.UIManager):
             ('menu_bookmarks', None, _('_Bookmarks')),
             ('menu_toolbars', None, _('T_oolbars')),
             ('menu_edit', None, _('_Edit')),
+            ('menu_open_with', None, _('_Open with')),
             ('menu_file', None, _('_File')),
             ('menu_view', None, _('_View')),
             ('menu_view_popup', 'comix-image', _('_View')),
@@ -237,6 +239,7 @@ class MainUI(gtk.UIManager):
                     <menuitem action="quit" />
                 </menu>
                 <menu action="menu_edit">
+                    <menu action="menu_open_with"></menu>
                     <menuitem action="copy_page" />
                     <separator />
                     <menuitem action="edit_archive" />
@@ -405,6 +408,10 @@ class MainUI(gtk.UIManager):
         self.recentPopup = recent.RecentFilesMenu(self, window)
         self.get_widget('/Popup/menu_recent').set_submenu(self.recentPopup)
         self.get_widget('/Popup/menu_recent').show()
+
+        openwith = openwith_menu.OpenWithMenu(self, window)
+        self.get_widget('/Menu/menu_edit/menu_open_with').set_submenu(openwith)
+        self.get_widget('/Menu/menu_edit/menu_open_with').show()
 
         # Load keyboard accelerator map
         if os.path.isfile(constants.KEYBINDINGS_PATH):
