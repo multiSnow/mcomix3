@@ -76,6 +76,9 @@ def parse_arguments(argv):
             choices=('all', 'warn', 'error'), default='warn',
             metavar='[ all | warn | error ]',
             help=_('Sets the desired output log level.'))
+    # This supresses an error when MComix is used with cProfile
+    debugopts.add_option('-o', dest='output', action='store',
+            default='', help=optparse.SUPPRESS_HELP)
     parser.add_option_group(debugopts)
 
     opts, args = parser.parse_args(argv)
