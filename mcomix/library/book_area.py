@@ -464,10 +464,13 @@ class _BookArea(gtk.ScrolledWindow):
         if collection == _COLLECTION_ALL:
             return
         selected = self._iconview.get_selected_items()
+        self._library.backend.begin_transaction()
         for path in selected:
             book = self.get_book_at_path(path)
             self._library.backend.remove_book_from_collection(book, collection)
             self.remove_book_at_path(path)
+        self._library.backend.end_transaction()
+
         coll_name = self._library.backend.get_collection_name(collection)
         message = i18n.get_translation().ungettext(
                 "Removed %(num)d book from '%(collection)s'.",
@@ -482,11 +485,14 @@ class _BookArea(gtk.ScrolledWindow):
         """
 
         selected = self._iconview.get_selected_items()
+        self._library.backend.begin_transaction()
 
         for path in selected:
             book = self.get_book_at_path(path)
             self._library.backend.remove_book(book)
             self.remove_book_at_path(path)
+
+        self._library.backend.end_transaction()
 
         msg = i18n.get_translation().ungettext(
             'Removed %d book from the library.',

@@ -12,6 +12,9 @@ MComix 1.00
     - Fixed a bug that prevented MComix from showing the first page of an
       archive nested in other archives.
 
+    - Deleting a large amout of books from the library should be much
+      faster now.
+
     - MComix now starts in RTL mode when a RTL language has been manually
       selected in the preference dialog.
 

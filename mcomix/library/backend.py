@@ -461,6 +461,18 @@ class _LibraryBackend:
         connection. """
         return self._con.execute(*args)
 
+    def begin_transaction(self):
+        """ Normally, the connection is in auto-commit mode. Calling
+        this method will switch to transactional mode, automatically
+        starting a transaction when a DML statement is used. """
+        self._con.isolation_level = 'IMMEDIATE'
+
+    def end_transaction(self):
+        """ Commits any changes to the database and switches back
+        to auto-commit mode. """
+        self._con.commit()
+        self._con.isolation_level = None
+
     def close(self):
         """Commit changes and close cleanly."""
         if self._con is not None:
