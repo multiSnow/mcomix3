@@ -60,6 +60,10 @@ class Extractor:
         """
         return self._files[:]
 
+    def get_directory(self):
+        """Returns the root extraction directory of this extractor."""
+        return self._dst
+
     def set_files(self, files):
         """Set the files that the extractor should extract from the archive in
         the order of extraction. Normally one would get the list of all files
@@ -111,7 +115,7 @@ class Extractor:
         self._extract_thread.start()
 
     @callback.Callback
-    def file_extracted(self, filename):
+    def file_extracted(self, extractor, filename):
         """ Called whenever a new file is extracted and ready. """
         pass
 
@@ -154,7 +158,7 @@ class Extractor:
         self._extracted[name] = True
         self._condition.notifyAll()
         self._condition.release()
-        self.file_extracted(name)
+        self.file_extracted(self, name)
 
 class ArchiveException(Exception):
     """ Indicate error during extraction operations. """

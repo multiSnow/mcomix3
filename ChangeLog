@@ -9,6 +9,9 @@ MComix 1.00
     - Fixed several malfunctions that could occur if no SQLite library
       was installed.
 
+    - Fixed a bug that prevented MComix from showing the first page of an
+      archive nested in other archives.
+
     - MComix now starts in RTL mode when a RTL language has been manually
       selected in the preference dialog.
 

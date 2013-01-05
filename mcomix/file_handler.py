@@ -707,11 +707,11 @@ class FileHandler(object):
         """
         pass
 
-    def _extracted_file(self, name):
+    def _extracted_file(self, extractor, name):
         """ Called when the extractor finishes extracting the file at
         <name>. This name is relative to the temporary directory
         the files were extracted to. """
-        filepath = os.path.join(self._tmp_dir, name)
+        filepath = os.path.join(extractor.get_directory(), name)
         self.file_available([filepath])
 
     def _wait_on_page(self, page):
