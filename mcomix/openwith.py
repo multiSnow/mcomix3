@@ -20,9 +20,11 @@ class OpenWithManager(object):
         return [OpenWithCommand(label, command)
                 for label, command in prefs['openwith commands']]
 
+
 class OpenWithException(Exception):
     def __init__(self, msg):
         Exception.__init__(self, msg)
+
 
 class OpenWithCommand(object):
     def __init__(self, label, command):
@@ -78,6 +80,9 @@ class OpenWithCommand(object):
         return args
 
     def _commandline_to_arguments(self, line, window):
+        """ Parse a command line string into a list containing
+        the parts to pass to Popen. The following two functions have
+        been contributed by Ark <aaku@users.sf.net>. """
         result = []
         buf = u""
         quote = False
@@ -115,6 +120,8 @@ class OpenWithCommand(object):
         return result
 
     def _expand_variable(self, identifier, window):
+        """ Replaces variables with their respective file
+        or archive path. """
         # Check for valid identifiers beforehand,
         # as this can be done even when no file is opened in filehandler.
         if identifier not in ('/', 'a', 'f', 'w', 'A', 'D', 'F', 'W'):
@@ -157,6 +164,9 @@ class OpenWithCommand(object):
                 return os.path.dirname(window.filehandler.get_path_to_base())
 
     def _is_executable(self, arg):
+        """ Check if a name is executable. This name can be either
+        a relative path, when the executable is in PATH, or an
+        absolute path. """
         if os.path.isfile(arg) and os.access(arg, os.R_OK|os.X_OK):
             return True
 
