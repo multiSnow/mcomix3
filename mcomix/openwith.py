@@ -1,5 +1,5 @@
 """ openwith.py - Logic and storage for Open with... commands. """
-import os.path
+import os
 import gtk
 import gobject
 
@@ -27,9 +27,9 @@ class OpenWithCommand(object):
     def __init__(self, label, command):
         self.label = label
         if isinstance(command, str):
-            self.command = command.decode('utf-8')
+            self.command = command.decode('utf-8').strip()
         else:
-            self.command = command
+            self.command = command.strip()
 
     def get_label(self):
         return self.label
@@ -40,15 +40,29 @@ class OpenWithCommand(object):
     def execute(self, window):
         pass
 
-    def validate(self):
-        pass
+    def validate(self, window):
+        try:
+            args = self.parse(window)
+            syntax_passes = True
+        except OpenWithException:
+            args = []
+            syntax_passes = False
+
+        if len(args) > 0:
+            executable = os.access(args[0], os.R_OK|os.X_OK)
+        else:
+            executable = False
+
+        return (syntax_passes and executable)
 
     def parse(self, window):
         """ Parses the command string and replaces special characters
         with their respective variable contents. Returns a list of
         arguments. """
-        command = os.path.expandvars(self.get_command())
-        args = self._commandline_to_arguments(command, window)
+        args = self._commandline_to_arguments(self.get_command(), window)
+        # Environment variables must be expanded after MComix variables,
+        # as win32 will eat %% and replace it with %.
+        args = [os.path.expandvars(arg) for arg in args]
         return args
 
     def _commandline_to_arguments(self, line, window):
@@ -58,25 +72,25 @@ class OpenWithCommand(object):
         escape = False
         for c in line:
             if escape:
-                if c == '%' or c == '"':
+                if c == u'%' or c == u'"':
                     buf += c
                 else:
                     buf += self._expand_variable(c, window)
                 escape = False
-            elif c == ' ':
+            elif c == u' ':
                 if quote:
                     buf += c
                 elif len(buf) != 0:
                     result.append(buf)
-                    buf = ""
-            elif c == '"':
+                    buf = u""
+            elif c == u'"':
                 if quote:
                     result.append(buf)
-                    buf = ""
+                    buf = u""
                     quote = False
                 else:
                     quote = True
-            elif c == '%':
+            elif c == u'%':
                 escape = True
             else:
                 buf += c
@@ -162,11 +176,11 @@ class OpenWithEditor(gtk.Dialog):
         self._test_field = gtk.Entry()
         self._test_field.set_property('editable', gtk.FALSE)
         self._test_field.set_text(_('Preview area'))
+        self._save_button = self.add_button(gtk.STOCK_SAVE, gtk.RESPONSE_CLOSE)
+        self.set_default_response(gtk.RESPONSE_CLOSE)
 
         self._layout()
         self._setup_table()
-        self.add_button(gtk.STOCK_SAVE, gtk.RESPONSE_CLOSE)
-        self.set_default_response(gtk.RESPONSE_CLOSE)
 
         self.connect('response', self._response)
 
@@ -176,6 +190,20 @@ class OpenWithEditor(gtk.Dialog):
     def save(self):
         """ Serializes the tree model into a list of OpenWithCommands
         and passes these back to the Manager object for persistance. """
+        commands = self.get_commands()
+        self._openwith.set_commands(commands)
+
+    def validate(self):
+        """ Validates all commands and disables the save button
+        if one of them is detected as invalid. """
+        commands = self.get_commands()
+        valid = all([cmd.validate(self._window) for cmd in commands])
+        self._save_button.set_sensitive(valid)
+        return valid
+
+    def get_commands(self):
+        """ Retrieves a list of OpenWithCommand instances from
+        the list model. """
         model = self._command_tree.get_model()
         iter = model.get_iter_first()
         commands = []
@@ -183,12 +211,12 @@ class OpenWithEditor(gtk.Dialog):
             label, command = model.get(iter, 0, 1)
             commands.append(OpenWithCommand(label, command))
             iter = model.iter_next(iter)
-
-        self._openwith.set_commands(commands)
+        return commands
 
     def _add_command(self, button):
         """ Add a new empty label-command line to the list. """
         self._command_tree.get_model().append((_('Command label'), _('Command')))
+        self.validate()
 
     def _remove_command(self, button):
         """ Removes the currently selected command from the list. """
@@ -259,14 +287,20 @@ class OpenWithEditor(gtk.Dialog):
         self._command_tree.set_headers_visible(True)
         self._command_tree.set_reorderable(True)
 
+        self.validate()
+
     def _value_changed(self, renderer, path, new_text, column):
         """ Called when the user edits a field in the table. """
         iter = self._command_tree.get_model().get_iter(path)
         self._command_tree.get_model().set_value(iter, column, new_text)
 
+        # Only re-validate if command column is changed
+        if column == 1:
+            self.validate()
+
     def _response(self, dialog, response):
         if response == gtk.RESPONSE_CLOSE:
-            # TODO: Validate entries before saving
+            # The Save button is only enabled if all commands are valid
             self.save()
             self.hide_all()
             self.destroy()
