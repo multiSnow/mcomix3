@@ -265,7 +265,10 @@ class OpenWithEditor(gtk.Dialog):
         buttonbox.pack_end(self._info_label, padding=6)
 
         treebox = gtk.VBox()
-        treebox.pack_start(self._command_tree, padding=4)
+        scroll_window = gtk.ScrolledWindow()
+        scroll_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        scroll_window.add(self._command_tree)
+        treebox.pack_start(scroll_window, padding=4)
         treebox.pack_end(self._test_field, False)
 
         upperbox.pack_start(treebox, padding=4)
