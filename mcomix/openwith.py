@@ -42,6 +42,7 @@ class OpenWithCommand(object):
         """ Spawns a new process with the given executable
         and arguments. """
         try:
+            # Redirect process output to null here?
             subprocess.Popen(self.parse(window))
         except Exception, e:
             text = _("Could not run command %(cmdlabel)s: %(exception)s") % \
@@ -60,7 +61,7 @@ class OpenWithCommand(object):
             syntax_passes = False
 
         if len(args) > 0:
-            executable = os.access(args[0], os.R_OK|os.X_OK)
+            executable = self._is_executable(args[0])
         else:
             executable = False
 
@@ -154,6 +155,19 @@ class OpenWithCommand(object):
                 return window.filehandler.get_path_to_base()
             else:
                 return os.path.dirname(window.filehandler.get_path_to_base())
+
+    def _is_executable(self, arg):
+        if os.path.isfile(arg) and os.access(arg, os.R_OK|os.X_OK):
+            return True
+
+        for path in os.environ["PATH"].split(os.pathsep):
+            path = path.strip('"')
+            exe = os.path.join(path, arg)
+            if os.path.isfile(exe) and os.access(exe, os.R_OK|os.X_OK):
+                return True
+
+        return False
+
 
 class OpenWithEditor(gtk.Dialog):
     """ The editor for changing and creating external commands. This window
