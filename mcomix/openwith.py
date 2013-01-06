@@ -1,5 +1,6 @@
 """ openwith.py - Logic and storage for Open with... commands. """
 import gtk
+import gobject
 
 from mcomix.preferences import prefs
 
@@ -32,6 +33,7 @@ class OpenWithEditor(gtk.Dialog):
     def __init__(self, window):
         gtk.Dialog.__init__(self, _('Edit external commands'), parent=window)
         self._window = window
+        self._openwith = OpenWithManager()
 
         self._command_tree = gtk.TreeView()
         self._command_tree.set_headers_visible(True)
@@ -51,6 +53,7 @@ class OpenWithEditor(gtk.Dialog):
         self._test_field = gtk.Entry()
 
         self._layout()
+        self._setup_table()
         self.add_button(gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
         self.set_default_response(gtk.RESPONSE_CLOSE)
 
@@ -77,6 +80,13 @@ class OpenWithEditor(gtk.Dialog):
         self.get_action_area().expand = True
         self.get_action_area().pack_start(self._test_field, True, True)
         self.get_action_area().pack_start(self._test_button, False)
+
+    def _setup_table(self):
+        """ Initializes the TreeView with settings and data. """
+        model = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING)
+        for command in self._openwith.get_commands():
+            model.append((command.get_label(), command.get_command()))
+        self._command_tree.set_model(model)
 
     def _response(self, dialog, response):
         if response == gtk.RESPONSE_CLOSE:
