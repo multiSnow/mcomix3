@@ -81,9 +81,9 @@ class OpenWithCommand(object):
             else:
                 buf += c
         if escape:
-            raise OpenWithException("Incomplete escape sequence")
-        if quote:
-            raise OpenWithException("Incomplete quotation")
+            raise OpenWithException(
+                _("Incomplete escape sequence. "
+                  "For a literal '%', use '%%'."))
         if len(buf) != 0:
             result.append(buf)
         return result
@@ -93,16 +93,22 @@ class OpenWithCommand(object):
             return os.path.sep
         elif identifier == 'a':
             if window.filehandler.archive_type is None:
-                raise OpenWithException("Not inside an archive")
+                raise OpenWithException(
+                    _("%a and %A can only be used for archives."))
             return window.filehandler.get_base_filename()
         elif identifier == 'f':
             return window.imagehandler.get_page_filename()
         elif identifier == 'w':
             if window.filehandler.archive_type is None:
-                return os.path.basename(window.filehandler.get_path_to_base())
+                return os.path.basename(
+                    window.filehandler.get_path_to_base())
             else:
-                return os.path.basename(os.path.dirname(window.filehandler.get_path_to_base()))
+                return os.path.basename(
+                    os.path.dirname(window.filehandler.get_path_to_base()))
         elif identifier == 'A':
+            if window.filehandler.archive_type is None:
+                raise OpenWithException(
+                    _("%a and %A can only be used for archives."))
             return window.filehandler.get_path_to_base()
         elif identifier == 'D':
             return window.filehandler.get_path_to_base()
@@ -114,7 +120,8 @@ class OpenWithCommand(object):
             else:
                 return os.path.dirname(window.filehandler.get_path_to_base())
         else:
-            raise OpenWithException("Invalid escape sequence");
+            raise OpenWithException(
+                _("Invalid escape sequence: %s") % identifier);
 
 class OpenWithEditor(gtk.Dialog):
     """ The editor for changing and creating external commands. This window
@@ -136,9 +143,19 @@ class OpenWithEditor(gtk.Dialog):
         self._remove_button.set_sensitive(False)
         self._info_label = gtk.Label()
         self._info_label.set_markup(
-            '<b>' + _('Variables:') + '</b>\n' +
-            _('<b>%f</b> - Filename') + '\n' +
-            _('<b>%d</b> - Directory') + '\n')
+            '<b>' + _('Variables') + '</b>\n' +
+            '<b>%f</b> - ' + _('File name') + '\n' +
+            '<b>%w</b> - ' + _('Directory name') + '\n' +
+            '<b>%a</b> - ' + _('Archive name') + '\n' +
+            '<b>' + _('Absolute path variables') + '</b>\n' +
+            '<b>%F</b> - ' + _('File path') + '\n' +
+            '<b>%W</b> - ' + _('Directory containing archive or file') + '\n' +
+            '<b>%A</b> - ' + _('Archive path') + '\n' +
+            '<b>%D</b> - ' + _('Directory containing files') + '\n' +
+            '<b>' + _('Miscellaneous variables') + '</b>\n' +
+            '<b>%/</b> - ' + _('Backslash or slash, depending on OS') + '\n' +
+            '<b>%"</b> - ' + _('Literal quote') + '\n' +
+            '<b>%%</b> - ' + _('Literal % character') + '\n')
         self._info_label.set_alignment(0, 0)
         self._test_button = gtk.Button(_('_Preview'))
         self._test_button.connect('clicked', self._test_command)
