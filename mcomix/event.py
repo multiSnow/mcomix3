@@ -9,6 +9,7 @@ from mcomix.preferences import prefs
 from mcomix import constants
 from mcomix import portability
 from mcomix import keybindings
+from mcomix import openwith
 
 
 class EventHandler:
@@ -151,6 +152,11 @@ class EventHandler:
         manager.register('osd panel',
             ['Tab'],
             self._window.show_info_panel)
+
+        # Execute external command. The first command in the list will be run.
+        manager.register('execute command',
+            ['F8'],
+            self._execute_command)
 
     def key_press_event(self, widget, event, *args):
         """Handle key press events on the main window."""
@@ -600,6 +606,12 @@ class EventHandler:
         else:
             # This path should not be reached.
             assert False, "Programmer is moron, incorrect assertion."
+
+    def _execute_command(self):
+        manager = openwith.OpenWithManager()
+        commands = manager.get_commands()
+        if commands:
+            commands[0].execute(self._window)
 
 
 def _get_latest_event_of_same_type(event):

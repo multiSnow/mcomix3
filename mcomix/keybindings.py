@@ -63,7 +63,8 @@ BINDING_INFO = {
     'smart scroll up' : { 'title' : _('Smart scroll up'), 'group' : _('Reading') },
     'smart scroll down' : { 'title' : _('Smart scroll down'), 'group' : _('Reading') },
 
-    'osd panel' : { 'title' : _('Show OSD panel'), 'group' : _('User Interface') }
+    'osd panel' : { 'title' : _('Show OSD panel'), 'group' : _('User Interface') },
+    'execute command' : { 'title' : _('Execute first external command'), 'group' : _('User Interface') }
 }
 
 
