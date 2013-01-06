@@ -1,5 +1,6 @@
 """ openwith.py - Logic and storage for Open with... commands. """
 import os
+import subprocess
 import gtk
 import gobject
 
@@ -38,9 +39,19 @@ class OpenWithCommand(object):
         return self.command
 
     def execute(self, window):
-        pass
+        """ Spawns a new process with the given executable
+        and arguments. """
+        try:
+            subprocess.Popen(self.parse(window))
+        except Exception, e:
+            text = _("Could not run command %(cmdlabel)s: %(exception)s") % \
+                {'cmdlabel': self.get_label(), 'exception': unicode(e)}
+            window.osd.show(text)
 
     def validate(self, window):
+        """ Returns True only if the command passes syntactic
+        checking without exception and when the first argument
+        is an executable, valid file. """
         try:
             args = self.parse(window)
             syntax_passes = True
@@ -149,11 +160,11 @@ class OpenWithEditor(gtk.Dialog):
     keeps its own internal model once initialized, and will overwrite
     the external model (i.e. preferences) only when properly closed. """
 
-    def __init__(self, window):
+    def __init__(self, window, openwithmanager):
         gtk.Dialog.__init__(self, _('Edit external commands'), parent=window)
         self.set_destroy_with_parent(True)
         self._window = window
-        self._openwith = OpenWithManager()
+        self._openwith = openwithmanager
 
         self._command_tree = gtk.TreeView()
         self._command_tree.get_selection().connect('changed', self._item_selected)
@@ -183,8 +194,8 @@ class OpenWithEditor(gtk.Dialog):
         self._test_field = gtk.Entry()
         self._test_field.set_property('editable', gtk.FALSE)
         self._test_field.set_text(_('Preview area'))
-        self._save_button = self.add_button(gtk.STOCK_SAVE, gtk.RESPONSE_CLOSE)
-        self.set_default_response(gtk.RESPONSE_CLOSE)
+        self._save_button = self.add_button(gtk.STOCK_SAVE, gtk.RESPONSE_ACCEPT)
+        self.set_default_response(gtk.RESPONSE_ACCEPT)
 
         self._layout()
         self._setup_table()
@@ -192,7 +203,6 @@ class OpenWithEditor(gtk.Dialog):
         self.connect('response', self._response)
 
         self.resize(600, 300)
-        self.show_all()
 
     def save(self):
         """ Serializes the tree model into a list of OpenWithCommands
@@ -297,18 +307,22 @@ class OpenWithEditor(gtk.Dialog):
 
     def _value_changed(self, renderer, path, new_text, column):
         """ Called when the user edits a field in the table. """
-        iter = self._command_tree.get_model().get_iter(path)
-        self._command_tree.get_model().set_value(iter, column, new_text)
+        model = self._command_tree.get_model()
+        iter = model.get_iter(path)
+        # Editing the model in the cellrenderercallback stops the editing
+        # operation, causing GTK warnings. Delay until callback is finished.
+        def delayed_set_value():
+            model.set_value(iter, column, new_text)
+            # Only re-validate if command column is changed
+            if column == 1:
+                self.validate()
+        gobject.idle_add(delayed_set_value)
 
-        # Only re-validate if command column is changed
-        if column == 1:
-            self.validate()
 
     def _response(self, dialog, response):
-        if response == gtk.RESPONSE_CLOSE:
+        if response == gtk.RESPONSE_ACCEPT:
             # The Save button is only enabled if all commands are valid
             self.save()
             self.hide_all()
-            self.destroy()
 
 # vim: expandtab:sw=4:ts=4
