@@ -284,33 +284,27 @@ msgstr "Bücher hinzufügen"
 msgid "Add to this collection:"
 msgstr "Zu Sammlung hinzufügen:"
 
-#: mcomix/file_chooser_main_dialog.py:22
-#: mcomix/file_chooser_simple_dialog.py:23
+#: mcomix/file_chooser_main_dialog.py:22 mcomix/file_chooser_simple_dialog.py:23
 msgid "All images"
 msgstr "Alle Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:24
-#: mcomix/file_chooser_simple_dialog.py:25
+#: mcomix/file_chooser_main_dialog.py:24 mcomix/file_chooser_simple_dialog.py:25
 msgid "JPEG images"
 msgstr "JPEG-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:25
-#: mcomix/file_chooser_simple_dialog.py:26
+#: mcomix/file_chooser_main_dialog.py:25 mcomix/file_chooser_simple_dialog.py:26
 msgid "PNG images"
 msgstr "PNG-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:26
-#: mcomix/file_chooser_simple_dialog.py:27
+#: mcomix/file_chooser_main_dialog.py:26 mcomix/file_chooser_simple_dialog.py:27
 msgid "GIF images"
 msgstr "GIF-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:27
-#: mcomix/file_chooser_simple_dialog.py:28
+#: mcomix/file_chooser_main_dialog.py:27 mcomix/file_chooser_simple_dialog.py:28
 msgid "TIFF images"
 msgstr "TIFF-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:28
-#: mcomix/file_chooser_simple_dialog.py:29
+#: mcomix/file_chooser_main_dialog.py:28 mcomix/file_chooser_simple_dialog.py:29
 msgid "BMP images"
 msgstr "BMP-Bilder"
 
@@ -484,7 +478,7 @@ msgstr "Benutzeroberfläche"
 
 #: mcomix/keybindings.py:67
 msgid "Execute first external command"
-msgstr ""
+msgstr "Erstes externes Programm ausführen"
 
 #: mcomix/keybindings.py:103
 #, python-format
@@ -534,102 +528,94 @@ msgstr "Bea_rbeiten"
 #: mcomix/openwith.py:50
 #, python-format
 msgid "Could not run command %(cmdlabel)s: %(exception)s"
-msgstr ""
+msgstr "Konnte Programm %(cmdlabel)s nicht ausführen: %(exception)s "
 
 #: mcomix/openwith.py:116
 msgid "Incomplete escape sequence. For a literal '%', use '%%'."
 msgstr ""
+"Unvollständige Escape-Sequenz. Benutze '%%', um das '%'-Zeichen zu erhalten."
 
 #: mcomix/openwith.py:129
 #, python-format
 msgid "Invalid escape sequence: %s"
-msgstr ""
+msgstr "Ungültige Escape-Sequenz: %s"
 
 #: mcomix/openwith.py:140 mcomix/openwith.py:154
 msgid "%a and %A can only be used for archives."
-msgstr ""
+msgstr "%a und %A können nur mit Archiven verwendet werden."
 
 #: mcomix/openwith.py:188
 msgid "Edit external commands"
-msgstr ""
+msgstr "Externe Programme bearbeiten"
 
 #: mcomix/openwith.py:202
 msgid "Variables"
-msgstr ""
+msgstr "Variablen"
 
 #: mcomix/openwith.py:203 mcomix/preferences_dialog.py:527
 msgid "File name"
 msgstr "Dateiname"
 
 #: mcomix/openwith.py:204
-#, fuzzy
 msgid "Directory name"
-msgstr "Verzeichnis"
+msgstr "Verzeichnis-Name"
 
 #: mcomix/openwith.py:205
-#, fuzzy
 msgid "Archive name"
-msgstr "Archiv"
+msgstr "Archiv-Name"
 
 #: mcomix/openwith.py:206
 msgid "Absolute path variables"
-msgstr ""
+msgstr "Absolute Pfadangaben"
 
 #: mcomix/openwith.py:207
-#, fuzzy
 msgid "File path"
-msgstr "Voller Pfad"
+msgstr "Dateipfad"
 
 #: mcomix/openwith.py:208
 msgid "Directory containing archive or file"
-msgstr ""
+msgstr "Verzeichnis, das Archiv oder Datei enthält"
 
 #: mcomix/openwith.py:209
-#, fuzzy
 msgid "Archive path"
-msgstr "Archiv"
+msgstr "Archivpfad"
 
 #: mcomix/openwith.py:210
 msgid "Directory containing files"
-msgstr ""
+msgstr "Verzeichnis, das Datei enthält"
 
 #: mcomix/openwith.py:211
 msgid "Miscellaneous variables"
-msgstr ""
+msgstr "Verschiedene Variablen"
 
 #: mcomix/openwith.py:212
 msgid "Backslash or slash, depending on OS"
-msgstr ""
+msgstr "Schrägstrich oder Backslash, abh. vom OS"
 
 #: mcomix/openwith.py:213
-#, fuzzy
 msgid "Literal quote"
-msgstr "Datei-Reihenfolge"
+msgstr "Anführungszeichen"
 
 #: mcomix/openwith.py:214
-#, fuzzy, python-format
+#, python-format
 msgid "Literal % character"
-msgstr "Datei-Reihenfolge"
+msgstr "Prozent-Zeichen"
 
 #: mcomix/openwith.py:216
-#, fuzzy
 msgid "_Preview"
-msgstr "_Vorherige Seite"
+msgstr "_Vorschau"
 
 #: mcomix/openwith.py:220
-#, fuzzy
 msgid "Preview area"
-msgstr "Vorheriges Archiv"
+msgstr "Vorschau-Zeile"
 
 #: mcomix/openwith.py:259
-#, fuzzy
 msgid "Command label"
-msgstr "Kommentare"
+msgstr "Programm-Bezeichnung"
 
 #: mcomix/openwith.py:259
-#, fuzzy
 msgid "Command"
-msgstr "Kommentare"
+msgstr "Befehl"
 
 #: mcomix/pageselect.py:17 mcomix/ui.py:98 mcomix/ui.py:99
 msgid "_Go"
@@ -1027,12 +1013,11 @@ msgstr "Datei-Reihenfolge"
 
 #: mcomix/preferences_dialog.py:363
 msgid "Sort files and directories by:"
-msgstr ""
+msgstr "Sortiere Dateien und Verzeichnisse nach:"
 
 #: mcomix/preferences_dialog.py:366
-#, fuzzy
 msgid "Sort archives by:"
-msgstr "Tar-Archive"
+msgstr "Sortiere Archive nach:"
 
 #: mcomix/preferences_dialog.py:369
 msgid "Cache"
@@ -1048,9 +1033,9 @@ msgid ""
 "specification. These thumbnails are shared by many other applications, such "
 "as most file managers."
 msgstr ""
-"Vorschaubilder für geöffnete Dateien gemäß der Spezifikation von freedesktop."
-"org speichern. Diese Vorschaubilder werden mit vielen anderen Anwendungen, "
-"zumeist Dateimanagern, gemeinsam benutzt."
+"Vorschaubilder für geöffnete Dateien gemäß der Spezifikation von "
+"freedesktop.org speichern. Diese Vorschaubilder werden mit vielen anderen "
+"Anwendungen, zumeist Dateimanagern, gemeinsam benutzt."
 
 #: mcomix/preferences_dialog.py:380
 msgid "Maximum number of pages to store in the cache:"
@@ -1161,14 +1146,12 @@ msgstr ""
 "in Archiven."
 
 #: mcomix/preferences_dialog.py:575
-#, fuzzy
 msgid "Natural order"
-msgstr "Datei-Reihenfolge"
+msgstr "Natürliche Sortierung"
 
 #: mcomix/preferences_dialog.py:576
-#, fuzzy
 msgid "Literal order"
-msgstr "Datei-Reihenfolge"
+msgstr "Buchstäbliche Sortierung"
 
 #: mcomix/preferences_dialog.py:593
 msgid ""
@@ -1176,6 +1159,10 @@ msgid ""
 "Natural order will sort numbered files based on their natural order, i.e. 1, "
 "2, ..., 10, while literal order uses standard C sorting, i.e. 1, 2, 34, 5."
 msgstr ""
+"Dateien in Archiven werden nach der hier angegebenen Sortierung angezeigt. "
+"Natürliche Sortierung sortiert nummerierte Dateien anhand ihrer natürlichen "
+"Reihenfolge, z.B. 1, 2, ..., 10. Buchstäbliche Sortierung benutzt die "
+"Standard-C-Reihenfolge, also 1, 2, 34, 5."
 
 #: mcomix/preferences_dialog.py:657
 msgid "Delete information about recently opened files?"
@@ -1706,9 +1693,8 @@ msgid "T_oolbars"
 msgstr "_Werkzeugleisten"
 
 #: mcomix/ui.py:94
-#, fuzzy
 msgid "_Open with"
-msgstr "Ö_ffnen"
+msgstr "Ö_ffnen mit"
 
 #: mcomix/ui.py:95
 msgid "_File"
@@ -1732,15 +1718,15 @@ msgstr "Bild ändern"
 
 #: mcomix/ui.py:103
 msgid "_Auto-rotate image"
-msgstr ""
+msgstr "_Automatisch rotieren"
 
 #: mcomix/ui.py:104
 msgid "...when width exceeds height"
-msgstr ""
+msgstr "...wenn Breite Höhe übersteigt"
 
 #: mcomix/ui.py:105
 msgid "...when height exceeds width"
-msgstr ""
+msgstr "...wenn Höhe Breite übersteigt"
 
 #: mcomix/ui.py:109
 msgid "_Fullscreen"
@@ -2686,8 +2672,8 @@ msgstr "Aut_omatisch nach Büchern suchen, wenn Bibliothek geöffnet wird"
 
 #~ msgid ""
 #~ "Crash recovery saves the current configuration information every "
-#~ "specified seconds.  In case of a crash the previous file will be re-"
-#~ "loaded."
+#~ "specified seconds.  In case of a crash the previous file will be "
+#~ "re-loaded."
 #~ msgstr ""
 #~ "Automatische Wiederherstellung speichert die derzeitige Konfiguration in "
 #~ "spezifizierten Abständen. Sollte MComix abstürzen, wird die zuletzt "
