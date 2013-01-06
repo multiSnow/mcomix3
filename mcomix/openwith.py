@@ -103,8 +103,18 @@ class OpenWithCommand(object):
         return result
 
     def _expand_variable(self, identifier, window):
+        # Check for valid identifiers beforehand,
+        # as this can be done even when no file is opened in filehandler.
+        if identifier not in ('/', 'a', 'f', 'w', 'A', 'D', 'F', 'W'):
+            raise OpenWithException(
+                _("Invalid escape sequence: %s") % identifier);
         if identifier == '/':
             return os.path.sep
+
+        # If no file is loaded, all following calls make no sense.
+        if not window.filehandler.file_loaded:
+            return identifier
+
         elif identifier == 'a':
             if window.filehandler.archive_type is None:
                 raise OpenWithException(
@@ -133,9 +143,6 @@ class OpenWithCommand(object):
                 return window.filehandler.get_path_to_base()
             else:
                 return os.path.dirname(window.filehandler.get_path_to_base())
-        else:
-            raise OpenWithException(
-                _("Invalid escape sequence: %s") % identifier);
 
 class OpenWithEditor(gtk.Dialog):
     """ The editor for changing and creating external commands. This window
@@ -227,10 +234,6 @@ class OpenWithEditor(gtk.Dialog):
     def _test_command(self, button):
         """ Parses the currently selected command and displays the output in the
         text box next to the button. """
-        if not self._window.filehandler.file_loaded:
-            self._test_field.set_text(_('No file loaded. Preview not available.'))
-            return
-
         model, iter = self._command_tree.get_selection().get_selected()
         if (iter and model.iter_is_valid(iter)):
             command = OpenWithCommand(*model.get(iter, 0, 1))
