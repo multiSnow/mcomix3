@@ -448,7 +448,8 @@ class MainUI(gtk.UIManager):
                    'next_directory',
                    'previous_directory',
                    'keep_transformation',
-                   'enhance_image')
+                   'enhance_image',
+                   'menu_open_with')
 
         unavailable_file = ('next_archive',
                               'previous_archive',
