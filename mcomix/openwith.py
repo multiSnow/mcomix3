@@ -21,9 +21,13 @@ class OpenWithManager(object):
                 for label, command in prefs['openwith commands']]
 
 
-class OpenWithException(Exception):
-    def __init__(self, msg):
-        Exception.__init__(self, msg)
+class OpenWithException(Exception): pass
+
+
+class OpenWithRunException(OpenWithException): pass
+
+
+class OpenWithSyntaxException(OpenWithException): pass
 
 
 class OpenWithCommand(object):
@@ -56,7 +60,7 @@ class OpenWithCommand(object):
         checking without exception and when the first argument
         is an executable, valid file. """
         try:
-            args = self.parse(window)
+            args = self.parse(window, False)
             syntax_passes = True
         except OpenWithException:
             args = []
@@ -69,10 +73,16 @@ class OpenWithCommand(object):
 
         return (syntax_passes and executable)
 
-    def parse(self, window):
+    def parse(self, window, check_restrictions=True):
         """ Parses the command string and replaces special characters
         with their respective variable contents. Returns a list of
-        arguments. """
+        arguments.
+        If check_restrictions is False, no checking will be done
+        if one of the variables isn't valid in the current file context. """
+        if (check_restrictions and window.filehandler.archive_type is None and
+            (u'%a' in self.get_command() or u'%A' in self.get_command())):
+            raise OpenWithException(_("%a and %A can only be used for archives."))
+
         args = self._commandline_to_arguments(self.get_command(), window)
         # Environment variables must be expanded after MComix variables,
         # as win32 will eat %% and replace it with %.
@@ -135,9 +145,6 @@ class OpenWithCommand(object):
             return identifier
 
         elif identifier == 'a':
-            if window.filehandler.archive_type is None:
-                raise OpenWithException(
-                    _("%a and %A can only be used for archives."))
             return window.filehandler.get_base_filename()
         elif identifier == 'f':
             return window.imagehandler.get_page_filename()
@@ -149,9 +156,6 @@ class OpenWithCommand(object):
                 return os.path.basename(
                     os.path.dirname(window.filehandler.get_path_to_base()))
         elif identifier == 'A':
-            if window.filehandler.archive_type is None:
-                raise OpenWithException(
-                    _("%a and %A can only be used for archives."))
             return window.filehandler.get_path_to_base()
         elif identifier == 'D':
             return window.filehandler.get_path_to_base()
@@ -213,8 +217,6 @@ class OpenWithEditor(gtk.Dialog):
             '<b>%"</b> - ' + _('Literal quote') + '\n' +
             '<b>%%</b> - ' + _('Literal % character') + '\n')
         self._info_label.set_alignment(0, 0)
-        self._test_button = gtk.Button(_('_Preview'))
-        self._test_button.connect('clicked', self._test_command)
         self._test_field = gtk.Entry()
         self._test_field.set_property('editable', gtk.FALSE)
         self._test_field.set_text(_('Preview area'))
@@ -265,7 +267,7 @@ class OpenWithEditor(gtk.Dialog):
         if (iter and model.iter_is_valid(iter)):
             model.remove(iter)
 
-    def _test_command(self, button):
+    def test_command(self):
         """ Parses the currently selected command and displays the output in the
         text box next to the button. """
         model, iter = self._command_tree.get_selection().get_selected()
@@ -284,8 +286,13 @@ class OpenWithEditor(gtk.Dialog):
 
     def _item_selected(self, selection):
         """ Enable or disable buttons that depend on an item being selected. """
-        for button in (self._remove_button, self._test_button):
+        for button in (self._remove_button, ):
             button.set_sensitive(selection.count_selected_rows() > 0)
+
+        if selection.count_selected_rows() > 0:
+            self.test_command()
+        else:
+            self._test_field.set_text(_('Preview area'))
 
     def _layout(self):
         """ Create and lay out UI components. """
@@ -295,7 +302,6 @@ class OpenWithEditor(gtk.Dialog):
         buttonbox = gtk.VBox()
         buttonbox.pack_start(self._add_button, False)
         buttonbox.pack_start(self._remove_button, False)
-        buttonbox.pack_start(self._test_button, False)
         buttonbox.pack_end(self._info_label, padding=6)
 
         treebox = gtk.VBox()
@@ -340,6 +346,7 @@ class OpenWithEditor(gtk.Dialog):
             # Only re-validate if command column is changed
             if column == 1:
                 self.validate()
+                self.test_command()
         gobject.idle_add(delayed_set_value)
 
 
