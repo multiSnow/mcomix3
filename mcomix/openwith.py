@@ -55,23 +55,25 @@ class OpenWithCommand(object):
                 {'cmdlabel': self.get_label(), 'exception': unicode(e)}
             window.osd.show(text)
 
-    def validate(self, window):
-        """ Returns True only if the command passes syntactic
-        checking without exception and when the first argument
-        is an executable, valid file. """
-        try:
-            args = self.parse(window, False)
-            syntax_passes = True
-        except OpenWithException:
-            args = []
-            syntax_passes = False
+    def is_executable(self):
+        """ Check if a name is executable. This name can be either
+        a relative path, when the executable is in PATH, or an
+        absolute path. """
+        args = self.parse(None)
+        if len(args) == 0:
+            return False
 
-        if len(args) > 0:
-            executable = self._is_executable(args[0])
-        else:
-            executable = False
+        arg = args[0]
+        if os.path.isfile(arg) and os.access(arg, os.R_OK|os.X_OK):
+            return True
 
-        return (syntax_passes and executable)
+        for path in os.environ["PATH"].split(os.pathsep):
+            path = path.strip('"')
+            exe = os.path.join(path, arg)
+            if os.path.isfile(exe) and os.access(exe, os.R_OK|os.X_OK):
+                return True
+
+        return False
 
     def parse(self, window, check_restrictions=True):
         """ Parses the command string and replaces special characters
@@ -79,10 +81,10 @@ class OpenWithCommand(object):
         arguments.
         If check_restrictions is False, no checking will be done
         if one of the variables isn't valid in the current file context. """
-        if (check_restrictions and window.filehandler.archive_type is None and
+        if (check_restrictions and window and window.filehandler.archive_type is None and
             (u'%a' in self.get_command() or u'%A' in self.get_command())):
             raise OpenWithException(_("%a and %A can only be used for archives."))
-        if (check_restrictions and window.filehandler.archive_type is not None and
+        if (check_restrictions and window and window.filehandler.archive_type is not None and
             (u'%o' in self.get_command() or u'%O' in self.get_command())):
             raise OpenWithException(_("%o and %O can only be used outside of archives."))
 
@@ -144,7 +146,7 @@ class OpenWithCommand(object):
             return os.path.sep
 
         # If no file is loaded, all following calls make no sense.
-        if not window.filehandler.file_loaded:
+        if not window or not window.filehandler.file_loaded:
             return identifier
 
         elif identifier == 'a':
@@ -170,20 +172,6 @@ class OpenWithCommand(object):
             else:
                 return os.path.dirname(window.filehandler.get_path_to_base())
 
-    def _is_executable(self, arg):
-        """ Check if a name is executable. This name can be either
-        a relative path, when the executable is in PATH, or an
-        absolute path. """
-        if os.path.isfile(arg) and os.access(arg, os.R_OK|os.X_OK):
-            return True
-
-        for path in os.environ["PATH"].split(os.pathsep):
-            path = path.strip('"')
-            exe = os.path.join(path, arg)
-            if os.path.isfile(exe) and os.access(exe, os.R_OK|os.X_OK):
-                return True
-
-        return False
 
 
 class OpenWithEditor(gtk.Dialog):
@@ -223,6 +211,7 @@ class OpenWithEditor(gtk.Dialog):
         self._test_field = gtk.Entry()
         self._test_field.set_property('editable', gtk.FALSE)
         self._test_field.set_text(_('Preview area'))
+        self._exec_label = gtk.Label()
         self._save_button = self.add_button(gtk.STOCK_SAVE, gtk.RESPONSE_ACCEPT)
         self.set_default_response(gtk.RESPONSE_ACCEPT)
 
@@ -275,6 +264,12 @@ class OpenWithEditor(gtk.Dialog):
             try:
                 args = map(quote_if_necessary, command.parse(self._window))
                 self._test_field.set_text(" ".join(args))
+
+                if not command.is_executable():
+                    self._exec_label.set_text(
+                        _('"%s" does not appear to have a valid executable.') % command.get_label())
+                else:
+                    self._exec_label.set_text('')
             except OpenWithException, e:
                 self._test_field.set_text(unicode(e))
 
@@ -303,7 +298,8 @@ class OpenWithEditor(gtk.Dialog):
         scroll_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         scroll_window.add(self._command_tree)
         treebox.pack_start(scroll_window, padding=4)
-        treebox.pack_end(self._test_field, False)
+        treebox.pack_start(self._test_field, False)
+        treebox.pack_start(self._exec_label, False, padding=4)
 
         upperbox.pack_start(treebox, padding=4)
         upperbox.pack_end(buttonbox, False, padding=4)
