@@ -239,14 +239,6 @@ class OpenWithEditor(gtk.Dialog):
         commands = self.get_commands()
         self._openwith.set_commands(commands)
 
-    def validate(self):
-        """ Validates all commands and disables the save button
-        if one of them is detected as invalid. """
-        commands = self.get_commands()
-        valid = all([cmd.validate(self._window) for cmd in commands])
-        self._save_button.set_sensitive(valid)
-        return valid
-
     def get_commands(self):
         """ Retrieves a list of OpenWithCommand instances from
         the list model. """
@@ -262,7 +254,6 @@ class OpenWithEditor(gtk.Dialog):
     def _add_command(self, button):
         """ Add a new empty label-command line to the list. """
         self._command_tree.get_model().append((_('Command label'), _('Command')))
-        self.validate()
 
     def _remove_command(self, button):
         """ Removes the currently selected command from the list. """
@@ -336,8 +327,6 @@ class OpenWithEditor(gtk.Dialog):
         self._command_tree.set_headers_visible(True)
         self._command_tree.set_reorderable(True)
 
-        self.validate()
-
     def _value_changed(self, renderer, path, new_text, column):
         """ Called when the user edits a field in the table. """
         model = self._command_tree.get_model()
@@ -348,7 +337,6 @@ class OpenWithEditor(gtk.Dialog):
             model.set_value(iter, column, new_text)
             # Only re-validate if command column is changed
             if column == 1:
-                self.validate()
                 self.test_command()
         gobject.idle_add(delayed_set_value)
 
