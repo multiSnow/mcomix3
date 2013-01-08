@@ -44,13 +44,13 @@ class OpenWithMenu(gtk.Menu):
         for command in reversed(commandlist):
             menuitem = gtk.MenuItem(command.get_label())
             menuitem.connect('activate', self._commandmenu_clicked,
-                    command.get_command())
+                    command.get_command(), command.get_label())
             menuitem.show()
             self.prepend(menuitem)
 
-    def _commandmenu_clicked(self, menuitem, cmd):
+    def _commandmenu_clicked(self, menuitem, cmd, label):
         """ Execute the command associated with the clicked menu. """
-        command = openwith.OpenWithCommand(None, cmd)
+        command = openwith.OpenWithCommand(label, cmd)
         command.execute(self._window)
 
     def _edit_commands(self, *args):
