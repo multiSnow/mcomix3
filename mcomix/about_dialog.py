@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """about_dialog.py - About dialog."""
 
+import webbrowser
 import gtk
 import pkg_resources
 
@@ -16,8 +17,8 @@ class _AboutDialog(gtk.AboutDialog):
         self.set_name(constants.APPNAME)
         self.set_program_name(constants.APPNAME)
         self.set_version(constants.VERSION)
-        self.set_website('http://mcomix.sourceforge.net')
-        self.set_copyright('Copyright © 2005-2012')
+        self.set_website('https://sourceforge.net/p/mcomix/wiki/')
+        self.set_copyright('Copyright © 2005-2013')
 
         icon_data = pkg_resources.resource_string('mcomix.images', 'mcomix.png')
         pixbuf = image_tools.load_pixbuf_data(icon_data)
@@ -47,5 +48,10 @@ class _AboutDialog(gtk.AboutDialog):
         self.set_artists(artists)
 
         self.show_all()
+
+def open_url(dialog, url, *args):
+    webbrowser.open(url)
+
+gtk.about_dialog_set_url_hook(open_url, None)
 
 # vim: expandtab:sw=4:ts=4
