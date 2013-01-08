@@ -82,6 +82,9 @@ class OpenWithCommand(object):
         if (check_restrictions and window.filehandler.archive_type is None and
             (u'%a' in self.get_command() or u'%A' in self.get_command())):
             raise OpenWithException(_("%a and %A can only be used for archives."))
+        if (check_restrictions and window.filehandler.archive_type is not None and
+            (u'%o' in self.get_command() or u'%O' in self.get_command())):
+            raise OpenWithException(_("%o and %O can only be used outside of archives."))
 
         args = self._commandline_to_arguments(self.get_command(), window)
         # Environment variables must be expanded after MComix variables,
@@ -134,7 +137,7 @@ class OpenWithCommand(object):
         or archive path. """
         # Check for valid identifiers beforehand,
         # as this can be done even when no file is opened in filehandler.
-        if identifier not in ('/', 'a', 'f', 'w', 'A', 'D', 'F', 'W'):
+        if identifier not in ('/', 'a', 'f', 'w', 'o', 'A', 'D', 'F', 'W', 'O'):
             raise OpenWithException(
                 _("Invalid escape sequence: %s") % identifier);
         if identifier == '/':
@@ -148,7 +151,7 @@ class OpenWithCommand(object):
             return window.filehandler.get_base_filename()
         elif identifier == 'f':
             return window.imagehandler.get_page_filename()
-        elif identifier == 'w':
+        elif identifier == 'w' or identifier == 'o':
             if window.filehandler.archive_type is None:
                 return os.path.basename(
                     window.filehandler.get_path_to_base())
@@ -158,10 +161,10 @@ class OpenWithCommand(object):
         elif identifier == 'A':
             return window.filehandler.get_path_to_base()
         elif identifier == 'D':
-            return window.filehandler.get_path_to_base()
+            return os.path.normpath(os.path.dirname(window.imagehandler.get_path_to_page()))
         elif identifier == 'F':
-            return window.imagehandler.get_path_to_page()
-        elif identifier == 'W':
+            return os.path.normpath(window.imagehandler.get_path_to_page())
+        elif identifier == 'W' or identifier == 'O':
             if window.filehandler.archive_type is None:
                 return window.filehandler.get_path_to_base()
             else:
@@ -209,9 +212,9 @@ class OpenWithEditor(gtk.Dialog):
             '<b>%a</b> - ' + _('Archive name') + '\n' +
             '<b>' + _('Absolute path variables') + '</b>\n' +
             '<b>%F</b> - ' + _('File path') + '\n' +
-            '<b>%W</b> - ' + _('Directory containing archive or file') + '\n' +
+            '<b>%W</b> - ' + _('Directory containing archive or image') + '\n' +
             '<b>%A</b> - ' + _('Archive path') + '\n' +
-            '<b>%D</b> - ' + _('Directory containing files') + '\n' +
+            '<b>%D</b> - ' + _('Directory containing (extracted) files') + '\n' +
             '<b>' + _('Miscellaneous variables') + '</b>\n' +
             '<b>%/</b> - ' + _('Backslash or slash, depending on OS') + '\n' +
             '<b>%"</b> - ' + _('Literal quote') + '\n' +
