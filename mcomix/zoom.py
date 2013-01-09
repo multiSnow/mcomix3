@@ -209,6 +209,11 @@ class FitToSizeMode(FitMode):
         else:
             assert False, 'Invalid fit to size mode specified in preferences'
 
+        # If the image is smaller than the desired size,
+        # only scale up if scale_up = True.
+        if not self.get_scale_up() and side < self.size:
+            return img_size
+
         scale = self.get_scale_percentage(side, self.size)
         return int(img_size[0] * scale), int(img_size[1] * scale)
 
