@@ -68,7 +68,7 @@ def fit_in_rectangle(src, width, height, scale_up=False, rotation=0):
             else:
                 src = src.composite_color_simple(width, height,
                     prefs['scaling quality'], 255, 1024, 0xFFFFFF, 0xFFFFFF)
-        else:
+        elif width != src_width or height != src_height:
             src = src.scale_simple(width, height, prefs['scaling quality'])
 
     if rotation == 90:
