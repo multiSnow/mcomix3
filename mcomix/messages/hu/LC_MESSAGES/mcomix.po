@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Comix 4.0.3\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2013-01-06 17:35+0100\n"
+"POT-Creation-Date: 2013-01-11 20:33+0100\n"
 "PO-Revision-Date: 2009-01-26 19:34+0100\n"
 "Last-Translator: Ernő Drabik <drerno@gmail.com>\n"
 "Language-Team: \n"
@@ -11,23 +11,23 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: mcomix/about_dialog.py:27
+#: mcomix/about_dialog.py:28
 #, python-format
 msgid "%s is an image viewer specifically designed to handle comic books."
 msgstr ""
 
-#: mcomix/about_dialog.py:29
+#: mcomix/about_dialog.py:30
 msgid "It reads ZIP, RAR and tar archives, as well as plain image files."
 msgstr ""
 "A program a szokásos képfájlok mellett megnyitja a ZIP, RAR és tar "
 "arhívumokat is."
 
-#: mcomix/about_dialog.py:33
+#: mcomix/about_dialog.py:34
 #, python-format
 msgid "%s is licensed under the terms of the GNU General Public License."
 msgstr ""
 
-#: mcomix/about_dialog.py:35
+#: mcomix/about_dialog.py:36
 #, python-format
 msgid "A copy of this license can be obtained from %s"
 msgstr ""
@@ -524,102 +524,128 @@ msgstr ""
 msgid "_Edit"
 msgstr "S_zerkesztés"
 
-#: mcomix/openwith.py:50
+#: mcomix/openwith.py:67
+#, python-format
+msgid "'%s' is disabled for archives."
+msgstr ""
+
+#: mcomix/openwith.py:80
 #, python-format
 msgid "Could not run command %(cmdlabel)s: %(exception)s"
 msgstr ""
 
-#: mcomix/openwith.py:116
+#: mcomix/openwith.py:112
+msgid "%a and %A can only be used for archives."
+msgstr ""
+
+#: mcomix/openwith.py:154
 msgid "Incomplete escape sequence. For a literal '%', use '%%'."
 msgstr ""
 
-#: mcomix/openwith.py:129
+#: mcomix/openwith.py:167
 #, python-format
 msgid "Invalid escape sequence: %s"
 msgstr ""
 
-#: mcomix/openwith.py:140 mcomix/openwith.py:154
-msgid "%a and %A can only be used for archives."
-msgstr ""
-
-#: mcomix/openwith.py:188
+#: mcomix/openwith.py:206
 msgid "Edit external commands"
 msgstr ""
 
-#: mcomix/openwith.py:202
-msgid "Variables"
+#: mcomix/openwith.py:224
+msgid "Image-related variables"
 msgstr ""
 
-#: mcomix/openwith.py:203 mcomix/preferences_dialog.py:527
-msgid "File name"
-msgstr ""
-
-#: mcomix/openwith.py:204
-msgid "Directory name"
-msgstr ""
-
-#: mcomix/openwith.py:205
-#, fuzzy
-msgid "Archive name"
-msgstr "Archívum"
-
-#: mcomix/openwith.py:206
-msgid "Absolute path variables"
-msgstr ""
-
-#: mcomix/openwith.py:207
+#: mcomix/openwith.py:225
 msgid "File path"
 msgstr ""
 
-#: mcomix/openwith.py:208
-msgid "Directory containing archive or file"
+#: mcomix/openwith.py:226
+#, fuzzy
+msgid "Image directory path"
+msgstr "Bélyegképek könyvtára"
+
+#: mcomix/openwith.py:227 mcomix/preferences_dialog.py:527
+msgid "File name"
 msgstr ""
 
-#: mcomix/openwith.py:209
+#: mcomix/openwith.py:228
+msgid "Directory name"
+msgstr ""
+
+#: mcomix/openwith.py:229
+#, fuzzy
+msgid "Archive-related variables"
+msgstr "Az arhívumok ZIP állományként lesznek tárolva."
+
+#: mcomix/openwith.py:230
 #, fuzzy
 msgid "Archive path"
 msgstr "Archívum"
 
-#: mcomix/openwith.py:210
-msgid "Directory containing files"
-msgstr ""
+#: mcomix/openwith.py:231 mcomix/openwith.py:233
+#, fuzzy
+msgid "Archive's directory path"
+msgstr "Archívum"
 
-#: mcomix/openwith.py:211
+#: mcomix/openwith.py:232
+#, fuzzy
+msgid "Archive name"
+msgstr "Archívum"
+
+#: mcomix/openwith.py:234
 msgid "Miscellaneous variables"
 msgstr ""
 
-#: mcomix/openwith.py:212
+#: mcomix/openwith.py:235
 msgid "Backslash or slash, depending on OS"
 msgstr ""
 
-#: mcomix/openwith.py:213
+#: mcomix/openwith.py:236
 msgid "Literal quote"
 msgstr ""
 
-#: mcomix/openwith.py:214
+#: mcomix/openwith.py:237
 #, python-format
 msgid "Literal % character"
 msgstr ""
 
-#: mcomix/openwith.py:216
-#, fuzzy
-msgid "_Preview"
-msgstr "Előző _oldal"
-
-#: mcomix/openwith.py:220
+#: mcomix/openwith.py:241 mcomix/openwith.py:340
 #, fuzzy
 msgid "Preview area"
 msgstr "Előző oldal"
 
-#: mcomix/openwith.py:259
+#: mcomix/openwith.py:281
+msgid "This is a separator pseudo-command."
+msgstr ""
+
+#: mcomix/openwith.py:296
+#, python-format
+msgid "\"%s\" does not appear to have a valid executable."
+msgstr ""
+
+#: mcomix/openwith.py:304
 #, fuzzy
 msgid "Command label"
 msgstr "Megjegyzések"
 
-#: mcomix/openwith.py:259
+#: mcomix/openwith.py:367
+msgid "Label"
+msgstr ""
+
+#: mcomix/openwith.py:367
 #, fuzzy
 msgid "Command"
 msgstr "Megjegyzések"
+
+#: mcomix/openwith.py:367
+#, fuzzy
+msgid "Working directory"
+msgstr "Bélyegképek könyvtára"
+
+#: mcomix/openwith.py:382
+#, fuzzy
+msgid "Disabled in archives"
+msgstr "Tar archívumok"
 
 #: mcomix/pageselect.py:17 mcomix/ui.py:98 mcomix/ui.py:99
 msgid "_Go"
@@ -2302,6 +2328,10 @@ msgid "Automatically scan for new books when library is _opened"
 msgstr "A könyveket automatikusan adja hozzá az aktuális gyűjteményhez."
 
 #, fuzzy
+#~ msgid "_Preview"
+#~ msgstr "Előző _oldal"
+
+#, fuzzy
 #~ msgid "Show only one wide image in double page mode"
 #~ msgstr "Csak a széles kép megjelenítése dupla lapos módban."
 
@@ -2583,9 +2613,6 @@ msgstr "A könyveket automatikusan adja hozzá az aktuális gyűjteményhez."
 #~ "és hoz létre ilyen bélyegképeket, de ezek néha még az eredeti fájl "
 #~ "törlése után is megmaradnak helypazarló módon. Ez a párbeszédablak segít "
 #~ "az efféle árva és elavult bélyegképek törlésében."
-
-#~ msgid "Thumbnail directory"
-#~ msgstr "Bélyegképek könyvtára"
 
 #~ msgid "Total number of thumbnails"
 #~ msgstr "Bélyegképek száma"

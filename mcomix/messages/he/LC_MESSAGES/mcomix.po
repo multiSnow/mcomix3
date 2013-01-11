@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mcomix 0.99\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2013-01-06 17:35+0100\n"
+"POT-Creation-Date: 2013-01-11 20:33+0100\n"
 "PO-Revision-Date: 2013-01-07 22:51+0200\n"
 "Last-Translator: Isratine Citizen <genghiskhan@gmx.ca>\n"
 "Language-Team: Hebrew <eliz@gnu.org>\n"
@@ -19,22 +19,22 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: mcomix/about_dialog.py:27
+#: mcomix/about_dialog.py:28
 #, python-format
 msgid "%s is an image viewer specifically designed to handle comic books."
 msgstr "‏%s הינו מציג תמונות שתוכנן במיוחד לטיפול ולניהול של חוברות קומיקס."
 
 # Tranlated plain into normal
-#: mcomix/about_dialog.py:29
+#: mcomix/about_dialog.py:30
 msgid "It reads ZIP, RAR and tar archives, as well as plain image files."
 msgstr "ביכולתו לקרוא ארכיוני ZIP, RAR וגם tar, וכמו כן גם קבצי תמונה רגילים."
 
-#: mcomix/about_dialog.py:33
+#: mcomix/about_dialog.py:34
 #, python-format
 msgid "%s is licensed under the terms of the GNU General Public License."
 msgstr "‏%s רשוי תחת הרישיון הציבורי הכללי של GNU."
 
-#: mcomix/about_dialog.py:35
+#: mcomix/about_dialog.py:36
 #, python-format
 msgid "A copy of this license can be obtained from %s"
 msgstr "ניתן להשיג עותק של רישיון זה בכתובת %s"
@@ -547,96 +547,124 @@ msgstr "אל תשאל אותי שנית."
 msgid "_Edit"
 msgstr "ע_רוך"
 
-#: mcomix/openwith.py:50
+#: mcomix/openwith.py:67
+#, python-format
+msgid "'%s' is disabled for archives."
+msgstr ""
+
+#: mcomix/openwith.py:80
 #, python-format
 msgid "Could not run command %(cmdlabel)s: %(exception)s"
 msgstr ""
 
-#: mcomix/openwith.py:116
+#: mcomix/openwith.py:112
+msgid "%a and %A can only be used for archives."
+msgstr ""
+
+#: mcomix/openwith.py:154
 msgid "Incomplete escape sequence. For a literal '%', use '%%'."
 msgstr ""
 
-#: mcomix/openwith.py:129
+#: mcomix/openwith.py:167
 #, python-format
 msgid "Invalid escape sequence: %s"
 msgstr ""
 
-#: mcomix/openwith.py:140 mcomix/openwith.py:154
-msgid "%a and %A can only be used for archives."
-msgstr ""
-
-#: mcomix/openwith.py:188
+#: mcomix/openwith.py:206
 msgid "Edit external commands"
 msgstr "עריכת פקודות חיצוניות"
 
-#: mcomix/openwith.py:202
-msgid "Variables"
-msgstr "משתנים"
+#: mcomix/openwith.py:224
+#, fuzzy
+msgid "Image-related variables"
+msgstr "משתנים שונים"
 
-#: mcomix/openwith.py:203 mcomix/preferences_dialog.py:527
-msgid "File name"
-msgstr "שם קובץ"
-
-#: mcomix/openwith.py:204
-msgid "Directory name"
-msgstr "שם מדור"
-
-#: mcomix/openwith.py:205
-msgid "Archive name"
-msgstr "שם ארכיון"
-
-#: mcomix/openwith.py:206
-msgid "Absolute path variables"
-msgstr "משתני נתיב מוחלט"
-
-#: mcomix/openwith.py:207
+#: mcomix/openwith.py:225
 msgid "File path"
 msgstr "נתיב קובץ"
 
-#: mcomix/openwith.py:208
-msgid "Directory containing archive or file"
-msgstr "מדור מכיל ארכיון או קובץ"
+#: mcomix/openwith.py:226
+#, fuzzy
+msgid "Image directory path"
+msgstr "מדור הבא"
 
-#: mcomix/openwith.py:209
+#: mcomix/openwith.py:227 mcomix/preferences_dialog.py:527
+msgid "File name"
+msgstr "שם קובץ"
+
+#: mcomix/openwith.py:228
+msgid "Directory name"
+msgstr "שם מדור"
+
+#: mcomix/openwith.py:229
+#, fuzzy
+msgid "Archive-related variables"
+msgstr "משתנים שונים"
+
+#: mcomix/openwith.py:230
 msgid "Archive path"
 msgstr "נתיב ארכיון"
 
-#: mcomix/openwith.py:210
-msgid "Directory containing files"
-msgstr "מדור מכיל קבצים"
+#: mcomix/openwith.py:231 mcomix/openwith.py:233
+#, fuzzy
+msgid "Archive's directory path"
+msgstr "נתיב ארכיון"
 
-#: mcomix/openwith.py:211
+#: mcomix/openwith.py:232
+msgid "Archive name"
+msgstr "שם ארכיון"
+
+#: mcomix/openwith.py:234
 msgid "Miscellaneous variables"
 msgstr "משתנים שונים"
 
-#: mcomix/openwith.py:212
+#: mcomix/openwith.py:235
 msgid "Backslash or slash, depending on OS"
 msgstr "לוכסן אחורי או לוכסן, תלוי במערכת הפעלה"
 
-#: mcomix/openwith.py:213
+#: mcomix/openwith.py:236
 msgid "Literal quote"
 msgstr ""
 
-#: mcomix/openwith.py:214
+#: mcomix/openwith.py:237
 #, python-format
 msgid "Literal % character"
 msgstr ""
 
-#: mcomix/openwith.py:216
-msgid "_Preview"
-msgstr "_תצוגה מקדימה"
-
-#: mcomix/openwith.py:220
+#: mcomix/openwith.py:241 mcomix/openwith.py:340
 msgid "Preview area"
 msgstr "שטח תצוגה מקדימה"
 
-#: mcomix/openwith.py:259
+#: mcomix/openwith.py:281
+msgid "This is a separator pseudo-command."
+msgstr ""
+
+#: mcomix/openwith.py:296
+#, python-format
+msgid "\"%s\" does not appear to have a valid executable."
+msgstr ""
+
+#: mcomix/openwith.py:304
 msgid "Command label"
 msgstr "סיווג פקודה"
 
-#: mcomix/openwith.py:259
+#: mcomix/openwith.py:367
+msgid "Label"
+msgstr ""
+
+#: mcomix/openwith.py:367
 msgid "Command"
 msgstr "פקודה"
+
+#: mcomix/openwith.py:367
+#, fuzzy
+msgid "Working directory"
+msgstr "מדור קודם"
+
+#: mcomix/openwith.py:382
+#, fuzzy
+msgid "Disabled in archives"
+msgstr "ארכיוני Tar"
 
 #: mcomix/pageselect.py:17 mcomix/ui.py:98 mcomix/ui.py:99
 msgid "_Go"
@@ -2359,6 +2387,21 @@ msgstr "הוס_ף"
 #: mcomix/library/watchlist.py:87
 msgid "Automatically scan for new books when library is _opened"
 msgstr "סרוק חוברות אוטומטית כאשר הספרייה הינה _פתוחה"
+
+#~ msgid "Variables"
+#~ msgstr "משתנים"
+
+#~ msgid "Absolute path variables"
+#~ msgstr "משתני נתיב מוחלט"
+
+#~ msgid "Directory containing archive or file"
+#~ msgstr "מדור מכיל ארכיון או קובץ"
+
+#~ msgid "Directory containing files"
+#~ msgstr "מדור מכיל קבצים"
+
+#~ msgid "_Preview"
+#~ msgstr "_תצוגה מקדימה"
 
 #~ msgid "Order files by:"
 #~ msgstr "סידור קבצים לפי:"

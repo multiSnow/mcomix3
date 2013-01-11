@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.98\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2013-01-06 17:35+0100\n"
+"POT-Creation-Date: 2013-01-11 20:33+0100\n"
 "PO-Revision-Date: 2012-04-03 16:41+GMT\n"
 "Last-Translator: Moritz Brunner <oddegamra@gmx.org>\n"
 "Language-Team: \n"
@@ -19,23 +19,23 @@ msgstr ""
 "X-Language: de_DE\n"
 "X-Source-Language: en\n"
 
-#: mcomix/about_dialog.py:27
+#: mcomix/about_dialog.py:28
 #, python-format
 msgid "%s is an image viewer specifically designed to handle comic books."
 msgstr ""
 "%s ist ein Bildbetrachter, der speziell für den Umgang mit Comicbüchern "
 "entworfen wurde."
 
-#: mcomix/about_dialog.py:29
+#: mcomix/about_dialog.py:30
 msgid "It reads ZIP, RAR and tar archives, as well as plain image files."
 msgstr "Es liest ZIP-, RAR- und Tar-Archive ebenso wie einfache Bilddateien."
 
-#: mcomix/about_dialog.py:33
+#: mcomix/about_dialog.py:34
 #, python-format
 msgid "%s is licensed under the terms of the GNU General Public License."
 msgstr "%s ist unter der \"GNU General Public License\" lizensiert."
 
-#: mcomix/about_dialog.py:35
+#: mcomix/about_dialog.py:36
 #, python-format
 msgid "A copy of this license can be obtained from %s"
 msgstr "Eine Kopie dieser Lizenz kann unter %s bezogen werden"
@@ -284,27 +284,33 @@ msgstr "Bücher hinzufügen"
 msgid "Add to this collection:"
 msgstr "Zu Sammlung hinzufügen:"
 
-#: mcomix/file_chooser_main_dialog.py:22 mcomix/file_chooser_simple_dialog.py:23
+#: mcomix/file_chooser_main_dialog.py:22
+#: mcomix/file_chooser_simple_dialog.py:23
 msgid "All images"
 msgstr "Alle Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:24 mcomix/file_chooser_simple_dialog.py:25
+#: mcomix/file_chooser_main_dialog.py:24
+#: mcomix/file_chooser_simple_dialog.py:25
 msgid "JPEG images"
 msgstr "JPEG-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:25 mcomix/file_chooser_simple_dialog.py:26
+#: mcomix/file_chooser_main_dialog.py:25
+#: mcomix/file_chooser_simple_dialog.py:26
 msgid "PNG images"
 msgstr "PNG-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:26 mcomix/file_chooser_simple_dialog.py:27
+#: mcomix/file_chooser_main_dialog.py:26
+#: mcomix/file_chooser_simple_dialog.py:27
 msgid "GIF images"
 msgstr "GIF-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:27 mcomix/file_chooser_simple_dialog.py:28
+#: mcomix/file_chooser_main_dialog.py:27
+#: mcomix/file_chooser_simple_dialog.py:28
 msgid "TIFF images"
 msgstr "TIFF-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:28 mcomix/file_chooser_simple_dialog.py:29
+#: mcomix/file_chooser_main_dialog.py:28
+#: mcomix/file_chooser_simple_dialog.py:29
 msgid "BMP images"
 msgstr "BMP-Bilder"
 
@@ -525,97 +531,125 @@ msgstr "Nicht noch einmal fragen."
 msgid "_Edit"
 msgstr "Bea_rbeiten"
 
-#: mcomix/openwith.py:50
+#: mcomix/openwith.py:67
+#, fuzzy, python-format
+msgid "'%s' is disabled for archives."
+msgstr "%a und %A können nur mit Archiven verwendet werden."
+
+#: mcomix/openwith.py:80
 #, python-format
 msgid "Could not run command %(cmdlabel)s: %(exception)s"
 msgstr "Konnte Programm %(cmdlabel)s nicht ausführen: %(exception)s "
 
-#: mcomix/openwith.py:116
+#: mcomix/openwith.py:112
+msgid "%a and %A can only be used for archives."
+msgstr "%a und %A können nur mit Archiven verwendet werden."
+
+#: mcomix/openwith.py:154
 msgid "Incomplete escape sequence. For a literal '%', use '%%'."
 msgstr ""
 "Unvollständige Escape-Sequenz. Benutze '%%', um das '%'-Zeichen zu erhalten."
 
-#: mcomix/openwith.py:129
+#: mcomix/openwith.py:167
 #, python-format
 msgid "Invalid escape sequence: %s"
 msgstr "Ungültige Escape-Sequenz: %s"
 
-#: mcomix/openwith.py:140 mcomix/openwith.py:154
-msgid "%a and %A can only be used for archives."
-msgstr "%a und %A können nur mit Archiven verwendet werden."
-
-#: mcomix/openwith.py:188
+#: mcomix/openwith.py:206
 msgid "Edit external commands"
 msgstr "Externe Programme bearbeiten"
 
-#: mcomix/openwith.py:202
-msgid "Variables"
-msgstr "Variablen"
+#: mcomix/openwith.py:224
+#, fuzzy
+msgid "Image-related variables"
+msgstr "Verschiedene Variablen"
 
-#: mcomix/openwith.py:203 mcomix/preferences_dialog.py:527
-msgid "File name"
-msgstr "Dateiname"
-
-#: mcomix/openwith.py:204
-msgid "Directory name"
-msgstr "Verzeichnis-Name"
-
-#: mcomix/openwith.py:205
-msgid "Archive name"
-msgstr "Archiv-Name"
-
-#: mcomix/openwith.py:206
-msgid "Absolute path variables"
-msgstr "Absolute Pfadangaben"
-
-#: mcomix/openwith.py:207
+#: mcomix/openwith.py:225
 msgid "File path"
 msgstr "Dateipfad"
 
-#: mcomix/openwith.py:208
-msgid "Directory containing archive or file"
-msgstr "Verzeichnis, das Archiv oder Datei enthält"
+#: mcomix/openwith.py:226
+#, fuzzy
+msgid "Image directory path"
+msgstr "Nächstes Verzeichnis"
 
-#: mcomix/openwith.py:209
+#: mcomix/openwith.py:227 mcomix/preferences_dialog.py:527
+msgid "File name"
+msgstr "Dateiname"
+
+#: mcomix/openwith.py:228
+msgid "Directory name"
+msgstr "Verzeichnis-Name"
+
+#: mcomix/openwith.py:229
+#, fuzzy
+msgid "Archive-related variables"
+msgstr "Verschiedene Variablen"
+
+#: mcomix/openwith.py:230
 msgid "Archive path"
 msgstr "Archivpfad"
 
-#: mcomix/openwith.py:210
-msgid "Directory containing files"
-msgstr "Verzeichnis, das Datei enthält"
+#: mcomix/openwith.py:231 mcomix/openwith.py:233
+#, fuzzy
+msgid "Archive's directory path"
+msgstr "Archivpfad"
 
-#: mcomix/openwith.py:211
+#: mcomix/openwith.py:232
+msgid "Archive name"
+msgstr "Archiv-Name"
+
+#: mcomix/openwith.py:234
 msgid "Miscellaneous variables"
 msgstr "Verschiedene Variablen"
 
-#: mcomix/openwith.py:212
+#: mcomix/openwith.py:235
 msgid "Backslash or slash, depending on OS"
 msgstr "Schrägstrich oder Backslash, abh. vom OS"
 
-#: mcomix/openwith.py:213
+#: mcomix/openwith.py:236
 msgid "Literal quote"
 msgstr "Anführungszeichen"
 
-#: mcomix/openwith.py:214
+#: mcomix/openwith.py:237
 #, python-format
 msgid "Literal % character"
 msgstr "Prozent-Zeichen"
 
-#: mcomix/openwith.py:216
-msgid "_Preview"
-msgstr "_Vorschau"
-
-#: mcomix/openwith.py:220
+#: mcomix/openwith.py:241 mcomix/openwith.py:340
 msgid "Preview area"
 msgstr "Vorschau-Zeile"
 
-#: mcomix/openwith.py:259
+#: mcomix/openwith.py:281
+msgid "This is a separator pseudo-command."
+msgstr ""
+
+#: mcomix/openwith.py:296
+#, python-format
+msgid "\"%s\" does not appear to have a valid executable."
+msgstr ""
+
+#: mcomix/openwith.py:304
 msgid "Command label"
 msgstr "Programm-Bezeichnung"
 
-#: mcomix/openwith.py:259
+#: mcomix/openwith.py:367
+msgid "Label"
+msgstr ""
+
+#: mcomix/openwith.py:367
 msgid "Command"
 msgstr "Befehl"
+
+#: mcomix/openwith.py:367
+#, fuzzy
+msgid "Working directory"
+msgstr "Vorheriges Verzeichnis"
+
+#: mcomix/openwith.py:382
+#, fuzzy
+msgid "Disabled in archives"
+msgstr "Tar-Archive"
 
 #: mcomix/pageselect.py:17 mcomix/ui.py:98 mcomix/ui.py:99
 msgid "_Go"
@@ -1033,9 +1067,9 @@ msgid ""
 "specification. These thumbnails are shared by many other applications, such "
 "as most file managers."
 msgstr ""
-"Vorschaubilder für geöffnete Dateien gemäß der Spezifikation von "
-"freedesktop.org speichern. Diese Vorschaubilder werden mit vielen anderen "
-"Anwendungen, zumeist Dateimanagern, gemeinsam benutzt."
+"Vorschaubilder für geöffnete Dateien gemäß der Spezifikation von freedesktop."
+"org speichern. Diese Vorschaubilder werden mit vielen anderen Anwendungen, "
+"zumeist Dateimanagern, gemeinsam benutzt."
 
 #: mcomix/preferences_dialog.py:380
 msgid "Maximum number of pages to store in the cache:"
@@ -2299,6 +2333,21 @@ msgstr "_Hinzufügen"
 msgid "Automatically scan for new books when library is _opened"
 msgstr "Aut_omatisch nach Büchern suchen, wenn Bibliothek geöffnet wird"
 
+#~ msgid "Variables"
+#~ msgstr "Variablen"
+
+#~ msgid "Absolute path variables"
+#~ msgstr "Absolute Pfadangaben"
+
+#~ msgid "Directory containing archive or file"
+#~ msgstr "Verzeichnis, das Archiv oder Datei enthält"
+
+#~ msgid "Directory containing files"
+#~ msgstr "Verzeichnis, das Datei enthält"
+
+#~ msgid "_Preview"
+#~ msgstr "_Vorschau"
+
 #~ msgid "Order files by:"
 #~ msgstr "Sortiere Dateien nach:"
 
@@ -2672,8 +2721,8 @@ msgstr "Aut_omatisch nach Büchern suchen, wenn Bibliothek geöffnet wird"
 
 #~ msgid ""
 #~ "Crash recovery saves the current configuration information every "
-#~ "specified seconds.  In case of a crash the previous file will be "
-#~ "re-loaded."
+#~ "specified seconds.  In case of a crash the previous file will be re-"
+#~ "loaded."
 #~ msgstr ""
 #~ "Automatische Wiederherstellung speichert die derzeitige Konfiguration in "
 #~ "spezifizierten Abständen. Sollte MComix abstürzen, wird die zuletzt "

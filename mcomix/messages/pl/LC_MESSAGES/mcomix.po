@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2013-01-06 17:35+0100\n"
+"POT-Creation-Date: 2013-01-11 20:33+0100\n"
 "PO-Revision-Date: 2009-02-02 14:19+0100\n"
 "Last-Translator: Dariusz Jakoniuk <pipaceliny@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,23 +16,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
 
-#: mcomix/about_dialog.py:27
+#: mcomix/about_dialog.py:28
 #, python-format
 msgid "%s is an image viewer specifically designed to handle comic books."
 msgstr ""
 
 #
 # File: src/about.py, line: 57
-#: mcomix/about_dialog.py:29
+#: mcomix/about_dialog.py:30
 msgid "It reads ZIP, RAR and tar archives, as well as plain image files."
 msgstr "Comix czyta archiwa ZIP, RAR i tar, jak również zwykłe obrazy."
 
-#: mcomix/about_dialog.py:33
+#: mcomix/about_dialog.py:34
 #, python-format
 msgid "%s is licensed under the terms of the GNU General Public License."
 msgstr ""
 
-#: mcomix/about_dialog.py:35
+#: mcomix/about_dialog.py:36
 #, python-format
 msgid "A copy of this license can be obtained from %s"
 msgstr ""
@@ -634,116 +634,150 @@ msgstr ""
 msgid "_Edit"
 msgstr "_Edycja"
 
-#: mcomix/openwith.py:50
+#: mcomix/openwith.py:67
+#, python-format
+msgid "'%s' is disabled for archives."
+msgstr ""
+
+#: mcomix/openwith.py:80
 #, python-format
 msgid "Could not run command %(cmdlabel)s: %(exception)s"
 msgstr ""
 
-#: mcomix/openwith.py:116
+#: mcomix/openwith.py:112
+msgid "%a and %A can only be used for archives."
+msgstr ""
+
+#: mcomix/openwith.py:154
 msgid "Incomplete escape sequence. For a literal '%', use '%%'."
 msgstr ""
 
-#: mcomix/openwith.py:129
+#: mcomix/openwith.py:167
 #, python-format
 msgid "Invalid escape sequence: %s"
 msgstr ""
 
-#: mcomix/openwith.py:140 mcomix/openwith.py:154
-msgid "%a and %A can only be used for archives."
-msgstr ""
-
-#: mcomix/openwith.py:188
+#: mcomix/openwith.py:206
 msgid "Edit external commands"
 msgstr ""
 
-#: mcomix/openwith.py:202
-msgid "Variables"
+#: mcomix/openwith.py:224
+msgid "Image-related variables"
 msgstr ""
 
-#: mcomix/openwith.py:203 mcomix/preferences_dialog.py:527
+#: mcomix/openwith.py:225
+msgid "File path"
+msgstr ""
+
+#
+# File: src/thumbremover.py, line: 58
+#: mcomix/openwith.py:226
+#, fuzzy
+msgid "Image directory path"
+msgstr "Katalog miniatur"
+
+#: mcomix/openwith.py:227 mcomix/preferences_dialog.py:527
 msgid "File name"
 msgstr ""
 
-#: mcomix/openwith.py:204
+#: mcomix/openwith.py:228
 msgid "Directory name"
 msgstr ""
 
 #
-# File: src/properties.py, line: 135
-#: mcomix/openwith.py:205
+# File: src/edit.py, line: 115
+#: mcomix/openwith.py:229
 #, fuzzy
-msgid "Archive name"
-msgstr "Archiwum"
-
-#: mcomix/openwith.py:206
-msgid "Absolute path variables"
-msgstr ""
-
-#: mcomix/openwith.py:207
-msgid "File path"
-msgstr ""
-
-#: mcomix/openwith.py:208
-msgid "Directory containing archive or file"
-msgstr ""
+msgid "Archive-related variables"
+msgstr "Archiwa są przechowywane jako pliki zip."
 
 #
 # File: src/properties.py, line: 135
-#: mcomix/openwith.py:209
+#: mcomix/openwith.py:230
 #, fuzzy
 msgid "Archive path"
 msgstr "Archiwum"
 
-#: mcomix/openwith.py:210
-msgid "Directory containing files"
-msgstr ""
+#
+# File: src/properties.py, line: 135
+#: mcomix/openwith.py:231 mcomix/openwith.py:233
+#, fuzzy
+msgid "Archive's directory path"
+msgstr "Archiwum"
 
-#: mcomix/openwith.py:211
+#
+# File: src/properties.py, line: 135
+#: mcomix/openwith.py:232
+#, fuzzy
+msgid "Archive name"
+msgstr "Archiwum"
+
+#: mcomix/openwith.py:234
 msgid "Miscellaneous variables"
 msgstr ""
 
-#: mcomix/openwith.py:212
+#: mcomix/openwith.py:235
 msgid "Backslash or slash, depending on OS"
 msgstr ""
 
-#: mcomix/openwith.py:213
+#: mcomix/openwith.py:236
 msgid "Literal quote"
 msgstr ""
 
-#: mcomix/openwith.py:214
+#: mcomix/openwith.py:237
 #, python-format
 msgid "Literal % character"
 msgstr ""
 
 #
-# File: src/ui.py, line: 36
-#: mcomix/openwith.py:216
-#, fuzzy
-msgid "_Preview"
-msgstr "_Poprzednia strona"
-
-#
 # File: src/ui.py, line: 284
-#: mcomix/openwith.py:220
+#: mcomix/openwith.py:241 mcomix/openwith.py:340
 #, fuzzy
 msgid "Preview area"
 msgstr "Poprzednia strona"
 
-#
-# File: src/comment.py, line: 16
-# File: src/preferences.py, line: 288
-#: mcomix/openwith.py:259
-#, fuzzy
-msgid "Command label"
-msgstr "Uwagi"
+#: mcomix/openwith.py:281
+msgid "This is a separator pseudo-command."
+msgstr ""
+
+#: mcomix/openwith.py:296
+#, python-format
+msgid "\"%s\" does not appear to have a valid executable."
+msgstr ""
 
 #
 # File: src/comment.py, line: 16
 # File: src/preferences.py, line: 288
-#: mcomix/openwith.py:259
+#: mcomix/openwith.py:304
+#, fuzzy
+msgid "Command label"
+msgstr "Uwagi"
+
+#: mcomix/openwith.py:367
+msgid "Label"
+msgstr ""
+
+#
+# File: src/comment.py, line: 16
+# File: src/preferences.py, line: 288
+#: mcomix/openwith.py:367
 #, fuzzy
 msgid "Command"
 msgstr "Uwagi"
+
+#
+# File: src/thumbremover.py, line: 58
+#: mcomix/openwith.py:367
+#, fuzzy
+msgid "Working directory"
+msgstr "Katalog miniatur"
+
+#
+# File: src/filechooser.py, line: 86
+#: mcomix/openwith.py:382
+#, fuzzy
+msgid "Disabled in archives"
+msgstr "Archiwa TAR"
 
 #
 # File: src/ui.py, line: 69
@@ -2800,6 +2834,12 @@ msgid "Automatically scan for new books when library is _opened"
 msgstr "Automatycznie dodaj ksiązki do tej kolekcji"
 
 #
+# File: src/ui.py, line: 36
+#, fuzzy
+#~ msgid "_Preview"
+#~ msgstr "_Poprzednia strona"
+
+#
 # File: src/preferences.py, line: 187
 #, fuzzy
 #~ msgid "Show only one wide image in double page mode"
@@ -3218,11 +3258,6 @@ msgstr "Automatycznie dodaj ksiązki do tej kolekcji"
 #~ "tworzy te miniatury, czasem pozostają mimo usunięcia oryginalnych plików "
 #~ "- zajmując niepotrzebnie przestrzeń dysku. Można wyczyścić Twoje podglądy "
 #~ "plików przez usunięcie osieroconych i porzuconych miniatur."
-
-#
-# File: src/thumbremover.py, line: 58
-#~ msgid "Thumbnail directory"
-#~ msgstr "Katalog miniatur"
 
 #
 # File: src/thumbremover.py, line: 65

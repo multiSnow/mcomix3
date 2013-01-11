@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2013-01-06 17:35+0100\n"
+"POT-Creation-Date: 2013-01-11 20:33+0100\n"
 "PO-Revision-Date: 2006-09-27 10:18+0200\n"
 "Last-Translator: Paul Chatzidimitriou <paulmedic555@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,23 +14,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
 
-#: mcomix/about_dialog.py:27
+#: mcomix/about_dialog.py:28
 #, python-format
 msgid "%s is an image viewer specifically designed to handle comic books."
 msgstr ""
 
 #
 # File: src/about.py, line: 57
-#: mcomix/about_dialog.py:29
+#: mcomix/about_dialog.py:30
 msgid "It reads ZIP, RAR and tar archives, as well as plain image files."
 msgstr ""
 
-#: mcomix/about_dialog.py:33
+#: mcomix/about_dialog.py:34
 #, python-format
 msgid "%s is licensed under the terms of the GNU General Public License."
 msgstr ""
 
-#: mcomix/about_dialog.py:35
+#: mcomix/about_dialog.py:36
 #, python-format
 msgid "A copy of this license can be obtained from %s"
 msgstr ""
@@ -614,116 +614,142 @@ msgstr ""
 msgid "_Edit"
 msgstr "_Επεξεργασία"
 
-#: mcomix/openwith.py:50
+#: mcomix/openwith.py:67
+#, python-format
+msgid "'%s' is disabled for archives."
+msgstr ""
+
+#: mcomix/openwith.py:80
 #, python-format
 msgid "Could not run command %(cmdlabel)s: %(exception)s"
 msgstr ""
 
-#: mcomix/openwith.py:116
+#: mcomix/openwith.py:112
+msgid "%a and %A can only be used for archives."
+msgstr ""
+
+#: mcomix/openwith.py:154
 msgid "Incomplete escape sequence. For a literal '%', use '%%'."
 msgstr ""
 
-#: mcomix/openwith.py:129
+#: mcomix/openwith.py:167
 #, python-format
 msgid "Invalid escape sequence: %s"
 msgstr ""
 
-#: mcomix/openwith.py:140 mcomix/openwith.py:154
-msgid "%a and %A can only be used for archives."
-msgstr ""
-
-#: mcomix/openwith.py:188
+#: mcomix/openwith.py:206
 msgid "Edit external commands"
 msgstr ""
 
-#: mcomix/openwith.py:202
-msgid "Variables"
-msgstr ""
-
-#: mcomix/openwith.py:203 mcomix/preferences_dialog.py:527
-msgid "File name"
+#: mcomix/openwith.py:224
+msgid "Image-related variables"
 msgstr ""
 
 #
-#: mcomix/openwith.py:204
-#, fuzzy
-msgid "Directory name"
-msgstr "Κατάλογοι"
-
-#
-# File: src/properties.py, line: 135
-#: mcomix/openwith.py:205
-#, fuzzy
-msgid "Archive name"
-msgstr "Αρχείο"
-
-#: mcomix/openwith.py:206
-msgid "Absolute path variables"
-msgstr ""
-
-#
-#: mcomix/openwith.py:207
+#: mcomix/openwith.py:225
 #, fuzzy
 msgid "File path"
 msgstr "Τύπος αρχείου"
 
-#: mcomix/openwith.py:208
-msgid "Directory containing archive or file"
+#: mcomix/openwith.py:226
+msgid "Image directory path"
+msgstr ""
+
+#: mcomix/openwith.py:227 mcomix/preferences_dialog.py:527
+msgid "File name"
+msgstr ""
+
+#
+#: mcomix/openwith.py:228
+#, fuzzy
+msgid "Directory name"
+msgstr "Κατάλογοι"
+
+#: mcomix/openwith.py:229
+msgid "Archive-related variables"
 msgstr ""
 
 #
 # File: src/properties.py, line: 135
-#: mcomix/openwith.py:209
+#: mcomix/openwith.py:230
 #, fuzzy
 msgid "Archive path"
 msgstr "Αρχείο"
 
-#: mcomix/openwith.py:210
-msgid "Directory containing files"
-msgstr ""
+#
+# File: src/properties.py, line: 135
+#: mcomix/openwith.py:231 mcomix/openwith.py:233
+#, fuzzy
+msgid "Archive's directory path"
+msgstr "Αρχείο"
 
-#: mcomix/openwith.py:211
+#
+# File: src/properties.py, line: 135
+#: mcomix/openwith.py:232
+#, fuzzy
+msgid "Archive name"
+msgstr "Αρχείο"
+
+#: mcomix/openwith.py:234
 msgid "Miscellaneous variables"
 msgstr ""
 
-#: mcomix/openwith.py:212
+#: mcomix/openwith.py:235
 msgid "Backslash or slash, depending on OS"
 msgstr ""
 
-#: mcomix/openwith.py:213
+#: mcomix/openwith.py:236
 msgid "Literal quote"
 msgstr ""
 
-#: mcomix/openwith.py:214
+#: mcomix/openwith.py:237
 #, python-format
 msgid "Literal % character"
 msgstr ""
 
 #
-# File: src/ui.py, line: 36
-#: mcomix/openwith.py:216
-#, fuzzy
-msgid "_Preview"
-msgstr "_Προηγούμενη σελίδα"
-
-#
 # File: src/ui.py, line: 284
-#: mcomix/openwith.py:220
+#: mcomix/openwith.py:241 mcomix/openwith.py:340
 #, fuzzy
 msgid "Preview area"
 msgstr "Προηγούμενη σελίδα"
 
+#: mcomix/openwith.py:281
+msgid "This is a separator pseudo-command."
+msgstr ""
+
+#: mcomix/openwith.py:296
+#, python-format
+msgid "\"%s\" does not appear to have a valid executable."
+msgstr ""
+
 #
-#: mcomix/openwith.py:259
+#: mcomix/openwith.py:304
 #, fuzzy
 msgid "Command label"
 msgstr "Σχολιασμός αρχείου"
 
+#: mcomix/openwith.py:367
+msgid "Label"
+msgstr ""
+
 #
-#: mcomix/openwith.py:259
+#: mcomix/openwith.py:367
 #, fuzzy
 msgid "Command"
 msgstr "Σχόλιο"
+
+#
+#: mcomix/openwith.py:367
+#, fuzzy
+msgid "Working directory"
+msgstr "Κατάλογοι"
+
+#
+#: mcomix/openwith.py:382
+#, fuzzy
+msgid "Disabled in archives"
+msgstr "Όλα τα αρχεία"
 
 #
 # File: src/ui.py, line: 69
@@ -2697,6 +2723,12 @@ msgid "Automatically scan for new books when library is _opened"
 msgstr ""
 
 #
+# File: src/ui.py, line: 36
+#, fuzzy
+#~ msgid "_Preview"
+#~ msgstr "_Προηγούμενη σελίδα"
+
+#
 #, fuzzy
 #~ msgid "Show only one wide image in double page mode"
 #~ msgstr ""
@@ -2886,10 +2918,6 @@ msgstr ""
 #
 #~ msgid "Open selected archive."
 #~ msgstr "Άνοιγμα επιλεγμένου αρχείου."
-
-#
-#~ msgid "All archives"
-#~ msgstr "Όλα τα αρχεία"
 
 #
 #~ msgid "JPEG image"
