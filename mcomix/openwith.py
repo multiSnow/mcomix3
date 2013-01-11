@@ -1,10 +1,14 @@
 """ openwith.py - Logic and storage for Open with... commands. """
 import os
+import re
 import subprocess
 import gtk
 import gobject
 
 from mcomix.preferences import prefs
+
+
+class OpenWithException(Exception): pass
 
 
 class OpenWithManager(object):
@@ -13,30 +17,32 @@ class OpenWithManager(object):
         pass
 
     def set_commands(self, cmds):
-        prefs['openwith commands'] = [(cmd.get_label(), cmd.get_command())
+        prefs['openwith commands'] = [(cmd.get_label(), cmd.get_command(), cmd.get_cwd(), cmd.is_disabled_for_archives())
             for cmd in cmds]
 
     def get_commands(self):
-        return [OpenWithCommand(label, command)
-                for label, command in prefs['openwith commands']]
-
-
-class OpenWithException(Exception): pass
-
-
-class OpenWithRunException(OpenWithException): pass
-
-
-class OpenWithSyntaxException(OpenWithException): pass
+        try:
+            return [OpenWithCommand(label, command, cwd, disabled_for_archives)
+                    for label, command, cwd, disabled_for_archives in prefs['openwith commands']]
+        except ValueError:
+            # Backwards compatibility for early versions with only two parameters
+            return [OpenWithCommand(label, command, u'', False)
+                    for label, command in prefs['openwith commands']]
 
 
 class OpenWithCommand(object):
-    def __init__(self, label, command):
+    def __init__(self, label, command, cwd, disabled_for_archives):
         self.label = label
         if isinstance(command, str):
             self.command = command.decode('utf-8').strip()
         else:
             self.command = command.strip()
+        if isinstance(cwd, str):
+            self.cwd = cwd.decode('utf-8').strip()
+        else:
+            self.cwd = cwd.strip()
+
+        self.disabled_for_archives = bool(disabled_for_archives)
 
     def get_label(self):
         return self.label
@@ -44,12 +50,32 @@ class OpenWithCommand(object):
     def get_command(self):
         return self.command
 
+    def get_cwd(self):
+        return self.cwd
+
+    def is_disabled_for_archives(self):
+        return self.disabled_for_archives
+
+    def is_separator(self):
+        return bool(re.match(r'^-+$', self.get_label().strip()))
+
     def execute(self, window):
         """ Spawns a new process with the given executable
         and arguments. """
+        if (self.is_disabled_for_archives() and
+            window.filehandler.archive_type is not None):
+            window.osd.show(_("'%s' is disabled for archives.") % self.get_label())
+            return
+
         try:
+            current_dir = os.getcwd()
+            if self.get_cwd() and os.path.isdir(self.get_cwd()):
+                os.chdir(self.get_cwd())
             # Redirect process output to null here?
-            subprocess.Popen(self.parse(window))
+            # FIXME: Close process when finished to avoid zombie process
+            process = subprocess.Popen(self.parse(window))
+            del process
+            os.chdir(current_dir)
         except Exception, e:
             text = _("Could not run command %(cmdlabel)s: %(exception)s") % \
                 {'cmdlabel': self.get_label(), 'exception': unicode(e)}
@@ -84,9 +110,6 @@ class OpenWithCommand(object):
         if (check_restrictions and window and window.filehandler.archive_type is None and
             (u'%a' in self.get_command() or u'%A' in self.get_command())):
             raise OpenWithException(_("%a and %A can only be used for archives."))
-        if (check_restrictions and window and window.filehandler.archive_type is not None and
-            (u'%o' in self.get_command() or u'%O' in self.get_command())):
-            raise OpenWithException(_("%o and %O can only be used outside of archives."))
 
         args = self._commandline_to_arguments(self.get_command(), window)
         # Environment variables must be expanded after MComix variables,
@@ -139,7 +162,7 @@ class OpenWithCommand(object):
         or archive path. """
         # Check for valid identifiers beforehand,
         # as this can be done even when no file is opened in filehandler.
-        if identifier not in ('/', 'a', 'f', 'w', 'o', 'A', 'D', 'F', 'W', 'O'):
+        if identifier not in ('/', 'a', 'f', 'c', 'A', 'D', 'F', 'C'):
             raise OpenWithException(
                 _("Invalid escape sequence: %s") % identifier);
         if identifier == '/':
@@ -153,7 +176,7 @@ class OpenWithCommand(object):
             return window.filehandler.get_base_filename()
         elif identifier == 'f':
             return window.imagehandler.get_page_filename()
-        elif identifier == 'w' or identifier == 'o':
+        elif identifier == 'c':
             if window.filehandler.archive_type is None:
                 return os.path.basename(
                     window.filehandler.get_path_to_base())
@@ -166,7 +189,7 @@ class OpenWithCommand(object):
             return os.path.normpath(os.path.dirname(window.imagehandler.get_path_to_page()))
         elif identifier == 'F':
             return os.path.normpath(window.imagehandler.get_path_to_page())
-        elif identifier == 'W' or identifier == 'O':
+        elif identifier == 'C':
             if window.filehandler.archive_type is None:
                 return window.filehandler.get_path_to_base()
             else:
@@ -191,18 +214,23 @@ class OpenWithEditor(gtk.Dialog):
         self._add_button.connect('clicked', self._add_command)
         self._remove_button = gtk.Button(stock=gtk.STOCK_REMOVE)
         self._remove_button.connect('clicked', self._remove_command)
+        self._up_button = gtk.Button(stock=gtk.STOCK_GO_UP)
+        self._up_button.connect('clicked', self._up_command)
+        self._down_button = gtk.Button(stock=gtk.STOCK_GO_DOWN)
+        self._down_button.connect('clicked', self._down_command)
         self._remove_button.set_sensitive(False)
         self._info_label = gtk.Label()
         self._info_label.set_markup(
-            '<b>' + _('Variables') + '</b>\n' +
-            '<b>%f</b> - ' + _('File name') + '\n' +
-            '<b>%w</b> - ' + _('Directory name') + '\n' +
-            '<b>%a</b> - ' + _('Archive name') + '\n' +
-            '<b>' + _('Absolute path variables') + '</b>\n' +
+            '<b>' + _('Image-related variables') + '</b>\n' +
             '<b>%F</b> - ' + _('File path') + '\n' +
-            '<b>%W</b> - ' + _('Directory containing archive or image') + '\n' +
+            '<b>%D</b> - ' + _('Image directory path') + '\n' +
+            '<b>%f</b> - ' + _('File name') + '\n' +
+            '<b>%c</b> - ' + _('Directory name') + '\n' +
+            '<b>' + _('Archive-related variables') + '</b>\n' +
             '<b>%A</b> - ' + _('Archive path') + '\n' +
-            '<b>%D</b> - ' + _('Directory containing (extracted) files') + '\n' +
+            '<b>%C</b> - ' + _("Archive's directory path") + '\n' +
+            '<b>%a</b> - ' + _('Archive name') + '\n' +
+            '<b>%c</b> - ' + _("Archive's directory path") + '\n' +
             '<b>' + _('Miscellaneous variables') + '</b>\n' +
             '<b>%/</b> - ' + _('Backslash or slash, depending on OS') + '\n' +
             '<b>%"</b> - ' + _('Literal quote') + '\n' +
@@ -212,6 +240,7 @@ class OpenWithEditor(gtk.Dialog):
         self._test_field.set_property('editable', gtk.FALSE)
         self._test_field.set_text(_('Preview area'))
         self._exec_label = gtk.Label()
+        self._exec_label.set_alignment(0, 0)
         self._save_button = self.add_button(gtk.STOCK_SAVE, gtk.RESPONSE_ACCEPT)
         self.set_default_response(gtk.RESPONSE_ACCEPT)
 
@@ -220,7 +249,7 @@ class OpenWithEditor(gtk.Dialog):
 
         self.connect('response', self._response)
 
-        self.resize(600, 300)
+        self.resize(800, 300)
 
     def save(self):
         """ Serializes the tree model into a list of OpenWithCommands
@@ -235,27 +264,24 @@ class OpenWithEditor(gtk.Dialog):
         iter = model.get_iter_first()
         commands = []
         while iter:
-            label, command = model.get(iter, 0, 1)
-            commands.append(OpenWithCommand(label, command))
+            label, command, cwd, disabled_for_archives = model.get(iter, 0, 1, 2, 3)
+            commands.append(OpenWithCommand(label, command, cwd, disabled_for_archives))
             iter = model.iter_next(iter)
         return commands
-
-    def _add_command(self, button):
-        """ Add a new empty label-command line to the list. """
-        self._command_tree.get_model().append((_('Command label'), _('Command')))
-
-    def _remove_command(self, button):
-        """ Removes the currently selected command from the list. """
-        model, iter = self._command_tree.get_selection().get_selected()
-        if (iter and model.iter_is_valid(iter)):
-            model.remove(iter)
 
     def test_command(self):
         """ Parses the currently selected command and displays the output in the
         text box next to the button. """
         model, iter = self._command_tree.get_selection().get_selected()
         if (iter and model.iter_is_valid(iter)):
-            command = OpenWithCommand(*model.get(iter, 0, 1))
+            command = OpenWithCommand(*model.get(iter, 0, 1, 2, 3))
+
+            # Test only if the selected field is a valid command
+            if command.is_separator():
+                self._test_field.set_text(_('This is a separator pseudo-command.'))
+                self._exec_label.set_text('')
+                return
+
             def quote_if_necessary(arg):
                 if u" " in arg:
                     return u'"' + arg.replace(u'"', u'\\"') + u'"'
@@ -272,10 +298,40 @@ class OpenWithEditor(gtk.Dialog):
                     self._exec_label.set_text('')
             except OpenWithException, e:
                 self._test_field.set_text(unicode(e))
+    
+    def _add_command(self, button):
+        """ Add a new empty label-command line to the list. """
+        self._command_tree.get_model().append((_('Command label'), '', '', gtk.FALSE))
+
+    def _remove_command(self, button):
+        """ Removes the currently selected command from the list. """
+        model, iter = self._command_tree.get_selection().get_selected()
+        if (iter and model.iter_is_valid(iter)):
+            model.remove(iter)
+
+    def _up_command(self, button):
+        """ Moves the selected command up by one. """
+        model, iter = self._command_tree.get_selection().get_selected()
+        if (iter and model.iter_is_valid(iter)):
+            path = model.get_path(iter)[0]
+
+            if path >= 1:
+                up = model.get_iter(path - 1)
+                model.swap(iter, up)
+
+    def _down_command(self, button):
+        """ Moves the selected command down by one. """
+        model, iter = self._command_tree.get_selection().get_selected()
+        if (iter and model.iter_is_valid(iter)):
+            path = model.get_path(iter)[0]
+
+            if path < len(self.get_commands()) - 1:
+                down = model.get_iter(path + 1)
+                model.swap(iter, down)
 
     def _item_selected(self, selection):
         """ Enable or disable buttons that depend on an item being selected. """
-        for button in (self._remove_button, ):
+        for button in (self._remove_button, self._up_button, self._down_button):
             button.set_sensitive(selection.count_selected_rows() > 0)
 
         if selection.count_selected_rows() > 0:
@@ -291,6 +347,8 @@ class OpenWithEditor(gtk.Dialog):
         buttonbox = gtk.VBox()
         buttonbox.pack_start(self._add_button, False)
         buttonbox.pack_start(self._remove_button, False)
+        buttonbox.pack_start(self._up_button, False)
+        buttonbox.pack_start(self._down_button, False)
         buttonbox.pack_end(self._info_label, padding=6)
 
         treebox = gtk.VBox()
@@ -306,24 +364,34 @@ class OpenWithEditor(gtk.Dialog):
 
     def _setup_table(self):
         """ Initializes the TreeView with settings and data. """
-        for i, label in enumerate(('Label', 'Command')):
+        for i, label in enumerate((_('Label'), _('Command'), _('Working directory'))):
             renderer = gtk.CellRendererText()
             renderer.set_property('editable', gtk.TRUE)
-            renderer.connect('edited', self._value_changed, i)
+            renderer.connect('edited', self._text_changed, i)
             column = gtk.TreeViewColumn(label, renderer)
             column.set_property('resizable', gtk.TRUE)
             column.set_attributes(renderer, text=i)
+            if (i == 1):
+                column.set_expand(True)  # Command column should scale automatically
             self._command_tree.append_column(column)
 
-        model = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING)
+        # The 'Disabled in archives' field is shown as toggle button
+        renderer = gtk.CellRendererToggle()
+        renderer.set_property('activatable', gtk.TRUE)
+        renderer.connect('toggled', self._value_changed, len(self._command_tree.get_columns()))
+        column = gtk.TreeViewColumn(_('Disabled in archives'), renderer)
+        column.set_attributes(renderer, active=len(self._command_tree.get_columns()))
+        self._command_tree.append_column(column)
+
+        model = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING, gobject.TYPE_STRING, gobject.TYPE_BOOLEAN)
         for command in self._openwith.get_commands():
-            model.append((command.get_label(), command.get_command()))
+            model.append((command.get_label(), command.get_command(), command.get_cwd(), command.is_disabled_for_archives()))
         self._command_tree.set_model(model)
 
         self._command_tree.set_headers_visible(True)
         self._command_tree.set_reorderable(True)
 
-    def _value_changed(self, renderer, path, new_text, column):
+    def _text_changed(self, renderer, path, new_text, column):
         """ Called when the user edits a field in the table. """
         model = self._command_tree.get_model()
         iter = model.get_iter(path)
@@ -336,6 +404,17 @@ class OpenWithEditor(gtk.Dialog):
                 self.test_command()
         gobject.idle_add(delayed_set_value)
 
+    def _value_changed(self, renderer, path, column):
+        """ Called when a toggle field is changed """
+        model = self._command_tree.get_model()
+        iter = model.get_iter(path)
+        # Editing the model in the cellrenderercallback stops the editing
+        # operation, causing GTK warnings. Delay until callback is finished.
+        def delayed_set_value():
+            value = not renderer.get_active()
+            model.set_value(iter, column, value)
+        
+        gobject.idle_add(delayed_set_value)
 
     def _response(self, dialog, response):
         if response == gtk.RESPONSE_ACCEPT:

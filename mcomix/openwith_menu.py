@@ -42,15 +42,20 @@ class OpenWithMenu(gtk.Menu):
             self.prepend(separator)
 
         for command in reversed(commandlist):
-            menuitem = gtk.MenuItem(command.get_label())
-            menuitem.connect('activate', self._commandmenu_clicked,
-                    command.get_command(), command.get_label())
+            if not command.is_separator():
+                menuitem = gtk.MenuItem(command.get_label())
+                menuitem.connect('activate', self._commandmenu_clicked,
+                        command.get_command(), command.get_label(),
+                        command.get_cwd(), command.is_disabled_for_archives())
+            else:
+                menuitem = gtk.SeparatorMenuItem()
+
             menuitem.show()
             self.prepend(menuitem)
 
-    def _commandmenu_clicked(self, menuitem, cmd, label):
+    def _commandmenu_clicked(self, menuitem, cmd, label, cwd, disabled_in_archives):
         """ Execute the command associated with the clicked menu. """
-        command = openwith.OpenWithCommand(label, cmd)
+        command = openwith.OpenWithCommand(label, cmd, cwd, disabled_in_archives)
         command.execute(self._window)
 
     def _edit_commands(self, *args):
