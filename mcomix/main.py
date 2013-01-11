@@ -932,7 +932,7 @@ class MainWindow(gtk.Window):
                 if self._vscroll.get_visible():
                     width -= self._vscroll.size_request()[0]
 
-                elif self._hscroll.get_visible():
+                if self._hscroll.get_visible():
                     height -= self._hscroll.size_request()[1]
 
         return width, height
