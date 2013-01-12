@@ -107,17 +107,14 @@ class OpenWithCommand(object):
         arguments.
         If check_restrictions is False, no checking will be done
         if one of the variables isn't valid in the current file context. """
-        if (check_restrictions and window and window.filehandler.archive_type is None and
-            (u'%a' in self.get_command() or u'%A' in self.get_command())):
-            raise OpenWithException(_("%a and %A can only be used for archives."))
-
-        args = self._commandline_to_arguments(self.get_command(), window)
+        args = self._commandline_to_arguments(self.get_command(), window,
+            not(check_restrictions and window and window.filehandler.archive_type is None))
         # Environment variables must be expanded after MComix variables,
         # as win32 will eat %% and replace it with %.
         args = [os.path.expandvars(arg) for arg in args]
         return args
 
-    def _commandline_to_arguments(self, line, window):
+    def _commandline_to_arguments(self, line, window, archive_context):
         """ Parse a command line string into a list containing
         the parts to pass to Popen. The following two functions have
         been contributed by Ark <aaku@users.sf.net>. """
@@ -130,7 +127,7 @@ class OpenWithCommand(object):
                 if c == u'%' or c == u'"':
                     buf += c
                 else:
-                    buf += self._expand_variable(c, window)
+                    buf += self._expand_variable(c, window, archive_context)
                 escape = False
             elif c == u' ':
                 if quote:
@@ -149,51 +146,53 @@ class OpenWithCommand(object):
                 escape = True
             else:
                 buf += c
+
         if escape:
             raise OpenWithException(
                 _("Incomplete escape sequence. "
                   "For a literal '%', use '%%'."))
+        if quote:
+            raise OpenWithException(
+                _("Incomplete quote sequence. "
+                  "For a literal '\"', use '%\"'."))
+
         if len(buf) != 0:
             result.append(buf)
         return result
 
-    def _expand_variable(self, identifier, window):
+    def _expand_variable(self, identifier, window, archive_context):
         """ Replaces variables with their respective file
         or archive path. """
-        # Check for valid identifiers beforehand,
-        # as this can be done even when no file is opened in filehandler.
-        if identifier not in ('/', 'a', 'f', 'c', 'A', 'D', 'F', 'C'):
-            raise OpenWithException(
-                _("Invalid escape sequence: %s") % identifier);
-        if identifier == '/':
-            return os.path.sep
 
-        # If no file is loaded, all following calls make no sense.
+        # Skip if no file is loaded
         if not window or not window.filehandler.file_loaded:
             return identifier
 
-        elif identifier == 'a':
+        if not archive_context and identifier in (u'a', u'c', u'A', u'C'):
+            raise OpenWithException(
+                _("Archive-related variables can only be used for archives."))
+
+        if identifier == u'/':
+            return os.path.sep
+        elif identifier == u'a':
             return window.filehandler.get_base_filename()
-        elif identifier == 'f':
+        elif identifier == u'd':
+            return os.path.basename(os.path.dirname(window.imagehandler.get_path_to_page()))
+        elif identifier == u'f':
             return window.imagehandler.get_page_filename()
-        elif identifier == 'c':
-            if window.filehandler.archive_type is None:
-                return os.path.basename(
-                    window.filehandler.get_path_to_base())
-            else:
-                return os.path.basename(
-                    os.path.dirname(window.filehandler.get_path_to_base()))
-        elif identifier == 'A':
+        elif identifier == u'c':
+            return os.path.basename(os.path.dirname(window.filehandler.get_path_to_base()))
+        elif identifier == u'A':
             return window.filehandler.get_path_to_base()
-        elif identifier == 'D':
+        elif identifier == u'D':
             return os.path.normpath(os.path.dirname(window.imagehandler.get_path_to_page()))
-        elif identifier == 'F':
+        elif identifier == u'F':
             return os.path.normpath(window.imagehandler.get_path_to_page())
-        elif identifier == 'C':
-            if window.filehandler.archive_type is None:
-                return window.filehandler.get_path_to_base()
-            else:
-                return os.path.dirname(window.filehandler.get_path_to_base())
+        elif identifier == u'C':
+            return os.path.dirname(window.filehandler.get_path_to_base())
+        else:
+            raise OpenWithException(
+                _("Invalid escape sequence: %%%s") % identifier);
 
 
 
@@ -225,12 +224,12 @@ class OpenWithEditor(gtk.Dialog):
             '<b>%F</b> - ' + _('File path') + '\n' +
             '<b>%D</b> - ' + _('Image directory path') + '\n' +
             '<b>%f</b> - ' + _('File name') + '\n' +
-            '<b>%c</b> - ' + _('Directory name') + '\n' +
+            '<b>%d</b> - ' + _('Image directory name') + '\n' +
             '<b>' + _('Archive-related variables') + '</b>\n' +
             '<b>%A</b> - ' + _('Archive path') + '\n' +
             '<b>%C</b> - ' + _("Archive's directory path") + '\n' +
             '<b>%a</b> - ' + _('Archive name') + '\n' +
-            '<b>%c</b> - ' + _("Archive's directory path") + '\n' +
+            '<b>%c</b> - ' + _("Archive's directory name") + '\n' +
             '<b>' + _('Miscellaneous variables') + '</b>\n' +
             '<b>%/</b> - ' + _('Backslash or slash, depending on OS') + '\n' +
             '<b>%"</b> - ' + _('Literal quote') + '\n' +
@@ -283,10 +282,14 @@ class OpenWithEditor(gtk.Dialog):
                 return
 
             def quote_if_necessary(arg):
-                if u" " in arg:
+                if arg == u"":
+                    return u'""'
+                # TODO How to do that for Windows?
+                if u'\\' in arg:
+                    arg = arg.replace(u'\\', u'\\\\')
+                if u" " in arg or u'"' in arg:
                     return u'"' + arg.replace(u'"', u'\\"') + u'"'
-                else:
-                    return arg
+                return arg
             try:
                 args = map(quote_if_necessary, command.parse(self._window))
                 self._test_field.set_text(" ".join(args))
@@ -298,7 +301,7 @@ class OpenWithEditor(gtk.Dialog):
                     self._exec_label.set_text('')
             except OpenWithException, e:
                 self._test_field.set_text(unicode(e))
-    
+
     def _add_command(self, button):
         """ Add a new empty label-command line to the list. """
         self._command_tree.get_model().append((_('Command label'), '', '', gtk.FALSE))
@@ -413,7 +416,7 @@ class OpenWithEditor(gtk.Dialog):
         def delayed_set_value():
             value = not renderer.get_active()
             model.set_value(iter, column, value)
-        
+
         gobject.idle_add(delayed_set_value)
 
     def _response(self, dialog, response):
