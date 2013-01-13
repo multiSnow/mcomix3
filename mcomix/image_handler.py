@@ -11,6 +11,7 @@ from mcomix import image_tools
 from mcomix import thumbnail_tools
 from mcomix import constants
 from mcomix import callback
+from mcomix import log
 
 class ImageHandler:
 
@@ -50,6 +51,8 @@ class ImageHandler:
         self._current_image_index = None
         #: Pixbuf map from page > Pixbuf
         self._raw_pixbufs = {}
+        #: How many pages to keep in cache
+        self._cache_pages = prefs['max pages to cache']
 
         #: Advance only one page instead of two in double page mode
         self.force_single_step = False
@@ -68,8 +71,10 @@ class ImageHandler:
             try:
                 pixbuf = image_tools.load_pixbuf(self._image_files[index])
                 self._raw_pixbufs[index] = pixbuf
-            except Exception:
+                tools.garbage_collect()
+            except Exception, e:
                 self._raw_pixbufs[index] = constants.MISSING_IMAGE_ICON
+                log.debug('Could not load pixbuf for page %d: %r', index, e)
         else:
             try:
                 pixbuf = self._raw_pixbufs[index]
@@ -127,27 +132,27 @@ class ImageHandler:
         last_wanted = first_wanted + 1
         last_wanted += 1
 
-        if prefs['max pages to cache'] != 0:
+        if self._cache_pages != 0:
             first_wanted -= self._get_backward_step_length()
             last_wanted += self._get_forward_step_length()
 
             # if the max pages to cache is -1 then cache
             # the entire comic book
-            if prefs['max pages to cache'] == -1 or self.get_number_of_pages() <= prefs['max pages to cache']:
+            if self._cache_pages == -1 or self.get_number_of_pages() <= self._cache_pages:
                 first_wanted = 0
                 last_wanted = self.get_number_of_pages()
 
-            elif self.get_number_of_pages() > prefs['max pages to cache']:
+            elif self.get_number_of_pages() > self._cache_pages:
 
                 # only cache the max number of pages to cache
-                half_cache = (prefs[ 'max pages to cache' ] / 2) - 1
+                half_cache = (self._cache_pages / 2) - 1
                 first_wanted = max(0, first_wanted - half_cache)
                 last_wanted = min(self.get_number_of_pages() - 1, \
-                                last_wanted + (prefs['max pages to cache'] - (last_wanted - first_wanted)) )
+                                last_wanted + (self._cache_pages - (last_wanted - first_wanted)) )
 
-                if (last_wanted - first_wanted) < prefs['max pages to cache']:
+                if (last_wanted - first_wanted) < self._cache_pages:
                     if last_wanted == self.get_number_of_pages() - 1:
-                        first_wanted -= prefs['max pages to cache'] - (last_wanted - first_wanted)
+                        first_wanted -= self._cache_pages - (last_wanted - first_wanted)
 
         first_wanted = max(0, first_wanted)
         last_wanted = min(self.get_number_of_pages() - 1, last_wanted)
@@ -327,6 +332,7 @@ class ImageHandler:
         self._image_files = []
         self._current_image_index = None
         self._raw_pixbufs.clear()
+        self._cache_pages = prefs['max pages to cache']
 
         tools.garbage_collect()
 
