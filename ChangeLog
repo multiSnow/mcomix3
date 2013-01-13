@@ -41,6 +41,9 @@ MComix 1.00
       numbers in file names based on their natural order (e.g. 1, 2, .., 10),
       while literal order will use standard C sorting (e.g. 1, 23, 4).
 
+    - "Reset zoom" is now bound to CTRL-0 and KeyPad0 by default. Previously,
+      CTRL-0 and CTRL-KeyPad0 were used.
+
     - Updated traditional Chinese translation (by Wayne Su).
 
     - Updated Hebrew translation (by Isratine Citizen).

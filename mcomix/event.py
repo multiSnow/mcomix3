@@ -116,7 +116,7 @@ class EventHandler:
             ['minus'],
             self._window.actiongroup.get_action('zoom_out').activate)
         manager.register('zoom original',
-            ['<Control>0', '<Control>KP_0'],
+            ['<Control>0', 'KP_0'],
             self._window.actiongroup.get_action('zoom_original').activate)
 
         # Arrow keys scroll the image
