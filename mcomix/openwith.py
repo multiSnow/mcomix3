@@ -1,4 +1,5 @@
 """ openwith.py - Logic and storage for Open with... commands. """
+import sys
 import os
 import re
 import subprocess
@@ -155,7 +156,6 @@ class OpenWithCommand(object):
                 _("Incomplete quote sequence. "
                   "For a literal '\"', use '%\"'."))
 
-        #if len(buf) != 0:
         if inarg:
             result.append(buf)
         return result
@@ -281,42 +281,8 @@ class OpenWithEditor(gtk.Dialog):
                 self._exec_label.set_text('')
                 return
 
-            def quote_if_necessary(arg):
-                if arg == u"":
-                    return u'""'
-                import sys
-                if sys.platform == 'win32':
-                    # based on http://msdn.microsoft.com/en-us/library/17w5ykft%28v=vs.85%29.aspx
-                    backslash_counter = 0
-                    needs_quoting = False
-                    result = u""
-                    for c in arg:
-                        if c == u'\\':
-                            backslash_counter += 1
-                        else:
-                            if c == u'\"':
-                                result += u'\\' * (2 * backslash_counter + 1)
-                            else:
-                                result += u'\\' * backslash_counter
-                            backslash_counter = 0
-                            result += c
-                        if c == u' ':
-                            needs_quoting = True
-                    result += u'\\' * backslash_counter # flush
-
-                    if needs_quoting:
-                        result = u'"' + result + u'"'
-                    return result
-                else:
-                    # simplified version of
-                    # http://www.gnu.org/software/bash/manual/bashref.html#Double-Quotes
-                    arg = arg.replace(u'\\', u'\\\\')
-                    arg = arg.replace(u'"', u'\\"')
-                    if u" " in arg:
-                        return u'"' + arg + u'"'
-                    return arg
             try:
-                args = map(quote_if_necessary, command.parse(self._window))
+                args = map(self._quote_if_necessary, command.parse(self._window))
                 self._test_field.set_text(" ".join(args))
 
                 if not command.is_executable():
@@ -450,4 +416,38 @@ class OpenWithEditor(gtk.Dialog):
             self.save()
             self.hide_all()
 
+    def _quote_if_necessary(self, arg):
+        """ Quotes a command line argument if necessary. """
+        if arg == u"":
+            return u'""'
+        if sys.platform == 'win32':
+            # based on http://msdn.microsoft.com/en-us/library/17w5ykft%28v=vs.85%29.aspx
+            backslash_counter = 0
+            needs_quoting = False
+            result = u""
+            for c in arg:
+                if c == u'\\':
+                    backslash_counter += 1
+                else:
+                    if c == u'\"':
+                        result += u'\\' * (2 * backslash_counter + 1)
+                    else:
+                        result += u'\\' * backslash_counter
+                    backslash_counter = 0
+                    result += c
+                if c == u' ':
+                    needs_quoting = True
+            result += u'\\' * backslash_counter # flush
+
+            if needs_quoting:
+                result = u'"' + result + u'"'
+            return result
+        else:
+            # simplified version of
+            # http://www.gnu.org/software/bash/manual/bashref.html#Double-Quotes
+            arg = arg.replace(u'\\', u'\\\\')
+            arg = arg.replace(u'"', u'\\"')
+            if u" " in arg:
+                return u'"' + arg + u'"'
+            return arg
 # vim: expandtab:sw=4:ts=4
