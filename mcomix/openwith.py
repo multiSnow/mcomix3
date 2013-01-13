@@ -122,6 +122,7 @@ class OpenWithCommand(object):
         buf = u""
         quote = False
         escape = False
+        inarg = False
         for c in line:
             if escape:
                 if c == u'%' or c == u'"':
@@ -132,20 +133,18 @@ class OpenWithCommand(object):
             elif c == u' ':
                 if quote:
                     buf += c
-                elif len(buf) != 0:
+                elif inarg:
                     result.append(buf)
                     buf = u""
-            elif c == u'"':
-                if quote:
-                    result.append(buf)
-                    buf = u""
-                    quote = False
-                else:
-                    quote = True
-            elif c == u'%':
-                escape = True
+                    inarg = False
             else:
-                buf += c
+                if c == u'"':
+                    quote = not quote
+                elif c == u'%':
+                    escape = True
+                else:
+                    buf += c
+                inarg = True
 
         if escape:
             raise OpenWithException(
@@ -156,7 +155,8 @@ class OpenWithCommand(object):
                 _("Incomplete quote sequence. "
                   "For a literal '\"', use '%\"'."))
 
-        if len(buf) != 0:
+        #if len(buf) != 0:
+        if inarg:
             result.append(buf)
         return result
 
@@ -284,12 +284,37 @@ class OpenWithEditor(gtk.Dialog):
             def quote_if_necessary(arg):
                 if arg == u"":
                     return u'""'
-                # TODO How to do that for Windows?
-                if u'\\' in arg:
+                import sys
+                if sys.platform == 'win32':
+                    # based on http://msdn.microsoft.com/en-us/library/17w5ykft%28v=vs.85%29.aspx
+                    backslash_counter = 0
+                    needs_quoting = False
+                    result = u""
+                    for c in arg:
+                        if c == u'\\':
+                            backslash_counter += 1
+                        else:
+                            if c == u'\"':
+                                result += u'\\' * (2 * backslash_counter + 1)
+                            else:
+                                result += u'\\' * backslash_counter
+                            backslash_counter = 0
+                            result += c
+                        if c == u' ':
+                            needs_quoting = True
+                    result += u'\\' * backslash_counter # flush
+
+                    if needs_quoting:
+                        result = u'"' + result + u'"'
+                    return result
+                else:
+                    # simplified version of
+                    # http://www.gnu.org/software/bash/manual/bashref.html#Double-Quotes
                     arg = arg.replace(u'\\', u'\\\\')
-                if u" " in arg or u'"' in arg:
-                    return u'"' + arg.replace(u'"', u'\\"') + u'"'
-                return arg
+                    arg = arg.replace(u'"', u'\\"')
+                    if u" " in arg:
+                        return u'"' + arg + u'"'
+                    return arg
             try:
                 args = map(quote_if_necessary, command.parse(self._window))
                 self._test_field.set_text(" ".join(args))
