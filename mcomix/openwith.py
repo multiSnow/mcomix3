@@ -71,8 +71,14 @@ class OpenWithCommand(object):
 
         try:
             current_dir = os.getcwd()
-            if self.get_cwd() and os.path.isdir(self.get_cwd()):
-                os.chdir(self.get_cwd())
+            if self.get_cwd() and len(self.get_cwd()) > 0:
+                work_dir = self.parse(window, text=self.get_cwd())[0]
+                if os.path.isdir(work_dir) and os.access(work_dir, os.X_OK):
+                    os.chdir(work_dir)
+                else:
+                    raise OpenWithException(
+                        _('%s is not a valid work directory.') % work_dir)
+
             # Redirect process output to null here?
             # FIXME: Close process when finished to avoid zombie process
             process = subprocess.Popen(self.parse(window))
@@ -82,6 +88,7 @@ class OpenWithCommand(object):
             text = _("Could not run command %(cmdlabel)s: %(exception)s") % \
                 {'cmdlabel': self.get_label(), 'exception': unicode(e)}
             window.osd.show(text)
+            raise
 
     def is_executable(self):
         """ Check if a name is executable. This name can be either
@@ -103,13 +110,16 @@ class OpenWithCommand(object):
 
         return False
 
-    def parse(self, window, check_restrictions=True):
+    def parse(self, window, text='', check_restrictions=True):
         """ Parses the command string and replaces special characters
         with their respective variable contents. Returns a list of
         arguments.
         If check_restrictions is False, no checking will be done
         if one of the variables isn't valid in the current file context. """
-        args = self._commandline_to_arguments(self.get_command(), window,
+        if not text:
+            text = self.get_command()
+
+        args = self._commandline_to_arguments(text, window,
             not(check_restrictions and window and window.filehandler.archive_type is None))
         # Environment variables must be expanded after MComix variables,
         # as win32 will eat %% and replace it with %.
