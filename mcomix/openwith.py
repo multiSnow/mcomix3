@@ -7,6 +7,7 @@ import gtk
 import gobject
 
 from mcomix.preferences import prefs
+from mcomix import message_dialog
 
 
 class OpenWithException(Exception): pass
@@ -206,6 +207,7 @@ class OpenWithEditor(gtk.Dialog):
         self.set_destroy_with_parent(True)
         self._window = window
         self._openwith = openwithmanager
+        self._changed = False
 
         self._command_tree = gtk.TreeView()
         self._command_tree.get_selection().connect('changed', self._item_selected)
@@ -255,6 +257,7 @@ class OpenWithEditor(gtk.Dialog):
         and passes these back to the Manager object for persistance. """
         commands = self.get_commands()
         self._openwith.set_commands(commands)
+        self._changed = False
 
     def get_commands(self):
         """ Retrieves a list of OpenWithCommand instances from
@@ -296,12 +299,14 @@ class OpenWithEditor(gtk.Dialog):
     def _add_command(self, button):
         """ Add a new empty label-command line to the list. """
         self._command_tree.get_model().append((_('Command label'), '', '', gtk.FALSE))
+        self._changed = True
 
     def _remove_command(self, button):
         """ Removes the currently selected command from the list. """
         model, iter = self._command_tree.get_selection().get_selected()
         if (iter and model.iter_is_valid(iter)):
             model.remove(iter)
+            self._changed = True
 
     def _up_command(self, button):
         """ Moves the selected command up by one. """
@@ -312,6 +317,7 @@ class OpenWithEditor(gtk.Dialog):
             if path >= 1:
                 up = model.get_iter(path - 1)
                 model.swap(iter, up)
+            self._changed = True
 
     def _down_command(self, button):
         """ Moves the selected command down by one. """
@@ -322,6 +328,7 @@ class OpenWithEditor(gtk.Dialog):
             if path < len(self.get_commands()) - 1:
                 down = model.get_iter(path + 1)
                 model.swap(iter, down)
+            self._changed = True
 
     def _item_selected(self, selection):
         """ Enable or disable buttons that depend on an item being selected. """
@@ -392,7 +399,9 @@ class OpenWithEditor(gtk.Dialog):
         # Editing the model in the cellrenderercallback stops the editing
         # operation, causing GTK warnings. Delay until callback is finished.
         def delayed_set_value():
+            old_value = model.get_value(iter, column)
             model.set_value(iter, column, new_text)
+            self._changed = old_value != new_text
             # Only re-validate if command column is changed
             if column == 1:
                 self.test_command()
@@ -407,6 +416,7 @@ class OpenWithEditor(gtk.Dialog):
         def delayed_set_value():
             value = not renderer.get_active()
             model.set_value(iter, column, value)
+            self._changed = True
 
         gobject.idle_add(delayed_set_value)
 
@@ -415,6 +425,18 @@ class OpenWithEditor(gtk.Dialog):
             # The Save button is only enabled if all commands are valid
             self.save()
             self.hide_all()
+        else:
+            if self._changed:
+                confirm_diag = message_dialog.MessageDialog(self, gtk.DIALOG_MODAL,
+                    gtk.MESSAGE_INFO, gtk.BUTTONS_YES_NO)
+                confirm_diag.set_text(_('Save changes to commands?'),
+                    _('You have made changes to the list of external commands that '
+                      'have not been saved yet. Pressing "No" here will discard all '
+                      'these changes.'))
+                response = confirm_diag.run()
+
+                if response == gtk.RESPONSE_YES:
+                    self.save()
 
     def _quote_if_necessary(self, arg):
         """ Quotes a command line argument if necessary. """
