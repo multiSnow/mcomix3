@@ -110,13 +110,11 @@ class EventHandler:
 
         # Zooming commands for manual zoom mode
         manager.register('zoom in',
-            ['plus', 'equal'],
+            ['equal'],
             self._window.actiongroup.get_action('zoom_in').activate)
-        manager.register('zoom out',
-            ['minus'],
-            self._window.actiongroup.get_action('zoom_out').activate)
+        # Zoom out is already defined as GTK menu hotkey
         manager.register('zoom original',
-            ['<Control>0', 'KP_0'],
+            ['KP_0'],
             self._window.actiongroup.get_action('zoom_original').activate)
 
         # Arrow keys scroll the image
