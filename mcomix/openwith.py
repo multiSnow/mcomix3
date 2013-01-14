@@ -131,7 +131,7 @@ class OpenWithCommand(object):
                 else:
                     buf += self._expand_variable(c, window, archive_context)
                 escape = False
-            elif c == u' ':
+            elif c == u' ' or c == u'\t':
                 if quote:
                     buf += c
                 elif inarg:
@@ -437,10 +437,12 @@ class OpenWithEditor(gtk.Dialog):
                     result += c
                 if c == u' ':
                     needs_quoting = True
-            result += u'\\' * backslash_counter # flush
 
             if needs_quoting:
+                result += u'\\' * (2 * backslash_counter)
                 result = u'"' + result + u'"'
+            else:
+                result += u'\\' * backslash_counter
             return result
         else:
             # simplified version of
