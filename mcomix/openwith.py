@@ -88,7 +88,6 @@ class OpenWithCommand(object):
             text = _("Could not run command %(cmdlabel)s: %(exception)s") % \
                 {'cmdlabel': self.get_label(), 'exception': unicode(e)}
             window.osd.show(text)
-            raise
 
     def is_executable(self):
         """ Check if a name is executable. This name can be either
