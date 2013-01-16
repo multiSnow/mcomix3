@@ -249,7 +249,11 @@ class _BookArea(gtk.ScrolledWindow):
 
         if (collection == self._library.collection_area.get_current_collection() or
             self._library.collection_area.get_current_collection() == _COLLECTION_ALL):
-            self.add_books([book])
+
+            # If the current view is filtered, only draw new books that match the filter
+            if not (self._library.filter_string and 
+                    self._library.filter_string.lower() not in book.name.lower()):
+                self.add_books([book])
 
     def remove_book_at_path(self, path):
         """Remove the book at <path> from the ListStore (and thus from
