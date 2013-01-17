@@ -62,6 +62,25 @@ class FileProvider(object):
     def previous_directory(self):
         return False
 
+    @staticmethod
+    def sort_files(files):
+        """ Sorts a list of C{files} depending on the current preferences.
+        The list is sorted in-place. """
+        if preferences.prefs['sort by'] == constants.SORT_NAME:
+            tools.alphanumeric_sort(files)
+        elif preferences.prefs['sort by'] == constants.SORT_LAST_MODIFIED:
+            # Most recently modified file first
+            files.sort(key=lambda filename: os.path.getmtime(filename)*-1)
+        elif preferences.prefs['sort by'] == constants.SORT_SIZE:
+            # Smallest file first
+            files.sort(key=lambda filename: os.stat(filename).st_size)
+        # else: don't sort at all: use OS ordering.
+
+        # Default is ascending.
+        if preferences.prefs['sort order'] == constants.SORT_DESCENDING:
+            files.reverse()
+
+
 class OrderedFileProvider(FileProvider):
     """ This provider will list all files in the same directory as the
         one passed to the constructor. """
@@ -115,20 +134,7 @@ class OrderedFileProvider(FileProvider):
                       [ i18n.to_unicode(fn) for fn in os.listdir(self.base_dir) ]
                       if should_accept(os.path.join(self.base_dir, filename)) ]
 
-
-            if preferences.prefs['sort by'] == constants.SORT_NAME:
-                tools.alphanumeric_sort(files)
-            elif preferences.prefs['sort by'] == constants.SORT_LAST_MODIFIED:
-                # Most recently modified file first
-                files.sort(key=lambda filename: os.path.getmtime(filename)*-1)
-            elif preferences.prefs['sort by'] == constants.SORT_SIZE:
-                # Smallest file first
-                files.sort(key=lambda filename: os.stat(filename).st_size)
-            # else: don't sort at all: use OS ordering.
-
-            # Default is ascending.
-            if preferences.prefs['sort order'] == constants.SORT_DESCENDING:
-                files.reverse()
+            FileProvider.sort_files(files)
 
             return files
         except OSError:

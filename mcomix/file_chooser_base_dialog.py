@@ -14,6 +14,7 @@ from mcomix import constants
 from mcomix import log
 from mcomix import thumbnail_tools
 from mcomix import message_dialog
+from mcomix import file_provider
 
 mimetypes.init()
 
@@ -211,8 +212,10 @@ class _BaseFileChooserDialog(gtk.Dialog):
                 path = path.decode('utf-8')
 
                 if os.path.isdir(path):
-                    paths.extend(self.collect_files_from_subdir(path, filter,
+                    subdir_files = list(self.collect_files_from_subdir(path, filter,
                         self.should_open_recursive()))
+                    file_provider.FileProvider.sort_files(subdir_files)
+                    paths.extend(subdir_files)
                 else:
                     paths.append(path)
 
