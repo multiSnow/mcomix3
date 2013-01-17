@@ -131,8 +131,12 @@ class _BaseFileChooserDialog(gtk.Dialog):
                 self.filechooser.set_filename(last_file)
             # If no file was stored yet, fall back to preferences
             elif os.path.isdir(prefs['path of last browsed in filechooser']):
-                self.filechooser.set_current_folder(
-                    prefs['path of last browsed in filechooser'])
+                if prefs['store recent file info']:
+                    self.filechooser.set_current_folder(
+                        prefs['path of last browsed in filechooser'])
+                else:
+                    self.filechooser.set_current_folder(
+                        constants.HOME_DIR)
 
         except Exception, ex: # E.g. broken prefs values.
             log.debug(ex)
@@ -238,8 +242,14 @@ class _BaseFileChooserDialog(gtk.Dialog):
                     self.emit_stop_by_name('response')
                     return
 
-            prefs['path of last browsed in filechooser'] = \
-                self.filechooser.get_current_folder()
+            # Do not store path if the user chose not to keep a file history
+            if prefs['store recent file info']:
+                prefs['path of last browsed in filechooser'] = \
+                    self.filechooser.get_current_folder()
+            else:
+                prefs['path of last browsed in filechooser'] = \
+                    constants.HOME_DIR
+
             self.__class__._last_activated_file = first_path
             self.files_chosen(paths)
 

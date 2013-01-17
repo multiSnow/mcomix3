@@ -21,6 +21,10 @@ MComix 1.00
     - "Fit to size" mode no longer scales up small images unless "Stretch
       small images" is enabled as well.
 
+    - If "Store information about recently opened files" is disabled,
+      MComix will no longer remember the last browsed directory in the
+      File->Open dialog.
+
     - Deleting a large amout of books from the library should be much
       faster now.
 
