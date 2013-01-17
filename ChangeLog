@@ -15,6 +15,9 @@ MComix 1.00
     - If both scrollbars were shown, it was impossible to scroll all the way
       down using the scrolling keys. This has been fixed.
 
+    - When a directory was opened using the File->Open dialog, MComix did not
+      sort files within the directory, ignoring the user's preferences.
+
     - "Fit to size" mode no longer scales up small images unless "Stretch
       small images" is enabled as well.
 
