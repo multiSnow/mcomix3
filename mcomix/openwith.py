@@ -89,7 +89,7 @@ class OpenWithCommand(object):
                 {'cmdlabel': self.get_label(), 'exception': unicode(e)}
             window.osd.show(text)
 
-    def is_executable(self):
+    def is_executable(self, window):
         """ Check if a name is executable. This name can be either
         a relative path, when the executable is in PATH, or an
         absolute path. """
@@ -176,7 +176,7 @@ class OpenWithCommand(object):
 
         # Skip if no file is loaded
         if not window or not window.filehandler.file_loaded:
-            return identifier
+            return '%' + identifier
 
         if not archive_context and identifier in (u'a', u'c', u'A', u'C'):
             raise OpenWithException(
@@ -222,13 +222,20 @@ class OpenWithEditor(gtk.Dialog):
         self._command_tree.get_selection().connect('changed', self._item_selected)
         self._add_button = gtk.Button(stock=gtk.STOCK_ADD)
         self._add_button.connect('clicked', self._add_command)
+        self._add_sep_button = gtk.Button(_('Add _separator'))
+        self._add_sep_button.connect('clicked', self._add_sep_command)
         self._remove_button = gtk.Button(stock=gtk.STOCK_REMOVE)
         self._remove_button.connect('clicked', self._remove_command)
+        self._remove_button.set_sensitive(False)
         self._up_button = gtk.Button(stock=gtk.STOCK_GO_UP)
         self._up_button.connect('clicked', self._up_command)
+        self._up_button.set_sensitive(False)
         self._down_button = gtk.Button(stock=gtk.STOCK_GO_DOWN)
         self._down_button.connect('clicked', self._down_command)
-        self._remove_button.set_sensitive(False)
+        self._down_button.set_sensitive(False)
+        self._run_button = gtk.Button(_('Run _command'))
+        self._run_button.connect('clicked', self._run_command)
+        self._run_button.set_sensitive(False)
         self._info_label = gtk.Label()
         self._info_label.set_markup(
             '<b>' + _('Image-related variables') + '</b>\n' +
@@ -248,7 +255,6 @@ class OpenWithEditor(gtk.Dialog):
         self._info_label.set_alignment(0, 0)
         self._test_field = gtk.Entry()
         self._test_field.set_property('editable', gtk.FALSE)
-        self._test_field.set_text(_('Preview area'))
         self._exec_label = gtk.Label()
         self._exec_label.set_alignment(0, 0)
         self._save_button = self.add_button(gtk.STOCK_SAVE, gtk.RESPONSE_ACCEPT)
@@ -280,34 +286,48 @@ class OpenWithEditor(gtk.Dialog):
             iter = model.iter_next(iter)
         return commands
 
-    def test_command(self):
-        """ Parses the currently selected command and displays the output in the
-        text box next to the button. """
+    def get_command(self):
+        """ Retrieves the selected command object. """
         model, iter = self._command_tree.get_selection().get_selected()
         if (iter and model.iter_is_valid(iter)):
             command = OpenWithCommand(*model.get(iter, 0, 1, 2, 3))
+            return command
+        else:
+            return None
 
-            # Test only if the selected field is a valid command
-            if command.is_separator():
-                self._test_field.set_text(_('This is a separator pseudo-command.'))
+    def test_command(self):
+        """ Parses the currently selected command and displays the output in the
+        text box next to the button. """
+        command = self.get_command()
+        if not command:
+            return
+
+        # Test only if the selected field is a valid command
+        if command.is_separator():
+            self._test_field.set_text(_('This is a separator pseudo-command.'))
+            self._exec_label.set_text('')
+            return
+
+        try:
+            args = map(self._quote_if_necessary, command.parse(self._window))
+            self._test_field.set_text(" ".join(args))
+
+            if not command.is_executable(self._window):
+                self._exec_label.set_text(
+                    _('"%s" does not appear to have a valid executable.') % command.get_label())
+            else:
                 self._exec_label.set_text('')
-                return
-
-            try:
-                args = map(self._quote_if_necessary, command.parse(self._window))
-                self._test_field.set_text(" ".join(args))
-
-                if not command.is_executable():
-                    self._exec_label.set_text(
-                        _('"%s" does not appear to have a valid executable.') % command.get_label())
-                else:
-                    self._exec_label.set_text('')
-            except OpenWithException, e:
-                self._test_field.set_text(unicode(e))
+        except OpenWithException, e:
+            self._test_field.set_text(unicode(e))
 
     def _add_command(self, button):
         """ Add a new empty label-command line to the list. """
-        self._command_tree.get_model().append((_('Command label'), '', '', gtk.FALSE))
+        self._command_tree.get_model().append((_('Command label'), '', '', gtk.FALSE, gtk.TRUE))
+        self._changed = True
+
+    def _add_sep_command(self, button):
+        """ Adds a new separator line. """
+        self._command_tree.get_model().append(('-', '', '', gtk.FALSE, gtk.FALSE))
         self._changed = True
 
     def _remove_command(self, button):
@@ -339,15 +359,25 @@ class OpenWithEditor(gtk.Dialog):
                 model.swap(iter, down)
             self._changed = True
 
+    def _run_command(self, button):
+        """ Executes the selected command in the current context. """
+        command = self.get_command()
+        if command and not command.is_separator():
+            command.execute(self._window)
+
     def _item_selected(self, selection):
         """ Enable or disable buttons that depend on an item being selected. """
-        for button in (self._remove_button, self._up_button, self._down_button):
+        for button in (self._remove_button, self._up_button,
+                self._down_button, self._run_button):
             button.set_sensitive(selection.count_selected_rows() > 0)
 
         if selection.count_selected_rows() > 0:
             self.test_command()
+
+            if self.get_command().is_separator():
+                self._run_button.set_sensitive(False)
         else:
-            self._test_field.set_text(_('Preview area'))
+            self._test_field.set_text('')
 
     def _layout(self):
         """ Create and lay out UI components. """
@@ -356,17 +386,22 @@ class OpenWithEditor(gtk.Dialog):
 
         buttonbox = gtk.VBox()
         buttonbox.pack_start(self._add_button, False)
+        buttonbox.pack_start(self._add_sep_button, False)
         buttonbox.pack_start(self._remove_button, False)
         buttonbox.pack_start(self._up_button, False)
         buttonbox.pack_start(self._down_button, False)
-        buttonbox.pack_end(self._info_label, padding=6)
+        buttonbox.pack_start(self._run_button, False, padding=10)
+        buttonbox.pack_end(self._info_label)
 
         treebox = gtk.VBox()
         scroll_window = gtk.ScrolledWindow()
         scroll_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         scroll_window.add(self._command_tree)
         treebox.pack_start(scroll_window, padding=4)
-        treebox.pack_start(self._test_field, False)
+        preview_box = gtk.HBox()
+        preview_box.pack_start(gtk.Label(_('Preview:')), False)
+        preview_box.pack_start(self._test_field, padding=4)
+        treebox.pack_start(preview_box, False)
         treebox.pack_start(self._exec_label, False, padding=4)
 
         upperbox.pack_start(treebox, padding=4)
@@ -376,26 +411,27 @@ class OpenWithEditor(gtk.Dialog):
         """ Initializes the TreeView with settings and data. """
         for i, label in enumerate((_('Label'), _('Command'), _('Working directory'))):
             renderer = gtk.CellRendererText()
-            renderer.set_property('editable', gtk.TRUE)
             renderer.connect('edited', self._text_changed, i)
             column = gtk.TreeViewColumn(label, renderer)
             column.set_property('resizable', gtk.TRUE)
-            column.set_attributes(renderer, text=i)
+            column.set_attributes(renderer, text=i, editable=4)
             if (i == 1):
                 column.set_expand(True)  # Command column should scale automatically
             self._command_tree.append_column(column)
 
         # The 'Disabled in archives' field is shown as toggle button
         renderer = gtk.CellRendererToggle()
-        renderer.set_property('activatable', gtk.TRUE)
         renderer.connect('toggled', self._value_changed, len(self._command_tree.get_columns()))
         column = gtk.TreeViewColumn(_('Disabled in archives'), renderer)
-        column.set_attributes(renderer, active=len(self._command_tree.get_columns()))
+        column.set_attributes(renderer, active=len(self._command_tree.get_columns()), activatable=4)
         self._command_tree.append_column(column)
 
-        model = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING, gobject.TYPE_STRING, gobject.TYPE_BOOLEAN)
+        # Label, command, working dir, disabled for archives, line is editable
+        model = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING, gobject.TYPE_STRING, 
+                gobject.TYPE_BOOLEAN, gobject.TYPE_BOOLEAN)
         for command in self._openwith.get_commands():
-            model.append((command.get_label(), command.get_command(), command.get_cwd(), command.is_disabled_for_archives()))
+            model.append((command.get_label(), command.get_command(), command.get_cwd(),
+                command.is_disabled_for_archives(), not command.is_separator()))
         self._command_tree.set_model(model)
 
         self._command_tree.set_headers_visible(True)
@@ -403,6 +439,10 @@ class OpenWithEditor(gtk.Dialog):
 
     def _text_changed(self, renderer, path, new_text, column):
         """ Called when the user edits a field in the table. """
+        # Prevent changing command to separator
+        if column == 0 and re.match(r'^-+$', new_text):
+            return
+
         model = self._command_tree.get_model()
         iter = model.get_iter(path)
         # Editing the model in the cellrenderercallback stops the editing
