@@ -230,6 +230,7 @@ class MainUI(gtk.UIManager):
                     <menuitem action="extract_page" />
                     <menuitem action="refresh_archive" />
                     <menuitem action="properties" />
+                    <menu action="menu_open_with"></menu>
                     <separator />
                     <menuitem action="delete" />
                     <separator />
@@ -239,7 +240,6 @@ class MainUI(gtk.UIManager):
                     <menuitem action="quit" />
                 </menu>
                 <menu action="menu_edit">
-                    <menu action="menu_open_with"></menu>
                     <menuitem action="copy_page" />
                     <separator />
                     <menuitem action="edit_archive" />
@@ -410,8 +410,8 @@ class MainUI(gtk.UIManager):
         self.get_widget('/Popup/menu_recent').show()
 
         openwith = openwith_menu.OpenWithMenu(self, window)
-        self.get_widget('/Menu/menu_edit/menu_open_with').set_submenu(openwith)
-        self.get_widget('/Menu/menu_edit/menu_open_with').show()
+        self.get_widget('/Menu/menu_file/menu_open_with').set_submenu(openwith)
+        self.get_widget('/Menu/menu_file/menu_open_with').show()
 
         # Load keyboard accelerator map
         if os.path.isfile(constants.KEYBINDINGS_PATH):
