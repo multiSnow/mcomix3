@@ -71,13 +71,12 @@ class OpenWithCommand(object):
 
         try:
             current_dir = os.getcwd()
-            if self.get_cwd() and len(self.get_cwd()) > 0:
-                work_dir = self.parse(window, text=self.get_cwd())[0]
-                if os.path.isdir(work_dir) and os.access(work_dir, os.X_OK):
-                    os.chdir(work_dir)
+            if self.get_cwd() and len(self.get_cwd().strip()) > 0:
+                directories = self.parse(window, text=self.get_cwd())
+                if self.is_valid_workdir(window):
+                    os.chdir(directories[0])
                 else:
-                    raise OpenWithException(
-                        _('%s is not a valid work directory.') % work_dir)
+                    raise OpenWithException(_('Invalid working directory.'))
 
             # Redirect process output to null here?
             # FIXME: Close process when finished to avoid zombie process
@@ -93,7 +92,7 @@ class OpenWithCommand(object):
         """ Check if a name is executable. This name can be either
         a relative path, when the executable is in PATH, or an
         absolute path. """
-        args = self.parse(None)
+        args = self.parse(window)
         if len(args) == 0:
             return False
 
@@ -106,6 +105,21 @@ class OpenWithCommand(object):
             exe = os.path.join(path, arg)
             if os.path.isfile(exe) and os.access(exe, os.R_OK|os.X_OK):
                 return True
+
+        return False
+
+    def is_valid_workdir(self, window):
+        """ Check if the working directory is valid. """
+        if len(self.get_cwd().strip()) == 0:
+            return True
+
+        args = self.parse(window, text=self.get_cwd())
+        if len(args) > 1:
+            return False
+
+        dir = args[0]
+        if os.path.isdir(dir) and os.access(dir, os.X_OK):
+            return True
 
         return False
 
@@ -264,6 +278,8 @@ class OpenWithEditor(gtk.Dialog):
         self._setup_table()
 
         self.connect('response', self._response)
+        self._window.filehandler.file_opened += self.test_command
+        self._window.filehandler.close_file += lambda *args: self.test_command()
 
         self.resize(800, 300)
 
@@ -312,7 +328,10 @@ class OpenWithEditor(gtk.Dialog):
             args = map(self._quote_if_necessary, command.parse(self._window))
             self._test_field.set_text(" ".join(args))
 
-            if not command.is_executable(self._window):
+            if not command.is_valid_workdir(self._window):
+                self._exec_label.set_text(
+                    _('"%s" does not have a valid working directory.') % command.get_label())
+            elif not command.is_executable(self._window):
                 self._exec_label.set_text(
                     _('"%s" does not appear to have a valid executable.') % command.get_label())
             else:
@@ -451,9 +470,7 @@ class OpenWithEditor(gtk.Dialog):
             old_value = model.get_value(iter, column)
             model.set_value(iter, column, new_text)
             self._changed = old_value != new_text
-            # Only re-validate if command column is changed
-            if column == 1:
-                self.test_command()
+            self.test_command()
         gobject.idle_add(delayed_set_value)
 
     def _value_changed(self, renderer, path, column):
@@ -480,8 +497,8 @@ class OpenWithEditor(gtk.Dialog):
                     gtk.MESSAGE_INFO, gtk.BUTTONS_YES_NO)
                 confirm_diag.set_text(_('Save changes to commands?'),
                     _('You have made changes to the list of external commands that '
-                      'have not been saved yet. Pressing "No" here will discard all '
-                      'these changes.'))
+                      'have not been saved yet. Press "Yes" to save all changes, '
+                      'or "No" to discard them.'))
                 response = confirm_diag.run()
 
                 if response == gtk.RESPONSE_YES:
