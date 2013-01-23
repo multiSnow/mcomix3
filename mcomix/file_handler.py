@@ -76,7 +76,11 @@ class FileHandler(object):
         """ Closes the current file(s)/archive and reloads them. """
         if self.file_loaded:
             current_file = os.path.abspath(self._window.imagehandler.get_real_path())
-            self.open_file(current_file, keep_fileprovider=True)
+            if self.archive_type is not None:
+                start_page = self._window.imagehandler.get_current_page()
+            else:
+                start_page = 0
+            self.open_file(current_file, start_page, keep_fileprovider=True)
 
     def open_file(self, path, start_page=0, keep_fileprovider=False):
         """Open the file pointed to by <path>.

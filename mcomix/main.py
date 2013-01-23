@@ -1082,7 +1082,7 @@ class MainWindow(gtk.Window):
                     if os.path.isfile(current_file):
                         os.unlink(current_file)
                     # Refresh the directory
-                    self.filehandler.refresh_file(self.imagehandler.get_current_page())
+                    self.filehandler.refresh_file()
                 else:
                     self.filehandler.close_file()
                     if os.path.isfile(current_file):

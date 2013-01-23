@@ -18,6 +18,8 @@ MComix 1.00
     - When a directory was opened using the File->Open dialog, MComix did not
       sort files within the directory, ignoring the user's preferences.
 
+    - "File->Refresh" did not restore the currently viewed page in archives.
+
     - "Fit to size" mode no longer scales up small images unless "Stretch
       small images" is enabled as well.
 
