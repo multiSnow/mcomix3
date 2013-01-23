@@ -200,8 +200,15 @@ class FileHandler(object):
             self._must_call_draw = False
             self._window.draw_image()
 
+        self.file_opened()
         return result
 
+    @callback.Callback
+    def file_opened(self):
+        """ Called when a new set of files has successfully been opened. """
+        pass
+
+    @callback.Callback
     def close_file(self, *args):
         """Run tasks for "closing" the currently opened file(s)."""
         self.update_last_read_page()
