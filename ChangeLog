@@ -34,7 +34,7 @@ MComix 1.00
       selected in the preference dialog.
 
     - Added an option to run arbitrary external commands on the currently
-      opened file or archive. Commands can be edited from the "Edit->Open with"
+      opened file or archive. Commands can be edited from the "File->Open with"
       menu entry. The first item in this list can be accessed with the F8 key.
 
       The first argument to each command must be the absolute path to an
