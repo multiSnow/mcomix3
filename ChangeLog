@@ -20,6 +20,9 @@ MComix 1.00
 
     - "File->Refresh" did not restore the currently viewed page in archives.
 
+    - Deleting a file in the library without closing the same file in the main
+      window before no longer causes an exception.
+
     - "Fit to size" mode no longer scales up small images unless "Stretch
       small images" is enabled as well.
 
