@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: comix.HEAD\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2013-01-11 20:33+0100\n"
+"POT-Creation-Date: 2013-01-27 10:49+0100\n"
 "PO-Revision-Date: 2012-09-06 18:00+0100\n"
 "Last-Translator: Carlos Feliu <carlos.feliu.holguera@gmail.com>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
@@ -288,64 +288,64 @@ msgstr ""
 #
 # File: src/filechooser.py, line: 35
 # File: src/library.py, line: 489
-#: mcomix/file_chooser_base_dialog.py:42
+#: mcomix/file_chooser_base_dialog.py:43
 msgid "Open"
 msgstr "Abrir"
 
 #
 # File: src/filechooser.py, line: 39
-#: mcomix/file_chooser_base_dialog.py:47
+#: mcomix/file_chooser_base_dialog.py:48
 msgid "Save"
 msgstr "Guardar"
 
 #
 # File: src/filechooser.py, line: 75
-#: mcomix/file_chooser_base_dialog.py:84
+#: mcomix/file_chooser_base_dialog.py:85
 msgid "All files"
 msgstr "Todos los archivos"
 
 #
 # File: src/filechooser.py, line: 78
-#: mcomix/file_chooser_base_dialog.py:100
+#: mcomix/file_chooser_base_dialog.py:101
 msgid "All Archives"
 msgstr "Todos los archivadores"
 
 #
 # File: src/filechooser.py, line: 82
-#: mcomix/file_chooser_base_dialog.py:103
+#: mcomix/file_chooser_base_dialog.py:104
 msgid "ZIP archives"
 msgstr "Archivadores ZIP"
 
 #
 # File: src/filechooser.py, line: 86
-#: mcomix/file_chooser_base_dialog.py:106
+#: mcomix/file_chooser_base_dialog.py:107
 msgid "Tar archives"
 msgstr "Archivadores Tar"
 
 #
 # File: src/filechooser.py, line: 84
-#: mcomix/file_chooser_base_dialog.py:110
+#: mcomix/file_chooser_base_dialog.py:111
 msgid "RAR archives"
 msgstr "Archivadores RAR"
 
-#: mcomix/file_chooser_base_dialog.py:114
+#: mcomix/file_chooser_base_dialog.py:115
 msgid "7z archives"
 msgstr "Archivadores 7z"
 
-#: mcomix/file_chooser_base_dialog.py:118
+#: mcomix/file_chooser_base_dialog.py:119
 msgid "LHA archives"
 msgstr "Archivadores LHA"
 
 #
 # File: src/filechooser.py, line: 125
-#: mcomix/file_chooser_base_dialog.py:229
+#: mcomix/file_chooser_base_dialog.py:236
 #, python-format
 msgid "A file named '%s' already exists. Do you want to replace it?"
 msgstr "Ya existe un archivo de nombre '%s'. ¿Desea reemplazarlo?"
 
 #
 # File: src/filechooser.py, line: 128
-#: mcomix/file_chooser_base_dialog.py:231
+#: mcomix/file_chooser_base_dialog.py:238
 msgid "Replacing it will overwrite its contents."
 msgstr "Al reemplazarlo, su contenido será sobreescrito."
 
@@ -410,38 +410,38 @@ msgstr "Imágenes BMP"
 
 #
 # File: src/filehandler.py, line: 285
-#: mcomix/file_handler.py:160 mcomix/file_handler.py:271
+#: mcomix/file_handler.py:164 mcomix/file_handler.py:282
 #, python-format
 msgid "No images in '%s'"
 msgstr "No hay imágenes en '%s'"
 
 #
 # File: src/filehandler.py, line: 213
-#: mcomix/file_handler.py:265
+#: mcomix/file_handler.py:276
 #, python-format
 msgid "Could not open %s: No such file."
 msgstr "No se puede abrir %s: el archivo no existe."
 
 #
 # File: src/filehandler.py, line: 217
-#: mcomix/file_handler.py:268 mcomix/file_provider.py:135
+#: mcomix/file_handler.py:279 mcomix/file_provider.py:141
 #, python-format
 msgid "Could not open %s: Permission denied."
 msgstr "No se puede abrir %s: permiso denegado."
 
 #
 # File: src/filehandler.py, line: 222
-#: mcomix/file_handler.py:276
+#: mcomix/file_handler.py:287
 #, python-format
 msgid "Could not open %s: Unknown file type."
 msgstr "No se puede abrir %s: tipo de archivo desconocido."
 
-#: mcomix/file_handler.py:472
+#: mcomix/file_handler.py:483
 #, python-format
 msgid "Continue reading from page %d?"
 msgstr "¿Continuar leyendo a partir de la página %d?"
 
-#: mcomix/file_handler.py:473
+#: mcomix/file_handler.py:484
 #, python-format
 msgid ""
 "You stopped reading here on %(date)s, %(time)s. If you choose \"Yes\", "
@@ -451,12 +451,12 @@ msgstr ""
 "Dejó de leer aquí en %(date)s, %(time)s. Si elige \"Yes\", la lectura se "
 "reanudará en la página %(page)d. Si no es así, se cargará la primera página."
 
-#: mcomix/file_handler.py:785
+#: mcomix/file_handler.py:796
 #, python-format
 msgid "! Corrupt preferences file \"%s\", deleting..."
 msgstr "! Archivo de preferencias \"%s\" corrupto, eliminando..."
 
-#: mcomix/file_provider.py:93
+#: mcomix/file_provider.py:112
 #, python-format
 msgid "Invalid path: '%s'"
 msgstr "Ruta no válida: '%s'"
@@ -468,7 +468,7 @@ msgstr "! No se pudo cargar el icono \"%s\""
 
 #
 # File: src/filehandler.py, line: 411
-#: mcomix/image_handler.py:490
+#: mcomix/image_handler.py:496
 msgid "Unknown filetype"
 msgstr "Tipo de archivo desconocido"
 
@@ -610,7 +610,7 @@ msgid "! Could neither find pysqlite2 nor sqlite3."
 msgstr "! No se pudieron encontrar ni pysqlite2 ni sqlite3."
 
 #: mcomix/last_read_page.py:202 mcomix/thumbnail_tools.py:110
-#: mcomix/library/book_area.py:541
+#: mcomix/library/book_area.py:545
 #, python-format
 msgid "! Could not remove file \"%s\""
 msgstr "!  No se pudo eliminar  el archivo \"%s\""
@@ -644,114 +644,143 @@ msgstr "No preguntar de nuevo."
 msgid "_Edit"
 msgstr "_Editar"
 
-#: mcomix/openwith.py:67
+#: mcomix/openwith.py:69
 #, python-format
 msgid "'%s' is disabled for archives."
 msgstr ""
 
-#: mcomix/openwith.py:80
+#: mcomix/openwith.py:79
+#, fuzzy
+msgid "Invalid working directory."
+msgstr "Carpeta anterior"
+
+#: mcomix/openwith.py:87
 #, python-format
 msgid "Could not run command %(cmdlabel)s: %(exception)s"
 msgstr ""
 
-#: mcomix/openwith.py:112
-msgid "%a and %A can only be used for archives."
-msgstr ""
-
-#: mcomix/openwith.py:154
+#: mcomix/openwith.py:176
 msgid "Incomplete escape sequence. For a literal '%', use '%%'."
 msgstr ""
 
-#: mcomix/openwith.py:167
-#, python-format
-msgid "Invalid escape sequence: %s"
+#: mcomix/openwith.py:180
+msgid "Incomplete quote sequence. For a literal '\"', use '%\"'."
 msgstr ""
 
-#: mcomix/openwith.py:206
+#
+# File: src/edit.py, line: 115
+#: mcomix/openwith.py:197
+#, fuzzy
+msgid "Archive-related variables can only be used for archives."
+msgstr "Los archivadores se guardan como paquetes ZIP."
+
+#: mcomix/openwith.py:219
+#, python-format
+msgid "Invalid escape sequence: %%%s"
+msgstr ""
+
+#: mcomix/openwith.py:229
 msgid "Edit external commands"
 msgstr ""
 
-#: mcomix/openwith.py:224
+#: mcomix/openwith.py:239
+msgid "Add _separator"
+msgstr ""
+
+#
+# File: src/comment.py, line: 16
+# File: src/preferences.py, line: 288
+#: mcomix/openwith.py:250
+#, fuzzy
+msgid "Run _command"
+msgstr "Comentarios"
+
+#: mcomix/openwith.py:255
 msgid "Image-related variables"
 msgstr ""
 
-#: mcomix/openwith.py:225
+#: mcomix/openwith.py:256
 #, fuzzy
 msgid "File path"
 msgstr "Ruta completa"
 
-#: mcomix/openwith.py:226
+#: mcomix/openwith.py:257
 #, fuzzy
 msgid "Image directory path"
 msgstr "Carpeta siguiente"
 
-#: mcomix/openwith.py:227 mcomix/preferences_dialog.py:527
+#: mcomix/openwith.py:258 mcomix/preferences_dialog.py:527
 msgid "File name"
 msgstr "Nombre de archivo"
 
-#: mcomix/openwith.py:228
+#: mcomix/openwith.py:259
 #, fuzzy
-msgid "Directory name"
-msgstr "Carpeta"
+msgid "Image directory name"
+msgstr "Carpeta siguiente"
 
 #
 # File: src/edit.py, line: 115
-#: mcomix/openwith.py:229
+#: mcomix/openwith.py:260
 #, fuzzy
 msgid "Archive-related variables"
 msgstr "Los archivadores se guardan como paquetes ZIP."
 
 #
 # File: src/properties.py, line: 135
-#: mcomix/openwith.py:230
+#: mcomix/openwith.py:261
 #, fuzzy
 msgid "Archive path"
 msgstr "Archivador"
 
 #
 # File: src/properties.py, line: 135
-#: mcomix/openwith.py:231 mcomix/openwith.py:233
+#: mcomix/openwith.py:262
 #, fuzzy
 msgid "Archive's directory path"
 msgstr "Archivador"
 
 #
 # File: src/properties.py, line: 135
-#: mcomix/openwith.py:232
+#: mcomix/openwith.py:263
 #, fuzzy
 msgid "Archive name"
 msgstr "Archivador"
 
-#: mcomix/openwith.py:234
+#
+# File: src/properties.py, line: 135
+#: mcomix/openwith.py:264
+#, fuzzy
+msgid "Archive's directory name"
+msgstr "Archivador"
+
+#: mcomix/openwith.py:265
 msgid "Miscellaneous variables"
 msgstr ""
 
-#: mcomix/openwith.py:235
+#: mcomix/openwith.py:266
 msgid "Backslash or slash, depending on OS"
 msgstr ""
 
-#: mcomix/openwith.py:236
+#: mcomix/openwith.py:267
 #, fuzzy
 msgid "Literal quote"
 msgstr "Orden de archivos"
 
-#: mcomix/openwith.py:237
+#: mcomix/openwith.py:268
 #, fuzzy, python-format
 msgid "Literal % character"
 msgstr "Orden de archivos"
 
-#
-# File: src/ui.py, line: 284
-#: mcomix/openwith.py:241 mcomix/openwith.py:340
-#, fuzzy
-msgid "Preview area"
-msgstr "Archivador anterior"
-
-#: mcomix/openwith.py:281
+#: mcomix/openwith.py:323
 msgid "This is a separator pseudo-command."
 msgstr ""
 
-#: mcomix/openwith.py:296
+#: mcomix/openwith.py:333
+#, python-format
+msgid "\"%s\" does not have a valid working directory."
+msgstr ""
+
+#: mcomix/openwith.py:336
 #, python-format
 msgid "\"%s\" does not appear to have a valid executable."
 msgstr ""
@@ -759,34 +788,51 @@ msgstr ""
 #
 # File: src/comment.py, line: 16
 # File: src/preferences.py, line: 288
-#: mcomix/openwith.py:304
+#: mcomix/openwith.py:344
 #, fuzzy
 msgid "Command label"
 msgstr "Comentarios"
 
-#: mcomix/openwith.py:367
+#
+# File: src/ui.py, line: 36
+#: mcomix/openwith.py:421
+#, fuzzy
+msgid "Preview:"
+msgstr "Página _anterior"
+
+#: mcomix/openwith.py:431
 msgid "Label"
 msgstr ""
 
 #
 # File: src/comment.py, line: 16
 # File: src/preferences.py, line: 288
-#: mcomix/openwith.py:367
+#: mcomix/openwith.py:431
 #, fuzzy
 msgid "Command"
 msgstr "Comentarios"
 
-#: mcomix/openwith.py:367
+#: mcomix/openwith.py:431
 #, fuzzy
 msgid "Working directory"
 msgstr "Carpeta anterior"
 
 #
 # File: src/filechooser.py, line: 86
-#: mcomix/openwith.py:382
+#: mcomix/openwith.py:444
 #, fuzzy
 msgid "Disabled in archives"
 msgstr "Archivadores Tar"
+
+#: mcomix/openwith.py:498
+msgid "Save changes to commands?"
+msgstr ""
+
+#: mcomix/openwith.py:499
+msgid ""
+"You have made changes to the list of external commands that have not been "
+"saved yet. Press \"Yes\" to save all changes, or \"No\" to discard them."
+msgstr ""
 
 #
 # File: src/ui.py, line: 69
@@ -2580,20 +2626,20 @@ msgstr "Diminuto"
 msgid "Custom..."
 msgstr "Personalizado..."
 
-#: mcomix/library/book_area.py:366
+#: mcomix/library/book_area.py:370
 msgid "Set library cover size"
 msgstr "Fijar tamaño de portada de biblioteca"
 
 #
 # File: src/library.py, line: 588
-#: mcomix/library/book_area.py:476
+#: mcomix/library/book_area.py:480
 #, python-format
 msgid "Removed %(num)d book from '%(collection)s'."
 msgid_plural "Removed %(num)d books from '%(collection)s'."
 msgstr[0] "Se han quitado %(num)d libro(s) desde '%(collection)s'."
 msgstr[1] "Se han quitado %(num)d libro(s) desde '%(collection)s'."
 
-#: mcomix/library/book_area.py:498 mcomix/library/collection_area.py:190
+#: mcomix/library/book_area.py:502 mcomix/library/collection_area.py:190
 #, python-format
 msgid "Removed %d book from the library."
 msgid_plural "Removed %d books from the library."
@@ -2602,13 +2648,13 @@ msgstr[1] "Eliminados %d libros de la biblioteca."
 
 #
 # File: src/library.py, line: 597
-#: mcomix/library/book_area.py:516
+#: mcomix/library/book_area.py:520
 msgid "Remove books from the library?"
 msgstr "¿Eliminar los libros de la biblioteca?"
 
 #
 # File: src/library.py, line: 599
-#: mcomix/library/book_area.py:517
+#: mcomix/library/book_area.py:521
 msgid ""
 "The selected books will be removed from the library and permanently deleted. "
 "Are you sure that you want to continue?"
@@ -2846,11 +2892,15 @@ msgstr "_Añadir"
 msgid "Automatically scan for new books when library is _opened"
 msgstr "Buscar nuevos libros automáticamente al abrir la biblioteca"
 
-#
-# File: src/ui.py, line: 36
 #, fuzzy
-#~ msgid "_Preview"
-#~ msgstr "Página _anterior"
+#~ msgid "Directory name"
+#~ msgstr "Carpeta"
+
+#
+# File: src/ui.py, line: 284
+#, fuzzy
+#~ msgid "Preview area"
+#~ msgstr "Archivador anterior"
 
 #~ msgid "Order files by:"
 #~ msgstr "Ordenar archivos por:"

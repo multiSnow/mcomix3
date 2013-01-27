@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2013-01-11 20:33+0100\n"
+"POT-Creation-Date: 2013-01-27 10:49+0100\n"
 "PO-Revision-Date: 2012-07-11 12:00+0100\n"
 "Last-Translator: Giovanni Scafora <giovanni@archlinux.org>\n"
 "Language-Team: Arch Linux Italian Team <giovanni@archlinux.org>\n"
@@ -229,48 +229,48 @@ msgstr ""
 "Regola automaticamente il contrasto (luminosità ed oscurità), separatamente "
 "per ciascuna banda di colore."
 
-#: mcomix/file_chooser_base_dialog.py:42
+#: mcomix/file_chooser_base_dialog.py:43
 msgid "Open"
 msgstr "Apri"
 
-#: mcomix/file_chooser_base_dialog.py:47
+#: mcomix/file_chooser_base_dialog.py:48
 msgid "Save"
 msgstr "Salva"
 
-#: mcomix/file_chooser_base_dialog.py:84
+#: mcomix/file_chooser_base_dialog.py:85
 msgid "All files"
 msgstr "Tutti i documenti"
 
-#: mcomix/file_chooser_base_dialog.py:100
+#: mcomix/file_chooser_base_dialog.py:101
 msgid "All Archives"
 msgstr "Tutti gli archivi"
 
-#: mcomix/file_chooser_base_dialog.py:103
+#: mcomix/file_chooser_base_dialog.py:104
 msgid "ZIP archives"
 msgstr "Archivi ZIP"
 
-#: mcomix/file_chooser_base_dialog.py:106
+#: mcomix/file_chooser_base_dialog.py:107
 msgid "Tar archives"
 msgstr "Archivi tar"
 
-#: mcomix/file_chooser_base_dialog.py:110
+#: mcomix/file_chooser_base_dialog.py:111
 msgid "RAR archives"
 msgstr "Archivi RAR"
 
-#: mcomix/file_chooser_base_dialog.py:114
+#: mcomix/file_chooser_base_dialog.py:115
 msgid "7z archives"
 msgstr "Archivi 7z"
 
-#: mcomix/file_chooser_base_dialog.py:118
+#: mcomix/file_chooser_base_dialog.py:119
 msgid "LHA archives"
 msgstr "Archivi LHA"
 
-#: mcomix/file_chooser_base_dialog.py:229
+#: mcomix/file_chooser_base_dialog.py:236
 #, python-format
 msgid "A file named '%s' already exists. Do you want to replace it?"
 msgstr "Il file '%s' già esiste. Vuoi sostituirlo?"
 
-#: mcomix/file_chooser_base_dialog.py:231
+#: mcomix/file_chooser_base_dialog.py:238
 msgid "Replacing it will overwrite its contents."
 msgstr "Sostituendolo, sovrascriverai il suo contenuto."
 
@@ -312,32 +312,32 @@ msgstr "Immagini TIFF"
 msgid "BMP images"
 msgstr "Immagini BMP"
 
-#: mcomix/file_handler.py:160 mcomix/file_handler.py:271
+#: mcomix/file_handler.py:164 mcomix/file_handler.py:282
 #, python-format
 msgid "No images in '%s'"
 msgstr "Non ci sono immagini in '%s'"
 
-#: mcomix/file_handler.py:265
+#: mcomix/file_handler.py:276
 #, python-format
 msgid "Could not open %s: No such file."
 msgstr "Impossibile aprire %s: il file non esiste."
 
-#: mcomix/file_handler.py:268 mcomix/file_provider.py:135
+#: mcomix/file_handler.py:279 mcomix/file_provider.py:141
 #, python-format
 msgid "Could not open %s: Permission denied."
 msgstr "Impossibile aprire %s: permesso negato."
 
-#: mcomix/file_handler.py:276
+#: mcomix/file_handler.py:287
 #, python-format
 msgid "Could not open %s: Unknown file type."
 msgstr "Impossibile aprire %s: tipo di file sconosciuto."
 
-#: mcomix/file_handler.py:472
+#: mcomix/file_handler.py:483
 #, python-format
 msgid "Continue reading from page %d?"
 msgstr "Continui a leggere da pagina %d?"
 
-#: mcomix/file_handler.py:473
+#: mcomix/file_handler.py:484
 #, python-format
 msgid ""
 "You stopped reading here on %(date)s, %(time)s. If you choose \"Yes\", "
@@ -348,12 +348,12 @@ msgstr ""
 "la lettura riprenderà dalla pagina %(page)d. Altrimenti, sarà caricata la "
 "prima pagina."
 
-#: mcomix/file_handler.py:785
+#: mcomix/file_handler.py:796
 #, python-format
 msgid "! Corrupt preferences file \"%s\", deleting..."
 msgstr "! Il file delle preferenze \"%s\" è corrotto, eliminazione in corso..."
 
-#: mcomix/file_provider.py:93
+#: mcomix/file_provider.py:112
 #, python-format
 msgid "Invalid path: '%s'"
 msgstr "Il percorso non è esatto: '%s'"
@@ -363,7 +363,7 @@ msgstr "Il percorso non è esatto: '%s'"
 msgid "! Could not load icon \"%s\""
 msgstr "! Impossibile caricare l'icona \"%s\""
 
-#: mcomix/image_handler.py:490
+#: mcomix/image_handler.py:496
 msgid "Unknown filetype"
 msgstr "Tipo di file sconosciuto"
 
@@ -501,7 +501,7 @@ msgid "! Could neither find pysqlite2 nor sqlite3."
 msgstr "! Impossibile trovare pysqlite2 e sqlite3."
 
 #: mcomix/last_read_page.py:202 mcomix/thumbnail_tools.py:110
-#: mcomix/library/book_area.py:541
+#: mcomix/library/book_area.py:545
 #, python-format
 msgid "! Could not remove file \"%s\""
 msgstr "! Impossibile rimuovere il file \"%s\""
@@ -531,131 +531,170 @@ msgstr "Non chiedere di nuovo."
 msgid "_Edit"
 msgstr "_Modifica"
 
-#: mcomix/openwith.py:67
+#: mcomix/openwith.py:69
 #, python-format
 msgid "'%s' is disabled for archives."
 msgstr ""
 
-#: mcomix/openwith.py:80
+#: mcomix/openwith.py:79
+#, fuzzy
+msgid "Invalid working directory."
+msgstr "Cartella precedente"
+
+#: mcomix/openwith.py:87
 #, python-format
 msgid "Could not run command %(cmdlabel)s: %(exception)s"
 msgstr ""
 
-#: mcomix/openwith.py:112
-msgid "%a and %A can only be used for archives."
-msgstr ""
-
-#: mcomix/openwith.py:154
+#: mcomix/openwith.py:176
 msgid "Incomplete escape sequence. For a literal '%', use '%%'."
 msgstr ""
 
-#: mcomix/openwith.py:167
-#, python-format
-msgid "Invalid escape sequence: %s"
+#: mcomix/openwith.py:180
+msgid "Incomplete quote sequence. For a literal '\"', use '%\"'."
 msgstr ""
 
-#: mcomix/openwith.py:206
+#: mcomix/openwith.py:197
+#, fuzzy
+msgid "Archive-related variables can only be used for archives."
+msgstr "Gli archivi sono salvati come file ZIP."
+
+#: mcomix/openwith.py:219
+#, python-format
+msgid "Invalid escape sequence: %%%s"
+msgstr ""
+
+#: mcomix/openwith.py:229
 msgid "Edit external commands"
 msgstr ""
 
-#: mcomix/openwith.py:224
+#: mcomix/openwith.py:239
+msgid "Add _separator"
+msgstr ""
+
+#: mcomix/openwith.py:250
+#, fuzzy
+msgid "Run _command"
+msgstr "Commenti"
+
+#: mcomix/openwith.py:255
 msgid "Image-related variables"
 msgstr ""
 
-#: mcomix/openwith.py:225
+#: mcomix/openwith.py:256
 #, fuzzy
 msgid "File path"
 msgstr "Percorso completo"
 
-#: mcomix/openwith.py:226
+#: mcomix/openwith.py:257
 #, fuzzy
 msgid "Image directory path"
 msgstr "Cartella successiva"
 
-#: mcomix/openwith.py:227 mcomix/preferences_dialog.py:527
+#: mcomix/openwith.py:258 mcomix/preferences_dialog.py:527
 msgid "File name"
 msgstr "Nome del file"
 
-#: mcomix/openwith.py:228
+#: mcomix/openwith.py:259
 #, fuzzy
-msgid "Directory name"
-msgstr "Cartella"
+msgid "Image directory name"
+msgstr "Cartella successiva"
 
-#: mcomix/openwith.py:229
+#: mcomix/openwith.py:260
 #, fuzzy
 msgid "Archive-related variables"
 msgstr "Gli archivi sono salvati come file ZIP."
 
-#: mcomix/openwith.py:230
+#: mcomix/openwith.py:261
 #, fuzzy
 msgid "Archive path"
 msgstr "Archivio"
 
-#: mcomix/openwith.py:231 mcomix/openwith.py:233
+#: mcomix/openwith.py:262
 #, fuzzy
 msgid "Archive's directory path"
 msgstr "Archivio"
 
-#: mcomix/openwith.py:232
+#: mcomix/openwith.py:263
 #, fuzzy
 msgid "Archive name"
 msgstr "Archivio"
 
-#: mcomix/openwith.py:234
+#: mcomix/openwith.py:264
+#, fuzzy
+msgid "Archive's directory name"
+msgstr "Archivio"
+
+#: mcomix/openwith.py:265
 msgid "Miscellaneous variables"
 msgstr ""
 
-#: mcomix/openwith.py:235
+#: mcomix/openwith.py:266
 msgid "Backslash or slash, depending on OS"
 msgstr ""
 
-#: mcomix/openwith.py:236
+#: mcomix/openwith.py:267
 #, fuzzy
 msgid "Literal quote"
 msgstr "Ordine dei file"
 
-#: mcomix/openwith.py:237
+#: mcomix/openwith.py:268
 #, fuzzy, python-format
 msgid "Literal % character"
 msgstr "Ordine dei file"
 
-#: mcomix/openwith.py:241 mcomix/openwith.py:340
-#, fuzzy
-msgid "Preview area"
-msgstr "Archivio precedente"
-
-#: mcomix/openwith.py:281
+#: mcomix/openwith.py:323
 msgid "This is a separator pseudo-command."
 msgstr ""
 
-#: mcomix/openwith.py:296
+#: mcomix/openwith.py:333
+#, python-format
+msgid "\"%s\" does not have a valid working directory."
+msgstr ""
+
+#: mcomix/openwith.py:336
 #, python-format
 msgid "\"%s\" does not appear to have a valid executable."
 msgstr ""
 
-#: mcomix/openwith.py:304
+#: mcomix/openwith.py:344
 #, fuzzy
 msgid "Command label"
 msgstr "File di commento"
 
-#: mcomix/openwith.py:367
+#: mcomix/openwith.py:421
+#, fuzzy
+msgid "Preview:"
+msgstr "_Pagina precedente"
+
+#: mcomix/openwith.py:431
 msgid "Label"
 msgstr ""
 
-#: mcomix/openwith.py:367
+#: mcomix/openwith.py:431
 #, fuzzy
 msgid "Command"
 msgstr "Commenti"
 
-#: mcomix/openwith.py:367
+#: mcomix/openwith.py:431
 #, fuzzy
 msgid "Working directory"
 msgstr "Cartella precedente"
 
-#: mcomix/openwith.py:382
+#: mcomix/openwith.py:444
 #, fuzzy
 msgid "Disabled in archives"
 msgstr "Archivi tar"
+
+#: mcomix/openwith.py:498
+msgid "Save changes to commands?"
+msgstr ""
+
+#: mcomix/openwith.py:499
+msgid ""
+"You have made changes to the list of external commands that have not been "
+"saved yet. Press \"Yes\" to save all changes, or \"No\" to discard them."
+msgstr ""
 
 #: mcomix/pageselect.py:17 mcomix/ui.py:98 mcomix/ui.py:99
 msgid "_Go"
@@ -2127,29 +2166,29 @@ msgstr "Molto piccola"
 msgid "Custom..."
 msgstr "Personalizza..."
 
-#: mcomix/library/book_area.py:366
+#: mcomix/library/book_area.py:370
 msgid "Set library cover size"
 msgstr "Imposta la dimensione della copertina della libreria"
 
-#: mcomix/library/book_area.py:476
+#: mcomix/library/book_area.py:480
 #, python-format
 msgid "Removed %(num)d book from '%(collection)s'."
 msgid_plural "Removed %(num)d books from '%(collection)s'."
 msgstr[0] "Rimosso %(num)d libro da '%(collection)s'."
 msgstr[1] "Rimossi %(num)d libri da '%(collection)s'."
 
-#: mcomix/library/book_area.py:498 mcomix/library/collection_area.py:190
+#: mcomix/library/book_area.py:502 mcomix/library/collection_area.py:190
 #, python-format
 msgid "Removed %d book from the library."
 msgid_plural "Removed %d books from the library."
 msgstr[0] "Rimossoo %d libro dalla libreria."
 msgstr[1] "Rimossi %d libri dalla libreria."
 
-#: mcomix/library/book_area.py:516
+#: mcomix/library/book_area.py:520
 msgid "Remove books from the library?"
 msgstr "Vuoi rimuovere i libri dalla libreria?"
 
-#: mcomix/library/book_area.py:517
+#: mcomix/library/book_area.py:521
 msgid ""
 "The selected books will be removed from the library and permanently deleted. "
 "Are you sure that you want to continue?"
@@ -2345,8 +2384,12 @@ msgid "Automatically scan for new books when library is _opened"
 msgstr "Cerca automaticamente nuovi libri quando la libreria è _aperta"
 
 #, fuzzy
-#~ msgid "_Preview"
-#~ msgstr "_Pagina precedente"
+#~ msgid "Directory name"
+#~ msgstr "Cartella"
+
+#, fuzzy
+#~ msgid "Preview area"
+#~ msgstr "Archivio precedente"
 
 #~ msgid "Order files by:"
 #~ msgstr "Ordina i file per:"

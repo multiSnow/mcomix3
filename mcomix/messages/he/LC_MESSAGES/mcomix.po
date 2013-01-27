@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mcomix 0.99\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2013-01-11 20:33+0100\n"
+"POT-Creation-Date: 2013-01-27 10:49+0100\n"
 "PO-Revision-Date: 2013-01-07 22:51+0200\n"
 "Last-Translator: Isratine Citizen <genghiskhan@gmx.ca>\n"
 "Language-Team: Hebrew <eliz@gnu.org>\n"
@@ -238,49 +238,49 @@ msgid ""
 msgstr ""
 "התאם ניגודיות (הן אפילה והן בהירות) אוטומטית, באופן נפרד עבור כל פס צבע."
 
-#: mcomix/file_chooser_base_dialog.py:42
+#: mcomix/file_chooser_base_dialog.py:43
 msgid "Open"
 msgstr "פתיחה"
 
-#: mcomix/file_chooser_base_dialog.py:47
+#: mcomix/file_chooser_base_dialog.py:48
 msgid "Save"
 msgstr "שמר"
 
-#: mcomix/file_chooser_base_dialog.py:84
+#: mcomix/file_chooser_base_dialog.py:85
 msgid "All files"
 msgstr "כל הקבצים"
 
-#: mcomix/file_chooser_base_dialog.py:100
+#: mcomix/file_chooser_base_dialog.py:101
 msgid "All Archives"
 msgstr "כל הארכיונים"
 
-#: mcomix/file_chooser_base_dialog.py:103
+#: mcomix/file_chooser_base_dialog.py:104
 msgid "ZIP archives"
 msgstr "ארכיוני ZIP"
 
-#: mcomix/file_chooser_base_dialog.py:106
+#: mcomix/file_chooser_base_dialog.py:107
 msgid "Tar archives"
 msgstr "ארכיוני Tar"
 
-#: mcomix/file_chooser_base_dialog.py:110
+#: mcomix/file_chooser_base_dialog.py:111
 msgid "RAR archives"
 msgstr "ארכיוני RAR"
 
-#: mcomix/file_chooser_base_dialog.py:114
+#: mcomix/file_chooser_base_dialog.py:115
 msgid "7z archives"
 msgstr "ארכיוני 7z"
 
-#: mcomix/file_chooser_base_dialog.py:118
+#: mcomix/file_chooser_base_dialog.py:119
 msgid "LHA archives"
 msgstr "ארכיוני LHA"
 
-#: mcomix/file_chooser_base_dialog.py:229
+#: mcomix/file_chooser_base_dialog.py:236
 #, python-format
 msgid "A file named '%s' already exists. Do you want to replace it?"
 msgstr "קובץ בשם '%s' כבר קיים. האם ברצונך להחליפו?"
 
 # משום שזהו רגע די גורלי, בחרתי להשתמש במשפט ארוך כמה שניתן.
-#: mcomix/file_chooser_base_dialog.py:231
+#: mcomix/file_chooser_base_dialog.py:238
 msgid "Replacing it will overwrite its contents."
 msgstr "החלפתו של הקובץ תשכתב את תכולתו של הקובץ."
 
@@ -322,7 +322,7 @@ msgstr "תמונות TIFF"
 msgid "BMP images"
 msgstr "תמונות BMP"
 
-#: mcomix/file_handler.py:160 mcomix/file_handler.py:271
+#: mcomix/file_handler.py:164 mcomix/file_handler.py:282
 #, python-format
 msgid "No images in '%s'"
 msgstr "לא קיימות תמונות בתוך '%s'"
@@ -330,27 +330,27 @@ msgstr "לא קיימות תמונות בתוך '%s'"
 # לא ניתן לפתוח את ‫%s: הקובץ אינו קיים.
 # לא ניתן לפתוח את %s\n
 # קובץ לא קיים.
-#: mcomix/file_handler.py:265
+#: mcomix/file_handler.py:276
 #, python-format
 msgid "Could not open %s: No such file."
 msgstr "לא ניתן לפתוח את הקובץ ‫%s: קובץ לא קיים."
 
-#: mcomix/file_handler.py:268 mcomix/file_provider.py:135
+#: mcomix/file_handler.py:279 mcomix/file_provider.py:141
 #, python-format
 msgid "Could not open %s: Permission denied."
 msgstr "לא ניתן לפתוח את הקובץ ‫%s הרשאה נדחתה."
 
-#: mcomix/file_handler.py:276
+#: mcomix/file_handler.py:287
 #, python-format
 msgid "Could not open %s: Unknown file type."
 msgstr "לא ניתן לפתוח את הקובץ ‫%s טיפוס קובץ לא מוכר."
 
-#: mcomix/file_handler.py:472
+#: mcomix/file_handler.py:483
 #, python-format
 msgid "Continue reading from page %d?"
 msgstr "להמשיך לקרוא מעמוד %d?"
 
-#: mcomix/file_handler.py:473
+#: mcomix/file_handler.py:484
 #, python-format
 msgid ""
 "You stopped reading here on %(date)s, %(time)s. If you choose \"Yes\", "
@@ -361,12 +361,12 @@ msgstr ""
 "%(page)d. אחרת, העמוד הראשון יוטען במקום."
 
 # ! קובץ העדפות פגום \"%s\", מוחק כעת...
-#: mcomix/file_handler.py:785
+#: mcomix/file_handler.py:796
 #, python-format
 msgid "! Corrupt preferences file \"%s\", deleting..."
 msgstr ""
 
-#: mcomix/file_provider.py:93
+#: mcomix/file_provider.py:112
 #, python-format
 msgid "Invalid path: '%s'"
 msgstr "נתיב שגוי: '%s'"
@@ -377,7 +377,7 @@ msgstr "נתיב שגוי: '%s'"
 msgid "! Could not load icon \"%s\""
 msgstr ""
 
-#: mcomix/image_handler.py:490
+#: mcomix/image_handler.py:496
 msgid "Unknown filetype"
 msgstr "טיפוס קובץ לא מוכר"
 
@@ -517,7 +517,7 @@ msgstr ""
 
 # ! לא ניתן להסיר את הקובץ \"%s\"
 #: mcomix/last_read_page.py:202 mcomix/thumbnail_tools.py:110
-#: mcomix/library/book_area.py:541
+#: mcomix/library/book_area.py:545
 #, python-format
 msgid "! Could not remove file \"%s\""
 msgstr ""
@@ -547,124 +547,165 @@ msgstr "אל תשאל אותי שנית."
 msgid "_Edit"
 msgstr "ע_רוך"
 
-#: mcomix/openwith.py:67
+#: mcomix/openwith.py:69
 #, python-format
 msgid "'%s' is disabled for archives."
 msgstr ""
 
-#: mcomix/openwith.py:80
+#: mcomix/openwith.py:79
+#, fuzzy
+msgid "Invalid working directory."
+msgstr "מדור קודם"
+
+#: mcomix/openwith.py:87
 #, python-format
 msgid "Could not run command %(cmdlabel)s: %(exception)s"
 msgstr ""
 
-#: mcomix/openwith.py:112
-msgid "%a and %A can only be used for archives."
-msgstr ""
-
-#: mcomix/openwith.py:154
+#: mcomix/openwith.py:176
 msgid "Incomplete escape sequence. For a literal '%', use '%%'."
 msgstr ""
 
-#: mcomix/openwith.py:167
-#, python-format
-msgid "Invalid escape sequence: %s"
+#: mcomix/openwith.py:180
+msgid "Incomplete quote sequence. For a literal '\"', use '%\"'."
 msgstr ""
 
-#: mcomix/openwith.py:206
+#: mcomix/openwith.py:197
+#, fuzzy
+msgid "Archive-related variables can only be used for archives."
+msgstr "משתנים שונים"
+
+#: mcomix/openwith.py:219
+#, python-format
+msgid "Invalid escape sequence: %%%s"
+msgstr ""
+
+#: mcomix/openwith.py:229
 msgid "Edit external commands"
 msgstr "עריכת פקודות חיצוניות"
 
-#: mcomix/openwith.py:224
+#: mcomix/openwith.py:239
+msgid "Add _separator"
+msgstr ""
+
+#: mcomix/openwith.py:250
+#, fuzzy
+msgid "Run _command"
+msgstr "פקודה"
+
+#: mcomix/openwith.py:255
 #, fuzzy
 msgid "Image-related variables"
 msgstr "משתנים שונים"
 
-#: mcomix/openwith.py:225
+#: mcomix/openwith.py:256
 msgid "File path"
 msgstr "נתיב קובץ"
 
-#: mcomix/openwith.py:226
+#: mcomix/openwith.py:257
 #, fuzzy
 msgid "Image directory path"
 msgstr "מדור הבא"
 
-#: mcomix/openwith.py:227 mcomix/preferences_dialog.py:527
+#: mcomix/openwith.py:258 mcomix/preferences_dialog.py:527
 msgid "File name"
 msgstr "שם קובץ"
 
-#: mcomix/openwith.py:228
-msgid "Directory name"
-msgstr "שם מדור"
+#: mcomix/openwith.py:259
+#, fuzzy
+msgid "Image directory name"
+msgstr "מדור הבא"
 
-#: mcomix/openwith.py:229
+#: mcomix/openwith.py:260
 #, fuzzy
 msgid "Archive-related variables"
 msgstr "משתנים שונים"
 
-#: mcomix/openwith.py:230
+#: mcomix/openwith.py:261
 msgid "Archive path"
 msgstr "נתיב ארכיון"
 
-#: mcomix/openwith.py:231 mcomix/openwith.py:233
+#: mcomix/openwith.py:262
 #, fuzzy
 msgid "Archive's directory path"
 msgstr "נתיב ארכיון"
 
-#: mcomix/openwith.py:232
+#: mcomix/openwith.py:263
 msgid "Archive name"
 msgstr "שם ארכיון"
 
-#: mcomix/openwith.py:234
+#: mcomix/openwith.py:264
+#, fuzzy
+msgid "Archive's directory name"
+msgstr "נתיב ארכיון"
+
+#: mcomix/openwith.py:265
 msgid "Miscellaneous variables"
 msgstr "משתנים שונים"
 
-#: mcomix/openwith.py:235
+#: mcomix/openwith.py:266
 msgid "Backslash or slash, depending on OS"
 msgstr "לוכסן אחורי או לוכסן, תלוי במערכת הפעלה"
 
-#: mcomix/openwith.py:236
+#: mcomix/openwith.py:267
 msgid "Literal quote"
 msgstr ""
 
-#: mcomix/openwith.py:237
+#: mcomix/openwith.py:268
 #, python-format
 msgid "Literal % character"
 msgstr ""
 
-#: mcomix/openwith.py:241 mcomix/openwith.py:340
-msgid "Preview area"
-msgstr "שטח תצוגה מקדימה"
-
-#: mcomix/openwith.py:281
+#: mcomix/openwith.py:323
 msgid "This is a separator pseudo-command."
 msgstr ""
 
-#: mcomix/openwith.py:296
+#: mcomix/openwith.py:333
+#, python-format
+msgid "\"%s\" does not have a valid working directory."
+msgstr ""
+
+#: mcomix/openwith.py:336
 #, python-format
 msgid "\"%s\" does not appear to have a valid executable."
 msgstr ""
 
-#: mcomix/openwith.py:304
+#: mcomix/openwith.py:344
 msgid "Command label"
 msgstr "סיווג פקודה"
 
-#: mcomix/openwith.py:367
+#: mcomix/openwith.py:421
+#, fuzzy
+msgid "Preview:"
+msgstr "_תצוגה מקדימה"
+
+#: mcomix/openwith.py:431
 msgid "Label"
 msgstr ""
 
-#: mcomix/openwith.py:367
+#: mcomix/openwith.py:431
 msgid "Command"
 msgstr "פקודה"
 
-#: mcomix/openwith.py:367
+#: mcomix/openwith.py:431
 #, fuzzy
 msgid "Working directory"
 msgstr "מדור קודם"
 
-#: mcomix/openwith.py:382
+#: mcomix/openwith.py:444
 #, fuzzy
 msgid "Disabled in archives"
 msgstr "ארכיוני Tar"
+
+#: mcomix/openwith.py:498
+msgid "Save changes to commands?"
+msgstr ""
+
+#: mcomix/openwith.py:499
+msgid ""
+"You have made changes to the list of external commands that have not been "
+"saved yet. Press \"Yes\" to save all changes, or \"No\" to discard them."
+msgstr ""
 
 #: mcomix/pageselect.py:17 mcomix/ui.py:98 mcomix/ui.py:99
 msgid "_Go"
@@ -2161,30 +2202,30 @@ msgstr "זעיר"
 msgid "Custom..."
 msgstr "מותאם..."
 
-#: mcomix/library/book_area.py:366
+#: mcomix/library/book_area.py:370
 msgid "Set library cover size"
 msgstr "קבע כריכה עבור הספרייה"
 
 # אולי מוטב יהיה להחליף את המילה from "מן" אל "מהאוסף"
-#: mcomix/library/book_area.py:476
+#: mcomix/library/book_area.py:480
 #, python-format
 msgid "Removed %(num)d book from '%(collection)s'."
 msgid_plural "Removed %(num)d books from '%(collection)s'."
 msgstr[0] "הוסרה חוברת %(num)d מהאוסף '%(collection)s'."
 msgstr[1] "הוסרו %(num)d חוברות מהאוסף '%(collection)s'."
 
-#: mcomix/library/book_area.py:498 mcomix/library/collection_area.py:190
+#: mcomix/library/book_area.py:502 mcomix/library/collection_area.py:190
 #, python-format
 msgid "Removed %d book from the library."
 msgid_plural "Removed %d books from the library."
 msgstr[0] "הוסרה חוברת %d מן הספרייה."
 msgstr[1] "הוסרו %d חוברות מן הספרייה."
 
-#: mcomix/library/book_area.py:516
+#: mcomix/library/book_area.py:520
 msgid "Remove books from the library?"
 msgstr "להסיר חוברות מן הספרייה?"
 
-#: mcomix/library/book_area.py:517
+#: mcomix/library/book_area.py:521
 msgid ""
 "The selected books will be removed from the library and permanently deleted. "
 "Are you sure that you want to continue?"
@@ -2388,6 +2429,12 @@ msgstr "הוס_ף"
 msgid "Automatically scan for new books when library is _opened"
 msgstr "סרוק חוברות אוטומטית כאשר הספרייה הינה _פתוחה"
 
+#~ msgid "Directory name"
+#~ msgstr "שם מדור"
+
+#~ msgid "Preview area"
+#~ msgstr "שטח תצוגה מקדימה"
+
 #~ msgid "Variables"
 #~ msgstr "משתנים"
 
@@ -2399,9 +2446,6 @@ msgstr "סרוק חוברות אוטומטית כאשר הספרייה הינה 
 
 #~ msgid "Directory containing files"
 #~ msgstr "מדור מכיל קבצים"
-
-#~ msgid "_Preview"
-#~ msgstr "_תצוגה מקדימה"
 
 #~ msgid "Order files by:"
 #~ msgstr "סידור קבצים לפי:"
