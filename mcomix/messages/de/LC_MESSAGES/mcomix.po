@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.98\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2013-01-27 10:49+0100\n"
+"POT-Creation-Date: 2013-02-08 20:08+0100\n"
 "PO-Revision-Date: 2012-04-03 16:41+GMT\n"
 "Last-Translator: Moritz Brunner <oddegamra@gmx.org>\n"
 "Language-Team: \n"
@@ -478,20 +478,21 @@ msgstr "Intelligent nach unten rollen"
 msgid "Show OSD panel"
 msgstr "Informationsbereich anzeigen"
 
-#: mcomix/keybindings.py:66 mcomix/keybindings.py:67
+#: mcomix/keybindings.py:66 mcomix/keybindings.py:71
 msgid "User Interface"
 msgstr "Benutzeroberfläche"
 
-#: mcomix/keybindings.py:67
-msgid "Execute first external command"
+#: mcomix/keybindings.py:71
+#, fuzzy
+msgid "Execute external command"
 msgstr "Erstes externes Programm ausführen"
 
-#: mcomix/keybindings.py:103
+#: mcomix/keybindings.py:106
 #, python-format
 msgid "Keybinding for \"%(action)s\" overrides hotkey for another action."
 msgstr "Taste für \"%(action)s\" überschreibt andere Aktion mit selber Taste."
 
-#: mcomix/keybindings.py:156
+#: mcomix/keybindings.py:159
 #, python-format
 msgid "Couldn't load keybindings: %s"
 msgstr "Konnte Tastaturbelegung nicht laden: %s"
@@ -531,164 +532,164 @@ msgstr "Nicht noch einmal fragen."
 msgid "_Edit"
 msgstr "Bea_rbeiten"
 
-#: mcomix/openwith.py:69
+#: mcomix/openwith.py:70
 #, fuzzy, python-format
 msgid "'%s' is disabled for archives."
 msgstr "%a und %A können nur mit Archiven verwendet werden."
 
-#: mcomix/openwith.py:79
+#: mcomix/openwith.py:80
 #, fuzzy
 msgid "Invalid working directory."
 msgstr "Vorheriges Verzeichnis"
 
-#: mcomix/openwith.py:87
+#: mcomix/openwith.py:92
 #, python-format
 msgid "Could not run command %(cmdlabel)s: %(exception)s"
 msgstr "Konnte Programm %(cmdlabel)s nicht ausführen: %(exception)s "
 
-#: mcomix/openwith.py:176
+#: mcomix/openwith.py:181
 msgid "Incomplete escape sequence. For a literal '%', use '%%'."
 msgstr ""
 "Unvollständige Escape-Sequenz. Benutze '%%', um das '%'-Zeichen zu erhalten."
 
-#: mcomix/openwith.py:180
+#: mcomix/openwith.py:185
 #, fuzzy
 msgid "Incomplete quote sequence. For a literal '\"', use '%\"'."
 msgstr ""
 "Unvollständige Escape-Sequenz. Benutze '%%', um das '%'-Zeichen zu erhalten."
 
-#: mcomix/openwith.py:197
+#: mcomix/openwith.py:202
 #, fuzzy
 msgid "Archive-related variables can only be used for archives."
 msgstr "%a und %A können nur mit Archiven verwendet werden."
 
-#: mcomix/openwith.py:219
+#: mcomix/openwith.py:224
 #, fuzzy, python-format
 msgid "Invalid escape sequence: %%%s"
 msgstr "Ungültige Escape-Sequenz: %s"
 
-#: mcomix/openwith.py:229
+#: mcomix/openwith.py:234
 msgid "Edit external commands"
 msgstr "Externe Programme bearbeiten"
 
-#: mcomix/openwith.py:239
+#: mcomix/openwith.py:244
 msgid "Add _separator"
 msgstr ""
 
-#: mcomix/openwith.py:250
+#: mcomix/openwith.py:255
 #, fuzzy
 msgid "Run _command"
 msgstr "Befehl"
 
-#: mcomix/openwith.py:255
+#: mcomix/openwith.py:260
 #, fuzzy
 msgid "Image-related variables"
 msgstr "Verschiedene Variablen"
 
-#: mcomix/openwith.py:256
+#: mcomix/openwith.py:261
 msgid "File path"
 msgstr "Dateipfad"
 
-#: mcomix/openwith.py:257
+#: mcomix/openwith.py:262
 #, fuzzy
 msgid "Image directory path"
 msgstr "Nächstes Verzeichnis"
 
-#: mcomix/openwith.py:258 mcomix/preferences_dialog.py:527
+#: mcomix/openwith.py:263 mcomix/preferences_dialog.py:527
 msgid "File name"
 msgstr "Dateiname"
 
-#: mcomix/openwith.py:259
+#: mcomix/openwith.py:264
 #, fuzzy
 msgid "Image directory name"
 msgstr "Nächstes Verzeichnis"
 
-#: mcomix/openwith.py:260
+#: mcomix/openwith.py:265
 #, fuzzy
 msgid "Archive-related variables"
 msgstr "Verschiedene Variablen"
 
-#: mcomix/openwith.py:261
+#: mcomix/openwith.py:266
 msgid "Archive path"
 msgstr "Archivpfad"
 
-#: mcomix/openwith.py:262
+#: mcomix/openwith.py:267
 #, fuzzy
 msgid "Archive's directory path"
 msgstr "Archivpfad"
 
-#: mcomix/openwith.py:263
+#: mcomix/openwith.py:268
 msgid "Archive name"
 msgstr "Archiv-Name"
 
-#: mcomix/openwith.py:264
+#: mcomix/openwith.py:269
 #, fuzzy
 msgid "Archive's directory name"
 msgstr "Archivpfad"
 
-#: mcomix/openwith.py:265
+#: mcomix/openwith.py:270
 msgid "Miscellaneous variables"
 msgstr "Verschiedene Variablen"
 
-#: mcomix/openwith.py:266
+#: mcomix/openwith.py:271
 msgid "Backslash or slash, depending on OS"
 msgstr "Schrägstrich oder Backslash, abh. vom OS"
 
-#: mcomix/openwith.py:267
+#: mcomix/openwith.py:272
 msgid "Literal quote"
 msgstr "Anführungszeichen"
 
-#: mcomix/openwith.py:268
+#: mcomix/openwith.py:273
 #, python-format
 msgid "Literal % character"
 msgstr "Prozent-Zeichen"
 
-#: mcomix/openwith.py:323
+#: mcomix/openwith.py:328
 msgid "This is a separator pseudo-command."
 msgstr ""
 
-#: mcomix/openwith.py:333
+#: mcomix/openwith.py:338
 #, python-format
 msgid "\"%s\" does not have a valid working directory."
 msgstr ""
 
-#: mcomix/openwith.py:336
+#: mcomix/openwith.py:341
 #, python-format
 msgid "\"%s\" does not appear to have a valid executable."
 msgstr ""
 
-#: mcomix/openwith.py:344
+#: mcomix/openwith.py:349
 msgid "Command label"
 msgstr "Programm-Bezeichnung"
 
-#: mcomix/openwith.py:421
+#: mcomix/openwith.py:426
 #, fuzzy
 msgid "Preview:"
 msgstr "_Vorschau"
 
-#: mcomix/openwith.py:431
+#: mcomix/openwith.py:436
 msgid "Label"
 msgstr ""
 
-#: mcomix/openwith.py:431
+#: mcomix/openwith.py:436
 msgid "Command"
 msgstr "Befehl"
 
-#: mcomix/openwith.py:431
+#: mcomix/openwith.py:436
 #, fuzzy
 msgid "Working directory"
 msgstr "Vorheriges Verzeichnis"
 
-#: mcomix/openwith.py:444
+#: mcomix/openwith.py:449
 #, fuzzy
 msgid "Disabled in archives"
 msgstr "Tar-Archive"
 
-#: mcomix/openwith.py:498
+#: mcomix/openwith.py:503
 msgid "Save changes to commands?"
 msgstr ""
 
-#: mcomix/openwith.py:499
+#: mcomix/openwith.py:504
 msgid ""
 "You have made changes to the list of external commands that have not been "
 "saved yet. Press \"Yes\" to save all changes, or \"No\" to discard them."
@@ -1265,12 +1266,12 @@ msgstr "Bilinear"
 msgid "Hyperbolic (slow)"
 msgstr "Hyperbolisch (langsam)"
 
-#: mcomix/process.py:50
+#: mcomix/process.py:51
 #, python-format
 msgid "! Error spawning process \"%(command)s\": %(error)s."
 msgstr "! Prozess \"%(command)s\" konnte nicht gestartet werden: %(error)s."
 
-#: mcomix/process.py:52
+#: mcomix/process.py:53
 #, python-format
 msgid "\"%(command)s\" must be on your system PATH to be found."
 msgstr ""

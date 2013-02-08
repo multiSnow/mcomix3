@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.93\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2013-01-27 10:49+0100\n"
+"POT-Creation-Date: 2013-02-08 20:08+0100\n"
 "PO-Revision-Date: 2013-02-06 23:50+0100\n"
 "Last-Translator: Frédéric Chateaux <fredchat@frenchmozilla.org>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
@@ -477,22 +477,23 @@ msgstr "Défilement intelligent vers le bas"
 msgid "Show OSD panel"
 msgstr "Afficher le panneau OSD"
 
-#: mcomix/keybindings.py:66 mcomix/keybindings.py:67
+#: mcomix/keybindings.py:66 mcomix/keybindings.py:71
 msgid "User Interface"
 msgstr "Interface utilisateur"
 
-#: mcomix/keybindings.py:67
-msgid "Execute first external command"
+#: mcomix/keybindings.py:71
+#, fuzzy
+msgid "Execute external command"
 msgstr "Exécuter la première commande externe"
 
-#: mcomix/keybindings.py:103
+#: mcomix/keybindings.py:106
 #, python-format
 msgid "Keybinding for \"%(action)s\" overrides hotkey for another action."
 msgstr ""
 "Le raccourci pour \"% (l'action) s\" remplace le raccourci clavier d'une "
 "autre action."
 
-#: mcomix/keybindings.py:156
+#: mcomix/keybindings.py:159
 #, python-format
 msgid "Couldn't load keybindings: %s"
 msgstr ""
@@ -534,165 +535,165 @@ msgstr "Ne plus demander."
 msgid "_Edit"
 msgstr "É_dition"
 
-#: mcomix/openwith.py:69
+#: mcomix/openwith.py:70
 #, fuzzy, python-format
 msgid "'%s' is disabled for archives."
 msgstr "%a et %A ne peuvent être utilisées que pour les archives."
 
-#: mcomix/openwith.py:79
+#: mcomix/openwith.py:80
 #, fuzzy
 msgid "Invalid working directory."
 msgstr "Inverse la direction du défilement intelligent."
 
-#: mcomix/openwith.py:87
+#: mcomix/openwith.py:92
 #, python-format
 msgid "Could not run command %(cmdlabel)s: %(exception)s"
 msgstr "Impossible d'exécuter la commande %(cmdlabel)s&nbsp;: %(exception)s"
 
-#: mcomix/openwith.py:176
+#: mcomix/openwith.py:181
 msgid "Incomplete escape sequence. For a literal '%', use '%%'."
 msgstr ""
 "Séquence d'échappement incomplète. Pour une '%' littérale, utilisez '%%'."
 
-#: mcomix/openwith.py:180
+#: mcomix/openwith.py:185
 #, fuzzy
 msgid "Incomplete quote sequence. For a literal '\"', use '%\"'."
 msgstr ""
 "Séquence d'échappement incomplète. Pour une '%' littérale, utilisez '%%'."
 
-#: mcomix/openwith.py:197
+#: mcomix/openwith.py:202
 #, fuzzy
 msgid "Archive-related variables can only be used for archives."
 msgstr "%a et %A ne peuvent être utilisées que pour les archives."
 
-#: mcomix/openwith.py:219
+#: mcomix/openwith.py:224
 #, fuzzy, python-format
 msgid "Invalid escape sequence: %%%s"
 msgstr "Séquence d'échappement non valide&nbsp;: %s"
 
-#: mcomix/openwith.py:229
+#: mcomix/openwith.py:234
 msgid "Edit external commands"
 msgstr "Éditer les commandes externes"
 
-#: mcomix/openwith.py:239
+#: mcomix/openwith.py:244
 msgid "Add _separator"
 msgstr ""
 
-#: mcomix/openwith.py:250
+#: mcomix/openwith.py:255
 #, fuzzy
 msgid "Run _command"
 msgstr "Commande"
 
-#: mcomix/openwith.py:255
+#: mcomix/openwith.py:260
 #, fuzzy
 msgid "Image-related variables"
 msgstr "Autres variables"
 
-#: mcomix/openwith.py:256
+#: mcomix/openwith.py:261
 msgid "File path"
 msgstr "Chemin du fichier"
 
-#: mcomix/openwith.py:257
+#: mcomix/openwith.py:262
 #, fuzzy
 msgid "Image directory path"
 msgstr "Répertoire suivant"
 
-#: mcomix/openwith.py:258 mcomix/preferences_dialog.py:527
+#: mcomix/openwith.py:263 mcomix/preferences_dialog.py:527
 msgid "File name"
 msgstr "Nom de fichier"
 
-#: mcomix/openwith.py:259
+#: mcomix/openwith.py:264
 #, fuzzy
 msgid "Image directory name"
 msgstr "Nom du répertoire"
 
-#: mcomix/openwith.py:260
+#: mcomix/openwith.py:265
 #, fuzzy
 msgid "Archive-related variables"
 msgstr "Autres variables"
 
-#: mcomix/openwith.py:261
+#: mcomix/openwith.py:266
 msgid "Archive path"
 msgstr "Chemin de l'archive"
 
-#: mcomix/openwith.py:262
+#: mcomix/openwith.py:267
 #, fuzzy
 msgid "Archive's directory path"
 msgstr "Chemin de l'archive"
 
-#: mcomix/openwith.py:263
+#: mcomix/openwith.py:268
 msgid "Archive name"
 msgstr "Nom de l'archive"
 
-#: mcomix/openwith.py:264
+#: mcomix/openwith.py:269
 #, fuzzy
 msgid "Archive's directory name"
 msgstr "Nom du répertoire"
 
-#: mcomix/openwith.py:265
+#: mcomix/openwith.py:270
 msgid "Miscellaneous variables"
 msgstr "Autres variables"
 
-#: mcomix/openwith.py:266
+#: mcomix/openwith.py:271
 msgid "Backslash or slash, depending on OS"
 msgstr ""
 "Barre oblique ou barre oblique inversée, suivant le système d'exploitation"
 
-#: mcomix/openwith.py:267
+#: mcomix/openwith.py:272
 msgid "Literal quote"
 msgstr "Citation littérale"
 
-#: mcomix/openwith.py:268
+#: mcomix/openwith.py:273
 #, python-format
 msgid "Literal % character"
 msgstr "Caractère % littéral"
 
-#: mcomix/openwith.py:323
+#: mcomix/openwith.py:328
 msgid "This is a separator pseudo-command."
 msgstr ""
 
-#: mcomix/openwith.py:333
+#: mcomix/openwith.py:338
 #, python-format
 msgid "\"%s\" does not have a valid working directory."
 msgstr ""
 
-#: mcomix/openwith.py:336
+#: mcomix/openwith.py:341
 #, python-format
 msgid "\"%s\" does not appear to have a valid executable."
 msgstr ""
 
-#: mcomix/openwith.py:344
+#: mcomix/openwith.py:349
 msgid "Command label"
 msgstr "Libellé de la commande"
 
-#: mcomix/openwith.py:421
+#: mcomix/openwith.py:426
 #, fuzzy
 msgid "Preview:"
 msgstr "_Prévisualisation"
 
-#: mcomix/openwith.py:431
+#: mcomix/openwith.py:436
 msgid "Label"
 msgstr ""
 
-#: mcomix/openwith.py:431
+#: mcomix/openwith.py:436
 msgid "Command"
 msgstr "Commande"
 
-#: mcomix/openwith.py:431
+#: mcomix/openwith.py:436
 #, fuzzy
 msgid "Working directory"
 msgstr "Répertoire précédent"
 
-#: mcomix/openwith.py:444
+#: mcomix/openwith.py:449
 #, fuzzy
 msgid "Disabled in archives"
 msgstr "Archives Tar"
 
-#: mcomix/openwith.py:498
+#: mcomix/openwith.py:503
 msgid "Save changes to commands?"
 msgstr ""
 
-#: mcomix/openwith.py:499
+#: mcomix/openwith.py:504
 msgid ""
 "You have made changes to the list of external commands that have not been "
 "saved yet. Press \"Yes\" to save all changes, or \"No\" to discard them."
@@ -1265,12 +1266,12 @@ msgstr "Bilinéaire"
 msgid "Hyperbolic (slow)"
 msgstr "Hyperbolique (lent)"
 
-#: mcomix/process.py:50
+#: mcomix/process.py:51
 #, python-format
 msgid "! Error spawning process \"%(command)s\": %(error)s."
 msgstr "! Erreur lors du processus \"%(command)s\": %(error)s"
 
-#: mcomix/process.py:52
+#: mcomix/process.py:53
 #, python-format
 msgid "\"%(command)s\" must be on your system PATH to be found."
 msgstr "\"%(command)s\" doit être dans le PATH de votre système."
