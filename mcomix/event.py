@@ -151,10 +151,12 @@ class EventHandler:
             ['Tab'],
             self._window.show_info_panel)
 
-        # Execute external command. The first command in the list will be run.
-        manager.register('execute command',
-            ['F8'],
-            self._execute_command)
+        # Execute external command. Bind keys from 1 to 9 to commands 1 to 9.
+        manager.register('execute command 1', ['F8', '1'],
+                         self._execute_command, args=[0])
+        for i in range(2, 10):
+            manager.register('execute command %d' % i, ['%d' % i],
+                             self._execute_command, args=[i - 1])
 
     def key_press_event(self, widget, event, *args):
         """Handle key press events on the main window."""
@@ -605,11 +607,13 @@ class EventHandler:
             # This path should not be reached.
             assert False, "Programmer is moron, incorrect assertion."
 
-    def _execute_command(self):
+    def _execute_command(self, cmdindex):
+        """ Execute an external command. cmdindex should be an integer from 0 to 9,
+        representing the command that should be executed. """
         manager = openwith.OpenWithManager()
-        commands = manager.get_commands()
-        if commands:
-            commands[0].execute(self._window)
+        commands = [cmd for cmd in manager.get_commands() if not cmd.is_separator()]
+        if len(commands) > cmdindex:
+            commands[cmdindex].execute(self._window)
 
 
 def _get_latest_event_of_same_type(event):

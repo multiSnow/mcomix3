@@ -64,8 +64,11 @@ BINDING_INFO = {
     'smart scroll down' : { 'title' : _('Smart scroll down'), 'group' : _('Reading') },
 
     'osd panel' : { 'title' : _('Show OSD panel'), 'group' : _('User Interface') },
-    'execute command' : { 'title' : _('Execute first external command'), 'group' : _('User Interface') }
 }
+
+# Generate 9 entries for executing command 1 to 9
+for i in range(1, 10):
+    BINDING_INFO['execute command %d' %i] = { 'title' : _('Execute external command') + u' (%d)' % i , 'group' : _('User Interface') }
 
 
 class _KeybindingManager(object):
