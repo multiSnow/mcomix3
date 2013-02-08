@@ -8,6 +8,7 @@ import gobject
 
 from mcomix.preferences import prefs
 from mcomix import message_dialog
+from mcomix import process
 
 
 class OpenWithException(Exception): pass
@@ -80,8 +81,12 @@ class OpenWithCommand(object):
 
             # Redirect process output to null here?
             # FIXME: Close process when finished to avoid zombie process
-            process = subprocess.Popen(self.parse(window))
-            del process
+            args = self.parse(window)
+            if sys.platform == 'win32':
+                proc = process.Win32Popen(args)
+            else:
+                proc = subprocess.Popen(args)
+            del proc
             os.chdir(current_dir)
         except Exception, e:
             text = _("Could not run command %(cmdlabel)s: %(exception)s") % \
