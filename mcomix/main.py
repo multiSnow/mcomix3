@@ -29,6 +29,7 @@ from mcomix import keybindings
 from mcomix import zoom
 from mcomix import bookmark_backend
 from mcomix import message_dialog
+from mcomix import callback
 from mcomix.library import backend
 
 
@@ -279,6 +280,7 @@ class MainWindow(gtk.Window):
         # isn't properly unset.
         self.imagehandler.force_single_step = False
 
+    @callback.Callback
     def draw_image(self, at_bottom=False, scroll=False):
         """Draw the current pages and update the titlebar and statusbar.
         """
