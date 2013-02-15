@@ -309,6 +309,10 @@ class OpenWithEditor(gtk.Dialog):
 
     def get_command(self):
         """ Retrieves the selected command object. """
+        selection = self._command_tree.get_selection()
+        if not selection:
+            return None
+
         model, iter = self._command_tree.get_selection().get_selected()
         if (iter and model.iter_is_valid(iter)):
             command = OpenWithCommand(*model.get(iter, 0, 1, 2, 3))
