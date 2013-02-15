@@ -474,8 +474,8 @@ class OpenWithEditor(gtk.Dialog):
 
     def _text_changed(self, renderer, path, new_text, column):
         """ Called when the user edits a field in the table. """
-        # Prevent changing command to separator
-        if column == 0 and re.match(r'^-+$', new_text):
+        # Prevent changing command to separator, and completely removing label
+        if column == 0 and (not new_text.strip() or re.match(r'^-+$', new_text)):
             return
 
         model = self._command_tree.get_model()
