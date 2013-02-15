@@ -91,7 +91,7 @@ class MainUI(gtk.UIManager):
             ('menu_bookmarks', None, _('_Bookmarks')),
             ('menu_toolbars', None, _('T_oolbars')),
             ('menu_edit', None, _('_Edit')),
-            ('menu_open_with', None, _('_Open with')),
+            ('menu_open_with', gtk.STOCK_OPEN, _('_Open with')),
             ('menu_file', None, _('_File')),
             ('menu_view', None, _('_View')),
             ('menu_view_popup', 'comix-image', _('_View')),
