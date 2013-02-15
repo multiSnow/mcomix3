@@ -101,8 +101,14 @@ class OpenWithCommand(object):
         if len(args) == 0:
             return False
 
+        if self.is_valid_workdir(window):
+            workdir = self.parse(window, text=self.get_cwd())[0]
+        else:
+            workdir = os.getcwd()
+
         arg = args[0]
-        if os.path.isfile(arg) and os.access(arg, os.R_OK|os.X_OK):
+        fullcmd = os.path.join(workdir, arg)
+        if os.path.isfile(fullcmd) and os.access(fullcmd, os.R_OK|os.X_OK):
             return True
 
         for path in os.environ["PATH"].split(os.pathsep):
