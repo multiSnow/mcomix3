@@ -114,6 +114,7 @@ class _KeybindingManager(object):
         method is a no-op. """
         if keybinding in self._callbacks:
             action, func, args, kwargs = self._callbacks[keybinding]
+            self._window.emit_stop_by_name('key_press_event')
             return func(*args, **kwargs)
 
         # Some keys enable additional modifiers (NumLock enables GDK_MOD2_MASK),
@@ -123,11 +124,13 @@ class _KeybindingManager(object):
             keycode, flags = binding
             if keycode == keybinding[0] and flags & keybinding[1]:
                 action, func, args, kwargs = value
+                self._window.emit_stop_by_name('key_press_event')
                 return func(*args, **kwargs)
 
         # Some keys may need modifiers to be typeable, but may be registered without.
         if (keybinding[0], 0) in self._callbacks:
             action, func, args, kwargs = self._callbacks[(keybinding[0], 0)]
+            self._window.emit_stop_by_name('key_press_event')
             return func(*args, **kwargs)
 
     def save(self):
@@ -177,14 +180,13 @@ class _KeybindingManager(object):
 _manager = None
 
 
-def keybinding_manager():
+def keybinding_manager(window):
     """ Returns a singleton instance of the keybinding manager. """
     global _manager
     if _manager:
         return _manager
     else:
-        from mcomix import main
-        _manager = _KeybindingManager(main.main_window())
+        _manager = _KeybindingManager(window)
         return _manager
 
 # vim: expandtab:sw=4:ts=4

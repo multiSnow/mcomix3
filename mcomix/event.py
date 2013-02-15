@@ -50,7 +50,7 @@ class EventHandler:
         """ Registers keyboard events and their default binings, and hooks
         them up with their respective callback functions. """
 
-        manager = keybindings.keybinding_manager()
+        manager = keybindings.keybinding_manager(self._window)
 
         # Navigation keys that work in addition to the accelerators in ui.py
         manager.register('previous page',
@@ -165,7 +165,7 @@ class EventHandler:
         self._scroll_protection = False
 
         # Dispatch keyboard input handling
-        manager = keybindings.keybinding_manager()
+        manager = keybindings.keybinding_manager(self._window)
         manager.execute((event.keyval, event.state))
 
         # ---------------------------------------------------------------

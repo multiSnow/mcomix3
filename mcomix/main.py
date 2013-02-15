@@ -1113,7 +1113,7 @@ class MainWindow(gtk.Window):
 
         # Write keyboard accelerator map
         gtk.accel_map_save(constants.KEYBINDINGS_PATH)
-        keybindings.keybinding_manager().save()
+        keybindings.keybinding_manager(self).save()
 
     def save_and_terminate_program(self, *args):
         prefs['previous quit was quit and save'] = True
