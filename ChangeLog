@@ -57,6 +57,8 @@ MComix 1.00
     - "Reset zoom" is now bound to CTRL-0 and KeyPad0 by default. Previously,
       CTRL-0 and CTRL-KeyPad0 were used.
 
+    - Added thumbnailer file for Gnome3 integration.
+
     - Updated traditional Chinese translation (by Wayne Su).
 
     - Updated Hebrew translation (by Isratine Citizen).
