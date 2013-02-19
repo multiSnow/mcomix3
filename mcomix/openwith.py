@@ -357,12 +357,24 @@ class OpenWithEditor(gtk.Dialog):
 
     def _add_command(self, button):
         """ Add a new empty label-command line to the list. """
-        self._command_tree.get_model().append((_('Command label'), '', '', gtk.FALSE, gtk.TRUE))
+        row = (_('Command label'), '', '', gtk.FALSE, gtk.TRUE)
+        selection = self._command_tree.get_selection()
+        if selection and selection.get_selected()[1]:
+            model, iter = selection.get_selected()
+            model.insert_before(iter, row)
+        else:
+            self._command_tree.get_model().append(row)
         self._changed = True
 
     def _add_sep_command(self, button):
         """ Adds a new separator line. """
-        self._command_tree.get_model().append(('-', '', '', gtk.FALSE, gtk.FALSE))
+        row = ('-', '', '', gtk.FALSE, gtk.FALSE)
+        selection = self._command_tree.get_selection()
+        if selection and selection.get_selected()[1]:
+            model, iter = selection.get_selected()
+            model.insert_before(iter, row)
+        else:
+            self._command_tree.get_model().append(row)
         self._changed = True
 
     def _remove_command(self, button):
