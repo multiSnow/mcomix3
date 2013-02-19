@@ -354,8 +354,17 @@ class _LibraryBackend:
         if the collection was successfully added.
         """
         try:
-            self._con.execute('''insert into Collection
-                (name) values (?)''', (name,))
+            # The Recent pseudo collection initializes the lowest rowid
+            # with -2, meaning that instead of starting from 1,
+            # auto-incremental will start from -1. Avoid this.
+            cur = self._con.execute('''select max(id) from collection''')
+            maxid = cur.fetchone()
+            if maxid is not None and maxid < 1:
+                self._con.execute('''insert into collection
+                    (id, name) values (?, ?)''', (1, name))
+            else:
+                self._con.execute('''insert into Collection
+                    (name) values (?)''', (name,))
             return True
         except dbapi2.Error:
             log.error( _('! Could not add collection "%s"'), name )
