@@ -560,6 +560,9 @@ class MainWindow(gtk.Window):
         if self.imagehandler.set_page(num):
             self.new_page(at_bottom=at_bottom)
             self.slideshow.update_delay()
+            return True
+        else:
+            return False
 
     def next_page(self, *args):
         new_page_number = self.imagehandler.next_page()
@@ -569,7 +572,8 @@ class MainWindow(gtk.Window):
 
     def next_page_fast_forward(self, *args):
         page_num = self.imagehandler.get_current_page()
-        self.set_page(page_num + 10)
+        if not self.set_page(page_num + 10):
+            self.last_page()
 
     def previous_page(self, *args):
         new_page_number = self.imagehandler.previous_page()
@@ -578,7 +582,8 @@ class MainWindow(gtk.Window):
 
     def previous_page_fast_forward(self, *args):
         page_num = self.imagehandler.get_current_page()
-        self.set_page(page_num - 10)
+        if not self.set_page(page_num - 10):
+            self.first_page()
 
     def first_page(self, *args):
         new_page_number = self.imagehandler.first_page()

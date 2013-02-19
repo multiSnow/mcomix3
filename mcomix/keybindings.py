@@ -107,6 +107,7 @@ class _KeybindingManager(object):
             if keycode in self._callbacks:
                 log.warning(_('Keybinding for "%(action)s" overrides hotkey for another action.'),
                         {"action": name})
+                log.debug('Binding %s overrides %r' % (keycode, self._callbacks[keycode]))
 
             self._callbacks[keycode] = (name, callback, args, kwargs)
 

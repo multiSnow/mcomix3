@@ -57,6 +57,9 @@ MComix 1.00
     - "Reset zoom" is now bound to CTRL-0 and KeyPad0 by default. Previously,
       CTRL-0 and CTRL-KeyPad0 were used.
 
+    - Using the Shift key with one of the next page / previous page
+      keybindings will advance or go back by 10 pages instead of only one.
+
     - Added thumbnailer file for Gnome3 integration. Please note that
       comicthumb is unmaintained and not installed by MComix' setup routine
       by default.

@@ -61,8 +61,11 @@ class EventHandler:
             self._window.next_page)
 
         manager.register('previous page ff',
-            ['<Shift>Page_down', '<Shift>KP_Page_down', '<Shift>Backspace', '<Shift><Mod1>Left'],
+            ['<Shift>Page_Up', '<Shift>KP_Page_Up', '<Shift>BackSpace', '<Shift><Mod1>Left'],
             self._window.previous_page_fast_forward)
+        manager.register('next page ff',
+            ['<Shift>Page_Down', '<Shift>KP_Page_Down', '<Shift><Mod1>Right'],
+            self._window.next_page_fast_forward)
 
         # Numpad (without numlock) aligns the image depending on the key.
         manager.register('scroll left bottom',
@@ -255,7 +258,9 @@ class EventHandler:
         elif event.button == 2:
             self._window.actiongroup.get_action('lens').set_active(True)
 
-        elif event.button == 3 and not event.state & gtk.gdk.MOD1_MASK:
+        elif (event.button == 3 and
+              not event.state & gtk.gdk.MOD1_MASK and
+              not event.state & gtk.gdk.SHIFT_MASK):
             self._window.cursor_handler.set_cursor_type(constants.NORMAL_CURSOR)
             self._window.popup.popup(None, None, None, event.button,
                 event.time)
@@ -273,7 +278,11 @@ class EventHandler:
             if event.x_root == self._pressed_pointer_pos_x and \
                 event.y_root == self._pressed_pointer_pos_y and \
                 not self._window.was_out_of_focus:
-                self._window.next_page()
+
+                if event.state & gtk.gdk.SHIFT_MASK:
+                    self._window.next_page_fast_forward()
+                else:
+                    self._window.next_page()
 
             else:
                 self._window.was_out_of_focus = False
@@ -281,8 +290,11 @@ class EventHandler:
         elif event.button == 2:
             self._window.actiongroup.get_action('lens').set_active(False)
 
-        elif event.button == 3 and event.state & gtk.gdk.MOD1_MASK:
-            self._previous_page_with_protection()
+        elif event.button == 3:
+            if event.state & gtk.gdk.MOD1_MASK:
+                self._window.previous_page()
+            elif event.state & gtk.gdk.SHIFT_MASK:
+                self._window.previous_page_fast_forward()
 
     def mouse_move_event(self, widget, event):
         """Handle mouse pointer movement events."""
