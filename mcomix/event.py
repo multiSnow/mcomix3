@@ -60,6 +60,10 @@ class EventHandler:
             ['KP_Page_Down', '<Mod1>Right'],
             self._window.next_page)
 
+        manager.register('previous page ff',
+            ['<Shift>Page_down', '<Shift>KP_Page_down', '<Shift>Backspace', '<Shift><Mod1>Left'],
+            self._window.previous_page_fast_forward)
+
         # Numpad (without numlock) aligns the image depending on the key.
         manager.register('scroll left bottom',
             ['KP_1'],

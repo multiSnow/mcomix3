@@ -35,6 +35,8 @@ from mcomix import log
 BINDING_INFO = {
     'previous page' : { 'title' : _('Previous page'), 'group' : _('Reading') },
     'next page' : { 'title' : _('Next page'), 'group' : _('Reading') },
+    'previous page ff' : { 'title': _('Back ten pages'), 'group': _('Reading') },
+    'next page ff' : { 'title': _('Forward ten pages'), 'group': _('Reading') },
 
     'scroll left bottom' : { 'title' : _('Scroll to bottom left'), 'group' : _('Page orientation and zoom')},
     'scroll middle bottom' : { 'title' : _('Scroll to bottom center'), 'group' : _('Page orientation and zoom')},

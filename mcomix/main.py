@@ -567,10 +567,18 @@ class MainWindow(gtk.Window):
         if new_page_number >= 1:
             self.set_page(new_page_number)
 
+    def next_page_fast_forward(self, *args):
+        page_num = self.imagehandler.get_current_page()
+        self.set_page(page_num + 10)
+
     def previous_page(self, *args):
         new_page_number = self.imagehandler.previous_page()
         if new_page_number >= 1:
             self.set_page(new_page_number, at_bottom=True)
+
+    def previous_page_fast_forward(self, *args):
+        page_num = self.imagehandler.get_current_page()
+        self.set_page(page_num - 10)
 
     def first_page(self, *args):
         new_page_number = self.imagehandler.first_page()
