@@ -70,8 +70,8 @@ class OpenWithCommand(object):
             window.osd.show(_("'%s' is disabled for archives.") % self.get_label())
             return
 
+        current_dir = os.getcwd()
         try:
-            current_dir = os.getcwd()
             if self.get_cwd() and len(self.get_cwd().strip()) > 0:
                 directories = self.parse(window, text=self.get_cwd())
                 if self.is_valid_workdir(window):
@@ -82,16 +82,21 @@ class OpenWithCommand(object):
             # Redirect process output to null here?
             # FIXME: Close process when finished to avoid zombie process
             args = self.parse(window)
-            if sys.platform == 'win32':
-                proc = process.Win32Popen(args)
+            if len(args) > 0:
+                if sys.platform == 'win32':
+                    proc = process.Win32Popen(args)
+                else:
+                    proc = subprocess.Popen(args)
+                del proc
             else:
-                proc = subprocess.Popen(args)
-            del proc
-            os.chdir(current_dir)
+                raise OpenWithException(_('Command line is empty.'))
+
         except Exception, e:
             text = _("Could not run command %(cmdlabel)s: %(exception)s") % \
                 {'cmdlabel': self.get_label(), 'exception': unicode(e)}
             window.osd.show(text)
+        finally:
+            os.chdir(current_dir)
 
     def is_executable(self, window):
         """ Check if a name is executable. This name can be either
