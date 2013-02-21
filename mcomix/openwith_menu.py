@@ -25,6 +25,10 @@ class OpenWithMenu(gtk.Menu):
         self.append(self.edit_button)
 
         self._construct_menu()
+        self._set_sensitivity()
+
+        self._window.filehandler.file_opened += self._set_sensitivity
+        self._window.filehandler.close_file += self._set_sensitivity
 
         self.show_all()
 
@@ -52,6 +56,13 @@ class OpenWithMenu(gtk.Menu):
 
             menuitem.show()
             self.prepend(menuitem)
+
+    def _set_sensitivity(self, *args):
+        """ Enables or disables menu items depending on files being loaded. """
+        sensitive = self._window.filehandler.file_loaded
+        for item in self.get_children():
+            if item != self.edit_button:
+                item.set_sensitive(sensitive)
 
     def _commandmenu_clicked(self, menuitem, cmd, label, cwd, disabled_in_archives):
         """ Execute the command associated with the clicked menu. """
