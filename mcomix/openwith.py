@@ -22,7 +22,7 @@ class OpenWithManager(object):
 
     @callback.Callback
     def set_commands(self, cmds):
-        prefs['openwith commands'] = [(cmd.get_label(), cmd.get_command(), 
+        prefs['openwith commands'] = [(cmd.get_label(), cmd.get_command(),
             cmd.get_cwd(), cmd.is_disabled_for_archives())
             for cmd in cmds]
 
@@ -270,23 +270,25 @@ class OpenWithEditor(gtk.Dialog):
         self._run_button = gtk.Button(_('Run _command'))
         self._run_button.connect('clicked', self._run_command)
         self._run_button.set_sensitive(False)
-        self._info_label = gtk.Label()
-        self._info_label.set_markup(
-            '<b>' + _('Image-related variables') + '</b>\n' +
+        self._info_img = gtk.Label()
+        self._info_img.set_markup(
             '<b>%F</b> - ' + _('File path') + '\n' +
             '<b>%D</b> - ' + _('Image directory path') + '\n' +
             '<b>%f</b> - ' + _('File name') + '\n' +
-            '<b>%d</b> - ' + _('Image directory name') + '\n' +
-            '<b>' + _('Archive-related variables') + '</b>\n' +
+            '<b>%d</b> - ' + _('Image directory name'))
+        self._info_archive = gtk.Label()
+        self._info_archive.set_markup(
             '<b>%A</b> - ' + _('Archive path') + '\n' +
             '<b>%C</b> - ' + _("Archive's directory path") + '\n' +
             '<b>%a</b> - ' + _('Archive name') + '\n' +
-            '<b>%c</b> - ' + _("Archive's directory name") + '\n' +
-            '<b>' + _('Miscellaneous variables') + '</b>\n' +
+            '<b>%c</b> - ' + _("Archive's directory name"))
+        self._info_misc = gtk.Label()
+        self._info_misc.set_markup(
             '<b>%/</b> - ' + _('Backslash or slash, depending on OS') + '\n' +
             '<b>%"</b> - ' + _('Literal quote') + '\n' +
-            '<b>%%</b> - ' + _('Literal % character') + '\n')
-        self._info_label.set_alignment(0, 0)
+            '<b>%%</b> - ' + _('Literal % character'))
+        for label in (self._info_img, self._info_archive, self._info_misc):
+            label.set_alignment(0, 0)
         self._test_field = gtk.Entry()
         self._test_field.set_property('editable', gtk.FALSE)
         self._exec_label = gtk.Label()
@@ -302,7 +304,7 @@ class OpenWithEditor(gtk.Dialog):
         self._window.filehandler.file_opened += self.test_command
         self._window.filehandler.close_file += lambda *args: self.test_command()
 
-        self.resize(800, 300)
+        self.resize(600, 400)
 
     def save(self):
         """ Serializes the tree model into a list of OpenWithCommands
@@ -347,7 +349,7 @@ class OpenWithEditor(gtk.Dialog):
         # Test only if the selected field is a valid command
         if command.is_separator():
             self._test_field.set_text(_('This is a separator pseudo-command.'))
-            self._exec_label.set_text('')
+            self._set_exec_text('')
             return
 
         try:
@@ -356,16 +358,16 @@ class OpenWithEditor(gtk.Dialog):
             self._run_button.set_sensitive(True)
 
             if not command.is_valid_workdir(self._window):
-                self._exec_label.set_text(
+                self._set_exec_text(
                     _('"%s" does not have a valid working directory.') % command.get_label())
             elif not command.is_executable(self._window):
-                self._exec_label.set_text(
+                self._set_exec_text(
                     _('"%s" does not appear to have a valid executable.') % command.get_label())
             else:
-                self._exec_label.set_text('')
+                self._set_exec_text('')
         except OpenWithException, e:
             self._test_field.set_text(unicode(e))
-            self._exec_label.set_text('')
+            self._set_exec_text('')
 
     def _add_command(self, button):
         """ Add a new empty label-command line to the list. """
@@ -435,33 +437,55 @@ class OpenWithEditor(gtk.Dialog):
         else:
             self._test_field.set_text('')
 
+    def _set_exec_text(self, text):
+        self._exec_label.set_text(text)
+        self._exec_label.set_visible(bool(text))
+
     def _layout(self):
         """ Create and lay out UI components. """
-        upperbox = gtk.HBox()
-        self.get_content_area().pack_start(upperbox, padding=4)
+        # All these boxes basically are just for adding a 4px border
+        vbox = self.get_content_area()
+        hbox = gtk.HBox()
+        vbox.pack_start(hbox, padding=4)
+        content = gtk.VBox()
+        content.set_spacing(6)
+        hbox.pack_start(content, padding=4)
 
-        buttonbox = gtk.VBox()
+        scroll_window = gtk.ScrolledWindow()
+        scroll_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        scroll_window.add(self._command_tree)
+        content.pack_start(scroll_window)
+
+        buttonbox = gtk.HBox()
         buttonbox.pack_start(self._add_button, False)
         buttonbox.pack_start(self._add_sep_button, False)
         buttonbox.pack_start(self._remove_button, False)
         buttonbox.pack_start(self._up_button, False)
         buttonbox.pack_start(self._down_button, False)
-        buttonbox.pack_start(self._run_button, False, padding=10)
-        buttonbox.pack_end(self._info_label)
+        content.pack_start(buttonbox, False)
 
-        treebox = gtk.VBox()
-        scroll_window = gtk.ScrolledWindow()
-        scroll_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        scroll_window.add(self._command_tree)
-        treebox.pack_start(scroll_window, padding=4)
         preview_box = gtk.HBox()
         preview_box.pack_start(gtk.Label(_('Preview:')), False)
         preview_box.pack_start(self._test_field, padding=4)
-        treebox.pack_start(preview_box, False)
-        treebox.pack_start(self._exec_label, False, padding=4)
+        preview_box.pack_start(self._run_button, False)
+        content.pack_start(preview_box, False)
 
-        upperbox.pack_start(treebox, padding=4)
-        upperbox.pack_end(buttonbox, False, padding=4)
+        content.pack_start(self._exec_label, False)
+
+        expander = gtk.Expander(_('Image-related variables'))
+        expander.set_expanded(False)
+        expander.add(self._info_img)
+        content.pack_start(expander, False)
+
+        expander = gtk.Expander(_('Archive-related variables'))
+        expander.set_expanded(False)
+        expander.add(self._info_archive)
+        content.pack_start(expander, False)
+
+        expander = gtk.Expander(_('Miscellaneous variables'))
+        expander.set_expanded(False)
+        expander.add(self._info_misc)
+        content.pack_start(expander, False)
 
     def _setup_table(self):
         """ Initializes the TreeView with settings and data. """
@@ -485,7 +509,7 @@ class OpenWithEditor(gtk.Dialog):
         self._command_tree.append_column(column)
 
         # Label, command, working dir, disabled for archives, line is editable
-        model = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING, gobject.TYPE_STRING, 
+        model = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING, gobject.TYPE_STRING,
                 gobject.TYPE_BOOLEAN, gobject.TYPE_BOOLEAN)
         for command in self._openwith.get_commands():
             model.append((command.get_label(), command.get_command(), command.get_cwd(),
