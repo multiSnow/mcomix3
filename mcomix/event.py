@@ -159,9 +159,7 @@ class EventHandler:
             self._window.show_info_panel)
 
         # Execute external command. Bind keys from 1 to 9 to commands 1 to 9.
-        manager.register('execute command 1', ['F8', '1'],
-                         self._execute_command, args=[0])
-        for i in range(2, 10):
+        for i in range(1, 10):
             manager.register('execute command %d' % i, ['%d' % i],
                              self._execute_command, args=[i - 1])
 
