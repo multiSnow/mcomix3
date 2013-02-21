@@ -383,7 +383,6 @@ class MainUI(gtk.UIManager):
                 <separator />
                 <menuitem action="preferences" />
                 <separator />
-                <menuitem action="minimize" />
                 <menuitem action="close" />
                 <menuitem action="quit" />
             </popup>
