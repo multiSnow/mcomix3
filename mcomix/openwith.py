@@ -22,13 +22,15 @@ class OpenWithManager(object):
 
     @callback.Callback
     def set_commands(self, cmds):
-        prefs['openwith commands'] = [(cmd.get_label(), cmd.get_command(), cmd.get_cwd(), cmd.is_disabled_for_archives())
+        prefs['openwith commands'] = [(cmd.get_label(), cmd.get_command(), 
+            cmd.get_cwd(), cmd.is_disabled_for_archives())
             for cmd in cmds]
 
     def get_commands(self):
         try:
             return [OpenWithCommand(label, command, cwd, disabled_for_archives)
-                    for label, command, cwd, disabled_for_archives in prefs['openwith commands']]
+                    for label, command, cwd, disabled_for_archives
+                    in prefs['openwith commands']]
         except ValueError:
             # Backwards compatibility for early versions with only two parameters
             return [OpenWithCommand(label, command, u'', False)
@@ -150,7 +152,8 @@ class OpenWithCommand(object):
             raise OpenWithException(_('Command line is empty.'))
 
         args = self._commandline_to_arguments(text, window,
-            not(check_restrictions and window and window.filehandler.archive_type is None))
+            not(check_restrictions and window and
+                window.filehandler.archive_type is None))
         # Environment variables must be expanded after MComix variables,
         # as win32 will eat %% and replace it with %.
         args = [os.path.expandvars(arg) for arg in args]
@@ -474,9 +477,11 @@ class OpenWithEditor(gtk.Dialog):
 
         # The 'Disabled in archives' field is shown as toggle button
         renderer = gtk.CellRendererToggle()
-        renderer.connect('toggled', self._value_changed, len(self._command_tree.get_columns()))
+        renderer.connect('toggled', self._value_changed,
+                len(self._command_tree.get_columns()))
         column = gtk.TreeViewColumn(_('Disabled in archives'), renderer)
-        column.set_attributes(renderer, active=len(self._command_tree.get_columns()), activatable=4)
+        column.set_attributes(renderer, active=len(self._command_tree.get_columns()),
+                activatable=4)
         self._command_tree.append_column(column)
 
         # Label, command, working dir, disabled for archives, line is editable
@@ -574,4 +579,6 @@ class OpenWithEditor(gtk.Dialog):
             if u" " in arg:
                 return u'"' + arg + u'"'
             return arg
+
+
 # vim: expandtab:sw=4:ts=4
