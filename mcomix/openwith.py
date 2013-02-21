@@ -355,7 +355,7 @@ class OpenWithEditor(gtk.Dialog):
         try:
             args = map(self._quote_if_necessary, command.parse(self._window))
             self._test_field.set_text(" ".join(args))
-            self._run_button.set_sensitive(True)
+            self._run_button.set_sensitive(self._window.filehandler.file_loaded)
 
             if not command.is_valid_workdir(self._window):
                 self._set_exec_text(
