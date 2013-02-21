@@ -335,6 +335,7 @@ class OpenWithEditor(gtk.Dialog):
         """ Parses the currently selected command and displays the output in the
         text box next to the button. """
         command = self.get_command()
+        self._run_button.set_sensitive(False)
         if not command:
             return
 
@@ -347,6 +348,7 @@ class OpenWithEditor(gtk.Dialog):
         try:
             args = map(self._quote_if_necessary, command.parse(self._window))
             self._test_field.set_text(" ".join(args))
+            self._run_button.set_sensitive(True)
 
             if not command.is_valid_workdir(self._window):
                 self._exec_label.set_text(
@@ -420,14 +422,11 @@ class OpenWithEditor(gtk.Dialog):
     def _item_selected(self, selection):
         """ Enable or disable buttons that depend on an item being selected. """
         for button in (self._remove_button, self._up_button,
-                self._down_button, self._run_button):
+                self._down_button):
             button.set_sensitive(selection.count_selected_rows() > 0)
 
         if selection.count_selected_rows() > 0:
             self.test_command()
-
-            if self.get_command().is_separator():
-                self._run_button.set_sensitive(False)
         else:
             self._test_field.set_text('')
 
