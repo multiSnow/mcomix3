@@ -4,6 +4,10 @@ import gtk
 
 from mcomix import openwith
 
+# Reference to the OpenWith command manager
+_openwith_manager = openwith.OpenWithManager()
+# Reference to the edit dialog (to keep only one instance)
+_openwith_edit_diag = None
 
 class OpenWithMenu(gtk.Menu):
     def __init__(self, ui, window):
@@ -11,9 +15,8 @@ class OpenWithMenu(gtk.Menu):
         gtk.Menu.__init__(self)
 
         self._window = window
-        self._openwith_manager = openwith.OpenWithManager()
-        self._edit_diag = None
-        
+        self._openwith_manager = _openwith_manager
+
         actiongroup = gtk.ActionGroup('mcomix-openwith')
         actiongroup.add_actions([
             ('edit_commands', gtk.STOCK_EDIT, _('_Edit'),
@@ -28,10 +31,11 @@ class OpenWithMenu(gtk.Menu):
 
         self._window.filehandler.file_opened += self._set_sensitivity
         self._window.filehandler.close_file += self._set_sensitivity
+        self._openwith_manager.set_commands += self._construct_menu
 
         self.show_all()
 
-    def _construct_menu(self):
+    def _construct_menu(self, *args):
         """ Build the menu entries from scratch. """
         for item in self.get_children():
             if item != self.edit_button:
@@ -73,18 +77,19 @@ class OpenWithMenu(gtk.Menu):
     def _edit_commands(self, *args):
         """ When clicked, opens the command editor to set up the menu. Make
         sure the dialog isn't opened more than once. """
-        if not self._edit_diag:
-            self._edit_diag = openwith.OpenWithEditor(self._window,
+        global _openwith_edit_diag
+        if not _openwith_edit_diag:
+            _openwith_edit_diag = openwith.OpenWithEditor(self._window,
                     self._openwith_manager)
-            self._edit_diag.connect_after('response', self._dialog_closed)
+            _openwith_edit_diag.connect_after('response', self._dialog_closed)
 
-        self._edit_diag.show_all()
-        self._edit_diag.present()
+        _openwith_edit_diag.show_all()
+        _openwith_edit_diag.present()
 
     def _dialog_closed(self, *args):
         """ Watch for the dialog getting closed and unset the local instance. """
-        self._edit_diag.destroy()
-        self._edit_diag = None
-        self._construct_menu()
+        global _openwith_edit_diag
+        _openwith_edit_diag.destroy()
+        _openwith_edit_diag = None
 
 # vim: expandtab:sw=4:ts=4

@@ -9,6 +9,7 @@ import gobject
 from mcomix.preferences import prefs
 from mcomix import message_dialog
 from mcomix import process
+from mcomix import callback
 
 
 class OpenWithException(Exception): pass
@@ -19,6 +20,7 @@ class OpenWithManager(object):
         """ Constructor. """
         pass
 
+    @callback.Callback
     def set_commands(self, cmds):
         prefs['openwith commands'] = [(cmd.get_label(), cmd.get_command(), cmd.get_cwd(), cmd.is_disabled_for_archives())
             for cmd in cmds]
