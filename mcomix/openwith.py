@@ -82,14 +82,11 @@ class OpenWithCommand(object):
             # Redirect process output to null here?
             # FIXME: Close process when finished to avoid zombie process
             args = self.parse(window)
-            if len(args) > 0:
-                if sys.platform == 'win32':
-                    proc = process.Win32Popen(args)
-                else:
-                    proc = subprocess.Popen(args)
-                del proc
+            if sys.platform == 'win32':
+                proc = process.Win32Popen(args)
             else:
-                raise OpenWithException(_('Command line is empty.'))
+                proc = subprocess.Popen(args)
+            del proc
 
         except Exception, e:
             text = _("Could not run command %(cmdlabel)s: %(exception)s") % \
@@ -147,6 +144,8 @@ class OpenWithCommand(object):
         if one of the variables isn't valid in the current file context. """
         if not text:
             text = self.get_command()
+        if not text.strip():
+            raise OpenWithException(_('Command line is empty.'))
 
         args = self._commandline_to_arguments(text, window,
             not(check_restrictions and window and window.filehandler.archive_type is None))
