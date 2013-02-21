@@ -359,6 +359,7 @@ class OpenWithEditor(gtk.Dialog):
                 self._exec_label.set_text('')
         except OpenWithException, e:
             self._test_field.set_text(unicode(e))
+            self._exec_label.set_text('')
 
     def _add_command(self, button):
         """ Add a new empty label-command line to the list. """
