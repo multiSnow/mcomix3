@@ -92,6 +92,7 @@ class MainUI(gtk.UIManager):
             ('menu_toolbars', None, _('T_oolbars')),
             ('menu_edit', None, _('_Edit')),
             ('menu_open_with', gtk.STOCK_OPEN, _('Open _with')),
+            ('menu_open_with_popup', gtk.STOCK_OPEN, _('Open _with')),
             ('menu_file', None, _('_File')),
             ('menu_view', None, _('_View')),
             ('menu_view_popup', 'comix-image', _('_View')),
@@ -380,6 +381,7 @@ class MainUI(gtk.UIManager):
                 <menuitem action="open" />
                 <menu action="menu_recent" />
                 <menuitem action="library" />
+                <menu action="menu_open_with_popup"></menu>
                 <separator />
                 <menuitem action="preferences" />
                 <separator />
@@ -411,6 +413,9 @@ class MainUI(gtk.UIManager):
         openwith = openwith_menu.OpenWithMenu(self, window)
         self.get_widget('/Menu/menu_file/menu_open_with').set_submenu(openwith)
         self.get_widget('/Menu/menu_file/menu_open_with').show()
+        openwith = openwith_menu.OpenWithMenu(self, window)
+        self.get_widget('/Popup/menu_open_with_popup').set_submenu(openwith)
+        self.get_widget('/Popup/menu_open_with_popup').show()
 
         # Load keyboard accelerator map
         if os.path.isfile(constants.KEYBINDINGS_PATH):
