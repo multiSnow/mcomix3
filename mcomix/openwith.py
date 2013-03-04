@@ -274,6 +274,7 @@ class OpenWithEditor(gtk.Dialog):
         self._test_field.set_property('editable', gtk.FALSE)
         self._exec_label = gtk.Label()
         self._exec_label.set_alignment(0, 0)
+        self._exec_label.set_property('no-show-all', True)
         self._save_button = self.add_button(gtk.STOCK_SAVE, gtk.RESPONSE_ACCEPT)
         self.set_default_response(gtk.RESPONSE_ACCEPT)
 
