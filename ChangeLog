@@ -42,8 +42,8 @@ MComix 1.00
       key, the second using '2', and so on, up to '9' for command nine.
 
       The first argument to each command must be the absolute path to an
-      executable, or an executable found in PATH. The 'Save' button is disabled
-      until each command is at least syntactically valid.
+      executable, or an executable found in PATH, or an executable found in
+      the specified working directory.
 
     - Added an option to automatically rotate images if their height exceeds
       their width (or width exceeds height), located in the menu bar under
