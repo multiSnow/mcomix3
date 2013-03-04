@@ -231,6 +231,7 @@ class MainUI(gtk.UIManager):
                     <menuitem action="extract_page" />
                     <menuitem action="refresh_archive" />
                     <menuitem action="properties" />
+                    <separator />
                     <menu action="menu_open_with"></menu>
                     <separator />
                     <menuitem action="delete" />
@@ -381,6 +382,7 @@ class MainUI(gtk.UIManager):
                 <menuitem action="open" />
                 <menu action="menu_recent" />
                 <menuitem action="library" />
+                <separator />
                 <menu action="menu_open_with_popup"></menu>
                 <separator />
                 <menuitem action="preferences" />
