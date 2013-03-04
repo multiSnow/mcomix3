@@ -270,25 +270,6 @@ class OpenWithEditor(gtk.Dialog):
         self._run_button = gtk.Button(_('Run _command'))
         self._run_button.connect('clicked', self._run_command)
         self._run_button.set_sensitive(False)
-        self._info_img = gtk.Label()
-        self._info_img.set_markup(
-            '<b>%F</b> - ' + _('File path') + '\n' +
-            '<b>%D</b> - ' + _('Image directory path') + '\n' +
-            '<b>%f</b> - ' + _('File name') + '\n' +
-            '<b>%d</b> - ' + _('Image directory name'))
-        self._info_archive = gtk.Label()
-        self._info_archive.set_markup(
-            '<b>%A</b> - ' + _('Archive path') + '\n' +
-            '<b>%C</b> - ' + _("Archive's directory path") + '\n' +
-            '<b>%a</b> - ' + _('Archive name') + '\n' +
-            '<b>%c</b> - ' + _("Archive's directory name"))
-        self._info_misc = gtk.Label()
-        self._info_misc.set_markup(
-            '<b>%/</b> - ' + _('Backslash or slash, depending on OS') + '\n' +
-            '<b>%"</b> - ' + _('Literal quote') + '\n' +
-            '<b>%%</b> - ' + _('Literal % character'))
-        for label in (self._info_img, self._info_archive, self._info_misc):
-            label.set_alignment(0, 0)
         self._test_field = gtk.Entry()
         self._test_field.set_property('editable', gtk.FALSE)
         self._exec_label = gtk.Label()
@@ -472,20 +453,12 @@ class OpenWithEditor(gtk.Dialog):
 
         content.pack_start(self._exec_label, False)
 
-        expander = gtk.Expander(_('Image-related variables'))
-        expander.set_expanded(False)
-        expander.add(self._info_img)
-        content.pack_start(expander, False)
-
-        expander = gtk.Expander(_('Archive-related variables'))
-        expander.set_expanded(False)
-        expander.add(self._info_archive)
-        content.pack_start(expander, False)
-
-        expander = gtk.Expander(_('Miscellaneous variables'))
-        expander.set_expanded(False)
-        expander.add(self._info_misc)
-        content.pack_start(expander, False)
+        linklabel = gtk.Label()
+        linklabel.set_markup(_('Please refer to the <a href="%s">external command documentation</a> '
+            'for a list of usable variables and other hints.') % \
+                'https://sourceforge.net/p/mcomix/wiki/External_Commands')
+        linklabel.set_alignment(0, 0)
+        content.pack_start(linklabel, False, padding=4)
 
     def _setup_table(self):
         """ Initializes the TreeView with settings and data. """
