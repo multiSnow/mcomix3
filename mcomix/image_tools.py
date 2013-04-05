@@ -6,9 +6,9 @@ import operator
 import itertools
 import bisect
 import gtk
-import Image
-import ImageEnhance
-import ImageOps
+import PIL.Image as Image
+import PIL.ImageEnhance as ImageEnhance
+import PIL.ImageOps as ImageOps
 
 from mcomix.preferences import prefs
 

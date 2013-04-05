@@ -141,8 +141,8 @@ except ImportError:
 
 # Check PIL library
 try:
-    import Image
-    assert Image.VERSION >= '1.1.5'
+    import PIL.Image
+    assert PIL.Image.VERSION >= '1.1.5'
 
 except AssertionError:
     print_( _("You don't have the required version of the Python Imaging"), end=' ')

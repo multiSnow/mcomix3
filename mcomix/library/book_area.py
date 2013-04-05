@@ -4,8 +4,8 @@ import os
 import urllib
 import gtk
 import gobject
-import Image
-import ImageDraw
+import PIL.Image as Image
+import PIL.ImageDraw as ImageDraw
 import pkg_resources
 
 from mcomix.preferences import prefs

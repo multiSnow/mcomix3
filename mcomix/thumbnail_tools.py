@@ -9,7 +9,7 @@ import tempfile
 import mimetypes
 import threading
 import itertools
-import Image
+import PIL.Image as Image
 from urllib import pathname2url
 
 try:  # The md5 module is deprecated as of Python 2.5, replaced by hashlib.

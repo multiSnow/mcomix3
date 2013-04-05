@@ -64,6 +64,9 @@ MComix 1.00
       comicthumb is unmaintained and not installed by MComix' setup routine
       by default.
 
+    - MComix will no longer complain that the PIL library is missing when 
+      a user has Pillow (a PIL fork) installed.
+
     - Updated traditional Chinese translation (by Wayne Su).
 
     - Updated Hebrew translation (by Isratine Citizen).

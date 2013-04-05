@@ -1,8 +1,8 @@
 """histogram.py - Draw histograms (RGB) from pixbufs."""
 
-import Image
-import ImageDraw
-import ImageOps
+import PIL.Image as Image
+import PIL.ImageDraw as ImageDraw
+import PIL.ImageOps as ImageOps
 
 from mcomix import image_tools
 
