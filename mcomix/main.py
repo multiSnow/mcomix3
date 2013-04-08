@@ -314,34 +314,40 @@ class MainWindow(gtk.Window):
             right_rotation = self._get_pixbuf_rotation(right_pixbuf, True)
 
             if left_rotation in (90, 270):
-                total_width = left_unscaled_y
-                total_height = left_unscaled_x
+                left_width = left_unscaled_y
+                left_height = left_unscaled_x
             else:
-                total_width = left_unscaled_x
-                total_height = left_unscaled_y
+                left_width = left_unscaled_x
+                left_height = left_unscaled_y
 
             if right_rotation in (90, 270):
-                total_width += right_unscaled_y
-                total_height = max(total_height, right_unscaled_x)
+                right_width = right_unscaled_y
+                right_height = right_unscaled_x
             else:
-                total_width += right_unscaled_x
-                total_height = max(total_height, right_unscaled_y)
+                right_width = right_unscaled_x
+                right_height = right_unscaled_y
 
-            total_width += 2  # For the 2 px gap between images.
+            width, height = image_tools.get_double_page_rectangle(
+                left_width, left_height,
+                right_width, right_height)
+
             scaled_width, scaled_height = self.zoom.get_zoomed_size(
-                (total_width, total_height), self.get_visible_area_size())
+                (width, height), self.get_visible_area_size())
 
             # Visible area size is recomputed depending on scrollbar visibility
             self._show_scrollbars((scaled_width, scaled_height),
                 self.get_visible_area_size())
             area_width, area_height = self.get_visible_area_size()
             scaled_width, scaled_height = self.zoom.get_zoomed_size(
-                (total_width, total_height), (area_width, area_height))
+                (width, height), (area_width, area_height))
 
-            left_pixbuf, right_pixbuf = image_tools.fit_2_in_rectangle(
-                left_pixbuf, right_pixbuf, scaled_width, scaled_height,
-                scale_up=True, rotation1=left_rotation,
-                rotation2=right_rotation)
+            # 100000 just some big enough constant.
+            # We need to ensure that images
+            #   are limited only by height during scaling
+            left_pixbuf = image_tools.fit_in_rectangle(
+                left_pixbuf, 100000, scaled_height, prefs['stretch'], left_rotation)
+            right_pixbuf = image_tools.fit_in_rectangle(
+                right_pixbuf, 100000, scaled_height, prefs['stretch'], right_rotation)
 
             if prefs['horizontal flip']:
                 left_pixbuf = left_pixbuf.flip(horizontal=True)

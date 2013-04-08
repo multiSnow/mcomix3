@@ -5,6 +5,7 @@ import os
 import operator
 import itertools
 import bisect
+import math
 import gtk
 import PIL.Image as Image
 import PIL.ImageEnhance as ImageEnhance
@@ -80,55 +81,17 @@ def fit_in_rectangle(src, width, height, scale_up=False, rotation=0):
     return src
 
 
-def fit_2_in_rectangle(src1, src2, width, height, scale_up=False,
-  rotation1=0, rotation2=0):
-    """Scale two pixbufs so that they fit together (side-by-side) into a
-    rectangle with dimensions <width> x <height>, with a 2 px gap.
-    If one pixbuf does not use all of its allotted space, the other one
-    is given it, so that the pixbufs are not necessarily scaled to the
-    same percentage.
+def get_double_page_rectangle(width_1, height_1, width_2, height_2):
+    h1 = float(height_1)
+    w1 = float(width_1)
+    h2 = float(height_2)
+    w2 = float(width_2)
+    target_tan = h2 * h1 / (w1*h2 + h1*w2)
 
-    The pixbufs are rotated according to the angles in <rotation1> and
-    <rotation2> before they are scaled.
+    height = max(height_1, height_2)
+    width = int(math.floor(height / target_tan)) + 2 # 2px between pages
 
-    See fit_in_rectangle() for more info on the parameters.
-    """
-    # "Unbounded" really means "bounded to 10000 px" - for simplicity.
-    # MComix would probably choke on larger images anyway.
-    if width < 0:
-        width = 10000
-    elif height < 0:
-        height = 10000
-
-    width -= 2              # We got a 2 px gap between images
-    width = max(width, 2)   # We need at least 1 px per image
-    height = max(height, 1)
-
-    src1_width = src1.get_width()
-    src1_height = src1.get_height()
-    src2_width = src2.get_width()
-    src2_height = src2.get_height()
-    if rotation1 in (90, 270):
-        src1_width, src1_height = src1_height, src1_width
-    if rotation2 in (90, 270):
-        src2_width, src2_height = src2_height, src2_width
-
-    total_width = src1_width + src2_width
-    alloc_width_src1 = max(src1_width * width / total_width, 1)
-    alloc_width_src2 = max(src2_width * width / total_width, 1)
-    needed_width_src1 = round(src1_width *
-        min(height / float(src1_height), alloc_width_src1 / float(src1_width)))
-    needed_width_src2 = round(src2_width *
-        min(height / float(src2_height), alloc_width_src2 / float(src2_width)))
-    if needed_width_src1 < alloc_width_src1:
-        alloc_width_src2 += alloc_width_src1 - needed_width_src1
-    elif needed_width_src1 >= alloc_width_src1:
-        alloc_width_src1 += alloc_width_src2 - needed_width_src2
-
-    return (fit_in_rectangle(src1, int(alloc_width_src1), height,
-                             scale_up, rotation1),
-            fit_in_rectangle(src2, int(alloc_width_src2), height,
-                             scale_up, rotation2))
+    return width, height
 
 
 def add_border(pixbuf, thickness, colour=0x000000FF):
