@@ -23,6 +23,9 @@ MComix 1.00
     - Deleting a file in the library without closing the same file in the main
       window before no longer causes an exception.
 
+    - The two images in double-page mode will now scale separately again.
+      (by Valentin Gologuzov)
+
     - "Fit to size" mode no longer scales up small images unless "Stretch
       small images" is enabled as well.
 
