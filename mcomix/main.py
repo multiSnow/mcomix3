@@ -748,6 +748,19 @@ class MainWindow(gtk.Window):
             self._vscroll.hide_all()
             self._hscroll.hide_all()
 
+    def is_scrollable_horizontally(self):
+        """ Returns True when the displayed image does not fit into the display
+        port horizontally and must be scrolled to be viewed completely. """
+
+        screen_width, _ = self.get_visible_area_size()
+        left_width = self.left_image.get_pixbuf() and \
+                self.left_image.get_pixbuf().get_width() or 0
+        right_width = self.right_image.get_pixbuf() and \
+                self.right_image.get_pixbuf().get_width() or 0
+        image_width = max(left_width, right_width)
+
+        return image_width > screen_width
+
     def is_scrollable_vertically(self):
         """ Returns True when the displayed image does not fit into the display
         port vertically and must be scrolled to be viewed completely. """
@@ -760,6 +773,12 @@ class MainWindow(gtk.Window):
         image_height = max(left_height, right_height)
 
         return image_height > screen_height
+
+    def is_scrollable(self):
+        """ Returns True when either is_scrollable_horizontally or
+        is_scrollable_vertically return True. """
+        return self.is_scrollable_horizontally() or \
+               self.is_scrollable_vertically()
 
     def scroll_with_flipping(self, x, y):
         """Returns true if able to scroll without flipping to
