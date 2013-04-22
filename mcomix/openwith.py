@@ -12,6 +12,9 @@ from mcomix import process
 from mcomix import callback
 
 
+NO_CONTEXT, IMAGE_FILE_CONTEXT, ARCHIVE_CONTEXT = -1, 1, 2
+
+
 class OpenWithException(Exception): pass
 
 
@@ -152,14 +155,13 @@ class OpenWithCommand(object):
             raise OpenWithException(_('Command line is empty.'))
 
         args = self._commandline_to_arguments(text, window,
-            not(check_restrictions and window and
-                window.filehandler.archive_type is None))
+            self._get_context_type(window, check_restrictions))
         # Environment variables must be expanded after MComix variables,
         # as win32 will eat %% and replace it with %.
         args = [os.path.expandvars(arg) for arg in args]
         return args
 
-    def _commandline_to_arguments(self, line, window, archive_context):
+    def _commandline_to_arguments(self, line, window, context_type):
         """ Parse a command line string into a list containing
         the parts to pass to Popen. The following two functions have
         been contributed by Ark <aaku@users.sf.net>. """
@@ -173,7 +175,7 @@ class OpenWithCommand(object):
                 if c == u'%' or c == u'"':
                     buf += c
                 else:
-                    buf += self._expand_variable(c, window, archive_context)
+                    buf += self._expand_variable(c, window, context_type)
                 escape = False
             elif c == u' ' or c == u'\t':
                 if quote:
@@ -204,15 +206,14 @@ class OpenWithCommand(object):
             result.append(buf)
         return result
 
-    def _expand_variable(self, identifier, window, archive_context):
+    def _expand_variable(self, identifier, window, context_type):
         """ Replaces variables with their respective file
         or archive path. """
 
-        # Skip if no file is loaded
-        if not window or not window.filehandler.file_loaded:
+        if not context_type or context_type == NO_CONTEXT:
             return '%' + identifier
 
-        if not archive_context and identifier in (u'a', u'c', u'A', u'C'):
+        if not (context_type & ARCHIVE_CONTEXT) and identifier in (u'a', u'c', u'A', u'C'):
             raise OpenWithException(
                 _("Archive-related variables can only be used for archives."))
 
@@ -238,6 +239,14 @@ class OpenWithCommand(object):
             raise OpenWithException(
                 _("Invalid escape sequence: %%%s") % identifier);
 
+    def _get_context_type(self, window, check_restrictions=True):
+        if not check_restrictions:
+            return NO_CONTEXT # ignore context
+        if not(window and window.filehandler.file_loaded):
+            return 0 # no file loaded
+        if not(window and window.filehandler.archive_type is None):
+            return IMAGE_FILE_CONTEXT|ARCHIVE_CONTEXT # archive loaded
+        return IMAGE_FILE_CONTEXT # image loaded (no archive)
 
 
 class OpenWithEditor(gtk.Dialog):
@@ -274,7 +283,7 @@ class OpenWithEditor(gtk.Dialog):
         self._test_field.set_property('editable', gtk.FALSE)
         self._exec_label = gtk.Label()
         self._exec_label.set_alignment(0, 0)
-        self._exec_label.set_property('no-show-all', True)
+        self._set_exec_text('');
         self._save_button = self.add_button(gtk.STOCK_SAVE, gtk.RESPONSE_ACCEPT)
         self.set_default_response(gtk.RESPONSE_ACCEPT)
 
@@ -337,7 +346,7 @@ class OpenWithEditor(gtk.Dialog):
         try:
             args = map(self._quote_if_necessary, command.parse(self._window))
             self._test_field.set_text(" ".join(args))
-            self._run_button.set_sensitive(self._window.filehandler.file_loaded)
+            self._run_button.set_sensitive(True)
 
             if not command.is_valid_workdir(self._window):
                 self._set_exec_text(
@@ -421,7 +430,6 @@ class OpenWithEditor(gtk.Dialog):
 
     def _set_exec_text(self, text):
         self._exec_label.set_text(text)
-        self._exec_label.set_visible(bool(text))
 
     def _layout(self):
         """ Create and lay out UI components. """
