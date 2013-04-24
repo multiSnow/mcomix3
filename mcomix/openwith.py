@@ -12,7 +12,7 @@ from mcomix import process
 from mcomix import callback
 
 
-NO_CONTEXT, IMAGE_FILE_CONTEXT, ARCHIVE_CONTEXT = -1, 1, 2
+DEBUGGING_CONTEXT, NO_FILE_CONTEXT, IMAGE_FILE_CONTEXT, ARCHIVE_CONTEXT = -1, 0, 1, 2
 
 
 class OpenWithException(Exception): pass
@@ -210,8 +210,12 @@ class OpenWithCommand(object):
         """ Replaces variables with their respective file
         or archive path. """
 
-        if not context_type or context_type == NO_CONTEXT:
+        if context_type == DEBUGGING_CONTEXT:
             return '%' + identifier
+
+        if not (context_type & IMAGE_FILE_CONTEXT) and identifier in (u'f', u'd', u'F', u'D'):
+            raise OpenWithException(
+                _("File-related variables can only be used for files."))
 
         if not (context_type & ARCHIVE_CONTEXT) and identifier in (u'a', u'c', u'A', u'C'):
             raise OpenWithException(
@@ -241,9 +245,9 @@ class OpenWithCommand(object):
 
     def _get_context_type(self, window, check_restrictions=True):
         if not check_restrictions:
-            return NO_CONTEXT # ignore context
+            return DEBUGGING_CONTEXT # ignore context, reflect variable name
         if not(window and window.filehandler.file_loaded):
-            return 0 # no file loaded
+            return NO_FILE_CONTEXT # no file loaded
         if not(window and window.filehandler.archive_type is None):
             return IMAGE_FILE_CONTEXT|ARCHIVE_CONTEXT # archive loaded
         return IMAGE_FILE_CONTEXT # image loaded (no archive)
