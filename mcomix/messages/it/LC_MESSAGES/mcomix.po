@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the MComix package.
 #
 # Translators:
-# Giovanni Scafora <giovanni@archlinux.org>, 2012.
+# Giovanni Scafora <giovanni@archlinux.org>, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: MComix\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
 "POT-Creation-Date: 2013-04-26 15:39+0200\n"
-"PO-Revision-Date: 2012-07-11 12:00+0100\n"
+"PO-Revision-Date: 2013-04-26 18:00+0100\n"
 "Last-Translator: Giovanni Scafora <giovanni@archlinux.org>\n"
 "Language-Team: Arch Linux Italian Team <giovanni@archlinux.org>\n"
 "Language: it\n"
@@ -383,13 +383,12 @@ msgid "Next page"
 msgstr "Pagina successiva"
 
 #: mcomix/keybindings.py:38
-#, fuzzy
 msgid "Back ten pages"
-msgstr "Salva la pagina come"
+msgstr "Indietro di dieci pagine"
 
 #: mcomix/keybindings.py:39
 msgid "Forward ten pages"
-msgstr ""
+msgstr "Avanti di dieci pagine"
 
 #: mcomix/keybindings.py:41
 msgid "Scroll to bottom left"
@@ -492,7 +491,7 @@ msgstr "Interfaccia utente"
 
 #: mcomix/keybindings.py:73
 msgid "Execute external command"
-msgstr ""
+msgstr "Esegui comando esterno"
 
 #: mcomix/keybindings.py:108
 #, python-format
@@ -538,88 +537,81 @@ msgid "Do not ask again."
 msgstr "Non chiedere di nuovo."
 
 #: mcomix/openwith_menu.py:22
-#, fuzzy
 msgid "_Edit commands"
-msgstr "Modifica i segnalibri"
+msgstr "_Edita comandi"
 
 #: mcomix/openwith.py:77
 #, python-format
 msgid "'%s' is disabled for archives."
-msgstr ""
+msgstr "'%s' è disabilitato per gli archivi."
 
 #: mcomix/openwith.py:87
-#, fuzzy
 msgid "Invalid working directory."
-msgstr "Cartella precedente"
+msgstr "Cartella di lavoro non valida."
 
 #: mcomix/openwith.py:99
 #, python-format
 msgid "Could not run command %(cmdlabel)s: %(exception)s"
-msgstr ""
+msgstr "Impossibile avviare il comando %(cmdlabel)s: %(exception)s"
 
 #: mcomix/openwith.py:155
 msgid "Command line is empty."
-msgstr ""
+msgstr "La riga di comando è vuota."
 
 #: mcomix/openwith.py:198
 msgid "Incomplete escape sequence. For a literal '%', use '%%'."
-msgstr ""
+msgstr "La sequenza di escape è incompleta. Per un letterale '%', use '%%'."
 
 #: mcomix/openwith.py:202
 msgid "Incomplete quote sequence. For a literal '\"', use '%\"'."
-msgstr ""
+msgstr "Sequenza di citazione incompleta. Per un letterale '\"', utilizza '%\"'."
 
 #: mcomix/openwith.py:218
-#, fuzzy
 msgid "File-related variables can only be used for files."
-msgstr "Gli archivi sono salvati come file ZIP."
+msgstr "Le variabili dei file possono essere usate solo per i file."
 
 #: mcomix/openwith.py:222
-#, fuzzy
 msgid "Archive-related variables can only be used for archives."
-msgstr "Gli archivi sono salvati come file ZIP."
+msgstr "Le variabili degli archivi possono essere usate solo per gli archivi."
 
 #: mcomix/openwith.py:244
 #, python-format
 msgid "Invalid escape sequence: %%%s"
-msgstr ""
+msgstr "La sequenza di escape è incompleta: %%%s"
 
 #: mcomix/openwith.py:262
 msgid "Edit external commands"
-msgstr ""
+msgstr "Edita i comandi esterni"
 
 #: mcomix/openwith.py:272
 msgid "Add _separator"
-msgstr ""
+msgstr "Aggiungi un _separatore"
 
 #: mcomix/openwith.py:283
-#, fuzzy
 msgid "Run _command"
-msgstr "Commenti"
+msgstr "Esegui _comando"
 
 #: mcomix/openwith.py:346
 msgid "This is a separator pseudo-command."
-msgstr ""
+msgstr "Questo è un separatore pseudo-comando."
 
 #: mcomix/openwith.py:357
 #, python-format
 msgid "\"%s\" does not have a valid working directory."
-msgstr ""
+msgstr "\"%s\" non ha una valida directory di lavoro."
 
 #: mcomix/openwith.py:360
 #, python-format
 msgid "\"%s\" does not appear to have a valid executable."
-msgstr ""
+msgstr "\"%s\" non sembra essere un valido eseguibile."
 
 #: mcomix/openwith.py:369
-#, fuzzy
 msgid "Command label"
-msgstr "File di commento"
+msgstr "Etichetta del comando"
 
 #: mcomix/openwith.py:462
-#, fuzzy
 msgid "Preview:"
-msgstr "_Pagina precedente"
+msgstr "Anteprima:"
 
 #: mcomix/openwith.py:470
 #, python-format
@@ -627,35 +619,36 @@ msgid ""
 "Please refer to the <a href=\"%s\">external command documentation</a> for a "
 "list of usable variables and other hints."
 msgstr ""
+"Si prega di far riferimento alla <a href=\"%s\">documentazione del comando esterno</a> per "
+"ottenere una lista di variabili utilizzabili ed altri suggerimenti."
 
 #: mcomix/openwith.py:478
 msgid "Label"
-msgstr ""
+msgstr "Etichetta"
 
 #: mcomix/openwith.py:478
-#, fuzzy
 msgid "Command"
-msgstr "Commenti"
+msgstr "Comando"
 
 #: mcomix/openwith.py:478
-#, fuzzy
 msgid "Working directory"
-msgstr "Cartella precedente"
+msgstr "Directory di lavoro"
 
 #: mcomix/openwith.py:492
-#, fuzzy
 msgid "Disabled in archives"
-msgstr "Archivi tar"
+msgstr "Disabilitato negli archivi"
 
 #: mcomix/openwith.py:547
 msgid "Save changes to commands?"
-msgstr ""
+msgstr "Vuoi salvare i comandi modificati?"
 
 #: mcomix/openwith.py:548
 msgid ""
 "You have made changes to the list of external commands that have not been "
 "saved yet. Press \"Yes\" to save all changes, or \"No\" to discard them."
 msgstr ""
+"Hai appena modificato la lista dei comandi esterni che non sono stati "
+"ancora salvati. Premere \"Sì\" per salvare tutte le modifiche oppure \"No\" per non salvarle."
 
 #: mcomix/pageselect.py:17 mcomix/ui.py:99 mcomix/ui.py:100
 msgid "_Go"
@@ -821,12 +814,12 @@ msgid ""
 "Automatically open the next archive in the directory when flipping past the "
 "last page, or the previous archive when flipping past the first page."
 msgstr ""
-"Apre automaticamente l'archivio successivo nella cartella, dopo aver "
+"Apre automaticamente l'archivio successivo nella directory, dopo aver "
 "visualizzato l'ultima pagina o l'archivio precedente dopo la prima pagina."
 
 #: mcomix/preferences_dialog.py:175
 msgid "Automatically open next directory"
-msgstr "Apri automaticamente la cartella successiva"
+msgstr "Apri automaticamente la directory successiva"
 
 #: mcomix/preferences_dialog.py:180
 msgid ""
@@ -834,8 +827,8 @@ msgid ""
 "flipping past the last page of the last file in a directory, or the previous "
 "directory when flipping past the first page of the first file."
 msgstr ""
-"Apre automaticamente il primo file presente nella prossima cartella, quando "
-"si giunge all'ultima pagina dell'ultimo file di una cartella, o la cartella "
+"Apre automaticamente il primo file presente nella prossima directory, quando "
+"si giunge all'ultima pagina dell'ultimo file di una directory, o la directory "
 "precedente quando si giunge alla prima pagina del primo file."
 
 #: mcomix/preferences_dialog.py:183
@@ -1057,12 +1050,11 @@ msgstr "Ordine dei file"
 
 #: mcomix/preferences_dialog.py:363
 msgid "Sort files and directories by:"
-msgstr ""
+msgstr "Ordina file e directory per:"
 
 #: mcomix/preferences_dialog.py:366
-#, fuzzy
 msgid "Sort archives by:"
-msgstr "Archivi tar"
+msgstr "Ordina gli archivi per:"
 
 #: mcomix/preferences_dialog.py:369
 msgid "Cache"
@@ -1194,14 +1186,12 @@ msgstr ""
 "Questa opzione non influisce sull'ordine all'interno degli archivi."
 
 #: mcomix/preferences_dialog.py:575
-#, fuzzy
 msgid "Natural order"
-msgstr "Ordine dei file"
+msgstr "Ordine naturale"
 
 #: mcomix/preferences_dialog.py:576
-#, fuzzy
 msgid "Literal order"
-msgstr "Ordine dei file"
+msgstr "Ordine letterale"
 
 #: mcomix/preferences_dialog.py:593
 msgid ""
@@ -1209,6 +1199,9 @@ msgid ""
 "Natural order will sort numbered files based on their natural order, i.e. 1, "
 "2, ..., 10, while literal order uses standard C sorting, i.e. 1, 2, 34, 5."
 msgstr ""
+"I file presenti all'interno degli archivi saranno ordinati secondo l'ordine specificato qui. "
+"Ordine naturale ordinerà i file numerati in base al loro ordine naturale, ad esempio 1, "
+"2, ..., 10, mentre l'ordine letterale utilizza l'ordinamento standard C, ad esempio 1, 2, 34, 5."
 
 #: mcomix/preferences_dialog.py:657
 msgid "Delete information about recently opened files?"
@@ -1748,9 +1741,8 @@ msgid "_Edit"
 msgstr "_Modifica"
 
 #: mcomix/ui.py:94 mcomix/ui.py:95
-#, fuzzy
 msgid "Open _with"
-msgstr "_Apri"
+msgstr "_Apri con"
 
 #: mcomix/ui.py:96
 msgid "_File"
@@ -1774,15 +1766,15 @@ msgstr "_Trasforma l'immagine"
 
 #: mcomix/ui.py:104
 msgid "_Auto-rotate image"
-msgstr ""
+msgstr "_Rotazione automatica dell'immagine"
 
 #: mcomix/ui.py:105
 msgid "...when width exceeds height"
-msgstr ""
+msgstr "...quando la larghezza è superiore all'altezza"
 
 #: mcomix/ui.py:106
 msgid "...when height exceeds width"
-msgstr ""
+msgstr "...quando l'altezza è superiore alla larghezza"
 
 #: mcomix/ui.py:110
 msgid "_Fullscreen"
@@ -2018,9 +2010,8 @@ msgstr ""
 "%(from)d a %(to)d."
 
 #: mcomix/library/backend.py:634
-#, fuzzy
 msgid "Recent"
-msgstr "_Recenti"
+msgstr "_Recente"
 
 #: mcomix/library/backend_types.py:200 mcomix/library/collection_area.py:142
 msgid "All books"
@@ -2295,7 +2286,7 @@ msgstr "Apri il libro selezionato."
 #: mcomix/library/control_area.py:140
 #, python-format
 msgid "Finished reading on %(date)s, %(time)s"
-msgstr ""
+msgstr "Lettura terminata il %(date)s, %(time)s"
 
 #: mcomix/library/main_dialog.py:35
 msgid "Library"
@@ -2308,17 +2299,17 @@ msgstr "Ricerca di nuovi libri in corso..."
 #: mcomix/library/main_dialog.py:99
 #, python-format
 msgid "Added new book '%(bookname)s' from directory '%(directory)s'."
-msgstr "Aggiunto un nuovo libro '%(bookname)s' dalla cartella '%(directory)s'."
+msgstr "Aggiunto un nuovo libro '%(bookname)s' dalla directory '%(directory)s'."
 
 #: mcomix/library/main_dialog.py:102
 #, python-format
 msgid "Added %(count)d new books from directory '%(directory)s'."
-msgstr "Aggiunti %(count)d nuovi libri dalla cartella '%(directory)s'."
+msgstr "Aggiunti %(count)d nuovi libri dalla directory '%(directory)s'."
 
 #: mcomix/library/main_dialog.py:109
 #, python-format
 msgid "No new books found in directory '%s'."
-msgstr "Non ci sono nuovi libri nella cartella '%s'."
+msgstr "Non ci sono nuovi libri nella directory '%s'."
 
 #: mcomix/library/main_dialog.py:169
 msgid "! You need an sqlite wrapper to use the library."
@@ -2351,60 +2342,3 @@ msgstr "_Aggiungi"
 #: mcomix/library/watchlist.py:87
 msgid "Automatically scan for new books when library is _opened"
 msgstr "Cerca automaticamente nuovi libri quando la libreria è _aperta"
-
-#, fuzzy
-#~ msgid "File path"
-#~ msgstr "Percorso completo"
-
-#, fuzzy
-#~ msgid "Image directory path"
-#~ msgstr "Cartella successiva"
-
-#, fuzzy
-#~ msgid "Image directory name"
-#~ msgstr "Cartella successiva"
-
-#, fuzzy
-#~ msgid "Archive-related variables"
-#~ msgstr "Gli archivi sono salvati come file ZIP."
-
-#, fuzzy
-#~ msgid "Archive path"
-#~ msgstr "Archivio"
-
-#, fuzzy
-#~ msgid "Archive's directory path"
-#~ msgstr "Archivio"
-
-#, fuzzy
-#~ msgid "Archive name"
-#~ msgstr "Archivio"
-
-#, fuzzy
-#~ msgid "Archive's directory name"
-#~ msgstr "Archivio"
-
-#, fuzzy
-#~ msgid "Literal quote"
-#~ msgstr "Ordine dei file"
-
-#, fuzzy
-#~ msgid "Literal % character"
-#~ msgstr "Ordine dei file"
-
-#, fuzzy
-#~ msgid "Directory name"
-#~ msgstr "Cartella"
-
-#, fuzzy
-#~ msgid "Preview area"
-#~ msgstr "Archivio precedente"
-
-#~ msgid "Order files by:"
-#~ msgstr "Ordina i file per:"
-
-#~ msgid "Only file names"
-#~ msgstr "Solo per i nomi dei file"
-
-#~ msgid "File names and last read page"
-#~ msgstr "Nomi dei file e ultima pagina letta"
