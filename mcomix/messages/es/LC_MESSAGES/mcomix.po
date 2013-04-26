@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: comix.HEAD\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2013-03-04 21:02+0100\n"
+"POT-Creation-Date: 2013-04-26 15:39+0200\n"
 "PO-Revision-Date: 2012-09-06 18:00+0100\n"
 "Last-Translator: Carlos Feliu <carlos.feliu.holguera@gmail.com>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
@@ -119,7 +119,7 @@ msgstr "Nombre"
 
 #
 # File: src/bookmark.py, line: 256
-#: mcomix/bookmark_dialog.py:53 mcomix/main.py:1113
+#: mcomix/bookmark_dialog.py:53 mcomix/main.py:1138
 #: mcomix/library/control_area.py:131
 msgid "Page"
 msgstr "Página"
@@ -627,20 +627,20 @@ msgstr "!  No se pudo eliminar  el archivo \"%s\""
 
 #
 # File: src/main.py, line: 666
-#: mcomix/main.py:988
+#: mcomix/main.py:1013
 msgid "SLIDESHOW"
 msgstr "DIAPOSITIVAS"
 
-#: mcomix/main.py:1049
+#: mcomix/main.py:1074
 msgid "Save page as"
 msgstr "Guardar página como"
 
-#: mcomix/main.py:1069
+#: mcomix/main.py:1094
 #, python-format
 msgid "Delete \"%s\"?"
 msgstr "¿Eliminar \"%s\"?"
 
-#: mcomix/main.py:1070
+#: mcomix/main.py:1095
 msgid "The file will be deleted from your harddisk."
 msgstr "El archivo será eliminado de su disco duro."
 
@@ -653,71 +653,78 @@ msgstr "No preguntar de nuevo."
 msgid "_Edit commands"
 msgstr "Editar marcadores"
 
-#: mcomix/openwith.py:74
+#: mcomix/openwith.py:77
 #, python-format
 msgid "'%s' is disabled for archives."
 msgstr ""
 
-#: mcomix/openwith.py:84
+#: mcomix/openwith.py:87
 #, fuzzy
 msgid "Invalid working directory."
 msgstr "Carpeta anterior"
 
-#: mcomix/openwith.py:96
+#: mcomix/openwith.py:99
 #, python-format
 msgid "Could not run command %(cmdlabel)s: %(exception)s"
 msgstr ""
 
-#: mcomix/openwith.py:152
+#: mcomix/openwith.py:155
 msgid "Command line is empty."
 msgstr ""
 
-#: mcomix/openwith.py:196
+#: mcomix/openwith.py:198
 msgid "Incomplete escape sequence. For a literal '%', use '%%'."
 msgstr ""
 
-#: mcomix/openwith.py:200
+#: mcomix/openwith.py:202
 msgid "Incomplete quote sequence. For a literal '\"', use '%\"'."
 msgstr ""
 
 #
 # File: src/edit.py, line: 115
-#: mcomix/openwith.py:217
+#: mcomix/openwith.py:218
+#, fuzzy
+msgid "File-related variables can only be used for files."
+msgstr "Los archivadores se guardan como paquetes ZIP."
+
+#
+# File: src/edit.py, line: 115
+#: mcomix/openwith.py:222
 #, fuzzy
 msgid "Archive-related variables can only be used for archives."
 msgstr "Los archivadores se guardan como paquetes ZIP."
 
-#: mcomix/openwith.py:239
+#: mcomix/openwith.py:244
 #, python-format
 msgid "Invalid escape sequence: %%%s"
 msgstr ""
 
-#: mcomix/openwith.py:249
+#: mcomix/openwith.py:262
 msgid "Edit external commands"
 msgstr ""
 
-#: mcomix/openwith.py:259
+#: mcomix/openwith.py:272
 msgid "Add _separator"
 msgstr ""
 
 #
 # File: src/comment.py, line: 16
 # File: src/preferences.py, line: 288
-#: mcomix/openwith.py:270
+#: mcomix/openwith.py:283
 #, fuzzy
 msgid "Run _command"
 msgstr "Comentarios"
 
-#: mcomix/openwith.py:333
+#: mcomix/openwith.py:346
 msgid "This is a separator pseudo-command."
 msgstr ""
 
-#: mcomix/openwith.py:344
+#: mcomix/openwith.py:357
 #, python-format
 msgid "\"%s\" does not have a valid working directory."
 msgstr ""
 
-#: mcomix/openwith.py:347
+#: mcomix/openwith.py:360
 #, python-format
 msgid "\"%s\" does not appear to have a valid executable."
 msgstr ""
@@ -725,54 +732,54 @@ msgstr ""
 #
 # File: src/comment.py, line: 16
 # File: src/preferences.py, line: 288
-#: mcomix/openwith.py:356
+#: mcomix/openwith.py:369
 #, fuzzy
 msgid "Command label"
 msgstr "Comentarios"
 
 #
 # File: src/ui.py, line: 36
-#: mcomix/openwith.py:450
+#: mcomix/openwith.py:462
 #, fuzzy
 msgid "Preview:"
 msgstr "Página _anterior"
 
-#: mcomix/openwith.py:458
+#: mcomix/openwith.py:470
 #, python-format
 msgid ""
 "Please refer to the <a href=\"%s\">external command documentation</a> for a "
 "list of usable variables and other hints."
 msgstr ""
 
-#: mcomix/openwith.py:466
+#: mcomix/openwith.py:478
 msgid "Label"
 msgstr ""
 
 #
 # File: src/comment.py, line: 16
 # File: src/preferences.py, line: 288
-#: mcomix/openwith.py:466
+#: mcomix/openwith.py:478
 #, fuzzy
 msgid "Command"
 msgstr "Comentarios"
 
-#: mcomix/openwith.py:466
+#: mcomix/openwith.py:478
 #, fuzzy
 msgid "Working directory"
 msgstr "Carpeta anterior"
 
 #
 # File: src/filechooser.py, line: 86
-#: mcomix/openwith.py:480
+#: mcomix/openwith.py:492
 #, fuzzy
 msgid "Disabled in archives"
 msgstr "Archivadores Tar"
 
-#: mcomix/openwith.py:535
+#: mcomix/openwith.py:547
 msgid "Save changes to commands?"
 msgstr ""
 
-#: mcomix/openwith.py:536
+#: mcomix/openwith.py:548
 msgid ""
 "You have made changes to the list of external commands that have not been "
 "saved yet. Press \"Yes\" to save all changes, or \"No\" to discard them."
