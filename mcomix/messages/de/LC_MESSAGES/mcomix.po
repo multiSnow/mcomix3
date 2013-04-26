@@ -284,33 +284,27 @@ msgstr "Bücher hinzufügen"
 msgid "Add to this collection:"
 msgstr "Zu Sammlung hinzufügen:"
 
-#: mcomix/file_chooser_main_dialog.py:22
-#: mcomix/file_chooser_simple_dialog.py:23
+#: mcomix/file_chooser_main_dialog.py:22 mcomix/file_chooser_simple_dialog.py:23
 msgid "All images"
 msgstr "Alle Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:24
-#: mcomix/file_chooser_simple_dialog.py:25
+#: mcomix/file_chooser_main_dialog.py:24 mcomix/file_chooser_simple_dialog.py:25
 msgid "JPEG images"
 msgstr "JPEG-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:25
-#: mcomix/file_chooser_simple_dialog.py:26
+#: mcomix/file_chooser_main_dialog.py:25 mcomix/file_chooser_simple_dialog.py:26
 msgid "PNG images"
 msgstr "PNG-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:26
-#: mcomix/file_chooser_simple_dialog.py:27
+#: mcomix/file_chooser_main_dialog.py:26 mcomix/file_chooser_simple_dialog.py:27
 msgid "GIF images"
 msgstr "GIF-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:27
-#: mcomix/file_chooser_simple_dialog.py:28
+#: mcomix/file_chooser_main_dialog.py:27 mcomix/file_chooser_simple_dialog.py:28
 msgid "TIFF images"
 msgstr "TIFF-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:28
-#: mcomix/file_chooser_simple_dialog.py:29
+#: mcomix/file_chooser_main_dialog.py:28 mcomix/file_chooser_simple_dialog.py:29
 msgid "BMP images"
 msgstr "BMP-Bilder"
 
@@ -385,13 +379,12 @@ msgid "Next page"
 msgstr "Nächste Seite"
 
 #: mcomix/keybindings.py:38
-#, fuzzy
 msgid "Back ten pages"
-msgstr "Seite speichern als"
+msgstr "Zehn Seiten zurück "
 
 #: mcomix/keybindings.py:39
 msgid "Forward ten pages"
-msgstr ""
+msgstr "Zehn Seiten vor"
 
 #: mcomix/keybindings.py:41
 msgid "Scroll to bottom left"
@@ -538,9 +531,8 @@ msgid "Do not ask again."
 msgstr "Nicht noch einmal fragen."
 
 #: mcomix/openwith_menu.py:22
-#, fuzzy
 msgid "_Edit commands"
-msgstr "Externe Programme bearbeiten"
+msgstr "_Externe Programme bearbeiten"
 
 #: mcomix/openwith.py:77
 #, python-format
@@ -558,7 +550,7 @@ msgstr "Konnte Programm %(cmdlabel)s nicht ausführen: %(exception)s "
 
 #: mcomix/openwith.py:155
 msgid "Command line is empty."
-msgstr ""
+msgstr "Befehlszeile ist leer."
 
 #: mcomix/openwith.py:198
 msgid "Incomplete escape sequence. For a literal '%', use '%%'."
@@ -572,9 +564,8 @@ msgstr ""
 "im Befehl zu erhalten."
 
 #: mcomix/openwith.py:218
-#, fuzzy
 msgid "File-related variables can only be used for files."
-msgstr "Variablen für Archive können nur in Archiven verwendet werden."
+msgstr "Datei-Variablen können nur für Dateien verwendet werden."
 
 #: mcomix/openwith.py:222
 msgid "Archive-related variables can only be used for archives."
@@ -625,6 +616,8 @@ msgid ""
 "Please refer to the <a href=\"%s\">external command documentation</a> for a "
 "list of usable variables and other hints."
 msgstr ""
+"Die <a href=\"%s\">Dokumentation für externe Befehle</a> enthält eine Liste "
+"aller Variablen und Hinweise zur Benutzung."
 
 #: mcomix/openwith.py:478
 msgid "Label"
@@ -1071,9 +1064,9 @@ msgid ""
 "specification. These thumbnails are shared by many other applications, such "
 "as most file managers."
 msgstr ""
-"Vorschaubilder für geöffnete Dateien gemäß der Spezifikation von freedesktop."
-"org speichern. Diese Vorschaubilder werden mit vielen anderen Anwendungen, "
-"zumeist Dateimanagern, gemeinsam benutzt."
+"Vorschaubilder für geöffnete Dateien gemäß der Spezifikation von "
+"freedesktop.org speichern. Diese Vorschaubilder werden mit vielen anderen "
+"Anwendungen, zumeist Dateimanagern, gemeinsam benutzt."
 
 #: mcomix/preferences_dialog.py:380
 msgid "Maximum number of pages to store in the cache:"
@@ -1739,7 +1732,6 @@ msgid "_Edit"
 msgstr "Bea_rbeiten"
 
 #: mcomix/ui.py:94 mcomix/ui.py:95
-#, fuzzy
 msgid "Open _with"
 msgstr "Ö_ffnen mit"
 
@@ -2776,8 +2768,8 @@ msgstr "Aut_omatisch nach Büchern suchen, wenn Bibliothek geöffnet wird"
 
 #~ msgid ""
 #~ "Crash recovery saves the current configuration information every "
-#~ "specified seconds.  In case of a crash the previous file will be re-"
-#~ "loaded."
+#~ "specified seconds.  In case of a crash the previous file will be "
+#~ "re-loaded."
 #~ msgstr ""
 #~ "Automatische Wiederherstellung speichert die derzeitige Konfiguration in "
 #~ "spezifizierten Abständen. Sollte MComix abstürzen, wird die zuletzt "
