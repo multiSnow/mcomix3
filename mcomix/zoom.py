@@ -31,28 +31,24 @@ class ZoomModel(object):
 
     def set_zoom(self, zoom):
         new_zoom = min(max(self._base_zoom + zoom, MIN_ZOOM), MAX_ZOOM)
-
         if new_zoom == self.get_zoom():
             return False
 
         self._user_zoom = new_zoom - self._base_zoom
-
         self.zoom_changed(self.get_zoom())
         return True
 
     def zoom_in(self):
-        plus = self.get_zoom_advancement()
-        return self.set_zoom(self._user_zoom + plus)
+        return self.set_zoom(self._user_zoom + self._get_zoom_advancement())
 
     def zoom_out(self):
-        minus = self.get_zoom_advancement()
-        return self.set_zoom(self._user_zoom - minus)
+        return self.set_zoom(self._user_zoom - self._get_zoom_advancement())
 
     def reset_zoom(self):
         self.set_zoom(0.0)
         self.zoom_changed(self.get_zoom())
 
-    def get_zoom_advancement(self):
+    def _get_zoom_advancement(self):
         if self.get_zoom() > 2.0:
             return 0.5
         elif self.get_zoom() > 1.0:
@@ -64,21 +60,21 @@ class ZoomModel(object):
     def zoom_changed(self, zoomlevel):
         pass
 
-    def recalculate_zoom(self, image_size, screen_size):
+    def _recalculate_zoom(self, image_size, screen_size):
         if self._fitmode:
             scaled_size = self._fitmode.get_scaled_size(image_size, screen_size)
             # Using width/height shouldn't matter as images are always scaled proportionally
-            self._base_zoom = float(scaled_size[0]) / float(image_size[0])
+            self._base_zoom = _calc_scale(image_size[0], scaled_size[0])
 
         # Prevent overflow from negative zoom factors
         if self.get_zoom() <= 0.001:
-            self._user_zoom = 0.05 - self._base_zoom
+            self._user_zoom = MIN_ZOOM - self._base_zoom
 
         return self._base_zoom
 
     def get_zoomed_size(self, image_size, screen_size):
-        self.recalculate_zoom(image_size, screen_size)
-        return int(self.get_zoom() * image_size[0]), int(self.get_zoom() * image_size[1])
+        self._recalculate_zoom(image_size, screen_size)
+        return _scale_int(image_size, self.get_zoom())
 
 
 class FitMode(object):
@@ -95,11 +91,6 @@ class FitMode(object):
 
     def set_scale_up(self, scale_up):
         self.scale_up = scale_up
-
-    def get_scale_percentage(self, length, desired_length):
-        """ Calculates the factor a number must be multiplied with to reach
-        a desired size. """
-        return float(desired_length) / float(length)
 
     def get_scaled_size(self, img_size, screen_size):
         """ Returns the base image size (scaled to fit into screen_size,
@@ -125,6 +116,7 @@ class FitMode(object):
 
         raise ValueError("No fit mode registered for identifier '%d'." % fitmode)
 
+
 class NoFitMode(FitMode):
     """ No automatic scaling depending on image size (unless L{scale_up} is
     True, in which case the image will be fit to screen size). """
@@ -136,10 +128,10 @@ class NoFitMode(FitMode):
                 img_size[0] < screen_size[0] and
                 img_size[1] < screen_size[1]):
 
-            scale_x = self.get_scale_percentage(img_size[0], screen_size[0])
-            scale_y = self.get_scale_percentage(img_size[1], screen_size[1])
+            scale_x = _calc_scale(img_size[0], screen_size[0])
+            scale_y = _calc_scale(img_size[1], screen_size[1])
             scale = min(scale_x, scale_y)
-            return int(img_size[0] * scale), int(img_size[1] * scale)
+            return _scale_int(img_size, scale)
         else:
             return int(img_size[0]), int(img_size[1])
 
@@ -152,10 +144,10 @@ class BestFitMode(FitMode):
     def get_scaled_size(self, img_size, screen_size):
         scale = min(self.get_scale_x(img_size[0], screen_size[0]),
                 self.get_scale_y(img_size[1], screen_size[1]))
-        return int(img_size[0] * scale), int(img_size[1] * scale)
+        return _scale_int(img_size, scale)
 
     def get_scale_x(self, img_width, screen_width):
-        scale_x = self.get_scale_percentage(img_width, screen_width)
+        scale_x = _calc_scale(img_width, screen_width)
 
         if scale_x > 1.0 and not self.get_scale_up():
             return 1.0
@@ -163,7 +155,7 @@ class BestFitMode(FitMode):
             return scale_x
 
     def get_scale_y(self, img_height, screen_height):
-        scale_y = self.get_scale_percentage(img_height, screen_height)
+        scale_y = _calc_scale(img_height, screen_height)
 
         if scale_y > 1.0 and not self.get_scale_up():
             return 1.0
@@ -178,7 +170,7 @@ class FitToWidthMode(BestFitMode):
 
     def get_scaled_size(self, img_size, screen_size):
         scale = self.get_scale_x(img_size[0], screen_size[0])
-        return int(img_size[0] * scale), int(img_size[1] * scale)
+        return _scale_int(img_size, scale)
 
 
 class FitToHeightMode(BestFitMode):
@@ -188,7 +180,7 @@ class FitToHeightMode(BestFitMode):
 
     def get_scaled_size(self, img_size, screen_size):
         scale = self.get_scale_y(img_size[1], screen_size[1])
-        return int(img_size[0] * scale), int(img_size[1] * scale)
+        return _scale_int(img_size, scale)
 
 
 class FitToSizeMode(FitMode):
@@ -215,8 +207,17 @@ class FitToSizeMode(FitMode):
         if not self.get_scale_up() and side < self.size:
             return img_size
 
-        scale = self.get_scale_percentage(side, self.size)
-        return int(img_size[0] * scale), int(img_size[1] * scale)
+        scale = _calc_scale(side, self.size)
+        return _scale_int(img_size, scale)
+
+
+def _scale_int(x, scale):
+    return int(x[0] * scale), int(x[1] * scale)
+
+def _calc_scale(length, desired_length):
+    """ Calculates the factor a number must be multiplied with to reach
+    a desired size. """
+    return float(desired_length) / float(length)
 
 
 # vim: expandtab:sw=4:ts=4
