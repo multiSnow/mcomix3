@@ -4,6 +4,9 @@ from mcomix import constants
 from mcomix import callback
 from mcomix.preferences import prefs
 
+MIN_ZOOM = 0.05
+MAX_ZOOM = 6.0
+
 class ZoomModel(object):
     """ Handles zoom and fit modes. """
 
@@ -27,16 +30,14 @@ class ZoomModel(object):
         return self._base_zoom + self._user_zoom
 
     def set_zoom(self, zoom):
-        if (self._base_zoom + zoom > 6.0 or
-            self._base_zoom + zoom < 0.05):
+        new_zoom = min(max(self._base_zoom + zoom, MIN_ZOOM), MAX_ZOOM)
+
+        if new_zoom == self.get_zoom():
             return False
 
-        old_zoom = self._user_zoom
-        self._user_zoom = float(zoom)
+        self._user_zoom = new_zoom - self._base_zoom
 
-        if zoom != old_zoom:
-            self.zoom_changed(self.get_zoom())
-
+        self.zoom_changed(self.get_zoom())
         return True
 
     def zoom_in(self):
