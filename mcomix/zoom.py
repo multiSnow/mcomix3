@@ -57,11 +57,11 @@ class FitMode(object):
 
     ID = -1
 
-    def get_preferred_scale(self, img_size, screen_size):
+    def get_preferred_scale(self, image_size, screen_size):
         """ Returns the base image size (scaled to fit into screen_size,
         depending on algorithm).
 
-        @param img_size: Tuple of (width, height), original image size
+        @param image_size: Tuple of (width, height), original image size
         @param screen_size: Tuple of (width, height), available screen size
         @return: Tuple of (width, height), scaled image size
         """
@@ -87,7 +87,10 @@ class NoFitMode(FitMode):
 
     ID = constants.ZOOM_MODE_MANUAL
 
-    def get_preferred_scale(self, img_size, screen_size):
+    def get_preferred_scale(self, image_size, screen_size):
+        if (image_size[0] < screen_size[0] and
+            image_size[1] < screen_size[1]):
+            return _calc_scale_both(image_size, screen_size)
         return IDENTITY_ZOOM
 
 
@@ -96,9 +99,8 @@ class BestFitMode(FitMode):
 
     ID = constants.ZOOM_MODE_BEST
 
-    def get_preferred_scale(self, img_size, screen_size):
-        return min(_calc_scale(img_size[0], screen_size[0]),
-                _calc_scale(img_size[1], screen_size[1]))
+    def get_preferred_scale(self, image_size, screen_size):
+        return _calc_scale_both(image_size, screen_size)
 
 
 class FitToWidthMode(FitMode):
@@ -106,8 +108,8 @@ class FitToWidthMode(FitMode):
 
     ID = constants.ZOOM_MODE_WIDTH
 
-    def get_preferred_scale(self, img_size, screen_size):
-        return _calc_scale(img_size[0], screen_size[0])
+    def get_preferred_scale(self, image_size, screen_size):
+        return _calc_scale_width(image_size, screen_size)
 
 
 class FitToHeightMode(FitMode):
@@ -115,8 +117,8 @@ class FitToHeightMode(FitMode):
 
     ID = constants.ZOOM_MODE_HEIGHT
 
-    def get_preferred_scale(self, img_size, screen_size):
-        return _calc_scale(img_size[1], screen_size[1])
+    def get_preferred_scale(self, image_size, screen_size):
+        return _calc_scale_height(image_size, screen_size)
 
 
 class FitToSizeMode(FitMode):
@@ -129,11 +131,11 @@ class FitToSizeMode(FitMode):
         self.size = int(prefs['fit to size px'])
         self.mode = prefs['fit to size mode']
 
-    def get_preferred_scale(self, img_size, screen_size):
+    def get_preferred_scale(self, image_size, screen_size):
         if self.mode == constants.ZOOM_MODE_WIDTH:
-            side = img_size[0]
+            side = image_size[0]
         elif self.mode == constants.ZOOM_MODE_HEIGHT:
-            side = img_size[1]
+            side = image_size[1]
         else:
             assert False, 'Invalid fit to size mode specified in preferences'
 
@@ -148,5 +150,14 @@ def _calc_scale(length, desired_length):
     a desired size. """
     return float(desired_length) / float(length)
 
+def _calc_scale_width(image_size, screen_size):
+    return _calc_scale(image_size[0], screen_size[0])
+
+def _calc_scale_height(image_size, screen_size):
+    return _calc_scale(image_size[1], screen_size[1])
+
+def _calc_scale_both(image_size, screen_size):
+    return min(_calc_scale_width(image_size, screen_size),
+        _calc_scale_height(image_size, screen_size))
 
 # vim: expandtab:sw=4:ts=4
