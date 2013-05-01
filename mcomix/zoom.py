@@ -44,8 +44,8 @@ class ZoomModel(object):
         preferred_scale = self._fitmode.get_preferred_scale(
             image_size, screen_size)
         if (preferred_scale > IDENTITY_ZOOM and
-            image_size[0] < screen_size[0] and
-            image_size[1] < screen_size[1] and
+            (image_size[0] < screen_size[0] or
+             image_size[1] < screen_size[1]) and
             not self.get_scale_up()):
             preferred_scale = IDENTITY_ZOOM
 
