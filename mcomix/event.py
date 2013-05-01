@@ -54,11 +54,17 @@ class EventHandler:
 
         # Navigation keys that work in addition to the accelerators in ui.py
         manager.register('previous page',
-            ['KP_Page_Up', 'BackSpace', '<Mod1>Left'],
+            ['KP_Page_Up', 'BackSpace'],
             self._window.previous_page)
         manager.register('next page',
-            ['KP_Page_Down', '<Mod1>Right'],
+            ['KP_Page_Down'],
             self._window.next_page)
+        manager.register('previous page dynamic',
+            ['<Mod1>Left'],
+            self._left_right_page_progress, kwargs={'left': True})
+        manager.register('next page dynamic',
+            ['<Mod1>Right'],
+            self._left_right_page_progress, kwargs={'left': False})
 
         manager.register('previous page ff',
             ['<Shift>Page_Up', '<Shift>KP_Page_Up', '<Shift>BackSpace', '<Shift><Mod1>Left'],
@@ -620,6 +626,20 @@ class EventHandler:
         else:
             # This path should not be reached.
             assert False, "Programmer is moron, incorrect assertion."
+
+    def _left_right_page_progress(self, left=True):
+        """ If left is True, this function advances one page in manga mode and goes
+        back one page in normal mode. The opposite happens for left=False. """
+
+        next = not left
+        if self._window.is_manga_mode:
+            # Switch next and previous page
+            next = not next
+
+        if next:
+            self._window.next_page()
+        else:
+            self._window.previous_page()
 
     def _execute_command(self, cmdindex):
         """ Execute an external command. cmdindex should be an integer from 0 to 9,
