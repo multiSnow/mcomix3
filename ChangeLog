@@ -1,6 +1,8 @@
 MComix 1.01
 
-    - Nothing yet.
+    - During database upgrade, MComix did not consider that books in the
+      "Last read" database might no longer exist, leading to program crash.
+      This has been fixed.
 
 MComix 1.00
 Release date: 26.04.2013
