@@ -81,7 +81,6 @@ class MainWindow(gtk.Window):
         self.lens = lens.MagnifyingLens(self)
         self.osd = osd.OnScreenDisplay(self)
         self.zoom = zoom.ZoomModel()
-        self.zoom.zoom_changed += lambda zoom: self.draw_image()
         self.uimanager = ui.MainUI(self)
         self.menubar = self.uimanager.get_widget('/Menu')
         self.toolbar = self.uimanager.get_widget('/Tool')
@@ -665,8 +664,10 @@ class MainWindow(gtk.Window):
             prefs['zoom mode'] = radioaction.get_current_value()
 
         fitmode = zoom.FitMode.create(prefs['zoom mode'])
-        fitmode.set_scale_up(prefs['stretch'])
         self.zoom.set_fit_mode(fitmode)
+        self.zoom.set_scale_up(prefs['stretch'])
+        self.zoom.reset_user_zoom()
+        self.draw_image()
 
     def change_autorotation(self, radioaction=None, *args):
         """ Switches between automatic rotation modes, depending on which
@@ -679,7 +680,7 @@ class MainWindow(gtk.Window):
     def change_stretch(self, toggleaction, *args):
         """ Toggles stretching small images. """
         prefs['stretch'] = toggleaction.get_active()
-        self.zoom.get_fit_mode().set_scale_up(prefs['stretch'])
+        self.zoom.set_scale_up(prefs['stretch'])
         self.draw_image()
 
     def change_toolbar_visibility(self, *args):
@@ -717,12 +718,15 @@ class MainWindow(gtk.Window):
 
     def manual_zoom_in(self, *args):
         self.zoom.zoom_in()
+        self.draw_image()
 
     def manual_zoom_out(self, *args):
         self.zoom.zoom_out()
+        self.draw_image()
 
     def manual_zoom_original(self, *args):
-        self.zoom.reset_zoom()
+        self.zoom.reset_user_zoom()
+        self.draw_image()
 
     def _show_scrollbars(self, img_size, screen_size):
         """ Enables scroll bars depending on image size
