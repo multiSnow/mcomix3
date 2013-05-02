@@ -145,7 +145,7 @@ class FitToSizeMode(FitMode):
 
 
 def _scale_int(x, scale):
-    return int(x[0] * scale), int(x[1] * scale)
+    return int(round(x[0] * scale)), int(round(x[1] * scale))
 
 def _calc_scale(length, desired_length):
     """ Calculates the factor a number must be multiplied with to reach
