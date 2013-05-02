@@ -4,16 +4,17 @@ from mcomix import constants
 from mcomix.preferences import prefs
 
 IDENTITY_ZOOM = 1.0
-ZOOM_STEP = 2 ** (1.0 / 4)
-MIN_USER_ZOOM = 1.0 / 32
-MAX_USER_ZOOM = 8.0
+IDENTITY_ZOOM_LOG = 0
+USER_ZOOM_LOG_SCALE1 = 4.0
+MIN_USER_ZOOM_LOG = -20
+MAX_USER_ZOOM_LOG = 12
 
 class ZoomModel(object):
     """ Handles zoom and fit modes. """
 
     def __init__(self):
         #: User zoom level.
-        self._user_zoom = IDENTITY_ZOOM
+        self._user_zoom_log = IDENTITY_ZOOM_LOG
         #: Image fit mode. Determines the base zoom level for an image by
         #: calculating its maximum size.
         self._fitmode = NoFitMode()
@@ -28,17 +29,17 @@ class ZoomModel(object):
     def set_scale_up(self, scale_up):
         self._scale_up = scale_up
 
-    def _set_user_zoom(self, zoom):
-        self._user_zoom = min(max(zoom, MIN_USER_ZOOM), MAX_USER_ZOOM)
+    def _set_user_zoom_log(self, zoom_log):
+        self._user_zoom_log = min(max(zoom_log, MIN_USER_ZOOM_LOG), MAX_USER_ZOOM_LOG)
 
     def zoom_in(self):
-        self._set_user_zoom(self._user_zoom * ZOOM_STEP)
+        self._set_user_zoom_log(self._user_zoom_log + 1)
 
     def zoom_out(self):
-        self._set_user_zoom(self._user_zoom / ZOOM_STEP)
+        self._set_user_zoom_log(self._user_zoom_log - 1)
 
     def reset_user_zoom(self):
-        self._set_user_zoom(IDENTITY_ZOOM)
+        self._set_user_zoom_log(IDENTITY_ZOOM_LOG)
 
     def get_zoomed_size(self, image_size, screen_size):
         preferred_scale = self._fitmode.get_preferred_scale(
@@ -49,7 +50,8 @@ class ZoomModel(object):
             not self.get_scale_up()):
             preferred_scale = IDENTITY_ZOOM
 
-        return _scale_int(image_size, preferred_scale * self._user_zoom)
+        return _scale_int(image_size,
+            preferred_scale * 2 ** (self._user_zoom_log / USER_ZOOM_LOG_SCALE1))
 
 
 class FitMode(object):
