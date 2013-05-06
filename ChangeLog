@@ -7,6 +7,9 @@ MComix 1.01
     - The ALT+Left and ALT+Right keys will now either advance one page,
       or go back one page, depending on the user being in manga mode or not.
 
+    - Manual zooming will now use a logarithmic scale instead of a linear
+      spline.
+
     - The library will now use natural sorting for "Sort by name" and
       "Sort by path" instead of alphanumeric sorting, bringing it in line with
       most other sorting done by MComix.
