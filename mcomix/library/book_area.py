@@ -18,6 +18,7 @@ from mcomix import i18n
 from mcomix import status
 from mcomix import log
 from mcomix import message_dialog
+from mcomix import tools
 from mcomix.library.pixbuf_cache import get_pixbuf_cache
 
 _dialog = None
@@ -52,6 +53,7 @@ class _BookArea(gtk.ScrolledWindow):
                 gobject.TYPE_INT, gobject.TYPE_STRING, gobject.TYPE_INT64,
                 gobject.TYPE_STRING, gobject.TYPE_BOOLEAN)
         self._liststore.set_sort_func(constants.SORT_NAME, self._sort_by_name, None)
+        self._liststore.set_sort_func(constants.SORT_PATH, self._sort_by_path, None)
         self.set_sort_order()
         self._liststore.connect('row-inserted', self._icon_added)
         self._iconview = thumbnail_view.ThumbnailIconView(self._liststore)
@@ -333,13 +335,13 @@ class _BookArea(gtk.ScrolledWindow):
         name1 = os.path.split(path1.decode('utf-8'))[1].lower()
         name2 = os.path.split(path2.decode('utf-8'))[1].lower()
 
-        if name1 == name2:
-            return 0
-        else:
-            if name1 < name2:
-                return -1
-            else:
-                return 1
+        return tools.alphanumeric_compare(name1, name2)
+
+    def _sort_by_path(self, treemodel, iter1, iter2, user_data):
+        """ Compares two books based on their full path, in natural order. """
+        path1 = self._liststore.get_value(iter1, 2)
+        path2 = self._liststore.get_value(iter2, 2)
+        return tools.alphanumeric_compare(path1, path2)
 
     def _icon_added(self, model, path, iter, *args):
         """ Justifies the alignment of all cell renderers when new data is
