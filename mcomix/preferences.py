@@ -81,7 +81,6 @@ prefs = {
     'pageselector height': -1,
     'pageselector width': -1,
     'library cover size': 125,
-    'auto add books into collections': True,
     'last library collection': None,
     'lib window height': 600,
     'lib window width': 500,

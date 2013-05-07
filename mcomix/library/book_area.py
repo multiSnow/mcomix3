@@ -40,7 +40,7 @@ class _BookArea(gtk.ScrolledWindow):
         self._library = library
         self._cache = get_pixbuf_cache()
 
-        self._library.backend.book_added += self._new_book_added
+        self._library.backend.book_added_to_collection += self._new_book_added
 
         self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
 

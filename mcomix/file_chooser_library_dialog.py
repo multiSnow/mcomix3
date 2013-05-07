@@ -20,26 +20,6 @@ class _LibraryFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog)
         self._library = library
 
         self.filechooser.set_select_multiple(True)
-        self.filechooser.connect('current_folder_changed',
-            self._set_collection_name)
-
-        self._collection_button = gtk.CheckButton(
-            _('Add to this collection:'),
-            False)
-        self._collection_button.set_active(
-            prefs['auto add books into collections'])
-        self._comboentry = gtk.combo_box_entry_new_text()
-        self._comboentry.child.set_activates_default(True)
-
-        for collection in self._library.backend.get_all_collections():
-            name = self._library.backend.get_collection_name(collection)
-            self._comboentry.append_text(name)
-
-        collection_box = gtk.HBox(False, 6)
-        collection_box.pack_start(self._collection_button, False, False)
-        collection_box.pack_start(self._comboentry, True, True)
-        collection_box.show_all()
-        self.filechooser.set_extra_widget(collection_box)
 
         # Remove 'All files' filter from base class
         filters = self.filechooser.list_filters()
@@ -70,27 +50,9 @@ class _LibraryFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog)
     def should_open_recursive(self):
         return True
 
-    def _set_collection_name(self, *args):
-        """Set the text in the ComboBoxEntry to the name of the current
-        directory.
-        """
-        name = os.path.basename(self.filechooser.get_current_folder())
-        self._comboentry.child.set_text(name)
-
     def files_chosen(self, paths):
         if paths:
             paths = [ path.decode('utf-8') for path in paths ]
-            if self._collection_button.get_active():
-                prefs['auto add books into collections'] = True
-                collection_name = self._comboentry.get_active_text().decode('utf-8')
-
-                if not collection_name: # No empty-string names.
-                    collection_name = None
-
-            else:
-                prefs['auto add books into collections'] = False
-                collection_name = None
-
             try: # For some reason this fails sometimes (GTK+ bug?)
                 filter_index = self.filechooser.list_filters().index(
                     self.filechooser.get_filter())
@@ -100,7 +62,7 @@ class _LibraryFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog)
                 pass
 
             close_library_filechooser_dialog()
-            self._library.add_books(paths, collection_name)
+            self._library.add_books(paths, None)
 
         else:
             close_library_filechooser_dialog()

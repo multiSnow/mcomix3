@@ -104,6 +104,10 @@ class _ControlArea(gtk.HBox):
         if selected:
             book_id = self._library.book_area.get_book_at_path(selected[0])
             book = self._library.backend.get_book_by_id(book_id)
+        else:
+            book = None
+
+        if book:
             name = book.name
             dir_path = os.path.dirname(book.path)
             pages = book.pages

@@ -329,7 +329,7 @@ class _LibraryBackend:
 
                 book = backend_types._Book(book_id, name, path, pages,
                         format, size, datetime.datetime.now().isoformat())
-                self.book_added(book, collection)
+                self.book_added(book)
 
             cursor.close()
 
@@ -342,12 +342,22 @@ class _LibraryBackend:
             return False
 
     @callback.Callback
-    def book_added(self, book, collection):
+    def book_added(self, book):
         """ Event that triggers when a new book is successfully added to the
         library.
         @param book: L{_Book} instance of the newly added book.
         """
         pass
+
+    @callback.Callback
+    def book_added_to_collection(self, book, collection_id):
+        """ Event that triggers when a book is added to the
+        specified collection.
+        @param book: L{_Book} instance of the added book.
+        @param collection_id: ID of the collection.
+        """
+        pass
+
 
     def add_collection(self, name):
         """Add a new collection with <name> to the library. Return True
@@ -375,6 +385,8 @@ class _LibraryBackend:
         try:
             self._con.execute('''insert into Contain
                 (collection, book) values (?, ?)''', (collection, book))
+            self.book_added_to_collection(self.get_book_by_id(book),
+                collection)
         except dbapi2.DatabaseError: # E.g. book already in collection.
             pass
         except dbapi2.Error:
