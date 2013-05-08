@@ -251,6 +251,8 @@ class _BookArea(gtk.ScrolledWindow):
 
         if (collection == self._library.collection_area.get_current_collection() or
             self._library.collection_area.get_current_collection() == _COLLECTION_ALL):
+            # FIXME: If "All books" is viewed when a book gets added to another collection,
+            # it is displayed twice.
 
             # If the current view is filtered, only draw new books that match the filter
             if not (self._library.filter_string and 
