@@ -1,5 +1,8 @@
 MComix 1.01
 
+    - Keyboard shortcuts can now be edited from MComix' preference dialog
+      in a new tab "Shortcuts". (by Valentin Gologuzov)
+
     - During database upgrade, MComix did not consider that books in the
       "Last read" database might no longer exist, leading to program crash.
       This has been fixed.

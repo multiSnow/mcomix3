@@ -2,6 +2,8 @@
 
 """preferences_dialog.py - Preferences dialog."""
 
+from itertools import groupby
+from collections import defaultdict
 import operator
 import gtk
 import gobject
@@ -11,6 +13,8 @@ from mcomix import preferences_page
 from mcomix import image_tools
 from mcomix import constants
 from mcomix import message_dialog
+from mcomix import keybindings
+from mcomix import keybindings_editor
 
 _dialog = None
 
@@ -48,6 +52,8 @@ class _PreferencesDialog(gtk.Dialog):
         notebook.append_page(display, gtk.Label(_('Display')))
         advanced = self._init_advanced_tab()
         notebook.append_page(advanced, gtk.Label(_('Advanced')))
+        shortcuts = self._init_shortcuts_tab()
+        notebook.append_page(shortcuts, gtk.Label(_('Shortcuts')))
 
         self.show_all()
 
@@ -417,6 +423,14 @@ class _PreferencesDialog(gtk.Dialog):
             _('Treat all files found within archives, that have one of these file endings, as comments.'))
         page.add_row(label, extensions_entry)
 
+        return page
+
+    def _init_shortcuts_tab(self):
+        # ----------------------------------------------------------------
+        # The "Shortcuts" tab.
+        # ----------------------------------------------------------------
+        km = keybindings.keybinding_manager(self._window)
+        page = keybindings_editor.KeybindingEditorWindow(km)
         return page
 
     def _response(self, dialog, response):

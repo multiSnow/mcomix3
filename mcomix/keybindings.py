@@ -24,8 +24,11 @@ action-name: string => [keycodes: list]
 Each action_name can have multiple keybindings.
 """
 
+import os
+import shutil
 import gtk
 import json
+from collections import defaultdict
 
 from mcomix import constants
 from mcomix import log
@@ -33,57 +36,126 @@ from mcomix import log
 #: Bindings defined in this dictionary will appear in the configuration dialog.
 #: If 'group' is None, the binding cannot be modified from the preferences dialog.
 BINDING_INFO = {
-    'previous page' : { 'title' : _('Previous page'), 'group' : _('Reading') },
-    'next page' : { 'title' : _('Next page'), 'group' : _('Reading') },
-    'previous page ff' : { 'title': _('Back ten pages'), 'group': _('Reading') },
-    'next page ff' : { 'title': _('Forward ten pages'), 'group': _('Reading') },
-    'previous page dynamic' : { 'title': _('Previous page (dynamic)'), 'group': _('Reading') },
-    'next page dynamic' : { 'title': _('Next page (dynamic)'), 'group': _('Reading') },
+    # Navigation between pages, archives, directories
+    'previous_page' : { 'title' : _('Previous page'), 'group' : _('Navigation') },
+    'next_page' : { 'title' : _('Next page'), 'group' : _('Navigation') },
+    'previous_page_ff' : { 'title': _('Back ten pages'), 'group': _('Navigation') },
+    'next_page_ff' : { 'title': _('Forward ten pages'), 'group': _('Navigation') },
+    'previous_page_dynamic' : { 'title': _('Previous page (dynamic)'), 'group': _('Navigation') },
+    'next_page_dynamic' : { 'title': _('Next page (dynamic)'), 'group': _('Navigation') },
 
-    'scroll left bottom' : { 'title' : _('Scroll to bottom left'), 'group' : _('Page orientation and zoom')},
-    'scroll middle bottom' : { 'title' : _('Scroll to bottom center'), 'group' : _('Page orientation and zoom')},
-    'scroll right bottom' : { 'title' : _('Scroll to bottom right'), 'group' : _('Page orientation and zoom')},
+    'first_page' : { 'title': _('First page'), 'group': _('Navigation') },
+    'last_page' : { 'title': _('Last page'), 'group': _('Navigation') },
+    'go_to' : { 'title': _('Go to page'), 'group': _('Navigation') },
 
-    'scroll left middle' : { 'title' : _('Scroll to middle left'), 'group' : _('Page orientation and zoom')},
-    'scroll middle' : { 'title' : _('Scroll to center'), 'group' : _('Page orientation and zoom')},
-    'scroll right middle' : { 'title' : _('Scroll to middle right'), 'group' : _('Page orientation and zoom')},
+    'next_archive' : { 'title': _('Next archive'), 'group': _('Navigation') },
+    'previous_archive' : { 'title': _('Previous archive'), 'group': _('Navigation') },
+    'next_directory' : { 'title': _('Next directory'), 'group': _('Navigation') },
+    'previous_directory' : { 'title': _('Previous directory'), 'group': _('Navigation') },
 
-    'scroll left top' : { 'title' : _('Scroll to top left'), 'group' : _('Page orientation and zoom')},
-    'scroll middle top' : { 'title' : _('Scroll to top center'), 'group' : _('Page orientation and zoom')},
-    'scroll right top' : { 'title' : _('Scroll to top right'), 'group' : _('Page orientation and zoom')},
+    # Scrolling
+    'scroll_left_bottom' : { 'title' : _('Scroll to bottom left'), 'group' : _('Scroll')},
+    'scroll_middle_bottom' : { 'title' : _('Scroll to bottom center'), 'group' : _('Scroll')},
+    'scroll_right_bottom' : { 'title' : _('Scroll to bottom right'), 'group' : _('Scroll')},
 
-    'exit fullscreen' : { 'title' : _('Exit from fullscreen'), 'group' : None},
-    'toggle fullscreen' : { 'title' : _('Toggle fullscreen'), 'group' : _('User interface')},
+    'scroll_left_middle' : { 'title' : _('Scroll to middle left'), 'group' : _('Scroll')},
+    'scroll_middle' : { 'title' : _('Scroll to center'), 'group' : _('Scroll')},
+    'scroll_right_middle' : { 'title' : _('Scroll to middle right'), 'group' : _('Scroll')},
 
-    'zoom in' : { 'title' : _('Zoom in'), 'group' : _('Page orientation and zoom')},
-    'zoom out' : { 'title' : _('Zoom out'), 'group' : _('Page orientation and zoom')},
-    'zoom original' : { 'title' : _('Normal size'), 'group' : _('Page orientation and zoom')},
+    'scroll_left_top' : { 'title' : _('Scroll to top left'), 'group' : _('Scroll')},
+    'scroll_middle_top' : { 'title' : _('Scroll to top center'), 'group' : _('Scroll')},
+    'scroll_right_top' : { 'title' : _('Scroll to top right'), 'group' : _('Scroll')},
 
-    'scroll down' : { 'title' : _('Scroll down'), 'group' : _('Reading') },
-    'scroll up' : { 'title' : _('Scroll up'), 'group' : _('Reading') },
-    'scroll right' : { 'title' : _('Scroll right'), 'group' : _('Reading') },
-    'scroll left' : { 'title' : _('Scroll left'), 'group' : _('Reading') },
+    'scroll_down' : { 'title' : _('Scroll down'), 'group' : _('Scroll') },
+    'scroll_up' : { 'title' : _('Scroll up'), 'group' : _('Scroll') },
+    'scroll_right' : { 'title' : _('Scroll right'), 'group' : _('Scroll') },
+    'scroll_left' : { 'title' : _('Scroll left'), 'group' : _('Scroll') },
 
-    'smart scroll up' : { 'title' : _('Smart scroll up'), 'group' : _('Reading') },
-    'smart scroll down' : { 'title' : _('Smart scroll down'), 'group' : _('Reading') },
+    'smart_scroll_up' : { 'title' : _('Smart scroll up'), 'group' : _('Scroll') },
+    'smart_scroll_down' : { 'title' : _('Smart scroll down'), 'group' : _('Scroll') },
 
-    'osd panel' : { 'title' : _('Show OSD panel'), 'group' : _('User Interface') },
+    # View
+    'zoom_in' : { 'title' : _('Zoom in'), 'group' : _('Zoom')},
+    'zoom_out' : { 'title' : _('Zoom out'), 'group' : _('Zoom')},
+    'zoom_original' : { 'title' : _('Normal size'), 'group' : _('Zoom')},
+
+    'keep_transformation' : { 'title': _('Keep transformation'), 'group': _('Transformation') },
+    'rotate_90' : { 'title': _('Rotate 90 degrees CW'), 'group': _('Transformation') },
+    'rotate_180' : { 'title': _('Rotate 180 degrees'), 'group': _('Transformation') },
+    'rotate_270' : { 'title': _('Rotate 90 degrees CCW'), 'group': _('Transformation') },
+    'flip_horiz' : { 'title': _('Flip horizontally'), 'group': _('Transformation') },
+    'flip_vert' : { 'title': _('Flip vertically'), 'group': _('Transformation') },
+    'no_autorotation' : { 'title': _('Never autorotate'), 'group': _('Transformation') },
+
+    'rotate_90_width' : { 'title': _('Rotate 90 degrees CW'), 'group': _('Autorotate by width') },
+    'rotate_270_width' : { 'title': _('Rotate 90 degrees CCW'), 'group': _('Autorotate by width') },
+    'rotate_90_height' : { 'title': _('Rotate 90 degrees CW'), 'group': _('Autorotate by height') },
+    'rotate_270_height' : { 'title': _('Rotate 90 degrees CCW'), 'group': _('Autorotate by height') },
+
+    'double_page' : { 'title': _('Double page mode'), 'group': _('View mode') },
+    'manga_mode' : { 'title': _('Manga mode'), 'group': _('View mode') },
+    'invert_scroll' : { 'title': _('Invert smart scroll'), 'group': _('View mode') },
+
+    'lens' : { 'title': _('Magnifying lens'), 'group': _('View mode') },
+    'stretch' : { 'title': _('Stretch small images'), 'group': _('View mode') },
+
+    'best_fit_mode' : { 'title': _('Best fit mode'), 'group': _('View mode') },
+    'fit_width_mode' : { 'title': _('Fit width mode'), 'group': _('View mode') },
+    'fit_height_mode' : { 'title': _('Fit height mode'), 'group': _('View mode') },
+    'fit_size_mode' : { 'title': _('Fit size mode'), 'group': _('View mode') },
+    'fit_manual_mode' : { 'title': _('Manual zoom mode'), 'group': _('View mode') },
+
+    # General UI
+    'exit_fullscreen' : { 'title' : _('Exit from fullscreen'), 'group' : _('User interface')},
+    'toggle_fullscreen' : { 'title' : _('Toggle fullscreen'), 'group' : _('User interface')},
+
+    'osd_panel' : { 'title' : _('Show OSD panel'), 'group' : _('User interface') },
+    'minimize' : { 'title' : _('Minimize'), 'group' : _('User interface') },
+    'fullscreen' : { 'title': _('Fullscreen'), 'group': _('User interface') },
+    'toolbar' : { 'title': _('Show/hide toolbar'), 'group': _('User interface') },
+    'menubar' : { 'title': _('Show/hide menubar'), 'group': _('User interface') },
+    'statusbar' : { 'title': _('Show/hide statusbar'), 'group': _('User interface') },
+    'scrollbar' : { 'title': _('Show/hide scrollbars'), 'group': _('User interface') },
+    'thumbnails' : { 'title': _('Thumbnails'), 'group': _('User interface') },
+    'hide_all' : { 'title': _('Show/hide all'), 'group': _('User interface') },
+    'slideshow' : { 'title': _('Start slideshow'), 'group': _('User interface') },
+
+    # File operations
+    'delete' : { 'title' : _('Delete'), 'group' : _('File') },
+    'refresh_archive' : { 'title': _('Refresh'), 'group': _('File') },
+    'close' : { 'title': _('Close'), 'group': _('File') },
+    'quit' : { 'title': _('Quit'), 'group': _('File') },
+    'save_and_quit' : { 'title': _('Save and quit'), 'group': _('File') },
+    'extract_page' : { 'title': _('Save As'), 'group': _('File') },
+
+    'comments' : { 'title': _('Archive comments'), 'group': _('File') },
+    'properties' : { 'title': _('Properties'), 'group': _('File') },
+    'preferences' : { 'title': _('Preferences'), 'group': _('File') },
+
+    'edit_archive' : { 'title': _('Edit archive'), 'group': _('File') },
+    'open' : { 'title': _('Open'), 'group': _('File') },
+    'enhance_image' : { 'title': _('Enhance image'), 'group': _('File') },
+    'library' : { 'title': _('Library'), 'group': _('File') },
 }
 
 # Generate 9 entries for executing command 1 to 9
 for i in range(1, 10):
-    BINDING_INFO['execute command %d' %i] = { 'title' : _('Execute external command') + u' (%d)' % i , 'group' : _('User Interface') }
+    BINDING_INFO['execute_command_%d' %i] = { 
+            'title' : _('Execute external command') + u' (%d)' % i,
+            'group' : _('External commands')
+    }
 
 
 class _KeybindingManager(object):
     def __init__(self, window):
         #: Main window instance
         self._window = window
-        #: Stores the current callbacks associated with each key.
-        self._callbacks = {}
-        #: Mapping from action names to list of keybindings. Loaded from configuration at startup.
-        self._action_bindings = {}
 
+        self._action_to_callback = {} # action name => (func, args, kwargs)
+        self._action_to_bindings = defaultdict(list) # action name => [ (key code, key modifier), ]
+        self._binding_to_action = {} # (key code, key modifier) => action name
+
+        self._migrate_from_old_bindings()
         self._initialize()
 
     def register(self, name, bindings, callback, args=[], kwargs={}):
@@ -100,59 +172,111 @@ class _KeybindingManager(object):
         assert name in BINDING_INFO, "'%s' isn't a valid keyboard action." % name
 
         # Load stored keybindings, or fall back to passed arguments
-        if self._get_bindings_for_action(name) is not None:
-            keycodes = self._get_bindings_for_action(name)
-        else:
-            keycodes = [ gtk.accelerator_parse(binding) for binding in bindings ]
+        keycodes = self._action_to_bindings[name]
+        if keycodes == []:
+            keycodes = [gtk.accelerator_parse(binding) for binding in bindings ]
 
         for keycode in keycodes:
-            if keycode in self._callbacks:
-                log.warning(_('Keybinding for "%(action)s" overrides hotkey for another action.'),
-                        {"action": name})
-                log.debug('Binding %s overrides %r' % (keycode, self._callbacks[keycode]))
+            if keycode in self._binding_to_action.keys():
+                if self._binding_to_action[keycode] != name:
+                    log.warning(_('Keybinding for "%(action)s" overrides hotkey for another action.'),
+                            {"action": name})
+                    log.warning('Binding %s overrides %r' % (keycode, self._binding_to_action[keycode]))
+            else:
+                self._binding_to_action[keycode] = name
+                self._action_to_bindings[name].append(keycode)
 
-            self._callbacks[keycode] = (name, callback, args, kwargs)
+        # Add gtk accelerator for labels in menu
+        if len(self._action_to_bindings[name]) > 0:
+            key, mod = self._action_to_bindings[name][0]
+            gtk.accel_map_change_entry('<Actions>/mcomix-main/%s' % name, key, mod, True)
+
+        self._action_to_callback[name] = (callback, args, kwargs)
+
+
+    def edit_accel(self, name, new_binding, old_binding):
+        """ Changes binding for an action
+        @param name: Action name
+        @param new_binding: Binding to be assigned to action
+        @param old_binding: Binding to be removed from action [ can be empty: "" ]
+
+        @return None: new_binding wasn't in any action
+                action name: where new_binding was before
+        """
+        global BINDING_INFO
+        assert name in BINDING_INFO, "'%s' isn't a valid keyboard action." % name
+
+        nb = gtk.accelerator_parse(new_binding)
+        old_action_with_nb = self._binding_to_action.get(nb)
+        if old_action_with_nb is not None:
+            self._binding_to_action.pop(nb)  # erase old binding with nb
+            self._action_to_bindings[old_action_with_nb].remove(nb)
+
+        if old_binding != "":
+            ob = gtk.accelerator_parse(old_binding)
+
+            self._binding_to_action.pop(ob)
+            self._binding_to_action[nb] = name
+
+            idx = self._action_to_bindings[name].index(ob)
+            self._action_to_bindings[name].pop(idx)
+            self._action_to_bindings[name].insert(idx, nb)
+        else:
+            self._binding_to_action[nb] = name
+            self._action_to_bindings[name].append(nb)
+
+        self.save()
+        return old_action_with_nb
+
+    def clear_accel(self, name, binding):
+        """ Remove binding for an action """
+        global BINDING_INFO
+        assert name in BINDING_INFO, "'%s' isn't a valid keyboard action." % name
+
+        ob = gtk.accelerator_parse(binding)
+        self._action_to_bindings[name].remove(ob)
+        self._binding_to_action.pop(ob)
+
+        self.save()
 
     def execute(self, keybinding):
         """ Executes an action that has been registered for the
         passed keyboard event. If no action is bound to the passed key, this
         method is a no-op. """
-        if keybinding in self._callbacks:
-            action, func, args, kwargs = self._callbacks[keybinding]
+        if keybinding in self._binding_to_action:
+            action = self._binding_to_action[keybinding]
+            func, args, kwargs = self._action_to_callback[action]
             self._window.emit_stop_by_name('key_press_event')
             return func(*args, **kwargs)
 
         # Some keys enable additional modifiers (NumLock enables GDK_MOD2_MASK),
         # which prevent direct lookup simply by being pressed.
         # XXX: Looking up by key/modifier probably isn't the best implementation
-        for binding, value in self._callbacks.iteritems():
-            keycode, flags = binding
-            if keycode == keybinding[0] and flags & keybinding[1]:
-                action, func, args, kwargs = value
+        for stored_binding, action in self._binding_to_action.iteritems():
+            stored_keycode, stored_flags = stored_binding
+            if stored_keycode == keybinding[0] and stored_flags & keybinding[1]:
+                func, args, kwargs = self._action_to_callback[action]
                 self._window.emit_stop_by_name('key_press_event')
                 return func(*args, **kwargs)
 
         # Some keys may need modifiers to be typeable, but may be registered without.
-        if (keybinding[0], 0) in self._callbacks:
-            action, func, args, kwargs = self._callbacks[(keybinding[0], 0)]
+        if (keybinding[0], 0) in self._binding_to_action:
+            action = self._binding_to_action[(keybinding[0], 0)]
+            func, args, kwargs = self._action_to_callback[action]
             self._window.emit_stop_by_name('key_press_event')
             return func(*args, **kwargs)
 
+
     def save(self):
         """ Stores the keybindings that have been set to disk. """
-
         # Collect keybindings for all registered actions
         action_to_keys = {}
-        for binding, callback in self._callbacks.iteritems():
-            keyval, modifiers = binding
-            action, func, args, kwargs = callback
-
-            keyname = gtk.accelerator_name(keyval, modifiers)
-            if action in action_to_keys:
-                action_to_keys[action].append(keyname)
-            else:
-                action_to_keys[action] = [keyname]
-
+        for action, bindings in self._action_to_bindings.iteritems():
+            if bindings is not None:
+                action_to_keys[action] = [
+                    gtk.accelerator_name(keyval, modifiers) for
+                    (keyval, modifiers) in bindings
+                ]
         fp = file(constants.KEYBINDINGS_CONF_PATH, "w")
         json.dump(action_to_keys, fp, indent=2)
         fp.close()
@@ -169,18 +293,34 @@ class _KeybindingManager(object):
 
         for action in BINDING_INFO.iterkeys():
             if action in stored_action_bindings:
-                self._action_bindings[action] = [
+                bindings = [
                     gtk.accelerator_parse(keyname)
                     for keyname in stored_action_bindings[action] ]
+                self._action_to_bindings[action] = bindings
+                for binding in bindings:
+                    self._binding_to_action[binding] = action
             else:
-                self._action_bindings[action] = None
+                self._action_to_bindings[action] = []
 
-    def _get_bindings_for_action(self, name):
+    def get_bindings_for_action(self, name):
         """ Returns a list of (keycode, modifier) for the action C{name}. """
-        if name in self._action_bindings:
-            return self._action_bindings[name]
-        else:
-            return []
+        return self._action_to_bindings[name]
+
+    def _migrate_from_old_bindings(self):
+        """ This method deals with upgrading from MComix 1.0 and older to
+        MComix 1.01, which integrated all UI hotkeys into this class. Simply
+        remove old files and start from default values. """
+        gtkrc = os.path.join(constants.CONFIG_DIR, 'keybindings-gtk.rc')
+        if os.path.isfile(gtkrc):
+            # In case the user has made modifications to his files,
+            # keep the old ones around for reference.
+            if not os.path.isfile(gtkrc + '.delete-me'):
+                shutil.move(gtkrc, gtkrc + '.delete-me')
+
+            if os.path.isfile(constants.KEYBINDINGS_CONF_PATH) and \
+                not os.path.isfile(constants.KEYBINDINGS_CONF_PATH + '.delete-me'):
+                shutil.move(constants.KEYBINDINGS_CONF_PATH,
+                        constants.KEYBINDINGS_CONF_PATH + '.delete-me')
 
 _manager = None
 

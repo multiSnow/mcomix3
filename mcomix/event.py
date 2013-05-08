@@ -52,97 +52,267 @@ class EventHandler:
 
         manager = keybindings.keybinding_manager(self._window)
 
-        # Navigation keys that work in addition to the accelerators in ui.py
-        manager.register('previous page',
-            ['KP_Page_Up', 'BackSpace'],
+        # Navigation keys
+        manager.register('previous_page',
+            ['Page_Up', 'KP_Page_Up', 'BackSpace'],
             self._window.previous_page)
-        manager.register('next page',
-            ['KP_Page_Down'],
+        manager.register('next_page',
+            ['Page_Down', 'KP_Page_Down'],
             self._window.next_page)
-        manager.register('previous page dynamic',
+        manager.register('previous_page_dynamic',
             ['<Mod1>Left'],
             self._left_right_page_progress, kwargs={'left': True})
-        manager.register('next page dynamic',
+        manager.register('next_page_dynamic',
             ['<Mod1>Right'],
             self._left_right_page_progress, kwargs={'left': False})
 
-        manager.register('previous page ff',
+        manager.register('previous_page_ff',
             ['<Shift>Page_Up', '<Shift>KP_Page_Up', '<Shift>BackSpace', '<Shift><Mod1>Left'],
             self._window.previous_page_fast_forward)
-        manager.register('next page ff',
+        manager.register('next_page_ff',
             ['<Shift>Page_Down', '<Shift>KP_Page_Down', '<Shift><Mod1>Right'],
             self._window.next_page_fast_forward)
 
+
+        manager.register('first_page',
+            ['Home'],
+            self._window.first_page)
+        manager.register('last_page',
+            ['End'],
+            self._window.last_page)
+        manager.register('go_to',
+            ['G'],
+            self._window.page_select)
+
         # Numpad (without numlock) aligns the image depending on the key.
-        manager.register('scroll left bottom',
+        manager.register('scroll_left_bottom',
             ['KP_1'],
             self._window.scroll_to_fixed,
             kwargs={'horiz': 'left', 'vert': 'bottom'})
-        manager.register('scroll middle bottom',
+        manager.register('scroll_middle_bottom',
             ['KP_2'],
             self._window.scroll_to_fixed,
             kwargs={'horiz': 'middle', 'vert': 'bottom'})
-        manager.register('scroll right bottom',
+        manager.register('scroll_right_bottom',
             ['KP_3'],
             self._window.scroll_to_fixed,
             kwargs={'horiz': 'right', 'vert': 'bottom'})
 
-        manager.register('scroll left middle',
+        manager.register('scroll_left_middle',
             ['KP_4'],
             self._window.scroll_to_fixed,
             kwargs={'horiz': 'left', 'vert': 'middle'})
-        manager.register('scroll middle',
+        manager.register('scroll_middle',
             ['KP_5'],
             self._window.scroll_to_fixed,
             kwargs={'horiz': 'middle', 'vert': 'middle'})
-        manager.register('scroll right middle',
+        manager.register('scroll_right_middle',
             ['KP_6'],
             self._window.scroll_to_fixed,
             kwargs={'horiz': 'right', 'vert': 'middle'})
 
-        manager.register('scroll left top',
+        manager.register('scroll_left_top',
             ['KP_7'],
             self._window.scroll_to_fixed,
             kwargs={'horiz': 'left', 'vert': 'top'})
-        manager.register('scroll middle top',
+        manager.register('scroll_middle_top',
             ['KP_8'],
             self._window.scroll_to_fixed,
             kwargs={'horiz': 'middle', 'vert': 'top'})
-        manager.register('scroll right top',
+        manager.register('scroll_right_top',
             ['KP_9'],
             self._window.scroll_to_fixed,
             kwargs={'horiz': 'right', 'vert': 'top'})
 
         # Enter/exit fullscreen.
-        manager.register('exit fullscreen',
+        manager.register('exit_fullscreen',
             ['Escape'],
             self.escape_event)
-        manager.register('toggle fullscreen',
+
+        manager.register('toggle_fullscreen',
             ['F11'],
             self._window.actiongroup.get_action('fullscreen').activate)
 
+        # View modes
+        manager.register('double_page',
+            ['d'],
+            self._window.actiongroup.get_action('double_page').activate)
+
+
+        manager.register('best_fit_mode',
+            ['b'],
+            self._window.actiongroup.get_action('best_fit_mode').activate)
+
+        manager.register('fit_width_mode',
+            ['w'],
+            self._window.actiongroup.get_action('fit_width_mode').activate)
+
+        manager.register('fit_height_mode',
+            ['h'],
+            self._window.actiongroup.get_action('fit_height_mode').activate)
+
+        manager.register('fit_size_mode',
+            ['s'],
+            self._window.actiongroup.get_action('fit_size_mode').activate)
+
+        manager.register('fit_manual_mode',
+            ['a'],
+            self._window.actiongroup.get_action('fit_manual_mode').activate)
+
+
+        manager.register('manga_mode',
+            ['m'],
+            self._window.actiongroup.get_action('manga_mode').activate)
+
+        manager.register('invert_scroll',
+            ['x'],
+            self._window.actiongroup.get_action('invert_scroll').activate)
+
+        manager.register('keep_transformation',
+            ['k'],
+            self._window.actiongroup.get_action('keep_transformation').activate)
+
+        manager.register('lens',
+            ['l'],
+            self._window.actiongroup.get_action('lens').activate)
+
+        manager.register('stretch',
+            ['y'],
+            self._window.actiongroup.get_action('stretch').activate)
+
         # Zooming commands for manual zoom mode
-        manager.register('zoom in',
-            ['equal'],
+        manager.register('zoom_in',
+            ['plus', 'KP_Add', 'equal'],
             self._window.actiongroup.get_action('zoom_in').activate)
+        manager.register('zoom_out',
+            ['minus', 'KP_Subtract'],
+            self._window.actiongroup.get_action('zoom_out').activate)
         # Zoom out is already defined as GTK menu hotkey
-        manager.register('zoom original',
-            ['KP_0'],
+        manager.register('zoom_original',
+            ['<Control>0', 'KP_0'],
             self._window.actiongroup.get_action('zoom_original').activate)
 
+        manager.register('rotate_90',
+            ['r'],
+            self._window.rotate_90)
+
+        manager.register('rotate_270',
+            ['<Shift>r'],
+            self._window.rotate_270)
+
+        manager.register('rotate_180',
+            [],
+            self._window.rotate_180)
+
+        manager.register('flip_horiz',
+            [],
+            self._window.flip_horizontally)
+
+        manager.register('flip_vert',
+            [],
+            self._window.flip_vertically)
+
+        manager.register('no_autorotation',
+            [],
+            self._window.actiongroup.get_action('no_autorotation').activate)
+
+        manager.register('rotate_90_width',
+            [],
+            self._window.actiongroup.get_action('rotate_90_width').activate)
+        manager.register('rotate_270_width',
+            [],
+            self._window.actiongroup.get_action('rotate_270_width').activate)
+
+        manager.register('rotate_90_height',
+            [],
+            self._window.actiongroup.get_action('rotate_90_height').activate)
+
+        manager.register('rotate_270_height',
+            [],
+            self._window.actiongroup.get_action('rotate_270_height').activate)
+
         # Arrow keys scroll the image
-        manager.register('scroll down',
+        manager.register('scroll_down',
             ['Down', 'KP_Down'],
             self._scroll_down)
-        manager.register('scroll up',
+        manager.register('scroll_up',
             ['Up', 'KP_Up'],
             self._scroll_up)
-        manager.register('scroll right',
+        manager.register('scroll_right',
             ['Right', 'KP_Right'],
             self._scroll_right)
-        manager.register('scroll left',
+        manager.register('scroll_left',
             ['Left', 'KP_Left'],
             self._scroll_left)
+
+        # File operations
+        manager.register('close',
+            ['<Control>W'],
+            self._window.filehandler.close_file)
+
+        manager.register('quit',
+            ['<Control>Q'],
+            self._window.close_program)
+
+        manager.register('save_and_quit',
+            ['<Control><shift>q'],
+            self._window.save_and_terminate_program)
+
+        manager.register('delete',
+            ['Delete'],
+            self._window.delete)
+
+        manager.register('extract_page',
+            ['<Control><Shift>s'],
+            self._window.extract_page)
+
+        manager.register('refresh_archive',
+            ['<control><shift>R'],
+            self._window.filehandler.refresh_file)
+
+        manager.register('next_archive',
+            ['<control><shift>N'],
+            self._window.filehandler._open_next_archive)
+
+        manager.register('previous_archive',
+            ['<control><shift>P'],
+            self._window.filehandler._open_previous_archive)
+
+        manager.register('next_directory',
+            ['<control>N'],
+            self._window.filehandler.open_next_directory)
+
+        manager.register('previous_directory',
+            ['<control>P'],
+            self._window.filehandler.open_previous_directory)
+
+        manager.register('comments',
+            ['c'],
+            self._window.actiongroup.get_action('comments').activate)
+
+        manager.register('properties',
+            ['<Alt>Return'],
+            self._window.actiongroup.get_action('properties').activate)
+
+        manager.register('preferences',
+            ['F12'],
+            self._window.actiongroup.get_action('preferences').activate)
+
+        manager.register('edit_archive',
+            [],
+            self._window.actiongroup.get_action('edit_archive').activate)
+
+        manager.register('open',
+            ['<Control>O'],
+            self._window.actiongroup.get_action('open').activate)
+
+        manager.register('enhance_image',
+            ['e'],
+            self._window.actiongroup.get_action('enhance_image').activate)
+
+        manager.register('library',
+            ['<Control>L'],
+            self._window.actiongroup.get_action('library').activate)
 
         # Space key scrolls down a percentage of the window height or the
         # image height at a time. When at the bottom it flips to the next
@@ -152,21 +322,58 @@ class EventHandler:
         # the flow of the comic.
         #
         # If Shift is pressed we should backtrack instead.
-        manager.register('smart scroll down',
+        manager.register('smart_scroll_down',
             ['space'],
             self._smart_scroll_down)
-        manager.register('smart scroll up',
+        manager.register('smart_scroll_up',
             ['<Shift>space'],
             self._smart_scroll_up)
 
-        # OSD Display
-        manager.register('osd panel',
+        # User interface
+        manager.register('osd_panel',
             ['Tab'],
             self._window.show_info_panel)
 
+        manager.register('minimize',
+            ['n'],
+            self._window.minimize)
+
+        manager.register('fullscreen',
+            ['f'],
+            self._window.actiongroup.get_action('fullscreen').activate)
+
+        manager.register('toolbar',
+            [],
+            self._window.actiongroup.get_action('toolbar').activate)
+
+        manager.register('menubar',
+            ['<Control>M'],
+            self._window.actiongroup.get_action('menubar').activate)
+
+        manager.register('statusbar',
+            [],
+            self._window.actiongroup.get_action('statusbar').activate)
+
+        manager.register('scrollbar',
+            [],
+            self._window.actiongroup.get_action('scrollbar').activate)
+
+        manager.register('thumbnails',
+            ['F9'],
+            self._window.actiongroup.get_action('thumbnails').activate)
+
+
+        manager.register('hide_all',
+            ['i'],
+            self._window.actiongroup.get_action('hide_all').activate)
+
+        manager.register('slideshow',
+            ['<Control>S'],
+            self._window.slideshow.toggle)
+
         # Execute external command. Bind keys from 1 to 9 to commands 1 to 9.
         for i in range(1, 10):
-            manager.register('execute command %d' % i, ['%d' % i],
+            manager.register('execute_command_%d' % i, ['%d' % i],
                              self._execute_command, args=[i - 1])
 
     def key_press_event(self, widget, event, *args):
