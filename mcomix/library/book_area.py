@@ -251,13 +251,27 @@ class _BookArea(gtk.ScrolledWindow):
 
         if (collection == self._library.collection_area.get_current_collection() or
             self._library.collection_area.get_current_collection() == _COLLECTION_ALL):
-            # FIXME: If "All books" is viewed when a book gets added to another collection,
-            # it is displayed twice.
+            # Make sure not to show a book twice when COLLECTION_ALL is selected
+            # and the book is added to another collection, triggering this event.
+            if self.is_book_displayed(book):
+                return
 
             # If the current view is filtered, only draw new books that match the filter
             if not (self._library.filter_string and 
                     self._library.filter_string.lower() not in book.name.lower()):
                 self.add_books([book])
+
+    def is_book_displayed(self, book):
+        """ Returns True when the current view contains the book passed.
+        @param book: L{_Book} instance. """
+        if not book:
+            return False
+
+        for row in self._liststore:
+            if row[1] == book.id:
+                return True
+
+        return False
 
     def remove_book_at_path(self, path):
         """Remove the book at <path> from the ListStore (and thus from
