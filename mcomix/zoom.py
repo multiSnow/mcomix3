@@ -44,10 +44,14 @@ class ZoomModel(object):
     def get_zoomed_size(self, image_size, screen_size):
         preferred_scale = self._fitmode.get_preferred_scale(
             image_size, screen_size)
+
+        # Fit to Size mode ignores the scale up setting
+        scale_up = (self.get_scale_up() or
+                    isinstance(self._fitmode, FitToSizeMode))
         if (preferred_scale > IDENTITY_ZOOM and
             (image_size[0] < screen_size[0] or
              image_size[1] < screen_size[1]) and
-            not self.get_scale_up()):
+            not scale_up):
             preferred_scale = IDENTITY_ZOOM
 
         return _scale_int(image_size,
