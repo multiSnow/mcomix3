@@ -107,7 +107,6 @@ BINDING_INFO = {
 
     # General UI
     'exit_fullscreen' : { 'title' : _('Exit from fullscreen'), 'group' : _('User interface')},
-    'toggle_fullscreen' : { 'title' : _('Toggle fullscreen'), 'group' : _('User interface')},
 
     'osd_panel' : { 'title' : _('Show OSD panel'), 'group' : _('User interface') },
     'minimize' : { 'title' : _('Minimize'), 'group' : _('User interface') },

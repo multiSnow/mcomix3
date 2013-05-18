@@ -129,10 +129,6 @@ class EventHandler:
             ['Escape'],
             self.escape_event)
 
-        manager.register('toggle_fullscreen',
-            ['F11'],
-            self._window.actiongroup.get_action('fullscreen').activate)
-
         # View modes
         manager.register('double_page',
             ['d'],
@@ -339,7 +335,7 @@ class EventHandler:
             self._window.minimize)
 
         manager.register('fullscreen',
-            ['f'],
+            ['f', 'F11'],
             self._window.actiongroup.get_action('fullscreen').activate)
 
         manager.register('toolbar',
