@@ -39,7 +39,7 @@ class KeybindingEditorWindow(gtk.ScrolledWindow):
                 None, row
             )
 
-        action_treeiter_map = {}
+        action_treeiter_map = self.action_treeiter_map = {}
         # Sort actions by action name
         actions = sorted(keybindings.BINDING_INFO.items(),
                 key=lambda item: item[1]['title'])
@@ -99,7 +99,7 @@ class KeybindingEditorWindow(gtk.ScrolledWindow):
                     if idx != column and self.treestore.get(iter, idx + 3)[0] == new_accel:
                         self.treestore.set_value(iter, idx + 3, "")
             elif affected_action is not None:
-                titer = action_treeiter_map[affected_action]
+                titer = self.action_treeiter_map[affected_action]
                 for idx in range(0, self.accel_column_num):
                     if self.treestore.get(titer, idx + 3)[0] == new_accel:
                         self.treestore.set_value(titer, idx + 3, "")
