@@ -379,7 +379,7 @@ class ImageHandler:
 
         available = sorted(filepaths)
         for i, imgpath in enumerate(self._image_files):
-            if tools.bin_search(available, imgpath) > -1:
+            if tools.bin_search(available, imgpath) >= 0:
                 self.page_available(i + 1)
 
     def is_last_page(self):

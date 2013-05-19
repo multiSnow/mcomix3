@@ -45,13 +45,16 @@ def alphanumeric_compare(s1, s2):
 
 def bin_search(lst, value):
     """ Binary search for sorted list C{lst}, looking for C{value}.
-    @return: List index on success, -1 on failure. """
+    @return: List index on success. On failure, it returns the 1's
+    complement of the index where C{value} would be inserted.
+    This implies that the return value is non-negative if and only if
+    C{value} is contained in C{lst}. """
 
     index = bisect.bisect_left(lst, value)
     if index != len(lst) and lst[index] == value:
         return index
     else:
-        return -1
+        return ~index
 
 
 def get_home_directory():
