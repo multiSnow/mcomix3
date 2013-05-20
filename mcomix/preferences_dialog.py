@@ -27,9 +27,8 @@ class _PreferencesDialog(gtk.Dialog):
     def __init__(self, window):
         gtk.Dialog.__init__(self, _('Preferences'), window, gtk.DIALOG_MODAL)
 
-        self.reset_button = reset = self.add_button(_('Clear dialog choices'), constants.RESPONSE_REVERT_TO_DEFAULT)
-        reset.set_tooltip_text(_('Clears all dialog choices that you have previously chosen not to be asked again.'))
-        reset.set_sensitive(len(prefs['stored dialog choices']) > 0)
+        # Button text is set later depending on active tab
+        self.reset_button = self.add_button('', constants.RESPONSE_REVERT_TO_DEFAULT)
         self.add_button(gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
 
         self._window = window
@@ -39,7 +38,7 @@ class _PreferencesDialog(gtk.Dialog):
 
         self.connect('response', self._response)
 
-        notebook = gtk.Notebook()
+        notebook = self.notebook = gtk.Notebook()
         self.vbox.pack_start(notebook)
         self.set_border_width(4)
         notebook.set_border_width(6)
@@ -52,8 +51,12 @@ class _PreferencesDialog(gtk.Dialog):
         notebook.append_page(display, gtk.Label(_('Display')))
         advanced = self._init_advanced_tab()
         notebook.append_page(advanced, gtk.Label(_('Advanced')))
-        shortcuts = self._init_shortcuts_tab()
+        shortcuts = self.shortcuts = self._init_shortcuts_tab()
         notebook.append_page(shortcuts, gtk.Label(_('Shortcuts')))
+
+        notebook.connect('switch-page', self._tab_page_changed)
+        # Update the Reset button's tooltip
+        self._tab_page_changed(notebook, None, 0)
 
         self.show_all()
 
@@ -433,14 +436,37 @@ class _PreferencesDialog(gtk.Dialog):
         page = keybindings_editor.KeybindingEditorWindow(km)
         return page
 
+    def _tab_page_changed(self, notebook, page_ptr, page_num):
+        """ Dynamically switches the "Reset" button's text and tooltip
+        depending on the currently selected tab page. """
+        new_page = notebook.get_nth_page(page_num)
+        if new_page == self.shortcuts:
+            self.reset_button.set_label(_("_Reset keys"))
+            self.reset_button.set_tooltip_text(
+                _("Resets all keyboard shortcuts to their default values."))
+            self.reset_button.set_sensitive(True)
+        else:
+            self.reset_button.set_label(_('Clear _dialog choices'))
+            self.reset_button.set_tooltip_text(
+                _('Clears all dialog choices that you have previously chosen not to be asked again.'))
+            self.reset_button.set_sensitive(len(prefs['stored dialog choices']) > 0)
+
     def _response(self, dialog, response):
         if response == gtk.RESPONSE_CLOSE:
             _close_dialog()
 
         elif response == constants.RESPONSE_REVERT_TO_DEFAULT:
-            # Reset stored choices
-            prefs['stored dialog choices'] = {}
-            self.reset_button.set_sensitive(False)
+            if self.notebook.get_nth_page(self.notebook.get_current_page()) == self.shortcuts:
+                # "Shortcuts" page is active, reset all keys to their default value
+                km = keybindings.keybinding_manager(self._window)
+                km.clear_all()
+                self._window._event_handler.register_key_events()
+                km.save()
+                self.shortcuts.refresh_model()
+            else:
+                # Reset stored choices
+                prefs['stored dialog choices'] = {}
+                self.reset_button.set_sensitive(False)
 
         else:
             # Other responses close the dialog, e.g. clicking the X icon on the dialog.

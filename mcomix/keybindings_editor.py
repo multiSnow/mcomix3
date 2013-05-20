@@ -28,38 +28,8 @@ class KeybindingEditorWindow(gtk.ScrolledWindow):
         model.extend( [str, ] * accel_column_num)
 
         treestore = self.treestore = gtk.TreeStore(*model)
+        self.refresh_model()
 
-        section_order = list(set(d['group'] for d in keybindings.BINDING_INFO.values()))
-        section_order.sort()
-        section_parent_map = {}
-        for section_name in section_order:
-            row = [section_name, None, False]
-            row.extend( [None,]*accel_column_num)
-            section_parent_map[section_name] =  treestore.append(
-                None, row
-            )
-
-        action_treeiter_map = self.action_treeiter_map = {}
-        # Sort actions by action name
-        actions = sorted(keybindings.BINDING_INFO.items(),
-                key=lambda item: item[1]['title'])
-        for action_name, action_data in actions:
-            title = action_data['title']
-            group_name = action_data['group']
-            old_bindings = self.keymanager.get_bindings_for_action(action_name)
-            acc_list =  ["", ] * accel_column_num
-            for idx in range(0, accel_column_num):
-                if len(old_bindings) > idx:
-                    acc_list[idx] = gtk.accelerator_name(*old_bindings[idx])
-
-            row = [title, action_name, True]
-            row.extend(acc_list)
-            treeiter = treestore.append(
-                section_parent_map[group_name],
-                row
-            )
-            action_treeiter_map[action_name] = treeiter
-        
         treeview = gtk.TreeView(treestore)
 
         tvcol1 = gtk.TreeViewColumn(_("Name"))
@@ -68,7 +38,7 @@ class KeybindingEditorWindow(gtk.ScrolledWindow):
         tvcol1.pack_start(cell1, True)
         tvcol1.set_attributes(cell1, text=0, editable=2)
 
-        for idx in range(0, accel_column_num):
+        for idx in range(0, self.accel_column_num):
             tvc = gtk.TreeViewColumn(_("Key %d") % (idx +1))
             treeview.append_column(tvc)
             accel_cell = gtk.CellRendererAccel()
@@ -82,6 +52,42 @@ class KeybindingEditorWindow(gtk.ScrolledWindow):
         tvcol1.set_sort_column_id(0)
 
         self.add_with_viewport(treeview)
+
+    def refresh_model(self):
+        """ Initializes the model from data provided by the keybinding
+        manager. """
+        self.treestore.clear()
+        section_order = list(set(d['group']
+             for d in keybindings.BINDING_INFO.values()))
+        section_order.sort()
+        section_parent_map = {}
+        for section_name in section_order:
+            row = [section_name, None, False]
+            row.extend( [None,] * self.accel_column_num)
+            section_parent_map[section_name] =  self.treestore.append(
+                None, row
+            )
+
+        action_treeiter_map = self.action_treeiter_map = {}
+        # Sort actions by action name
+        actions = sorted(keybindings.BINDING_INFO.items(),
+                key=lambda item: item[1]['title'])
+        for action_name, action_data in actions:
+            title = action_data['title']
+            group_name = action_data['group']
+            old_bindings = self.keymanager.get_bindings_for_action(action_name)
+            acc_list =  ["", ] * self.accel_column_num
+            for idx in range(0, self.accel_column_num):
+                if len(old_bindings) > idx:
+                    acc_list[idx] = gtk.accelerator_name(*old_bindings[idx])
+
+            row = [title, action_name, True]
+            row.extend(acc_list)
+            treeiter = self.treestore.append(
+                section_parent_map[group_name],
+                row
+            )
+            action_treeiter_map[action_name] = treeiter
 
     def get_on_accel_edited(self, column):
         def on_accel_edited(renderer, path, accel_key, accel_mods, hardware_keycode):

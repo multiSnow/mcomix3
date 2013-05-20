@@ -238,6 +238,13 @@ class _KeybindingManager(object):
 
         self.save()
 
+    def clear_all(self):
+        """ Removes all keybindings. The changes are only persisted if
+        save() is called afterwards. """
+        self._action_to_callback = {}
+        self._action_to_bindings = defaultdict(list)
+        self._binding_to_action = {}
+
     def execute(self, keybinding):
         """ Executes an action that has been registered for the
         passed keyboard event. If no action is bound to the passed key, this
