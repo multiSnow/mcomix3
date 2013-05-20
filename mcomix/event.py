@@ -380,7 +380,13 @@ class EventHandler:
 
         # Dispatch keyboard input handling
         manager = keybindings.keybinding_manager(self._window)
-        manager.execute((event.keyval, event.state))
+        # Some keys can only be pressed with certain modifiers that
+        # are irrelevant to the actual hotkey. Find out and ignore them.
+        keymap = gtk.gdk.keymap_get_default()
+        keyval, egroup, level, consumed = keymap.translate_keyboard_state(
+                event.hardware_keycode, event.state, event.group)
+        # 'consumed' is the modifier that was necessary to type the key
+        manager.execute((event.keyval, event.state & ~consumed))
 
         # ---------------------------------------------------------------
         # Register CTRL for scrolling only one page instead of two

@@ -250,21 +250,14 @@ class _KeybindingManager(object):
 
         # Some keys enable additional modifiers (NumLock enables GDK_MOD2_MASK),
         # which prevent direct lookup simply by being pressed.
-        # XXX: Looking up by key/modifier probably isn't the best implementation
+        # XXX: Looking up by key/modifier probably isn't the best implementation,
+        # so limit possible states to begin with?
         for stored_binding, action in self._binding_to_action.iteritems():
             stored_keycode, stored_flags = stored_binding
             if stored_keycode == keybinding[0] and stored_flags & keybinding[1]:
                 func, args, kwargs = self._action_to_callback[action]
                 self._window.emit_stop_by_name('key_press_event')
                 return func(*args, **kwargs)
-
-        # Some keys may need modifiers to be typeable, but may be registered without.
-        if (keybinding[0], 0) in self._binding_to_action:
-            action = self._binding_to_action[(keybinding[0], 0)]
-            func, args, kwargs = self._action_to_callback[action]
-            self._window.emit_stop_by_name('key_press_event')
-            return func(*args, **kwargs)
-
 
     def save(self):
         """ Stores the keybindings that have been set to disk. """
