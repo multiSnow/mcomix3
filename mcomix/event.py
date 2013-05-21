@@ -382,11 +382,24 @@ class EventHandler:
         manager = keybindings.keybinding_manager(self._window)
         # Some keys can only be pressed with certain modifiers that
         # are irrelevant to the actual hotkey. Find out and ignore them.
+        ALL_ACCELS_MASK = (gtk.gdk.CONTROL_MASK | gtk.gdk.SHIFT_MASK |
+                           gtk.gdk.MOD1_MASK)
+
         keymap = gtk.gdk.keymap_get_default()
         keyval, egroup, level, consumed = keymap.translate_keyboard_state(
                 event.hardware_keycode, event.state, event.group)
+
+        # If the resulting key is upper case (i.e. SHIFT + key),
+        # convert it to lower case and remove SHIFT from the consumed flags
+        # to match how keys are registered (<Shift> + lowercase)
+        if (gtk.gdk.keyval_is_upper(keyval) and
+            not gtk.gdk.keyval_is_lower(keyval) and
+            event.state & gtk.gdk.SHIFT_MASK):
+            keyval = gtk.gdk.keyval_to_lower(keyval)
+            consumed &= ~gtk.gdk.SHIFT_MASK
+
         # 'consumed' is the modifier that was necessary to type the key
-        manager.execute((event.keyval, event.state & ~consumed))
+        manager.execute((keyval, event.state & ~consumed & ALL_ACCELS_MASK))
 
         # ---------------------------------------------------------------
         # Register CTRL for scrolling only one page instead of two
