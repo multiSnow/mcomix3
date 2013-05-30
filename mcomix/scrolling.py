@@ -22,8 +22,8 @@ class Scrolling(object):
         orientation, max_scroll):
         """ Returns a new viewport_position when reading forwards using
         the given orientation. If there is no space left to go, the empty
-        list is returned. Note that all params are lists of integers
-        (except max_scroll which is a list of floats) where each index
+        list is returned. Note that all params are lists of ints (except
+        max_scroll which might also contain floats) where each index
         corresponds to one dimension. The lower the index, the faster the
         corresponding position changes when reading.
         @param content_size: The size of the content to display.
@@ -35,9 +35,8 @@ class Scrolling(object):
         reading) or -1 (towards lesser values in this dimension when reading).
         Note that you can emulate "reading backwards" by flipping the sign
         of this argument.
-        @param max_scroll: the portion of the viewport to scroll in one
-        step. Must be a fraction greater than 0 and is usually not greater
-        than 1.
+        @param max_scroll: The maximum number of pixels to scroll in one step.
+        (Floats allowed.)
         @return: A new viewport_position if you can read further or the
         empty list if there is nothing left to read. """
 
@@ -53,12 +52,12 @@ class Scrolling(object):
                 continue
 
             o = orientation[i]
-            actual_increment = vs * max_scroll[i]
+            ms = max_scroll[i]
 
             # Let's calculate the grid we want to snap to.
-            if actual_increment != 0:
-                steps_to_take = int(math.ceil(invisible_size / actual_increment))
-            if actual_increment == 0 or steps_to_take >= invisible_size:
+            if ms != 0:
+                steps_to_take = int(math.ceil(invisible_size / ms))
+            if ms == 0 or steps_to_take >= invisible_size:
                 # special case: We MUST go forward by at least 1 pixel.
                 if o >= 0:
                     result[i] += 1
