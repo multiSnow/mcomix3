@@ -52,7 +52,7 @@ class Scrolling(object):
                 continue
 
             o = orientation[i]
-            ms = max_scroll[i]
+            ms = min(max_scroll[i], invisible_size)
 
             # Let's calculate the grid we want to snap to.
             if ms != 0:
