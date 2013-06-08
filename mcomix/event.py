@@ -365,7 +365,7 @@ class EventHandler:
 
         manager.register('slideshow',
             ['<Control>S'],
-            self._window.slideshow.toggle)
+            self._window.actiongroup.get_action('slideshow').activate)
 
         # Execute external command. Bind keys from 1 to 9 to commands 1 to 9.
         for i in range(1, 10):
