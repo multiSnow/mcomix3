@@ -3,6 +3,7 @@
 import urllib
 import itertools
 import gtk
+import glib
 import gobject
 import sys
 
@@ -65,7 +66,11 @@ class RecentFilesMenu(gtk.RecentChooserMenu):
         if not preferences.prefs['store recent file info']:
             return
         uri = portability.uri_prefix() + urllib.pathname2url(i18n.to_utf8(path))
-        self._manager.remove_item(uri)
+        try:
+            self._manager.remove_item(uri)
+        except glib.GError:
+            # Could not remove item
+            pass
 
     def remove_all(self):
         """ Removes all entries to recently opened files. """
