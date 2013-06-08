@@ -75,10 +75,10 @@ class EventHandler:
 
 
         manager.register('first_page',
-            ['Home'],
+            ['Home', 'KP_Home'],
             self._window.first_page)
         manager.register('last_page',
-            ['End'],
+            ['End', 'KP_End'],
             self._window.last_page)
         manager.register('go_to',
             ['G'],
