@@ -119,7 +119,7 @@ setuptools.setup(
             'includes' : 'cairo, pango, pangocairo, atk, gobject, gio, gtk.keysyms',
             'dist_dir' : 'dist_py2exe',
             'excludes' : ['_ssl', 'pyreadline', 'difflib', 'doctest', 
-                'calendar', 'pdb', 'unittest', 'inspect']
+                          'pdb', 'unittest', 'inspect']
         }
     }
 )
