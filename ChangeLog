@@ -7,6 +7,8 @@ MComix 1.01
       "Last read" database might no longer exist, leading to program crash.
       This has been fixed.
 
+    - Fixed win32 builds missing the 'calendar' module.
+
     - The ALT+Left and ALT+Right keys will now either advance one page,
       or go back one page, depending on the user being in manga mode.
 
