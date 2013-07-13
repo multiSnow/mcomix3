@@ -36,14 +36,12 @@ class BookmarksMenu(gtk.Menu):
         self.edit_button = action.create_menu_item()
         self.append(self.edit_button)
 
-        # Menus apparently do not have a show/hide signal, so use first item
-        self.add_button.connect('visibility-notify-event', self._menu_shown)
+        # Re-create the bookmarks menu if one was added/removed
+        self._create_bookmark_menuitems()
+        self._bookmarks_store.add_bookmark += lambda bookmark: self._create_bookmark_menuitems()
+        self._bookmarks_store.remove_bookmark += lambda bookmark: self._create_bookmark_menuitems()
 
         self.show_all()
-
-    def _menu_shown(self, widget, event, *args):
-        """ Called when the menu becomes visible. """
-        self._create_bookmark_menuitems()
 
     def _create_bookmark_menuitems(self):
         # Delete all old menu entries

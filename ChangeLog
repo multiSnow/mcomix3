@@ -9,6 +9,8 @@ MComix 1.01
 
     - Fixed win32 builds missing the 'calendar' module.
 
+    - Fixed bookmarks not being displayed in the Ubuntu Unity global menu.
+
     - The ALT+Left and ALT+Right keys will now either advance one page,
       or go back one page, depending on the user being in manga mode.
 
