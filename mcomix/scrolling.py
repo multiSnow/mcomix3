@@ -56,7 +56,7 @@ class Scrolling(object):
 
             # Let's calculate the grid we want to snap to.
             if ms != 0:
-                steps_to_take = int(math.ceil(invisible_size / ms))
+                steps_to_take = int(math.ceil(float(invisible_size) / ms))
             if ms == 0 or steps_to_take >= invisible_size:
                 # special case: We MUST go forward by at least 1 pixel.
                 if o >= 0:
