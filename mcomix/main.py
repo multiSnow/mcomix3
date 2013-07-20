@@ -362,10 +362,10 @@ class MainWindow(gtk.Window):
             self.left_image.set_from_pixbuf(left_pixbuf)
             self.right_image.set_from_pixbuf(right_pixbuf)
 
-            x_padding = (area_width - left_pixbuf.get_width() -
-                right_pixbuf.get_width()) / 2
-            y_padding = (area_height - max(left_pixbuf.get_height(),
-                right_pixbuf.get_height())) / 2
+            x_padding = int(round((area_width - left_pixbuf.get_width() -
+                right_pixbuf.get_width()) / 2.0))
+            y_padding = int(round((area_height - max(left_pixbuf.get_height(),
+                right_pixbuf.get_height())) / 2.0))
 
             if left_rotation in (90, 270):
                 left_scale_percent = (100.0 * left_pixbuf.get_width() /
@@ -416,8 +416,8 @@ class MainWindow(gtk.Window):
             self.left_image.set_from_pixbuf(pixbuf)
             self.right_image.clear()
 
-            x_padding = (area_width - pixbuf.get_width()) / 2
-            y_padding = (area_height - pixbuf.get_height()) / 2
+            x_padding = int(round((area_width - pixbuf.get_width()) / 2.0))
+            y_padding = int(round((area_height - pixbuf.get_height()) / 2.0))
 
             if rotation in (90, 270):
                 scale_percent = 100.0 * pixbuf.get_width() / height
