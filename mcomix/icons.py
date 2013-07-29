@@ -41,15 +41,7 @@ def load_icons():
               ('fitwidth.png',               'mcomix-fitwidth'),
               ('fitheight.png',              'mcomix-fitheight'),
               ('fitmanual.png',              'mcomix-fitmanual'),
-              ('fitsize.png',                'mcomix-fitsize'),
-              ('goto-first-page.png',        'mcomix-goto-first-page'),
-              ('goto-last-page.png',         'mcomix-goto-last-page'),
-              ('next-page.png',              'mcomix-next-page'),
-              ('previous-page.png',          'mcomix-previous-page'),
-              ('next-archive.png',           'mcomix-next-archive'),
-              ('previous-archive.png',       'mcomix-previous-archive'),
-              ('next-directory.png',         'mcomix-next-directory'),
-              ('previous-directory.png',     'mcomix-previous-directory'))
+              ('fitsize.png',                'mcomix-fitsize'))
 
     # Load window title icons.
     pixbufs = mcomix_icons()
