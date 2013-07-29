@@ -25,6 +25,9 @@ MComix 1.01
       in another collection did not immediately show the book in the
       library main view when the new collection was already selected.
 
+    - MComix will now use the current GTK theme's icons for
+      Next/Previous buttons.
+
     - Updated traditional Chinese translation (by Wayne Su).
 
 MComix 1.00
