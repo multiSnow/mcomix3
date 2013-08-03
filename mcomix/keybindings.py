@@ -208,18 +208,23 @@ class _KeybindingManager(object):
         nb = gtk.accelerator_parse(new_binding)
         old_action_with_nb = self._binding_to_action.get(nb)
         if old_action_with_nb is not None:
-            self._binding_to_action.pop(nb)  # erase old binding with nb
+            # The new key is already bound to an action, erase the action
+            self._binding_to_action.pop(nb)
             self._action_to_bindings[old_action_with_nb].remove(nb)
 
-        if old_binding != "":
+        if old_binding and name != old_action_with_nb:
+            # The action already had a key that is now being replaced
             ob = gtk.accelerator_parse(old_binding)
-
-            self._binding_to_action.pop(ob)
             self._binding_to_action[nb] = name
 
-            idx = self._action_to_bindings[name].index(ob)
-            self._action_to_bindings[name].pop(idx)
-            self._action_to_bindings[name].insert(idx, nb)
+            # Remove action bound to the key.
+            if ob in self._binding_to_action:
+                self._binding_to_action.pop(ob)
+
+            if ob in self._action_to_bindings[name]:
+                idx = self._action_to_bindings[name].index(ob)
+                self._action_to_bindings[name].pop(idx)
+                self._action_to_bindings[name].insert(idx, nb)
         else:
             self._binding_to_action[nb] = name
             self._action_to_bindings[name].append(nb)
