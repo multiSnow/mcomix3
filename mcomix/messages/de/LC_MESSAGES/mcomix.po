@@ -281,33 +281,27 @@ msgstr "Durch Ersetzen geht ihr alter Inhalt verloren."
 msgid "Add books"
 msgstr "Bücher hinzufügen"
 
-#: mcomix/file_chooser_main_dialog.py:22
-#: mcomix/file_chooser_simple_dialog.py:23
+#: mcomix/file_chooser_main_dialog.py:22 mcomix/file_chooser_simple_dialog.py:23
 msgid "All images"
 msgstr "Alle Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:24
-#: mcomix/file_chooser_simple_dialog.py:25
+#: mcomix/file_chooser_main_dialog.py:24 mcomix/file_chooser_simple_dialog.py:25
 msgid "JPEG images"
 msgstr "JPEG-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:25
-#: mcomix/file_chooser_simple_dialog.py:26
+#: mcomix/file_chooser_main_dialog.py:25 mcomix/file_chooser_simple_dialog.py:26
 msgid "PNG images"
 msgstr "PNG-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:26
-#: mcomix/file_chooser_simple_dialog.py:27
+#: mcomix/file_chooser_main_dialog.py:26 mcomix/file_chooser_simple_dialog.py:27
 msgid "GIF images"
 msgstr "GIF-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:27
-#: mcomix/file_chooser_simple_dialog.py:28
+#: mcomix/file_chooser_main_dialog.py:27 mcomix/file_chooser_simple_dialog.py:28
 msgid "TIFF images"
 msgstr "TIFF-Bilder"
 
-#: mcomix/file_chooser_main_dialog.py:28
-#: mcomix/file_chooser_simple_dialog.py:29
+#: mcomix/file_chooser_main_dialog.py:28 mcomix/file_chooser_simple_dialog.py:29
 msgid "BMP images"
 msgstr "BMP-Bilder"
 
@@ -563,10 +557,9 @@ msgid "Double page mode"
 msgstr "Doppelseitiger Modus"
 
 #: mcomix/keybindings.py:95 mcomix/keybindings.py:96 mcomix/keybindings.py:97
-#: mcomix/keybindings.py:99 mcomix/keybindings.py:100
-#: mcomix/keybindings.py:102 mcomix/keybindings.py:103
-#: mcomix/keybindings.py:104 mcomix/keybindings.py:105
-#: mcomix/keybindings.py:106
+#: mcomix/keybindings.py:99 mcomix/keybindings.py:100 mcomix/keybindings.py:102
+#: mcomix/keybindings.py:103 mcomix/keybindings.py:104
+#: mcomix/keybindings.py:105 mcomix/keybindings.py:106
 msgid "View mode"
 msgstr "Ansicht"
 
@@ -669,8 +662,7 @@ msgstr "Löschen"
 #: mcomix/keybindings.py:127 mcomix/keybindings.py:128
 #: mcomix/keybindings.py:130 mcomix/keybindings.py:131
 #: mcomix/keybindings.py:132 mcomix/keybindings.py:134
-#: mcomix/keybindings.py:135 mcomix/keybindings.py:136
-#: mcomix/keybindings.py:137
+#: mcomix/keybindings.py:135 mcomix/keybindings.py:136 mcomix/keybindings.py:137
 msgid "File"
 msgstr "Datei"
 
@@ -1265,9 +1257,9 @@ msgid ""
 "specification. These thumbnails are shared by many other applications, such "
 "as most file managers."
 msgstr ""
-"Vorschaubilder für geöffnete Dateien gemäß der Spezifikation von freedesktop."
-"org speichern. Diese Vorschaubilder werden mit vielen anderen Anwendungen, "
-"zumeist Dateimanagern, gemeinsam benutzt."
+"Vorschaubilder für geöffnete Dateien gemäß der Spezifikation von "
+"freedesktop.org speichern. Diese Vorschaubilder werden mit vielen anderen "
+"Anwendungen, zumeist Dateimanagern, gemeinsam benutzt."
 
 #: mcomix/preferences_dialog.py:389
 msgid "Maximum number of pages to store in the cache:"
@@ -1318,18 +1310,16 @@ msgstr ""
 "haben, werden als Kommentare behandelt."
 
 #: mcomix/preferences_dialog.py:444
-#, fuzzy
 msgid "_Reset keys"
-msgstr "_Zurücksetzen"
+msgstr "_Tasten zurücksetzen"
 
 #: mcomix/preferences_dialog.py:446
 msgid "Resets all keyboard shortcuts to their default values."
-msgstr ""
+msgstr "Setzt alle Tastenbelegungen auf Standard-Werte zurück."
 
 #: mcomix/preferences_dialog.py:449
-#, fuzzy
 msgid "Clear _dialog choices"
-msgstr "Dialogantworten löschen"
+msgstr "_Dialogantworten löschen"
 
 #: mcomix/preferences_dialog.py:451
 msgid ""
@@ -2932,8 +2922,8 @@ msgstr "Aut_omatisch nach Büchern suchen, wenn Bibliothek geöffnet wird"
 
 #~ msgid ""
 #~ "Crash recovery saves the current configuration information every "
-#~ "specified seconds.  In case of a crash the previous file will be re-"
-#~ "loaded."
+#~ "specified seconds.  In case of a crash the previous file will be "
+#~ "re-loaded."
 #~ msgstr ""
 #~ "Automatische Wiederherstellung speichert die derzeitige Konfiguration in "
 #~ "spezifizierten Abständen. Sollte MComix abstürzen, wird die zuletzt "
