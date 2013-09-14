@@ -77,7 +77,8 @@ def archive_mime_type(path):
             elif magic[0:4] == '7z\xBC\xAF':
                 return constants.SEVENZIP
 
-            elif magic[0:5] == '\xFD7zXZ':
+            # Headers for TAR-XZ and TAR-LZMA that aren't supported by tarfile
+            elif magic[0:5] == '\xFD7zXZ' or magic[0:5] == ']\x00\x00\x80\x00':
                 return constants.SEVENZIP
 
             elif magic[2:] == '-l':
