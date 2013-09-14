@@ -11,34 +11,44 @@ _7z_executable = -1
 class SevenZipArchive(archive_base.ExternalExecutableArchive):
     """ 7z file extractor using the 7z executable. """
 
+    STATE_HEADER, STATE_LISTING, STATE_FOOTER = 1, 2, 3
+
     def __init__(self, archive):
         super(SevenZipArchive, self).__init__(archive)
 
-        #: Indicates that the first PATH line in the list mode has been read.
-        self._read_first_path = False
+        #: Indicates which part of the file listing has been read
+        self._state = SevenZipArchive.STATE_HEADER
 
     def _get_executable(self):
         return SevenZipArchive._find_7z_executable()
 
     def _get_list_arguments(self):
-        return [u'l', u'-slt', u'-p', u'--']
+        return [u'l', u'-p', u'--']
 
     def _get_extract_arguments(self):
         return [u'x', u'-so', u'-p', u'--']
 
     def _parse_list_output_line(self, line):
-        """ The first path listed is always the archive itself,
-        so skip until the next line. """
-        if line.startswith('Path = '):
-            filename = line[len('Path = '):]
+        """ Start parsing after the first delimiter (bunch of - characters),
+        and end when delimiters appear again. Format:
+        Date <space> Time <space> Attr <space> Size <space> Compressed <space> Name"""
+        if line.startswith('----'):
+            if self._state == SevenZipArchive.STATE_HEADER:
+                # First delimiter reached, start reading from next line
+                self._state = SevenZipArchive.STATE_LISTING
+            elif self._state == SevenZipArchive.STATE_LISTING:
+                # Last delimiter read, stop reading from now on
+                self._state = SevenZipArchive.STATE_FOOTER
 
-            if self._read_first_path:
-                return filename
-            else:
-                self._read_first_path = True
-                return None
-        else:
             return None
+        else:
+            if self._state == SevenZipArchive.STATE_LISTING:
+                # 7z occasionally does not include all columns when printing
+                # the listing, so splitting columns by spaces is unreliable.
+                # Use hardcoded start point by characters instead.
+                return line[53:]
+            else:
+                return None
 
     @staticmethod
     def _find_7z_executable():
