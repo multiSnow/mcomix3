@@ -54,7 +54,7 @@ def archive_mime_type(path):
                 return constants.ZIP
 
             fd = open(path, 'rb')
-            magic = fd.read(4)
+            magic = fd.read(5)
             fd.close()
 
             try:
@@ -71,16 +71,19 @@ def archive_mime_type(path):
                 else:
                     return constants.TAR
 
-            if magic == 'Rar!':
+            if magic[0:4] == 'Rar!':
                 return constants.RAR
 
-            elif magic == '7z\xBC\xAF':
+            elif magic[0:4] == '7z\xBC\xAF':
+                return constants.SEVENZIP
+
+            elif magic[0:5] == '\xFD7zXZ':
                 return constants.SEVENZIP
 
             elif magic[2:] == '-l':
                 return constants.LHA
 
-            #if magic == '%PDF':
+            #if magic[0:4] == '%PDF':
             #    return constants.PDF
 
     except Exception:

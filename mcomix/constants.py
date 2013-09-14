@@ -64,7 +64,7 @@ TAR_FORMATS = (
         ('*.tar', '*.gz', '*.bz2', '*.bzip2', '*.cbt'))
 SZIP_FORMATS = (
         ('application/x-7z-compressed', 'application/x-cb7'),
-        ('*.7z', '*.cb7'))
+        ('*.7z', '*.cb7', '*.xz', '*.lzma'))
 LHA_FORMATS = (
         ('application/x-lzh', 'application/x-lha', 'application/x-lzh-compressed'),
         ('*.lha', '*.lzh'))
