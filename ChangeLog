@@ -27,6 +27,9 @@ MComix 1.01
       in another collection did not immediately show the book in the
       library main view when the new collection was already selected.
 
+    - MComix can now use the '7z' executable to read .tar.xz and .tar.lzma
+      archives.
+
     - MComix will now use the current GTK theme's icons for
       Next/Previous buttons.
 
