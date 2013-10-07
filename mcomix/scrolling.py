@@ -11,6 +11,9 @@ MANGA_BACKWARDS_ORIENTATION = [1, -1]
 
 SCROLL_TO_CENTER = -2
 
+NORMAL_AXES = [0, 1]
+SWAPPED_AXES = [1, 0]
+
 
 class Scrolling(object):
 
@@ -19,13 +22,14 @@ class Scrolling(object):
 
 
     def scroll_smartly(self, content_size, viewport_size, viewport_position,
-        orientation, max_scroll):
+        orientation, max_scroll, axis_map=None):
         """ Returns a new viewport_position when reading forwards using
         the given orientation. If there is no space left to go, the empty
         list is returned. Note that all params are lists of ints (except
         max_scroll which might also contain floats) where each index
         corresponds to one dimension. The lower the index, the faster the
-        corresponding position changes when reading.
+        corresponding position changes when reading. If you need to override
+        this behavior, use the optional axis_map.
         @param content_size: The size of the content to display.
         @param viewport_size: The size of the viewport we are looking through.
         @param viewport_position: The current position of the viewport,
@@ -37,8 +41,19 @@ class Scrolling(object):
         of this argument.
         @param max_scroll: The maximum number of pixels to scroll in one step.
         (Floats allowed.)
+        @param axis_map: The index of the dimension to modify.
         @return: A new viewport_position if you can read further or the
         empty list if there is nothing left to read. """
+
+        # Axis remapping is implemented here only for convenience.
+        # Callers can always remap the axes themselves by simply applying
+        # the remapping beforehand and applying the inverse to the result
+        # afterwards.
+        if axis_map is not None:
+            content_size, viewport_size, viewport_position, orientation, \
+                max_scroll = Scrolling._map_remap_axes([content_size,
+                viewport_size, viewport_position, orientation, max_scroll],
+                axis_map)
 
         # This code is somewhat similar to a simple ripple-carry adder.
         result = list(viewport_position)
@@ -101,6 +116,12 @@ class Scrolling(object):
         if carry:
             # No space left.
             return []
+
+        # Undo axis remapping, if any
+        if axis_map is not None:
+            result = Scrolling._remap_axes(result,
+                Scrolling._inverse_axis_map(axis_map))
+
         return result
 
 
@@ -176,5 +197,19 @@ class Scrolling(object):
                 partial_sum += quotient
             result.append(partial_sum)
         return result
+
+    @staticmethod
+    def _remap_axes(vector, order):
+        return [vector[i] for i in order]
+
+    @staticmethod
+    def _map_remap_axes(vectors, order):
+        return map(lambda v: Scrolling._remap_axes(v, order), vectors)
+
+    @staticmethod
+    def _inverse_axis_map(order):
+        identity = range(len(order))
+        return [identity[order[i]] for i in identity]
+
 
 # vim: expandtab:sw=4:ts=4
