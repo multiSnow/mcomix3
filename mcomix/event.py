@@ -55,23 +55,23 @@ class EventHandler:
         # Navigation keys
         manager.register('previous_page',
             ['Page_Up', 'KP_Page_Up', 'BackSpace'],
-            self._flip_page, kwargs={'number_of_flips': -1})
+            self._flip_page, kwargs={'number_of_pages': -1})
         manager.register('next_page',
             ['Page_Down', 'KP_Page_Down'],
-            self._flip_page, kwargs={'number_of_flips': 1})
+            self._flip_page, kwargs={'number_of_pages': 1})
         manager.register('previous_page_dynamic',
             ['<Mod1>Left'],
-            self._left_right_page_progress, kwargs={'number_of_flips': -1})
+            self._left_right_page_progress, kwargs={'number_of_pages': -1})
         manager.register('next_page_dynamic',
             ['<Mod1>Right'],
-            self._left_right_page_progress, kwargs={'number_of_flips': 1})
+            self._left_right_page_progress, kwargs={'number_of_pages': 1})
 
         manager.register('previous_page_ff',
             ['<Shift>Page_Up', '<Shift>KP_Page_Up', '<Shift>BackSpace', '<Shift><Mod1>Left'],
-            self._flip_page, kwargs={'number_of_flips': -10})
+            self._flip_page, kwargs={'number_of_pages': -10})
         manager.register('next_page_ff',
             ['<Shift>Page_Down', '<Shift>KP_Page_Down', '<Shift><Mod1>Right'],
-            self._flip_page, kwargs={'number_of_flips': 10})
+            self._flip_page, kwargs={'number_of_pages': 10})
 
 
         manager.register('first_page',
@@ -851,26 +851,26 @@ class EventHandler:
             assert False, "Programmer is moron, incorrect assertion."
 
 
-    def _flip_page(self, number_of_flips):
+    def _flip_page(self, number_of_pages):
         self._extra_scroll_events = 0
         # TODO needs even better abstraction
-        if number_of_flips == 1:
+        if number_of_pages == 1:
             self._window.next_page()
-        elif number_of_flips == -1:
+        elif number_of_pages == -1:
             self._window.previous_page()
-        elif number_of_flips == 10:
+        elif number_of_pages == 10:
             self._window.next_page_fast_forward() # XXX wtf
-        elif number_of_flips == -10:
+        elif number_of_pages == -10:
             self._window.previous_page_fast_forward() # XXX wtf
         else:
-            assert False, "_flip_page(" + str(number_of_flips) + ")"
+            assert False, "_flip_page(" + str(number_of_pages) + ")"
 
 
-    def _left_right_page_progress(self, number_of_flips=1):
-        """ If number_of_flips is positive, this function advances the specified
+    def _left_right_page_progress(self, number_of_pages=1):
+        """ If number_of_pages is positive, this function advances the specified
         number of pages in manga mode and goes back the same number of pages in
-        normal mode. The opposite happens for number_of_flips being negative. """
-        self._flip_page(-number_of_flips if self._window.is_manga_mode else number_of_flips)
+        normal mode. The opposite happens for number_of_pages being negative. """
+        self._flip_page(-number_of_pages if self._window.is_manga_mode else number_of_pages)
 
     def _execute_command(self, cmdindex):
         """ Execute an external command. cmdindex should be an integer from 0 to 9,
