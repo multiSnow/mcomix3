@@ -198,13 +198,16 @@ class Scrolling(object):
             result.append(partial_sum)
         return result
 
+
     @staticmethod
     def _remap_axes(vector, order):
         return [vector[i] for i in order]
 
+
     @staticmethod
     def _map_remap_axes(vectors, order):
         return map(lambda v: Scrolling._remap_axes(v, order), vectors)
+
 
     @staticmethod
     def _inverse_axis_map(order):

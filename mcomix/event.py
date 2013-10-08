@@ -55,23 +55,23 @@ class EventHandler:
         # Navigation keys
         manager.register('previous_page',
             ['Page_Up', 'KP_Page_Up', 'BackSpace'],
-            self._window.previous_page)
+            self._flip_page, kwargs={'number_of_flips': -1})
         manager.register('next_page',
             ['Page_Down', 'KP_Page_Down'],
-            self._window.next_page)
+            self._flip_page, kwargs={'number_of_flips': 1})
         manager.register('previous_page_dynamic',
             ['<Mod1>Left'],
-            self._left_right_page_progress, kwargs={'left': True})
+            self._left_right_page_progress, kwargs={'number_of_flips': -1})
         manager.register('next_page_dynamic',
             ['<Mod1>Right'],
-            self._left_right_page_progress, kwargs={'left': False})
+            self._left_right_page_progress, kwargs={'number_of_flips': 1})
 
         manager.register('previous_page_ff',
             ['<Shift>Page_Up', '<Shift>KP_Page_Up', '<Shift>BackSpace', '<Shift><Mod1>Left'],
-            self._window.previous_page_fast_forward)
+            self._flip_page, kwargs={'number_of_flips': -10})
         manager.register('next_page_ff',
             ['<Shift>Page_Down', '<Shift>KP_Page_Down', '<Shift><Mod1>Right'],
-            self._window.next_page_fast_forward)
+            self._flip_page, kwargs={'number_of_flips': 10})
 
 
         manager.register('first_page',
@@ -509,9 +509,9 @@ class EventHandler:
                 not self._window.was_out_of_focus:
 
                 if event.state & gtk.gdk.SHIFT_MASK:
-                    self._window.next_page_fast_forward()
+                    self._flip_page(10)
                 else:
-                    self._window.next_page()
+                    self._flip_page(1)
 
             else:
                 self._window.was_out_of_focus = False
@@ -521,9 +521,9 @@ class EventHandler:
 
         elif event.button == 3:
             if event.state & gtk.gdk.MOD1_MASK:
-                self._window.previous_page()
+                self._flip_page(-1)
             elif event.state & gtk.gdk.SHIFT_MASK:
-                self._window.previous_page_fast_forward()
+                self._flip_page(-10)
 
     def mouse_move_event(self, widget, event):
         """Handle mouse pointer movement events."""
@@ -814,8 +814,7 @@ class EventHandler:
             or self._extra_scroll_events >= prefs['number of key presses before page turn'] - 1
             or not self._window.is_scrollable()):
 
-            self._extra_scroll_events = 0
-            self._window.next_page()
+            self._flip_page(1)
             return True
 
         elif (self._scroll_protection):
@@ -840,8 +839,7 @@ class EventHandler:
             or self._extra_scroll_events <= -prefs['number of key presses before page turn'] + 1
             or not self._window.is_scrollable()):
 
-            self._extra_scroll_events = 0
-            self._window.previous_page()
+            self._flip_page(-1)
             return True
 
         elif (self._scroll_protection):
@@ -852,19 +850,27 @@ class EventHandler:
             # This path should not be reached.
             assert False, "Programmer is moron, incorrect assertion."
 
-    def _left_right_page_progress(self, left=True):
-        """ If left is True, this function advances one page in manga mode and goes
-        back one page in normal mode. The opposite happens for left=False. """
 
-        next = not left
-        if self._window.is_manga_mode:
-            # Switch next and previous page
-            next = not next
-
-        if next:
+    def _flip_page(self, number_of_flips):
+        self._extra_scroll_events = 0
+        # TODO needs even better abstraction
+        if number_of_flips == 1:
             self._window.next_page()
-        else:
+        elif number_of_flips == -1:
             self._window.previous_page()
+        elif number_of_flips == 10:
+            self._window.next_page_fast_forward() # XXX wtf
+        elif number_of_flips == -10:
+            self._window.previous_page_fast_forward() # XXX wtf
+        else:
+            assert False, "_flip_page(" + str(number_of_flips) + ")"
+
+
+    def _left_right_page_progress(self, number_of_flips=1):
+        """ If number_of_flips is positive, this function advances the specified
+        number of pages in manga mode and goes back the same number of pages in
+        normal mode. The opposite happens for number_of_flips being negative. """
+        self._flip_page(-number_of_flips if self._window.is_manga_mode else number_of_flips)
 
     def _execute_command(self, cmdindex):
         """ Execute an external command. cmdindex should be an integer from 0 to 9,
