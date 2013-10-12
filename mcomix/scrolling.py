@@ -215,4 +215,66 @@ class Scrolling(object):
         return [identity[order[i]] for i in identity]
 
 
+    @staticmethod
+    def _distance_point_box(point, box_start, box_end):
+        """ Returns the Euclidean distance between a box and a point.
+        If the point lies within the box, this box is said to have a distance of
+        zero. Otherwise, the Euclidean distance between point and the closest
+        point of the box is returned.
+        Note: The current implementation assumes that the box is axis-aligned
+        and each element in box_start is smaller than the corresponding element
+        in box_end.
+        @param point: The point of interest.
+        @param box_start: A list of coordinates pointing to the start point of
+        the box.
+        @param box_end: A list of coordinates pointing to the end point
+        (exclusive) of the box.
+        @return: The distance between the point and the box as specified above. """
+
+        result = 0
+        for i in range(len(point)):
+            p = point[i]
+            bs = box_start[i]
+            be = box_end[i]
+            if p < bs:
+                r = bs - p
+            elif p > be:
+                r = p - be
+            else:
+                continue
+            result += r * r
+        return math.sqrt(result)
+
+
+    @staticmethod
+    def _closest_box(point, boxes):
+        """ Returns the index of a box that is closest to the specified point.
+        If the point lies within a box, this box is said to have a distance of
+        zero. (Thus, the index of this box will be the result.) Otherwise, the
+        Euclidean distance between point and the closest point of the box is
+        used to determine which of these boxes is the closest one.
+        Note: The current implementation uses _distance_point_box, see this
+        method for details.
+        @param point: The point of interest.
+        @param boxes: A list of boxes.
+        @return: The index of the closest box as specified above. """
+
+        # TODO more suitable interface(?)
+        result = -1
+        mindist = -1 # XXX is there something like "Infinity"?
+        i = 0
+        while True:
+            dist = Scrolling._distance_point_box(point, boxes[i][0], boxes[i][1])
+            print "i=" + str(i) + " dist=" + str(dist)
+            if dist == 0:
+                return i # shortcut
+            if (mindist == -1) or (dist < mindist):
+                mindist = dist
+                result = i
+            i += 1
+            if i >= len(boxes):
+                break
+        return result
+
+
 # vim: expandtab:sw=4:ts=4
