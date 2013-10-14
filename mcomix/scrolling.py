@@ -215,65 +215,68 @@ class Scrolling(object):
         return [identity[order[i]] for i in identity]
 
 
-    @staticmethod
-    def _distance_point_box(point, box_start, box_end):
-        """ Returns the Euclidean distance between a box and a point.
-        If the point lies within the box, this box is said to have a distance of
-        zero. Otherwise, the Euclidean distance between point and the closest
-        point of the box is returned.
-        Note: The current implementation assumes that the box is axis-aligned
-        and each element in box_start is smaller than the corresponding element
-        in box_end.
+
+class Box(object):
+
+    def __init__(self, position, size, content=None):
+        """ A box is always axis-aligned.
+        Each component of size should be positive (i.e. non-zero). """
+        self.position = tuple(position)
+        self.size = tuple(size)
+        self.content = content
+
+
+    def get_size(self):
+        return size
+
+    def get_position(self):
+        return position
+
+    def get_content(self):
+        return content
+
+    def distance_point_squared(self, point):
+        """ Returns the square of the Euclidean distance between this box and a
+        point. If the point lies within the box, this box is said to have a
+        distance of zero. Otherwise, the square of the Euclidean distance
+        between point and the closest point of the box is returned.
         @param point: The point of interest.
-        @param box_start: A list of coordinates pointing to the start point of
-        the box.
-        @param box_end: A list of coordinates pointing to the end point
-        (exclusive) of the box.
-        @return: The distance between the point and the box as specified above. """
+        @return The distance between the point and the box as specified above. """
 
         result = 0
         for i in range(len(point)):
             p = point[i]
-            bs = box_start[i]
-            be = box_end[i]
+            bs = self.position[i]
+            be = self.size[i] + bs
             if p < bs:
                 r = bs - p
-            elif p > be:
-                r = p - be
+            elif p >= be:
+                r = p - be + 1
             else:
                 continue
             result += r * r
-        return math.sqrt(result)
+        return result
 
 
     @staticmethod
-    def _closest_box(point, boxes):
-        """ Returns the index of a box that is closest to the specified point.
-        If the point lies within a box, this box is said to have a distance of
-        zero. (Thus, the index of this box will be the result.) Otherwise, the
-        Euclidean distance between point and the closest point of the box is
-        used to determine which of these boxes is the closest one.
-        Note: The current implementation uses _distance_point_box, see this
-        method for details.
+    def closest_boxes(point, boxes):
+        """ Returns the indices of the boxes that are closest to the specified
+        point. The Euclidean distance between point and the closest point of the
+        respecitve box is used to determine which of these boxes are the closest
+        ones.
         @param point: The point of interest.
         @param boxes: A list of boxes.
-        @return: The index of the closest box as specified above. """
+        @return The indices of the closest boxes as specified above. """
 
-        # TODO more suitable interface(?)
-        result = -1
-        mindist = -1 # XXX is there something like "Infinity"?
-        i = 0
-        while True:
-            dist = Scrolling._distance_point_box(point, boxes[i][0], boxes[i][1])
-            print "i=" + str(i) + " dist=" + str(dist)
-            if dist == 0:
-                return i # shortcut
-            if (mindist == -1) or (dist < mindist):
+        result = []
+        mindist = -1
+        for i in range(len(boxes)):
+            dist = boxes[i].distance_point_squared(point)
+            if (result == []) or (dist < mindist):
                 mindist = dist
-                result = i
-            i += 1
-            if i >= len(boxes):
-                break
+                result = [i]
+            elif dist == mindist:
+                result.append(i)
         return result
 
 
