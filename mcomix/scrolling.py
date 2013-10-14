@@ -227,13 +227,13 @@ class Box(object):
 
 
     def get_size(self):
-        return size
+        return self.size
 
     def get_position(self):
-        return position
+        return self.position
 
     def get_content(self):
-        return content
+        return self.content
 
     def distance_point_squared(self, point):
         """ Returns the square of the Euclidean distance between this box and a
@@ -278,6 +278,26 @@ class Box(object):
             elif dist == mindist:
                 result.append(i)
         return result
+
+
+    @staticmethod
+    def viewport_center(viewport_box, orientation):
+        result = []
+        vp = viewport_box.get_position()
+        vs = viewport_box.get_size()
+        for i in range(len(orientation)):
+            t = vs[i] >> 1
+            if ((vs[i] & 1) == 0) and (orientation[i] == 1):
+                t -= 1
+            result.append(t + vp[i])
+        print "CENTER=" + str(result)
+        return result
+
+
+    @staticmethod
+    def current_box(viewport_box, orientation, boxes):
+        return Box.closest_boxes(Box.viewport_center(viewport_box, orientation),
+            boxes)[0]
 
 
 # vim: expandtab:sw=4:ts=4
