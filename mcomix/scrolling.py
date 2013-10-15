@@ -290,7 +290,6 @@ class Box(object):
             if ((vs[i] & 1) == 0) and (orientation[i] == 1):
                 t -= 1
             result.append(t + vp[i])
-        print "CENTER=" + str(result)
         return result
 
 
