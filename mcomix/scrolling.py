@@ -35,8 +35,8 @@ class Scrolling(object):
         @param viewport_position: The current position of the viewport,
         should be between 0 and content_size-viewport_size (inclusive).
         @param orientation: The orientation which shows where "forward"
-        points to. Either 1 (towards greater values in this dimension when
-        reading) or -1 (towards lesser values in this dimension when reading).
+        points to. Either 1 (towards larger values in this dimension when
+        reading) or -1 (towards smaller values in this dimension when reading).
         Note that you can emulate "reading backwards" by flipping the sign
         of this argument.
         @param max_scroll: The maximum number of pixels to scroll in one step.
@@ -87,7 +87,9 @@ class Scrolling(object):
                         result[i] = invisible_size
                         continue
                 break
-            positions = self._cached_bs(invisible_size, steps_to_take)
+            # If orientation is -1, we need to round half up instead of
+            # half down.
+            positions = self._cached_bs(invisible_size, steps_to_take, o == -1)
 
             # Where are we now (according to the grid)?
             index = tools.bin_search(positions, viewport_position[i])
@@ -126,7 +128,7 @@ class Scrolling(object):
 
 
     def scroll_to_predefined(self, content_size, viewport_size, viewport_position,
-        destination):
+        orientation, destination):
         """ Returns a new viewport_position when scrolling towards a
         predefined destination. Note that all params are lists of integers
         where each index corresponds to one dimension.
@@ -134,6 +136,9 @@ class Scrolling(object):
         @param viewport_size: The size of the viewport we are looking through.
         @param viewport_position: The current position of the viewport,
         should be between 0 and content_size-viewport_size (inclusive).
+        @param orientation: The orientation which shows where "forward"
+        points to. Either 1 (towards larger values in this dimension when
+        reading) or -1 (towards smaller values in this dimension when reading).
         @param destination: An integer representing a predefined destination.
         Either 1 (towards the greatest possible values in this dimension),
         -1 (towards the smallest value in this dimension), 0 (keep position)
@@ -148,33 +153,41 @@ class Scrolling(object):
                 continue
             if d < SCROLL_TO_CENTER or d > 1:
                 raise ValueError("invalid destination " + d + " at index "+ i);
-            invisible_size = content_size[i] - viewport_size[i]
-            result[i] = (invisible_size / 2 if d == SCROLL_TO_CENTER
-                    else invisible_size if d == 1
-                    else 0) # if d == -1
+            c = content_size[i]
+            v = viewport_size[i]
+            invisible_size = c - v
+            result[i] = (Box._box_to_center_offset_1d(v - c, orientation[i])
+                if d == SCROLL_TO_CENTER
+                else invisible_size if d == 1
+                else 0) # if d == -1
         return result
 
 
-    def _cached_bs(self, num, denom):
+    def _cached_bs(self, num, denom, half_up):
         """ A simple (and ugly) caching mechanism used to avoid
         recomputations. The current implementation offers a cache with
         only two entries so it's only useful for the two "fastest"
         dimensions. """
-        if self._cache0[0] != num or self._cache0[1] != denom:
+        if (self._cache0[0] != num or
+            self._cache0[1] != denom or
+            self._cache0[2] != half_up):
             self._cache0, self._cache1 = self._cache1, self._cache0
-        if self._cache0[0] != num or self._cache0[1] != denom:
-            self._cache0 = (num, denom, Scrolling._bresenham_sums(num, denom))
-        return self._cache0[2]
+        if (self._cache0[0] != num or
+            self._cache0[1] != denom or
+            self._cache0[2] != half_up):
+            self._cache0 = (num, denom, half_up,
+                Scrolling._bresenham_sums(num, denom, half_up))
+        return self._cache0[3]
 
 
     def clear_cache(self):
         """ Clears all caches that are used internally. """
-        self._cache0 = (0, 0, [])
-        self._cache1 = (0, 0, [])
+        self._cache0 = (0, 0, False, [])
+        self._cache1 = (0, 0, False, [])
 
 
     @staticmethod
-    def _bresenham_sums(num, denom):
+    def _bresenham_sums(num, denom, half_up):
         """ This algorithm is derived from Bresenham's line algorithm in
         order to distribute the remainder of num/denom equally. See
         https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm for details.
@@ -185,6 +198,8 @@ class Scrolling(object):
             raise ValueError("denom < 1");
         quotient = num // denom;
         remainder = num % denom;
+        needs_up = half_up and (remainder != 0) and ((denom & 1) == 0)
+        up_flag = False
         error = denom >> 1;
         result = [0]
         partial_sum = 0
@@ -195,6 +210,15 @@ class Scrolling(object):
                 partial_sum += quotient + 1
             else:
                 partial_sum += quotient
+
+            # round half up, if necessary
+            if up_flag:
+                partial_sum -= 1;
+                up_flag = False;
+            elif needs_up and error == 0:
+                partial_sum += 1;
+                up_flag = True;
+
             result.append(partial_sum)
         return result
 
@@ -259,44 +283,114 @@ class Box(object):
 
 
     @staticmethod
-    def closest_boxes(point, boxes):
+    def closest_boxes(point, boxes, orientation=None):
         """ Returns the indices of the boxes that are closest to the specified
-        point. The Euclidean distance between point and the closest point of the
-        respecitve box is used to determine which of these boxes are the closest
-        ones.
+        point. First, the Euclidean distance between point and the closest point
+        of the respective box is used to determine which of these boxes are the
+        closest ones. If two boxes have the same distance, the box that is
+        closer to the origin as defined by orientation is said to have a shorter
+        distance.
         @param point: The point of interest.
         @param boxes: A list of boxes.
+        @param orientation: The orientation which shows where "forward" points
+        to. Either 1 (towards larger values in this dimension when reading) or
+        -1 (towards smaller values in this dimension when reading). If
+        orientation is set to None, it will be ignored.
         @return The indices of the closest boxes as specified above. """
 
         result = []
         mindist = -1
         for i in range(len(boxes)):
-            dist = boxes[i].distance_point_squared(point)
+            # 0 --> keep
+            # 1 --> append
+            # 2 --> replace
+            keep_append_replace = 0
+            b = boxes[i]
+            dist = b.distance_point_squared(point)
             if (result == []) or (dist < mindist):
+                keep_append_replace = 2
+            elif dist == mindist:
+                if orientation is not None:
+                # Take orientation into account.
+                # If result is small, a simple iteration shouldn't be a
+                # performance issue.
+                    for ri in range(len(result)):
+                        c = Box._compare_distance_to_origin(b,
+                            boxes[result[ri]], orientation)
+                        if c < 0:
+                            keep_append_replace = 2
+                            break
+                        if c == 0:
+                            keep_append_replace = 1
+                else:
+                    keep_append_replace = 1
+
+            if keep_append_replace == 1:
+                result.append(i)
+            if keep_append_replace == 2:
                 mindist = dist
                 result = [i]
-            elif dist == mindist:
-                result.append(i)
         return result
 
 
     @staticmethod
-    def viewport_center(viewport_box, orientation):
-        result = []
-        vp = viewport_box.get_position()
-        vs = viewport_box.get_size()
+    def _compare_distance_to_origin(box1, box2, orientation):
+        """ Returns an integer that is less than, equal to or greater than zero
+        if the distance between box1 and the origin is less than, equal to or
+        greater than the distance between box2 and the origin, respectively.
+        The origin is implied by orientation.
+        @param box1: The first box.
+        @param box2: The second box.
+        @param orientation: The orientation which shows where "forward" points
+        to. Either 1 (towards larger values in this dimension when reading) or
+        -1 (towards smaller values in this dimension when reading).
+        @return An integer as specified above. """
         for i in range(len(orientation)):
-            t = vs[i] >> 1
-            if ((vs[i] & 1) == 0) and (orientation[i] == 1):
-                t -= 1
-            result.append(t + vp[i])
+            o = orientation[i]
+            if o == 0:
+                continue
+            box1edge = box1.get_position()[i]
+            box2edge = box2.get_position()[i]
+            if o < 0:
+                box1edge = box1.get_size()[i] - box1edge
+                box2edge = box2.get_size()[i] - box2edge
+            d = box1edge - box2edge
+            if d != 0:
+                return d
+        return 0
+
+
+    @staticmethod
+    def box_center(box, orientation):
+        """ Returns the center of a box. If the exact value is not equal to an
+        integer, the integer that is closer to the origin (as implied by
+        orientation) is chosen.
+        @param box: The box.
+        @orientation: The orientation which shows where "forward" points
+        to. Either 1 (towards larger values in this dimension when reading) or
+        -1 (towards smaller values in this dimension when reading).
+        @return The center of box as specified above. """
+        result = []
+        bp = box.get_position()
+        bs = box.get_size()
+        for i in range(len(orientation)):
+            result.append(Box._box_to_center_offset_1d(bs[i] - 1,
+                orientation[i]) + bp[i])
         return result
+
+
+    @staticmethod
+    def _box_to_center_offset_1d(box_size_delta, orientation):
+        t = box_size_delta >> 1
+        if ((box_size_delta & 1) == 1) and (orientation == -1):
+            t += 1
+        return t
 
 
     @staticmethod
     def current_box(viewport_box, orientation, boxes):
-        return Box.closest_boxes(Box.viewport_center(viewport_box, orientation),
-            boxes)[0]
+        return Box.closest_boxes(Box.box_center(viewport_box, orientation),
+            boxes, orientation)[0]
 
 
 # vim: expandtab:sw=4:ts=4
