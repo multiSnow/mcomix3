@@ -370,27 +370,143 @@ class Box(object):
         to. Either 1 (towards larger values in this dimension when reading) or
         -1 (towards smaller values in this dimension when reading).
         @return The center of box as specified above. """
-        result = []
+        result = [0] * len(orientation)
         bp = box.get_position()
         bs = box.get_size()
         for i in range(len(orientation)):
-            result.append(Box._box_to_center_offset_1d(bs[i] - 1,
-                orientation[i]) + bp[i])
+            result[i] = Box._box_to_center_offset_1d(bs[i] - 1,
+                orientation[i]) + bp[i]
         return result
 
 
     @staticmethod
     def _box_to_center_offset_1d(box_size_delta, orientation):
-        t = box_size_delta >> 1
-        if ((box_size_delta & 1) == 1) and (orientation == -1):
-            t += 1
-        return t
+        if orientation == -1:
+            box_size_delta += 1
+        return box_size_delta >> 1
 
 
     @staticmethod
     def current_box(viewport_box, orientation, boxes):
         return Box.closest_boxes(Box.box_center(viewport_box, orientation),
             boxes, orientation)[0]
+
+
+    @staticmethod
+    def _align_center(boxes, axis, fix, orientation):
+        if len(boxes) == 0:
+            return []
+        result = [None] * len(boxes)
+        centerBox = boxes[fix]
+        center2 = centerBox.get_position()[axis] + centerBox.get_size()[axis];
+        for b in boxes:
+            s = b.get_size()
+            p = b.get_position()
+            p[axis] = center2 - s[axis];
+            if orientation == -1:
+                p[axis] += 1
+            result[i] = Box(p, s, b.get_content())
+        return result
+
+
+    @staticmethod
+    def _distribute(boxes, axis, fix):
+        """ Ensures that the boxes do not overlap. For this purpose, the boxes are
+        distributed according to the index of the respective box.
+        @param axis: the axis along which the boxes are distributed.
+        @param fix: the index of the box that should not move.
+        @return a new list with new boxes that are accordingly translated."""
+        if len(boxes) == 0:
+            return []
+        result = [None] * len(boxes)
+        initialSum = boxes[fix].get_position()[axis]
+        partial_sum = initialSum
+        for bi in range(fix, len(boxes)):
+            b = boxes[bi]
+            s = b.get_size()
+            p = b.get_position()
+            p[axis] = partial_sum
+            result[bi] = Box(p, s, b.get_content())
+            partial_sum += s[axis]
+        partial_sum = initialSum;
+        for bi in range(fix - 1, -1, -1):
+            b = boxes[bi]
+            s = b.get_size()
+            p = b.get_position()
+            partial_sum -= s[axis]
+            p[axis] = partial_sum
+            result[bi] = Box(p, s, b.get_content())
+        return result
+
+
+    @staticmethod
+    def _spare_box(content_box, viewport_size, orientation):
+        content_size = content_box.get_size()
+        result_size = [0] * len(content_size)
+        result_position = [0] * len(content_size)
+        for i in range(len(content_size)):
+            c = content_size[i]
+            v = viewport_size[i]
+            result_size[i] = max(c, v)
+            result_position[i] = Box._box_to_center_offset_1d(v - c,
+                orientation[i])
+        return Box(result_position, result_size, content_box)
+
+
+    @staticmethod
+    def bounding_box(boxes):
+        if len(boxes) == 0:
+            return None # XXX empty box?
+        mins = [4294967295] * len(boxes[0]) # XXX constant for max dim
+        maxes = [0] * len(boxes[0])
+        for b in boxes:
+            s = b.get_size()
+            p = b.get_position()
+            for i in range(len(mins)):
+                mins[i] = min(mins[i], p[i])
+                maxes[i] = max(maxes[i], p[i] + s[i])
+        return Box(mins, Box.calc_offset(maxes, mins), boxes)
+
+
+    @staticmethod
+    def calc_offset(apos, bpos):
+        result = [0] * len(apos)
+        for i in range(len(apos)):
+            result[i] = apos[i] - bpos[i]
+        return result
+
+
+    @staticmethod
+    def translate(pos, delta):
+        result = [0] * len(pos)
+        for i in range(len(pos)):
+            result[i] = pos[i] + delta[i]
+        return result
+
+
+    @staticmethod
+    def intersect(boxA, boxB):
+        aPos = boxA.get_position()
+        bPos = boxB.get_position()
+        aSize = boxA.get_size()
+        bSize = boxB.get_size()
+        resPos = [0] * len(aPos)
+        resSize = [0] * len(aSize)
+        for i in range(len(aPos)):
+            ax1 = aPos[i]
+            bx1 = bPos[i]
+            ax2 = ax1
+            ax2 += aSize[i]
+            bx2 = bx1
+            bx2 += bSize[i]
+            if ax1 < bx1:
+                ax1 = bx1
+            if ax2 > bx2:
+                ax2 = bx2
+            ax2 -= ax1
+            resPos[i] = ax1
+            resSize[i] = ax2
+        return Box(resPos, resSize)
 
 
 # vim: expandtab:sw=4:ts=4
