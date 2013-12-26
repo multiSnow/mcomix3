@@ -250,6 +250,19 @@ class Box(object):
         self.content = content
 
 
+    def __str__(self):
+        result = "{" +str(self.get_position()) + ":" + str(self.get_size()) + "::"
+        try:
+            for x in self.get_content():
+                if type(x) is Box:
+                    result += str(x) + ","
+                else:
+                    result += str(x)
+        except TypeError, te:
+            result += str(self.get_content())
+        return result + "}"
+
+
     def get_size(self):
         return self.size
 
@@ -266,7 +279,6 @@ class Box(object):
         between point and the closest point of the box is returned.
         @param point: The point of interest.
         @return The distance between the point and the box as specified above. """
-
         result = 0
         for i in range(len(point)):
             p = point[i]
@@ -280,6 +292,15 @@ class Box(object):
                 continue
             result += r * r
         return result
+
+
+    def translate_and_put(self, delta, content):
+        return Box(Box._translate_point(self.get_position(), delta),
+            self.get_size(), content)
+
+
+    def translate(self, delta):
+        return self.translate_and_put(delta, self.get_content())
 
 
     @staticmethod
@@ -396,25 +417,26 @@ class Box(object):
     def _align_center(boxes, axis, fix, orientation):
         if len(boxes) == 0:
             return []
-        result = [None] * len(boxes)
         centerBox = boxes[fix]
-        center2 = centerBox.get_position()[axis] + centerBox.get_size()[axis];
+        cs = centerBox.get_size()[axis]
+        cp = centerBox.get_position()[axis]
+        result = []
         for b in boxes:
             s = b.get_size()
-            p = b.get_position()
-            p[axis] = center2 - s[axis];
-            if orientation == -1:
-                p[axis] += 1
-            result[i] = Box(p, s, b.get_content())
+            p = list(b.get_position())
+            p[axis] = cp + Box._box_to_center_offset_1d(cs - s[axis],
+                orientation)
+            result.append(Box(p, s, b.get_content()))
         return result
 
 
     @staticmethod
-    def _distribute(boxes, axis, fix):
+    def _distribute(boxes, axis, fix, spacing=0):
         """ Ensures that the boxes do not overlap. For this purpose, the boxes are
         distributed according to the index of the respective box.
         @param axis: the axis along which the boxes are distributed.
         @param fix: the index of the box that should not move.
+        @param spacing: the number of additional pixels between boxes.
         @return a new list with new boxes that are accordingly translated."""
         if len(boxes) == 0:
             return []
@@ -424,23 +446,23 @@ class Box(object):
         for bi in range(fix, len(boxes)):
             b = boxes[bi]
             s = b.get_size()
-            p = b.get_position()
+            p = list(b.get_position())
             p[axis] = partial_sum
             result[bi] = Box(p, s, b.get_content())
-            partial_sum += s[axis]
+            partial_sum += s[axis] + spacing
         partial_sum = initialSum;
         for bi in range(fix - 1, -1, -1):
             b = boxes[bi]
             s = b.get_size()
-            p = b.get_position()
-            partial_sum -= s[axis]
+            p = list(b.get_position())
+            partial_sum -= s[axis] + spacing
             p[axis] = partial_sum
             result[bi] = Box(p, s, b.get_content())
         return result
 
 
     @staticmethod
-    def _spare_box(content_box, viewport_size, orientation):
+    def _wrapper_box(content_box, viewport_size, orientation):
         content_size = content_box.get_size()
         result_size = [0] * len(content_size)
         result_position = [0] * len(content_size)
@@ -448,8 +470,8 @@ class Box(object):
             c = content_size[i]
             v = viewport_size[i]
             result_size[i] = max(c, v)
-            result_position[i] = Box._box_to_center_offset_1d(v - c,
-                orientation[i])
+            result_position[i] = Box._box_to_center_offset_1d(c - result_size[i],
+                orientation[i]) + content_box.get_position()[i]
         return Box(result_position, result_size, content_box)
 
 
@@ -457,14 +479,17 @@ class Box(object):
     def bounding_box(boxes):
         if len(boxes) == 0:
             return None # XXX empty box?
-        mins = [4294967295] * len(boxes[0]) # XXX constant for max dim
-        maxes = [0] * len(boxes[0])
+        mins = [None] * len(boxes[0].get_size())
+        maxes = [None] * len(mins)
         for b in boxes:
             s = b.get_size()
             p = b.get_position()
             for i in range(len(mins)):
-                mins[i] = min(mins[i], p[i])
-                maxes[i] = max(maxes[i], p[i] + s[i])
+                if (mins[i] is None) or (p[i] < mins[i]):
+                    mins[i] = p[i]
+                ps = p[i] + s[i]
+                if (maxes[i] is None) or (ps > maxes[i]):
+                    maxes[i] = ps
         return Box(mins, Box.calc_offset(maxes, mins), boxes)
 
 
@@ -477,7 +502,7 @@ class Box(object):
 
 
     @staticmethod
-    def translate(pos, delta):
+    def _translate_point(pos, delta):
         result = [0] * len(pos)
         for i in range(len(pos)):
             result[i] = pos[i] + delta[i]
@@ -485,7 +510,15 @@ class Box(object):
 
 
     @staticmethod
-    def intersect(boxA, boxB):
+    def _opposite(pos):
+        result = [0] * len(pos)
+        for i in range(len(pos)):
+            result[i] = -pos[i]
+        return result
+
+
+    @staticmethod
+    def intersect(boxA, boxB, content=None):
         aPos = boxA.get_position()
         bPos = boxB.get_position()
         aSize = boxA.get_size()
@@ -506,7 +539,36 @@ class Box(object):
             ax2 -= ax1
             resPos[i] = ax1
             resSize[i] = ax2
-        return Box(resPos, resSize)
+        return Box(resPos, resSize, content)
 
+
+class FiniteLayout(object):
+
+    def __init__(self, content_boxes, viewport_size, orientation, spacing):
+        # align to center
+        temp_cb_list = Box._align_center(content_boxes, 1, 0,
+            orientation[1])
+        # distribute
+        temp_cb_list = Box._distribute(temp_cb_list, 0, 0, spacing)
+        # wrap in (potentially oversized) wrapper boxes
+        temp_wb_list = [None] * len(temp_cb_list)
+        for i in range(len(temp_cb_list)):
+            temp_wb_list[i] = Box._wrapper_box(temp_cb_list[i],
+                viewport_size, orientation)
+        # wrap in bounding box
+        temp_bb = Box.bounding_box(temp_wb_list)
+        # move to (0, 0)
+        delta = Box._opposite(temp_bb.get_position())
+        for i in range(len(temp_cb_list)):
+            temp_cb_list[i] = temp_cb_list[i].translate(delta)
+        for i in range(len(temp_wb_list)):
+            temp_wb_list[i] = temp_wb_list[i].translate_and_put(delta,
+                temp_cb_list[i])
+        # done
+        self.overall_box = Box.bounding_box(temp_wb_list)
+
+
+    def get_overall_box(self):
+        return self.overall_box
 
 # vim: expandtab:sw=4:ts=4
