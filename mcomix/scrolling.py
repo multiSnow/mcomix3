@@ -4,15 +4,15 @@ from mcomix import tools
 import math
 
 
-WESTERN_FORWARDS_ORIENTATION = [1, 1]
-WESTERN_BACKWARDS_ORIENTATION = [-1, -1]
-MANGA_FORWARDS_ORIENTATION = [-1, 1]
-MANGA_BACKWARDS_ORIENTATION = [1, -1]
+WESTERN_FORWARDS_ORIENTATION = (1, 1)
+WESTERN_BACKWARDS_ORIENTATION = (-1, -1)
+MANGA_FORWARDS_ORIENTATION = (-1, 1)
+MANGA_BACKWARDS_ORIENTATION = (1, -1)
 
 SCROLL_TO_CENTER = -2
 
-NORMAL_AXES = [0, 1]
-SWAPPED_AXES = [1, 0]
+NORMAL_AXES = (0, 1)
+SWAPPED_AXES = (1, 0)
 
 
 class Scrolling(object):
@@ -21,19 +21,17 @@ class Scrolling(object):
         self.clear_cache()
 
 
-    def scroll_smartly(self, content_size, viewport_size, viewport_position,
-        orientation, max_scroll, axis_map=None):
-        """ Returns a new viewport_position when reading forwards using
+    def scroll_smartly(self, content_box, viewport_box, orientation, max_scroll,
+        axis_map=None):
+        """ Returns a new viewport position when reading forwards using
         the given orientation. If there is no space left to go, the empty
         list is returned. Note that all params are lists of ints (except
         max_scroll which might also contain floats) where each index
         corresponds to one dimension. The lower the index, the faster the
         corresponding position changes when reading. If you need to override
         this behavior, use the optional axis_map.
-        @param content_size: The size of the content to display.
-        @param viewport_size: The size of the viewport we are looking through.
-        @param viewport_position: The current position of the viewport,
-        should be between 0 and content_size-viewport_size (inclusive).
+        @param content_box: The Box of the content to display.
+        @param viewport_box: The viewport Box we are looking through.
         @param orientation: The orientation which shows where "forward"
         points to. Either 1 (towards larger values in this dimension when
         reading) or -1 (towards smaller values in this dimension when reading).
@@ -44,11 +42,13 @@ class Scrolling(object):
         @param axis_map: The index of the dimension to modify.
         @return: A new viewport_position if you can read further or the
         empty list if there is nothing left to read. """
-
-        # Axis remapping is implemented here only for convenience.
-        # Callers can always remap the axes themselves by simply applying
-        # the remapping beforehand and applying the inverse to the result
-        # afterwards.
+        # Translate content and viewport so that content position equals origin
+        offset = content_box.get_position()
+        content_size = content_box.get_size()
+        content_position = [0] * len(offset)
+        viewport_position = Box._vector_sub(viewport_box.get_position(), offset)
+        viewport_size = viewport_box.get_size()
+        # Remap axes
         if axis_map is not None:
             content_size, viewport_size, viewport_position, orientation, \
                 max_scroll = Scrolling._map_remap_axes([content_size,
@@ -124,18 +124,16 @@ class Scrolling(object):
             result = Scrolling._remap_axes(result,
                 Scrolling._inverse_axis_map(axis_map))
 
-        return result
+        return Box._vector_add(result, offset)
 
 
-    def scroll_to_predefined(self, content_size, viewport_size, viewport_position,
-        orientation, destination):
-        """ Returns a new viewport_position when scrolling towards a
+    def scroll_to_predefined(self, content_box, viewport_box, orientation,
+        destination):
+        """ Returns a new viewport position when scrolling towards a
         predefined destination. Note that all params are lists of integers
         where each index corresponds to one dimension.
-        @param content_size: The size of the content to display.
-        @param viewport_size: The size of the viewport we are looking through.
-        @param viewport_position: The current position of the viewport,
-        should be between 0 and content_size-viewport_size (inclusive).
+        @param content_box: The Box of the content to display.
+        @param viewport_box: The viewport Box we are looking through.
         @param orientation: The orientation which shows where "forward"
         points to. Either 1 (towards larger values in this dimension when
         reading) or -1 (towards smaller values in this dimension when reading).
@@ -144,20 +142,22 @@ class Scrolling(object):
         -1 (towards the smallest value in this dimension), 0 (keep position)
         or SCROLL_TO_CENTER (scroll to the center of the content in this
         dimension).
-        @return: A new viewport_position as specified above. """
-
-        result = list(viewport_position)
+        @return: A new viewport position as specified above. """
+        content_position = content_box.get_position()
+        content_size = content_box.get_size()
+        viewport_size = viewport_box.get_size()
+        result = list(viewport_box.get_position())
         for i in range(len(content_size)):
             d = destination[i]
             if d == 0:
                 continue
             if d < SCROLL_TO_CENTER or d > 1:
-                raise ValueError("invalid destination " + d + " at index "+ i);
+                raise ValueError("invalid destination " + d + " at index "+ i)
             c = content_size[i]
             v = viewport_size[i]
             invisible_size = c - v
-            result[i] = (Box._box_to_center_offset_1d(v - c, orientation[i])
-                if d == SCROLL_TO_CENTER
+            result[i] = content_position[i] + (Box._box_to_center_offset_1d(
+                invisible_size, orientation[i]) if d == SCROLL_TO_CENTER
                 else invisible_size if d == 1
                 else 0) # if d == -1
         return result
@@ -242,43 +242,71 @@ class Scrolling(object):
 
 class Box(object):
 
-    def __init__(self, position, size, content=None):
-        """ A box is always axis-aligned.
-        Each component of size should be positive (i.e. non-zero). """
+    def __init__(self, position, size):
+        """ A Box is immutable and always axis-aligned.
+        Each component of size should be positive (i.e. non-zero).
+        Both position and size must have equal number of dimensions.
+        @param position: The position of this Box.
+        @param size: The size of this Box."""
         self.position = tuple(position)
         self.size = tuple(size)
-        self.content = content
+        if len(self.position) != len(self.size):
+            raise ValueError("different number of dimensions: " +
+                str(len(self.position)) + " != " + str(len(self.size)))
 
 
     def __str__(self):
-        result = "{" +str(self.get_position()) + ":" + str(self.get_size()) + "::"
-        try:
-            for x in self.get_content():
-                if type(x) is Box:
-                    result += str(x) + ","
-                else:
-                    result += str(x)
-        except TypeError, te:
-            result += str(self.get_content())
-        return result + "}"
+        """ Returns a string representation of this Box. """
+        return "{" + str(self.get_position()) + ":" + str(self.get_size()) + "}"
+
+
+    def __eq__(self, other):
+        """ Two Boxes are said to be equal if and only if the number of
+        dimensions, the positions and the sizes of the two Boxes are equal,
+        respectively. """
+        return (self.get_position() == other.get_position()) and \
+            (self.get_size() == self.get_size())
+
+
+    def __len__(self):
+        """ Returns the number of dimensions of this Box. """
+        return len(self.position)
 
 
     def get_size(self):
+        """ Returns the size of this Box.
+        @return: The size of this Box. """
         return self.size
 
+
     def get_position(self):
+        """ Returns the position of this Box.
+        @return: The position of this Box. """
         return self.position
 
-    def get_content(self):
-        return self.content
+
+    def set_position(self, position):
+        """ Returns a new Box that has the same size as this Box and the
+        specified position.
+        @return: A new Box as specified above. """
+        return Box(position, self.get_size())
+
+
+    def set_size(self, size):
+        """ Returns a new Box that has the same position as this Box and the
+        specified size.
+        @return: A new Box as specified above. """
+        return Box(self.get_position(), size)
+
 
     def distance_point_squared(self, point):
-        """ Returns the square of the Euclidean distance between this box and a
-        point. If the point lies within the box, this box is said to have a
+        """ Returns the square of the Euclidean distance between this Box and a
+        point. If the point lies within the Box, this Box is said to have a
         distance of zero. Otherwise, the square of the Euclidean distance
-        between point and the closest point of the box is returned.
+        between point and the closest point of the Box is returned.
         @param point: The point of interest.
-        @return The distance between the point and the box as specified above. """
+        @return The distance between the point and the Box as specified above.
+        """
         result = 0
         for i in range(len(point)):
             p = point[i]
@@ -294,31 +322,40 @@ class Box(object):
         return result
 
 
-    def translate_and_put(self, delta, content):
-        return Box(Box._translate_point(self.get_position(), delta),
-            self.get_size(), content)
-
-
     def translate(self, delta):
-        return self.translate_and_put(delta, self.get_content())
+        """ Returns a new Box that has the same size as this Box and a
+        translated position as specified by delta.
+        @param delta: The distance to the position of this Box.
+        @return: A new Box as specified above. """
+        return Box(Box._vector_add(self.get_position(), delta),
+            self.get_size())
+
+
+    def translate_opposite(self, delta):
+        """ Returns a new Box that has the same size as this Box and a
+        oppositely translated position as specified by delta.
+        @param delta: The distance to the position of this Box, with opposite
+        direction.
+        @return: A new Box as specified above. """
+        return Box(Box._vector_sub(self.get_position(), delta),
+            self.get_size())
 
 
     @staticmethod
     def closest_boxes(point, boxes, orientation=None):
-        """ Returns the indices of the boxes that are closest to the specified
+        """ Returns the indices of the Boxes that are closest to the specified
         point. First, the Euclidean distance between point and the closest point
-        of the respective box is used to determine which of these boxes are the
-        closest ones. If two boxes have the same distance, the box that is
+        of the respective Box is used to determine which of these Boxes are the
+        closest ones. If two Boxes have the same distance, the Box that is
         closer to the origin as defined by orientation is said to have a shorter
         distance.
         @param point: The point of interest.
-        @param boxes: A list of boxes.
+        @param boxes: A list of Boxes.
         @param orientation: The orientation which shows where "forward" points
         to. Either 1 (towards larger values in this dimension when reading) or
         -1 (towards smaller values in this dimension when reading). If
         orientation is set to None, it will be ignored.
-        @return The indices of the closest boxes as specified above. """
-
+        @return The indices of the closest Boxes as specified above. """
         result = []
         mindist = -1
         for i in range(len(boxes)):
@@ -360,8 +397,8 @@ class Box(object):
         if the distance between box1 and the origin is less than, equal to or
         greater than the distance between box2 and the origin, respectively.
         The origin is implied by orientation.
-        @param box1: The first box.
-        @param box2: The second box.
+        @param box1: The first Box.
+        @param box2: The second Box.
         @param orientation: The orientation which shows where "forward" points
         to. Either 1 (towards larger values in this dimension when reading) or
         -1 (towards smaller values in this dimension when reading).
@@ -381,19 +418,17 @@ class Box(object):
         return 0
 
 
-    @staticmethod
-    def box_center(box, orientation):
-        """ Returns the center of a box. If the exact value is not equal to an
-        integer, the integer that is closer to the origin (as implied by
+    def get_center(self, orientation):
+        """ Returns the center of this Box. If the exact value is not equal to
+        an integer, the integer that is closer to the origin (as implied by
         orientation) is chosen.
-        @param box: The box.
         @orientation: The orientation which shows where "forward" points
         to. Either 1 (towards larger values in this dimension when reading) or
         -1 (towards smaller values in this dimension when reading).
-        @return The center of box as specified above. """
+        @return The center of this Box as specified above. """
         result = [0] * len(orientation)
-        bp = box.get_position()
-        bs = box.get_size()
+        bp = self.get_position()
+        bs = self.get_size()
         for i in range(len(orientation)):
             result[i] = Box._box_to_center_offset_1d(bs[i] - 1,
                 orientation[i]) + bp[i]
@@ -407,14 +442,24 @@ class Box(object):
         return box_size_delta >> 1
 
 
-    @staticmethod
-    def current_box(viewport_box, orientation, boxes):
-        return Box.closest_boxes(Box.box_center(viewport_box, orientation),
-            boxes, orientation)[0]
+    def current_box_index(self, orientation, boxes):
+        """ Calculates the index of the Box that is closest to the center of
+        this Box.
+        @param orientation: The orientation to use.
+        @param boxes: The Boxes to examine.
+        @return: The index as specified above. """
+        return Box.closest_boxes(self.get_center(orientation), boxes,
+            orientation)[0]
 
 
     @staticmethod
     def _align_center(boxes, axis, fix, orientation):
+        """ Aligns Boxes so that the center of each Box appears on the same
+        line.
+        @param axis: the axis to center.
+        @param fix: the index of the Box that should not move.
+        @param orientation: The orientation to use.
+        @return: A list of new Boxes with accordingly translated positions. """
         if len(boxes) == 0:
             return []
         centerBox = boxes[fix]
@@ -426,18 +471,18 @@ class Box(object):
             p = list(b.get_position())
             p[axis] = cp + Box._box_to_center_offset_1d(cs - s[axis],
                 orientation)
-            result.append(Box(p, s, b.get_content()))
+            result.append(Box(p, s))
         return result
 
 
     @staticmethod
-    def _distribute(boxes, axis, fix, spacing=0):
-        """ Ensures that the boxes do not overlap. For this purpose, the boxes are
-        distributed according to the index of the respective box.
-        @param axis: the axis along which the boxes are distributed.
-        @param fix: the index of the box that should not move.
-        @param spacing: the number of additional pixels between boxes.
-        @return a new list with new boxes that are accordingly translated."""
+    def distribute(boxes, axis, fix, spacing=0):
+        """ Ensures that the Boxes do not overlap. For this purpose, the Boxes
+        are distributed according to the index of the respective Box.
+        @param axis: the axis along which the Boxes are distributed.
+        @param fix: the index of the Box that should not move.
+        @param spacing: the number of additional pixels between Boxes.
+        @return: A new list with new Boxes that are accordingly translated. """
         if len(boxes) == 0:
             return []
         result = [None] * len(boxes)
@@ -448,7 +493,7 @@ class Box(object):
             s = b.get_size()
             p = list(b.get_position())
             p[axis] = partial_sum
-            result[bi] = Box(p, s, b.get_content())
+            result[bi] = Box(p, s)
             partial_sum += s[axis] + spacing
         partial_sum = initialSum;
         for bi in range(fix - 1, -1, -1):
@@ -457,28 +502,37 @@ class Box(object):
             p = list(b.get_position())
             partial_sum -= s[axis] + spacing
             p[axis] = partial_sum
-            result[bi] = Box(p, s, b.get_content())
+            result[bi] = Box(p, s)
         return result
 
 
-    @staticmethod
-    def _wrapper_box(content_box, viewport_size, orientation):
-        content_size = content_box.get_size()
-        result_size = [0] * len(content_size)
-        result_position = [0] * len(content_size)
-        for i in range(len(content_size)):
-            c = content_size[i]
+    def wrapper_box(self, viewport_size, orientation):
+        """ Returns a Box that covers the same area that is covered by a
+        scrollable viewport showing this Box.
+        @param viewport_size: The size of the viewport.
+        @param orientation: The orientation to use.
+        @return: A Box as specified above. """
+        size = self.get_size()
+        position = self.get_position()
+        result_size = [0] * len(size)
+        result_position = [0] * len(size)
+        for i in range(len(size)):
+            c = size[i]
             v = viewport_size[i]
             result_size[i] = max(c, v)
             result_position[i] = Box._box_to_center_offset_1d(c - result_size[i],
-                orientation[i]) + content_box.get_position()[i]
-        return Box(result_position, result_size, content_box)
+                orientation[i]) + position[i]
+        return Box(result_position, result_size)
 
 
     @staticmethod
     def bounding_box(boxes):
+        """ Returns the union of all specified Boxes (that is, the smallest Box
+        that contains all specified Boxes).
+        @param boxes: The Boxes to calculate the union from.
+        @return: A Box as specified above. """
         if len(boxes) == 0:
-            return None # XXX empty box?
+            return Box([], [])
         mins = [None] * len(boxes[0].get_size())
         maxes = [None] * len(mins)
         for b in boxes:
@@ -490,35 +544,38 @@ class Box(object):
                 ps = p[i] + s[i]
                 if (maxes[i] is None) or (ps > maxes[i]):
                     maxes[i] = ps
-        return Box(mins, Box.calc_offset(maxes, mins), boxes)
+        return Box(mins, Box._vector_sub(maxes, mins))
 
 
     @staticmethod
-    def calc_offset(apos, bpos):
-        result = [0] * len(apos)
-        for i in range(len(apos)):
-            result[i] = apos[i] - bpos[i]
+    def _vector_sub(a, b):
+        """ Subtracts vector b from vector a. """
+        result = [0] * len(a)
+        for i in range(len(a)):
+            result[i] = a[i] - b[i]
         return result
 
 
     @staticmethod
-    def _translate_point(pos, delta):
-        result = [0] * len(pos)
-        for i in range(len(pos)):
-            result[i] = pos[i] + delta[i]
+    def _vector_add(a, b):
+        """ Adds vector a to vector b. """
+        result = [0] * len(a)
+        for i in range(len(a)):
+            result[i] = a[i] + b[i]
         return result
 
 
     @staticmethod
-    def _opposite(pos):
-        result = [0] * len(pos)
-        for i in range(len(pos)):
-            result[i] = -pos[i]
+    def _vector_opposite(a):
+        """ Returns the opposite vector -a. """
+        result = [0] * len(a)
+        for i in range(len(a)):
+            result[i] = -a[i]
         return result
 
 
     @staticmethod
-    def intersect(boxA, boxB, content=None):
+    def intersect(boxA, boxB): # TODO test! docs!
         aPos = boxA.get_position()
         bPos = boxB.get_position()
         aSize = boxA.get_size()
@@ -539,36 +596,149 @@ class Box(object):
             ax2 -= ax1
             resPos[i] = ax1
             resSize[i] = ax2
-        return Box(resPos, resSize, content)
+        return Box(resPos, resSize)
 
 
 class FiniteLayout(object):
 
     def __init__(self, content_boxes, viewport_size, orientation, spacing):
-        # align to center
-        temp_cb_list = Box._align_center(content_boxes, 1, 0,
-            orientation[1])
-        # distribute
-        temp_cb_list = Box._distribute(temp_cb_list, 0, 0, spacing)
-        # wrap in (potentially oversized) wrapper boxes
-        temp_wb_list = [None] * len(temp_cb_list)
-        for i in range(len(temp_cb_list)):
-            temp_wb_list[i] = Box._wrapper_box(temp_cb_list[i],
-                viewport_size, orientation)
-        # wrap in bounding box
-        temp_bb = Box.bounding_box(temp_wb_list)
-        # move to (0, 0)
-        delta = Box._opposite(temp_bb.get_position())
-        for i in range(len(temp_cb_list)):
-            temp_cb_list[i] = temp_cb_list[i].translate(delta)
-        for i in range(len(temp_wb_list)):
-            temp_wb_list[i] = temp_wb_list[i].translate_and_put(delta,
-                temp_cb_list[i])
-        # done
-        self.overall_box = Box.bounding_box(temp_wb_list)
+        """ Lays out a finite number of Boxes along the first axis.
+        @param content_boxes: The Boxes to lay out.
+        @param viewport_size: The size of the viewport.
+        @param orientation: The orientation to use.
+        @param spacing: Number of additional pixels between Boxes. """
+        self.scroller = Scrolling()
+        self.current_index = -1
+        self._reset(content_boxes, viewport_size, orientation, spacing)
+
+
+    def set_viewport_position(self, viewport_position):
+        """ Moves the viewport to the specified position.
+        @param viewport_position: The new viewport position. """
+        self.viewport_box = self.viewport_box.set_position(viewport_position)
+        self.dirty_current_index = True
+
+
+    def scroll_smartly(self, max_scroll, backwards=False, remapped_axes=False,
+        index=None):
+        """ Applies a "smart scrolling" step to the current viewport position.
+        If there are not enough Boxes to scroll to, the viewport is not moved
+        and an appropriate value is returned.
+        @param max_scroll: The maximum numbers of pixels to scroll in one step.
+        @param backwards: True for backwards scrolling, False otherwise.
+        @param remapped_axes: True for swapped axes, False otherwise.
+        @param index: The index of the Box the scrolling step is related to,
+        or None to use the index of the current Box.
+        @return: The index of the current Box after scrolling, or -1 if there
+        were not enough Boxes to scroll backwards, or the number of Boxes if
+        there were not enough Boxes to scroll forwards. """
+        if index == None:
+            index = self.get_current_index()
+        current_box = self.wrapper_boxes[index]
+        o = Box._vector_opposite(self.orientation) if backwards \
+            else self.orientation
+        axis_map = (1, 0) if remapped_axes else (0, 1)
+        new_pos = self.scroller.scroll_smartly(current_box, self.viewport_box,
+            o, max_scroll, axis_map)
+        if new_pos == []:
+            index += -1 if backwards else 1
+            n = len(self.get_content_boxes())
+            if (index < n) and (index >= 0):
+                self.scroll_to_predefined(Box._vector_opposite(o), index)
+            return index
+        self.set_viewport_position(new_pos)
+        return index
+
+
+    def scroll_to_predefined(self, destination, index=None):
+        """ Scrolls the viewport to a predefined destination.
+        @param destination: An integer representing a predefined destination.
+        Either 1 (towards the greatest possible values in this dimension),
+        -1 (towards the smallest value in this dimension), 0 (keep position)
+        or SCROLL_TO_CENTER (scroll to the center of the content in this
+        dimension).
+        @param index: The index of the Box the scrolling is related to,
+        or None to use the index of the current Box. """
+        if index == None:
+            index = self.get_current_index()
+        current_box = self.wrapper_boxes[index]
+        self.set_viewport_position(self.scroller.scroll_to_predefined(
+            current_box, self.viewport_box, self.orientation, destination))
+
+
+    def get_content_boxes(self):
+        """ Returns the Boxes as they are arranged in this layout. 
+        @return: The Boxes as they are arranged in this layout. """
+        return self.content_boxes
+
+
+    def get_wrapper_boxes(self):
+        """ Returns the wrapper Boxes as they are arranged in this layout.
+        @return: The wrapper Boxes as they are arranged in this layout. """
+        return self.wrapper_boxes
 
 
     def get_overall_box(self):
+        """ Returns the overall Box for this layout.
+        @return: The overall Box for this layout. """
         return self.overall_box
+
+
+    def get_current_index(self):
+        """ Returns the index of the Box that is said to be the current Box.
+        @return: The index of the Box that is said to be the current Box. """
+        if self.dirty_current_index:
+            self.current_index = self.viewport_box.current_box_index(
+                self.orientation, self.content_boxes)
+            self.dirty_current_index = False
+        return self.current_index
+
+
+    def get_viewport_box(self):
+        """ Returns the current viewport Box.
+        @return: The current viewport Box. """
+        return self.viewport_box
+
+
+    def get_orientation(self):
+        """ Returns the orientation for this layout.
+        @return: The orientation for this layout. """
+        return self.orientation
+
+
+    def _reset(self, content_boxes, viewport_size, orientation, spacing):
+        # reverse order if necessary
+        if orientation[0] == -1:
+            content_boxes = tuple(reversed(content_boxes))
+        # align to center
+        temp_cb_list = Box._align_center(content_boxes, 1, 0, orientation[1])
+        # distribute
+        temp_cb_list = Box.distribute(temp_cb_list, 0, 0, spacing)
+        # calculate (potentially oversized) wrapper Boxes
+        temp_wb_list = [None] * len(temp_cb_list)
+        for i in range(len(temp_cb_list)):
+            temp_wb_list[i] = temp_cb_list[i].wrapper_box(viewport_size,
+                orientation)
+        # calculate bounding Box
+        temp_bb = Box.bounding_box(temp_wb_list)
+        # move to global origin
+        bbp = temp_bb.get_position()
+        for i in range(len(temp_cb_list)):
+            temp_cb_list[i] = temp_cb_list[i].translate_opposite(bbp)
+        for i in range(len(temp_wb_list)):
+            temp_wb_list[i] = temp_wb_list[i].translate_opposite(bbp)
+        temp_bb = temp_bb.translate_opposite(bbp)
+        # reverse order again, if necessary
+        if orientation[0] == -1:
+            temp_cb_list = tuple(reversed(temp_cb_list))
+            temp_wb_list = tuple(reversed(temp_wb_list))
+        # done
+        self.content_boxes = temp_cb_list
+        self.wrapper_boxes = temp_wb_list
+        self.overall_box = temp_bb
+        self.viewport_box = Box([0] * len(viewport_size), viewport_size)
+        self.orientation = orientation
+        self.dirty_current_index = True
+
 
 # vim: expandtab:sw=4:ts=4
