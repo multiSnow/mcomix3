@@ -193,7 +193,7 @@ class MainWindow(gtk.Window):
 
         if prefs['hide all']:
             prefs['hide all'] = False
-            self.actiongroup.get_action('hide all').activate()
+            self.actiongroup.get_action('hide_all').activate()
 
         if prefs['keep transformation']:
             prefs['keep transformation'] = False
