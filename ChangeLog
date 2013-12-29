@@ -9,9 +9,6 @@ MComix 1.01
       "Last read" database might no longer exist, leading to program crash.
       This has been fixed.
 
-    - Fixed MComix crashing at startup if "Hide all UI elements" was previously
-      activated in the menu.
-
     - Fixed win32 builds missing the 'calendar' module.
 
     - Fixed bookmarks not being displayed in the Ubuntu Unity global menu.
