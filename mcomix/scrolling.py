@@ -4,15 +4,14 @@ from mcomix import tools
 import math
 
 
-WESTERN_FORWARDS_ORIENTATION = (1, 1)
-WESTERN_BACKWARDS_ORIENTATION = (-1, -1)
-MANGA_FORWARDS_ORIENTATION = (-1, 1)
-MANGA_BACKWARDS_ORIENTATION = (1, -1)
+WESTERN_ORIENTATION = (1, 1) # 2D only
+MANGA_ORIENTATION = (-1, 1) # 2D only
 
 SCROLL_TO_CENTER = -2
 
-NORMAL_AXES = (0, 1)
-SWAPPED_AXES = (1, 0)
+NORMAL_AXES = (0, 1) # 2D only
+SWAPPED_AXES = (1, 0) # 2D only
+
 
 
 class Scrolling(object):
@@ -453,7 +452,7 @@ class Box(object):
 
 
     @staticmethod
-    def _align_center(boxes, axis, fix, orientation):
+    def align_center(boxes, axis, fix, orientation):
         """ Aligns Boxes so that the center of each Box appears on the same
         line.
         @param axis: the axis to center.
@@ -599,7 +598,11 @@ class Box(object):
         return Box(resPos, resSize)
 
 
-class FiniteLayout(object):
+
+_DISTRIBUTION_AXIS = 0 # 2D only
+_ALIGNMENT_AXIS = 1 # 2D only
+
+class FiniteLayout(object): # 2D only
 
     def __init__(self, content_boxes, viewport_size, orientation, spacing):
         """ Lays out a finite number of Boxes along the first axis.
@@ -619,25 +622,26 @@ class FiniteLayout(object):
         self.dirty_current_index = True
 
 
-    def scroll_smartly(self, max_scroll, backwards=False, remapped_axes=False,
+    def scroll_smartly(self, max_scroll, backwards=False, swapped_axes=False,
         index=None):
         """ Applies a "smart scrolling" step to the current viewport position.
         If there are not enough Boxes to scroll to, the viewport is not moved
         and an appropriate value is returned.
         @param max_scroll: The maximum numbers of pixels to scroll in one step.
         @param backwards: True for backwards scrolling, False otherwise.
-        @param remapped_axes: True for swapped axes, False otherwise.
+        @param swapped_axes: True for swapped axes, False otherwise.
         @param index: The index of the Box the scrolling step is related to,
         or None to use the index of the current Box.
         @return: The index of the current Box after scrolling, or -1 if there
         were not enough Boxes to scroll backwards, or the number of Boxes if
         there were not enough Boxes to scroll forwards. """
+        # TODO reconsider interface
         if index == None:
             index = self.get_current_index()
         current_box = self.wrapper_boxes[index]
         o = Box._vector_opposite(self.orientation) if backwards \
             else self.orientation
-        axis_map = (1, 0) if remapped_axes else (0, 1)
+        axis_map = SWAPPED_AXES if swapped_axes else NORMAL_AXES
         new_pos = self.scroller.scroll_smartly(current_box, self.viewport_box,
             o, max_scroll, axis_map)
         if new_pos == []:
@@ -678,10 +682,10 @@ class FiniteLayout(object):
         return self.wrapper_boxes
 
 
-    def get_overall_box(self):
-        """ Returns the overall Box for this layout.
-        @return: The overall Box for this layout. """
-        return self.overall_box
+    def get_union_box(self):
+        """ Returns the union Box for this layout.
+        @return: The union Box for this layout. """
+        return self.union_box
 
 
     def get_current_index(self):
@@ -708,12 +712,14 @@ class FiniteLayout(object):
 
     def _reset(self, content_boxes, viewport_size, orientation, spacing):
         # reverse order if necessary
-        if orientation[0] == -1:
+        if orientation[_DISTRIBUTION_AXIS] == -1:
             content_boxes = tuple(reversed(content_boxes))
         # align to center
-        temp_cb_list = Box._align_center(content_boxes, 1, 0, orientation[1])
+        temp_cb_list = Box.align_center(content_boxes, _ALIGNMENT_AXIS, 0,
+            orientation[_ALIGNMENT_AXIS])
         # distribute
-        temp_cb_list = Box.distribute(temp_cb_list, 0, 0, spacing)
+        temp_cb_list = Box.distribute(temp_cb_list, _DISTRIBUTION_AXIS, 0,
+            spacing)
         # calculate (potentially oversized) wrapper Boxes
         temp_wb_list = [None] * len(temp_cb_list)
         for i in range(len(temp_cb_list)):
@@ -729,14 +735,14 @@ class FiniteLayout(object):
             temp_wb_list[i] = temp_wb_list[i].translate_opposite(bbp)
         temp_bb = temp_bb.translate_opposite(bbp)
         # reverse order again, if necessary
-        if orientation[0] == -1:
+        if orientation[_DISTRIBUTION_AXIS] == -1:
             temp_cb_list = tuple(reversed(temp_cb_list))
             temp_wb_list = tuple(reversed(temp_wb_list))
         # done
         self.content_boxes = temp_cb_list
         self.wrapper_boxes = temp_wb_list
-        self.overall_box = temp_bb
-        self.viewport_box = Box([0] * len(viewport_size), viewport_size)
+        self.union_box = temp_bb
+        self.viewport_box = Box((0,) * len(viewport_size), viewport_size)
         self.orientation = orientation
         self.dirty_current_index = True
 
