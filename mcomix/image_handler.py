@@ -83,23 +83,21 @@ class ImageHandler:
 
         return pixbuf
 
-    def get_pixbufs(self, single=False):
-        """Return the pixbuf(s) for the image(s) that should be currently
-        displayed, from cache. Return two pixbufs in double-page mode unless
-        <single> is True. Pixbufs not found in cache are fetched from
-        disk first.
+    def get_pixbufs(self, number_of_bufs):
+        """Returns number_of_bufs pixbufs for the image(s) that should be
+        currently displayed. This method might fetch images from disk, so make
+        sure that number_of_bufs is as small as possible.
         """
-        if not self._window.displayed_double() or single:
-            return [self._get_pixbuf(self._current_image_index)]
+        result = []
+        for i in range(number_of_bufs):
+            result.append(self._get_pixbuf(self._current_image_index + i))
+        return result
 
-        return [self._get_pixbuf(self._current_image_index),
-                self._get_pixbuf(self._current_image_index + 1)]
-
-    def get_pixbuf_auto_background(self, single=False):
+    def get_pixbuf_auto_background(self, number_of_bufs): # XXX limited to number_of_bufs <= 2
         """ Returns an automatically calculated background color
         for the current page(s). """
 
-        pixbufs = self.get_pixbufs(single)
+        pixbufs = self.get_pixbufs(number_of_bufs)
 
         if len(pixbufs) == 1:
             auto_bg = image_tools.get_most_common_edge_colour(pixbufs[0])

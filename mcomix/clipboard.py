@@ -31,7 +31,8 @@ class Clipboard(gtk.Clipboard):
 
         if self._window.filehandler.file_loaded:
             # Get pixbuf for current page
-            current_page_pixbufs = self._window.imagehandler.get_pixbufs()
+            current_page_pixbufs = self._window.imagehandler.get_pixbufs(
+                2 if self._window.displayed_double() else 1) # XXX limited to at most 2 pages
 
             if len(current_page_pixbufs) == 1:
                 pixbuf = current_page_pixbufs[ 0 ]

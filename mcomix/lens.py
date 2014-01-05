@@ -127,7 +127,7 @@ class MagnifyingLens(object):
 
         if self._window.displayed_double():
 
-            l_source_pixbuf, r_source_pixbuf = self._window.imagehandler.get_pixbufs()
+            l_source_pixbuf, r_source_pixbuf = self._window.imagehandler.get_pixbufs(2) # XXX implied by self._window.displayed_double() == True
             if self._window.is_manga_mode:
                 l_source_pixbuf, r_source_pixbuf = r_source_pixbuf, l_source_pixbuf
 
@@ -140,7 +140,7 @@ class MagnifyingLens(object):
                 l_image_size[0], left=False)
         else:
 
-            source_pixbuf = self._window.imagehandler.get_pixbufs()[0]
+            source_pixbuf = self._window.imagehandler.get_pixbufs(1)[0] # XXX implied by self._window.displayed_double() == False
 
             image_size = self._window.left_image.size_request()
             self._add_subpixbuf(canvas, x, y, image_size, source_pixbuf)

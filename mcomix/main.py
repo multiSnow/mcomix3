@@ -298,152 +298,150 @@ class MainWindow(gtk.Window):
         self.is_virtual_double_page = \
             self.imagehandler.get_virtual_double_page()
 
-        skip_pixbuf = not self.imagehandler.page_is_available()
+        if self.imagehandler.page_is_available():
+            if self.displayed_double():
+                left_pixbuf, right_pixbuf = self.imagehandler.get_pixbufs(2) # XXX implied by self.displayed_double() == True
+                if self.is_manga_mode:
+                    right_pixbuf, left_pixbuf = left_pixbuf, right_pixbuf
+                left_unscaled_x = left_pixbuf.get_width()
+                left_unscaled_y = left_pixbuf.get_height()
+                right_unscaled_x = right_pixbuf.get_width()
+                right_unscaled_y = right_pixbuf.get_height()
 
-        if self.displayed_double() and not skip_pixbuf:
-            left_pixbuf, right_pixbuf = self.imagehandler.get_pixbufs()
-            if self.is_manga_mode:
-                right_pixbuf, left_pixbuf = left_pixbuf, right_pixbuf
-            left_unscaled_x = left_pixbuf.get_width()
-            left_unscaled_y = left_pixbuf.get_height()
-            right_unscaled_x = right_pixbuf.get_width()
-            right_unscaled_y = right_pixbuf.get_height()
+                left_rotation = self._get_pixbuf_rotation(left_pixbuf, True)
+                right_rotation = self._get_pixbuf_rotation(right_pixbuf, True)
 
-            left_rotation = self._get_pixbuf_rotation(left_pixbuf, True)
-            right_rotation = self._get_pixbuf_rotation(right_pixbuf, True)
+                if left_rotation in (90, 270):
+                    left_width = left_unscaled_y
+                    left_height = left_unscaled_x
+                else:
+                    left_width = left_unscaled_x
+                    left_height = left_unscaled_y
 
-            if left_rotation in (90, 270):
-                left_width = left_unscaled_y
-                left_height = left_unscaled_x
+                if right_rotation in (90, 270):
+                    right_width = right_unscaled_y
+                    right_height = right_unscaled_x
+                else:
+                    right_width = right_unscaled_x
+                    right_height = right_unscaled_y
+
+                width, height = image_tools.get_double_page_rectangle(
+                    left_width, left_height,
+                    right_width, right_height)
+
+                scaled_width, scaled_height = self.zoom.get_zoomed_size(
+                    (width, height), self.get_visible_area_size())
+
+                # Visible area size is recomputed depending on scrollbar visibility
+                self._show_scrollbars((scaled_width, scaled_height),
+                    self.get_visible_area_size())
+                area_width, area_height = self.get_visible_area_size()
+                scaled_width, scaled_height = self.zoom.get_zoomed_size(
+                    (width, height), (area_width, area_height))
+
+                # 100000 just some big enough constant.
+                # We need to ensure that images
+                #   are limited only by height during scaling
+                left_pixbuf = image_tools.fit_in_rectangle(
+                    left_pixbuf, 100000, scaled_height, prefs['stretch'], left_rotation)
+                right_pixbuf = image_tools.fit_in_rectangle(
+                    right_pixbuf, 100000, scaled_height, prefs['stretch'], right_rotation)
+
+                if prefs['horizontal flip']:
+                    left_pixbuf = left_pixbuf.flip(horizontal=True)
+                    right_pixbuf = right_pixbuf.flip(horizontal=True)
+
+                if prefs['vertical flip']:
+                    left_pixbuf = left_pixbuf.flip(horizontal=False)
+                    right_pixbuf = right_pixbuf.flip(horizontal=False)
+
+                left_pixbuf = self.enhancer.enhance(left_pixbuf)
+                right_pixbuf = self.enhancer.enhance(right_pixbuf)
+
+                self.left_image.set_from_pixbuf(left_pixbuf)
+                self.right_image.set_from_pixbuf(right_pixbuf)
+
+                x_padding = int(round((area_width - left_pixbuf.get_width() -
+                    right_pixbuf.get_width()) / 2.0))
+                y_padding = int(round((area_height - max(left_pixbuf.get_height(),
+                    right_pixbuf.get_height())) / 2.0))
+
+                if left_rotation in (90, 270):
+                    left_scale_percent = (100.0 * left_pixbuf.get_width() /
+                        left_unscaled_y)
+                else:
+                    left_scale_percent = (100.0 * left_pixbuf.get_width() /
+                        left_unscaled_x)
+
+                if right_rotation in (90, 270):
+                    right_scale_percent = (100.0 * right_pixbuf.get_width() /
+                        right_unscaled_y)
+                else:
+                    right_scale_percent = (100.0 * right_pixbuf.get_width() /
+                        right_unscaled_x)
+
+                self.statusbar.set_resolution(
+                    (left_unscaled_x, left_unscaled_y, left_scale_percent),
+                    (right_unscaled_x, right_unscaled_y, right_scale_percent))
+
             else:
-                left_width = left_unscaled_x
-                left_height = left_unscaled_y
+                pixbuf = self.imagehandler.get_pixbufs(1)[0] # XXX implied by self.displayed_double() == False
+                width, height = pixbuf.get_width(), pixbuf.get_height()
 
-            if right_rotation in (90, 270):
-                right_width = right_unscaled_y
-                right_height = right_unscaled_x
-            else:
-                right_width = right_unscaled_x
-                right_height = right_unscaled_y
+                rotation = self._get_pixbuf_rotation(pixbuf)
+                if rotation in (90, 270):
+                    width, height = height, width
 
-            width, height = image_tools.get_double_page_rectangle(
-                left_width, left_height,
-                right_width, right_height)
+                scaled_width, scaled_height = self.zoom.get_zoomed_size(
+                    (width, height), self.get_visible_area_size())
 
-            scaled_width, scaled_height = self.zoom.get_zoomed_size(
-                (width, height), self.get_visible_area_size())
+                # Visible area size is recomputed depending on scrollbar visibility
+                self._show_scrollbars((scaled_width, scaled_height),
+                    self.get_visible_area_size())
+                area_width, area_height = self.get_visible_area_size()
+                scaled_width, scaled_height = self.zoom.get_zoomed_size(
+                    (width, height), (area_width, area_height))
 
-            # Visible area size is recomputed depending on scrollbar visibility
-            self._show_scrollbars((scaled_width, scaled_height),
-                self.get_visible_area_size())
-            area_width, area_height = self.get_visible_area_size()
-            scaled_width, scaled_height = self.zoom.get_zoomed_size(
-                (width, height), (area_width, area_height))
+                pixbuf = image_tools.fit_in_rectangle(pixbuf, scaled_width,
+                    scaled_height, scale_up=True, rotation=rotation)
 
-            # 100000 just some big enough constant.
-            # We need to ensure that images
-            #   are limited only by height during scaling
-            left_pixbuf = image_tools.fit_in_rectangle(
-                left_pixbuf, 100000, scaled_height, prefs['stretch'], left_rotation)
-            right_pixbuf = image_tools.fit_in_rectangle(
-                right_pixbuf, 100000, scaled_height, prefs['stretch'], right_rotation)
+                if prefs['horizontal flip']:
+                    pixbuf = pixbuf.flip(horizontal=True)
+                if prefs['vertical flip']:
+                    pixbuf = pixbuf.flip(horizontal=False)
 
-            if prefs['horizontal flip']:
-                left_pixbuf = left_pixbuf.flip(horizontal=True)
-                right_pixbuf = right_pixbuf.flip(horizontal=True)
+                pixbuf = self.enhancer.enhance(pixbuf)
 
-            if prefs['vertical flip']:
-                left_pixbuf = left_pixbuf.flip(horizontal=False)
-                right_pixbuf = right_pixbuf.flip(horizontal=False)
+                self.left_image.set_from_pixbuf(pixbuf)
+                self.right_image.clear()
 
-            left_pixbuf = self.enhancer.enhance(left_pixbuf)
-            right_pixbuf = self.enhancer.enhance(right_pixbuf)
+                x_padding = int(round((area_width - pixbuf.get_width()) / 2.0))
+                y_padding = int(round((area_height - pixbuf.get_height()) / 2.0))
 
-            self.left_image.set_from_pixbuf(left_pixbuf)
-            self.right_image.set_from_pixbuf(right_pixbuf)
+                if rotation in (90, 270):
+                    scale_percent = 100.0 * pixbuf.get_width() / height
+                else:
+                    scale_percent = 100.0 * pixbuf.get_width() / width
 
-            x_padding = int(round((area_width - left_pixbuf.get_width() -
-                right_pixbuf.get_width()) / 2.0))
-            y_padding = int(round((area_height - max(left_pixbuf.get_height(),
-                right_pixbuf.get_height())) / 2.0))
+                self.statusbar.set_resolution((width, height,
+                    scale_percent))
 
-            if left_rotation in (90, 270):
-                left_scale_percent = (100.0 * left_pixbuf.get_width() /
-                    left_unscaled_y)
-            else:
-                left_scale_percent = (100.0 * left_pixbuf.get_width() /
-                    left_unscaled_x)
+            if prefs['smart bg']:
 
-            if right_rotation in (90, 270):
-                right_scale_percent = (100.0 * right_pixbuf.get_width() /
-                    right_unscaled_y)
-            else:
-                right_scale_percent = (100.0 * right_pixbuf.get_width() /
-                    right_unscaled_x)
+                bg_colour = self.imagehandler.get_pixbuf_auto_background(
+                    2 if self.displayed_double() else 1) # XXX limited to at most 2 pages
+                self.set_bg_colour(bg_colour)
 
-            self.statusbar.set_resolution(
-                (left_unscaled_x, left_unscaled_y, left_scale_percent),
-                (right_unscaled_x, right_unscaled_y, right_scale_percent))
+                if prefs['smart thumb bg'] and prefs['show thumbnails']:
+                    self.thumbnailsidebar.change_thumbnail_background_color(bg_colour)
 
-        elif not skip_pixbuf:
-            pixbuf = self.imagehandler.get_pixbufs(single=True)[ 0 ]
-            width, height = pixbuf.get_width(), pixbuf.get_height()
+            elif prefs['smart thumb bg'] and prefs['show thumbnails']:
 
-            rotation = self._get_pixbuf_rotation(pixbuf)
-            if rotation in (90, 270):
-                width, height = height, width
+                bg_colour = image_tools.get_most_common_edge_colour(
+                                self.left_image.get_pixbuf())
 
-            scaled_width, scaled_height = self.zoom.get_zoomed_size(
-                (width, height), self.get_visible_area_size())
-
-            # Visible area size is recomputed depending on scrollbar visibility
-            self._show_scrollbars((scaled_width, scaled_height),
-                self.get_visible_area_size())
-            area_width, area_height = self.get_visible_area_size()
-            scaled_width, scaled_height = self.zoom.get_zoomed_size(
-                (width, height), (area_width, area_height))
-
-            pixbuf = image_tools.fit_in_rectangle(pixbuf, scaled_width,
-                scaled_height, scale_up=True, rotation=rotation)
-
-            if prefs['horizontal flip']:
-                pixbuf = pixbuf.flip(horizontal=True)
-            if prefs['vertical flip']:
-                pixbuf = pixbuf.flip(horizontal=False)
-
-            pixbuf = self.enhancer.enhance(pixbuf)
-
-            self.left_image.set_from_pixbuf(pixbuf)
-            self.right_image.clear()
-
-            x_padding = int(round((area_width - pixbuf.get_width()) / 2.0))
-            y_padding = int(round((area_height - pixbuf.get_height()) / 2.0))
-
-            if rotation in (90, 270):
-                scale_percent = 100.0 * pixbuf.get_width() / height
-            else:
-                scale_percent = 100.0 * pixbuf.get_width() / width
-
-            self.statusbar.set_resolution((width, height,
-                scale_percent))
-
-        if prefs['smart bg'] and not skip_pixbuf:
-
-            bg_colour = self.imagehandler.get_pixbuf_auto_background(
-                    not self.displayed_double())
-            self.set_bg_colour(bg_colour)
-
-            if prefs['smart thumb bg'] and prefs['show thumbnails']:
                 self.thumbnailsidebar.change_thumbnail_background_color(bg_colour)
 
-        elif prefs['smart thumb bg'] and prefs['show thumbnails'] and not skip_pixbuf:
-
-            bg_colour = image_tools.get_most_common_edge_colour(
-                            self.left_image.get_pixbuf())
-
-            self.thumbnailsidebar.change_thumbnail_background_color(bg_colour)
-
-        if not skip_pixbuf:
             self._image_box.window.freeze_updates()
             self._main_layout.move(self._image_box, max(0, x_padding),
                 max(0, y_padding))
