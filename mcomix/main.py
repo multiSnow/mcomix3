@@ -367,22 +367,18 @@ class MainWindow(gtk.Window):
                     right_pixbuf.get_height())) / 2.0))
 
                 if left_rotation in (90, 270):
-                    left_scale_percent = (100.0 * left_pixbuf.get_width() /
-                        left_unscaled_y)
+                    left_scale = float(left_pixbuf.get_width()) / left_unscaled_y
                 else:
-                    left_scale_percent = (100.0 * left_pixbuf.get_width() /
-                        left_unscaled_x)
+                    left_scale = float(left_pixbuf.get_width()) / left_unscaled_x
 
                 if right_rotation in (90, 270):
-                    right_scale_percent = (100.0 * right_pixbuf.get_width() /
-                        right_unscaled_y)
+                    right_scale = float(right_pixbuf.get_width()) / right_unscaled_y
                 else:
-                    right_scale_percent = (100.0 * right_pixbuf.get_width() /
-                        right_unscaled_x)
+                    right_scale = float(right_pixbuf.get_width()) / right_unscaled_x
 
                 self.statusbar.set_resolution(
-                    (left_unscaled_x, left_unscaled_y, left_scale_percent),
-                    (right_unscaled_x, right_unscaled_y, right_scale_percent))
+                    ((left_unscaled_x, left_unscaled_y, left_scale),
+                    (right_unscaled_x, right_unscaled_y, right_scale)))
 
             else:
                 pixbuf = self.imagehandler.get_pixbufs(1)[0] # XXX implied by self.displayed_double() == False
@@ -419,12 +415,11 @@ class MainWindow(gtk.Window):
                 y_padding = int(round((area_height - pixbuf.get_height()) / 2.0))
 
                 if rotation in (90, 270):
-                    scale_percent = 100.0 * pixbuf.get_width() / height
+                    scale = float(pixbuf.get_width()) / height
                 else:
-                    scale_percent = 100.0 * pixbuf.get_width() / width
+                    scale = float(pixbuf.get_width()) / width
 
-                self.statusbar.set_resolution((width, height,
-                    scale_percent))
+                self.statusbar.set_resolution(((width, height, scale),))
 
             if prefs['smart bg']:
 
@@ -480,7 +475,7 @@ class MainWindow(gtk.Window):
         if self.displayed_double():
             self.statusbar.set_page_number(
                 self.imagehandler.get_current_page(),
-                self.imagehandler.get_number_of_pages(), double_page=True)
+                self.imagehandler.get_number_of_pages(), 2) # XXX implied by self.displayed_double() == True
 
             left_filename, right_filename = \
                 self.imagehandler.get_page_filename(double=True)
@@ -492,7 +487,7 @@ class MainWindow(gtk.Window):
         else:
             self.statusbar.set_page_number(
                 self.imagehandler.get_current_page(),
-                self.imagehandler.get_number_of_pages())
+                self.imagehandler.get_number_of_pages(), 1) # XXX implied by self.displayed_double() == False
 
             self.statusbar.set_filename(self.imagehandler.get_page_filename())
 
@@ -999,17 +994,16 @@ class MainWindow(gtk.Window):
 
     def update_title(self):
         """Set the title acording to current state."""
-        if self.displayed_double():
-            title = i18n.to_unicode('[%d,%d / %d]  %s' % (
-                self.imagehandler.get_current_page(),
-                self.imagehandler.get_current_page() + 1,
-                self.imagehandler.get_number_of_pages(),
-                self.imagehandler.get_pretty_current_filename()))
-        else:
-            title = i18n.to_unicode('[%d / %d]  %s' % (
-                self.imagehandler.get_current_page(),
-                self.imagehandler.get_number_of_pages(),
-                self.imagehandler.get_pretty_current_filename()))
+        this_screen = 2 if self.displayed_double() else 1 # XXX limited to at most 2 pages
+        # TODO introduce formatter to merge these string ops with the ops for status bar updates
+        title = '['
+        for i in range(this_screen):
+            title += '%d' % (self.imagehandler.get_current_page() + i)
+            if i < this_screen - 1:
+                title += ','
+        title += ' / %d]  %s' % (self.imagehandler.get_number_of_pages(),
+            self.imagehandler.get_pretty_current_filename())
+        title = i18n.to_unicode(title)
 
         if self.slideshow.is_running():
             title = '[%s] %s' % (_('SLIDESHOW'), title)

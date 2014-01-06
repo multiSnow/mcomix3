@@ -93,7 +93,7 @@ class ImageHandler:
             result.append(self._get_pixbuf(self._current_image_index + i))
         return result
 
-    def get_pixbuf_auto_background(self, number_of_bufs): # XXX limited to number_of_bufs <= 2
+    def get_pixbuf_auto_background(self, number_of_bufs): # XXX limited to at most 2 pages
         """ Returns an automatically calculated background color
         for the current page(s). """
 

@@ -70,12 +70,15 @@ class Statusbar(gtk.EventBox):
         self.status.pop(-1)
         self.status.push(-1, " " * Statusbar.SPACING + message)
 
-    def set_page_number(self, page, total, double_page=False):
+    def set_page_number(self, page, total, this_screen):
         """Update the page number."""
-        if double_page:
-            self._page_info = '%d,%d / %d' % (page, page + 1, total)
-        else:
-            self._page_info = '%d / %d' % (page, total)
+        page_info = ""
+        for i in range(this_screen):
+            page_info += '%d' % (page + i)
+            if i < this_screen - 1:
+                page_info +=','
+        page_info += ' / %d' % total
+        self._page_info = page_info
 
     def get_page_number(self):
         """Returns the bar's page information."""
@@ -93,16 +96,19 @@ class Statusbar(gtk.EventBox):
         """ Returns the bar's file information."""
         return self._file_info
 
-    def set_resolution(self, left_dimensions, right_dimensions=None):
+    def set_resolution(self, dimensions): # 2D only
         """Update the resolution data.
 
-        Takes one or two tuples, (x, y, scale), describing the original
-        resolution of an image as well as the currently displayed scale
-        in percent.
+        Takes an iterable of tuples, (x, y, scale), describing the original
+        resolution of an image as well as the currently displayed scale.
         """
-        self._resolution = '%dx%d (%.1f%%)' % left_dimensions
-        if right_dimensions is not None:
-            self._resolution += ', %dx%d (%.1f%%)' % right_dimensions
+        resolution = ""
+        for i in range(len(dimensions)):
+            d = dimensions[i]
+            resolution += '%dx%d (%.1f%%)' % (d[0], d[1], d[2] * 100.0)
+            if i < len(dimensions) - 1:
+                resolution += ', '
+        self._resolution = resolution
 
     def set_root(self, root):
         """Set the name of the root (directory or archive)."""
