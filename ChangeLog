@@ -13,6 +13,9 @@ MComix 1.01
 
     - Fixed bookmarks not being displayed in the Ubuntu Unity global menu.
 
+    - Fixed 'Continue reading' not working when files are opened from
+      the command line (by Boris Bogar).
+
     - The ALT+Left and ALT+Right keys will now either advance one page,
       or go back one page, depending on the user being in manga mode.
 
