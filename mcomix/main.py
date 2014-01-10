@@ -260,6 +260,7 @@ class MainWindow(gtk.Window):
         prefs['previous quit was quit and save'] = False
 
         if open_path is not None:
+            open_page = self.filehandler._get_last_read_page(open_path)
             self.filehandler.open_file(open_path, open_page)
 
         if is_slideshow:
