@@ -2,6 +2,7 @@
 
 from mcomix import constants
 from mcomix.preferences import prefs
+import operator
 
 IDENTITY_ZOOM = 1.0
 IDENTITY_ZOOM_LOG = 0
@@ -45,12 +46,11 @@ class ZoomModel(object):
         preferred_scale = self._fitmode.get_preferred_scale(
             image_size, screen_size)
         if (preferred_scale > IDENTITY_ZOOM and
-            (image_size[0] < screen_size[0] or
-             image_size[1] < screen_size[1]) and
-            not self.get_scale_up()):
+            not self.get_scale_up() and
+            any(_smaller(image_size, screen_size))):
             preferred_scale = IDENTITY_ZOOM
 
-        return _scale_int(image_size,
+        return _scale_image_size(image_size,
             preferred_scale * 2 ** (self._user_zoom_log / USER_ZOOM_LOG_SCALE1))
 
 
@@ -90,9 +90,8 @@ class NoFitMode(FitMode):
     ID = constants.ZOOM_MODE_MANUAL
 
     def get_preferred_scale(self, image_size, screen_size):
-        if (image_size[0] < screen_size[0] and
-            image_size[1] < screen_size[1]):
-            return _calc_scale_both(image_size, screen_size)
+        if all(_smaller(image_size, screen_size)):
+            return _calc_scale_all_axes(image_size, screen_size)
         return IDENTITY_ZOOM
 
 
@@ -102,7 +101,7 @@ class BestFitMode(FitMode):
     ID = constants.ZOOM_MODE_BEST
 
     def get_preferred_scale(self, image_size, screen_size):
-        return _calc_scale_both(image_size, screen_size)
+        return _calc_scale_all_axes(image_size, screen_size)
 
 
 class FitToWidthMode(FitMode):
@@ -111,7 +110,7 @@ class FitToWidthMode(FitMode):
     ID = constants.ZOOM_MODE_WIDTH
 
     def get_preferred_scale(self, image_size, screen_size):
-        return _calc_scale_width(image_size, screen_size)
+        return _calc_scale(image_size, screen_size, constants.WIDTH_AXIS)
 
 
 class FitToHeightMode(FitMode):
@@ -120,7 +119,7 @@ class FitToHeightMode(FitMode):
     ID = constants.ZOOM_MODE_HEIGHT
 
     def get_preferred_scale(self, image_size, screen_size):
-        return _calc_scale_height(image_size, screen_size)
+        return _calc_scale(image_size, screen_size, constants.HEIGHT_AXIS)
 
 
 class FitToSizeMode(FitMode):
@@ -135,31 +134,39 @@ class FitToSizeMode(FitMode):
 
     def get_preferred_scale(self, image_size, screen_size):
         if self.mode == constants.ZOOM_MODE_WIDTH:
-            side = image_size[0]
+            side = image_size[constants.WIDTH_AXIS]
         elif self.mode == constants.ZOOM_MODE_HEIGHT:
-            side = image_size[1]
+            side = image_size[constants.HEIGHT_AXIS]
         else:
             assert False, 'Invalid fit to size mode specified in preferences'
 
         return _calc_scale(side, self.size)
 
 
-def _scale_int(x, scale):
-    return int(round(x[0] * scale)), int(round(x[1] * scale))
+def _smaller(a, b):
+    return map(operator.lt, a, b)
 
-def _calc_scale(length, desired_length):
-    """ Calculates the factor a number must be multiplied with to reach
-    a desired size. """
-    return float(desired_length) / float(length)
+def _scale_image_size(size, scale):
+    return _to_nonempty_tuple(_round_tuple(_scale_tuple(size, scale)))
 
-def _calc_scale_width(image_size, screen_size):
-    return _calc_scale(image_size[0], screen_size[0])
+def _calc_scale(from_size, to_size, axis=None):
+    if axis is None:
+        from_size = (from_size,)
+        to_size = (to_size,)
+        axis = 0
+    return float(to_size[axis]) / float(from_size[axis])
 
-def _calc_scale_height(image_size, screen_size):
-    return _calc_scale(image_size[1], screen_size[1])
+def _calc_scale_all_axes(from_size, to_size):
+    return reduce(min, map(lambda axis: _calc_scale(from_size, to_size, axis),
+        range(len(from_size))))
 
-def _calc_scale_both(image_size, screen_size):
-    return min(_calc_scale_width(image_size, screen_size),
-        _calc_scale_height(image_size, screen_size))
+def _scale_tuple(t, factor):
+    return tuple([x * factor for x in t])
+
+def _round_tuple(t):
+    return tuple(map(lambda x: int(round(x)), t))
+
+def _to_nonempty_tuple(t):
+    return tuple(map(lambda x: x if x > 0 else 1, t))
 
 # vim: expandtab:sw=4:ts=4
