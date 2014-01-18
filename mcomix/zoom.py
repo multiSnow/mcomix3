@@ -147,7 +147,7 @@ def _smaller(a, b):
     return map(operator.lt, a, b)
 
 def _scale_image_size(size, scale):
-    return _to_nonempty_tuple(_round_tuple(_scale_tuple(size, scale)))
+    return _round_nonempty(_scale_tuple(size, scale))
 
 def _calc_scale(from_size, to_size, axis=None):
     if axis is None:
@@ -168,5 +168,102 @@ def _round_tuple(t):
 
 def _to_nonempty_tuple(t):
     return tuple(map(lambda x: x if x > 0 else 1, t))
+
+def _round_nonempty(t):
+    """ Conveniece method for _to_nonempty_tuple(_round_tuple(t)). """
+    return _to_nonempty_tuple(_round_tuple(t))
+
+def _volume(t):
+    return reduce(operator.mul, t, 1)
+
+def _relerr(approx, ideal):
+    return abs((approx - ideal) / ideal)
+
+def _scale_distributed(sizes, axis, max_size, allow_upscaling):
+    # TODO: documentation
+    n = len(sizes)
+    # trivial cases first
+    if n == 0:
+        return ()
+    if n >= max_size:
+        # In this case, only one solution or only an approximation available.
+        # if n > max_size, the result won't fit into max_size.
+        return tuple(map(lambda x: 1.0 / float(x[axis]), sizes))
+    this_axis_size = sum(map(lambda x:x[axis], sizes))
+    if (this_axis_size <= max_size) and not allow_upscaling:
+        # identity
+        return (IDENTITY_ZOOM,) * n
+
+    # non-trival case
+    scale = float(max_size) / float(this_axis_size)
+    scaling_data = [None] * n
+    this_axis_size = 0
+    # This loop collects some data we need for the actual computations later.
+    for i in range(n):
+        # Initial guess: The current scale works for all tuples.
+        local_scale = scale
+        ideal = _scale_tuple(sizes[i], local_scale)
+        ideal_vol = _volume(ideal)
+        # Let's use a dummy to compute the actual (rounded) size along axis so
+        # we can rescale the rounded tuple with a better local_scale.
+        dummy_approx = _round_nonempty((ideal[axis],))
+        local_scale = float(dummy_approx[0]) / float(sizes[i][axis])
+        # This rescaling is necessary to ensure that the sizes in ALL dimensions
+        # are monotonically scaled (with respect to local_scale). A nice side
+        # effect of this is that it keeps a better aspect ratio.
+        approx = _round_nonempty(ideal)
+        this_axis_size += approx[axis]
+        can_be_downscaled = approx[axis] > 1
+        if can_be_downscaled:
+            forced_size = approx[axis] - 1
+            forced_scale = float(forced_size) / float(sizes[i][axis])
+            forced_approx = _round_nonempty(_scale_tuple(sizes[i], forced_scale))
+            forced_vol_err = _relerr(_volume(forced_approx), ideal_vol)
+        else:
+            forced_scale = None
+            forced_approx = None
+            forced_vol_err = None
+        scaling_data[i] = [local_scale, ideal, can_be_downscaled, forced_scale,
+            forced_vol_err]
+    # Now we need to find at most this_axis_size - max_size occasions to scale
+    # down some tuples so the whole thing would fit into max_size. If we are
+    # lucky, there will be no gaps at the end (or at least fewer gaps than we
+    # would have if we always rounded down).
+    while this_axis_size > max_size:
+        # This algorithm needs O(n*n) time. Let's hope that n is small enough.
+        current_index = 0
+        current_min = None
+        for i in range(n):
+            d = scaling_data[i]
+            if not d[2]:
+                # Ignore elements that cannot be made any smaller.
+                continue
+            if (current_min is None) or (d[4] < current_min[4]):
+                # We are searching for the tuple where downscaling results in
+                # the smallest relative volume error (compared to the respective
+                # ideal volume).
+                current_min = d
+                current_index = i
+        for i in range(current_index, n):
+            # We must scale down ALL equal tuples. Otherwise, images that are of
+            # equal size might appear to be of different size afterwards. The
+            # downside of this approach is that it might introduce more gaps
+            # than necessary.
+            d = scaling_data[i]
+            if (not d[2]) or (d[1] != current_min[1]):
+                continue
+            d[0] = d[3]
+            d[2] = False # only once per tuple
+            this_axis_size -= 1
+    else:
+        # If we are here and this_axis_size < max_size, we could try to upscale
+        # some tuples similarily to the other loop (i.e. smallest relative
+        # volume error first, equal boxes in conjunction with each other).
+        # However, this is not as useful as the other loop, slightly more
+        # complicated and it won't do anything if all tuples are equal.
+        pass
+    return tuple(map(lambda d: d[0], scaling_data))
+
+
 
 # vim: expandtab:sw=4:ts=4
