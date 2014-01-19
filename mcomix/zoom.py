@@ -180,7 +180,20 @@ def _relerr(approx, ideal):
     return abs((approx - ideal) / ideal)
 
 def _scale_distributed(sizes, axis, max_size, allow_upscaling):
-    # TODO: documentation
+    """ Calculates scales for a list of boxes that are distributed along a given
+    axis (without any gaps). If the resulting scales are applied to their
+    respective boxes, their new total size along axis will be as close as
+    possible to max_size. The current implementation ensures that equal box
+    sizes are mapped to equal scales.
+    @param sizes: A list of box sizes.
+    @param axis: The axis along which those boxes are distributed.
+    @param max_size: The maximum size the scaled boxes may have along axis.
+    @param allow_upscaling: True if upscaling is allowed, False otherwise.
+    @return: A tuple of scales where the i-th scale belongs to the i-th box size.
+    If sizes is empty, the empty tuple is returned. If there are more boxes than
+    max_size, an approximation is returned where all resulting scales will
+    shrink their respective boxes to 1 along axis. In this case, the scaled
+    total size might be greater than max_size. """
     n = len(sizes)
     # trivial cases first
     if n == 0:
@@ -189,47 +202,45 @@ def _scale_distributed(sizes, axis, max_size, allow_upscaling):
         # In this case, only one solution or only an approximation available.
         # if n > max_size, the result won't fit into max_size.
         return tuple(map(lambda x: 1.0 / float(x[axis]), sizes))
-    this_axis_size = sum(map(lambda x:x[axis], sizes))
-    if (this_axis_size <= max_size) and not allow_upscaling:
+    total_axis_size = sum(map(lambda x:x[axis], sizes))
+    if (total_axis_size <= max_size) and not allow_upscaling:
         # identity
         return (IDENTITY_ZOOM,) * n
 
     # non-trival case
-    scale = float(max_size) / float(this_axis_size)
+    scale = float(max_size) / float(total_axis_size)
     scaling_data = [None] * n
-    this_axis_size = 0
+    total_axis_size = 0
     # This loop collects some data we need for the actual computations later.
     for i in range(n):
+        this_size = sizes[i]
         # Initial guess: The current scale works for all tuples.
-        local_scale = scale
-        ideal = _scale_tuple(sizes[i], local_scale)
+        ideal = _scale_tuple(this_size, scale)
         ideal_vol = _volume(ideal)
         # Let's use a dummy to compute the actual (rounded) size along axis so
-        # we can rescale the rounded tuple with a better local_scale.
-        dummy_approx = _round_nonempty((ideal[axis],))
-        local_scale = float(dummy_approx[0]) / float(sizes[i][axis])
+        # we can rescale the rounded tuple with a better local_scale later.
         # This rescaling is necessary to ensure that the sizes in ALL dimensions
         # are monotonically scaled (with respect to local_scale). A nice side
-        # effect of this is that it keeps a better aspect ratio.
-        approx = _round_nonempty(ideal)
-        this_axis_size += approx[axis]
-        can_be_downscaled = approx[axis] > 1
+        # effect of this is that it keeps the aspect ratio better.
+        dummy_approx = _round_nonempty((ideal[axis],))[0]
+        local_scale = float(dummy_approx) / float(this_size[axis])
+        total_axis_size += dummy_approx
+        can_be_downscaled = dummy_approx > 1
         if can_be_downscaled:
-            forced_size = approx[axis] - 1
-            forced_scale = float(forced_size) / float(sizes[i][axis])
-            forced_approx = _round_nonempty(_scale_tuple(sizes[i], forced_scale))
+            forced_size = dummy_approx - 1
+            forced_scale = float(forced_size) / float(this_size[axis])
+            forced_approx = _scale_image_size(this_size, forced_scale)
             forced_vol_err = _relerr(_volume(forced_approx), ideal_vol)
         else:
             forced_scale = None
-            forced_approx = None
             forced_vol_err = None
         scaling_data[i] = [local_scale, ideal, can_be_downscaled, forced_scale,
             forced_vol_err]
-    # Now we need to find at most this_axis_size - max_size occasions to scale
+    # Now we need to find at most total_axis_size - max_size occasions to scale
     # down some tuples so the whole thing would fit into max_size. If we are
     # lucky, there will be no gaps at the end (or at least fewer gaps than we
     # would have if we always rounded down).
-    while this_axis_size > max_size:
+    while total_axis_size > max_size:
         # This algorithm needs O(n*n) time. Let's hope that n is small enough.
         current_index = 0
         current_min = None
@@ -254,9 +265,9 @@ def _scale_distributed(sizes, axis, max_size, allow_upscaling):
                 continue
             d[0] = d[3]
             d[2] = False # only once per tuple
-            this_axis_size -= 1
+            total_axis_size -= 1
     else:
-        # If we are here and this_axis_size < max_size, we could try to upscale
+        # If we are here and total_axis_size < max_size, we could try to upscale
         # some tuples similarily to the other loop (i.e. smallest relative
         # volume error first, equal boxes in conjunction with each other).
         # However, this is not as useful as the other loop, slightly more
