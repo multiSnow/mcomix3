@@ -65,8 +65,8 @@ class MainWindow(gtk.Window):
         self._event_handler = event.EventHandler(self)
         self._vadjust = self._main_layout.get_vadjustment()
         self._hadjust = self._main_layout.get_hadjustment()
-        self._vscroll = gtk.VScrollbar(self._vadjust)
-        self._hscroll = gtk.HScrollbar(self._hadjust)
+        self._scroll = (gtk.HScrollbar(self._hadjust),
+            gtk.VScrollbar(self._vadjust))
 
         self.filehandler = file_handler.FileHandler(self)
         self.imagehandler = image_handler.ImageHandler(self)
@@ -125,9 +125,9 @@ class MainWindow(gtk.Window):
 
         table.attach(self._main_layout, 1, 2, 2, 3, gtk.FILL|gtk.EXPAND,
             gtk.FILL|gtk.EXPAND, 0, 0)
-        table.attach(self._vscroll, 2, 3, 2, 3, gtk.FILL|gtk.SHRINK,
+        table.attach(self._scroll[constants.HEIGHT_AXIS], 2, 3, 2, 3, gtk.FILL|gtk.SHRINK,
             gtk.FILL|gtk.SHRINK, 0, 0)
-        table.attach(self._hscroll, 1, 2, 4, 5, gtk.FILL|gtk.SHRINK,
+        table.attach(self._scroll[constants.WIDTH_AXIS], 1, 2, 4, 5, gtk.FILL|gtk.SHRINK,
             gtk.FILL, 0, 0)
         table.attach(self.menubar, 0, 3, 0, 1, gtk.FILL|gtk.SHRINK,
             gtk.FILL, 0, 0)
@@ -330,23 +330,28 @@ class MainWindow(gtk.Window):
                     left_width, left_height,
                     right_width, right_height)
 
-                scaled_width, scaled_height = self.zoom.get_zoomed_size(
-                    (width, height), self.get_visible_area_size())
-
+                scaled_size = () # dummy
+                viewport_size = () # dummy
+                self._show_scrollbars((False,) * len(self._scroll))
                 # Visible area size is recomputed depending on scrollbar visibility
-                self._show_scrollbars((scaled_width, scaled_height),
-                    self.get_visible_area_size())
-                area_width, area_height = self.get_visible_area_size()
-                scaled_width, scaled_height = self.zoom.get_zoomed_size(
-                    (width, height), (area_width, area_height))
+                while True:
+                    new_viewport_size = self.get_visible_area_size()
+                    if new_viewport_size == viewport_size:
+                        break
+                    viewport_size = new_viewport_size
+                    scaled_size = self.zoom.get_zoomed_size((width, height), viewport_size)
+                    # XXX: reconsider "visibility" of zoom._smaller
+                    self._show_scrollbars(zoom._smaller(viewport_size, scaled_size))
 
                 # 100000 just some big enough constant.
                 # We need to ensure that images
                 #   are limited only by height during scaling
                 left_pixbuf = image_tools.fit_in_rectangle(
-                    left_pixbuf, 100000, scaled_height, prefs['stretch'], left_rotation)
+                    left_pixbuf, 100000, scaled_size[constants.HEIGHT_AXIS],
+                    prefs['stretch'], left_rotation)
                 right_pixbuf = image_tools.fit_in_rectangle(
-                    right_pixbuf, 100000, scaled_height, prefs['stretch'], right_rotation)
+                    right_pixbuf, 100000, scaled_size[constants.HEIGHT_AXIS],
+                    prefs['stretch'], right_rotation)
 
                 if prefs['horizontal flip']:
                     left_pixbuf = left_pixbuf.flip(horizontal=True)
@@ -362,10 +367,10 @@ class MainWindow(gtk.Window):
                 self.left_image.set_from_pixbuf(left_pixbuf)
                 self.right_image.set_from_pixbuf(right_pixbuf)
 
-                x_padding = int(round((area_width - left_pixbuf.get_width() -
-                    right_pixbuf.get_width()) / 2.0))
-                y_padding = int(round((area_height - max(left_pixbuf.get_height(),
-                    right_pixbuf.get_height())) / 2.0))
+                x_padding = int(round((viewport_size[constants.WIDTH_AXIS] -
+                    left_pixbuf.get_width() - right_pixbuf.get_width()) / 2.0))
+                y_padding = int(round((viewport_size[constants.HEIGHT_AXIS] -
+                    max(left_pixbuf.get_height(), right_pixbuf.get_height())) / 2.0))
 
                 if left_rotation in (90, 270):
                     left_scale = float(left_pixbuf.get_width()) / left_unscaled_y
@@ -389,18 +394,23 @@ class MainWindow(gtk.Window):
                 if rotation in (90, 270):
                     width, height = height, width
 
-                scaled_width, scaled_height = self.zoom.get_zoomed_size(
-                    (width, height), self.get_visible_area_size())
-
+                scaled_size = () # dummy
+                viewport_size = () # dummy
+                self._show_scrollbars((False,) * len(self._scroll))
                 # Visible area size is recomputed depending on scrollbar visibility
-                self._show_scrollbars((scaled_width, scaled_height),
-                    self.get_visible_area_size())
-                area_width, area_height = self.get_visible_area_size()
-                scaled_width, scaled_height = self.zoom.get_zoomed_size(
-                    (width, height), (area_width, area_height))
+                while True:
+                    new_viewport_size = self.get_visible_area_size()
+                    if new_viewport_size == viewport_size:
+                        break
+                    viewport_size = new_viewport_size
+                    scaled_size = self.zoom.get_zoomed_size((width, height), viewport_size)
+                    # XXX: reconsider "visibility" of zoom._smaller
+                    self._show_scrollbars(zoom._smaller(viewport_size, scaled_size))
 
-                pixbuf = image_tools.fit_in_rectangle(pixbuf, scaled_width,
-                    scaled_height, scale_up=True, rotation=rotation)
+                pixbuf = image_tools.fit_in_rectangle(pixbuf,
+                    scaled_size[constants.WIDTH_AXIS],
+                    scaled_size[constants.HEIGHT_AXIS],
+                    scale_up=True, rotation=rotation)
 
                 if prefs['horizontal flip']:
                     pixbuf = pixbuf.flip(horizontal=True)
@@ -412,8 +422,10 @@ class MainWindow(gtk.Window):
                 self.left_image.set_from_pixbuf(pixbuf)
                 self.right_image.clear()
 
-                x_padding = int(round((area_width - pixbuf.get_width()) / 2.0))
-                y_padding = int(round((area_height - pixbuf.get_height()) / 2.0))
+                x_padding = int(round((viewport_size[constants.WIDTH_AXIS] -
+                    pixbuf.get_width()) / 2.0))
+                y_padding = int(round((viewport_size[constants.HEIGHT_AXIS] -
+                    pixbuf.get_height()) / 2.0))
 
                 if rotation in (90, 270):
                     scale = float(pixbuf.get_width()) / height
@@ -722,29 +734,18 @@ class MainWindow(gtk.Window):
         self.zoom.reset_user_zoom()
         self.draw_image()
 
-    def _show_scrollbars(self, img_size, screen_size):
-        """ Enables scroll bars depending on image size
-        and preferences. """
+    def _show_scrollbars(self, request):
+        """ Enables scroll bars depending on requests and preferences. """
 
-        self._vscroll.hide_all()
-        self._hscroll.hide_all()
-
-        if (prefs['show scrollbar']
-            and not prefs['hide all']
-            and not (self.is_fullscreen and prefs['hide all in fullscreen'])):
-            if img_size[0] > screen_size[0]:
-                self._hscroll.show_all()
+        limit = prefs['show scrollbar'] and \
+            not prefs['hide all'] and\
+            not (self.is_fullscreen and \
+            prefs['hide all in fullscreen'])
+        for i in range(len(self._scroll)):
+            if limit and request[i]:
+                self._scroll[i].show_all()
             else:
-                self._hscroll.hide_all()
-
-            if img_size[1] > screen_size[1]:
-                self._vscroll.show_all()
-            else:
-                self._vscroll.hide_all()
-
-        else:
-            self._vscroll.hide_all()
-            self._hscroll.hide_all()
+                self._scroll[i].hide_all()
 
     def is_scrollable_horizontally(self):
         """ Returns True when the displayed image does not fit into the display
@@ -967,11 +968,13 @@ class MainWindow(gtk.Window):
 
             if prefs['show scrollbar']:
 
-                if self._vscroll.get_visible():
-                    width -= self._vscroll.size_request()[0]
+                if self._scroll[constants.HEIGHT_AXIS].get_visible():
+                    width -= self._scroll[constants.HEIGHT_AXIS]\
+                        .size_request()[constants.WIDTH_AXIS]
 
-                if self._hscroll.get_visible():
-                    height -= self._hscroll.size_request()[1]
+                if self._scroll[constants.WIDTH_AXIS].get_visible():
+                    height -= self._scroll[constants.WIDTH_AXIS]\
+                        .size_request()[constants.HEIGHT_AXIS]
 
         return width, height
 
@@ -1054,8 +1057,8 @@ class MainWindow(gtk.Window):
             self.menubar.hide_all()
             self.statusbar.hide_all()
             self.thumbnailsidebar.hide()
-            self._vscroll.hide_all()
-            self._hscroll.hide_all()
+            self._scroll[constants.HEIGHT_AXIS].hide_all()
+            self._scroll[constants.WIDTH_AXIS].hide_all()
 
     def extract_page(self, *args):
         """ Derive some sensible filename (archive name + _ + filename should do) and offer

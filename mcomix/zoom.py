@@ -144,6 +144,8 @@ class FitToSizeMode(FitMode):
 
 
 def _smaller(a, b):
+    """ Returns a list with the i-th element set to True if and only the i-th
+    element in a is less than the i-th element in b. """
     return map(operator.lt, a, b)
 
 def _scale_image_size(size, scale):
