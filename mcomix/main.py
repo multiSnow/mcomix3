@@ -647,8 +647,7 @@ class MainWindow(gtk.Window):
         if radioaction:
             prefs['zoom mode'] = radioaction.get_current_value()
 
-        fitmode = zoom.FitMode.create(prefs['zoom mode'])
-        self.zoom.set_fit_mode(fitmode)
+        self.zoom.set_fit_mode(prefs['zoom mode'])
         self.zoom.set_scale_up(prefs['stretch'])
         self.zoom.reset_user_zoom()
         self.draw_image()
