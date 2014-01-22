@@ -46,10 +46,8 @@ class ZoomModel(object):
         self._set_user_zoom_log(IDENTITY_ZOOM_LOG)
 
     def get_zoomed_size(self, image_size, screen_size):
-        limits = ZoomModel._calc_limits(image_size, screen_size, self._fitmode)
-        preferred_scale = ZoomModel._get_preferred_scale(image_size, limits)
-        if preferred_scale is None:
-            preferred_scale = IDENTITY_ZOOM
+        preferred_scale = ZoomModel._get_preferred_scale(image_size,
+            screen_size, self._fitmode)
         if (preferred_scale > IDENTITY_ZOOM and
             not self.get_scale_up() and
             any(_smaller(image_size, screen_size))):
@@ -59,40 +57,27 @@ class ZoomModel(object):
             preferred_scale * 2 ** (self._user_zoom_log / USER_ZOOM_LOG_SCALE1)))
 
     @staticmethod
-    def _get_preferred_scale(image_size, limits):
-        min_scale = None
-        for i in range(len(limits)):
-            l = limits[i]
-            if l is None:
-                continue
-            s = _div(l, image_size[i])
-            if min_scale is None or s < min_scale:
-                min_scale = s
-        return min_scale
-
-    @staticmethod
-    def _calc_limits(image_size, screen_size, fitmode):
-        """ Returns a list or a tuple with the i-th element set to int x if
-        fitmode limits the size at the i-th axis to x, or None if fitmode has no
-        preference for this axis. """
+    def _get_preferred_scale(image_size, screen_size, fitmode):
         manual = fitmode == constants.ZOOM_MODE_MANUAL
-        if fitmode == constants.ZOOM_MODE_BEST or \
-            (manual and all(_smaller(image_size, screen_size))):
-            return screen_size
-        result = [None] * len(screen_size)
-        if not manual:
-            fixed_size = None
-            if fitmode == constants.ZOOM_MODE_SIZE:
-                fitmode = prefs['fit to size mode'] # reassigning fitmode
-                fixed_size = int(prefs['fit to size px'])
-            if fitmode == constants.ZOOM_MODE_WIDTH:
-                axis = constants.WIDTH_AXIS
-            elif fitmode == constants.ZOOM_MODE_HEIGHT:
-                axis = constants.HEIGHT_AXIS
-            else:
-                assert False, 'Cannot map fitmode to axis'
-            result[axis] = fixed_size if fixed_size is not None else screen_size[axis]
-        return result
+        if (manual and all(_smaller(image_size, screen_size))) or \
+            fitmode == constants.ZOOM_MODE_BEST:
+            return reduce(min, map(
+                lambda axis: _div(screen_size[axis], image_size[axis]),
+                range(len(image_size))))
+        if manual:
+            return IDENTITY_ZOOM
+        fixed = None
+        if fitmode == constants.ZOOM_MODE_SIZE:
+            fitmode = prefs['fit to size mode'] # reassigning fitmode
+            fixed = int(prefs['fit to size px'])
+        if fitmode == constants.ZOOM_MODE_WIDTH:
+            axis = constants.WIDTH_AXIS
+        elif fitmode == constants.ZOOM_MODE_HEIGHT:
+            axis = constants.HEIGHT_AXIS
+        else:
+            assert False, 'Cannot map fitmode to axis'
+        return _div((fixed if fixed is not None else screen_size[axis]),
+            image_size[axis])
 
     @staticmethod
     def _scale_distributed(sizes, axis, max_size, allow_upscaling):
