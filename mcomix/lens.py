@@ -56,7 +56,7 @@ class MagnifyingLens(object):
         with it; <x> and <y> are the positions of the cursor within the
         main window layout area.
         """
-        if not self._window.filehandler.file_loaded or not self._window.left_image.get_pixbuf():
+        if not self._window.filehandler.file_loaded or not self._window.images[0].get_pixbuf(): # XXX transitional(double page limitation)
             return
 
         rectangle = self._calculate_lens_rect(x, y, prefs['lens size'], prefs['lens size'])
@@ -131,8 +131,8 @@ class MagnifyingLens(object):
             if self._window.is_manga_mode:
                 l_source_pixbuf, r_source_pixbuf = r_source_pixbuf, l_source_pixbuf
 
-            l_image_size = self._window.left_image.size_request()
-            r_image_size = self._window.right_image.size_request()
+            l_image_size = self._window.images[0].size_request() # XXX transitional(double page limitation)
+            r_image_size = self._window.images[1].size_request() # XXX transitional(double page limitation)
 
             self._add_subpixbuf(canvas, x, y, l_image_size, l_source_pixbuf,
                 r_image_size[0], left=True)
@@ -142,7 +142,7 @@ class MagnifyingLens(object):
 
             source_pixbuf = self._window.imagehandler.get_pixbufs(1)[0] # XXX implied by self._window.displayed_double() == False
 
-            image_size = self._window.left_image.size_request()
+            image_size = self._window.images[0].size_request() # XXX transitional(double page limitation)
             self._add_subpixbuf(canvas, x, y, image_size, source_pixbuf)
 
         return image_tools.add_border(canvas, 1)

@@ -122,7 +122,7 @@ class _EnhanceImageDialog(gtk.Dialog):
         self._contrast_scale.set_sensitive(
             not self._autocontrast_button.get_active())
 
-        self.draw_histogram(self._window.left_image)
+        self.draw_histogram(self._window.images[0]) # XXX transitional(double page limitation)
 
         self.show_all()
 
@@ -192,7 +192,7 @@ def open_dialog(action, window):
 
     if _dialog is None:
         _dialog = _EnhanceImageDialog(window)
-        draw_histogram(window.left_image)
+        draw_histogram(window.images[0]) # XXX transitional(double page limitation)
 
     else:
         _dialog.present()

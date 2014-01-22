@@ -88,8 +88,7 @@ class MainWindow(gtk.Window):
         self.popup = self.uimanager.get_widget('/Popup')
         self.actiongroup = self.uimanager.get_action_groups()[0]
 
-        self.left_image = gtk.Image()
-        self.right_image = gtk.Image()
+        self.images = [gtk.Image(), gtk.Image()] # XXX limited to at most 2 pages
 
         # ----------------------------------------------------------------
         # Setup
@@ -108,8 +107,8 @@ class MainWindow(gtk.Window):
         self.toolbar.set_style(gtk.TOOLBAR_ICONS)
         self.toolbar.set_icon_size(gtk.ICON_SIZE_LARGE_TOOLBAR)
 
-        self._image_box.add(self.left_image)
-        self._image_box.add(self.right_image)
+        self._image_box.add(self.images[0]) # XXX transitional(double page limitation)
+        self._image_box.add(self.images[1]) # XXX transitional(double page limitation)
         self._image_box.show_all()
 
         self._main_layout.put(self._image_box, 0, 0)
@@ -297,147 +296,95 @@ class MainWindow(gtk.Window):
             self._waiting_for_redraw = False
             return False
 
-        self.is_virtual_double_page = \
-            self.imagehandler.get_virtual_double_page()
+        self.is_virtual_double_page = self.imagehandler.get_virtual_double_page()
 
         if self.imagehandler.page_is_available():
-            if self.displayed_double():
-                # XXX limited to at most 2 pages
-                pixbufs = list(self.imagehandler.get_pixbufs(2)) # XXX implied by self.displayed_double() == True
-                if self.is_manga_mode:
-                    pixbufs = [pixbufs[1], pixbufs[0]]
-                sizes = [(pixbufs[0].get_width(), pixbufs[0].get_height()),
-                    (pixbufs[1].get_width(), pixbufs[1].get_height())]
+            n = 2 if self.displayed_double() else 1 # XXX limited to at most 2 pages
+            pixbufs = list(self.imagehandler.get_pixbufs(n))
+            if self.is_manga_mode:
+                pixbufs = list(reversed(pixbufs))
+            rotations = [self._get_pixbuf_rotation(x, True) for x in pixbufs]
+            sizes = map(lambda y: tuple(reversed(y[1])) \
+                if rotations[y[0]] in (90, 270) else y[1],
+                enumerate([(x.get_width(), x.get_height()) for x in pixbufs]))
 
-                rotations = (self._get_pixbuf_rotation(pixbufs[0], True),
-                    self._get_pixbuf_rotation(pixbufs[1], True))
-
-                if rotations[0] in (90, 270):
-                    sizes[0] = (sizes[0][constants.HEIGHT_AXIS],
-                        sizes[0][constants.WIDTH_AXIS])
-                if rotations[1] in (90, 270):
-                    sizes[1] = (sizes[1][constants.HEIGHT_AXIS],
-                        sizes[1][constants.WIDTH_AXIS])
-
+            if n == 2: # XXX transitional(double page limitation)
                 dp_size = image_tools.get_double_page_rectangle(
                     sizes[0][0], sizes[0][1],
                     sizes[1][0], sizes[1][1])
-
-                viewport_size = () # dummy
-                self._show_scrollbars((False,) * len(self._scroll))
-                # Visible area size is recomputed depending on scrollbar visibility
-                while True:
-                    new_viewport_size = self.get_visible_area_size()
-                    if new_viewport_size == viewport_size:
-                        break
-                    viewport_size = new_viewport_size
-                    dp_scaled_size = self.zoom.get_zoomed_size(dp_size, viewport_size)
-                    # XXX: reconsider "visibility" of zoom._smaller
-                    self._show_scrollbars(zoom._smaller(viewport_size, dp_scaled_size))
-
-                # 100000 just some big enough constant.
-                # We need to ensure that images
-                #   are limited only by height during scaling
-                pixbufs[0] = image_tools.fit_in_rectangle(
-                    pixbufs[0], 100000, dp_scaled_size[constants.HEIGHT_AXIS],
-                    prefs['stretch'], rotations[0])
-                pixbufs[1] = image_tools.fit_in_rectangle(
-                    pixbufs[1], 100000, dp_scaled_size[constants.HEIGHT_AXIS],
-                    prefs['stretch'], rotations[1])
-
-                if prefs['horizontal flip']:
-                    pixbufs[0] = pixbufs[0].flip(horizontal=True)
-                    pixbufs[1] = pixbufs[1].flip(horizontal=True)
-
-                if prefs['vertical flip']:
-                    pixbufs[0] = pixbufs[0].flip(horizontal=False)
-                    pixbufs[1] = pixbufs[1].flip(horizontal=False)
-
-                pixbufs[0] = self.enhancer.enhance(pixbufs[0])
-                pixbufs[1] = self.enhancer.enhance(pixbufs[1])
-
-                self.left_image.set_from_pixbuf(pixbufs[0])
-                self.right_image.set_from_pixbuf(pixbufs[1])
-
-                x_padding = int(round((viewport_size[constants.WIDTH_AXIS] -
-                    pixbufs[0].get_width() - pixbufs[1].get_width()) / 2.0))
-                y_padding = int(round((viewport_size[constants.HEIGHT_AXIS] -
-                    max(pixbufs[0].get_height(), pixbufs[1].get_height())) / 2.0))
-
-                scaled_sizes = ((pixbufs[0].get_width(), pixbufs[0].get_height()),
-                    (pixbufs[1].get_width(), pixbufs[1].get_height()))
-                scales = (math.sqrt(float(zoom._volume(scaled_sizes[0])) /
-                    float(zoom._volume(sizes[0]))),
-                    math.sqrt(float(zoom._volume(scaled_sizes[1])) /
-                    float(zoom._volume(sizes[1]))))
-
-                self.statusbar.set_resolution((sizes[0] + (scales[0],),
-                    sizes[1] + (scales[1],)))
-
             else:
-                pixbuf = self.imagehandler.get_pixbufs(1)[0] # XXX implied by self.displayed_double() == False
-                size = (pixbuf.get_width(), pixbuf.get_height())
+                dp_size = sizes[0]
 
-                rotation = self._get_pixbuf_rotation(pixbuf)
-                if rotation in (90, 270):
-                    size = size[constants.HEIGHT_AXIS], size[constants.WIDTH_AXIS] # 2D only
+            viewport_size = () # dummy
+            self._show_scrollbars((False,) * len(self._scroll))
+            # Visible area size is recomputed depending on scrollbar visibility
+            while True:
+                new_viewport_size = self.get_visible_area_size()
+                if new_viewport_size == viewport_size:
+                    break
+                viewport_size = new_viewport_size
+                dp_scaled_size = self.zoom.get_zoomed_size(dp_size, viewport_size)
+                # XXX: reconsider "visibility" of zoom._smaller
+                self._show_scrollbars(zoom._smaller(viewport_size, dp_scaled_size))
 
-                viewport_size = () # dummy
-                self._show_scrollbars((False,) * len(self._scroll))
-                # Visible area size is recomputed depending on scrollbar visibility
-                while True:
-                    new_viewport_size = self.get_visible_area_size()
-                    if new_viewport_size == viewport_size:
-                        break
-                    viewport_size = new_viewport_size
-                    scaled_size = self.zoom.get_zoomed_size(size, viewport_size)
-                    # XXX: reconsider "visibility" of zoom._smaller
-                    self._show_scrollbars(zoom._smaller(viewport_size, scaled_size))
-                pixbuf = image_tools.fit_in_rectangle(pixbuf,
-                    scaled_size[constants.WIDTH_AXIS],
-                    scaled_size[constants.HEIGHT_AXIS],
-                    scale_up=True, rotation=rotation)
+            if n == 2: # XXX transitional(double page limitation)
+                for i in range(n):
+                    # 100000 just some big enough constant.
+                    # We need to ensure that images
+                    #   are limited only by height during scaling
+                    pixbufs[i] = image_tools.fit_in_rectangle(
+                        pixbufs[i], 100000, dp_scaled_size[constants.HEIGHT_AXIS],
+                        prefs['stretch'], rotations[i])
+            else:
+                pixbufs[0] = image_tools.fit_in_rectangle(pixbufs[0],
+                    dp_scaled_size[constants.WIDTH_AXIS],
+                    dp_scaled_size[constants.HEIGHT_AXIS],
+                    scale_up=True, rotation=rotations[0])
 
-                if prefs['horizontal flip']:
-                    pixbuf = pixbuf.flip(horizontal=True)
-                if prefs['vertical flip']:
-                    pixbuf = pixbuf.flip(horizontal=False)
+            for i in range(n):
+                if prefs['horizontal flip']: # 2D only
+                    pixbufs[i] = pixbufs[i].flip(horizontal=True)
+                if prefs['vertical flip']: # 2D only
+                    pixbufs[i] = pixbufs[i].flip(horizontal=False)
+                pixbufs[i] = self.enhancer.enhance(pixbufs[i])
 
-                pixbuf = self.enhancer.enhance(pixbuf)
+            for i in range(n):
+                self.images[i].set_from_pixbuf(pixbufs[i])
 
-                self.left_image.set_from_pixbuf(pixbuf)
-                self.right_image.clear()
+            total_size0 = sum([x.get_width() for x in pixbufs]) # 2D only
+            max_size1 = max([x.get_height() for x in pixbufs]) # 2D only
+            padding = [int(round((viewport_size[constants.WIDTH_AXIS] -
+                total_size0) / 2.0)),
+                int(round((viewport_size[constants.HEIGHT_AXIS] -
+                max_size1) / 2.0))] # 2D only
 
-                x_padding = int(round((viewport_size[constants.WIDTH_AXIS] -
-                    pixbuf.get_width()) / 2.0))
-                y_padding = int(round((viewport_size[constants.HEIGHT_AXIS] -
-                    pixbuf.get_height()) / 2.0))
+            scaled_sizes = tuple([(x.get_width(), x.get_height()) \
+                for x in pixbufs]) # 2D only
 
-                # XXX reconsider "visibility" of zoom._volume
-                scale = math.sqrt(float(zoom._volume(scaled_size)) /
-                    float(zoom._volume(size)))
-                self.statusbar.set_resolution((size + (scale,),))
+            # XXX reconsider "visibility" of zoom._volume and zoom._div
+            scales = tuple(map(lambda x, y: math.sqrt(zoom._div(
+                zoom._volume(x), zoom._volume(y))), scaled_sizes, sizes))
+
+            self.statusbar.set_resolution(tuple(
+                map(lambda x, y: x + (y,), sizes, scales)))
 
             smartbg = prefs['smart bg']
             smartthumbbg = prefs['smart thumb bg'] and prefs['show thumbnails']
             if smartbg or smartthumbbg:
-                bg_colour = self.imagehandler.get_pixbuf_auto_background(
-                    2 if self.displayed_double() else 1) # XXX limited to at most 2 pages
+                bg_colour = self.imagehandler.get_pixbuf_auto_background(n)
             if smartbg:
                 self.set_bg_colour(bg_colour)
             if smartthumbbg:
                 self.thumbnailsidebar.change_thumbnail_background_color(bg_colour)
 
             self._image_box.window.freeze_updates()
-            self._main_layout.move(self._image_box, max(0, x_padding),
-                max(0, y_padding))
+            self._main_layout.move(self._image_box, max(0, padding[0]),
+                max(0, padding[1])) # 2D only
 
-            self.left_image.show()
-
-            if self.displayed_double():
-                self.right_image.show()
-            else:
-                self.right_image.hide()
+            for i in range(n):
+                self.images[i].show()
+            for i in range(n, len(self.images)):
+                self.images[i].hide()
 
             self._main_layout.set_size(*self._image_box.size_request())
 
@@ -450,9 +397,9 @@ class MainWindow(gtk.Window):
             self._image_box.window.thaw_updates()
         else:
             # If the pixbuf for the current page(s) isn't available,
-            # hide both images to clear any old pixbufs.
-            self.left_image.hide()
-            self.right_image.hide()
+            # hide all images to clear any old pixbufs.
+            for i in range(len(self.images)):
+                self.images[i].hide()
 
         self._update_page_information()
         self._waiting_for_redraw = False
@@ -729,10 +676,10 @@ class MainWindow(gtk.Window):
         port horizontally and must be scrolled to be viewed completely. """
 
         screen_width, _ = self.get_visible_area_size()
-        left_width = self.left_image.get_pixbuf() and \
-                self.left_image.get_pixbuf().get_width() or 0
-        right_width = self.right_image.get_pixbuf() and \
-                self.right_image.get_pixbuf().get_width() or 0
+        left_width = self.images[0].get_pixbuf() and \
+                self.images[0].get_pixbuf().get_width() or 0 # XXX transitional(double page limitation)
+        right_width = self.images[1].get_pixbuf() and \
+                self.images[1].get_pixbuf().get_width() or 0 # XXX transitional(double page limitation)
         image_width = max(left_width, right_width)
 
         return image_width > screen_width
@@ -742,10 +689,10 @@ class MainWindow(gtk.Window):
         port vertically and must be scrolled to be viewed completely. """
 
         _, screen_height = self.get_visible_area_size()
-        left_height = self.left_image.get_pixbuf() and \
-                self.left_image.get_pixbuf().get_height() or 0
-        right_height = self.right_image.get_pixbuf() and \
-                self.right_image.get_pixbuf().get_height() or 0
+        left_height = self.images[0].get_pixbuf() and \
+                self.images[0].get_pixbuf().get_height() or 0 # XXX transitional(double page limitation)
+        right_height = self.images[1].get_pixbuf() and \
+                self.images[1].get_pixbuf().get_height() or 0 # XXX transitional(double page limitation)
         image_height = max(left_height, right_height)
 
         return image_height > screen_height
@@ -784,10 +731,10 @@ class MainWindow(gtk.Window):
 
         if bound == 'first':
             hadjust_upper = max(0, hadjust_upper -
-                self.right_image.size_request()[0] - 2)
+                self.images[1].size_request()[0] - 2) # XXX transitional(double page limitation)
 
         elif bound == 'second':
-            hadjust_lower = self.left_image.size_request()[0] + 2
+            hadjust_lower = self.images[0].size_request()[0] + 2 # XXX transitional(double page limitation)
 
         new_hadjust = old_hadjust + x
         new_vadjust = old_vadjust + y
@@ -873,12 +820,12 @@ class MainWindow(gtk.Window):
         elif horiz == 'endfirst':
 
             if self.displayed_double():
-                new_hadjust = self.left_image.size_request()[0] - visible_width
+                new_hadjust = self.images[0].size_request()[0] - visible_width # XXX transitional(double page limitation)
             else:
                 new_hadjust = hadjust_upper
 
         elif horiz == 'startsecond':
-            new_hadjust = self.left_image.size_request()[0] + 2
+            new_hadjust = self.images[0].size_request()[0] + 2 # XXX transitional(double page limitation)
         elif horiz == 'endsecond':
             new_hadjust = hadjust_upper
 
@@ -902,16 +849,16 @@ class MainWindow(gtk.Window):
         width, height = self.get_visible_area_size()
         if self.is_manga_mode:
             return (self._hadjust.get_value() >= self._hadjust.upper - width or
-                self._hadjust.get_value() > self.left_image.size_request()[0])
+                self._hadjust.get_value() > self.images[0].size_request()[0]) # XXX transitional(double page limitation)
         else:
             return (self._hadjust.get_value() == 0 or
                 self._hadjust.get_value() + width <=
-                self.left_image.size_request()[0])
+                self.images[0].size_request()[0]) # XXX transitional(double page limitation)
 
     def clear(self):
         """Clear the currently displayed data (i.e. "close" the file)."""
-        self.left_image.clear()
-        self.right_image.clear()
+        self.images[0].clear() # XXX transitional(double page limitation)
+        self.images[1].clear() # XXX transitional(double page limitation)
         self.set_title(constants.APPNAME)
         self.statusbar.set_message('')
         self.set_bg_colour(prefs['bg colour'])
