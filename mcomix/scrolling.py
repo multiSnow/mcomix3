@@ -241,14 +241,20 @@ class Scrolling(object):
 
 class Box(object):
 
-    def __init__(self, position, size):
+    def __init__(self, position, size=None):
         """ A Box is immutable and always axis-aligned.
         Each component of size should be positive (i.e. non-zero).
         Both position and size must have equal number of dimensions.
+        If there is only one argument, it must be the size. In this case, the
+        position is set to origin (i.e. all coordinates are 0) by definition.
         @param position: The position of this Box.
         @param size: The size of this Box."""
-        self.position = tuple(position)
-        self.size = tuple(size)
+        if size is None:
+            self.position = (0,) * len(position)
+            self.size = tuple(position)
+        else:
+            self.position = tuple(position)
+            self.size = tuple(size)
         if len(self.position) != len(self.size):
             raise ValueError("different number of dimensions: " +
                 str(len(self.position)) + " != " + str(len(self.size)))
@@ -461,9 +467,11 @@ class Box(object):
         @return: A list of new Boxes with accordingly translated positions. """
         if len(boxes) == 0:
             return []
-        centerBox = boxes[fix]
-        cs = centerBox.get_size()[axis]
-        cp = centerBox.get_position()[axis]
+        center_box = boxes[fix]
+        cs = center_box.get_size()[axis]
+        if cs % 2 != 0:
+            cs +=1
+        cp = center_box.get_position()[axis]
         result = []
         for b in boxes:
             s = b.get_size()
@@ -520,7 +528,7 @@ class Box(object):
             v = viewport_size[i]
             result_size[i] = max(c, v)
             result_position[i] = Box._box_to_center_offset_1d(c - result_size[i],
-                orientation[i]) + position[i]
+                -orientation[i]) + position[i]
         return Box(result_position, result_size)
 
 
@@ -531,7 +539,7 @@ class Box(object):
         @param boxes: The Boxes to calculate the union from.
         @return: A Box as specified above. """
         if len(boxes) == 0:
-            return Box([], [])
+            return Box((), ())
         mins = [None] * len(boxes[0].get_size())
         maxes = [None] * len(mins)
         for b in boxes:
@@ -604,15 +612,18 @@ _ALIGNMENT_AXIS = 1 # 2D only
 
 class FiniteLayout(object): # 2D only
 
-    def __init__(self, content_boxes, viewport_size, orientation, spacing):
+    def __init__(self, content_sizes, viewport_size, orientation, spacing, wrap_individually):
         """ Lays out a finite number of Boxes along the first axis.
-        @param content_boxes: The Boxes to lay out.
+        @param content_sizes: The sizes of the Boxes to lay out.
         @param viewport_size: The size of the viewport.
         @param orientation: The orientation to use.
-        @param spacing: Number of additional pixels between Boxes. """
+        @param spacing: Number of additional pixels between Boxes.
+        @param wrap_individually: True if each content box should get its own
+        wrapper box, False if the only wrapper box should be the union of all
+        content boxes. """
         self.scroller = Scrolling()
         self.current_index = -1
-        self._reset(content_boxes, viewport_size, orientation, spacing)
+        self._reset(content_sizes, viewport_size, orientation, spacing, wrap_individually)
 
 
     def set_viewport_position(self, viewport_position):
@@ -710,23 +721,21 @@ class FiniteLayout(object): # 2D only
         return self.orientation
 
 
-    def _reset(self, content_boxes, viewport_size, orientation, spacing):
+    def _reset(self, content_sizes, viewport_size, orientation, spacing, wrap_individually):
         # reverse order if necessary
         if orientation[_DISTRIBUTION_AXIS] == -1:
-            content_boxes = tuple(reversed(content_boxes))
+            content_sizes = tuple(reversed(content_sizes))
+        temp_cb_list = map(Box, content_sizes)
         # align to center
-        temp_cb_list = Box.align_center(content_boxes, _ALIGNMENT_AXIS, 0,
+        temp_cb_list = Box.align_center(temp_cb_list, _ALIGNMENT_AXIS, 0,
             orientation[_ALIGNMENT_AXIS])
         # distribute
         temp_cb_list = Box.distribute(temp_cb_list, _DISTRIBUTION_AXIS, 0,
             spacing)
-        # calculate (potentially oversized) wrapper Boxes
-        temp_wb_list = [None] * len(temp_cb_list)
-        for i in range(len(temp_cb_list)):
-            temp_wb_list[i] = temp_cb_list[i].wrapper_box(viewport_size,
-                orientation)
-        # calculate bounding Box
-        temp_bb = Box.bounding_box(temp_wb_list)
+        if wrap_individually:
+            temp_wb_list, temp_bb = FiniteLayout._wrap_individually(temp_cb_list, viewport_size, orientation)
+        else:
+            temp_wb_list, temp_bb = FiniteLayout._wrap_union(temp_cb_list, viewport_size, orientation)
         # move to global origin
         bbp = temp_bb.get_position()
         for i in range(len(temp_cb_list)):
@@ -742,9 +751,28 @@ class FiniteLayout(object): # 2D only
         self.content_boxes = temp_cb_list
         self.wrapper_boxes = temp_wb_list
         self.union_box = temp_bb
-        self.viewport_box = Box((0,) * len(viewport_size), viewport_size)
+        self.viewport_box = Box(viewport_size)
         self.orientation = orientation
         self.dirty_current_index = True
 
+
+    @staticmethod
+    def _wrap_individually(temp_cb_list, viewport_size, orientation):
+        # calculate (potentially oversized) wrapper Boxes
+        temp_wb_list = [None] * len(temp_cb_list)
+        for i in range(len(temp_cb_list)):
+            temp_wb_list[i] = temp_cb_list[i].wrapper_box(viewport_size,
+                orientation)
+        # calculate bounding Box
+        temp_bb = Box.bounding_box(temp_wb_list)
+        return (temp_wb_list, temp_bb)
+
+
+    @staticmethod
+    def _wrap_union(temp_cb_list, viewport_size, orientation):
+        # calculate bounding Box
+        temp_wb_list = [Box.bounding_box(temp_cb_list).wrapper_box(viewport_size,
+            orientation)]
+        return (temp_wb_list, temp_wb_list[0])
 
 # vim: expandtab:sw=4:ts=4

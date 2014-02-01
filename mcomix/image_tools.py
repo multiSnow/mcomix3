@@ -20,6 +20,29 @@ _supported_formats = sorted(
                        gtk.gdk.pixbuf_get_formats())
         for extension in extlist])
 
+def fit_pixbuf_to_rectangle(src, rect, rotation):
+
+    if rotation in (90, 270):
+        rect = (rect[1], rect[0])
+
+    if src.get_has_alpha():
+        if prefs['checkered bg for transparent images']:
+            src = src.composite_color_simple(rect[0], rect[1],
+                prefs['scaling quality'], 255, 8, 0x777777, 0x999999)
+        else:
+            src = src.composite_color_simple(rect[0], rect[1],
+                prefs['scaling quality'], 255, 1024, 0xFFFFFF, 0xFFFFFF)
+    elif rect[0] != src.get_width() or rect[1] != src.get_height():
+        src = src.scale_simple(rect[0], rect[1], prefs['scaling quality'])
+
+    if rotation == 90:
+        src = src.rotate_simple(gtk.gdk.PIXBUF_ROTATE_CLOCKWISE)
+    elif rotation == 180:
+        src = src.rotate_simple(gtk.gdk.PIXBUF_ROTATE_UPSIDEDOWN)
+    elif rotation == 270:
+        src = src.rotate_simple(gtk.gdk.PIXBUF_ROTATE_COUNTERCLOCKWISE)
+    return src
+
 def fit_in_rectangle(src, width, height, scale_up=False, rotation=0):
     """Scale (and return) a pixbuf so that it fits in a rectangle with
     dimensions <width> x <height>. A negative <width> or <height>

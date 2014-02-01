@@ -31,7 +31,9 @@ from mcomix import bookmark_backend
 from mcomix import message_dialog
 from mcomix import callback
 from mcomix.library import backend
+from mcomix import scrolling
 import math
+import operator
 
 
 class MainWindow(gtk.Window):
@@ -61,7 +63,7 @@ class MainWindow(gtk.Window):
 
         self._waiting_for_redraw = False
 
-        self._image_box = gtk.HBox(False, 2)
+        self._image_box = gtk.HBox(False, 2) # XXX transitional(kept for osd.py)
         self._main_layout = gtk.Layout()
         self._event_handler = event.EventHandler(self)
         self._vadjust = self._main_layout.get_vadjustment()
@@ -107,11 +109,8 @@ class MainWindow(gtk.Window):
         self.toolbar.set_style(gtk.TOOLBAR_ICONS)
         self.toolbar.set_icon_size(gtk.ICON_SIZE_LARGE_TOOLBAR)
 
-        self._image_box.add(self.images[0]) # XXX transitional(double page limitation)
-        self._image_box.add(self.images[1]) # XXX transitional(double page limitation)
-        self._image_box.show_all()
-
-        self._main_layout.put(self._image_box, 0, 0)
+        for img in self.images:
+            self._main_layout.put(img, 0, 0)
         self.set_bg_colour(prefs['bg colour'])
 
         self._vadjust.step_increment = 15
@@ -299,47 +298,35 @@ class MainWindow(gtk.Window):
         self.is_virtual_double_page = self.imagehandler.get_virtual_double_page()
 
         if self.imagehandler.page_is_available():
+            SPACING = 0 # XXX replace by ordinary member
             n = 2 if self.displayed_double() else 1 # XXX limited to at most 2 pages
             pixbufs = list(self.imagehandler.get_pixbufs(n))
-            if self.is_manga_mode:
-                pixbufs = list(reversed(pixbufs))
             rotations = [self._get_pixbuf_rotation(x, True) for x in pixbufs]
             sizes = map(lambda y: tuple(reversed(y[1])) \
-                if rotations[y[0]] in (90, 270) else y[1],
+                if rotations[y[0]] in (90, 270) else y[1], # 2D only
                 enumerate([(x.get_width(), x.get_height()) for x in pixbufs]))
 
-            if n == 2: # XXX transitional(double page limitation)
-                dp_size = image_tools.get_double_page_rectangle(
-                    sizes[0][0], sizes[0][1],
-                    sizes[1][0], sizes[1][1])
-            else:
-                dp_size = sizes[0]
-
             viewport_size = () # dummy
-            self._show_scrollbars((False,) * len(self._scroll))
+            scrollbar_requests = [False] * len(self._scroll)
             # Visible area size is recomputed depending on scrollbar visibility
             while True:
-                new_viewport_size = self.get_visible_area_size()
+                self._show_scrollbars(scrollbar_requests)
+                new_viewport_size = self.get_visible_area_size() # FIXME include SPACING
                 if new_viewport_size == viewport_size:
                     break
                 viewport_size = new_viewport_size
-                dp_scaled_size = self.zoom.get_zoomed_size(dp_size, viewport_size)
+                scaled_sizes = self.zoom.get_zoomed_size(sizes, viewport_size)
+                layout = scrolling.FiniteLayout(scaled_sizes, viewport_size,
+                    scrolling.MANGA_ORIENTATION if self.is_manga_mode
+                    else scrolling.WESTERN_ORIENTATION, SPACING, False) # XXX replace by ordinary member
+                union_scaled_size = layout.get_union_box().get_size()
                 # XXX: reconsider "visibility" of zoom._smaller
-                self._show_scrollbars(zoom._smaller(viewport_size, dp_scaled_size))
+                scrollbar_requests = map(operator.or_, scrollbar_requests,
+                    zoom._smaller(viewport_size, union_scaled_size))
 
-            if n == 2: # XXX transitional(double page limitation)
-                for i in range(n):
-                    # 100000 just some big enough constant.
-                    # We need to ensure that images
-                    #   are limited only by height during scaling
-                    pixbufs[i] = image_tools.fit_in_rectangle(
-                        pixbufs[i], 100000, dp_scaled_size[constants.HEIGHT_AXIS],
-                        prefs['stretch'], rotations[i])
-            else:
-                pixbufs[0] = image_tools.fit_in_rectangle(pixbufs[0],
-                    dp_scaled_size[constants.WIDTH_AXIS],
-                    dp_scaled_size[constants.HEIGHT_AXIS],
-                    scale_up=True, rotation=rotations[0])
+            for i in range(n):
+                pixbufs[i] = image_tools.fit_pixbuf_to_rectangle(
+                    pixbufs[i], scaled_sizes[i], rotations[i])
 
             for i in range(n):
                 if prefs['horizontal flip']: # 2D only
@@ -351,22 +338,14 @@ class MainWindow(gtk.Window):
             for i in range(n):
                 self.images[i].set_from_pixbuf(pixbufs[i])
 
-            total_size0 = sum([x.get_width() for x in pixbufs]) # 2D only
-            max_size1 = max([x.get_height() for x in pixbufs]) # 2D only
-            padding = [int(round((viewport_size[constants.WIDTH_AXIS] -
-                total_size0) / 2.0)),
-                int(round((viewport_size[constants.HEIGHT_AXIS] -
-                max_size1) / 2.0))] # 2D only
-
-            scaled_sizes = tuple([(x.get_width(), x.get_height()) \
-                for x in pixbufs]) # 2D only
-
             # XXX reconsider "visibility" of zoom._volume and zoom._div
             scales = tuple(map(lambda x, y: math.sqrt(zoom._div(
                 zoom._volume(x), zoom._volume(y))), scaled_sizes, sizes))
 
-            self.statusbar.set_resolution(tuple(
-                map(lambda x, y: x + (y,), sizes, scales)))
+            resolutions = tuple(map(lambda x, y: x + (y,), sizes, scales))
+            if self.is_manga_mode:
+                resolutions = tuple(reversed(resolutions))
+            self.statusbar.set_resolution(resolutions)
 
             smartbg = prefs['smart bg']
             smartthumbbg = prefs['smart thumb bg'] and prefs['show thumbnails']
@@ -377,16 +356,17 @@ class MainWindow(gtk.Window):
             if smartthumbbg:
                 self.thumbnailsidebar.change_thumbnail_background_color(bg_colour)
 
-            self._image_box.window.freeze_updates()
-            self._main_layout.move(self._image_box, max(0, padding[0]),
-                max(0, padding[1])) # 2D only
+            #self._image_box.window.freeze_updates() # XXX replacement necessary?
+            self._main_layout.set_size(*union_scaled_size)
+            content_boxes = layout.get_content_boxes()
+            for i in range(n):
+                self._main_layout.move(self.images[i],
+                    *content_boxes[i].get_position())
 
             for i in range(n):
                 self.images[i].show()
             for i in range(n, len(self.images)):
                 self.images[i].hide()
-
-            self._main_layout.set_size(*self._image_box.size_request())
 
             if scroll:
                 if at_bottom:
@@ -394,7 +374,7 @@ class MainWindow(gtk.Window):
                 else:
                     self.scroll_to_fixed(horiz='startfirst', vert='top')
 
-            self._image_box.window.thaw_updates()
+            #self._image_box.window.thaw_updates() # XXX replacement necessary?
         else:
             # If the pixbuf for the current page(s) isn't available,
             # hide all images to clear any old pixbufs.
