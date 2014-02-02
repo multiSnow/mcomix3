@@ -32,6 +32,7 @@ from mcomix import message_dialog
 from mcomix import callback
 from mcomix.library import backend
 from mcomix import scrolling
+from mcomix import tools
 import math
 import operator
 
@@ -61,6 +62,7 @@ class MainWindow(gtk.Window):
         #: Used to remember if changing to fullscreen enabled 'Hide all'
         self.hide_all_forced = False
 
+        self._spacing = 2
         self._waiting_for_redraw = False
 
         self._image_box = gtk.HBox(False, 2) # XXX transitional(kept for osd.py)
@@ -298,7 +300,8 @@ class MainWindow(gtk.Window):
         self.is_virtual_double_page = self.imagehandler.get_virtual_double_page()
 
         if self.imagehandler.page_is_available():
-            SPACING = 0 # XXX replace by ordinary member
+            distribution_axis = constants.DISTRIBUTION_AXIS
+            alignment_axis = constants.ALIGNMENT_AXIS
             n = 2 if self.displayed_double() else 1 # XXX limited to at most 2 pages
             pixbufs = list(self.imagehandler.get_pixbufs(n))
             rotations = [self._get_pixbuf_rotation(x, True) for x in pixbufs]
@@ -311,18 +314,25 @@ class MainWindow(gtk.Window):
             # Visible area size is recomputed depending on scrollbar visibility
             while True:
                 self._show_scrollbars(scrollbar_requests)
-                new_viewport_size = self.get_visible_area_size() # FIXME include SPACING
+                new_viewport_size = self.get_visible_area_size()
                 if new_viewport_size == viewport_size:
                     break
                 viewport_size = new_viewport_size
-                scaled_sizes = self.zoom.get_zoomed_size(sizes, viewport_size)
+                zoom_dummy_size = list(viewport_size)
+                dasize = zoom_dummy_size[distribution_axis] - \
+                    self._spacing * (n - 1)
+                if dasize <= 0:
+                    dasize = 1
+                zoom_dummy_size[distribution_axis] = dasize
+                scaled_sizes = self.zoom.get_zoomed_size(sizes, zoom_dummy_size,
+                    distribution_axis)
                 layout = scrolling.FiniteLayout(scaled_sizes, viewport_size,
                     scrolling.MANGA_ORIENTATION if self.is_manga_mode
-                    else scrolling.WESTERN_ORIENTATION, SPACING, False) # XXX replace by ordinary member
+                    else scrolling.WESTERN_ORIENTATION, self._spacing, False,
+                    distribution_axis, alignment_axis) # XXX replace by ordinary member
                 union_scaled_size = layout.get_union_box().get_size()
-                # XXX: reconsider "visibility" of zoom._smaller
                 scrollbar_requests = map(operator.or_, scrollbar_requests,
-                    zoom._smaller(viewport_size, union_scaled_size))
+                    tools.smaller(viewport_size, union_scaled_size))
 
             for i in range(n):
                 pixbufs[i] = image_tools.fit_pixbuf_to_rectangle(
@@ -338,9 +348,8 @@ class MainWindow(gtk.Window):
             for i in range(n):
                 self.images[i].set_from_pixbuf(pixbufs[i])
 
-            # XXX reconsider "visibility" of zoom._volume and zoom._div
-            scales = tuple(map(lambda x, y: math.sqrt(zoom._div(
-                zoom._volume(x), zoom._volume(y))), scaled_sizes, sizes))
+            scales = tuple(map(lambda x, y: math.sqrt(tools.div(
+                tools.volume(x), tools.volume(y))), scaled_sizes, sizes))
 
             resolutions = tuple(map(lambda x, y: x + (y,), sizes, scales))
             if self.is_manga_mode:

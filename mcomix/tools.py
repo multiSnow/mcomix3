@@ -5,6 +5,7 @@ import sys
 import re
 import gc
 import bisect
+import operator
 
 
 NUMERIC_REGEXP = re.compile(r"\d+|\D+")  # Split into numerics and characters
@@ -116,5 +117,44 @@ def garbage_collect():
         gc.collect(0)
     else:
         gc.collect()
+
+
+def div(a, b):
+    return float(a) / float(b)
+
+def volume(t):
+    return reduce(operator.mul, t, 1)
+
+def relerr(approx, ideal):
+    return abs((approx - ideal) / ideal)
+
+def smaller(a, b):
+    """ Returns a list with the i-th element set to True if and only the i-th
+    element in a is less than the i-th element in b. """
+    return map(operator.lt, a, b)
+
+def scale(t, factor):
+    return [x * factor for x in t]
+
+def vector_sub(a, b):
+    """ Subtracts vector b from vector a. """
+    result = [0] * len(a)
+    for i in range(len(a)):
+        result[i] = a[i] - b[i]
+    return result
+
+def vector_add(a, b):
+    """ Adds vector a to vector b. """
+    result = [0] * len(a)
+    for i in range(len(a)):
+        result[i] = a[i] + b[i]
+    return result
+
+def vector_opposite(a):
+    """ Returns the opposite vector -a. """
+    result = [0] * len(a)
+    for i in range(len(a)):
+        result[i] = -a[i]
+    return result
 
 # vim: expandtab:sw=4:ts=4

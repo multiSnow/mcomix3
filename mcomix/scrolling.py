@@ -45,7 +45,7 @@ class Scrolling(object):
         offset = content_box.get_position()
         content_size = content_box.get_size()
         content_position = [0] * len(offset)
-        viewport_position = Box._vector_sub(viewport_box.get_position(), offset)
+        viewport_position = tools.vector_sub(viewport_box.get_position(), offset)
         viewport_size = viewport_box.get_size()
         # Remap axes
         if axis_map is not None:
@@ -123,7 +123,7 @@ class Scrolling(object):
             result = Scrolling._remap_axes(result,
                 Scrolling._inverse_axis_map(axis_map))
 
-        return Box._vector_add(result, offset)
+        return tools.vector_add(result, offset)
 
 
     def scroll_to_predefined(self, content_box, viewport_box, orientation,
@@ -332,7 +332,7 @@ class Box(object):
         translated position as specified by delta.
         @param delta: The distance to the position of this Box.
         @return: A new Box as specified above. """
-        return Box(Box._vector_add(self.get_position(), delta),
+        return Box(tools.vector_add(self.get_position(), delta),
             self.get_size())
 
 
@@ -342,7 +342,7 @@ class Box(object):
         @param delta: The distance to the position of this Box, with opposite
         direction.
         @return: A new Box as specified above. """
-        return Box(Box._vector_sub(self.get_position(), delta),
+        return Box(tools.vector_sub(self.get_position(), delta),
             self.get_size())
 
 
@@ -551,34 +551,7 @@ class Box(object):
                 ps = p[i] + s[i]
                 if (maxes[i] is None) or (ps > maxes[i]):
                     maxes[i] = ps
-        return Box(mins, Box._vector_sub(maxes, mins))
-
-
-    @staticmethod
-    def _vector_sub(a, b):
-        """ Subtracts vector b from vector a. """
-        result = [0] * len(a)
-        for i in range(len(a)):
-            result[i] = a[i] - b[i]
-        return result
-
-
-    @staticmethod
-    def _vector_add(a, b):
-        """ Adds vector a to vector b. """
-        result = [0] * len(a)
-        for i in range(len(a)):
-            result[i] = a[i] + b[i]
-        return result
-
-
-    @staticmethod
-    def _vector_opposite(a):
-        """ Returns the opposite vector -a. """
-        result = [0] * len(a)
-        for i in range(len(a)):
-            result[i] = -a[i]
-        return result
+        return Box(mins, tools.vector_sub(maxes, mins))
 
 
     @staticmethod
@@ -606,13 +579,10 @@ class Box(object):
         return Box(resPos, resSize)
 
 
-
-_DISTRIBUTION_AXIS = 0 # 2D only
-_ALIGNMENT_AXIS = 1 # 2D only
-
 class FiniteLayout(object): # 2D only
 
-    def __init__(self, content_sizes, viewport_size, orientation, spacing, wrap_individually):
+    def __init__(self, content_sizes, viewport_size, orientation, spacing,
+        wrap_individually, distribution_axis, alignment_axis):
         """ Lays out a finite number of Boxes along the first axis.
         @param content_sizes: The sizes of the Boxes to lay out.
         @param viewport_size: The size of the viewport.
@@ -620,10 +590,13 @@ class FiniteLayout(object): # 2D only
         @param spacing: Number of additional pixels between Boxes.
         @param wrap_individually: True if each content box should get its own
         wrapper box, False if the only wrapper box should be the union of all
-        content boxes. """
+        content boxes.
+        @param distribution_axis: the axis along which the Boxes are distributed.
+        @param alignment_axis: the axis to center. """
         self.scroller = Scrolling()
         self.current_index = -1
-        self._reset(content_sizes, viewport_size, orientation, spacing, wrap_individually)
+        self._reset(content_sizes, viewport_size, orientation, spacing,
+            wrap_individually, distribution_axis, alignment_axis)
 
 
     def set_viewport_position(self, viewport_position):
@@ -650,7 +623,7 @@ class FiniteLayout(object): # 2D only
         if index == None:
             index = self.get_current_index()
         current_box = self.wrapper_boxes[index]
-        o = Box._vector_opposite(self.orientation) if backwards \
+        o = tools.vector_opposite(self.orientation) if backwards \
             else self.orientation
         axis_map = SWAPPED_AXES if swapped_axes else NORMAL_AXES
         new_pos = self.scroller.scroll_smartly(current_box, self.viewport_box,
@@ -659,7 +632,7 @@ class FiniteLayout(object): # 2D only
             index += -1 if backwards else 1
             n = len(self.get_content_boxes())
             if (index < n) and (index >= 0):
-                self.scroll_to_predefined(Box._vector_opposite(o), index)
+                self.scroll_to_predefined(tools.vector_opposite(o), index)
             return index
         self.set_viewport_position(new_pos)
         return index
@@ -721,16 +694,17 @@ class FiniteLayout(object): # 2D only
         return self.orientation
 
 
-    def _reset(self, content_sizes, viewport_size, orientation, spacing, wrap_individually):
+    def _reset(self, content_sizes, viewport_size, orientation, spacing,
+        wrap_individually, distribution_axis, alignment_axis):
         # reverse order if necessary
-        if orientation[_DISTRIBUTION_AXIS] == -1:
+        if orientation[distribution_axis] == -1:
             content_sizes = tuple(reversed(content_sizes))
         temp_cb_list = map(Box, content_sizes)
         # align to center
-        temp_cb_list = Box.align_center(temp_cb_list, _ALIGNMENT_AXIS, 0,
-            orientation[_ALIGNMENT_AXIS])
+        temp_cb_list = Box.align_center(temp_cb_list, alignment_axis, 0,
+            orientation[alignment_axis])
         # distribute
-        temp_cb_list = Box.distribute(temp_cb_list, _DISTRIBUTION_AXIS, 0,
+        temp_cb_list = Box.distribute(temp_cb_list, distribution_axis, 0,
             spacing)
         if wrap_individually:
             temp_wb_list, temp_bb = FiniteLayout._wrap_individually(temp_cb_list, viewport_size, orientation)
@@ -744,7 +718,7 @@ class FiniteLayout(object): # 2D only
             temp_wb_list[i] = temp_wb_list[i].translate_opposite(bbp)
         temp_bb = temp_bb.translate_opposite(bbp)
         # reverse order again, if necessary
-        if orientation[_DISTRIBUTION_AXIS] == -1:
+        if orientation[distribution_axis] == -1:
             temp_cb_list = tuple(reversed(temp_cb_list))
             temp_wb_list = tuple(reversed(temp_wb_list))
         # done
