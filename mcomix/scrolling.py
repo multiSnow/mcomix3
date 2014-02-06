@@ -9,10 +9,6 @@ MANGA_ORIENTATION = (-1, 1) # 2D only
 
 SCROLL_TO_CENTER = -2
 
-NORMAL_AXES = (0, 1) # 2D only
-SWAPPED_AXES = (1, 0) # 2D only
-
-
 
 class Scrolling(object):
 
@@ -595,6 +591,7 @@ class FiniteLayout(object): # 2D only
         @param alignment_axis: the axis to center. """
         self.scroller = Scrolling()
         self.current_index = -1
+        self.wrap_individually = wrap_individually
         self._reset(content_sizes, viewport_size, orientation, spacing,
             wrap_individually, distribution_axis, alignment_axis)
 
@@ -606,34 +603,39 @@ class FiniteLayout(object): # 2D only
         self.dirty_current_index = True
 
 
-    def scroll_smartly(self, max_scroll, backwards=False, swapped_axes=False,
-        index=None):
+    def scroll_smartly(self, max_scroll, backwards, axis_map, index=None):
         """ Applies a "smart scrolling" step to the current viewport position.
         If there are not enough Boxes to scroll to, the viewport is not moved
         and an appropriate value is returned.
         @param max_scroll: The maximum numbers of pixels to scroll in one step.
         @param backwards: True for backwards scrolling, False otherwise.
-        @param swapped_axes: True for swapped axes, False otherwise.
+        @param axis_map: The index of the dimension to modify.
         @param index: The index of the Box the scrolling step is related to,
         or None to use the index of the current Box.
         @return: The index of the current Box after scrolling, or -1 if there
         were not enough Boxes to scroll backwards, or the number of Boxes if
         there were not enough Boxes to scroll forwards. """
         # TODO reconsider interface
-        if index == None:
+        if (index == None) or (not self.wrap_individually):
             index = self.get_current_index()
-        current_box = self.wrapper_boxes[index]
+        if not self.wrap_individually:
+            wrapper_index = 0
+        else:
+            wrapper_index = index
         o = tools.vector_opposite(self.orientation) if backwards \
             else self.orientation
-        axis_map = SWAPPED_AXES if swapped_axes else NORMAL_AXES
-        new_pos = self.scroller.scroll_smartly(current_box, self.viewport_box,
-            o, max_scroll, axis_map)
+        new_pos = self.scroller.scroll_smartly(self.wrapper_boxes[wrapper_index],
+            self.viewport_box, o, max_scroll, axis_map)
         if new_pos == []:
-            index += -1 if backwards else 1
-            n = len(self.get_content_boxes())
-            if (index < n) and (index >= 0):
-                self.scroll_to_predefined(tools.vector_opposite(o), index)
-            return index
+            if self.wrap_individually:
+                index += -1 if backwards else 1
+                n = len(self.get_content_boxes())
+                if (index < n) and (index >= 0):
+                    self.scroll_to_predefined(tools.vector_opposite(o), index)
+                return index
+            else:
+                index = -1 if backwards else len(self.get_content_boxes())
+                return index
         self.set_viewport_position(new_pos)
         return index
 
@@ -649,7 +651,11 @@ class FiniteLayout(object): # 2D only
         or None to use the index of the current Box. """
         if index == None:
             index = self.get_current_index()
-        current_box = self.wrapper_boxes[index]
+        if not self.wrap_individually:
+            wrapper_index = 0
+        else:
+            wrapper_index = index
+        current_box = self.wrapper_boxes[wrapper_index]
         self.set_viewport_position(self.scroller.scroll_to_predefined(
             current_box, self.viewport_box, self.orientation, destination))
 
@@ -707,9 +713,11 @@ class FiniteLayout(object): # 2D only
         temp_cb_list = Box.distribute(temp_cb_list, distribution_axis, 0,
             spacing)
         if wrap_individually:
-            temp_wb_list, temp_bb = FiniteLayout._wrap_individually(temp_cb_list, viewport_size, orientation)
+            temp_wb_list, temp_bb = FiniteLayout._wrap_individually(temp_cb_list,
+                viewport_size, orientation)
         else:
-            temp_wb_list, temp_bb = FiniteLayout._wrap_union(temp_cb_list, viewport_size, orientation)
+            temp_wb_list, temp_bb = FiniteLayout._wrap_union(temp_cb_list,
+                viewport_size, orientation)
         # move to global origin
         bbp = temp_bb.get_position()
         for i in range(len(temp_cb_list)):

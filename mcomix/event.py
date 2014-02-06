@@ -634,171 +634,39 @@ class EventHandler:
 
     def _smart_scroll_down(self, small_step=None):
         """ Smart scrolling. """
-
-        width, height = self._window.get_visible_area_size()
-        distance = prefs['smart scroll percentage']
-
-        if small_step is None:
-            x_step_small = x_step_large = int(width * distance)
-            y_step_small = y_step_large = int(height * distance)
-        else:
-            x_step_small = small_step
-            y_step_small = small_step
-            x_step_large = int(width * distance)
-            y_step_large = int(height * distance)
-
-            if prefs['invert smart scroll']:
-                x_step_small, y_step_small = y_step_small, x_step_small
-                x_step_large, y_step_large = y_step_large, x_step_small
-
-        if self._window.is_manga_mode:
-            x_step_small *= -1
-            x_step_large *= -1
-
-        if not prefs["smart scroll"]:
-            if not self._window.scroll(0, y_step_small):
-                self._next_page_with_protection()
-            return
-
-        if self._window.displayed_double():
-            if self._window.is_on_first_page():
-                last_scroll = self._last_scroll_was_direction_1
-                self._last_scroll_was_direction_1 = self._window.scroll(x_step_small, 0, 'first')
-                if not self._last_scroll_was_direction_1:
-                    scroll_size = last_scroll and y_step_large or y_step_small
-
-                    if not self._window.scroll(0, scroll_size):
-
-                        if not self._window.scroll_to_fixed(
-                          horiz='startsecond'):
-                            self._next_page_with_protection()
-                        else:
-                            self._window.scroll_to_fixed(
-                                    vert='top')
-
-                    else:
-
-                        self._window.scroll_to_fixed(
-                            horiz='startfirst')
-            else:
-                last_scroll = self._last_scroll_was_direction_1
-                self._last_scroll_was_direction_1 = self._window.scroll(x_step_small, 0, 'second')
-                if not self._last_scroll_was_direction_1:
-                    scroll_size = last_scroll and y_step_large or y_step_small
-
-                    if not self._window.scroll(0, scroll_size):
-                        self._next_page_with_protection()
-                    else:
-                        self._window.scroll_to_fixed(
-                            horiz='startsecond')
-        else:
-            # When a double page is displayed, scroll left/right,
-            # then top/bottom
-            if not prefs['invert smart scroll']:
-                last_scroll = self._last_scroll_was_direction_1
-                self._last_scroll_was_direction_1 = self._window.scroll(x_step_small, 0)
-                if not self._last_scroll_was_direction_1:
-                    scroll_size = last_scroll and y_step_large or y_step_small
-                    if not self._window.scroll(0, scroll_size):
-                        self._next_page_with_protection()
-                    else:
-                        self._window.scroll_to_fixed(
-                            horiz='startfirst')
-            # Scroll top/bottom, then left/right
-            else:
-                last_scroll = self._last_scroll_was_direction_1
-                self._last_scroll_was_direction_1 = self._window.scroll(0, y_step_small)
-                if not self._last_scroll_was_direction_1:
-                    scroll_size = last_scroll and x_step_large or x_step_small
-                    if not self._window.scroll(scroll_size, 0):
-                        self._next_page_with_protection()
-                    else:
-                        self._window.scroll_to_fixed(
-                            horiz='startsecond', vert='top')
+        self._smart_scrolling(small_step, False)
 
     def _smart_scroll_up(self, small_step=None):
         """ Reversed smart scrolling. """
+        self._smart_scrolling(small_step, True)
 
-        width, height = self._window.get_visible_area_size()
+    def _smart_scrolling(self, small_step, backwards):
+        # Collect data from the environment
+        viewport_size = self._window.get_visible_area_size()
         distance = prefs['smart scroll percentage']
-
         if small_step is None:
-            x_step_small = x_step_large = int(width * distance)
-            y_step_small = y_step_large = int(height * distance)
+            max_scroll = [distance * viewport_size[0],
+                distance * viewport_size[1]] # 2D only
         else:
-            x_step_small = small_step
-            y_step_small = small_step
-            x_step_large = int(width * distance)
-            y_step_large = int(height * distance)
+            max_scroll = [small_step] * 2 # 2D only
+        swap_axes = constants.SWAPPED_AXES if prefs['invert smart scroll'] \
+            else constants.NORMAL_AXES
+        viewport_position = [int(round(self._window._hadjust.value)),
+            int(round(self._window._vadjust.value))] # XXX self._window.layout should already know this position
+        self._window.layout.set_viewport_position(viewport_position) # XXX self._window.layout should already know this position
 
-            if prefs['invert smart scroll']:
-                x_step_small, y_step_small = y_step_small, x_step_small
-                x_step_large, y_step_large = y_step_large, x_step_small
+        # Scroll to the new position
+        new_index = self._window.layout.scroll_smartly(max_scroll, backwards, swap_axes)
+        n = 2 if self._window.displayed_double() else 1 # XXX limited to at most 2 pages
 
-        if self._window.is_manga_mode:
-            x_step_small *= -1
-            x_step_large *= -1
-
-        if not prefs["smart scroll"]:
-            if not self._window.scroll(0, -y_step_small):
-                self._previous_page_with_protection()
-            return
-
-        if self._window.displayed_double():
-            if self._window.is_on_first_page():
-                last_scroll = self._last_scroll_was_direction_1
-                self._last_scroll_was_direction_1 = self._window.scroll(-x_step_small, 0, 'first')
-                if not self._last_scroll_was_direction_1:
-                    scroll_size = last_scroll and y_step_large or y_step_small
-
-                    if not self._window.scroll(0, -scroll_size):
-                        self._previous_page_with_protection()
-                    else:
-                        self._window.scroll_to_fixed(
-                            horiz='endfirst')
-
-            else:
-                last_scroll = self._last_scroll_was_direction_1
-                self._last_scroll_was_direction_1 = self._window.scroll(-x_step_small, 0, 'second')
-                if not self._last_scroll_was_direction_1:
-                    scroll_size = last_scroll and y_step_large or y_step_small
-
-                    if not self._window.scroll(0, -scroll_size):
-
-                        if not self._window.scroll_to_fixed(
-                          horiz='endfirst'):
-                            self._previous_page_with_protection()
-
-                        else:
-                            self._window.scroll_to_fixed(
-                                vert='bottom')
-
-                    else:
-                        self._window.scroll_to_fixed(
-                            horiz='endsecond')
+        if new_index == -1:
+            self._previous_page_with_protection()
+        elif new_index == n:
+            self._next_page_with_protection()
         else:
-            # When a double page is displayed, scroll left/right,
-            # then top/bottom
-            if not prefs['invert smart scroll']:
-                last_scroll = self._last_scroll_was_direction_1
-                self._last_scroll_was_direction_1 = self._window.scroll(-x_step_small, 0)
-                if not self._last_scroll_was_direction_1:
-                    scroll_size = last_scroll and y_step_large or y_step_small
-                    if not self._window.scroll(0, -scroll_size):
-                        self._previous_page_with_protection()
-                    else:
-                        self._window.scroll_to_fixed(horiz='endfirst')
-            # Scroll top/bottom, then left/right
-            else:
-                last_scroll = self._last_scroll_was_direction_1
-                self._last_scroll_was_direction_1 = self._window.scroll(0, -y_step_small)
-                if not self._last_scroll_was_direction_1:
-                    scroll_size = last_scroll and x_step_large or x_step_small
-                    if not self._window.scroll(-scroll_size, 0):
-                        self._previous_page_with_protection()
-                    else:
-                        self._window.scroll_to_fixed(
-                            horiz='startfirst', vert='bottom')
+            # Update actual viewport
+            self._window.update_viewport_position()
+
 
     def _next_page_with_protection(self):
         """ Advances to the next page. If L{_scroll_protection} is enabled,

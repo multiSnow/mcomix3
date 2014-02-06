@@ -62,6 +62,7 @@ class MainWindow(gtk.Window):
         #: Used to remember if changing to fullscreen enabled 'Hide all'
         self.hide_all_forced = False
 
+        self.layout = _dummy_layout()
         self._spacing = 2
         self._waiting_for_redraw = False
 
@@ -310,6 +311,7 @@ class MainWindow(gtk.Window):
                 enumerate([(x.get_width(), x.get_height()) for x in pixbufs]))
 
             viewport_size = () # dummy
+            expand_area = False
             scrollbar_requests = [False] * len(self._scroll)
             # Visible area size is recomputed depending on scrollbar visibility
             while True:
@@ -326,13 +328,16 @@ class MainWindow(gtk.Window):
                 zoom_dummy_size[distribution_axis] = dasize
                 scaled_sizes = self.zoom.get_zoomed_size(sizes, zoom_dummy_size,
                     distribution_axis)
-                layout = scrolling.FiniteLayout(scaled_sizes, viewport_size,
+                self.layout = scrolling.FiniteLayout(scaled_sizes, viewport_size,
                     scrolling.MANGA_ORIENTATION if self.is_manga_mode
-                    else scrolling.WESTERN_ORIENTATION, self._spacing, False,
-                    distribution_axis, alignment_axis) # XXX replace by ordinary member
-                union_scaled_size = layout.get_union_box().get_size()
+                    else scrolling.WESTERN_ORIENTATION, self._spacing,
+                    expand_area, distribution_axis, alignment_axis)
+                union_scaled_size = self.layout.get_union_box().get_size()
                 scrollbar_requests = map(operator.or_, scrollbar_requests,
                     tools.smaller(viewport_size, union_scaled_size))
+                if len(filter(None, scrollbar_requests)) > 1 and not expand_area:
+                    expand_area = True
+                    viewport_size = () # start anew
 
             for i in range(n):
                 pixbufs[i] = image_tools.fit_pixbuf_to_rectangle(
@@ -367,7 +372,7 @@ class MainWindow(gtk.Window):
 
             #self._image_box.window.freeze_updates() # XXX replacement necessary?
             self._main_layout.set_size(*union_scaled_size)
-            content_boxes = layout.get_content_boxes()
+            content_boxes = self.layout.get_content_boxes()
             for i in range(n):
                 self._main_layout.move(self.images[i],
                     *content_boxes[i].get_position())
@@ -387,6 +392,7 @@ class MainWindow(gtk.Window):
         else:
             # If the pixbuf for the current page(s) isn't available,
             # hide all images to clear any old pixbufs.
+            # XXX How about calling self._clear_main_area?
             for i in range(len(self.images)):
                 self.images[i].hide()
 
@@ -827,31 +833,27 @@ class MainWindow(gtk.Window):
 
         return old_vadjust != new_vadjust or old_hadjust != new_hadjust
 
-    def is_on_first_page(self):
-        """Return True if we are currently viewing the first page, i.e. if we
-        are scrolled as far to the left as possible, or if only the left page
-        is visible on the main layout. In manga mode it is the other way
-        around.
-        """
-        if not self.displayed_double():
-            return True
-        width, height = self.get_visible_area_size()
-        if self.is_manga_mode:
-            return (self._hadjust.get_value() >= self._hadjust.upper - width or
-                self._hadjust.get_value() > self.images[0].size_request()[0]) # XXX transitional(double page limitation)
-        else:
-            return (self._hadjust.get_value() == 0 or
-                self._hadjust.get_value() + width <=
-                self.images[0].size_request()[0]) # XXX transitional(double page limitation)
+    def update_viewport_position(self):
+        viewport_position = self.layout.get_viewport_box().get_position()
+        self._hadjust.set_value(viewport_position[0]) # 2D only
+        self._vadjust.set_value(viewport_position[1]) # 2D only
 
     def clear(self):
         """Clear the currently displayed data (i.e. "close" the file)."""
-        self.images[0].clear() # XXX transitional(double page limitation)
-        self.images[1].clear() # XXX transitional(double page limitation)
+        self._clear_main_area()
         self.set_title(constants.APPNAME)
         self.statusbar.set_message('')
-        self.set_bg_colour(prefs['bg colour'])
         enhance_dialog.clear_histogram()
+
+    def _clear_main_area(self):
+        for i in self.images:
+            i.hide()
+        for i in self.images:
+            i.clear()
+        self._show_scrollbars([False] * len(self._scroll))
+        self.layout = _dummy_layout()
+        self._main_layout.set_size(*self.layout.get_union_box().get_size())
+        self.set_bg_colour(prefs['bg colour'])
 
     def displayed_double(self):
         """Return True if two pages are currently displayed."""
@@ -1118,5 +1120,10 @@ def main_window():
 def set_main_window(window):
     global __main_window
     __main_window = window
+
+
+def _dummy_layout():
+    return scrolling.FiniteLayout(((1,1),), (1,1), (1,1), 0, False, 0, 0)
+
 
 # vim: expandtab:sw=4:ts=4
