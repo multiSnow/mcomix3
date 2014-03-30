@@ -8,6 +8,12 @@ WESTERN_ORIENTATION = (1, 1) # 2D only
 MANGA_ORIENTATION = (-1, 1) # 2D only
 
 SCROLL_TO_CENTER = -2
+SCROLL_TO_START = -3
+SCROLL_TO_END = -4
+
+FIRST_INDEX = 0
+LAST_INDEX = -1
+UNION_INDEX = -2
 
 
 class Scrolling(object):
@@ -134,8 +140,10 @@ class Scrolling(object):
         reading) or -1 (towards smaller values in this dimension when reading).
         @param destination: An integer representing a predefined destination.
         Either 1 (towards the greatest possible values in this dimension),
-        -1 (towards the smallest value in this dimension), 0 (keep position)
-        or SCROLL_TO_CENTER (scroll to the center of the content in this
+        -1 (towards the smallest value in this dimension), 0 (keep position),
+        SCROLL_TO_CENTER (scroll to the center of the content in this
+        dimension), SCROLL_TO_START (scroll to where the content starts in this
+        dimension) or SCROLL_TO_END (scroll to where the content ends in this
         dimension).
         @return: A new viewport position as specified above. """
         content_position = content_box.get_position()
@@ -143,16 +151,21 @@ class Scrolling(object):
         viewport_size = viewport_box.get_size()
         result = list(viewport_box.get_position())
         for i in range(len(content_size)):
+            o = orientation[i]
             d = destination[i]
             if d == 0:
                 continue
-            if d < SCROLL_TO_CENTER or d > 1:
+            if d < SCROLL_TO_END or d > 1:
                 raise ValueError("invalid destination " + d + " at index "+ i)
+            if d == SCROLL_TO_END:
+                d = o
+            if d == SCROLL_TO_START:
+                d = -o
             c = content_size[i]
             v = viewport_size[i]
             invisible_size = c - v
             result[i] = content_position[i] + (Box._box_to_center_offset_1d(
-                invisible_size, orientation[i]) if d == SCROLL_TO_CENTER
+                invisible_size, o) if d == SCROLL_TO_CENTER
                 else invisible_size if d == 1
                 else 0) # if d == -1
         return result
@@ -644,18 +657,26 @@ class FiniteLayout(object): # 2D only
         """ Scrolls the viewport to a predefined destination.
         @param destination: An integer representing a predefined destination.
         Either 1 (towards the greatest possible values in this dimension),
-        -1 (towards the smallest value in this dimension), 0 (keep position)
-        or SCROLL_TO_CENTER (scroll to the center of the content in this
+        -1 (towards the smallest value in this dimension), 0 (keep position),
+        SCROLL_TO_CENTER (scroll to the center of the content in this
+        dimension), SCROLL_TO_START (scroll to where the content starts in this
+        dimension) or SCROLL_TO_END (scroll to where the content ends in this
         dimension).
-        @param index: The index of the Box the scrolling is related to,
-        or None to use the index of the current Box. """
+        @param index: The index of the Box the scrolling is related to, None to
+        use the index of the current Box, or UNION_INDEX to use the union box
+        instead. Note that the current implementation always uses the union box
+        if self.wrap_individually is False. """
+        # FIXME smart scrolling starting from "center" position doesn't respect "current" page if viewport-to-content-difference is either odd or even
         if index == None:
             index = self.get_current_index()
         if not self.wrap_individually:
-            wrapper_index = 0
+            index = UNION_INDEX
+        if index == UNION_INDEX:
+            current_box = self.union_box
         else:
-            wrapper_index = index
-        current_box = self.wrapper_boxes[wrapper_index]
+            if index == LAST_INDEX:
+                index = len(self.content_boxes) - 1
+            current_box = self.wrapper_boxes[index]
         self.set_viewport_position(self.scroller.scroll_to_predefined(
             current_box, self.viewport_box, self.orientation, destination))
 

@@ -6,7 +6,7 @@ import gtk
 import gtk.gdk
 
 from mcomix.preferences import prefs
-from mcomix import constants
+from mcomix import constants, scrolling
 from mcomix import portability
 from mcomix import keybindings
 from mcomix import openwith
@@ -87,42 +87,47 @@ class EventHandler:
         # Numpad (without numlock) aligns the image depending on the key.
         manager.register('scroll_left_bottom',
             ['KP_1'],
-            self._window.scroll_to_fixed,
-            kwargs={'horiz': 'left', 'vert': 'bottom'})
+            self._window.scroll_to_predefined,
+            kwargs={'destination': (-1, 1), 'index': scrolling.UNION_INDEX})
         manager.register('scroll_middle_bottom',
             ['KP_2'],
-            self._window.scroll_to_fixed,
-            kwargs={'horiz': 'middle', 'vert': 'bottom'})
+            self._window.scroll_to_predefined,
+            kwargs={'destination': (scrolling.SCROLL_TO_CENTER, 1),
+                'index': scrolling.UNION_INDEX})
         manager.register('scroll_right_bottom',
             ['KP_3'],
-            self._window.scroll_to_fixed,
-            kwargs={'horiz': 'right', 'vert': 'bottom'})
+            self._window.scroll_to_predefined,
+            kwargs={'destination': (1, 1), 'index': scrolling.UNION_INDEX})
 
         manager.register('scroll_left_middle',
             ['KP_4'],
-            self._window.scroll_to_fixed,
-            kwargs={'horiz': 'left', 'vert': 'middle'})
+            self._window.scroll_to_predefined,
+            kwargs={'destination': (-1, scrolling.SCROLL_TO_CENTER),
+                'index': scrolling.UNION_INDEX})
         manager.register('scroll_middle',
             ['KP_5'],
-            self._window.scroll_to_fixed,
-            kwargs={'horiz': 'middle', 'vert': 'middle'})
+            self._window.scroll_to_predefined,
+            kwargs={'destination': (scrolling.SCROLL_TO_CENTER,
+                scrolling.SCROLL_TO_CENTER), 'index': scrolling.UNION_INDEX})
         manager.register('scroll_right_middle',
             ['KP_6'],
-            self._window.scroll_to_fixed,
-            kwargs={'horiz': 'right', 'vert': 'middle'})
+            self._window.scroll_to_predefined,
+            kwargs={'destination': (1, scrolling.SCROLL_TO_CENTER),
+                'index': scrolling.UNION_INDEX})
 
         manager.register('scroll_left_top',
             ['KP_7'],
-            self._window.scroll_to_fixed,
-            kwargs={'horiz': 'left', 'vert': 'top'})
+            self._window.scroll_to_predefined,
+            kwargs={'destination': (-1, -1), 'index': scrolling.UNION_INDEX})
         manager.register('scroll_middle_top',
             ['KP_8'],
-            self._window.scroll_to_fixed,
-            kwargs={'horiz': 'middle', 'vert': 'top'})
+            self._window.scroll_to_predefined,
+            kwargs={'destination': (scrolling.SCROLL_TO_CENTER, -1),
+                'index': scrolling.UNION_INDEX})
         manager.register('scroll_right_top',
             ['KP_9'],
-            self._window.scroll_to_fixed,
-            kwargs={'horiz': 'right', 'vert': 'top'})
+            self._window.scroll_to_predefined,
+            kwargs={'destination': (1, -1), 'index': scrolling.UNION_INDEX})
 
         # Enter/exit fullscreen.
         manager.register('exit_fullscreen',
@@ -651,9 +656,7 @@ class EventHandler:
             max_scroll = [small_step] * 2 # 2D only
         swap_axes = constants.SWAPPED_AXES if prefs['invert smart scroll'] \
             else constants.NORMAL_AXES
-        viewport_position = [int(round(self._window._hadjust.value)),
-            int(round(self._window._vadjust.value))] # XXX self._window.layout should already know this position
-        self._window.layout.set_viewport_position(viewport_position) # XXX self._window.layout should already know this position
+        self._window.update_layout_position()
 
         # Scroll to the new position
         new_index = self._window.layout.scroll_smartly(max_scroll, backwards, swap_axes)

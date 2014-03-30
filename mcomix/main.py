@@ -384,9 +384,11 @@ class MainWindow(gtk.Window):
 
             if scroll:
                 if at_bottom:
-                    self.scroll_to_fixed(horiz='endsecond', vert='bottom')
+                    self.scroll_to_predefined((scrolling.SCROLL_TO_END,) * 2,
+                        scrolling.LAST_INDEX)
                 else:
-                    self.scroll_to_fixed(horiz='startfirst', vert='top')
+                    self.scroll_to_predefined((scrolling.SCROLL_TO_START,) * 2,
+                        scrolling.FIRST_INDEX)
 
             #self._image_box.window.thaw_updates() # XXX replacement necessary?
         else:
@@ -745,98 +747,18 @@ class MainWindow(gtk.Window):
 
         return old_vadjust != new_vadjust or old_hadjust != new_hadjust
 
-    def scroll_to_fixed(self, horiz=None, vert=None):
-        """Scroll using one of several fixed values.
-
-        If either <horiz> or <vert> is as below, the display is scrolled as
-        follows:
-
-        horiz: 'left'        = left end of display
-               'middle'      = middle of the display
-               'right'       = right end of display
-               'startfirst'  = start of first page
-               'endfirst'    = end of first page
-               'startsecond' = start of second page
-               'endsecond'   = end of second page
-
-        vert:  'top'         = top of display
-               'middle'      = middle of display
-               'bottom'      = bottom of display
-
-        What is considered "start" and "end" depends on whether we are
-        using manga mode or not.
-
-        Return True if call resulted in new adjustment values.
-        """
-        old_hadjust = self._hadjust.get_value()
-        old_vadjust = self._vadjust.get_value()
-        new_vadjust = old_vadjust
-        new_hadjust = old_hadjust
-        visible_width, visible_height = self.get_visible_area_size()
-        vadjust_upper = self._vadjust.upper - visible_height
-        hadjust_upper = self._hadjust.upper - visible_width
-
-        if vert == 'top':
-            new_vadjust = 0
-        elif vert == 'middle':
-            new_vadjust = vadjust_upper / 2
-        elif vert == 'bottom':
-            new_vadjust = vadjust_upper
-
-        if not self.displayed_double():
-            horiz = {'startsecond': 'endfirst',
-                     'endsecond': 'endfirst'}.get(horiz, horiz)
-
-        # Manga transformations.
-        if self.is_manga_mode and self.displayed_double() and horiz is not None:
-            horiz = {'left':        'left',
-                     'middle':      'middle',
-                     'right':       'right',
-                     'startfirst':  'endsecond',
-                     'endfirst':    'startsecond',
-                     'startsecond': 'endfirst',
-                     'endsecond':   'startfirst'}[horiz]
-
-        elif self.is_manga_mode and horiz is not None:
-            horiz = {'left':        'left',
-                     'middle':      'middle',
-                     'right':       'right',
-                     'startfirst':  'endfirst',
-                     'endfirst':    'startfirst'}[horiz]
-
-        if horiz == 'left':
-            new_hadjust = 0
-        elif horiz == 'middle':
-            new_hadjust = hadjust_upper / 2
-        elif horiz == 'right':
-            new_hadjust = hadjust_upper
-        elif horiz == 'startfirst':
-            new_hadjust = 0
-        elif horiz == 'endfirst':
-
-            if self.displayed_double():
-                new_hadjust = self.images[0].size_request()[0] - visible_width # XXX transitional(double page limitation)
-            else:
-                new_hadjust = hadjust_upper
-
-        elif horiz == 'startsecond':
-            new_hadjust = self.images[0].size_request()[0] + 2 # XXX transitional(double page limitation)
-        elif horiz == 'endsecond':
-            new_hadjust = hadjust_upper
-
-        new_hadjust = max(0, new_hadjust)
-        new_vadjust = max(0, new_vadjust)
-        new_hadjust = min(hadjust_upper, new_hadjust)
-        new_vadjust = min(vadjust_upper, new_vadjust)
-        self._vadjust.set_value(new_vadjust)
-        self._hadjust.set_value(new_hadjust)
-
-        return old_vadjust != new_vadjust or old_hadjust != new_hadjust
+    def scroll_to_predefined(self, destination, index=None):
+        self.layout.scroll_to_predefined(destination, index)
+        self.update_viewport_position()
 
     def update_viewport_position(self):
         viewport_position = self.layout.get_viewport_box().get_position()
         self._hadjust.set_value(viewport_position[0]) # 2D only
         self._vadjust.set_value(viewport_position[1]) # 2D only
+
+    def update_layout_position(self):
+        self.layout.set_viewport_position(
+            (int(round(self._hadjust.value)), int(round(self._vadjust.value))))
 
     def clear(self):
         """Clear the currently displayed data (i.e. "close" the file)."""
