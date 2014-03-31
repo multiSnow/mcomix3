@@ -46,7 +46,6 @@ class Scrolling(object):
         # Translate content and viewport so that content position equals origin
         offset = content_box.get_position()
         content_size = content_box.get_size()
-        content_position = [0] * len(offset)
         viewport_position = tools.vector_sub(viewport_box.get_position(), offset)
         viewport_size = viewport_box.get_size()
         # Remap axes
@@ -56,66 +55,90 @@ class Scrolling(object):
                 viewport_size, viewport_position, orientation, max_scroll],
                 axis_map)
 
-        # This code is somewhat similar to a simple ripple-carry adder.
         result = list(viewport_position)
         carry = True
+        reset_all_axes = False
         for i in range(len(content_size)):
-            vs = viewport_size[i]
-            invisible_size = content_size[i] - vs
-
-            if invisible_size <= 0:
-                # There is nothing to do in this dimension. Fast forward.
-                continue
-
+            invisible_size = content_size[i] - viewport_size[i]
             o = orientation[i]
-            ms = min(max_scroll[i], invisible_size)
+            # Find a nice starting point
+            if o == 1:
+                if viewport_position[i] < 0:
+                    result[i] = 0
+                    carry = False
+                    if viewport_position[i] <= -viewport_size[i]:
+                        reset_all_axes = True
+                        break
+            else: # o == -1
+                if viewport_position[i] > invisible_size:
+                    result[i] = invisible_size
+                    carry = False
+                    if viewport_position[i] > content_size[i]:
+                        reset_all_axes = True
+                        break
+        if reset_all_axes:
+            # We don't see anything at all because we are somewhere way before
+            # the content box. Let's go to it.
+            for i in range(len(content_size)):
+                invisible_size = content_size[i] - viewport_size[i]
+                o = orientation[i]
+                if o == 1:
+                    result[i] = 0
+                else: # o == -1
+                    result[i] = invisible_size
 
-            # Let's calculate the grid we want to snap to.
-            if ms != 0:
-                steps_to_take = int(math.ceil(float(invisible_size) / ms))
-            if ms == 0 or steps_to_take >= invisible_size:
-                # special case: We MUST go forward by at least 1 pixel.
-                if o >= 0:
-                    result[i] += 1
-                    carry = result[i] > invisible_size
-                    if carry:
-                        result[i] = 0
-                        continue
+        # This code is somewhat similar to a simple ripple-carry adder.
+        if carry:
+            for i in range(len(content_size)):
+                invisible_size = content_size[i] - viewport_size[i]
+                o = orientation[i]
+                ms = min(max_scroll[i], invisible_size)
+                # Let's calculate the grid we want to snap to.
+                if ms != 0:
+                    steps_to_take = int(math.ceil(float(invisible_size) / ms))
+                if ms == 0 or steps_to_take >= invisible_size:
+                    # special case: We MUST go forward by at least 1 pixel.
+                    if o >= 0:
+                        result[i] += 1
+                        carry = result[i] > invisible_size
+                        if carry:
+                            result[i] = 0
+                            continue
+                    else:
+                        result[i] -= 1
+                        carry = result[i] < 0
+                        if carry:
+                            result[i] = invisible_size
+                            continue
+                    break
+                # If orientation is -1, we need to round half up instead of
+                # half down.
+                positions = self._cached_bs(invisible_size, steps_to_take, o == -1)
+
+                # Where are we now (according to the grid)?
+                index = tools.bin_search(positions, viewport_position[i])
+
+                if index < 0:
+                    # We're somewhere between two valid grid points, so
+                    # let's go to the next one.
+                    index = ~index
+                    if o >= 0:
+                        # index tends to be greater, so we need to go back
+                        # manually, if needed.
+                        index -= 1
+                # Let's go to where we're headed for.
+                index += o
+
+                carry = index < 0 or index >= len(positions)
+                if carry:
+                    # There is no space left in this dimension, so let's go
+                    # back in this one and one step forward in the next one.
+                    result[i] = 0 if o > 0 else invisible_size
                 else:
-                    result[i] -= 1
-                    carry = result[i] < 0
-                    if carry:
-                        result[i] = invisible_size
-                        continue
-                break
-            # If orientation is -1, we need to round half up instead of
-            # half down.
-            positions = self._cached_bs(invisible_size, steps_to_take, o == -1)
-
-            # Where are we now (according to the grid)?
-            index = tools.bin_search(positions, viewport_position[i])
-
-            if index < 0:
-                # We're somewhere between two valid grid points, so
-                # let's go to the next one.
-                index = ~index
-                if o >= 0:
-                    # index tends to be greater, so we need to go back
-                    # manually, if needed.
-                    index -= 1
-            # Let's go to where we're headed for.
-            index += o
-
-            carry = index < 0 or index >= len(positions)
-            if carry:
-                # There is no space left in this dimension, so let's go
-                # back in this one and one step forward in the next one.
-                result[i] = 0 if o > 0 else invisible_size
-            else:
-                # We found a valid grid point in this dimension, so let's
-                # stop here.
-                result[i] = positions[index]
-                break
+                    # We found a valid grid point in this dimension, so let's
+                    # stop here.
+                    result[i] = positions[index]
+                    break
         if carry:
             # No space left.
             return []
@@ -537,7 +560,7 @@ class Box(object):
             v = viewport_size[i]
             result_size[i] = max(c, v)
             result_position[i] = Box._box_to_center_offset_1d(c - result_size[i],
-                -orientation[i]) + position[i]
+                orientation[i]) + position[i]
         return Box(result_position, result_size)
 
 
@@ -666,7 +689,6 @@ class FiniteLayout(object): # 2D only
         use the index of the current Box, or UNION_INDEX to use the union box
         instead. Note that the current implementation always uses the union box
         if self.wrap_individually is False. """
-        # FIXME smart scrolling starting from "center" position doesn't respect "current" page if viewport-to-content-difference is either odd or even
         if index == None:
             index = self.get_current_index()
         if not self.wrap_individually:
