@@ -33,6 +33,7 @@ from mcomix import callback
 from mcomix.library import backend
 from mcomix import scrolling
 from mcomix import tools
+from mcomix import layout
 import math
 import operator
 
@@ -328,9 +329,9 @@ class MainWindow(gtk.Window):
                 zoom_dummy_size[distribution_axis] = dasize
                 scaled_sizes = self.zoom.get_zoomed_size(sizes, zoom_dummy_size,
                     distribution_axis)
-                self.layout = scrolling.FiniteLayout(scaled_sizes, viewport_size,
-                    scrolling.MANGA_ORIENTATION if self.is_manga_mode
-                    else scrolling.WESTERN_ORIENTATION, self._spacing,
+                self.layout = layout.FiniteLayout(scaled_sizes, viewport_size,
+                    constants.MANGA_ORIENTATION if self.is_manga_mode
+                    else constants.WESTERN_ORIENTATION, self._spacing,
                     expand_area, distribution_axis, alignment_axis)
                 union_scaled_size = self.layout.get_union_box().get_size()
                 scrollbar_requests = map(operator.or_, scrollbar_requests,
@@ -384,11 +385,11 @@ class MainWindow(gtk.Window):
 
             if scroll:
                 if at_bottom:
-                    self.scroll_to_predefined((scrolling.SCROLL_TO_END,) * 2,
-                        scrolling.LAST_INDEX)
+                    self.scroll_to_predefined((constants.SCROLL_TO_END,) * 2,
+                        constants.LAST_INDEX)
                 else:
-                    self.scroll_to_predefined((scrolling.SCROLL_TO_START,) * 2,
-                        scrolling.FIRST_INDEX)
+                    self.scroll_to_predefined((constants.SCROLL_TO_START,) * 2,
+                        constants.FIRST_INDEX)
 
             #self._image_box.window.thaw_updates() # XXX replacement necessary?
         else:
@@ -1045,7 +1046,7 @@ def set_main_window(window):
 
 
 def _dummy_layout():
-    return scrolling.FiniteLayout(((1,1),), (1,1), (1,1), 0, False, 0, 0)
+    return layout.FiniteLayout(((1,1),), (1,1), (1,1), 0, False, 0, 0)
 
 
 # vim: expandtab:sw=4:ts=4

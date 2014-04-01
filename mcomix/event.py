@@ -6,7 +6,7 @@ import gtk
 import gtk.gdk
 
 from mcomix.preferences import prefs
-from mcomix import constants, scrolling
+from mcomix import constants
 from mcomix import portability
 from mcomix import keybindings
 from mcomix import openwith
@@ -88,46 +88,46 @@ class EventHandler:
         manager.register('scroll_left_bottom',
             ['KP_1'],
             self._window.scroll_to_predefined,
-            kwargs={'destination': (-1, 1), 'index': scrolling.UNION_INDEX})
+            kwargs={'destination': (-1, 1), 'index': constants.UNION_INDEX})
         manager.register('scroll_middle_bottom',
             ['KP_2'],
             self._window.scroll_to_predefined,
-            kwargs={'destination': (scrolling.SCROLL_TO_CENTER, 1),
-                'index': scrolling.UNION_INDEX})
+            kwargs={'destination': (constants.SCROLL_TO_CENTER, 1),
+                'index': constants.UNION_INDEX})
         manager.register('scroll_right_bottom',
             ['KP_3'],
             self._window.scroll_to_predefined,
-            kwargs={'destination': (1, 1), 'index': scrolling.UNION_INDEX})
+            kwargs={'destination': (1, 1), 'index': constants.UNION_INDEX})
 
         manager.register('scroll_left_middle',
             ['KP_4'],
             self._window.scroll_to_predefined,
-            kwargs={'destination': (-1, scrolling.SCROLL_TO_CENTER),
-                'index': scrolling.UNION_INDEX})
+            kwargs={'destination': (-1, constants.SCROLL_TO_CENTER),
+                'index': constants.UNION_INDEX})
         manager.register('scroll_middle',
             ['KP_5'],
             self._window.scroll_to_predefined,
-            kwargs={'destination': (scrolling.SCROLL_TO_CENTER,
-                scrolling.SCROLL_TO_CENTER), 'index': scrolling.UNION_INDEX})
+            kwargs={'destination': (constants.SCROLL_TO_CENTER,
+                constants.SCROLL_TO_CENTER), 'index': constants.UNION_INDEX})
         manager.register('scroll_right_middle',
             ['KP_6'],
             self._window.scroll_to_predefined,
-            kwargs={'destination': (1, scrolling.SCROLL_TO_CENTER),
-                'index': scrolling.UNION_INDEX})
+            kwargs={'destination': (1, constants.SCROLL_TO_CENTER),
+                'index': constants.UNION_INDEX})
 
         manager.register('scroll_left_top',
             ['KP_7'],
             self._window.scroll_to_predefined,
-            kwargs={'destination': (-1, -1), 'index': scrolling.UNION_INDEX})
+            kwargs={'destination': (-1, -1), 'index': constants.UNION_INDEX})
         manager.register('scroll_middle_top',
             ['KP_8'],
             self._window.scroll_to_predefined,
-            kwargs={'destination': (scrolling.SCROLL_TO_CENTER, -1),
-                'index': scrolling.UNION_INDEX})
+            kwargs={'destination': (constants.SCROLL_TO_CENTER, -1),
+                'index': constants.UNION_INDEX})
         manager.register('scroll_right_top',
             ['KP_9'],
             self._window.scroll_to_predefined,
-            kwargs={'destination': (1, -1), 'index': scrolling.UNION_INDEX})
+            kwargs={'destination': (1, -1), 'index': constants.UNION_INDEX})
 
         # Enter/exit fullscreen.
         manager.register('exit_fullscreen',

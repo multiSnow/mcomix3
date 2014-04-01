@@ -21,7 +21,7 @@ from mcomix import log
 from mcomix import last_read_page
 from mcomix import message_dialog
 from mcomix.library import backend
-from mcomix import scrolling
+
 
 class FileHandler(object):
 
@@ -179,8 +179,8 @@ class FileHandler(object):
             self._window.imagehandler._name_table = self._name_table
 
             self._window.imagehandler.do_cacheing()
-            self._window.scroll_to_predefined((scrolling.SCROLL_TO_START,) * 2,
-                scrolling.FIRST_INDEX)
+            self._window.scroll_to_predefined((constants.SCROLL_TO_START,) * 2,
+                constants.FIRST_INDEX)
 
             self._window.uimanager.set_sensitivities()
             self._window.thumbnailsidebar.load_thumbnails()
@@ -619,7 +619,7 @@ class FileHandler(object):
                     self.close_file()
                     self._window.imagehandler.close()
                     self._window.scroll_to_predefined(
-                        (scrolling.SCROLL_TO_START,) * 2, scrolling.FIRST_INDEX)
+                        (constants.SCROLL_TO_START,) * 2, constants.FIRST_INDEX)
                     self.open_file(path, keep_fileprovider=True)
                     return True
 
@@ -642,7 +642,7 @@ class FileHandler(object):
                     self.close_file()
                     self._window.imagehandler.close()
                     self._window.scroll_to_predefined(
-                        (scrolling.SCROLL_TO_END,) * 2, scrolling.LAST_INDEX)
+                        (constants.SCROLL_TO_END,) * 2, constants.LAST_INDEX)
                     self.open_file(path, -1, keep_fileprovider=True)
                     return True
 
@@ -665,7 +665,7 @@ class FileHandler(object):
                 self.close_file()
                 self._window.imagehandler.close()
                 self._window.scroll_to_predefined(
-                    (scrolling.SCROLL_TO_START,) * 2, scrolling.FIRST_INDEX)
+                    (constants.SCROLL_TO_START,) * 2, constants.FIRST_INDEX)
                 self.open_file(files[0], keep_fileprovider=True)
                 return True
 
@@ -690,7 +690,7 @@ class FileHandler(object):
                 self.close_file()
                 self._window.imagehandler.close()
                 self._window.scroll_to_predefined(
-                    (scrolling.SCROLL_TO_END,) * 2, scrolling.LAST_INDEX)
+                    (constants.SCROLL_TO_END,) * 2, constants.LAST_INDEX)
                 self.open_file(files[-1], -1, keep_fileprovider=True)
                 return True
 
