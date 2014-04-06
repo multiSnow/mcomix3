@@ -31,7 +31,6 @@ from mcomix import bookmark_backend
 from mcomix import message_dialog
 from mcomix import callback
 from mcomix.library import backend
-from mcomix import scrolling
 from mcomix import tools
 from mcomix import layout
 import math

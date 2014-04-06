@@ -26,9 +26,6 @@ class EventHandler:
         self._extra_scroll_events = 0
         #: If True, increment _extra_scroll_events before switchting pages
         self._scroll_protection = False
-        #: If True, the last smart scroll action was in direction 1 (usually
-        #: horizontal). False means that direction 2 was scrolled (vertically)
-        self._last_scroll_was_direction_1 = False
 
     def resize_event(self, widget, event):
         """Handle events from resizing and moving the main window."""
@@ -603,7 +600,6 @@ class EventHandler:
         """
 
         self._scroll_protection = True
-        self._last_scroll_was_direction_1 = False
 
         if self._window.scroll(x, y):
             self._extra_scroll_events = 0
