@@ -8,6 +8,7 @@ import tarfile
 from mcomix import constants
 from mcomix import log
 from mcomix.archive import zip
+from mcomix.archive import zip_external
 from mcomix.archive import rar
 from mcomix.archive import tar
 from mcomix.archive import sevenzip
@@ -51,7 +52,10 @@ def archive_mime_type(path):
                 return None
 
             if zipfile.is_zipfile(path):
-                return constants.ZIP
+                if zip.is_py_supported_zipfile(path):
+                    return constants.ZIP
+                else:
+                    return constants.ZIP_EXTERNAL
 
             fd = open(path, 'rb')
             magic = fd.read(5)
@@ -126,6 +130,11 @@ def get_archive_handler(path):
 
     if mime == constants.ZIP:
         return zip.ZipArchive(path)
+    elif mime == constants.ZIP_EXTERNAL and zip_external.ZipExecArchive.is_available():
+        return zip_external.ZipExecArchive(path)
+    elif mime == constants.ZIP_EXTERNAL and sevenzip.SevenZipArchive.is_available():
+        log.info('Using Sevenzip for unsupported zip archives.')
+        return sevenzip.SevenZipArchive(path)
     elif mime in (constants.TAR, constants.GZIP, constants.BZIP2):
         return tar.TarArchive(path)
     elif mime == constants.RAR and rar.RarArchive.is_available():
