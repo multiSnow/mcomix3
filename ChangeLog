@@ -33,6 +33,9 @@ MComix 1.01
     - MComix can now use the '7z' executable to read .tar.xz and .tar.lzma
       archives.
 
+    - ZIP archives using BZIP2 compression will now fall back to external
+      unzip/7z instead of failing (by Awad Mackie).
+
     - MComix will now use the current GTK theme's icons for
       Next/Previous buttons.
 
