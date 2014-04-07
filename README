@@ -51,7 +51,8 @@
 === Dependencies ==============================================================
 
   MComix needs Python 2.5, Setuptools 0.6, PyGTK 2.12 and PIL (Python
-  Imaging Library) 1.1.5 or newer to function.
+  Imaging Library) 1.1.5 or newer to function. It is possible to use
+  Pillow (an up-to-date fork) as drop-in replacement for PIL.
 
   To use the library you need pysqlite (which is usually included in the
   standard library for Python 2.5 and later).
