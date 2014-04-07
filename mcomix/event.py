@@ -56,6 +56,12 @@ class EventHandler:
         manager.register('next_page',
             ['Page_Down', 'KP_Page_Down'],
             self._flip_page, kwargs={'number_of_pages': 1})
+        manager.register('previous_page_singlestep',
+            ['<Ctrl>Page_Up', '<Ctrl>KP_Page_Up', '<Ctrl>BackSpace'],
+            self._flip_page, kwargs={'number_of_pages': -1, 'single_step': True})
+        manager.register('next_page_singlestep',
+            ['<Ctrl>Page_Down', '<Ctrl>KP_Page_Down'],
+            self._flip_page, kwargs={'number_of_pages': 1, 'single_step': True})
         manager.register('previous_page_dynamic',
             ['<Mod1>Left'],
             self._left_right_page_progress, kwargs={'number_of_pages': -1})
@@ -408,7 +414,7 @@ class EventHandler:
 
         # ---------------------------------------------------------------
         # Register CTRL for scrolling only one page instead of two
-        # pages in double page mode
+        # pages in double page mode. This is mainly for mouse scrolling.
         # ---------------------------------------------------------------
         if event.keyval in (gtk.keysyms.Control_L, gtk.keysyms.Control_R):
             self._window.imagehandler.force_single_step = True
@@ -718,19 +724,26 @@ class EventHandler:
             assert False, "Programmer is moron, incorrect assertion."
 
 
-    def _flip_page(self, number_of_pages):
+    def _flip_page(self, number_of_pages, single_step=False):
+        """ Switches a number of pages forwards/backwards. If C{single_step} is True,
+        the page count will be advanced by only one page even in double page mode. """
         self._extra_scroll_events = 0
+        old_stepping = self._window.imagehandler.force_single_step
+        self._window.imagehandler.force_single_step = old_stepping or single_step
+
         # TODO needs even better abstraction
         if number_of_pages == 1:
             self._window.next_page()
         elif number_of_pages == -1:
             self._window.previous_page()
         elif number_of_pages == 10:
-            self._window.next_page_fast_forward() # XXX wtf
+            self._window.next_page_fast_forward()
         elif number_of_pages == -10:
-            self._window.previous_page_fast_forward() # XXX wtf
+            self._window.previous_page_fast_forward()
         else:
             assert False, "_flip_page(" + str(number_of_pages) + ")"
+
+        self._window.imagehandler.force_single_step = old_stepping
 
 
     def _left_right_page_progress(self, number_of_pages=1):

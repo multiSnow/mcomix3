@@ -43,6 +43,8 @@ BINDING_INFO = {
     'next_page_ff' : { 'title': _('Forward ten pages'), 'group': _('Navigation') },
     'previous_page_dynamic' : { 'title': _('Previous page (dynamic)'), 'group': _('Navigation') },
     'next_page_dynamic' : { 'title': _('Next page (dynamic)'), 'group': _('Navigation') },
+    'previous_page_singlestep': { 'title': _('Previous page (always one page)'), 'group': _('Navigation') },
+    'next_page_singlestep': { 'title': _('Next page (always one page)'), 'group': _('Navigation') },
 
     'first_page' : { 'title': _('First page'), 'group': _('Navigation') },
     'last_page' : { 'title': _('Last page'), 'group': _('Navigation') },
