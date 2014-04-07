@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mcomix 0.99\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2013-07-05 19:57+0200\n"
+"POT-Creation-Date: 2014-04-07 17:44+0200\n"
 "PO-Revision-Date: 2013-01-07 22:51+0200\n"
 "Last-Translator: Isratine Citizen <genghiskhan@gmx.ca>\n"
 "Language-Team: Hebrew <eliz@gnu.org>\n"
@@ -65,7 +65,7 @@ msgstr ""
 "! Could not add file %(sourcefile)s to archive %(archivefile)s, aborting..."
 
 # ! לא ניתן לקרוא את %s
-#: mcomix/archive_tools.py:87
+#: mcomix/archive_tools.py:95
 #, python-format
 msgid "! Could not read %s"
 msgstr "! Could not read %s"
@@ -114,7 +114,7 @@ msgstr "טיפוס"
 msgid "Name"
 msgstr "שם"
 
-#: mcomix/bookmark_dialog.py:53 mcomix/main.py:1142
+#: mcomix/bookmark_dialog.py:53 mcomix/main.py:975
 #: mcomix/library/control_area.py:135
 msgid "Page"
 msgstr "עמוד"
@@ -170,7 +170,7 @@ msgstr "גודל"
 msgid "Remove from archive"
 msgstr "הסר מן ארכיון"
 
-#: mcomix/edit_dialog.py:28 mcomix/keybindings.py:134
+#: mcomix/edit_dialog.py:28 mcomix/keybindings.py:136
 msgid "Edit archive"
 msgstr "עריכת ארכיון"
 
@@ -199,7 +199,7 @@ msgstr "הקבצים הנוכחיים לא הוסרו."
 msgid "Archives are stored as ZIP files."
 msgstr "הארכיונים מאוחסנים כקבציי ZIP."
 
-#: mcomix/enhance_dialog.py:17 mcomix/keybindings.py:136
+#: mcomix/enhance_dialog.py:17 mcomix/keybindings.py:138
 msgid "Enhance image"
 msgstr "שיפור תמונה"
 
@@ -239,7 +239,7 @@ msgid ""
 msgstr ""
 "התאם ניגודיות (הן אפילה והן בהירות) אוטומטית, באופן נפרד עבור כל פס צבע."
 
-#: mcomix/file_chooser_base_dialog.py:43 mcomix/keybindings.py:135
+#: mcomix/file_chooser_base_dialog.py:43 mcomix/keybindings.py:137
 msgid "Open"
 msgstr "פתיחה"
 
@@ -319,7 +319,7 @@ msgstr "תמונות TIFF"
 msgid "BMP images"
 msgstr "תמונות BMP"
 
-#: mcomix/file_handler.py:164 mcomix/file_handler.py:282
+#: mcomix/file_handler.py:165 mcomix/file_handler.py:284
 #, python-format
 msgid "No images in '%s'"
 msgstr "לא קיימות תמונות בתוך '%s'"
@@ -327,27 +327,27 @@ msgstr "לא קיימות תמונות בתוך '%s'"
 # לא ניתן לפתוח את ‫%s: הקובץ אינו קיים.
 # לא ניתן לפתוח את %s\n
 # קובץ לא קיים.
-#: mcomix/file_handler.py:276
+#: mcomix/file_handler.py:278
 #, python-format
 msgid "Could not open %s: No such file."
 msgstr "לא ניתן לפתוח את הקובץ ‫%s: קובץ לא קיים."
 
-#: mcomix/file_handler.py:279 mcomix/file_provider.py:141
+#: mcomix/file_handler.py:281 mcomix/file_provider.py:141
 #, python-format
 msgid "Could not open %s: Permission denied."
 msgstr "לא ניתן לפתוח את הקובץ ‫%s הרשאה נדחתה."
 
-#: mcomix/file_handler.py:287
+#: mcomix/file_handler.py:289
 #, python-format
 msgid "Could not open %s: Unknown file type."
 msgstr "לא ניתן לפתוח את הקובץ ‫%s טיפוס קובץ לא מוכר."
 
-#: mcomix/file_handler.py:483
+#: mcomix/file_handler.py:485
 #, python-format
 msgid "Continue reading from page %d?"
 msgstr "להמשיך לקרוא מעמוד %d?"
 
-#: mcomix/file_handler.py:484
+#: mcomix/file_handler.py:486
 #, python-format
 msgid ""
 "You stopped reading here on %(date)s, %(time)s. If you choose \"Yes\", "
@@ -358,7 +358,7 @@ msgstr ""
 "%(page)d. אחרת, העמוד הראשון יוטען במקום."
 
 # ! קובץ העדפות פגום \"%s\", מוחק כעת...
-#: mcomix/file_handler.py:796
+#: mcomix/file_handler.py:802
 #, python-format
 msgid "! Corrupt preferences file \"%s\", deleting..."
 msgstr ""
@@ -369,12 +369,12 @@ msgid "Invalid path: '%s'"
 msgstr "נתיב שגוי: '%s'"
 
 # ! לא ניתן לטעון את הצלמית \"%s\"
-#: mcomix/icons.py:66
+#: mcomix/icons.py:58
 #, python-format
 msgid "! Could not load icon \"%s\""
 msgstr ""
 
-#: mcomix/image_handler.py:496
+#: mcomix/image_handler.py:494
 msgid "Unknown filetype"
 msgstr "טיפוס קובץ לא מוכר"
 
@@ -389,9 +389,9 @@ msgstr "עמוד קודם"
 
 #: mcomix/keybindings.py:40 mcomix/keybindings.py:41 mcomix/keybindings.py:42
 #: mcomix/keybindings.py:43 mcomix/keybindings.py:44 mcomix/keybindings.py:45
-#: mcomix/keybindings.py:47 mcomix/keybindings.py:48 mcomix/keybindings.py:49
-#: mcomix/keybindings.py:51 mcomix/keybindings.py:52 mcomix/keybindings.py:53
-#: mcomix/keybindings.py:54
+#: mcomix/keybindings.py:46 mcomix/keybindings.py:47 mcomix/keybindings.py:49
+#: mcomix/keybindings.py:50 mcomix/keybindings.py:51 mcomix/keybindings.py:53
+#: mcomix/keybindings.py:54 mcomix/keybindings.py:55 mcomix/keybindings.py:56
 msgid "Navigation"
 msgstr ""
 
@@ -418,360 +418,370 @@ msgstr "עמוד קודם"
 msgid "Next page (dynamic)"
 msgstr "עמוד הבא"
 
-#: mcomix/keybindings.py:47 mcomix/ui.py:43
+#: mcomix/keybindings.py:46
+#, fuzzy
+msgid "Previous page (always one page)"
+msgstr "עמוד קודם"
+
+#: mcomix/keybindings.py:47
+#, fuzzy
+msgid "Next page (always one page)"
+msgstr "עמוד הבא"
+
+#: mcomix/keybindings.py:49 mcomix/ui.py:43
 msgid "First page"
 msgstr "עמוד ראשון"
 
-#: mcomix/keybindings.py:48 mcomix/ui.py:45
+#: mcomix/keybindings.py:50 mcomix/ui.py:45
 msgid "Last page"
 msgstr "עמוד אחרון"
 
-#: mcomix/keybindings.py:49
+#: mcomix/keybindings.py:51
 #, fuzzy
 msgid "Go to page"
 msgstr "לך אל עמוד..."
 
-#: mcomix/keybindings.py:51 mcomix/ui.py:52
+#: mcomix/keybindings.py:53 mcomix/ui.py:52
 msgid "Next archive"
 msgstr "ארכיון הבא"
 
-#: mcomix/keybindings.py:52 mcomix/ui.py:54
+#: mcomix/keybindings.py:54 mcomix/ui.py:54
 msgid "Previous archive"
 msgstr "ארכיון קודם"
 
-#: mcomix/keybindings.py:53 mcomix/ui.py:55 mcomix/ui.py:56
+#: mcomix/keybindings.py:55 mcomix/ui.py:55 mcomix/ui.py:56
 msgid "Next directory"
 msgstr "מדור הבא"
 
-#: mcomix/keybindings.py:54 mcomix/ui.py:57 mcomix/ui.py:58
+#: mcomix/keybindings.py:56 mcomix/ui.py:57 mcomix/ui.py:58
 msgid "Previous directory"
 msgstr "מדור קודם"
 
-#: mcomix/keybindings.py:57
+#: mcomix/keybindings.py:59
 msgid "Scroll to bottom left"
 msgstr "גלילה אל שמאל תחתון"
 
-#: mcomix/keybindings.py:57 mcomix/keybindings.py:58 mcomix/keybindings.py:59
-#: mcomix/keybindings.py:61 mcomix/keybindings.py:62 mcomix/keybindings.py:63
-#: mcomix/keybindings.py:65 mcomix/keybindings.py:66 mcomix/keybindings.py:67
-#: mcomix/keybindings.py:69 mcomix/keybindings.py:70 mcomix/keybindings.py:71
-#: mcomix/keybindings.py:72 mcomix/keybindings.py:74 mcomix/keybindings.py:75
+#: mcomix/keybindings.py:59 mcomix/keybindings.py:60 mcomix/keybindings.py:61
+#: mcomix/keybindings.py:63 mcomix/keybindings.py:64 mcomix/keybindings.py:65
+#: mcomix/keybindings.py:67 mcomix/keybindings.py:68 mcomix/keybindings.py:69
+#: mcomix/keybindings.py:71 mcomix/keybindings.py:72 mcomix/keybindings.py:73
+#: mcomix/keybindings.py:74 mcomix/keybindings.py:76 mcomix/keybindings.py:77
 #: mcomix/preferences_dialog.py:153
 msgid "Scroll"
 msgstr "גלילה"
 
-#: mcomix/keybindings.py:58
+#: mcomix/keybindings.py:60
 msgid "Scroll to bottom center"
 msgstr "גלילה אל מרכז תחתון"
 
-#: mcomix/keybindings.py:59
+#: mcomix/keybindings.py:61
 msgid "Scroll to bottom right"
 msgstr "גלילה אל ימין תחתון"
 
 # שמאל תיכוני
-#: mcomix/keybindings.py:61
+#: mcomix/keybindings.py:63
 msgid "Scroll to middle left"
 msgstr "גלילה אל אמצע שמאל"
 
-#: mcomix/keybindings.py:62
+#: mcomix/keybindings.py:64
 msgid "Scroll to center"
 msgstr "גלילה אל המרכז"
 
 # ימין תיכוני
-#: mcomix/keybindings.py:63
+#: mcomix/keybindings.py:65
 msgid "Scroll to middle right"
 msgstr "גלילה אל אמצע ימין"
 
-#: mcomix/keybindings.py:65
+#: mcomix/keybindings.py:67
 msgid "Scroll to top left"
 msgstr "גלילה אל שמאל עליון"
 
-#: mcomix/keybindings.py:66
+#: mcomix/keybindings.py:68
 msgid "Scroll to top center"
 msgstr "גלילה אל מרכז עליון"
 
-#: mcomix/keybindings.py:67
+#: mcomix/keybindings.py:69
 msgid "Scroll to top right"
 msgstr "גלילה אל ימין עליון"
 
-#: mcomix/keybindings.py:69
+#: mcomix/keybindings.py:71
 msgid "Scroll down"
 msgstr "גלילה מטה"
 
-#: mcomix/keybindings.py:70
+#: mcomix/keybindings.py:72
 msgid "Scroll up"
 msgstr "גלילה מעלה"
 
-#: mcomix/keybindings.py:71
+#: mcomix/keybindings.py:73
 msgid "Scroll right"
 msgstr "גלילה ימינה"
 
-#: mcomix/keybindings.py:72
+#: mcomix/keybindings.py:74
 msgid "Scroll left"
 msgstr "גלילה שמאלה"
 
-#: mcomix/keybindings.py:74
+#: mcomix/keybindings.py:76
 msgid "Smart scroll up"
 msgstr "גלילה חכמה מעלה"
 
-#: mcomix/keybindings.py:75
+#: mcomix/keybindings.py:77
 msgid "Smart scroll down"
 msgstr "גלילה חכמה מטה"
 
-#: mcomix/keybindings.py:78
+#: mcomix/keybindings.py:80
 msgid "Zoom in"
 msgstr "זום פנימה"
 
-#: mcomix/keybindings.py:78 mcomix/keybindings.py:79 mcomix/keybindings.py:80
+#: mcomix/keybindings.py:80 mcomix/keybindings.py:81 mcomix/keybindings.py:82
 #, fuzzy
 msgid "Zoom"
 msgstr "_זום"
 
-#: mcomix/keybindings.py:79
+#: mcomix/keybindings.py:81
 msgid "Zoom out"
 msgstr "זום החוצה"
 
-#: mcomix/keybindings.py:80
+#: mcomix/keybindings.py:82
 msgid "Normal size"
 msgstr "גודל מקורי"
 
-#: mcomix/keybindings.py:82
+#: mcomix/keybindings.py:84
 #, fuzzy
 msgid "Keep transformation"
 msgstr "ה_שאר שינויים"
 
-#: mcomix/keybindings.py:82 mcomix/keybindings.py:83 mcomix/keybindings.py:84
-#: mcomix/keybindings.py:85 mcomix/keybindings.py:86 mcomix/keybindings.py:87
-#: mcomix/keybindings.py:88
+#: mcomix/keybindings.py:84 mcomix/keybindings.py:85 mcomix/keybindings.py:86
+#: mcomix/keybindings.py:87 mcomix/keybindings.py:88 mcomix/keybindings.py:89
+#: mcomix/keybindings.py:90
 #, fuzzy
 msgid "Transformation"
 msgstr "ה_שאר שינויים"
 
 # ימינה
-#: mcomix/keybindings.py:83 mcomix/keybindings.py:90 mcomix/keybindings.py:92
+#: mcomix/keybindings.py:85 mcomix/keybindings.py:92 mcomix/keybindings.py:94
 #, fuzzy
 msgid "Rotate 90 degrees CW"
 msgstr "סובב 90 מעלות _עם כיוון השעון"
 
-#: mcomix/keybindings.py:84
+#: mcomix/keybindings.py:86
 #, fuzzy
 msgid "Rotate 180 degrees"
 msgstr "_סובב 180 מעלות"
 
 # שמאלה
-#: mcomix/keybindings.py:85 mcomix/keybindings.py:91 mcomix/keybindings.py:93
+#: mcomix/keybindings.py:87 mcomix/keybindings.py:93 mcomix/keybindings.py:95
 #, fuzzy
 msgid "Rotate 90 degrees CCW"
 msgstr "סובב 90 מעלות _נגד כיוון השעון"
 
-#: mcomix/keybindings.py:86
+#: mcomix/keybindings.py:88
 #, fuzzy
 msgid "Flip horizontally"
 msgstr "הפוך במאו_זן"
 
-#: mcomix/keybindings.py:87
+#: mcomix/keybindings.py:89
 #, fuzzy
 msgid "Flip vertically"
 msgstr "הפוך במאו_נך"
 
-#: mcomix/keybindings.py:88
+#: mcomix/keybindings.py:90
 msgid "Never autorotate"
 msgstr ""
 
-#: mcomix/keybindings.py:90 mcomix/keybindings.py:91
+#: mcomix/keybindings.py:92 mcomix/keybindings.py:93
 #, fuzzy
 msgid "Autorotate by width"
 msgstr "סובב תמונה _אוטומטית"
 
-#: mcomix/keybindings.py:92 mcomix/keybindings.py:93
+#: mcomix/keybindings.py:94 mcomix/keybindings.py:95
 #, fuzzy
 msgid "Autorotate by height"
 msgstr "סובב תמונה _אוטומטית"
 
-#: mcomix/keybindings.py:95 mcomix/preferences_dialog.py:230 mcomix/ui.py:111
+#: mcomix/keybindings.py:97 mcomix/preferences_dialog.py:230 mcomix/ui.py:111
 msgid "Double page mode"
 msgstr "מצב עמוד כפול"
 
-#: mcomix/keybindings.py:95 mcomix/keybindings.py:96 mcomix/keybindings.py:97
-#: mcomix/keybindings.py:99 mcomix/keybindings.py:100
-#: mcomix/keybindings.py:102 mcomix/keybindings.py:103
+#: mcomix/keybindings.py:97 mcomix/keybindings.py:98 mcomix/keybindings.py:99
+#: mcomix/keybindings.py:101 mcomix/keybindings.py:102
 #: mcomix/keybindings.py:104 mcomix/keybindings.py:105
-#: mcomix/keybindings.py:106
+#: mcomix/keybindings.py:106 mcomix/keybindings.py:107
+#: mcomix/keybindings.py:108
 #, fuzzy
 msgid "View mode"
 msgstr "CLI"
 
 # Tranlated to: Manga mode (Japanese comic brochure)
-#: mcomix/keybindings.py:96 mcomix/ui.py:125
+#: mcomix/keybindings.py:98 mcomix/ui.py:125
 msgid "Manga mode"
 msgstr "מצב מנגה (חוברת קומיקס יפנית)"
 
-#: mcomix/keybindings.py:97 mcomix/ui.py:126
+#: mcomix/keybindings.py:99 mcomix/ui.py:126
 msgid "Invert smart scroll"
 msgstr "היפוך גלילה חכמה"
 
-#: mcomix/keybindings.py:99 mcomix/ui.py:134
+#: mcomix/keybindings.py:101 mcomix/ui.py:134
 msgid "Magnifying lens"
 msgstr "עדשת מגדלת"
 
-#: mcomix/keybindings.py:100 mcomix/ui.py:135
+#: mcomix/keybindings.py:102 mcomix/ui.py:135
 msgid "Stretch small images"
 msgstr "מתח תמונות קטנות"
 
 # ההתאמה הטובה ביותר
-#: mcomix/keybindings.py:102 mcomix/ui.py:143
+#: mcomix/keybindings.py:104 mcomix/ui.py:143
 msgid "Best fit mode"
 msgstr "מצב התאמה מיטבית"
 
-#: mcomix/keybindings.py:103 mcomix/ui.py:145
+#: mcomix/keybindings.py:105 mcomix/ui.py:145
 msgid "Fit width mode"
 msgstr "מצב התאמה לרוחב"
 
-#: mcomix/keybindings.py:104 mcomix/ui.py:147
+#: mcomix/keybindings.py:106 mcomix/ui.py:147
 msgid "Fit height mode"
 msgstr "מצב התאמה לגובה"
 
-#: mcomix/keybindings.py:105
+#: mcomix/keybindings.py:107
 #, fuzzy
 msgid "Fit size mode"
 msgstr "מצב התאמה ל_גודל"
 
-#: mcomix/keybindings.py:106 mcomix/ui.py:151
+#: mcomix/keybindings.py:108 mcomix/ui.py:151
 msgid "Manual zoom mode"
 msgstr "מצב זום ידני"
 
-#: mcomix/keybindings.py:109
+#: mcomix/keybindings.py:111
 msgid "Exit from fullscreen"
 msgstr "צא ממסך מלא"
 
-#: mcomix/keybindings.py:109 mcomix/keybindings.py:111
-#: mcomix/keybindings.py:112 mcomix/keybindings.py:113
+#: mcomix/keybindings.py:111 mcomix/keybindings.py:113
 #: mcomix/keybindings.py:114 mcomix/keybindings.py:115
 #: mcomix/keybindings.py:116 mcomix/keybindings.py:117
 #: mcomix/keybindings.py:118 mcomix/keybindings.py:119
-#: mcomix/keybindings.py:120 mcomix/preferences_dialog.py:356
+#: mcomix/keybindings.py:120 mcomix/keybindings.py:121
+#: mcomix/keybindings.py:122 mcomix/preferences_dialog.py:356
 msgid "User interface"
 msgstr "ממשק משתמש"
 
-#: mcomix/keybindings.py:111
+#: mcomix/keybindings.py:113
 msgid "Show OSD panel"
 msgstr "הצג לוח OSD"
 
-#: mcomix/keybindings.py:112
+#: mcomix/keybindings.py:114
 #, fuzzy
 msgid "Minimize"
 msgstr "_מזער"
 
-#: mcomix/keybindings.py:113 mcomix/preferences_dialog.py:272
+#: mcomix/keybindings.py:115 mcomix/preferences_dialog.py:272
 msgid "Fullscreen"
 msgstr "מסך מלא"
 
-#: mcomix/keybindings.py:114
+#: mcomix/keybindings.py:116
 msgid "Show/hide toolbar"
 msgstr ""
 
-#: mcomix/keybindings.py:115
+#: mcomix/keybindings.py:117
 #, fuzzy
 msgid "Show/hide menubar"
 msgstr "הצג מספרי קבצים"
 
-#: mcomix/keybindings.py:116
+#: mcomix/keybindings.py:118
 #, fuzzy
 msgid "Show/hide statusbar"
 msgstr "שורת _מצב"
 
-#: mcomix/keybindings.py:117
+#: mcomix/keybindings.py:119
 #, fuzzy
 msgid "Show/hide scrollbars"
 msgstr "סרגלי _גלילה"
 
-#: mcomix/keybindings.py:118 mcomix/preferences_dialog.py:89
+#: mcomix/keybindings.py:120 mcomix/preferences_dialog.py:89
 msgid "Thumbnails"
 msgstr "תמונות־ציפורן"
 
-#: mcomix/keybindings.py:119
+#: mcomix/keybindings.py:121
 #, fuzzy
 msgid "Show/hide all"
 msgstr "ה_סתר הכל"
 
-#: mcomix/keybindings.py:120 mcomix/slideshow.py:47 mcomix/ui.py:132
+#: mcomix/keybindings.py:122 mcomix/slideshow.py:47 mcomix/ui.py:132
 msgid "Start slideshow"
 msgstr "התחל מצגת"
 
-#: mcomix/keybindings.py:123
+#: mcomix/keybindings.py:125
 #, fuzzy
 msgid "Delete"
 msgstr "_מחק"
 
-#: mcomix/keybindings.py:123 mcomix/keybindings.py:124
 #: mcomix/keybindings.py:125 mcomix/keybindings.py:126
 #: mcomix/keybindings.py:127 mcomix/keybindings.py:128
-#: mcomix/keybindings.py:130 mcomix/keybindings.py:131
-#: mcomix/keybindings.py:132 mcomix/keybindings.py:134
-#: mcomix/keybindings.py:135 mcomix/keybindings.py:136
-#: mcomix/keybindings.py:137
+#: mcomix/keybindings.py:129 mcomix/keybindings.py:130
+#: mcomix/keybindings.py:132 mcomix/keybindings.py:133
+#: mcomix/keybindings.py:134 mcomix/keybindings.py:136
+#: mcomix/keybindings.py:137 mcomix/keybindings.py:138
+#: mcomix/keybindings.py:139
 #, fuzzy
 msgid "File"
 msgstr "קבצים"
 
-#: mcomix/keybindings.py:124
+#: mcomix/keybindings.py:126
 #, fuzzy
 msgid "Refresh"
 msgstr "_רענן"
 
-#: mcomix/keybindings.py:125
+#: mcomix/keybindings.py:127
 #, fuzzy
 msgid "Close"
 msgstr "_סגור"
 
-#: mcomix/keybindings.py:126
+#: mcomix/keybindings.py:128
 #, fuzzy
 msgid "Quit"
 msgstr "י_ציאה"
 
-#: mcomix/keybindings.py:127
+#: mcomix/keybindings.py:129
 #, fuzzy
 msgid "Save and quit"
 msgstr "_שמור וצא"
 
-#: mcomix/keybindings.py:128
+#: mcomix/keybindings.py:130
 #, fuzzy
 msgid "Save As"
 msgstr "שמור _בשם"
 
-#: mcomix/keybindings.py:130
+#: mcomix/keybindings.py:132
 #, fuzzy
 msgid "Archive comments"
 msgstr "שם ארכיון"
 
-#: mcomix/keybindings.py:131 mcomix/properties_dialog.py:21
+#: mcomix/keybindings.py:133 mcomix/properties_dialog.py:21
 msgid "Properties"
 msgstr "מאפיינים"
 
-#: mcomix/keybindings.py:132 mcomix/preferences_dialog.py:28
+#: mcomix/keybindings.py:134 mcomix/preferences_dialog.py:28
 msgid "Preferences"
 msgstr "העדפות"
 
-#: mcomix/keybindings.py:137 mcomix/library/main_dialog.py:35
+#: mcomix/keybindings.py:139 mcomix/library/main_dialog.py:35
 msgid "Library"
 msgstr "ספרייה"
 
-#: mcomix/keybindings.py:143
+#: mcomix/keybindings.py:145
 #, fuzzy
 msgid "Execute external command"
 msgstr "עריכת פקודות חיצוניות"
 
-#: mcomix/keybindings.py:144
+#: mcomix/keybindings.py:146
 #, fuzzy
 msgid "External commands"
 msgstr "עריכת פקודות חיצוניות"
 
-#: mcomix/keybindings.py:181
+#: mcomix/keybindings.py:183
 #, python-format
 msgid "Keybinding for \"%(action)s\" overrides hotkey for another action."
 msgstr ""
 
-#: mcomix/keybindings.py:290
+#: mcomix/keybindings.py:297
 #, python-format
 msgid "Couldn't load keybindings: %s"
 msgstr ""
@@ -788,20 +798,20 @@ msgstr ""
 msgid "! Could not remove file \"%s\""
 msgstr ""
 
-#: mcomix/main.py:1017
+#: mcomix/main.py:850
 msgid "SLIDESHOW"
 msgstr "מצגת"
 
-#: mcomix/main.py:1078
+#: mcomix/main.py:911
 msgid "Save page as"
 msgstr "שמירת עמוד בשם"
 
-#: mcomix/main.py:1098
+#: mcomix/main.py:931
 #, python-format
 msgid "Delete \"%s\"?"
 msgstr "למחוק את \"%s\"?"
 
-#: mcomix/main.py:1099
+#: mcomix/main.py:932
 msgid "The file will be deleted from your harddisk."
 msgstr "הקובץ יימחק מן הכונן הקשיח שלך."
 
@@ -2166,7 +2176,7 @@ msgid "Please enter the password to continue:"
 msgstr "נא להזין את הסיסמא כדי להמשיך."
 
 # גודלו המחולץ של הקובץ %(filename)s הינו %(actual_size)d בתים, אולם גודלו אמור/צריך להיות %(expected_size)d בתים. הארכיון עשוי להיות פגום או שסוג ארכיון זה אינו נתמך.
-#: mcomix/archive/zip.py:50
+#: mcomix/archive/zip.py:61
 #, python-format
 msgid ""
 "%(filename)s's extracted size is %(actual_size)d bytes, but should be "

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix zh_TW\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2013-07-05 19:58+0200\n"
+"POT-Creation-Date: 2014-04-07 17:44+0200\n"
 "PO-Revision-Date: 2013-07-05 21:37+0800\n"
 "Last-Translator: Wayne Su <mstarmstar@hotmail.com>\n"
 "Language-Team: \n"
@@ -67,7 +67,7 @@ msgid ""
 msgstr ""
 "！ 無法將檔案 %(sourcefile)s 加入壓縮檔 %(archivefile)s 中，正在取消..."
 
-#: mcomix/archive_tools.py:87
+#: mcomix/archive_tools.py:95
 #, python-format
 msgid "! Could not read %s"
 msgstr "！ 無法讀取 %s"
@@ -110,7 +110,7 @@ msgstr "類型"
 msgid "Name"
 msgstr "檔案名稱"
 
-#: mcomix/bookmark_dialog.py:53 mcomix/main.py:1142
+#: mcomix/bookmark_dialog.py:53 mcomix/main.py:975
 #: mcomix/library/control_area.py:135
 msgid "Page"
 msgstr "頁次"
@@ -162,7 +162,7 @@ msgstr "大小"
 msgid "Remove from archive"
 msgstr "從壓縮檔移除"
 
-#: mcomix/edit_dialog.py:28 mcomix/keybindings.py:134
+#: mcomix/edit_dialog.py:28 mcomix/keybindings.py:136
 msgid "Edit archive"
 msgstr "編輯壓縮檔"
 
@@ -190,7 +190,7 @@ msgstr "原始檔案沒有被移除。"
 msgid "Archives are stored as ZIP files."
 msgstr "已儲存為 ZIP 壓縮檔。"
 
-#: mcomix/enhance_dialog.py:17 mcomix/keybindings.py:136
+#: mcomix/enhance_dialog.py:17 mcomix/keybindings.py:138
 msgid "Enhance image"
 msgstr "強化圖片"
 
@@ -228,7 +228,7 @@ msgid ""
 "each colour band."
 msgstr "分別為每個色頻自動調整明暗對比。"
 
-#: mcomix/file_chooser_base_dialog.py:43 mcomix/keybindings.py:135
+#: mcomix/file_chooser_base_dialog.py:43 mcomix/keybindings.py:137
 msgid "Open"
 msgstr "開啟"
 
@@ -307,32 +307,32 @@ msgstr "TIFF 圖片"
 msgid "BMP images"
 msgstr "BMP 圖片"
 
-#: mcomix/file_handler.py:164 mcomix/file_handler.py:282
+#: mcomix/file_handler.py:165 mcomix/file_handler.py:284
 #, python-format
 msgid "No images in '%s'"
 msgstr "%s 裏沒有圖片"
 
-#: mcomix/file_handler.py:276
+#: mcomix/file_handler.py:278
 #, python-format
 msgid "Could not open %s: No such file."
 msgstr "無法開啟 %s：沒有這個檔案。"
 
-#: mcomix/file_handler.py:279 mcomix/file_provider.py:141
+#: mcomix/file_handler.py:281 mcomix/file_provider.py:141
 #, python-format
 msgid "Could not open %s: Permission denied."
 msgstr "無法開啟 %s：沒有權限。"
 
-#: mcomix/file_handler.py:287
+#: mcomix/file_handler.py:289
 #, python-format
 msgid "Could not open %s: Unknown file type."
 msgstr "無法開啟 %s：不明的檔案類型。"
 
-#: mcomix/file_handler.py:483
+#: mcomix/file_handler.py:485
 #, python-format
 msgid "Continue reading from page %d?"
 msgstr "要從第%d頁開始繼續讀嗎？"
 
-#: mcomix/file_handler.py:484
+#: mcomix/file_handler.py:486
 #, python-format
 msgid ""
 "You stopped reading here on %(date)s, %(time)s. If you choose \"Yes\", "
@@ -342,7 +342,7 @@ msgstr ""
 "你在 %(date)s %(time)s 時讀到這裏就停了。如果你選「是」，可以從第 %(page)d 頁"
 "開始讀；否則就會載入第一頁。"
 
-#: mcomix/file_handler.py:796
+#: mcomix/file_handler.py:802
 #, python-format
 msgid "! Corrupt preferences file \"%s\", deleting..."
 msgstr "！ 設定檔 %s 損壞，正在刪除..."
@@ -352,12 +352,12 @@ msgstr "！ 設定檔 %s 損壞，正在刪除..."
 msgid "Invalid path: '%s'"
 msgstr "不正確的路徑：%s"
 
-#: mcomix/icons.py:66
+#: mcomix/icons.py:58
 #, python-format
 msgid "! Could not load icon \"%s\""
 msgstr "！ 無法載入「%s」圖示"
 
-#: mcomix/image_handler.py:496
+#: mcomix/image_handler.py:494
 msgid "Unknown filetype"
 msgstr "不明的檔案類型"
 
@@ -372,9 +372,9 @@ msgstr "上一頁"
 
 #: mcomix/keybindings.py:40 mcomix/keybindings.py:41 mcomix/keybindings.py:42
 #: mcomix/keybindings.py:43 mcomix/keybindings.py:44 mcomix/keybindings.py:45
-#: mcomix/keybindings.py:47 mcomix/keybindings.py:48 mcomix/keybindings.py:49
-#: mcomix/keybindings.py:51 mcomix/keybindings.py:52 mcomix/keybindings.py:53
-#: mcomix/keybindings.py:54
+#: mcomix/keybindings.py:46 mcomix/keybindings.py:47 mcomix/keybindings.py:49
+#: mcomix/keybindings.py:50 mcomix/keybindings.py:51 mcomix/keybindings.py:53
+#: mcomix/keybindings.py:54 mcomix/keybindings.py:55 mcomix/keybindings.py:56
 msgid "Navigation"
 msgstr "導覽"
 
@@ -398,326 +398,336 @@ msgstr "上一頁 (動態)"
 msgid "Next page (dynamic)"
 msgstr "下一頁 (動態)"
 
-#: mcomix/keybindings.py:47 mcomix/ui.py:43
+#: mcomix/keybindings.py:46
+#, fuzzy
+msgid "Previous page (always one page)"
+msgstr "上一頁 (動態)"
+
+#: mcomix/keybindings.py:47
+#, fuzzy
+msgid "Next page (always one page)"
+msgstr "下一頁 (動態)"
+
+#: mcomix/keybindings.py:49 mcomix/ui.py:43
 msgid "First page"
 msgstr "第一頁"
 
-#: mcomix/keybindings.py:48 mcomix/ui.py:45
+#: mcomix/keybindings.py:50 mcomix/ui.py:45
 msgid "Last page"
 msgstr "最後一頁"
 
-#: mcomix/keybindings.py:49
+#: mcomix/keybindings.py:51
 msgid "Go to page"
 msgstr "指定頁數..."
 
-#: mcomix/keybindings.py:51 mcomix/ui.py:52
+#: mcomix/keybindings.py:53 mcomix/ui.py:52
 msgid "Next archive"
 msgstr "下一個壓縮檔"
 
-#: mcomix/keybindings.py:52 mcomix/ui.py:54
+#: mcomix/keybindings.py:54 mcomix/ui.py:54
 msgid "Previous archive"
 msgstr "上一個壓縮檔"
 
-#: mcomix/keybindings.py:53 mcomix/ui.py:55 mcomix/ui.py:56
+#: mcomix/keybindings.py:55 mcomix/ui.py:55 mcomix/ui.py:56
 msgid "Next directory"
 msgstr "下一個目錄"
 
-#: mcomix/keybindings.py:54 mcomix/ui.py:57 mcomix/ui.py:58
+#: mcomix/keybindings.py:56 mcomix/ui.py:57 mcomix/ui.py:58
 msgid "Previous directory"
 msgstr "上一個目錄"
 
-#: mcomix/keybindings.py:57
+#: mcomix/keybindings.py:59
 msgid "Scroll to bottom left"
 msgstr "捲動到底部左側"
 
-#: mcomix/keybindings.py:57 mcomix/keybindings.py:58 mcomix/keybindings.py:59
-#: mcomix/keybindings.py:61 mcomix/keybindings.py:62 mcomix/keybindings.py:63
-#: mcomix/keybindings.py:65 mcomix/keybindings.py:66 mcomix/keybindings.py:67
-#: mcomix/keybindings.py:69 mcomix/keybindings.py:70 mcomix/keybindings.py:71
-#: mcomix/keybindings.py:72 mcomix/keybindings.py:74 mcomix/keybindings.py:75
+#: mcomix/keybindings.py:59 mcomix/keybindings.py:60 mcomix/keybindings.py:61
+#: mcomix/keybindings.py:63 mcomix/keybindings.py:64 mcomix/keybindings.py:65
+#: mcomix/keybindings.py:67 mcomix/keybindings.py:68 mcomix/keybindings.py:69
+#: mcomix/keybindings.py:71 mcomix/keybindings.py:72 mcomix/keybindings.py:73
+#: mcomix/keybindings.py:74 mcomix/keybindings.py:76 mcomix/keybindings.py:77
 #: mcomix/preferences_dialog.py:153
 msgid "Scroll"
 msgstr "捲動"
 
-#: mcomix/keybindings.py:58
+#: mcomix/keybindings.py:60
 msgid "Scroll to bottom center"
 msgstr "捲動到底部中央"
 
-#: mcomix/keybindings.py:59
+#: mcomix/keybindings.py:61
 msgid "Scroll to bottom right"
 msgstr "捲動到底部右側"
 
-#: mcomix/keybindings.py:61
+#: mcomix/keybindings.py:63
 msgid "Scroll to middle left"
 msgstr "捲動到中央左側"
 
-#: mcomix/keybindings.py:62
+#: mcomix/keybindings.py:64
 msgid "Scroll to center"
 msgstr "捲動到正中央"
 
-#: mcomix/keybindings.py:63
+#: mcomix/keybindings.py:65
 msgid "Scroll to middle right"
 msgstr "捲動到中央右側"
 
-#: mcomix/keybindings.py:65
+#: mcomix/keybindings.py:67
 msgid "Scroll to top left"
 msgstr "捲動到頂部左側"
 
-#: mcomix/keybindings.py:66
+#: mcomix/keybindings.py:68
 msgid "Scroll to top center"
 msgstr "捲動到頂部中央"
 
-#: mcomix/keybindings.py:67
+#: mcomix/keybindings.py:69
 msgid "Scroll to top right"
 msgstr "捲動到頂部右側"
 
-#: mcomix/keybindings.py:69
+#: mcomix/keybindings.py:71
 msgid "Scroll down"
 msgstr "下移"
 
-#: mcomix/keybindings.py:70
+#: mcomix/keybindings.py:72
 msgid "Scroll up"
 msgstr "上移"
 
-#: mcomix/keybindings.py:71
+#: mcomix/keybindings.py:73
 msgid "Scroll right"
 msgstr "右移"
 
-#: mcomix/keybindings.py:72
+#: mcomix/keybindings.py:74
 msgid "Scroll left"
 msgstr "左移"
 
-#: mcomix/keybindings.py:74
+#: mcomix/keybindings.py:76
 msgid "Smart scroll up"
 msgstr "智慧型向上捲"
 
-#: mcomix/keybindings.py:75
+#: mcomix/keybindings.py:77
 msgid "Smart scroll down"
 msgstr "智慧型向下捲"
 
-#: mcomix/keybindings.py:78
+#: mcomix/keybindings.py:80
 msgid "Zoom in"
 msgstr "放大"
 
-#: mcomix/keybindings.py:78 mcomix/keybindings.py:79 mcomix/keybindings.py:80
+#: mcomix/keybindings.py:80 mcomix/keybindings.py:81 mcomix/keybindings.py:82
 msgid "Zoom"
 msgstr "縮放"
 
-#: mcomix/keybindings.py:79
+#: mcomix/keybindings.py:81
 msgid "Zoom out"
 msgstr "縮小"
 
-#: mcomix/keybindings.py:80
+#: mcomix/keybindings.py:82
 msgid "Normal size"
 msgstr "正常大小"
 
-#: mcomix/keybindings.py:82
+#: mcomix/keybindings.py:84
 msgid "Keep transformation"
 msgstr "保持形變設定"
 
-#: mcomix/keybindings.py:82 mcomix/keybindings.py:83 mcomix/keybindings.py:84
-#: mcomix/keybindings.py:85 mcomix/keybindings.py:86 mcomix/keybindings.py:87
-#: mcomix/keybindings.py:88
+#: mcomix/keybindings.py:84 mcomix/keybindings.py:85 mcomix/keybindings.py:86
+#: mcomix/keybindings.py:87 mcomix/keybindings.py:88 mcomix/keybindings.py:89
+#: mcomix/keybindings.py:90
 msgid "Transformation"
 msgstr "形變設定"
 
-#: mcomix/keybindings.py:83 mcomix/keybindings.py:90 mcomix/keybindings.py:92
+#: mcomix/keybindings.py:85 mcomix/keybindings.py:92 mcomix/keybindings.py:94
 msgid "Rotate 90 degrees CW"
 msgstr "順時針旋轉 90 度"
 
-#: mcomix/keybindings.py:84
+#: mcomix/keybindings.py:86
 msgid "Rotate 180 degrees"
 msgstr "旋轉 180 度"
 
-#: mcomix/keybindings.py:85 mcomix/keybindings.py:91 mcomix/keybindings.py:93
+#: mcomix/keybindings.py:87 mcomix/keybindings.py:93 mcomix/keybindings.py:95
 msgid "Rotate 90 degrees CCW"
 msgstr "逆時針旋轉 90 度"
 
-#: mcomix/keybindings.py:86
+#: mcomix/keybindings.py:88
 msgid "Flip horizontally"
 msgstr "水平翻轉"
 
-#: mcomix/keybindings.py:87
+#: mcomix/keybindings.py:89
 msgid "Flip vertically"
 msgstr "垂直翻轉"
 
-#: mcomix/keybindings.py:88
+#: mcomix/keybindings.py:90
 msgid "Never autorotate"
 msgstr "永遠不自動旋轉"
 
-#: mcomix/keybindings.py:90 mcomix/keybindings.py:91
+#: mcomix/keybindings.py:92 mcomix/keybindings.py:93
 msgid "Autorotate by width"
 msgstr "依據寬度自動旋轉"
 
-#: mcomix/keybindings.py:92 mcomix/keybindings.py:93
+#: mcomix/keybindings.py:94 mcomix/keybindings.py:95
 msgid "Autorotate by height"
 msgstr "依據高度自動旋轉"
 
-#: mcomix/keybindings.py:95 mcomix/preferences_dialog.py:230 mcomix/ui.py:111
+#: mcomix/keybindings.py:97 mcomix/preferences_dialog.py:230 mcomix/ui.py:111
 msgid "Double page mode"
 msgstr "雙頁模式"
 
-#: mcomix/keybindings.py:95 mcomix/keybindings.py:96 mcomix/keybindings.py:97
-#: mcomix/keybindings.py:99 mcomix/keybindings.py:100
-#: mcomix/keybindings.py:102 mcomix/keybindings.py:103
+#: mcomix/keybindings.py:97 mcomix/keybindings.py:98 mcomix/keybindings.py:99
+#: mcomix/keybindings.py:101 mcomix/keybindings.py:102
 #: mcomix/keybindings.py:104 mcomix/keybindings.py:105
-#: mcomix/keybindings.py:106
+#: mcomix/keybindings.py:106 mcomix/keybindings.py:107
+#: mcomix/keybindings.py:108
 msgid "View mode"
 msgstr "檢視模式"
 
-#: mcomix/keybindings.py:96 mcomix/ui.py:125
+#: mcomix/keybindings.py:98 mcomix/ui.py:125
 msgid "Manga mode"
 msgstr "漫畫模式"
 
-#: mcomix/keybindings.py:97 mcomix/ui.py:126
+#: mcomix/keybindings.py:99 mcomix/ui.py:126
 msgid "Invert smart scroll"
 msgstr "反向智慧型捲動"
 
-#: mcomix/keybindings.py:99 mcomix/ui.py:134
+#: mcomix/keybindings.py:101 mcomix/ui.py:134
 msgid "Magnifying lens"
 msgstr "放大鏡"
 
-#: mcomix/keybindings.py:100 mcomix/ui.py:135
+#: mcomix/keybindings.py:102 mcomix/ui.py:135
 msgid "Stretch small images"
 msgstr "伸展小圖片"
 
-#: mcomix/keybindings.py:102 mcomix/ui.py:143
+#: mcomix/keybindings.py:104 mcomix/ui.py:143
 msgid "Best fit mode"
 msgstr "最佳大小模式"
 
-#: mcomix/keybindings.py:103 mcomix/ui.py:145
+#: mcomix/keybindings.py:105 mcomix/ui.py:145
 msgid "Fit width mode"
 msgstr "符合寬度模式"
 
-#: mcomix/keybindings.py:104 mcomix/ui.py:147
+#: mcomix/keybindings.py:106 mcomix/ui.py:147
 msgid "Fit height mode"
 msgstr "符合高度模式"
 
-#: mcomix/keybindings.py:105
+#: mcomix/keybindings.py:107
 msgid "Fit size mode"
 msgstr "符合大小模式"
 
-#: mcomix/keybindings.py:106 mcomix/ui.py:151
+#: mcomix/keybindings.py:108 mcomix/ui.py:151
 msgid "Manual zoom mode"
 msgstr "手動縮放模式"
 
-#: mcomix/keybindings.py:109
+#: mcomix/keybindings.py:111
 msgid "Exit from fullscreen"
 msgstr "離開全螢幕模式"
 
-#: mcomix/keybindings.py:109 mcomix/keybindings.py:111
-#: mcomix/keybindings.py:112 mcomix/keybindings.py:113
+#: mcomix/keybindings.py:111 mcomix/keybindings.py:113
 #: mcomix/keybindings.py:114 mcomix/keybindings.py:115
 #: mcomix/keybindings.py:116 mcomix/keybindings.py:117
 #: mcomix/keybindings.py:118 mcomix/keybindings.py:119
-#: mcomix/keybindings.py:120 mcomix/preferences_dialog.py:356
+#: mcomix/keybindings.py:120 mcomix/keybindings.py:121
+#: mcomix/keybindings.py:122 mcomix/preferences_dialog.py:356
 msgid "User interface"
 msgstr "使用者介面"
 
-#: mcomix/keybindings.py:111
+#: mcomix/keybindings.py:113
 msgid "Show OSD panel"
 msgstr "顯示嵌入訊息面板"
 
-#: mcomix/keybindings.py:112
+#: mcomix/keybindings.py:114
 msgid "Minimize"
 msgstr "縮到最小"
 
-#: mcomix/keybindings.py:113 mcomix/preferences_dialog.py:272
+#: mcomix/keybindings.py:115 mcomix/preferences_dialog.py:272
 msgid "Fullscreen"
 msgstr "全螢幕"
 
-#: mcomix/keybindings.py:114
+#: mcomix/keybindings.py:116
 msgid "Show/hide toolbar"
 msgstr "顯示/隱藏工具列"
 
-#: mcomix/keybindings.py:115
+#: mcomix/keybindings.py:117
 msgid "Show/hide menubar"
 msgstr "顯示/隱藏選單列"
 
-#: mcomix/keybindings.py:116
+#: mcomix/keybindings.py:118
 msgid "Show/hide statusbar"
 msgstr "顯示/隱藏狀態列"
 
-#: mcomix/keybindings.py:117
+#: mcomix/keybindings.py:119
 msgid "Show/hide scrollbars"
 msgstr "顯示/隱藏捲軸"
 
-#: mcomix/keybindings.py:118 mcomix/preferences_dialog.py:89
+#: mcomix/keybindings.py:120 mcomix/preferences_dialog.py:89
 msgid "Thumbnails"
 msgstr "預覽縮圖"
 
-#: mcomix/keybindings.py:119
+#: mcomix/keybindings.py:121
 msgid "Show/hide all"
 msgstr "全部顯示/隱藏"
 
-#: mcomix/keybindings.py:120 mcomix/slideshow.py:47 mcomix/ui.py:132
+#: mcomix/keybindings.py:122 mcomix/slideshow.py:47 mcomix/ui.py:132
 msgid "Start slideshow"
 msgstr "開始投影片放映"
 
-#: mcomix/keybindings.py:123
+#: mcomix/keybindings.py:125
 msgid "Delete"
 msgstr "刪除"
 
-#: mcomix/keybindings.py:123 mcomix/keybindings.py:124
 #: mcomix/keybindings.py:125 mcomix/keybindings.py:126
 #: mcomix/keybindings.py:127 mcomix/keybindings.py:128
-#: mcomix/keybindings.py:130 mcomix/keybindings.py:131
-#: mcomix/keybindings.py:132 mcomix/keybindings.py:134
-#: mcomix/keybindings.py:135 mcomix/keybindings.py:136
-#: mcomix/keybindings.py:137
+#: mcomix/keybindings.py:129 mcomix/keybindings.py:130
+#: mcomix/keybindings.py:132 mcomix/keybindings.py:133
+#: mcomix/keybindings.py:134 mcomix/keybindings.py:136
+#: mcomix/keybindings.py:137 mcomix/keybindings.py:138
+#: mcomix/keybindings.py:139
 msgid "File"
 msgstr "檔案"
 
-#: mcomix/keybindings.py:124
+#: mcomix/keybindings.py:126
 msgid "Refresh"
 msgstr "重新整理"
 
-#: mcomix/keybindings.py:125
+#: mcomix/keybindings.py:127
 msgid "Close"
 msgstr "關閉"
 
-#: mcomix/keybindings.py:126
+#: mcomix/keybindings.py:128
 msgid "Quit"
 msgstr "離開"
 
-#: mcomix/keybindings.py:127
+#: mcomix/keybindings.py:129
 msgid "Save and quit"
 msgstr "儲存後離開"
 
-#: mcomix/keybindings.py:128
+#: mcomix/keybindings.py:130
 msgid "Save As"
 msgstr "另存為"
 
-#: mcomix/keybindings.py:130
+#: mcomix/keybindings.py:132
 msgid "Archive comments"
 msgstr "壓縮檔註解"
 
-#: mcomix/keybindings.py:131 mcomix/properties_dialog.py:21
+#: mcomix/keybindings.py:133 mcomix/properties_dialog.py:21
 msgid "Properties"
 msgstr "屬性"
 
-#: mcomix/keybindings.py:132 mcomix/preferences_dialog.py:28
+#: mcomix/keybindings.py:134 mcomix/preferences_dialog.py:28
 msgid "Preferences"
 msgstr "偏好設定"
 
-#: mcomix/keybindings.py:137 mcomix/library/main_dialog.py:35
+#: mcomix/keybindings.py:139 mcomix/library/main_dialog.py:35
 msgid "Library"
 msgstr "書庫"
 
-#: mcomix/keybindings.py:143
+#: mcomix/keybindings.py:145
 msgid "Execute external command"
 msgstr "執行外部指令"
 
-#: mcomix/keybindings.py:144
+#: mcomix/keybindings.py:146
 msgid "External commands"
 msgstr "外部指令"
 
-#: mcomix/keybindings.py:181
+#: mcomix/keybindings.py:183
 #, python-format
 msgid "Keybinding for \"%(action)s\" overrides hotkey for another action."
 msgstr "以「%(action)s」功能的快速鍵替換掉原有功能。"
 
-#: mcomix/keybindings.py:290
+#: mcomix/keybindings.py:297
 #, python-format
 msgid "Couldn't load keybindings: %s"
 msgstr "無法載入快速鍵設定：%s"
@@ -732,20 +742,20 @@ msgstr "！ 無法找到 pysqlite2 或 sqlite3。"
 msgid "! Could not remove file \"%s\""
 msgstr "！ 無法移除檔案 %s"
 
-#: mcomix/main.py:1017
+#: mcomix/main.py:850
 msgid "SLIDESHOW"
 msgstr "投影片放映"
 
-#: mcomix/main.py:1078
+#: mcomix/main.py:911
 msgid "Save page as"
 msgstr "頁面另存為"
 
-#: mcomix/main.py:1098
+#: mcomix/main.py:931
 #, python-format
 msgid "Delete \"%s\"?"
 msgstr "要刪除 %s ？"
 
-#: mcomix/main.py:1099
+#: mcomix/main.py:932
 msgid "The file will be deleted from your harddisk."
 msgstr "檔案將會從你的硬碟中刪除。"
 
@@ -2019,7 +2029,7 @@ msgstr "這個壓縮檔有密碼保護。"
 msgid "Please enter the password to continue:"
 msgstr "請輸入密碼才能繼續："
 
-#: mcomix/archive/zip.py:50
+#: mcomix/archive/zip.py:61
 #, python-format
 msgid ""
 "%(filename)s's extracted size is %(actual_size)d bytes, but should be "

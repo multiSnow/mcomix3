@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: comix 4.0.1\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2013-07-05 19:57+0200\n"
+"POT-Creation-Date: 2014-04-07 17:44+0200\n"
 "PO-Revision-Date: 2008-12-13 18:00+0100\n"
 "Last-Translator: Adrian C. <anrxc@sysphere.org>\n"
 "Language-Team: Croatian\n"
@@ -59,7 +59,7 @@ msgid ""
 "! Could not add file %(sourcefile)s to archive %(archivefile)s, aborting..."
 msgstr ""
 
-#: mcomix/archive_tools.py:87
+#: mcomix/archive_tools.py:95
 #, python-format
 msgid "! Could not read %s"
 msgstr ""
@@ -108,7 +108,7 @@ msgstr "Ime"
 
 #
 # File: src/bookmark.py, line: 256
-#: mcomix/bookmark_dialog.py:53 mcomix/main.py:1142
+#: mcomix/bookmark_dialog.py:53 mcomix/main.py:975
 #: mcomix/library/control_area.py:135
 msgid "Page"
 msgstr "Stranica"
@@ -179,7 +179,7 @@ msgstr "Ukloni iz arhive"
 
 #
 # File: src/edit.py, line: 28
-#: mcomix/edit_dialog.py:28 mcomix/keybindings.py:134
+#: mcomix/edit_dialog.py:28 mcomix/keybindings.py:136
 msgid "Edit archive"
 msgstr "Uredi arhivu"
 
@@ -221,7 +221,7 @@ msgstr "Arhive se spremaju kao ZIP datoteke."
 
 #
 # File: src/enhance.py, line: 51
-#: mcomix/enhance_dialog.py:17 mcomix/keybindings.py:136
+#: mcomix/enhance_dialog.py:17 mcomix/keybindings.py:138
 msgid "Enhance image"
 msgstr "Poboljšaj sliku"
 
@@ -281,7 +281,7 @@ msgstr ""
 #
 # File: src/filechooser.py, line: 35
 # File: src/library.py, line: 489
-#: mcomix/file_chooser_base_dialog.py:43 mcomix/keybindings.py:135
+#: mcomix/file_chooser_base_dialog.py:43 mcomix/keybindings.py:137
 msgid "Open"
 msgstr "Otvori"
 
@@ -400,38 +400,38 @@ msgstr "PNG slike"
 
 #
 # File: src/filehandler.py, line: 285
-#: mcomix/file_handler.py:164 mcomix/file_handler.py:282
+#: mcomix/file_handler.py:165 mcomix/file_handler.py:284
 #, python-format
 msgid "No images in '%s'"
 msgstr "Nema slika u '%s'"
 
 #
 # File: src/filehandler.py, line: 213
-#: mcomix/file_handler.py:276
+#: mcomix/file_handler.py:278
 #, python-format
 msgid "Could not open %s: No such file."
 msgstr "Nemoguće otvoriti %s: Datoteka ne postoji."
 
 #
 # File: src/filehandler.py, line: 217
-#: mcomix/file_handler.py:279 mcomix/file_provider.py:141
+#: mcomix/file_handler.py:281 mcomix/file_provider.py:141
 #, python-format
 msgid "Could not open %s: Permission denied."
 msgstr "Nemoguće otvoriti %s: Pristup odbijen."
 
 #
 # File: src/filehandler.py, line: 222
-#: mcomix/file_handler.py:287
+#: mcomix/file_handler.py:289
 #, python-format
 msgid "Could not open %s: Unknown file type."
 msgstr "Nemoguće otvoriti %s: Nepoznat tip datoteke."
 
-#: mcomix/file_handler.py:483
+#: mcomix/file_handler.py:485
 #, python-format
 msgid "Continue reading from page %d?"
 msgstr ""
 
-#: mcomix/file_handler.py:484
+#: mcomix/file_handler.py:486
 #, python-format
 msgid ""
 "You stopped reading here on %(date)s, %(time)s. If you choose \"Yes\", "
@@ -439,7 +439,7 @@ msgid ""
 "loaded."
 msgstr ""
 
-#: mcomix/file_handler.py:796
+#: mcomix/file_handler.py:802
 #, python-format
 msgid "! Corrupt preferences file \"%s\", deleting..."
 msgstr ""
@@ -449,14 +449,14 @@ msgstr ""
 msgid "Invalid path: '%s'"
 msgstr ""
 
-#: mcomix/icons.py:66
+#: mcomix/icons.py:58
 #, python-format
 msgid "! Could not load icon \"%s\""
 msgstr ""
 
 #
 # File: src/filehandler.py, line: 411
-#: mcomix/image_handler.py:496
+#: mcomix/image_handler.py:494
 msgid "Unknown filetype"
 msgstr "Nepoznat tip datoteke"
 
@@ -473,9 +473,9 @@ msgstr "Prethodna stranica"
 
 #: mcomix/keybindings.py:40 mcomix/keybindings.py:41 mcomix/keybindings.py:42
 #: mcomix/keybindings.py:43 mcomix/keybindings.py:44 mcomix/keybindings.py:45
-#: mcomix/keybindings.py:47 mcomix/keybindings.py:48 mcomix/keybindings.py:49
-#: mcomix/keybindings.py:51 mcomix/keybindings.py:52 mcomix/keybindings.py:53
-#: mcomix/keybindings.py:54
+#: mcomix/keybindings.py:46 mcomix/keybindings.py:47 mcomix/keybindings.py:49
+#: mcomix/keybindings.py:50 mcomix/keybindings.py:51 mcomix/keybindings.py:53
+#: mcomix/keybindings.py:54 mcomix/keybindings.py:55 mcomix/keybindings.py:56
 msgid "Navigation"
 msgstr ""
 
@@ -511,262 +511,276 @@ msgid "Next page (dynamic)"
 msgstr "Sljedeća stranica"
 
 #
+# File: src/ui.py, line: 284
+#: mcomix/keybindings.py:46
+#, fuzzy
+msgid "Previous page (always one page)"
+msgstr "Prethodna stranica"
+
+#
+# File: src/ui.py, line: 285
+#: mcomix/keybindings.py:47
+#, fuzzy
+msgid "Next page (always one page)"
+msgstr "Sljedeća stranica"
+
+#
 # File: src/ui.py, line: 282
-#: mcomix/keybindings.py:47 mcomix/ui.py:43
+#: mcomix/keybindings.py:49 mcomix/ui.py:43
 msgid "First page"
 msgstr "Prva stranica"
 
 #
 # File: src/ui.py, line: 286
-#: mcomix/keybindings.py:48 mcomix/ui.py:45
+#: mcomix/keybindings.py:50 mcomix/ui.py:45
 msgid "Last page"
 msgstr "Zadnja stranica"
 
 #
 # File: src/ui.py, line: 285
-#: mcomix/keybindings.py:49
+#: mcomix/keybindings.py:51
 #, fuzzy
 msgid "Go to page"
 msgstr "Sljedeća stranica"
 
 #
 # File: src/edit.py, line: 28
-#: mcomix/keybindings.py:51 mcomix/ui.py:52
+#: mcomix/keybindings.py:53 mcomix/ui.py:52
 #, fuzzy
 msgid "Next archive"
 msgstr "Uredi arhivu"
 
 #
 # File: src/ui.py, line: 284
-#: mcomix/keybindings.py:52 mcomix/ui.py:54
+#: mcomix/keybindings.py:54 mcomix/ui.py:54
 #, fuzzy
 msgid "Previous archive"
 msgstr "Prethodna stranica"
 
-#: mcomix/keybindings.py:53 mcomix/ui.py:55 mcomix/ui.py:56
+#: mcomix/keybindings.py:55 mcomix/ui.py:55 mcomix/ui.py:56
 msgid "Next directory"
 msgstr ""
 
-#: mcomix/keybindings.py:54 mcomix/ui.py:57 mcomix/ui.py:58
+#: mcomix/keybindings.py:56 mcomix/ui.py:57 mcomix/ui.py:58
 msgid "Previous directory"
 msgstr ""
 
-#: mcomix/keybindings.py:57
+#: mcomix/keybindings.py:59
 msgid "Scroll to bottom left"
 msgstr ""
 
 #
 # File: src/preferences.py, line: 167
-#: mcomix/keybindings.py:57 mcomix/keybindings.py:58 mcomix/keybindings.py:59
-#: mcomix/keybindings.py:61 mcomix/keybindings.py:62 mcomix/keybindings.py:63
-#: mcomix/keybindings.py:65 mcomix/keybindings.py:66 mcomix/keybindings.py:67
-#: mcomix/keybindings.py:69 mcomix/keybindings.py:70 mcomix/keybindings.py:71
-#: mcomix/keybindings.py:72 mcomix/keybindings.py:74 mcomix/keybindings.py:75
+#: mcomix/keybindings.py:59 mcomix/keybindings.py:60 mcomix/keybindings.py:61
+#: mcomix/keybindings.py:63 mcomix/keybindings.py:64 mcomix/keybindings.py:65
+#: mcomix/keybindings.py:67 mcomix/keybindings.py:68 mcomix/keybindings.py:69
+#: mcomix/keybindings.py:71 mcomix/keybindings.py:72 mcomix/keybindings.py:73
+#: mcomix/keybindings.py:74 mcomix/keybindings.py:76 mcomix/keybindings.py:77
 #: mcomix/preferences_dialog.py:153
 msgid "Scroll"
 msgstr "Pomicanje"
 
-#: mcomix/keybindings.py:58
+#: mcomix/keybindings.py:60
 msgid "Scroll to bottom center"
 msgstr ""
 
-#: mcomix/keybindings.py:59
+#: mcomix/keybindings.py:61
 msgid "Scroll to bottom right"
 msgstr ""
 
-#: mcomix/keybindings.py:61
+#: mcomix/keybindings.py:63
 msgid "Scroll to middle left"
 msgstr ""
 
-#: mcomix/keybindings.py:62
+#: mcomix/keybindings.py:64
 msgid "Scroll to center"
 msgstr ""
 
-#: mcomix/keybindings.py:63
+#: mcomix/keybindings.py:65
 msgid "Scroll to middle right"
 msgstr ""
 
-#: mcomix/keybindings.py:65
+#: mcomix/keybindings.py:67
 msgid "Scroll to top left"
 msgstr ""
 
-#: mcomix/keybindings.py:66
+#: mcomix/keybindings.py:68
 msgid "Scroll to top center"
 msgstr ""
 
-#: mcomix/keybindings.py:67
+#: mcomix/keybindings.py:69
 msgid "Scroll to top right"
 msgstr ""
 
-#: mcomix/keybindings.py:69
+#: mcomix/keybindings.py:71
 msgid "Scroll down"
 msgstr ""
 
-#: mcomix/keybindings.py:70
+#: mcomix/keybindings.py:72
 msgid "Scroll up"
 msgstr ""
 
-#: mcomix/keybindings.py:71
+#: mcomix/keybindings.py:73
 msgid "Scroll right"
 msgstr ""
 
-#: mcomix/keybindings.py:72
+#: mcomix/keybindings.py:74
 msgid "Scroll left"
 msgstr ""
 
-#: mcomix/keybindings.py:74
+#: mcomix/keybindings.py:76
 msgid "Smart scroll up"
 msgstr ""
 
-#: mcomix/keybindings.py:75
+#: mcomix/keybindings.py:77
 msgid "Smart scroll down"
 msgstr ""
 
-#: mcomix/keybindings.py:78
+#: mcomix/keybindings.py:80
 msgid "Zoom in"
 msgstr ""
 
 #
 # File: src/ui.py, line: 42
-#: mcomix/keybindings.py:78 mcomix/keybindings.py:79 mcomix/keybindings.py:80
+#: mcomix/keybindings.py:80 mcomix/keybindings.py:81 mcomix/keybindings.py:82
 #, fuzzy
 msgid "Zoom"
 msgstr "_Uvećaj"
 
-#: mcomix/keybindings.py:79
+#: mcomix/keybindings.py:81
 msgid "Zoom out"
 msgstr ""
 
-#: mcomix/keybindings.py:80
+#: mcomix/keybindings.py:82
 msgid "Normal size"
 msgstr ""
 
 #
 # File: src/ui.py, line: 93
-#: mcomix/keybindings.py:82
+#: mcomix/keybindings.py:84
 #, fuzzy
 msgid "Keep transformation"
 msgstr "_Zadrži transformaciju"
 
 #
 # File: src/ui.py, line: 93
-#: mcomix/keybindings.py:82 mcomix/keybindings.py:83 mcomix/keybindings.py:84
-#: mcomix/keybindings.py:85 mcomix/keybindings.py:86 mcomix/keybindings.py:87
-#: mcomix/keybindings.py:88
+#: mcomix/keybindings.py:84 mcomix/keybindings.py:85 mcomix/keybindings.py:86
+#: mcomix/keybindings.py:87 mcomix/keybindings.py:88 mcomix/keybindings.py:89
+#: mcomix/keybindings.py:90
 #, fuzzy
 msgid "Transformation"
 msgstr "_Zadrži transformaciju"
 
 #
 # File: src/ui.py, line: 52
-#: mcomix/keybindings.py:83 mcomix/keybindings.py:90 mcomix/keybindings.py:92
+#: mcomix/keybindings.py:85 mcomix/keybindings.py:92 mcomix/keybindings.py:94
 #, fuzzy
 msgid "Rotate 90 degrees CW"
 msgstr "_Okreni za 90 stupnjeva u smjeru kazaljke na satu"
 
 #
 # File: src/ui.py, line: 54
-#: mcomix/keybindings.py:84
+#: mcomix/keybindings.py:86
 #, fuzzy
 msgid "Rotate 180 degrees"
 msgstr "Okreni za 180 _stupnjeva"
 
 #
 # File: src/ui.py, line: 56
-#: mcomix/keybindings.py:85 mcomix/keybindings.py:91 mcomix/keybindings.py:93
+#: mcomix/keybindings.py:87 mcomix/keybindings.py:93 mcomix/keybindings.py:95
 #, fuzzy
 msgid "Rotate 90 degrees CCW"
 msgstr "Okre_ni za 90 stupnjeva obrnuto od smjera kazaljke na satu"
 
 #
 # File: src/ui.py, line: 58
-#: mcomix/keybindings.py:86
+#: mcomix/keybindings.py:88
 #, fuzzy
 msgid "Flip horizontally"
 msgstr "Okreni _vodoravno"
 
 #
 # File: src/ui.py, line: 60
-#: mcomix/keybindings.py:87
+#: mcomix/keybindings.py:89
 #, fuzzy
 msgid "Flip vertically"
 msgstr "Okreni _okomito"
 
-#: mcomix/keybindings.py:88
+#: mcomix/keybindings.py:90
 msgid "Never autorotate"
 msgstr ""
 
-#: mcomix/keybindings.py:90 mcomix/keybindings.py:91
+#: mcomix/keybindings.py:92 mcomix/keybindings.py:93
 msgid "Autorotate by width"
 msgstr ""
 
-#: mcomix/keybindings.py:92 mcomix/keybindings.py:93
+#: mcomix/keybindings.py:94 mcomix/keybindings.py:95
 msgid "Autorotate by height"
 msgstr ""
 
 #
 # File: src/preferences.py, line: 177
 # File: src/ui.py, line: 296
-#: mcomix/keybindings.py:95 mcomix/preferences_dialog.py:230 mcomix/ui.py:111
+#: mcomix/keybindings.py:97 mcomix/preferences_dialog.py:230 mcomix/ui.py:111
 msgid "Double page mode"
 msgstr "Prikaz dvostrukih stranica"
 
 #
 # File: src/preferences.py, line: 263
 # File: src/ui.py, line: 290
-#: mcomix/keybindings.py:95 mcomix/keybindings.py:96 mcomix/keybindings.py:97
-#: mcomix/keybindings.py:99 mcomix/keybindings.py:100
-#: mcomix/keybindings.py:102 mcomix/keybindings.py:103
+#: mcomix/keybindings.py:97 mcomix/keybindings.py:98 mcomix/keybindings.py:99
+#: mcomix/keybindings.py:101 mcomix/keybindings.py:102
 #: mcomix/keybindings.py:104 mcomix/keybindings.py:105
-#: mcomix/keybindings.py:106
+#: mcomix/keybindings.py:106 mcomix/keybindings.py:107
+#: mcomix/keybindings.py:108
 #, fuzzy
 msgid "View mode"
 msgstr "Prilagodi širini"
 
 #
 # File: src/ui.py, line: 297
-#: mcomix/keybindings.py:96 mcomix/ui.py:125
+#: mcomix/keybindings.py:98 mcomix/ui.py:125
 msgid "Manga mode"
 msgstr "Manga prikaz"
 
-#: mcomix/keybindings.py:97 mcomix/ui.py:126
+#: mcomix/keybindings.py:99 mcomix/ui.py:126
 msgid "Invert smart scroll"
 msgstr ""
 
 #
 # File: src/ui.py, line: 298
-#: mcomix/keybindings.py:99 mcomix/ui.py:134
+#: mcomix/keybindings.py:101 mcomix/ui.py:134
 msgid "Magnifying lens"
 msgstr "Povećalo"
 
-#: mcomix/keybindings.py:100 mcomix/ui.py:135
+#: mcomix/keybindings.py:102 mcomix/ui.py:135
 msgid "Stretch small images"
 msgstr ""
 
 #
 # File: src/preferences.py, line: 262
 # File: src/ui.py, line: 288
-#: mcomix/keybindings.py:102 mcomix/ui.py:143
+#: mcomix/keybindings.py:104 mcomix/ui.py:143
 msgid "Best fit mode"
 msgstr "Najbolje pristajanje"
 
 #
 # File: src/preferences.py, line: 263
 # File: src/ui.py, line: 290
-#: mcomix/keybindings.py:103 mcomix/ui.py:145
+#: mcomix/keybindings.py:105 mcomix/ui.py:145
 msgid "Fit width mode"
 msgstr "Prilagodi širini"
 
 #
 # File: src/preferences.py, line: 264
 # File: src/ui.py, line: 292
-#: mcomix/keybindings.py:104 mcomix/ui.py:147
+#: mcomix/keybindings.py:106 mcomix/ui.py:147
 msgid "Fit height mode"
 msgstr "Prilagodi visini"
 
 #
 # File: src/ui.py, line: 103
-#: mcomix/keybindings.py:105
+#: mcomix/keybindings.py:107
 #, fuzzy
 msgid "Fit size mode"
 msgstr "Pri_lagodi širini"
@@ -774,170 +788,170 @@ msgstr "Pri_lagodi širini"
 #
 # File: src/preferences.py, line: 265
 # File: src/ui.py, line: 294
-#: mcomix/keybindings.py:106 mcomix/ui.py:151
+#: mcomix/keybindings.py:108 mcomix/ui.py:151
 msgid "Manual zoom mode"
 msgstr "Ručno uvećanje"
 
-#: mcomix/keybindings.py:109
+#: mcomix/keybindings.py:111
 msgid "Exit from fullscreen"
 msgstr ""
 
-#: mcomix/keybindings.py:109 mcomix/keybindings.py:111
-#: mcomix/keybindings.py:112 mcomix/keybindings.py:113
+#: mcomix/keybindings.py:111 mcomix/keybindings.py:113
 #: mcomix/keybindings.py:114 mcomix/keybindings.py:115
 #: mcomix/keybindings.py:116 mcomix/keybindings.py:117
 #: mcomix/keybindings.py:118 mcomix/keybindings.py:119
-#: mcomix/keybindings.py:120 mcomix/preferences_dialog.py:356
+#: mcomix/keybindings.py:120 mcomix/keybindings.py:121
+#: mcomix/keybindings.py:122 mcomix/preferences_dialog.py:356
 msgid "User interface"
 msgstr ""
 
-#: mcomix/keybindings.py:111
+#: mcomix/keybindings.py:113
 msgid "Show OSD panel"
 msgstr ""
 
-#: mcomix/keybindings.py:112
+#: mcomix/keybindings.py:114
 msgid "Minimize"
 msgstr ""
 
 #
 # File: src/preferences.py, line: 271
-#: mcomix/keybindings.py:113 mcomix/preferences_dialog.py:272
+#: mcomix/keybindings.py:115 mcomix/preferences_dialog.py:272
 msgid "Fullscreen"
 msgstr "Cijeli zaslon"
 
-#: mcomix/keybindings.py:114
+#: mcomix/keybindings.py:116
 msgid "Show/hide toolbar"
 msgstr ""
 
-#: mcomix/keybindings.py:115
+#: mcomix/keybindings.py:117
 msgid "Show/hide menubar"
 msgstr ""
 
 #
 # File: src/ui.py, line: 83
-#: mcomix/keybindings.py:116
+#: mcomix/keybindings.py:118
 #, fuzzy
 msgid "Show/hide statusbar"
 msgstr "S_tanje"
 
 #
 # File: src/ui.py, line: 85
-#: mcomix/keybindings.py:117
+#: mcomix/keybindings.py:119
 #, fuzzy
 msgid "Show/hide scrollbars"
 msgstr "Kli_zači"
 
 #
 # File: src/preferences.py, line: 109
-#: mcomix/keybindings.py:118 mcomix/preferences_dialog.py:89
+#: mcomix/keybindings.py:120 mcomix/preferences_dialog.py:89
 msgid "Thumbnails"
 msgstr "Sličice"
 
 #
 # File: src/ui.py, line: 89
-#: mcomix/keybindings.py:119
+#: mcomix/keybindings.py:121
 #, fuzzy
 msgid "Show/hide all"
 msgstr "_Sakrij sve"
 
 #
 # File: src/preferences.py, line: 279
-#: mcomix/keybindings.py:120 mcomix/slideshow.py:47 mcomix/ui.py:132
+#: mcomix/keybindings.py:122 mcomix/slideshow.py:47 mcomix/ui.py:132
 #, fuzzy
 msgid "Start slideshow"
 msgstr "Prezentacija"
 
-#: mcomix/keybindings.py:123
+#: mcomix/keybindings.py:125
 msgid "Delete"
 msgstr ""
 
 #
 # File: src/preferences.py, line: 196
-#: mcomix/keybindings.py:123 mcomix/keybindings.py:124
 #: mcomix/keybindings.py:125 mcomix/keybindings.py:126
 #: mcomix/keybindings.py:127 mcomix/keybindings.py:128
-#: mcomix/keybindings.py:130 mcomix/keybindings.py:131
-#: mcomix/keybindings.py:132 mcomix/keybindings.py:134
-#: mcomix/keybindings.py:135 mcomix/keybindings.py:136
-#: mcomix/keybindings.py:137
+#: mcomix/keybindings.py:129 mcomix/keybindings.py:130
+#: mcomix/keybindings.py:132 mcomix/keybindings.py:133
+#: mcomix/keybindings.py:134 mcomix/keybindings.py:136
+#: mcomix/keybindings.py:137 mcomix/keybindings.py:138
+#: mcomix/keybindings.py:139
 #, fuzzy
 msgid "File"
 msgstr "Datoteke"
 
 #
 # File: src/edit.py, line: 51
-#: mcomix/keybindings.py:124
+#: mcomix/keybindings.py:126
 #, fuzzy
 msgid "Refresh"
 msgstr "Druge datoteke"
 
 #
 # File: src/ui.py, line: 48
-#: mcomix/keybindings.py:125
+#: mcomix/keybindings.py:127
 #, fuzzy
 msgid "Close"
 msgstr "_Zatvori"
 
 #
 # File: src/ui.py, line: 50
-#: mcomix/keybindings.py:126
+#: mcomix/keybindings.py:128
 #, fuzzy
 msgid "Quit"
 msgstr "_Izlaz"
 
-#: mcomix/keybindings.py:127
+#: mcomix/keybindings.py:129
 msgid "Save and quit"
 msgstr ""
 
 #
 # File: src/filechooser.py, line: 39
-#: mcomix/keybindings.py:128
+#: mcomix/keybindings.py:130
 #, fuzzy
 msgid "Save As"
 msgstr "Spremi"
 
 #
 # File: src/properties.py, line: 135
-#: mcomix/keybindings.py:130
+#: mcomix/keybindings.py:132
 #, fuzzy
 msgid "Archive comments"
 msgstr "Arhiva"
 
 #
 # File: src/properties.py, line: 89
-#: mcomix/keybindings.py:131 mcomix/properties_dialog.py:21
+#: mcomix/keybindings.py:133 mcomix/properties_dialog.py:21
 msgid "Properties"
 msgstr "Svojstva"
 
 #
 # File: src/preferences.py, line: 78
-#: mcomix/keybindings.py:132 mcomix/preferences_dialog.py:28
+#: mcomix/keybindings.py:134 mcomix/preferences_dialog.py:28
 msgid "Preferences"
 msgstr "Postavke"
 
 #
 # File: src/library.py, line: 38
-#: mcomix/keybindings.py:137 mcomix/library/main_dialog.py:35
+#: mcomix/keybindings.py:139 mcomix/library/main_dialog.py:35
 msgid "Library"
 msgstr "Biblioteka"
 
-#: mcomix/keybindings.py:143
+#: mcomix/keybindings.py:145
 msgid "Execute external command"
 msgstr ""
 
 #
 # File: src/bookmark.py, line: 229
-#: mcomix/keybindings.py:144
+#: mcomix/keybindings.py:146
 #, fuzzy
 msgid "External commands"
 msgstr "Uredi oznake"
 
-#: mcomix/keybindings.py:181
+#: mcomix/keybindings.py:183
 #, python-format
 msgid "Keybinding for \"%(action)s\" overrides hotkey for another action."
 msgstr ""
 
-#: mcomix/keybindings.py:290
+#: mcomix/keybindings.py:297
 #, python-format
 msgid "Couldn't load keybindings: %s"
 msgstr ""
@@ -954,20 +968,20 @@ msgstr ""
 
 #
 # File: src/main.py, line: 666
-#: mcomix/main.py:1017
+#: mcomix/main.py:850
 msgid "SLIDESHOW"
 msgstr "PREZENTACIJA"
 
-#: mcomix/main.py:1078
+#: mcomix/main.py:911
 msgid "Save page as"
 msgstr ""
 
-#: mcomix/main.py:1098
+#: mcomix/main.py:931
 #, python-format
 msgid "Delete \"%s\"?"
 msgstr ""
 
-#: mcomix/main.py:1099
+#: mcomix/main.py:932
 msgid "The file will be deleted from your harddisk."
 msgstr ""
 
@@ -2601,7 +2615,7 @@ msgstr ""
 msgid "Please enter the password to continue:"
 msgstr ""
 
-#: mcomix/archive/zip.py:50
+#: mcomix/archive/zip.py:61
 #, python-format
 msgid ""
 "%(filename)s's extracted size is %(actual_size)d bytes, but should be "
