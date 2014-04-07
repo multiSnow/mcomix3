@@ -19,6 +19,8 @@ MComix 1.01
     - The ALT+Left and ALT+Right keys will now either advance one page,
       or go back one page, depending on the user being in manga mode.
 
+    - CTRL plus mouse wheel will now zoom in/out one level.
+
     - Manual zooming will now use a logarithmic scale instead of a linear
       spline.
 

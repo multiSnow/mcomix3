@@ -460,13 +460,17 @@ class EventHandler:
         self._scroll_protection = True
 
         if event.direction == gtk.gdk.SCROLL_UP:
-            if prefs['smart scroll']:
+            if event.state & gtk.gdk.CONTROL_MASK:
+                self._window.manual_zoom_in()
+            elif prefs['smart scroll']:
                 self._smart_scroll_up(prefs['number of pixels to scroll per mouse wheel event'])
             else:
                 self._scroll_with_flipping(0, -prefs['number of pixels to scroll per mouse wheel event'])
 
         elif event.direction == gtk.gdk.SCROLL_DOWN:
-            if prefs['smart scroll']:
+            if event.state & gtk.gdk.CONTROL_MASK:
+                self._window.manual_zoom_out()
+            elif prefs['smart scroll']:
                 self._smart_scroll_down(prefs['number of pixels to scroll per mouse wheel event'])
             else:
                 self._scroll_with_flipping(0, prefs['number of pixels to scroll per mouse wheel event'])
