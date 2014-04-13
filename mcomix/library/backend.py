@@ -34,7 +34,7 @@ class _LibraryBackend:
 
     #: Current version of the library database structure.
     # See method _upgrade_database() for changes between versions.
-    DB_VERSION = 5
+    DB_VERSION = 6
 
     def __init__(self):
 
@@ -598,14 +598,30 @@ class _LibraryBackend:
                 lastread = last_read_page.LastReadPage(self)
                 lastread.migrate_database_to_library(COLLECTION_RECENT)
 
+            if 5 in upgrades:
+                # Changed all 'string' columns into 'text' columns
+                self._con.execute('''alter table book rename to book_old''')
+                self._create_table_book()
+                self._con.execute('''insert into book
+                    (id, name, path, pages, format, size, added)
+                    select id, name, path, pages, format, size, added from book_old''')
+                self._con.execute('''drop table book_old''')
+
+                self._con.execute('''alter table collection rename to collection_old''')
+                self._create_table_collection()
+                self._con.execute('''insert into collection
+                    (id, name, supercollection)
+                    select id, name, supercollection from collection_old''')
+                self._con.execute('''drop table collection_old''')
+
             self._con.execute('''update info set value = ? where key = 'version' ''',
                               (str(_LibraryBackend.DB_VERSION),))
 
     def _create_table_book(self):
         self._con.execute('''create table if not exists book (
             id integer primary key,
-            name string,
-            path string unique,
+            name text,
+            path text unique,
             pages integer,
             format integer,
             size integer,
@@ -614,7 +630,7 @@ class _LibraryBackend:
     def _create_table_collection(self):
         self._con.execute('''create table if not exists collection (
             id integer primary key,
-            name string unique,
+            name text unique,
             supercollection integer)''')
 
     def _create_table_contain(self):
