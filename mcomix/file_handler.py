@@ -472,8 +472,6 @@ class FileHandler(object):
         """ If the user read an archive previously, ask to continue from
         that time, or from page 1. This method returns a page index, that is,
         index + 1. """
-        print path
-        
         if (isinstance(path, list) and len(path) > 0
             and isinstance(path[0], (str, unicode))):
             path = path[0]
