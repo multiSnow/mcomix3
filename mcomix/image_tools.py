@@ -5,7 +5,6 @@ import os
 import operator
 import itertools
 import bisect
-import math
 import gtk
 import PIL.Image as Image
 import PIL.ImageEnhance as ImageEnhance
@@ -102,19 +101,6 @@ def fit_in_rectangle(src, width, height, scale_up=False, rotation=0):
     elif rotation == 270:
         src = src.rotate_simple(gtk.gdk.PIXBUF_ROTATE_COUNTERCLOCKWISE)
     return src
-
-
-def get_double_page_rectangle(width_1, height_1, width_2, height_2):
-    h1 = float(height_1)
-    w1 = float(width_1)
-    h2 = float(height_2)
-    w2 = float(width_2)
-    target_tan = h2 * h1 / (w1*h2 + h1*w2)
-
-    height = max(height_1, height_2)
-    width = int(math.floor(height / target_tan)) + 2 # 2px between pages
-
-    return width, height
 
 
 def add_border(pixbuf, thickness, colour=0x000000FF):
