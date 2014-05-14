@@ -271,6 +271,8 @@ class MainWindow(gtk.Window):
         if show_library:
             self.actiongroup.get_action('library').activate()
 
+        self.cursor_handler.auto_hide_on()
+
     def gained_focus(self, *args):
         self.is_in_focus = True
 
@@ -568,7 +570,6 @@ class MainWindow(gtk.Window):
         self.is_fullscreen = toggleaction.get_active()
         if self.is_fullscreen:
             self.fullscreen()
-            self.cursor_handler.auto_hide_on()
 
             if (prefs['hide all in fullscreen'] and
                 not prefs['hide all']):
@@ -577,7 +578,6 @@ class MainWindow(gtk.Window):
                 self.change_hide_all()
         else:
             self.unfullscreen()
-            self.cursor_handler.auto_hide_off()
 
             if (prefs['hide all in fullscreen'] and
                 prefs['hide all'] and
