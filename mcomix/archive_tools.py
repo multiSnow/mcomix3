@@ -13,6 +13,7 @@ from mcomix.archive import rar
 from mcomix.archive import tar
 from mcomix.archive import sevenzip
 from mcomix.archive import lha
+from mcomix.archive import pdf
 
 def szip_available():
     return sevenzip.SevenZipArchive.is_available()
@@ -37,6 +38,9 @@ def get_supported_archive_regex():
 
     if lha_available():
         formats.extend(constants.LHA_FORMATS[1])
+
+    if pdf.PdfArchive.is_available():
+        formats.extend(constants.PDF_FORMATS[1])
 
     # Strip leading glob characters "*." from file extensions
     formats = [format[2:] for format in formats]
@@ -88,8 +92,8 @@ def archive_mime_type(path):
             elif magic[2:] == '-l':
                 return constants.LHA
 
-            #if magic[0:4] == '%PDF':
-            #    return constants.PDF
+            if magic[0:4] == '%PDF':
+               return constants.PDF
 
     except Exception:
         log.warning(_('! Could not read %s'), path)
@@ -149,6 +153,8 @@ def get_archive_handler(path):
     elif mime == constants.LHA and sevenzip.SevenZipArchive.is_available():
         log.info('Using Sevenzip for LHA archives.')
         return sevenzip.SevenZipArchive(path)
+    elif mime == constants.PDF and pdf.PdfArchive.is_available():
+        return pdf.PdfArchive(path)
     else:
         return None
 

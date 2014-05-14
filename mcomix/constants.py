@@ -82,6 +82,9 @@ SZIP_FORMATS = (
 LHA_FORMATS = (
         ('application/x-lzh', 'application/x-lha', 'application/x-lzh-compressed'),
         ('*.lha', '*.lzh'))
+PDF_FORMATS = (
+        ('application/pdf',),
+        ('*.pdf',))
 
 
 
