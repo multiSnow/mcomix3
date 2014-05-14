@@ -70,6 +70,9 @@
   substitute for both "unrar" and "lha", but extraction of Unicode filenames
   on Windows will be broken in that case.
 
+  To read PDF files, MComix can use the tools provided by mupdf, namely
+  mutool and mudraw.
+
 === Credits ===================================================================
 
   Thanks to everyone who have contributed translations, suggestions, bug

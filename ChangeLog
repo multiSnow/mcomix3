@@ -44,6 +44,9 @@ MComix 1.01
     - ZIP archives using BZIP2 compression will now fall back to external
       unzip/7z instead of failing (by Awad Mackie).
 
+    - MComix can now read PDF files using tools provided by mupdf,
+      namely mutool and mudraw. (by Benoit Pierre)
+
     - MComix will now use the current GTK theme's icons for
       Next/Previous buttons.
 
