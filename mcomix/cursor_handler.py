@@ -64,14 +64,20 @@ class CursorHandler:
         if self._auto_hide:
             self.set_cursor_type(self._current_cursor)
 
+    def _on_timeout(self):
+        mode = self._get_hidden_cursor()
+        self._window.set_cursor(mode)
+        self._timer_id = None
+        return False
+
     def _set_hide_timer(self):
         self._kill_timer()
-        self._timer_id = gobject.timeout_add(2000, self._window.set_cursor,
-            self._get_hidden_cursor())
+        self._timer_id = gobject.timeout_add(2000, self._on_timeout)
 
     def _kill_timer(self):
         if self._timer_id is not None:
             gobject.source_remove(self._timer_id)
+            self._timer_id = None
 
     def _get_hidden_cursor(self):
         pixmap = gtk.gdk.Pixmap(None, 1, 1, 1)

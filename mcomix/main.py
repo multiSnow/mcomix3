@@ -831,7 +831,6 @@ class MainWindow(gtk.Window):
         directly.
         """
         self._main_layout.window.set_cursor(mode)
-        return False
 
     def update_title(self):
         """Set the title acording to current state."""
