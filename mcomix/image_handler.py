@@ -3,6 +3,7 @@
 import os
 import threading
 import gtk
+import Queue
 
 from mcomix.preferences import prefs
 from mcomix import i18n
@@ -12,6 +13,7 @@ from mcomix import thumbnail_tools
 from mcomix import constants
 from mcomix import callback
 from mcomix import log
+from mcomix.worker_thread import WorkerThread
 
 class ImageHandler:
 
@@ -31,17 +33,8 @@ class ImageHandler:
         #: Reference to main window
         self._window = window
 
-        #: First index of last pixbuf cache run
-        self.first_wanted = 0
-        #: Last index of last pixbuf cache run
-        self.last_wanted = 1
-
-        #: Pixbufs are currently being cached
-        self.is_cacheing = False
-        #: Interrupts the cacheing thread if True
-        self._stop_cacheing = False
         #: Caching thread
-        self._thread = None
+        self._thread = WorkerThread(self._cache_pixbuf, sort_orders=True)
 
         #: Archive path, if currently opened file is archive
         self._base_path = None
@@ -49,6 +42,10 @@ class ImageHandler:
         self._image_files = None
         #: Index of current page
         self._current_image_index = None
+        #: Set of images reading for decoding (i.e. already extracted)
+        self._available_images = set()
+        #: List of pixbufs we want to cache
+        self._wanted_pixbufs = []
         #: Pixbuf map from page > Pixbuf
         self._raw_pixbufs = {}
         #: How many pages to keep in cache
@@ -74,7 +71,7 @@ class ImageHandler:
                 tools.garbage_collect()
             except Exception, e:
                 self._raw_pixbufs[index] = constants.MISSING_IMAGE_ICON
-                log.debug('Could not load pixbuf for page %d: %r', index, e)
+                log.error('Could not load pixbuf for page %u: %r', index + 1, e)
         else:
             try:
                 pixbuf = self._raw_pixbufs[index]
@@ -119,77 +116,30 @@ class ImageHandler:
         after the current page. All other pixbufs are deleted and garbage
         collected directly in order to save memory.
         """
-        if not self._window.filehandler.file_loaded or self.is_cacheing:
+        if not self._window.filehandler.file_loaded:
             return
 
-        self.is_cacheing = True
-        self._stop_cacheing = False
-
+        # Flush caching orders.
+        self._thread.clear_orders()
         # Get list of wanted pixbufs.
-        first_wanted = self._current_image_index
-        last_wanted = first_wanted + 1
-        last_wanted += 1
+        wanted_pixbufs = self._ask_for_pages(self.get_current_page())
+        if -1 != self._cache_pages:
+            # We're not caching everything, remove old pixbufs.
+            for index in set(self._raw_pixbufs) - set(wanted_pixbufs):
+                del self._raw_pixbufs[index]
+        log.debug('Caching page(s) %s', ' '.join([str(index + 1) for index in wanted_pixbufs]))
+        self._wanted_pixbufs = wanted_pixbufs
+        # Start caching available images not already in cache.
+        wanted_pixbufs = [index for index in wanted_pixbufs
+                          if index in self._available_images and not index in self._raw_pixbufs]
+        orders = [(priority, index) for priority, index in enumerate(wanted_pixbufs)]
+        if len(orders) > 0:
+            self._thread.extend_orders(orders)
 
-        if self._cache_pages != 0:
-            first_wanted -= self._get_backward_step_length()
-            last_wanted += self._get_forward_step_length()
-
-            # if the max pages to cache is -1 then cache
-            # the entire comic book
-            if self._cache_pages == -1 or self.get_number_of_pages() <= self._cache_pages:
-                first_wanted = 0
-                last_wanted = self.get_number_of_pages()
-
-            elif self.get_number_of_pages() > self._cache_pages:
-
-                # only cache the max number of pages to cache
-                half_cache = (self._cache_pages / 2) - 1
-                first_wanted = max(0, first_wanted - half_cache)
-                last_wanted = min(self.get_number_of_pages() - 1, \
-                                last_wanted + (self._cache_pages - (last_wanted - first_wanted)) )
-
-                if (last_wanted - first_wanted) < self._cache_pages:
-                    if last_wanted == self.get_number_of_pages() - 1:
-                        first_wanted -= self._cache_pages - (last_wanted - first_wanted)
-
-        first_wanted = max(0, first_wanted)
-        last_wanted = min(self.get_number_of_pages() - 1, last_wanted)
-
-        # if the pages to be put into cache have not changed then there is nothing
-        # to do and no pages would be released
-        if ((self.first_wanted == first_wanted) and (self.last_wanted == last_wanted)):
-            self.is_cacheing = False
-            return
-        else:
-            self.first_wanted = first_wanted
-            self.last_wanted = last_wanted
-
-        wanted_pixbufs = range(first_wanted, last_wanted)
-
-        # Remove old pixbufs.
-        for page in set(self._raw_pixbufs) - set(wanted_pixbufs):
-            del self._raw_pixbufs[page]
-
-        self.thread_cache_new_pixbufs(wanted_pixbufs)
-
-    def thread_cache_new_pixbufs(self, wanted_pixbufs):
-        """Start threaded cache loading.
-        """
-        self._thread = threading.Thread(target=self.cache_new_pixbufs, args=(wanted_pixbufs,))
-        self._thread.setDaemon(False)
-        self._thread.start()
-
-    def cache_new_pixbufs(self, wanted_pixbufs):
-        """Cache new pixbufs if they are not already cached.
-        """
-        for wanted in wanted_pixbufs:
-
-            if not self._stop_cacheing:
-                self._get_pixbuf(wanted)
-            else:
-                break
-
-        self.is_cacheing = False
+    def _cache_pixbuf(self, wanted):
+        priority, index = wanted
+        log.debug('Caching page %u', index + 1)
+        self._get_pixbuf(index)
 
     def next_page(self):
         """Set up filehandler to the next page. Return the new page number.
@@ -329,6 +279,7 @@ class ImageHandler:
         self._base_path = None
         self._image_files = []
         self._current_image_index = None
+        self._available_images.clear()
         self._raw_pixbufs.clear()
         self._cache_pages = prefs['max pages to cache']
 
@@ -336,12 +287,7 @@ class ImageHandler:
 
     def cleanup(self):
         """Run clean-up tasks. Should be called prior to exit."""
-        self._stop_cacheing = True
-        if self._thread:
-            self._thread.join()
-            self._thread = None
-        self._stop_cacheing = False
-        self.is_cacheing = False
+        self._thread.stop()
 
     def page_is_available(self, page=None):
         """ Returns True if <page> is available and calls to get_pixbufs
@@ -367,7 +313,20 @@ class ImageHandler:
     def page_available(self, page):
         """ Called whenever a new page becomes available, i.e. the corresponding
         file has been extracted. """
-        pass
+        log.debug('Page %u is available', page)
+        index = page - 1
+        assert index not in self._available_images
+        self._available_images.add(index)
+        # Check if we need to cache it.
+        priority = None
+        if index in self._wanted_pixbufs:
+            # In the list of wanted pixbufs.
+            priority = self._wanted_pixbufs.index(index)
+        elif -1 == self._cache_pages:
+            # We're caching everything.
+            priority = self.get_number_of_pages()
+        if priority is not None:
+            self._thread.append_order((priority, index))
 
     def _file_available(self, filepaths):
         """ Called by the filehandler when a new file becomes available. """
@@ -537,7 +496,44 @@ class ImageHandler:
         """Block the running (main) thread until the file corresponding to
         image <page> has been fully extracted.
         """
+        index = page - 1
+        if index in self._available_images:
+            # Already extracted!
+            return
+        log.debug('Waiting for page %u', page)
         path = self.get_path_to_page(page)
         self._window.filehandler._wait_on_file(path)
+
+    def _ask_for_pages(self, page):
+        """Ask for pages around <page> to be given priority extraction.
+        """
+        files = []
+        if self._window.is_double_page:
+            page_width = 2
+        else:
+            page_width = 1
+        if 0 == self._cache_pages:
+            # Only ask for current page.
+            num_pages = page_width
+        elif -1 == self._cache_pages:
+            # Ask for 10 pages.
+            num_pages = min(10, self.get_number_of_pages())
+        else:
+            num_pages = self._cache_pages
+        page_list = [page - 1 - page_width + n for n in xrange(num_pages)]
+        # Current and next page first, followed by previous page.
+        previous_page = page_list[0:page_width]
+        del page_list[0:page_width]
+        page_list[2*page_width:2*page_width] = previous_page
+        page_list = [index for index in page_list if index >= 0 and index < len(self._image_files)]
+        log.debug('Ask for priority extraction around page %u: %s', page, ' '.join([str(n + 1) for n in page_list]))
+        for index in page_list:
+            if index in self._available_images:
+                # Already extracted.
+                continue
+            files.append(self._image_files[index])
+        if len(files) > 0:
+            self._window.filehandler._ask_for_files(files)
+        return page_list
 
 # vim: expandtab:sw=4:ts=4

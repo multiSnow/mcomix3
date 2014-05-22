@@ -58,7 +58,8 @@ class Extractor:
         files found in the archive. The paths in the list are relative to
         the archive root and are not absolute for the files once extracted.
         """
-        return self._files[:]
+        with self._condition:
+            return self._files[:]
 
     def get_directory(self):
         """Returns the root extraction directory of this extractor."""
@@ -85,10 +86,8 @@ class Extractor:
         """Return True if the file <name> in the extractor's file list
         (as set by set_files()) is fully extracted.
         """
-        self._condition.acquire()
-        isready = self._extracted.get(name, False)
-        self._condition.release()
-        return isready
+        with self._condition:
+            return self._extracted.get(name, False)
 
     def get_mime_type(self):
         """Return the mime type name of the extractor's current archive."""
@@ -128,7 +127,16 @@ class Extractor:
 
     def _thread_extract(self):
         """Extract the files in the file list one by one."""
-        for name in self._files:
+        while True:
+            with self._condition:
+                if len(self._files) > 0:
+                    name = self._files[0]
+                else:
+                    name = None
+                if self._stop:
+                    self._condition.notifyAll()
+            if name is None or self._stop:
+                break
             self._extract_file(name)
 
         self.close()
@@ -138,9 +146,6 @@ class Extractor:
         mark the file as "ready", then signal a notify() on the Condition
         returned by setup().
         """
-        if self._stop:
-            self.close()
-            return
 
         try:
             dst_path = os.path.join(self._dst, name)
@@ -154,10 +159,10 @@ class Extractor:
             # handled gracefully by the main program anyway.
             log.error(_('! Extraction error: %s'), ex)
 
-        self._condition.acquire()
-        self._extracted[name] = True
-        self._condition.notifyAll()
-        self._condition.release()
+        with self._condition:
+            self._files.remove(name)
+            self._extracted[name] = True
+            self._condition.notifyAll()
         self.file_extracted(self, name)
 
 class ArchiveException(Exception):

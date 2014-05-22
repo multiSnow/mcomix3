@@ -224,10 +224,6 @@ class FileHandler(object):
         self._window.clear()
         self._window.uimanager.set_sensitivities()
         self._extractor.stop()
-        if self._condition:
-            self._condition.acquire()
-            self._condition.notifyAll()
-            self._condition.release()
         self.thread_delete(self._tmp_dir)
         self._tmp_dir = tempfile.mkdtemp(prefix=u'mcomix.', suffix=os.sep)
         self._window.imagehandler.close()
@@ -544,11 +540,6 @@ class FileHandler(object):
         self.thread_delete(self._tmp_dir)
         self._stop_waiting = True
         self._extractor.stop()
-        if self._condition:
-            self._condition.acquire()
-            self._condition.notifyAll()
-            self._condition.release()
-
         self.update_last_read_page()
 
     def get_number_of_comments(self):
@@ -705,10 +696,8 @@ class FileHandler(object):
         for reading, i.e. extracted to harddisk. """
 
         if self.archive_type is not None:
-            self._condition.acquire()
-            ready = self._extractor.is_ready(self._name_table[filepath])
-            self._condition.release()
-            return ready
+            with self._condition:
+                return self._extractor.is_ready(self._name_table[filepath])
 
         elif filepath is None:
             return False
@@ -750,13 +739,27 @@ class FileHandler(object):
 
         try:
             name = self._name_table[path]
-            self._condition.acquire()
-            while not self._extractor.is_ready(name) and not self._stop_waiting:
-                self._condition.wait()
-            self._condition.release()
+            with self._condition:
+                while not self._extractor.is_ready(name) and not self._stop_waiting:
+                    self._condition.wait()
         except Exception, ex:
             log.error(u'Waiting on extraction of "%s" failed: %s', path, ex)
             return
+
+    def _ask_for_files(self, files):
+        """Ask for <files> to be given priority for extraction.
+        """
+        if self.archive_type == None:
+            return
+
+        with self._condition:
+            extractor_files = self._extractor.get_files()
+            for path in reversed(files):
+                name = self._name_table[path]
+                if not self._extractor.is_ready(name):
+                    extractor_files.remove(name)
+                    extractor_files.insert(0, name)
+            self._extractor.set_files(extractor_files)
 
     def thread_delete(self, path):
         """Start a threaded removal of the directory tree rooted at <path>.
