@@ -104,7 +104,7 @@ class Pageselector(gtk.Dialog):
         width = self._image_preview.get_allocation().width
         height = self._image_preview.get_allocation().height
         pixbuf = self._window.imagehandler.get_thumbnail(index + 1,
-            width=width, height=height)
+            width=width, height=height, nowait=True)
         self._image_preview.set_from_pixbuf(pixbuf)
 
 # vim: expandtab:sw=4:ts=4

@@ -452,15 +452,20 @@ class ImageHandler:
             return info[0]['name'].upper()
         return _('Unknown filetype')
 
-    def get_thumbnail(self, page=None, width=128, height=128, create=False):
+    def get_thumbnail(self, page=None, width=128, height=128, create=False,
+                      nowait=False):
         """Return a thumbnail pixbuf of <page> that fit in a box with
         dimensions <width>x<height>. Return a thumbnail for the current
         page if <page> is None.
 
         If <create> is True, and <width>x<height> <= 128x128, the
         thumbnail is also stored on disk.
+
+        If <nowait> is True, don't wait for <page> to be available.
         """
-        self._wait_on_page(page)
+        if not self._wait_on_page(page, check_only=nowait):
+            # Page is not available!
+            return
         path = self.get_path_to_page(page)
 
         if path == None:
@@ -492,17 +497,23 @@ class ImageHandler:
             return 2
         return 1
 
-    def _wait_on_page(self, page):
+    def _wait_on_page(self, page, check_only=False):
         """Block the running (main) thread until the file corresponding to
         image <page> has been fully extracted.
+
+        If <check_only> is True, only check (and return status), don't wait.
         """
         index = page - 1
         if index in self._available_images:
             # Already extracted!
-            return
+            return True
+        if check_only:
+            # Asked for check only...
+            return False
         log.debug('Waiting for page %u', page)
         path = self.get_path_to_page(page)
         self._window.filehandler._wait_on_file(path)
+        return True
 
     def _ask_for_pages(self, page):
         """Ask for pages around <page> to be given priority extraction.
