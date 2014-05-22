@@ -1,4 +1,5 @@
 """file_handler.py - File handler that takes care of opening archives and images."""
+from __future__ import with_statement
 
 import os
 import shutil
