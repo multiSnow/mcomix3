@@ -252,9 +252,13 @@ class ImageHandler:
           self.get_current_page() == self.get_number_of_pages()):
             return False
 
+        if not self.page_is_available(self._current_image_index + 1):
+            return False
         page1 = self._get_pixbuf(self._current_image_index)
         if page1.get_width() > page1.get_height():
             return True
+        if not self.page_is_available(self._current_image_index + 2):
+            return False
         page2 = self._get_pixbuf(self._current_image_index + 1)
         if page2.get_width() > page2.get_height():
             return True
