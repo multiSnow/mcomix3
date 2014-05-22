@@ -734,13 +734,6 @@ class FileHandler(object):
         filepath = os.path.join(extractor.get_directory(), name)
         self.file_available([filepath])
 
-    def _wait_on_page(self, page):
-        """Block the running (main) thread until the file corresponding to
-        image <page> has been fully extracted.
-        """
-        path = self._window.imagehandler.get_path_to_page(page)
-        self._wait_on_file(path)
-
     def _wait_on_comment(self, num):
         """Block the running (main) thread until the file corresponding to
         comment <num> has been fully extracted.
