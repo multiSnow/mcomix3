@@ -666,7 +666,6 @@ class FileHandler(object):
 
             if len(files) > 0:
                 self.close_file()
-                self._window.imagehandler.close()
                 self._window.scroll_to_predefined(
                     (constants.SCROLL_TO_START,) * 2, constants.FIRST_INDEX)
                 self.open_file(files[0], keep_fileprovider=True)
