@@ -33,6 +33,7 @@ from mcomix import callback
 from mcomix.library import backend
 from mcomix import tools
 from mcomix import layout
+from mcomix import log
 import math
 import operator
 
@@ -1027,6 +1028,7 @@ class MainWindow(gtk.Window):
         # This hack is to avoid Python issue #1856.
         for thread in threading.enumerate():
             if thread is not threading.currentThread():
+                log.debug('Waiting for thread %s to finish before exit', thread)
                 thread.join()
 
 #: Main window instance
