@@ -194,6 +194,8 @@ def run():
     if preferences.prefs['language'] in ('he', 'fa'):
         gtk.widget_set_default_direction(gtk.TEXT_DIR_RTL)
 
+    gtk.gdk.set_program_class('MComix')
+
     window = main.MainWindow(fullscreen = opts.fullscreen, is_slideshow = opts.slideshow,
             show_library = opts.library, manga_mode = opts.manga,
             double_page = opts.doublepage, zoom_mode = opts.zoommode,
