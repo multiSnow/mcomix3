@@ -19,6 +19,9 @@ MComix 1.01
     - Fixed 'Continue reading' not working when files are opened from
       the command line (by Boris Bogar).
 
+    - Improved page extraction and caching algorithm, leading to much better
+      responsiveness, especially for viewing large archives. (by Benoit Pierre)
+
     - MComix will now always hide the mouse cursor after a period of
       inactivity, even when not in fullscreen mode. (by Benoit Pierre)
 
