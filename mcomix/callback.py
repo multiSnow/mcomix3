@@ -6,16 +6,13 @@ import gobject
 
 from mcomix import log
 
-class Callback(object):
-    """ Decorator class for implementing callbacks within the main thread.
+class CallbackList(object):
+    """ Helper class for implementing callbacks within the main thread.
     Add listeners to method calls with method += callback_function. """
 
-    def __init__(self, function):
+    def __init__(self, obj, function):
         self.__callbacks = []
-        # This is the object the Callback is decorating.
-        # Set by __get__ when called internally.
-        self.__object = None
-        # This is the function the Callback is decorating.
+        self.__object = obj
         self.__function = function
 
     def __call__(self, *args, **kwargs):
@@ -53,14 +50,6 @@ class Callback(object):
         if (obj, func) in self.__callbacks:
             self.__callbacks.remove((obj, func))
 
-        return self
-
-    def __get__(self, obj, cls):
-        """ This method makes Callback implement the descriptor interface.
-        Enables calling bound methods with the correct <self> reference.
-        Do not ask me why or how this actually works, I simply do not know. """
-
-        self.__object = obj
         return self
 
     def __mainthread_call(self, params):
@@ -112,5 +101,19 @@ class Callback(object):
             return (weakref.ref(func.im_self, self.__callback_deleted), func.im_func)
         else:
             return (None, func)
+
+class Callback(object):
+    """ Decorator class for using the CallbackList helper. """
+
+    def __init__(self, function):
+        # This is the function the Callback is decorating.
+        self.__function = function
+
+    def __get__(self, obj, cls):
+        """ This method makes Callback implement the descriptor interface.
+        Enables calling bound methods with the correct <self> reference.
+        Do not ask me why or how this actually works, I simply do not know. """
+
+        return CallbackList(obj, self.__function)
 
 # vim: expandtab:sw=4:ts=4
