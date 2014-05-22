@@ -209,6 +209,7 @@ class ImageHandler:
         """
         if not self._window.filehandler.file_loaded:
             return False
+
         self._current_image_index = 0
         return self.get_current_page()
 
@@ -262,6 +263,7 @@ class ImageHandler:
         page2 = self._get_pixbuf(self._current_image_index + 1)
         if page2.get_width() > page2.get_height():
             return True
+
         return False
 
     def get_real_path(self):
@@ -437,7 +439,8 @@ class ImageHandler:
 
         if info is not None:
             return (info[1], info[2])
-        return (0, 0)
+        else:
+            return (0, 0)
 
     def get_mime_name(self, page=None):
         """Return a string with the name of the mime type of <page>. If
@@ -454,7 +457,8 @@ class ImageHandler:
 
         if info is not None:
             return info[0]['name'].upper()
-        return _('Unknown filetype')
+        else:
+            return _('Unknown filetype')
 
     def get_thumbnail(self, page=None, width=128, height=128, create=False,
                       nowait=False):
@@ -514,6 +518,7 @@ class ImageHandler:
         if check_only:
             # Asked for check only...
             return False
+
         log.debug('Waiting for page %u', page)
         path = self.get_path_to_page(page)
         self._window.filehandler._wait_on_file(path)
@@ -535,20 +540,26 @@ class ImageHandler:
             num_pages = min(10, self.get_number_of_pages())
         else:
             num_pages = self._cache_pages
+
         page_list = [page - 1 - page_width + n for n in xrange(num_pages)]
+
         # Current and next page first, followed by previous page.
         previous_page = page_list[0:page_width]
         del page_list[0:page_width]
         page_list[2*page_width:2*page_width] = previous_page
-        page_list = [index for index in page_list if index >= 0 and index < len(self._image_files)]
-        log.debug('Ask for priority extraction around page %u: %s', page, ' '.join([str(n + 1) for n in page_list]))
+        page_list = [index for index in page_list
+                     if index >= 0 and index < len(self._image_files)]
+
+        log.debug('Ask for priority extraction around page %u: %s',
+                  page, ' '.join([str(n + 1) for n in page_list]))
+
         for index in page_list:
-            if index in self._available_images:
-                # Already extracted.
-                continue
-            files.append(self._image_files[index])
+            if index not in self._available_images:
+                files.append(self._image_files[index])
+
         if len(files) > 0:
             self._window.filehandler._ask_for_files(files)
+
         return page_list
 
 # vim: expandtab:sw=4:ts=4
