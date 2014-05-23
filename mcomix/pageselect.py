@@ -127,13 +127,11 @@ class Pageselector(gtk.Dialog):
     @callback.Callback
     def _thumbnail_finished(self, page, pixbuf):
         # Don't bother if we changed page in the meantime.
-        if page != self._thumbnail_page:
-            return
-        self._image_preview.set_from_pixbuf(pixbuf)
+        if page == self._thumbnail_page:
+            self._image_preview.set_from_pixbuf(pixbuf)
 
     def _page_available(self, page):
-        if page != int(self._selector_adjustment.value):
-            return
-        self._update_thumbnail(page)
+        if page == int(self._selector_adjustment.value):
+            self._update_thumbnail(page)
 
 # vim: expandtab:sw=4:ts=4
