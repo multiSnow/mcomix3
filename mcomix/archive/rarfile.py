@@ -22,6 +22,9 @@ class UnrarDll(object):
     """ Wrapper class for libunrar. All string values passed to this class must be unicode objects.
     In turn, all values returned are also unicode. """
 
+    """ Nope! Not a good idea... """
+    support_concurrent_extractions = False
+
     class _OpenMode:
         """ Rar open mode """
         RAR_OM_LIST    = 0

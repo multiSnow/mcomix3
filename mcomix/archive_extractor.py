@@ -8,6 +8,7 @@ from mcomix import archive_tools
 from mcomix import constants
 from mcomix import callback
 from mcomix import log
+from mcomix.preferences import prefs
 from mcomix.worker_thread import WorkerThread
 
 class Extractor:
@@ -49,7 +50,12 @@ class Extractor:
         self._setupped = True
         self._started = False
         self._condition = threading.Condition()
+        if self._archive.support_concurrent_extractions:
+            max_threads = prefs['max extract threads']
+        else:
+            max_threads = 1
         self._extract_thread = WorkerThread(self._extract_file,
+                                            max_threads=max_threads,
                                             unique_orders=True)
         return self._condition
 

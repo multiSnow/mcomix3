@@ -4,6 +4,7 @@
 extraction and adding new archive formats. """
 
 import os
+import errno
 from mcomix import portability
 from mcomix import i18n
 from mcomix import process
@@ -14,6 +15,9 @@ class BaseArchive(object):
     """ Base archive interface. All filenames passed from and into archives
     are expected to be Unicode objects. Archive files are converted to
     Unicode with some guess-work. """
+
+    """ True if concurrent calls to extract is supported. """
+    support_concurrent_extractions = False
 
     def __init__(self, archive):
         assert isinstance(archive, unicode), "File should be an Unicode string."
@@ -56,8 +60,14 @@ class BaseArchive(object):
 
     def _create_directory(self, directory):
         """ Recursively create a directory if it doesn't exist yet. """
-        if not os.path.exists(directory):
+        if os.path.exists(directory):
+            return
+        try:
             os.makedirs(directory)
+        except OSError, e:
+            # Can happen with concurrent calls.
+            if e.errno != errno.EEXIST:
+                raise e
 
     @callback.Callback
     def _password_required(self, event):
@@ -102,6 +112,10 @@ class NonUnicodeArchive(BaseArchive):
 class ExternalExecutableArchive(NonUnicodeArchive):
     """ For archives that are extracted by spawning an external
     application. """
+
+    """ Since we're using an external program for extraction, concurrent
+    calls are supported. """
+    support_concurrent_extractions = True
 
     def __init__(self, archive):
         super(ExternalExecutableArchive, self).__init__(archive)

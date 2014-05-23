@@ -90,6 +90,7 @@ prefs = {
     'statusbar fields': constants.STATUS_PAGE | constants.STATUS_RESOLUTION | \
                         constants.STATUS_PATH | constants.STATUS_FILENAME,
     'max threads': 3,
+    'max extract threads': 1,
     'wrap mouse scroll': False,
     'scaling quality': 1,  # gtk.gdk.INTERP_TILES
     'escape quits': False,

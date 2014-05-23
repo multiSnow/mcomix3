@@ -18,6 +18,10 @@ PDF_RENDER_DPI_MAX = 72 * 10
 _pdf_possible = None
 
 class PdfArchive(archive_base.BaseArchive):
+
+    """ Concurrent calls to extract welcome! """
+    support_concurrent_extractions = True
+
     def __init__(self, archive):
         super(PdfArchive, self).__init__(archive)
         self.pdf = archive
