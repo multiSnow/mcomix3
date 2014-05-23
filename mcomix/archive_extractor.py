@@ -8,6 +8,7 @@ from mcomix import archive_tools
 from mcomix import constants
 from mcomix import callback
 from mcomix import log
+from mcomix.worker_thread import WorkerThread
 
 class Extractor:
 
@@ -38,20 +39,19 @@ class Extractor:
         self._type = type or archive_tools.archive_mime_type(src)
         self._files = []
         self._extracted = {}
-        self._stop = False
-        self._extract_thread = None
-        self._condition = threading.Condition()
-
         self._archive = archive_tools.get_archive_handler(src)
-
-        if self._archive:
-            self._files = self._archive.list_contents()
-            self._setupped = True
-            return self._condition
-        else:
+        if self._archive is None:
             msg = _('Non-supported archive format: %s') % os.path.basename(src)
             log.warning(msg)
             raise ArchiveException(msg)
+
+        self._files = self._archive.list_contents()
+        self._setupped = True
+        self._started = False
+        self._condition = threading.Condition()
+        self._extract_thread = WorkerThread(self._extract_file,
+                                            unique_orders=True)
+        return self._condition
 
     def get_files(self):
         """Return a list of names of all the files the extractor is currently
@@ -78,10 +78,14 @@ class Extractor:
         not be used for scanned comic books. So, we cheat and ignore the
         ordering applied with this method on such archives.
         """
-        if self._type in (constants.GZIP, constants.BZIP2):
-            self._files = [x for x in self._files if x in files]
-        else:
-            self._files = files
+        with self._condition:
+            if self._type in (constants.GZIP, constants.BZIP2):
+                self._files = [x for x in self._files if x in files]
+            else:
+                self._files = files
+            self._files = [f for f in files if f not in self._extracted]
+            if self._started:
+                self.extract()
 
     def is_ready(self, name):
         """Return True if the file <name> in the extractor's file list
@@ -98,21 +102,19 @@ class Extractor:
         """Signal the extractor to stop extracting and kill the extracting
         thread. Blocks until the extracting thread has terminated.
         """
-        self._stop = True
-
         if self._setupped:
-            if self._extract_thread:
-                self._extract_thread.join()
+            self._extract_thread.stop()
             self.setupped = False
+            self.started = False
 
     def extract(self):
         """Start extracting the files in the file list one by one using a
         new thread. Every time a new file is extracted a notify() will be
         signalled on the Condition that was returned by setup().
         """
-        self._extract_thread = threading.Thread(target=self._thread_extract)
-        self._extract_thread.setDaemon(False)
-        self._extract_thread.start()
+        self._started = True
+        self._extract_thread.clear_orders()
+        self._extract_thread.extend_orders(self._files)
 
     @callback.Callback
     def file_extracted(self, extractor, filename):
@@ -125,22 +127,6 @@ class Extractor:
         """
         if self._archive:
             self._archive.close()
-
-    def _thread_extract(self):
-        """Extract the files in the file list one by one."""
-        while True:
-            with self._condition:
-                if len(self._files) > 0:
-                    name = self._files[0]
-                else:
-                    name = None
-                if self._stop:
-                    self._condition.notifyAll()
-            if name is None or self._stop:
-                break
-            self._extract_file(name)
-
-        self.close()
 
     def _extract_file(self, name):
         """Extract the file named <name> to the destination directory,
