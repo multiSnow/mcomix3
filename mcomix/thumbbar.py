@@ -91,6 +91,9 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         self.update_layout_size()
         self.show_all()
 
+        self._visible = False
+        self._window.imagehandler.page_available += self._page_available
+
     def toggle_page_numbers_visible(self):
         """ Enables or disables page numbers on the thumbnail bar. """
 
@@ -123,11 +126,14 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
 
     def show(self, *args):
         """Show the ThumbnailSidebar."""
+        self._visible = True
         self.show_all()
         self.load_thumbnails()
 
     def hide(self):
         """Hide the ThumbnailSidebar."""
+        self._visible = False
+        self._treeview.stop_update()
         self.hide_all()
 
     def clear(self):
@@ -229,7 +235,7 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         self.update_layout_size()
         self.update_select()
 
-    def _generate_thumbnail(self, file_path, model, path):
+    def _generate_thumbnail(self, file_path, path):
         """ Generate the pixbuf for C{path} at demand. """
         if isinstance(path, tuple):
             page = path[0] + 1
@@ -241,9 +247,9 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
             assert False, "Expected int or tuple as tree path."
 
         pixbuf = self._window.imagehandler.get_thumbnail(page,
-                prefs['thumbnail size'], prefs['thumbnail size']) or \
-            constants.MISSING_IMAGE_ICON
-        pixbuf = image_tools.add_border(pixbuf, 1)
+                prefs['thumbnail size'], prefs['thumbnail size'], nowait=True)
+        if pixbuf is not None:
+            pixbuf = image_tools.add_border(pixbuf, 1)
 
         return pixbuf
 
@@ -329,5 +335,9 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
 
         return pixbuf
 
+    def _page_available(self, page):
+        """ Called whenever a new page is ready for display. """
+        if self._visible:
+            self._treeview.draw_thumbnails_on_screen()
 
 # vim: expandtab:sw=4:ts=4

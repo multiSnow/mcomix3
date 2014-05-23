@@ -413,7 +413,7 @@ class _BookArea(gtk.ScrolledWindow):
             collection = self._library.collection_area.get_current_collection()
             gobject.idle_add(self.display_covers, collection)
 
-    def _get_pixbuf(self, path, model, model_path):
+    def _get_pixbuf(self, path, model_path):
         """ Get or create the thumbnail for the selected book at <path>. """
         if self._cache.exists(path):
             pixbuf = self._cache.get(path)
@@ -468,6 +468,10 @@ class _BookArea(gtk.ScrolledWindow):
         if not isinstance(paths, list):
             paths = [ paths ]
 
+        if not keep_library_open:
+            # Necessary to prevent a deadlock at exit when trying to "join" the
+            # worker thread.
+            self.stop_update()
         books = [ self.get_book_at_path(path) for path in paths ]
         self._library.open_book(books, keep_library_open=keep_library_open)
 

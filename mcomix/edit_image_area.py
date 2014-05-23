@@ -73,12 +73,13 @@ class _ImageArea(gtk.ScrolledWindow):
 
             self._liststore.append([pixbuf, encoded_path, path, page, False])
 
-    def _generate_thumbnail(self, file_path, model, path):
+    def _generate_thumbnail(self, file_path, path):
         """ Creates the thumbnail for the passed model path. """
 
         if path is None:
             return constants.MISSING_IMAGE_ICON
 
+        model = self._liststore
         iter = model.get_iter(path)
         page = model.get_value(iter, 3)
         pixbuf = self._window.imagehandler.get_thumbnail(page) or \

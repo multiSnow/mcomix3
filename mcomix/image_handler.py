@@ -473,11 +473,11 @@ class ImageHandler:
         """
         if not self._wait_on_page(page, check_only=nowait):
             # Page is not available!
-            return
+            return None
         path = self.get_path_to_page(page)
 
         if path == None:
-            return constants.MISSING_IMAGE_ICON
+            return None
 
         try:
             thumbnailer = thumbnail_tools.Thumbnailer()
