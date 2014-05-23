@@ -64,7 +64,22 @@ class _PreferencesDialog(gtk.Dialog):
         # ----------------------------------------------------------------
         # The "Appearance" tab.
         # ----------------------------------------------------------------
-        page = preferences_page._PreferencePage(80)
+        page = preferences_page._PreferencePage(None)
+
+        page.new_section(_('User interface'))
+        label = gtk.Label(_('Language (needs restart):'))
+        language_box = self._create_language_control()
+        page.add_row(label, language_box)
+
+        esc_quits = gtk.CheckButton(_('Escape key closes program'))
+        esc_quits.set_active(prefs['escape quits'])
+        esc_quits.connect('toggled', self._check_button_cb,
+            'escape quits')
+        esc_quits.set_tooltip_text(
+            _('When active, the ESC key closes the program, instead of only '
+              'disabling fullscreen mode.'))
+        page.add_row(esc_quits)
+
         page.new_section(_('Background'))
 
         fixed_bg_button = gtk.RadioButton(None,
@@ -353,19 +368,6 @@ class _PreferencesDialog(gtk.Dialog):
         # ----------------------------------------------------------------
         page = preferences_page._PreferencePage(None)
 
-        page.new_section(_('User interface'))
-        label = gtk.Label(_('Language (needs restart):'))
-        language_box = self._create_language_control()
-        page.add_row(label, language_box)
-
-        esc_quits = gtk.CheckButton(_('Escape key closes program'))
-        esc_quits.set_active(prefs['escape quits'])
-        esc_quits.connect('toggled', self._check_button_cb,
-            'escape quits')
-        esc_quits.set_tooltip_text(
-            _('When active, the ESC key closes the program, instead of only '
-              'disabling fullscreen mode.'))
-        page.add_row(esc_quits)
 
         page.new_section(_('File order'))
 
@@ -375,7 +377,16 @@ class _PreferencesDialog(gtk.Dialog):
         label = gtk.Label(_('Sort archives by:'))
         page.add_row(label, self._create_archive_sort_by_control())
 
-        page.new_section(_('Cache'))
+        page.new_section(_('Extraction and cache'))
+
+        label = gtk.Label(_('Maximum number of concurrent extraction threads:'))
+        adjustment = gtk.Adjustment(prefs['max extract threads'], 1, 16, 1, 4)
+        extract_threads_spinner = gtk.SpinButton(adjustment, digits=0)
+        extract_threads_spinner.connect('value-changed', self._spinner_cb,
+                                        'max extract threads')
+        extract_threads_spinner.set_tooltip_text(
+            _('Set the maximum number of concurrent threads for formats that support it.'))
+        page.add_row(label, extract_threads_spinner)
 
         create_thumbs_button = gtk.CheckButton(
             _('Store thumbnails for opened files'))
@@ -426,15 +437,6 @@ class _PreferencesDialog(gtk.Dialog):
             _('Treat all files found within archives, that have one of these file endings, as comments.'))
         page.add_row(label, extensions_entry)
 
-        page.new_section(_('Threading'))
-        label = gtk.Label(_('Maximum number of concurrent extraction threads:'))
-        adjustment = gtk.Adjustment(prefs['max extract threads'], 1, 16, 1, 4)
-        extract_threads_spinner = gtk.SpinButton(adjustment, digits=0)
-        extract_threads_spinner.connect('value-changed', self._spinner_cb,
-                                        'max extract threads')
-        extract_threads_spinner.set_tooltip_text(
-            _('Set the maximum number of concurrent threads for formats that support it.'))
-        page.add_row(label, extract_threads_spinner)
 
         return page
 
