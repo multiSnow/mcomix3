@@ -74,6 +74,7 @@ class Pageselector(gtk.Dialog):
         self._thumbnail_page = 0
         self._thread = WorkerThread(self._generate_thumbnail)
         self._update_thumbnail(int(self._selector_adjustment.value))
+        self._window.imagehandler.page_available += self._page_available
 
     def _cb_value_changed(self, *args):
         """ Called whenever the spinbox value changes. Updates the preview thumbnail. """
@@ -102,6 +103,7 @@ class Pageselector(gtk.Dialog):
         if event == gtk.RESPONSE_OK:
             self._window.set_page(int(self._selector_adjustment.value))
 
+        self._window.imagehandler.page_available -= self._page_available
         self._thread.stop()
         self.destroy()
 
@@ -128,5 +130,10 @@ class Pageselector(gtk.Dialog):
         if page != self._thumbnail_page:
             return
         self._image_preview.set_from_pixbuf(pixbuf)
+
+    def _page_available(self, page):
+        if page != int(self._selector_adjustment.value):
+            return
+        self._update_thumbnail(page)
 
 # vim: expandtab:sw=4:ts=4
