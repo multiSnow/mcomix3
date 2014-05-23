@@ -426,6 +426,16 @@ class _PreferencesDialog(gtk.Dialog):
             _('Treat all files found within archives, that have one of these file endings, as comments.'))
         page.add_row(label, extensions_entry)
 
+        page.new_section(_('Threading'))
+        label = gtk.Label(_('Maximum number of concurrent extraction threads:'))
+        adjustment = gtk.Adjustment(prefs['max extract threads'], 1, 16, 1, 4)
+        extract_threads_spinner = gtk.SpinButton(adjustment, digits=0)
+        extract_threads_spinner.connect('value-changed', self._spinner_cb,
+                                        'max extract threads')
+        extract_threads_spinner.set_tooltip_text(
+            _('Set the maximum number of concurrent threads for formats that support it.'))
+        page.add_row(label, extract_threads_spinner)
+
         return page
 
     def _init_shortcuts_tab(self):
@@ -876,6 +886,9 @@ class _PreferencesDialog(gtk.Dialog):
         elif preference == 'fit to size px':
             prefs[preference] = int(value)
             self._window.change_zoom_mode()
+
+        elif preference == 'max extract threads':
+            prefs[preference] = int(value)
 
 
     def _entry_cb(self, entry, event=None):
