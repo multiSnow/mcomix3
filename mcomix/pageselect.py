@@ -3,6 +3,8 @@
 import gtk
 
 from mcomix.preferences import prefs
+from mcomix.worker_thread import WorkerThread
+from mcomix import callback
 
 
 class Pageselector(gtk.Dialog):
@@ -68,11 +70,16 @@ class Pageselector(gtk.Dialog):
         self._page_spinner.select_region(0, -1)
         self._page_spinner.grab_focus()
 
-        self._set_thumbnail(int(self._selector_adjustment.value) - 1)
+        # Currently displayed thumbnail page.
+        self._thumbnail_page = 0
+        self._thread = WorkerThread(self._generate_thumbnail)
+        self._update_thumbnail(int(self._selector_adjustment.value))
 
     def _cb_value_changed(self, *args):
         """ Called whenever the spinbox value changes. Updates the preview thumbnail. """
-        self._set_thumbnail(int(self._selector_adjustment.value) - 1)
+        page = int(self._selector_adjustment.value)
+        if page != self._thumbnail_page:
+            self._update_thumbnail(page)
 
     def _size_changed_cb(self, *args):
         # Window cannot be scaled down unless the size request is reset
@@ -81,7 +88,7 @@ class Pageselector(gtk.Dialog):
         prefs['pageselector width'] = self.get_allocation().width
         prefs['pageselector height'] = self.get_allocation().height
 
-        self._set_thumbnail(int(self._selector_adjustment.value) - 1)
+        self._update_thumbnail(int(self._selector_adjustment.value))
 
     def _page_text_changed(self, control, *args):
         """ Called when the page selector has been changed. Used to instantly update
@@ -95,16 +102,31 @@ class Pageselector(gtk.Dialog):
         if event == gtk.RESPONSE_OK:
             self._window.set_page(int(self._selector_adjustment.value))
 
+        self._thread.stop()
         self.destroy()
 
-    def _set_thumbnail(self, index):
-        """ Set the preview thumbnail for the page selector.
-        If a thumbnail isn't cached yet, use a transparent image. """
-
+    def _update_thumbnail(self, page):
+        """ Trigger a thumbnail update. """
         width = self._image_preview.get_allocation().width
         height = self._image_preview.get_allocation().height
-        pixbuf = self._window.imagehandler.get_thumbnail(index + 1,
+        self._thumbnail_page = page
+        self._thread.clear_orders()
+        self._thread.append_order((page, width, height))
+
+    def _generate_thumbnail(self, params):
+        """ Generate the preview thumbnail for the page selector.
+        A transparent image will be used if the page is not yet available. """
+        page, width, height = params
+
+        pixbuf = self._window.imagehandler.get_thumbnail(page,
             width=width, height=height, nowait=True)
+        self._thumbnail_finished(page, pixbuf)
+
+    @callback.Callback
+    def _thumbnail_finished(self, page, pixbuf):
+        # Don't bother if we changed page in the meantime.
+        if page != self._thumbnail_page:
+            return
         self._image_preview.set_from_pixbuf(pixbuf)
 
 # vim: expandtab:sw=4:ts=4
