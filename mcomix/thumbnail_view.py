@@ -24,6 +24,8 @@ class ThumbnailViewBase(object):
         #: Model index of the pixbuf field
         self.pixbuf_column = -1
 
+        #: Ignore updates when this flag is True.
+        self._updates_stopped = True
         #: Worker thread
         self._thread = WorkerThread(self._pixbuf_worker,
                                     name='thumbview',
@@ -46,6 +48,7 @@ class ThumbnailViewBase(object):
 
     def stop_update(self):
         """ Stops generation of pixbufs. """
+        self._updates_stopped = True
         self._thread.stop()
 
     def draw_thumbnails_on_screen(self, *args):
@@ -84,6 +87,7 @@ class ThumbnailViewBase(object):
                 pixbufs_needed.append((file_path, path))
 
         if len(pixbufs_needed) > 0:
+            self._updates_stopped = False
             self._thread.extend_orders(pixbufs_needed)
 
     def _pixbuf_worker(self, order):
@@ -98,9 +102,10 @@ class ThumbnailViewBase(object):
         into the view store. C{pixbuf_info} is a tuple containing
         (index, pixbuf). """
 
-        model = self.get_model()
-        if model is None:
+        if self._updates_stopped:
             return 0
+
+        model = self.get_model()
         iter = model.get_iter(path)
         model.set(iter, self.pixbuf_column, pixbuf)
         # Mark as generated
