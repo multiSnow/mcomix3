@@ -38,6 +38,7 @@ class Packer:
     def pack(self):
         """Pack all the files in the file lists into the archive."""
         self._pack_thread = threading.Thread(target=self._thread_pack)
+        self._pack_thread.name += 'pack'
         self._pack_thread.setDaemon(False)
         self._pack_thread.start()
 

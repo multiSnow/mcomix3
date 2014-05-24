@@ -55,6 +55,7 @@ class Extractor:
         else:
             max_threads = 1
         self._extract_thread = WorkerThread(self._extract_file,
+                                            name='extract',
                                             max_threads=max_threads,
                                             unique_orders=True)
         return self._condition

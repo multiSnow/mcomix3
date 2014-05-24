@@ -25,7 +25,9 @@ class ThumbnailViewBase(object):
         self.pixbuf_column = -1
 
         #: Worker thread
-        self._thread = WorkerThread(self._pixbuf_worker, unique_orders=True,
+        self._thread = WorkerThread(self._pixbuf_worker,
+                                    name='thumbview',
+                                    unique_orders=True,
                                     max_threads=prefs["max threads"])
 
     def generate_thumbnail(self, file_path, model, path):

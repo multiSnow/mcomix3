@@ -34,7 +34,8 @@ class ImageHandler:
         self._window = window
 
         #: Caching thread
-        self._thread = WorkerThread(self._cache_pixbuf, sort_orders=True)
+        self._thread = WorkerThread(self._cache_pixbuf, name='image',
+                                    sort_orders=True)
 
         #: Archive path, if currently opened file is archive
         self._base_path = None

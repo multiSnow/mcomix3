@@ -72,7 +72,7 @@ class Pageselector(gtk.Dialog):
 
         # Currently displayed thumbnail page.
         self._thumbnail_page = 0
-        self._thread = WorkerThread(self._generate_thumbnail)
+        self._thread = WorkerThread(self._generate_thumbnail, name='preview')
         self._update_thumbnail(int(self._selector_adjustment.value))
         self._window.imagehandler.page_available += self._page_available
 

@@ -5,15 +5,17 @@ import threading
 
 class WorkerThread:
 
-    def __init__(self, process_order, max_threads=1,
+    def __init__(self, process_order, name=None, max_threads=1,
                  sort_orders=False, unique_orders=False):
         """Create a new pool of worker threads.
 
+        Optional <name> will be added to spawned thread names.
         <process_order> will be called to process each work order.
         At most <max_threads> will be started for processing.
         If <sort_orders> is True, the orders queue will be sorted
         after each addition. If <unique_orders> is True, duplicate
         orders will not be added to the queue. """
+        self._name = name
         self._process_order = process_order
         self._max_threads = max_threads
         self._sort_orders = sort_orders
@@ -37,6 +39,8 @@ class WorkerThread:
             if len(self._threads) == self._max_threads:
                 break
             thread = threading.Thread(target=self._run)
+            if self._name is not None:
+                thread.name += '-' + self._name
             thread.setDaemon(False)
             thread.start()
             self._threads.append(thread)

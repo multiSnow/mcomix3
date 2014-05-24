@@ -774,6 +774,7 @@ class FileHandler(object):
         This is to avoid long blockings when removing large temporary dirs.
         """
         del_thread = threading.Thread(target=shutil.rmtree, args=(path, True))
+        del_thread.name += '-delete'
         del_thread.setDaemon(False)
         del_thread.start()
 
