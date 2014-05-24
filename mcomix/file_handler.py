@@ -163,6 +163,7 @@ class FileHandler(object):
         if not image_files:
             self.file_loaded = False
             self.file_load_failed = True
+            self._window.imagehandler._image_files = None
             msg = _("No images in '%s'") % os.path.basename(path)
             self._window.statusbar.set_message(msg)
             self._window.osd.show(msg)
@@ -399,7 +400,13 @@ class FileHandler(object):
                     # set those files instead of image_files for the return
                     image_files = tmp_image_files
 
+            # Preemptively set _image files of ImageHandler, to prevent extraction callbacks
+            # from being ignored, as the ImageHandler needs the list of files
+            # to translate from file name to page index
+            self._window.imagehandler._image_files = image_files
+
             # Image index may have changed after additional files were extracted.
+            # This call might block due to displaying a confirmation dialog.
             current_image_index = self._get_index_for_page(start_page,
                 len(image_files), path, confirm=True)
 
