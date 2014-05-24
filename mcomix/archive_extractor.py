@@ -131,6 +131,7 @@ class Extractor:
         """Close any open file objects, need only be called manually if the
         extract() method isn't called.
         """
+        self.stop()
         if self._archive:
             self._archive.close()
 

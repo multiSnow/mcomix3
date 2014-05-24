@@ -130,6 +130,7 @@ class Thumbnailer(object):
                 while not extractor.is_ready(wanted):
                     condition.wait()
                 condition.release()
+                extractor.close()
 
                 if not os.path.isfile(image_path):
                     return None, None
