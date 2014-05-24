@@ -581,11 +581,6 @@ class _BookArea(gtk.ScrolledWindow):
         """Handle mouse button presses on the _BookArea."""
         path = iconview.get_path_at_pos(int(event.x), int(event.y))
 
-        # For some reason we don't always get an item_activated event when
-        # double-clicking on an icon, so we handle it explicitly here.
-        if event.type == gtk.gdk._2BUTTON_PRESS and path is not None:
-            self._book_activated(iconview, path)
-
         if event.button == 3:
             if path and not iconview.path_is_selected(path):
                 iconview.unselect_all()
