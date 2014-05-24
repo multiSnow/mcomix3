@@ -471,6 +471,8 @@ class ImageHandler:
 
         If <nowait> is True, don't wait for <page> to be available.
         """
+        if page is None:
+            page = self.get_current_page()
         if not self._wait_on_page(page, check_only=nowait):
             # Page is not available!
             return None
