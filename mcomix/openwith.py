@@ -213,7 +213,7 @@ class OpenWithCommand(object):
         if context_type == DEBUGGING_CONTEXT:
             return '%' + identifier
 
-        if not (context_type & IMAGE_FILE_CONTEXT) and identifier in (u'f', u'd', u'F', u'D'):
+        if not (context_type & IMAGE_FILE_CONTEXT) and identifier in (u'f', u'd', u'b', u's', u'F', u'D', u'B', u'S'):
             raise OpenWithException(
                 _("File-related variables can only be used for files."))
 
@@ -231,6 +231,16 @@ class OpenWithCommand(object):
             return window.imagehandler.get_page_filename()
         elif identifier == u'c':
             return os.path.basename(os.path.dirname(window.filehandler.get_path_to_base()))
+        elif identifier == u'b':
+            if (context_type & ARCHIVE_CONTEXT):
+                return window.filehandler.get_base_filename() # same as %a
+            else:
+                return os.path.basename(os.path.dirname(window.imagehandler.get_path_to_page())) # same as %d
+        elif identifier == u's':
+            if (context_type & ARCHIVE_CONTEXT):
+                return os.path.basename(os.path.dirname(window.filehandler.get_path_to_base())) # same as %c
+            else:
+                return os.path.basename(os.path.dirname(os.path.dirname(window.imagehandler.get_path_to_page())))
         elif identifier == u'A':
             return window.filehandler.get_path_to_base()
         elif identifier == u'D':
@@ -239,6 +249,16 @@ class OpenWithCommand(object):
             return os.path.normpath(window.imagehandler.get_path_to_page())
         elif identifier == u'C':
             return os.path.dirname(window.filehandler.get_path_to_base())
+        elif identifier == u'B':
+            if (context_type & ARCHIVE_CONTEXT):
+                return window.filehandler.get_path_to_base() # same as %A
+            else:
+                return os.path.normpath(os.path.dirname(window.imagehandler.get_path_to_page())) # same as %D
+        elif identifier == u'S':
+            if (context_type & ARCHIVE_CONTEXT):
+                return os.path.dirname(window.filehandler.get_path_to_base()) # same as %C
+            else:
+                return os.path.dirname(os.path.dirname(window.imagehandler.get_path_to_page()))
         else:
             raise OpenWithException(
                 _("Invalid escape sequence: %%%s") % identifier);
