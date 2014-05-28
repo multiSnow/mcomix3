@@ -56,7 +56,13 @@ class BaseArchive(object):
         for char in unsafe_chars:
             translation_table[ord(char)] = replacement_char
 
-        return filename.translate(translation_table)
+        new_name = filename.translate(translation_table)
+
+        # Make sure the filename does not contain portions that might
+        # traverse directories, i.e. do not allow absolute paths
+        # and paths containing ../
+        normalized = os.path.normpath(new_name)
+        return normalized.lstrip('..' + os.sep).lstrip(os.sep)
 
     def _create_directory(self, directory):
         """ Recursively create a directory if it doesn't exist yet. """
