@@ -53,6 +53,8 @@ MComix 1.01
     - MComix will now use the current GTK theme's icons for
       Next/Previous buttons.
 
+    - Added AppData meta information for software repositories.
+
     - Updated traditional Chinese translation (by Wayne Su).
 
 MComix 1.00

@@ -70,6 +70,7 @@ setuptools.setup(
     data_files = [
         ('share/man/man1', ['mcomix.1.gz']),
         ('share/applications', ['mime/mcomix.desktop']),
+        ('share/appdata', ['mime/mcomix.appdata.xml']),
         ('share/mime/packages', ['mime/mcomix.xml']),
         ('share/icons/hicolor/16x16/apps', ['mcomix/images/16x16/mcomix.png']),
         ('share/icons/hicolor/22x22/apps', ['mcomix/images/22x22/mcomix.png']),

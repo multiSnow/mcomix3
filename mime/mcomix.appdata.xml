@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2014 Moritz Brunner -->
+<application>
+ <id type="desktop">mcomix.desktop</id>
+ <metadata_license>CC0-1.0</metadata_license>
+ <project_license>GPL-2.0+</project_license>
+ <name>MComix</name>
+ <summary>Comic and general purpose image viewer</summary>
+ <description>
+  <p>
+	  MComix is an user-friendly, customizable image viewer. It is specifically
+	  designed to handle comic books, but also serves as a generic viewer.
+	  It reads images in various archive formats such as ZIP, RAR, 7Zip, LHA or
+	  tar/gz/bz2, archives as well as plain image files.
+  </p>
+  <p>
+	  MComix is a fork of the Comix project, and aims to add bug fixes and
+	  stability improvements after Comix development came to a halt in
+	  late 2009.
+  </p>
+ </description>
+ <screenshots>
+  <screenshot type="default" width="640" height="376">http://sourceforge.net/p/mcomix/screenshot/273797.jpg</screenshot>
+ </screenshots>
+ <url type="homepage">http://mcomix.sourceforge.net/</url>
+ <updatecontact>oddegamra_at_posteo.org</updatecontact>
+ <project_group />
+</application>
