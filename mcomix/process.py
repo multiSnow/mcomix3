@@ -3,9 +3,12 @@
 import gc
 import subprocess
 import sys
+import os
 
 from mcomix import log
 from mcomix import i18n
+
+NULL = open(os.devnull, 'wb')
 
 class Process:
 
@@ -34,15 +37,13 @@ class Process:
 
         self._proc = None
 
-    def _exec(self):
+    def _exec(self, stdin, stderr):
         """Spawns the process, and returns its stdout.
         (NOTE: separate function to make python2.4 exception syntax happy)
         """
         try:
-            # Cannot spawn processes with PythonW/Win32 unless stdin and
-            # stderr are redirected to a pipe as well.
             self._proc = subprocess.Popen(self._args, stdout=subprocess.PIPE,
-                    stdin=subprocess.PIPE, stderr=subprocess.PIPE,
+                    stdin=stdin, stderr=stderr,
                     startupinfo=self._startupinfo())
             return self._proc.stdout
         except Exception, ex:
@@ -68,13 +69,15 @@ class Process:
         else:
             return None
 
-    def spawn(self):
+    # Cannot spawn processes with PythonW/Win32 unless stdin and
+    # stderr are redirected to a pipe/devnull as well.
+    def spawn(self, stdin=subprocess.PIPE, stderr=NULL):
         """Spawn the process defined by the args in __init__(). Return a
         file-like object linked to the spawned process' stdout.
         """
         try:
             gc.disable() # Avoid Python issue #1336!
-            return self._exec()
+            return self._exec(stdin, stderr)
         finally:
             gc.enable()
 
