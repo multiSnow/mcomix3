@@ -47,11 +47,8 @@ class ZipArchive(archive_base.NonUnicodeArchive):
         return [self._unicode_filename(filename)
            for filename in self.zip.namelist()]
 
-    def extract(self, filename, destination_path):
-        destination_dir = os.path.split(destination_path)[0]
-        self._create_directory(destination_dir)
-
-        new = file(destination_path, 'wb')
+    def extract(self, filename, destination_dir):
+        new = self._create_file(os.path.join(destination_dir, filename))
         content = self.zip.read(self._original_filename(filename))
         new.write(content)
         new.close()

@@ -59,6 +59,13 @@ class WorkerThread:
                 self._processing_orders.append(order)
             self._process_order(order)
 
+    def must_stop(self):
+        """Return true if we've been asked to stop processing.
+
+        Can be used by the processing function to check if it must abort early.
+        """
+        return self._stop
+
     def clear_orders(self):
         """Clear the current orders queue."""
         with self._condition:

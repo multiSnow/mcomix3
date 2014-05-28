@@ -39,7 +39,7 @@ class Extractor:
         self._dst = dst
         self._type = type or archive_tools.archive_mime_type(src)
         self._files = []
-        self._extracted = {}
+        self._extracted = set()
         self._archive = archive_tools.get_archive_handler(src)
         if self._archive is None:
             msg = _('Non-supported archive format: %s') % os.path.basename(src)
@@ -50,11 +50,16 @@ class Extractor:
         self._setupped = True
         self._started = False
         self._condition = threading.Condition()
-        if self._archive.support_concurrent_extractions:
+        if self._archive.support_concurrent_extractions \
+           and not self._archive.is_solid():
             max_threads = prefs['max extract threads']
         else:
             max_threads = 1
-        self._extract_thread = WorkerThread(self._extract_file,
+        if self._archive.is_solid():
+            fn = self._extract_all_files
+        else:
+            fn = self._extract_file
+        self._extract_thread = WorkerThread(fn,
                                             name='extract',
                                             max_threads=max_threads,
                                             unique_orders=True)
@@ -86,10 +91,6 @@ class Extractor:
         ordering applied with this method on such archives.
         """
         with self._condition:
-            if self._type in (constants.GZIP, constants.BZIP2):
-                self._files = [x for x in self._files if x in files]
-            else:
-                self._files = files
             self._files = [f for f in files if f not in self._extracted]
             if self._started:
                 self.extract()
@@ -99,7 +100,7 @@ class Extractor:
         (as set by set_files()) is fully extracted.
         """
         with self._condition:
-            return self._extracted.get(name, False)
+            return name in self._extracted
 
     def get_mime_type(self):
         """Return the mime type name of the extractor's current archive."""
@@ -121,7 +122,12 @@ class Extractor:
         """
         self._started = True
         self._extract_thread.clear_orders()
-        self._extract_thread.extend_orders(self._files)
+        if self._archive.is_solid():
+            # Sort files so we don't queue the same batch multiple times.
+            files = sorted(self._files)
+            self._extract_thread.append_order(files)
+        else:
+            self._extract_thread.extend_orders(self._files)
 
     @callback.Callback
     def file_extracted(self, extractor, filename):
@@ -136,16 +142,25 @@ class Extractor:
         if self._archive:
             self._archive.close()
 
-    def _extract_file(self, name):
-        """Extract the file named <name> to the destination directory,
-        mark the file as "ready", then signal a notify() on the Condition
-        returned by setup().
-        """
+    def _extraction_finished(self, name):
+        with self._condition:
+            self._files.remove(name)
+            self._extracted.add(name)
+            self._condition.notifyAll()
+        self.file_extracted(self, name)
+        return not self._extract_thread.must_stop()
+
+    def _extract_all_files(self, files):
+
+        # With multiple extractions for each pass, some of the files might have
+        # already been extracted.
+        with self._condition:
+            files = list(set(files) - self._extracted)
+            files.sort()
 
         try:
-            dst_path = os.path.join(self._dst, name)
-            log.debug(u'Extracting "%s" to "%s"', name, dst_path)
-            self._archive.extract(name, dst_path)
+            log.debug(u'Extracting "%s" to "%s"', '", "'.join(files), self._dst)
+            self._archive.extract_all(files, self._dst, self._extraction_finished)
 
         except Exception, ex:
             # Better to ignore any failed extractions (e.g. from a corrupt
@@ -154,11 +169,24 @@ class Extractor:
             # handled gracefully by the main program anyway.
             log.error(_('! Extraction error: %s'), ex)
 
-        with self._condition:
-            self._files.remove(name)
-            self._extracted[name] = True
-            self._condition.notifyAll()
-        self.file_extracted(self, name)
+    def _extract_file(self, name):
+        """Extract the file named <name> to the destination directory,
+        mark the file as "ready", then signal a notify() on the Condition
+        returned by setup().
+        """
+
+        try:
+            log.debug(u'Extracting "%s" to "%s"', name, self._dst)
+            self._archive.extract(name, self._dst)
+
+        except Exception, ex:
+            # Better to ignore any failed extractions (e.g. from a corrupt
+            # archive) than to crash here and leave the main thread in a
+            # possible infinite block. Damaged or missing files *should* be
+            # handled gracefully by the main program anyway.
+            log.error(_('! Extraction error: %s'), ex)
+
+        self._extraction_finished(name)
 
 class ArchiveException(Exception):
     """ Indicate error during extraction operations. """

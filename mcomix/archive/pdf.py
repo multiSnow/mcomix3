@@ -37,9 +37,9 @@ class PdfArchive(archive_base.BaseArchive):
             fd.close()
         return pages
 
-    def extract(self, filename, destination_path):
-        destination_dir = os.path.split(destination_path)[0]
+    def extract(self, filename, destination_dir):
         self._create_directory(destination_dir)
+        destination_path = os.path.join(destination_dir, filename)
         page_num = int(filename[0:-4])
         # Try to find optimal DPI.
         proc = process.Process(['mudraw', '-x', self.pdf, str(page_num)])

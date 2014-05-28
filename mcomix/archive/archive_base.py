@@ -33,18 +33,36 @@ class BaseArchive(object):
 
         return []
 
-    def extract(self, filename, destination_path):
+    def extract(self, filename, destination_dir):
         """ Extracts the file specified by <filename>. This filename must
         be obtained by calling list_contents(). The file is saved to
-        <destination_path>, which includes both target path and filename. """
+        <destination_dir>. """
 
         assert isinstance(filename, unicode) and \
-            isinstance(destination_path, unicode)
+            isinstance(destination_dir, unicode)
+
+    def extract_all(self, entries, destination_dir, callback):
+        """ Extract all <entries> from archive to <destination_dir>. """
+        wanted = set(entries)
+        for filename in self.list_contents():
+            if not filename in wanted:
+                continue
+            self.extract(filename, destination_dir)
+            if not callback(filename):
+                break
+            wanted.remove(filename)
+            if 0 == len(wanted):
+                break
 
     def close(self):
         """ Closes the archive and releases held resources. """
 
         pass
+
+    def is_solid(self):
+        """ Returns True if the archive is solid and extraction should be done
+        in one pass. """
+        return False
 
     def _replace_invalid_filesystem_chars(self, filename):
         """ Replaces characters in <filename> that cannot be saved to the disk
@@ -74,6 +92,13 @@ class BaseArchive(object):
             # Can happen with concurrent calls.
             if e.errno != errno.EEXIST:
                 raise e
+
+    def _create_file(self, dst_path):
+        """ Open <dst_path> for writing, making sure base directory exists. """
+        dst_dir = os.path.dirname(dst_path)
+        # Create directory if it doesn't exist
+        self._create_directory(dst_dir)
+        return open(dst_path, 'wb')
 
     @callback.Callback
     def _password_required(self, event):
@@ -173,10 +198,10 @@ class ExternalExecutableArchive(NonUnicodeArchive):
         self.filenames_initialized = True
         return filenames
 
-    def extract(self, filename, destination_path):
-        """ Extract <filename> from the archive to <destination_path>.
-        This path should include the full filename. """
-        assert isinstance(filename, unicode) and isinstance(destination_path, unicode)
+    def extract(self, filename, destination_dir):
+        """ Extract <filename> from the archive to <destination_dir>. """
+        assert isinstance(filename, unicode) and \
+                isinstance(destination_dir, unicode)
 
         if not self._get_executable():
             return
@@ -184,9 +209,6 @@ class ExternalExecutableArchive(NonUnicodeArchive):
         if not self.filenames_initialized:
             self.list_contents()
 
-        # Create directory if it doesn't exist
-        destination_dir = os.path.split(destination_path)[0]
-        self._create_directory(destination_dir)
         proc = process.Process([self._get_executable()] +
             self._get_extract_arguments() +
             [self.archive, self._original_filename(filename)])
@@ -194,7 +216,7 @@ class ExternalExecutableArchive(NonUnicodeArchive):
 
         if fd:
             # Create new file
-            new = open(destination_path, 'wb')
+            new = self._create_file(os.path.join(destination_dir, filename))
             stdout, stderr = proc.communicate()
             new.write(stdout)
             new.close()

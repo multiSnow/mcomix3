@@ -18,7 +18,7 @@ else:
     UNRARCALLBACK = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_uint,
         ctypes.c_long, ctypes.c_long, ctypes.c_long)
 
-class UnrarDll(object):
+class UnrarDll(archive.archive_base.BaseArchive):
     """ Wrapper class for libunrar. All string values passed to this class must be unicode objects.
     In turn, all values returned are also unicode. """
 
@@ -105,6 +105,7 @@ class UnrarDll(object):
         self._handle = None
         self._callback_function = None
         self._password = None
+        self._is_solid = False
 
         # Set up function prototypes.
         # Mandatory since pointers get truncated on x64 otherwise!
@@ -123,6 +124,9 @@ class UnrarDll(object):
         self._unrar.RARSetCallback.argtypes = \
             [ctypes.c_void_p, UNRARCALLBACK, ctypes.c_long]
 
+    def is_solid(self):
+        return self._is_solid
+
     def list_contents(self):
         """ Returns a list of files in the archive. """
 
@@ -135,6 +139,8 @@ class UnrarDll(object):
         # Read first header
         result = self._unrar.RARReadHeaderEx(handle, ctypes.byref(headerdata))
         while result == 0:
+            if 0 != (0x10 & headerdata.Flags):
+                self._is_solid = True
             filelist.append(headerdata.FileNameW)
             # Skip to the next entry
             self._unrar.RARProcessFileW(handle, UnrarDll._ProcessingMode.RAR_SKIP, None, None)
@@ -145,9 +151,8 @@ class UnrarDll(object):
 
         return filelist
 
-    def extract(self, filename, destination_path, try_again=True):
-        """ Extract <filename> from the archive to <destination_path>.
-        This path should include the full filename. """
+    def extract(self, filename, destination_dir, try_again=True):
+        """ Extract <filename> from the archive to <destination_dir>. """
         # Obtain handle for RAR file, opening it in EXTRACT mode
         if not self._handle:
             handle = self._handle = self._open(self._archive, UnrarDll._OpenMode.RAR_OM_EXTRACT)
@@ -163,6 +168,7 @@ class UnrarDll(object):
             # Check if the current file matches the requested file
             if (headerdata.FileNameW == filename):
                 # Extract file and stop processing
+                destination_path = os.path.join(destination_dir, filename)
                 result = self._unrar.RARProcessFileW(handle,
                     UnrarDll._ProcessingMode.RAR_EXTRACT, None,
                     ctypes.c_wchar_p(destination_path))
@@ -187,7 +193,7 @@ class UnrarDll(object):
             # it probably doesn't even exist in the archive.
             self.close()
             if try_again:
-                self.extract(filename, destination_path, False)
+                self.extract(filename, destination_dir, False)
         elif errorcode == UnrarDll._ErrorCode.ERAR_BAD_DATA:
             self.close()
 

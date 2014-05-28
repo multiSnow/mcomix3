@@ -2,6 +2,8 @@
 
 """ 7z archive extractor. """
 
+import os
+
 from mcomix import process
 from mcomix.archive import archive_base
 
@@ -16,14 +18,18 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
     def __init__(self, archive):
         super(SevenZipArchive, self).__init__(archive)
 
+        self._is_solid = False
         #: Indicates which part of the file listing has been read
         self._state = SevenZipArchive.STATE_HEADER
+        self._contents = []
+        #: Current path while listing contents
+        self._path = None
 
     def _get_executable(self):
         return SevenZipArchive._find_7z_executable()
 
     def _get_list_arguments(self):
-        return [u'l', u'-p', u'--']
+        return [u'l', u'-slt', u'-p', u'--']
 
     def _get_extract_arguments(self):
         return [u'x', u'-so', u'-p', u'--']
@@ -41,14 +47,60 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
                 self._state = SevenZipArchive.STATE_FOOTER
 
             return None
-        else:
-            if self._state == SevenZipArchive.STATE_LISTING:
-                # 7z occasionally does not include all columns when printing
-                # the listing, so splitting columns by spaces is unreliable.
-                # Use hardcoded start point by characters instead.
-                return line[53:]
-            else:
-                return None
+
+        if self._state == SevenZipArchive.STATE_HEADER:
+            if 'Solid = +' == line:
+                self._is_solid = True
+
+        if self._state == SevenZipArchive.STATE_LISTING:
+            if line.startswith('Path = '):
+                self._path = line[7:]
+                return self._path
+            if line.startswith('Size ='):
+                self._contents.append((self._path, int(line[7:])))
+
+        return None
+
+    def is_solid(self):
+        return self._is_solid
+
+    def extract_all(self, entries, destination_dir, callback):
+
+        if not self._get_executable():
+            return
+
+        if not self.filenames_initialized:
+            self.list_contents()
+
+        proc = process.Process([self._get_executable()] +
+            self._get_extract_arguments() +
+            [self.archive])
+        fd = proc.spawn(stdin=process.NULL)
+        if not fd:
+            return
+
+        wanted = dict([(self._original_filename(unicode_name), unicode_name)
+                       for unicode_name in entries])
+
+        for filename, filesize in self._contents:
+            data = fd.read(filesize)
+            if filename not in wanted:
+                continue
+            unicode_name = wanted.get(filename, None)
+            if unicode_name is None:
+                continue
+            new = self._create_file(os.path.join(destination_dir, unicode_name))
+            new.write(data)
+            new.close()
+            if not callback(unicode_name):
+                break
+            del wanted[filename]
+            if 0 == len(wanted):
+                break
+
+        # Wait for process to finish
+        fd.close()
+        proc.wait()
 
     @staticmethod
     def _find_7z_executable():
