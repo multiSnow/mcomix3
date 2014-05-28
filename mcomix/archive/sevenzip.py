@@ -3,6 +3,8 @@
 """ 7z archive extractor. """
 
 import os
+import sys
+import tempfile
 
 from mcomix import process
 from mcomix.archive import archive_base
@@ -29,7 +31,11 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         return SevenZipArchive._find_7z_executable()
 
     def _get_list_arguments(self):
-        return [u'l', u'-slt', u'-p', u'--']
+        args = [u'l', u'-slt', u'-p']
+        if sys.platform == 'win32':
+            args.append(u'-sccUTF-8')
+        args.append(u'--')
+        return args
 
     def _get_extract_arguments(self):
         return [u'x', u'-so', u'-p', u'--']
@@ -38,6 +44,7 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         """ Start parsing after the first delimiter (bunch of - characters),
         and end when delimiters appear again. Format:
         Date <space> Time <space> Attr <space> Size <space> Compressed <space> Name"""
+        line = line.decode('UTF-8')
         if line.startswith('----'):
             if self._state == SevenZipArchive.STATE_HEADER:
                 # First delimiter reached, start reading from next line
@@ -64,8 +71,41 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
     def is_solid(self):
         return self._is_solid
 
-    def extract_all(self, entries, destination_dir, callback):
+    def extract(self, filename, destination_dir):
+        """ Extract <filename> from the archive to <destination_dir>. """
+        assert isinstance(filename, unicode) and \
+                isinstance(destination_dir, unicode)
 
+        if not self._get_executable():
+            return
+
+        if not self.filenames_initialized:
+            self.list_contents()
+
+        tmplistfile = tempfile.NamedTemporaryFile(prefix='mcomix.7z.', delete=False)
+        try:
+            tmplistfile.write(self._original_filename(filename).encode('UTF-8') + os.linesep)
+            tmplistfile.close()
+            proc = process.Process([self._get_executable(),
+                                    u'x', u'-so', u'-p',
+                                    u'-i@' + tmplistfile.name,
+                                    u'--', self.archive])
+            fd = proc.spawn()
+
+            if fd:
+                # Create new file
+                new = self._create_file(os.path.join(destination_dir, filename))
+                stdout, stderr = proc.communicate()
+                new.write(stdout)
+                new.close()
+
+                # Wait for process to finish
+                fd.close()
+                proc.wait()
+        finally:
+            os.unlink(tmplistfile.name)
+
+    def extract_all(self, entries, destination_dir, callback):
         if not self._get_executable():
             return
 
