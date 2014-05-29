@@ -33,7 +33,7 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
     def _get_list_arguments(self):
         args = [u'l', u'-slt', u'-p']
         if sys.platform == 'win32':
-            args.append(u'-sccUTF-8')
+            args.append(u'-sccUTF-8')  # This switch is only supported on Win32
         args.append(u'--')
         return args
 
@@ -41,7 +41,11 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         """ Start parsing after the first delimiter (bunch of - characters),
         and end when delimiters appear again. Format:
         Date <space> Time <space> Attr <space> Size <space> Compressed <space> Name"""
-        line = line.decode('UTF-8')
+
+        # Encoding is only guaranteed on win32 due to the -scc switch
+        if sys.platform == 'win32':
+            line = line.decode('utf-8')
+
         if line.startswith('----'):
             if self._state == SevenZipArchive.STATE_HEADER:
                 # First delimiter reached, start reading from next line
@@ -61,7 +65,9 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
                 self._path = line[7:]
                 return self._path
             if line.startswith('Size ='):
-                self._contents.append((self._path, int(line[7:])))
+                filesize = int(line[7:])
+                if filesize > 0:
+                    self._contents.append((self._path, filesize))
 
         return None
 
@@ -81,7 +87,11 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
 
         tmplistfile = tempfile.NamedTemporaryFile(prefix='mcomix.7z.', delete=False)
         try:
-            tmplistfile.write(self._original_filename(filename).encode('UTF-8') + os.linesep)
+            desired_filename = self._original_filename(filename)
+            if isinstance(desired_filename, unicode):
+                desired_filename = desired_filename.encode('utf-8')
+
+            tmplistfile.write(desired_filename + os.linesep)
             tmplistfile.close()
             proc = process.Process([self._get_executable(),
                                     u'x', u'-so', u'-p',
