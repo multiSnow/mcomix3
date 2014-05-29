@@ -37,9 +37,6 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         args.append(u'--')
         return args
 
-    def _get_extract_arguments(self):
-        return [u'x', u'-so', u'-p', u'--']
-
     def _parse_list_output_line(self, line):
         """ Start parsing after the first delimiter (bunch of - characters),
         and end when delimiters appear again. Format:
@@ -106,15 +103,16 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
             os.unlink(tmplistfile.name)
 
     def extract_all(self, entries, destination_dir, callback):
+
         if not self._get_executable():
             return
 
         if not self.filenames_initialized:
             self.list_contents()
 
-        proc = process.Process([self._get_executable()] +
-            self._get_extract_arguments() +
-            [self.archive])
+        proc = process.Process([self._get_executable(),
+                                u'x', u'-so', u'-p',
+                                u'--', self.archive])
         fd = proc.spawn(stdin=process.NULL)
         if not fd:
             return
