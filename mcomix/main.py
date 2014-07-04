@@ -861,6 +861,10 @@ class MainWindow(gtk.Window):
 
         if prefs['thumbnail bg uses main colour']:
             self.thumbnailsidebar.change_thumbnail_background_color(prefs['bg colour'])
+        self._bg_colour = colour
+
+    def get_bg_colour(self):
+        return self._bg_colour
 
     def _display_active_widgets(self):
         """Hide and/or show main window widgets depending on the current

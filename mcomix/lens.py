@@ -123,7 +123,7 @@ class MagnifyingLens(object):
         """
         canvas = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8,
             prefs['lens size'], prefs['lens size'])
-        canvas.fill(0x000000bb)
+        canvas.fill(image_tools.convert_rgb16list_to_rgba8int(self._window.get_bg_colour()))
         cb = self._window.layout.get_content_boxes()
         source_pixbufs = self._window.imagehandler.get_pixbufs(len(cb))
         for i in range(len(cb)):

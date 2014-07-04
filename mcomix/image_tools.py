@@ -361,4 +361,7 @@ def is_image_file(path):
     ext_index = bisect.bisect_left(_supported_formats, ext)
     return ext_index != len(_supported_formats) and _supported_formats[ext_index] == ext
 
+def convert_rgb16list_to_rgba8int(c):
+    return 0x000000FF | (c[0] >> 8 << 24) | (c[1] >> 8 << 16) | (c[2] >> 8 << 8)
+
 # vim: expandtab:sw=4:ts=4
