@@ -218,6 +218,8 @@ class MagnifyingLens(object):
         if prefs['vertical flip']:
             subpixbuf = subpixbuf.flip(horizontal=False)
 
+        subpixbuf = self._window.enhancer.enhance(subpixbuf)
+
         if paste_left:
             dest_x = 0
         else:
