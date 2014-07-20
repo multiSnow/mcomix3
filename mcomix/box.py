@@ -34,7 +34,7 @@ class Box(object):
         dimensions, the positions and the sizes of the two Boxes are equal,
         respectively. """
         return (self.get_position() == other.get_position()) and \
-            (self.get_size() == self.get_size())
+            (self.get_size() == other.get_size())
 
 
     def __len__(self):
