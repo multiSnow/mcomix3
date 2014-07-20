@@ -396,7 +396,7 @@ class FileHandler(object):
                         self._name_table[full_path] = os.path.basename(full_path)
                         # This trick here allows to avoid indefinite waiting on
                         # the sub-extracted files.
-                        self._extractor._extracted[os.path.basename(full_path)] = True
+                        self._extractor._extracted.add(os.path.basename(full_path))
                     # set those files instead of image_files for the return
                     image_files = tmp_image_files
 
