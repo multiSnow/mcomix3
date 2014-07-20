@@ -116,50 +116,57 @@ class Thumbnailer(object):
         tuple along with a file metadata dictionary: (pixbuf, tEXt_data) """
 
         if archive_tools.archive_mime_type(filepath) is not None:
-            extractor = archive_extractor.Extractor()
-            tmpdir = tempfile.mkdtemp(prefix=u'mcomix_archive_thumb.')
-            condition = extractor.setup(filepath, tmpdir)
-            files = extractor.get_files()
-            wanted = self._guess_cover(files)
-
-            if wanted:
-                extractor.set_files([wanted])
-                extractor.extract()
-                image_path = os.path.join(tmpdir, wanted)
-
-                condition.acquire()
-                while not extractor.is_ready(wanted):
-                    condition.wait()
-                condition.release()
-                extractor.close()
-
-                if not os.path.isfile(image_path):
+            cleanup = []
+            try:
+                extractor = archive_extractor.Extractor()
+                cleanup.append(lambda: extractor.close())
+                tmpdir = tempfile.mkdtemp(prefix=u'mcomix_archive_thumb.')
+                cleanup.append(lambda: shutil.rmtree(tmpdir, True))
+                try:
+                    condition = extractor.setup(filepath, tmpdir)
+                except archive_extractor.ArchiveException:
                     return None, None
+                files = extractor.get_files()
+                wanted = self._guess_cover(files)
 
-                pixbuf = image_tools.load_pixbuf_size(image_path, self.width, self.height)
-                tEXt_data = self._get_text_data(image_path)
-                # Use the archive's mTime instead of the extracted file's mtime
-                tEXt_data['tEXt::Thumb::MTime'] = str(long(os.stat(filepath).st_mtime))
-
-                shutil.rmtree(tmpdir, True)
-                return pixbuf, tEXt_data
-            else:
-                # Then check for subarchives by file extension and
-                # extract only the first...
-                subs = filter(archive_tools.get_supported_archive_regex().search, files)
-                if subs:
-                    extractor.set_files([subs[0]])
+                if wanted:
+                    extractor.set_files([wanted])
                     extractor.extract()
+                    image_path = os.path.join(tmpdir, wanted)
+
                     condition.acquire()
-                    while not extractor.is_ready(subs[0]):
+                    while not extractor.is_ready(wanted):
                         condition.wait()
                     condition.release()
-                    subpath = os.path.join(tmpdir, subs[0])
-                    # Recursively try to find an image to use as cover
-                    return self._create_thumbnail_pixbuf(subpath)
 
-                shutil.rmtree(tmpdir, True)
-                return None, None
+                    if not os.path.isfile(image_path):
+                        return None, None
+
+                    pixbuf = image_tools.load_pixbuf_size(image_path, self.width, self.height)
+                    tEXt_data = self._get_text_data(image_path)
+                    # Use the archive's mTime instead of the extracted file's mtime
+                    tEXt_data['tEXt::Thumb::MTime'] = str(long(os.stat(filepath).st_mtime))
+
+                    return pixbuf, tEXt_data
+                else:
+                    # Then check for subarchives by file extension and
+                    # extract only the first...
+                    subs = filter(archive_tools.get_supported_archive_regex().search, files)
+                    if subs:
+                        extractor.set_files([subs[0]])
+                        extractor.extract()
+                        condition.acquire()
+                        while not extractor.is_ready(subs[0]):
+                            condition.wait()
+                        condition.release()
+                        subpath = os.path.join(tmpdir, subs[0])
+                        # Recursively try to find an image to use as cover
+                        return self._create_thumbnail_pixbuf(subpath)
+
+                    return None, None
+            finally:
+                for fn in reversed(cleanup):
+                    fn()
 
         elif image_tools.is_image_file(filepath):
             pixbuf = image_tools.load_pixbuf_size(filepath, self.width, self.height)
