@@ -229,6 +229,10 @@ class MagnifyingLens(object):
         else:
             dest_y = min(canvas.get_height() - subpixbuf.get_height(), dest_y)
 
+        if subpixbuf.get_has_alpha() and prefs['checkered bg for transparent images']:
+            subpixbuf = subpixbuf.composite_color_simple(subpixbuf.get_width(), subpixbuf.get_height(),
+                gtk.gdk.INTERP_NEAREST, 255, 8, 0x777777, 0x999999)
+
         subpixbuf.copy_area(0, 0, subpixbuf.get_width(),
             subpixbuf.get_height(), canvas, dest_x, dest_y)
 
