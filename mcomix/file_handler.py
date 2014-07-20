@@ -545,9 +545,9 @@ class FileHandler(object):
 
     def cleanup(self):
         """Run clean-up tasks. Should be called prior to exit."""
-        self.thread_delete(self._tmp_dir)
         self._stop_waiting = True
         self._extractor.stop()
+        self.thread_delete(self._tmp_dir)
         self.update_last_read_page()
 
     def get_number_of_comments(self):
