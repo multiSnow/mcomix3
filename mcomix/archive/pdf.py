@@ -35,6 +35,7 @@ class PdfArchive(archive_base.BaseArchive):
                 if line.startswith('page '):
                     pages.append(line.split()[1] + '.png')
             fd.close()
+            proc.wait()
         return pages
 
     def extract(self, filename, destination_dir):
@@ -58,6 +59,7 @@ class PdfArchive(archive_base.BaseArchive):
                         max_width = width
                         max_dpi = dpi
             fd.close()
+            proc.wait()
         # Render...
         cmd = ['mudraw', '-r', str(max_dpi), '-o', destination_path, '--', self.pdf, str(page_num)]
         log.debug('rendering %s: %s' % (filename, ' '.join(cmd)))
@@ -65,7 +67,7 @@ class PdfArchive(archive_base.BaseArchive):
         fd = proc.spawn()
         if fd is not None:
             fd.close()
-        proc.wait()
+            proc.wait()
 
     def close(self):
         self.pdf = None
@@ -78,6 +80,7 @@ class PdfArchive(archive_base.BaseArchive):
             fd = proc.spawn()
             if fd is not None:
                 fd.close()
+                proc.wait()
                 _pdf_possible = True
             else:
                 log.info('MuPDF not available.')
