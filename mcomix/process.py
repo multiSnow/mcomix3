@@ -1,12 +1,19 @@
 """process.py - Process spawning module."""
 
 import gc
-import subprocess
 import sys
 import os
 
 from mcomix import log
 from mcomix import i18n
+
+try:
+    import subprocess32 as subprocess
+    _using_subprocess32 = True
+except ImportError:
+    log.warning('subprocess32 not available! using subprocess')
+    import subprocess
+    _using_subprocess32 = False
 
 NULL = open(os.devnull, 'wb')
 
@@ -76,10 +83,12 @@ class Process:
         file-like object linked to the spawned process' stdout.
         """
         try:
-            gc.disable() # Avoid Python issue #1336!
+            if not _using_subprocess32:
+                gc.disable() # Avoid Python issue #1336!
             return self._exec(stdin, stderr)
         finally:
-            gc.enable()
+            if not _using_subprocess32:
+                gc.enable()
 
     def wait(self):
         """Wait for the process to terminate."""
