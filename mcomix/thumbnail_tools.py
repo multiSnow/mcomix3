@@ -86,7 +86,7 @@ class Thumbnailer(object):
         else:
             if async:
                 thread = threading.Thread(target=self._create_thumbnail, args=(filepath,))
-                thread.name += 'thumbnailer'
+                thread.name += '-thumbnailer'
                 thread.setDaemon(True)
                 thread.start()
                 return None

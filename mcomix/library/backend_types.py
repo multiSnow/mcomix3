@@ -303,7 +303,7 @@ class _WatchList(object):
         When the scan finishes, L{new_files_found} will be called
         asynchronously. """
         thread = threading.Thread(target=self._scan_for_new_files_thread)
-        thread.name += 'scan_for_new_files'
+        thread.name += '-scan_for_new_files'
         thread.start()
 
     def _scan_for_new_files_thread(self):
