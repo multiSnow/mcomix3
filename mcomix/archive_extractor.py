@@ -159,7 +159,7 @@ class Extractor:
             files.sort()
 
         try:
-            log.debug(u'Extracting "%s" to "%s"', '", "'.join(files), self._dst)
+            log.debug(u'Extracting from "%s" to "%s": "%s"', self._src, self._dst, '", "'.join(files))
             self._archive.extract_all(files, self._dst, self._extraction_finished)
 
         except Exception, ex:
@@ -176,7 +176,7 @@ class Extractor:
         """
 
         try:
-            log.debug(u'Extracting "%s" to "%s"', name, self._dst)
+            log.debug(u'Extracting from "%s" to "%s": "%s"', self._src, self._dst, name)
             self._archive.extract(name, self._dst)
 
         except Exception, ex:
