@@ -2,6 +2,9 @@
 from __future__ import with_statement
 
 import threading
+import traceback
+
+from mcomix import log
 
 class WorkerThread:
 
@@ -57,7 +60,12 @@ class WorkerThread:
                     return
                 order = self._waiting_orders.pop(0)
                 self._processing_orders.append(order)
-            self._process_order(order)
+            try:
+                self._process_order(order)
+            except Exception, e:
+                log.error(_('! Worker thread processing %(function)r failed: %(error)s'),
+                          { 'function' : self._process_order, 'error' : e })
+                log.debug('Traceback:\n%s', traceback.format_exc())
 
     def must_stop(self):
         """Return true if we've been asked to stop processing.
