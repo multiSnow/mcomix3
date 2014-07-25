@@ -77,6 +77,7 @@ class PrintHandler(logging.Handler):
 
 # Set up default logger.
 __logger = logging.getLogger('mcomix')
+__logger.setLevel(WARNING)
 if not __logger.handlers:
     __handler = PrintHandler()
     __handler.setFormatter(logging.Formatter(
