@@ -48,7 +48,7 @@ class PdfArchive(archive_base.BaseArchive):
         max_width = 0
         max_dpi = PDF_RENDER_DPI_DEF
         if fd is not None:
-            for line in fd.read().splitlines():
+            for line in fd:
                 m = re.match('<fill_image .* matrix="([0-9.]+) [^"]*".* width="([0-9]+)"', line)
                 if m is not None:
                     width = int(m.group(2))
