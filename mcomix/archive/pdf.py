@@ -28,7 +28,7 @@ class PdfArchive(archive_base.BaseArchive):
 
     def list_contents(self):
         pages = []
-        proc = process.Process(['mutool', 'show', self.pdf, 'pages'])
+        proc = process.Process(['mutool', 'show', '--', self.pdf, 'pages'])
         fd = proc.spawn()
         if fd is not None:
             for line in fd.read().splitlines():
@@ -42,7 +42,7 @@ class PdfArchive(archive_base.BaseArchive):
         destination_path = os.path.join(destination_dir, filename)
         page_num = int(filename[0:-4])
         # Try to find optimal DPI.
-        proc = process.Process(['mudraw', '-x', self.pdf, str(page_num)])
+        proc = process.Process(['mudraw', '-x', '--', self.pdf, str(page_num)])
         fd = proc.spawn()
         max_width = 0
         max_dpi = PDF_RENDER_DPI_DEF
@@ -59,7 +59,7 @@ class PdfArchive(archive_base.BaseArchive):
                         max_dpi = dpi
             fd.close()
         # Render...
-        cmd = ['mudraw', '-r', str(max_dpi), '-o', destination_path, self.pdf, str(page_num)]
+        cmd = ['mudraw', '-r', str(max_dpi), '-o', destination_path, '--', self.pdf, str(page_num)]
         log.debug('rendering %s: %s' % (filename, ' '.join(cmd)))
         proc = process.Process(cmd)
         fd = proc.spawn()
