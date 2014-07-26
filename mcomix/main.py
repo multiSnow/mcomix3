@@ -30,7 +30,7 @@ from mcomix import zoom
 from mcomix import bookmark_backend
 from mcomix import message_dialog
 from mcomix import callback
-from mcomix.library import backend
+from mcomix.library import backend, main_dialog
 from mcomix import tools
 from mcomix import layout
 from mcomix import log
@@ -1027,6 +1027,8 @@ class MainWindow(gtk.Window):
         self.filehandler.cleanup()
         self.imagehandler.cleanup()
         self.thumbnailsidebar.clear()
+        if main_dialog._dialog is not None:
+            main_dialog._dialog.close()
         backend.LibraryBackend().close()
 
         # This hack is to avoid Python issue #1856.
