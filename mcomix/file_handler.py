@@ -323,19 +323,10 @@ class FileHandler(object):
             self._comment_files = [ os.path.join(self._tmp_dir, f)
                                     for f in comment_files ]
 
-            # Allow managing sub-archives by keeping archives based on extension
-            archive_files = filter(
-                    archive_tools.get_supported_archive_regex().search, files)
-            archive_files_paths = [ os.path.join(self._tmp_dir, f)
-                                    for f in archive_files ]
-
             for name, full_path in zip(archive_images, image_files):
                 self._name_table[full_path] = name
 
             for name, full_path in zip(comment_files, self._comment_files):
-                self._name_table[full_path] = name
-
-            for name, full_path in zip(archive_files, archive_files_paths):
                 self._name_table[full_path] = name
 
             # Determine current archive image index.
@@ -345,60 +336,9 @@ class FileHandler(object):
             # Sort files to determine extraction order.
             self._sort_archive_files(archive_images, current_image_index)
 
-            self._extractor.set_files(archive_images + comment_files + archive_files)
+            self._extractor.set_files(archive_images + comment_files)
             self._extractor.file_extracted += self._extracted_file
             self._extractor.extract()
-
-            # Manage subarchive through recursion
-            if archive_files:
-                has_subarchive = False
-
-                # For each potential archive, change the current extractor,
-                # extract recursively, and restore the internal extractor.
-                for f in archive_files_paths:
-                    if not self._extractor.is_ready(f):
-                        self._wait_on_file(f)
-
-                    if archive_tools.archive_mime_type(f) is not None:
-                        # save self data
-                        state = self._save_state()
-                        # Setup temporary data
-                        self._extractor = archive_extractor.Extractor()
-                        self._tmp_dir = os.path.join(self._tmp_dir,
-                            os.path.basename(f) + u'.dir')
-                        if not os.path.exists(self._tmp_dir):
-                            os.mkdir(self._tmp_dir)
-                        self._condition = self._extractor.setup(self._base_path,
-                                                self._tmp_dir,
-                                                self.archive_type)
-                        self._extractor.file_extracted += self._extracted_file
-                        add_images, dummy_idx = self._open_archive(f, 1) # recursion here
-                        # Since it's recursive, we do not want to loose the way to ensure
-                        # that the file was extracted, so too bad but it will be a lil' slower.
-                        for image in add_images:
-                            self._wait_on_file(image)
-                        image_files.extend(add_images)
-                        self._extractor.stop()
-                        self._extractor.close()
-                        # restore self data
-                        self._restore_state(state)
-                        has_subarchive = True
-
-                # Allows to avoid any behaviour changes if there was no subarchive..
-                if has_subarchive:
-                    # Mark additional files as extracted
-                    self._comment_files = \
-                        filter(self._comment_re.search, image_files)
-                    tmp_image_files = \
-                        filter(self._image_re.search, image_files)
-                    self._name_table.clear()
-                    for full_path in tmp_image_files + self._comment_files:
-                        self._name_table[full_path] = os.path.basename(full_path)
-                        # This trick here allows to avoid indefinite waiting on
-                        # the sub-extracted files.
-                        self._extractor._extracted.add(os.path.basename(full_path))
-                    # set those files instead of image_files for the return
-                    image_files = tmp_image_files
 
             # Preemptively set _image files of ImageHandler, to prevent extraction callbacks
             # from being ignored, as the ImageHandler needs the list of files
@@ -433,23 +373,6 @@ class FileHandler(object):
             filelist.reverse()
 
         return filelist
-
-    def _save_state(self):
-        """ Saves the FileHandler's internal state and returns it as dict object,
-        which can be loaded by L{_restore_state}. """
-
-        state = {}
-        for var in ('_extractor', '_base_path', '_tmp_dir', '_condition',
-                '_comment_files'):
-            state[var] = getattr(self, var)
-
-        return state
-
-    def _restore_state(self, state):
-        """ Restores the state previously saved by L{_save_state}. """
-
-        for key, value in state.iteritems():
-            setattr(self, key, value)
 
     def _get_index_for_page(self, start_page, num_of_pages, path, confirm=False):
         """ Returns the page that should be displayed for an archive.
