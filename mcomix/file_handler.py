@@ -34,8 +34,9 @@ class FileHandler(object):
     """
 
     def __init__(self, window):
-        #: Indicates if files/archives are currently loaded.
+        #: Indicates if files/archives are currently loaded/loading.
         self.file_loaded = False
+        self.file_loading = False
         #: Indicate if files/archives load has failed.
         self.file_load_failed = False
         #: None if current file is not an archive, or unrecognized format.
@@ -58,6 +59,8 @@ class FileHandler(object):
         self._name_table = {}
         #: Archive extractor.
         self._extractor = archive_extractor.Extractor()
+        self._extractor.file_extracted += self._extracted_file
+        self._extractor.contents_listed += self._listed_contents
         #: Condition to wait on when extracting archives and waiting on files.
         self._condition = None
         #: Provides a list of available files/archives in the open directory.
@@ -123,7 +126,9 @@ class FileHandler(object):
         while gtk.events_pending():
             gtk.main_iteration(False)
 
+        self.filelist = filelist
         self.archive_type = archive_type
+        self._start_page = start_page
         self._current_file = os.path.abspath(path)
         self._stop_waiting = False
 
@@ -134,15 +139,26 @@ class FileHandler(object):
         # Actually open the file(s)/archive passed in path.
         if self.archive_type is not None:
             try:
-                image_files, current_image_index = \
-                    self._open_archive(self._current_file, start_page)
+                self._open_archive(self._current_file, start_page)
             except Exception, ex:
                 self.file_loaded = False
+                self.file_loading = False
                 self._window.statusbar.set_message(unicode(ex))
                 self._window.osd.show(unicode(ex))
                 self._window.uimanager.set_sensitivities()
                 return False
+            self.file_loading = True
+        else:
+            image_files, current_image_index = \
+                self._open_image_files(filelist, self._current_file)
+            self._archive_opened(image_files, current_image_index)
 
+        return True
+
+    def _archive_opened(self, image_files, current_image_index):
+        """ Called once the archive has been opened and its contents listed.
+        """
+        if self.archive_type is not None:
             # Update status bar
             archive_list = self._file_provider.list_files(
                 file_provider.FileProvider.ARCHIVES)
@@ -154,9 +170,6 @@ class FileHandler(object):
             self._window.statusbar.set_file_number(current_index + 1,
                 len(archive_list))
         else:
-            image_files, current_image_index = \
-                self._open_image_files(filelist, self._current_file)
-
             # Update status bar (0 disables file numbers for images)
             self._window.statusbar.set_file_number(0, 0)
 
@@ -164,7 +177,7 @@ class FileHandler(object):
             self.file_loaded = False
             self.file_load_failed = True
             self._window.imagehandler._image_files = None
-            msg = _("No images in '%s'") % os.path.basename(path)
+            msg = _("No images in '%s'") % os.path.basename(self._current_file)
             self._window.statusbar.set_message(msg)
             self._window.osd.show(msg)
 
@@ -192,9 +205,7 @@ class FileHandler(object):
 
             # If no extraction is required, mark all files as available instantly.
             if self.archive_type is None:
-                self.file_available(filelist)
-
-            result = True
+                self.file_available(self.filelist)
 
         tools.alphanumeric_sort(self._comment_files)
 
@@ -205,7 +216,6 @@ class FileHandler(object):
             self._window.draw_image()
 
         self.file_opened()
-        return result
 
     @callback.Callback
     def file_opened(self):
@@ -217,6 +227,7 @@ class FileHandler(object):
         """Run tasks for "closing" the currently opened file(s)."""
         self.update_last_read_page()
         self.file_loaded = False
+        self.file_loading = False
         self.archive_type = None
         self._current_file = None
         self._base_path = None
@@ -307,54 +318,53 @@ class FileHandler(object):
             self._condition = None
             raise
 
-        if self._condition != None:
+    def _listed_contents(self, archive, files):
 
-            files = self._extractor.get_files()
-            archive_images = [image for image in files
-                if self._image_re.search(image)
-                # Remove MacOS meta files from image list
-                and not u'__MACOSX' in os.path.normpath(image).split(os.sep)]
+        if not self.file_loading:
+            return
+        self.file_loading = False
 
-            archive_images = self._sort_archive_images(archive_images)
-            image_files = [ os.path.join(self._tmp_dir, f)
-                            for f in archive_images ]
+        files = self._extractor.get_files()
+        archive_images = [image for image in files
+            if self._image_re.search(image)
+            # Remove MacOS meta files from image list
+            and not u'__MACOSX' in os.path.normpath(image).split(os.sep)]
 
-            comment_files = filter(self._comment_re.search, files)
-            self._comment_files = [ os.path.join(self._tmp_dir, f)
-                                    for f in comment_files ]
+        archive_images = self._sort_archive_images(archive_images)
+        image_files = [ os.path.join(self._tmp_dir, f)
+                        for f in archive_images ]
 
-            for name, full_path in zip(archive_images, image_files):
-                self._name_table[full_path] = name
+        comment_files = filter(self._comment_re.search, files)
+        self._comment_files = [ os.path.join(self._tmp_dir, f)
+                                for f in comment_files ]
 
-            for name, full_path in zip(comment_files, self._comment_files):
-                self._name_table[full_path] = name
+        for name, full_path in zip(archive_images, image_files):
+            self._name_table[full_path] = name
 
-            # Determine current archive image index.
-            current_image_index = self._get_index_for_page(start_page,
-                len(image_files), path)
+        for name, full_path in zip(comment_files, self._comment_files):
+            self._name_table[full_path] = name
 
-            # Sort files to determine extraction order.
-            self._sort_archive_files(archive_images, current_image_index)
+        # Determine current archive image index.
+        current_image_index = self._get_index_for_page(self._start_page,
+            len(image_files), self._current_file)
 
-            self._extractor.set_files(archive_images + comment_files)
-            self._extractor.file_extracted += self._extracted_file
-            self._extractor.extract()
+        # Sort files to determine extraction order.
+        self._sort_archive_files(archive_images, current_image_index)
 
-            # Preemptively set _image files of ImageHandler, to prevent extraction callbacks
-            # from being ignored, as the ImageHandler needs the list of files
-            # to translate from file name to page index
-            self._window.imagehandler._image_files = image_files
+        self._extractor.set_files(archive_images + comment_files)
+        self._extractor.extract()
 
-            # Image index may have changed after additional files were extracted.
-            # This call might block due to displaying a confirmation dialog.
-            current_image_index = self._get_index_for_page(start_page,
-                len(image_files), path, confirm=True)
+        # Preemptively set _image files of ImageHandler, to prevent extraction callbacks
+        # from being ignored, as the ImageHandler needs the list of files
+        # to translate from file name to page index
+        self._window.imagehandler._image_files = image_files
 
-            return image_files, current_image_index
+        # Image index may have changed after additional files were extracted.
+        # This call might block due to displaying a confirmation dialog.
+        current_image_index = self._get_index_for_page(self._start_page,
+            len(image_files), self._current_file, confirm=True)
 
-        else:
-            # No condition was returned from the Extractor, i.e. invalid archive.
-            return [], 0
+        self._archive_opened(image_files, current_image_index)
 
     def _sort_archive_images(self, filelist):
         """ Sorts the image list passed in C{filelist} based on the sorting
@@ -650,6 +660,8 @@ class FileHandler(object):
         """ Called when the extractor finishes extracting the file at
         <name>. This name is relative to the temporary directory
         the files were extracted to. """
+        if not self.file_loaded:
+            return
         filepath = os.path.join(extractor.get_directory(), name)
         self.file_available([filepath])
 

@@ -15,13 +15,13 @@ class Extractor:
 
     """Extractor is a threaded class for extracting different archive formats.
 
-    The Extractor can be loaded with paths to archives (currently ZIP, tar,
-    or RAR archives) and a path to a destination directory. Once an archive
-    has been set it is possible to filter out the files to be extracted and
-    set the order in which they should be extracted. The extraction can
-    then be started in a new thread in which files are extracted one by one,
-    and a signal is sent on a condition after each extraction, so that it is
-    possible for other threads to wait on specific files to be ready.
+    The Extractor can be loaded with paths to archives and a path to a
+    destination directory. Once an archive has been set and its contents
+    listed, it is possible to filter out the files to be extracted and set the
+    order in which they should be extracted.  The extraction can then be
+    started in a new thread in which files are extracted one by one, and a
+    signal is sent on a condition after each extraction, so that it is possible
+    for other threads to wait on specific files to be ready.
 
     Note: Support for gzip/bzip2 compressed tar archives is limited, see
     set_files() for more info.
@@ -46,23 +46,13 @@ class Extractor:
             log.warning(msg)
             raise ArchiveException(msg)
 
-        self._files = self._archive.list_contents()
-        self._setupped = True
-        self._started = False
+        self._contents_listed = False
+        self._extract_started = False
         self._condition = threading.Condition()
-        if self._archive.support_concurrent_extractions \
-           and not self._archive.is_solid():
-            max_threads = prefs['max extract threads']
-        else:
-            max_threads = 1
-        if self._archive.is_solid():
-            fn = self._extract_all_files
-        else:
-            fn = self._extract_file
-        self._extract_thread = WorkerThread(fn,
-                                            name='extract',
-                                            max_threads=max_threads,
-                                            unique_orders=True)
+        self._list_thread = WorkerThread(self._list_contents, name='list')
+        self._list_thread.append_order(self._archive)
+        self._setupped = True
+
         return self._condition
 
     def get_files(self):
@@ -72,6 +62,8 @@ class Extractor:
         the archive root and are not absolute for the files once extracted.
         """
         with self._condition:
+            if not self._contents_listed:
+                return
             return self._files[:]
 
     def get_directory(self):
@@ -91,8 +83,10 @@ class Extractor:
         ordering applied with this method on such archives.
         """
         with self._condition:
+            if not self._contents_listed:
+                return
             self._files = [f for f in files if f not in self._extracted]
-            if self._started:
+            if self._extract_started:
                 self.extract()
 
     def is_ready(self, name):
@@ -111,23 +105,47 @@ class Extractor:
         thread. Blocks until the extracting thread has terminated.
         """
         if self._setupped:
-            self._extract_thread.stop()
+            self._list_thread.stop()
+            if self._extract_started:
+                self._extract_thread.stop()
+                self._extract_started = False
             self.setupped = False
-            self.started = False
 
     def extract(self):
         """Start extracting the files in the file list one by one using a
         new thread. Every time a new file is extracted a notify() will be
         signalled on the Condition that was returned by setup().
         """
-        self._started = True
-        self._extract_thread.clear_orders()
-        if self._archive.is_solid():
-            # Sort files so we don't queue the same batch multiple times.
-            files = sorted(self._files)
-            self._extract_thread.append_order(files)
-        else:
-            self._extract_thread.extend_orders(self._files)
+        with self._condition:
+            if not self._contents_listed:
+                return
+            if not self._extract_started:
+                if self._archive.support_concurrent_extractions \
+                   and not self._archive.is_solid():
+                    max_threads = prefs['max extract threads']
+                else:
+                    max_threads = 1
+                if self._archive.is_solid():
+                    fn = self._extract_all_files
+                else:
+                    fn = self._extract_file
+                self._extract_thread = WorkerThread(fn,
+                                                    name='extract',
+                                                    max_threads=max_threads,
+                                                    unique_orders=True)
+                self._extract_started = True
+            else:
+                self._extract_thread.clear_orders()
+            if self._archive.is_solid():
+                # Sort files so we don't queue the same batch multiple times.
+                self._extract_thread.append_order(sorted(self._files))
+            else:
+                self._extract_thread.extend_orders(self._files)
+
+    @callback.Callback
+    def contents_listed(self, extractor, files):
+        """ Called after the contents of the archive has been listed. """
+        pass
 
     @callback.Callback
     def file_extracted(self, extractor, filename):
@@ -189,6 +207,17 @@ class Extractor:
             log.error(_('! Extraction error: %s'), ex)
 
         self._extraction_finished(name)
+
+    def _list_contents(self, archive):
+        files = []
+        for f in archive.iter_contents():
+            if self._list_thread.must_stop():
+                return
+            files.append(f)
+        with self._condition:
+            self._files = files
+            self._contents_listed = True
+        self.contents_listed(self, files)
 
 class ArchiveException(Exception):
     """ Indicate error during extraction operations. """
