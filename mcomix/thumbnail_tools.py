@@ -115,55 +115,35 @@ class Thumbnailer(object):
         """ Creates a thumbnail pixbuf from <filepath>, and returns it as a
         tuple along with a file metadata dictionary: (pixbuf, tEXt_data) """
 
-        if archive_tools.archive_mime_type(filepath) is not None:
+        mime = archive_tools.archive_mime_type(filepath)
+        if mime is not None:
             cleanup = []
             try:
-                extractor = archive_extractor.Extractor()
-                cleanup.append(lambda: extractor.close())
                 tmpdir = tempfile.mkdtemp(prefix=u'mcomix_archive_thumb.')
                 cleanup.append(lambda: shutil.rmtree(tmpdir, True))
-                try:
-                    condition = extractor.setup(filepath, tmpdir)
-                except archive_extractor.ArchiveException:
+                archive = archive_tools.get_recursive_archive_handler(filepath,
+                                                                      tmpdir,
+                                                                      type=mime)
+                if archive is None:
                     return None, None
-                files = extractor.get_files()
+                cleanup.append(archive.close)
+                files = archive.list_contents()
                 wanted = self._guess_cover(files)
-
-                if wanted:
-                    extractor.set_files([wanted])
-                    extractor.extract()
-                    image_path = os.path.join(tmpdir, wanted)
-
-                    condition.acquire()
-                    while not extractor.is_ready(wanted):
-                        condition.wait()
-                    condition.release()
-
-                    if not os.path.isfile(image_path):
-                        return None, None
-
-                    pixbuf = image_tools.load_pixbuf_size(image_path, self.width, self.height)
-                    tEXt_data = self._get_text_data(image_path)
-                    # Use the archive's mTime instead of the extracted file's mtime
-                    tEXt_data['tEXt::Thumb::MTime'] = str(long(os.stat(filepath).st_mtime))
-
-                    return pixbuf, tEXt_data
-                else:
-                    # Then check for subarchives by file extension and
-                    # extract only the first...
-                    subs = filter(archive_tools.get_supported_archive_regex().search, files)
-                    if subs:
-                        extractor.set_files([subs[0]])
-                        extractor.extract()
-                        condition.acquire()
-                        while not extractor.is_ready(subs[0]):
-                            condition.wait()
-                        condition.release()
-                        subpath = os.path.join(tmpdir, subs[0])
-                        # Recursively try to find an image to use as cover
-                        return self._create_thumbnail_pixbuf(subpath)
-
+                if wanted is None:
                     return None, None
+
+                archive.extract(wanted, tmpdir)
+
+                image_path = os.path.join(tmpdir, wanted)
+                if not os.path.isfile(image_path):
+                    return None, None
+
+                pixbuf = image_tools.load_pixbuf_size(image_path, self.width, self.height)
+                tEXt_data = self._get_text_data(image_path)
+                # Use the archive's mTime instead of the extracted file's mtime
+                tEXt_data['tEXt::Thumb::MTime'] = str(long(os.stat(filepath).st_mtime))
+
+                return pixbuf, tEXt_data
             finally:
                 for fn in reversed(cleanup):
                     fn()
