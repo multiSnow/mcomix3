@@ -40,7 +40,7 @@ class Extractor:
         self._type = type or archive_tools.archive_mime_type(src)
         self._files = []
         self._extracted = set()
-        self._archive = archive_tools.get_archive_handler(src)
+        self._archive = archive_tools.get_recursive_archive_handler(src, dst, type=self._type)
         if self._archive is None:
             msg = _('Non-supported archive format: %s') % os.path.basename(src)
             log.warning(msg)
