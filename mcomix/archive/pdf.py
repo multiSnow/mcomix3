@@ -26,17 +26,18 @@ class PdfArchive(archive_base.BaseArchive):
         super(PdfArchive, self).__init__(archive)
         self.pdf = archive
 
-    def list_contents(self):
-        pages = []
+    def iter_contents(self):
         proc = process.Process(['mutool', 'show', '--', self.pdf, 'pages'])
         fd = proc.spawn()
-        if fd is not None:
-            for line in fd.read().splitlines():
+        if fd is None:
+            return
+        try:
+            for line in fd:
                 if line.startswith('page '):
-                    pages.append(line.split()[1] + '.png')
+                    yield line.split()[1] + '.png'
+        finally:
             fd.close()
             proc.wait()
-        return pages
 
     def extract(self, filename, destination_dir):
         self._create_directory(destination_dir)

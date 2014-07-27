@@ -25,13 +25,19 @@ class BaseArchive(object):
         self.archive = archive
         self._password = None
 
+    def iter_contents(self):
+        """ Generator for listing the archive contents.
+        """
+        return
+        yield
+
     def list_contents(self):
         """ Returns a list of unicode filenames relative to the archive root.
         These names do not necessarily exist in the actual archive since they
         need to saveable on the local filesystems, so some characters might
         need to be replaced. """
 
-        return []
+        return [f for f in self.iter_contents()]
 
     def extract(self, filename, destination_dir):
         """ Extracts the file specified by <filename>. This filename must
@@ -41,15 +47,14 @@ class BaseArchive(object):
         assert isinstance(filename, unicode) and \
             isinstance(destination_dir, unicode)
 
-    def extract_all(self, entries, destination_dir, callback):
-        """ Extract all <entries> from archive to <destination_dir>. """
+    def iter_extract(self, entries, destination_dir):
+        """ Generator to extract <entries> from archive to <destination_dir>. """
         wanted = set(entries)
-        for filename in self.list_contents():
+        for filename in self.iter_contents():
             if not filename in wanted:
                 continue
             self.extract(filename, destination_dir)
-            if not callback(filename):
-                break
+            yield filename
             wanted.remove(filename)
             if 0 == len(wanted):
                 break
@@ -177,26 +182,25 @@ class ExternalExecutableArchive(NonUnicodeArchive):
 
         return line
 
-    def list_contents(self):
+    def iter_contents(self):
         if not self._get_executable():
-            return []
+            return
 
         proc = process.Process([self._get_executable()] +
             self._get_list_arguments() +
             [self.archive])
         fd = proc.spawn()
 
-        filenames = [ ]
-        for line in fd.readlines():
-            filename = self._parse_list_output_line(line.rstrip(os.linesep))
-            if filename is not None:
-                filenames.append(self._unicode_filename(filename))
-
-        fd.close()
-        proc.wait()
+        try:
+            for line in fd.readlines():
+                filename = self._parse_list_output_line(line.rstrip(os.linesep))
+                if filename is not None:
+                    yield self._unicode_filename(filename)
+        finally:
+            fd.close()
+            proc.wait()
 
         self.filenames_initialized = True
-        return filenames
 
     def extract(self, filename, destination_dir):
         """ Extract <filename> from the archive to <destination_dir>. """

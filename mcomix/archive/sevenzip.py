@@ -112,7 +112,7 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         finally:
             os.unlink(tmplistfile.name)
 
-    def extract_all(self, entries, destination_dir, callback):
+    def iter_extract(self, entries, destination_dir):
 
         if not self._get_executable():
             return
@@ -127,28 +127,29 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         if not fd:
             return
 
-        wanted = dict([(self._original_filename(unicode_name), unicode_name)
-                       for unicode_name in entries])
+        try:
+            wanted = dict([(self._original_filename(unicode_name), unicode_name)
+                           for unicode_name in entries])
 
-        for filename, filesize in self._contents:
-            data = fd.read(filesize)
-            if filename not in wanted:
-                continue
-            unicode_name = wanted.get(filename, None)
-            if unicode_name is None:
-                continue
-            new = self._create_file(os.path.join(destination_dir, unicode_name))
-            new.write(data)
-            new.close()
-            if not callback(unicode_name):
-                break
-            del wanted[filename]
-            if 0 == len(wanted):
-                break
+            for filename, filesize in self._contents:
+                data = fd.read(filesize)
+                if filename not in wanted:
+                    continue
+                unicode_name = wanted.get(filename, None)
+                if unicode_name is None:
+                    continue
+                new = self._create_file(os.path.join(destination_dir, unicode_name))
+                new.write(data)
+                new.close()
+                yield unicode_name
+                del wanted[filename]
+                if 0 == len(wanted):
+                    break
 
-        # Wait for process to finish
-        fd.close()
-        proc.wait()
+        finally:
+            # Wait for process to finish
+            fd.close()
+            proc.wait()
 
     @staticmethod
     def _find_7z_executable():

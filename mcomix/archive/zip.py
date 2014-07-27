@@ -29,7 +29,7 @@ class ZipArchive(archive_base.NonUnicodeArchive):
         self._encryption_supported = hasattr(self.zip, "setpassword")
         self._password = None
 
-    def list_contents(self):
+    def iter_contents(self):
         if self._encryption_supported \
             and self._has_encryption()\
             and self._password is None:
@@ -44,8 +44,8 @@ class ZipArchive(archive_base.NonUnicodeArchive):
 
             self.zip.setpassword(self._password)
 
-        return [self._unicode_filename(filename)
-           for filename in self.zip.namelist()]
+        for filename in self.zip.namelist():
+            yield self._unicode_filename(filename)
 
     def extract(self, filename, destination_dir):
         new = self._create_file(os.path.join(destination_dir, filename))

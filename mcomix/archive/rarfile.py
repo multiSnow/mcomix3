@@ -127,29 +127,28 @@ class UnrarDll(archive.archive_base.BaseArchive):
     def is_solid(self):
         return self._is_solid
 
-    def list_contents(self):
-        """ Returns a list of files in the archive. """
+    def iter_contents(self):
+        """ List archive contents. """
 
         # Obtain handle for RAR file, opening it in LIST mode
         handle = self._open(self._archive, UnrarDll._OpenMode.RAR_OM_LIST)
-        # Information about the current file will be stored in this structure
-        headerdata = UnrarDll._RARHeaderDataEx()
-        filelist = []
+        try:
+            # Information about the current file will be stored in this structure
+            headerdata = UnrarDll._RARHeaderDataEx()
 
-        # Read first header
-        result = self._unrar.RARReadHeaderEx(handle, ctypes.byref(headerdata))
-        while result == 0:
-            if 0 != (0x10 & headerdata.Flags):
-                self._is_solid = True
-            filelist.append(headerdata.FileNameW)
-            # Skip to the next entry
-            self._unrar.RARProcessFileW(handle, UnrarDll._ProcessingMode.RAR_SKIP, None, None)
-            # Read its header
+            # Read first header
             result = self._unrar.RARReadHeaderEx(handle, ctypes.byref(headerdata))
+            while result == 0:
+                if 0 != (0x10 & headerdata.Flags):
+                    self._is_solid = True
+                yield headerdata.FileNameW
+                # Skip to the next entry
+                self._unrar.RARProcessFileW(handle, UnrarDll._ProcessingMode.RAR_SKIP, None, None)
+                # Read its header
+                result = self._unrar.RARReadHeaderEx(handle, ctypes.byref(headerdata))
 
-        self._close(handle)
-
-        return filelist
+        finally:
+            self._close(handle)
 
     def extract(self, filename, destination_dir, try_again=True):
         """ Extract <filename> from the archive to <destination_dir>. """
