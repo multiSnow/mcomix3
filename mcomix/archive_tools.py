@@ -127,35 +127,49 @@ def get_archive_info(path):
 
     return (mime, num_pages, size)
 
-def get_archive_handler(path):
+def get_archive_handler(path, type=None):
     """ Returns a fitting extractor handler for the archive passed
-    in <path>. Returns None if no matching extractor was found. """
-    mime = archive_mime_type(path)
+    in <path> (with optional mime type <type>. Returns None if no matching
+    extractor was found.
+    """
+    if type is None:
+        type = archive_mime_type(path)
 
-    if mime == constants.ZIP:
+    if type == constants.ZIP:
         return zip.ZipArchive(path)
-    elif mime == constants.ZIP_EXTERNAL and zip_external.ZipExecArchive.is_available():
+    elif type == constants.ZIP_EXTERNAL and zip_external.ZipExecArchive.is_available():
         return zip_external.ZipExecArchive(path)
-    elif mime == constants.ZIP_EXTERNAL and sevenzip.SevenZipArchive.is_available():
+    elif type == constants.ZIP_EXTERNAL and sevenzip.SevenZipArchive.is_available():
         log.info('Using Sevenzip for unsupported zip archives.')
         return sevenzip.SevenZipArchive(path)
-    elif mime in (constants.TAR, constants.GZIP, constants.BZIP2):
+    elif type in (constants.TAR, constants.GZIP, constants.BZIP2):
         return tar.TarArchive(path)
-    elif mime == constants.RAR and rar.RarArchive.is_available():
+    elif type == constants.RAR and rar.RarArchive.is_available():
         return rar.RarArchive(path)
-    elif mime == constants.RAR and sevenzip.SevenZipArchive.is_available():
+    elif type == constants.RAR and sevenzip.SevenZipArchive.is_available():
         log.info('Using Sevenzip for RAR archives.')
         return sevenzip.SevenZipArchive(path)
-    elif mime == constants.SEVENZIP and sevenzip.SevenZipArchive.is_available():
+    elif type == constants.SEVENZIP and sevenzip.SevenZipArchive.is_available():
         return sevenzip.SevenZipArchive(path)
-    elif mime == constants.LHA and lha.LhaArchive.is_available():
+    elif type == constants.LHA and lha.LhaArchive.is_available():
         return lha.LhaArchive(path)
-    elif mime == constants.LHA and sevenzip.SevenZipArchive.is_available():
+    elif type == constants.LHA and sevenzip.SevenZipArchive.is_available():
         log.info('Using Sevenzip for LHA archives.')
         return sevenzip.SevenZipArchive(path)
-    elif mime == constants.PDF and pdf.PdfArchive.is_available():
+    elif type == constants.PDF and pdf.PdfArchive.is_available():
         return pdf.PdfArchive(path)
     else:
         return None
 
+def get_recursive_archive_handler(path, destination_dir, type=None):
+    """ Same as <get_archive_handler> but the handler will transparently handle
+    archives within archives.
+    """
+    archive = get_archive_handler(path, type=type)
+    if archive is None:
+        return None
+    # XXX: Deferred import to avoid circular dependency
+    from mcomix.archive import archive_recursive
+    return archive_recursive.RecursiveArchive(archive, destination_dir)
+ 
 # vim: expandtab:sw=4:ts=4
