@@ -22,6 +22,8 @@ class PdfArchive(archive_base.BaseArchive):
     """ Concurrent calls to extract welcome! """
     support_concurrent_extractions = True
 
+    _fill_image_regex = re.compile(r'^\s*<fill_image\b.*\bmatrix="(?P<matrix>(-?[0-9.]+ *){6})".*\bwidth="(?P<width>\d+)".*\bheight="(?P<height>\d+)".*/>\s*$')
+
     def __init__(self, archive):
         super(PdfArchive, self).__init__(archive)
         self.pdf = archive
@@ -46,19 +48,26 @@ class PdfArchive(archive_base.BaseArchive):
         # Try to find optimal DPI.
         proc = process.Process(['mudraw', '-x', '--', self.pdf, str(page_num)])
         fd = proc.spawn()
-        max_width = 0
+        max_size = 0
         max_dpi = PDF_RENDER_DPI_DEF
         if fd is not None:
             for line in fd:
-                m = re.match('<fill_image .* matrix="([0-9.]+) [^"]*".* width="([0-9]+)"', line)
-                if m is not None:
-                    width = int(m.group(2))
-                    if width > max_width:
-                        dpi = int(width * 72 / float(m.group(1)))
-                        if dpi > PDF_RENDER_DPI_MAX:
-                            dpi = PDF_RENDER_DPI_MAX
-                        max_width = width
-                        max_dpi = dpi
+                match = self._fill_image_regex.match(line)
+                if not match:
+                    continue
+                matrix = [float(f) for f in match.group('matrix').split()]
+                for size, coeff1, coeff2 in (
+                    (int(match.group('width')), matrix[0], matrix[1]),
+                    (int(match.group('height')), matrix[2], matrix[3]),
+                ):
+                    if size < max_size:
+                        continue
+                    render_size = math.sqrt(coeff1 * coeff1 + coeff2 * coeff2)
+                    dpi = int(size * 72 / render_size)
+                    if dpi > PDF_RENDER_DPI_MAX:
+                        dpi = PDF_RENDER_DPI_MAX
+                    max_size = size
+                    max_dpi = dpi
             fd.close()
             proc.wait()
         # Render...
