@@ -79,7 +79,7 @@ class WorkerThread:
         with self._condition:
             self._waiting_orders = []
 
-    def append_order(self, order, sort=False):
+    def append_order(self, order):
         """Append work order to the thread orders queue."""
         with self._condition:
             if self._unique_orders:
