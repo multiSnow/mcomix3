@@ -3,6 +3,7 @@ from __future__ import with_statement
 
 import os
 import threading
+import traceback
 
 from mcomix import archive_tools
 from mcomix import constants
@@ -188,6 +189,7 @@ class Extractor:
             # possible infinite block. Damaged or missing files *should* be
             # handled gracefully by the main program anyway.
             log.error(_('! Extraction error: %s'), ex)
+            log.debug('Traceback:\n%s', traceback.format_exc())
 
     def _extract_file(self, name):
         """Extract the file named <name> to the destination directory,
@@ -205,6 +207,7 @@ class Extractor:
             # possible infinite block. Damaged or missing files *should* be
             # handled gracefully by the main program anyway.
             log.error(_('! Extraction error: %s'), ex)
+            log.debug('Traceback:\n%s', traceback.format_exc())
 
         self._extraction_finished(name)
 
