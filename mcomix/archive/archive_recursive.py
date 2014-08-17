@@ -97,16 +97,23 @@ class RecursiveArchive(archive_base.BaseArchive):
         # we need to call iter_extract (not extract) for each archive ourselves.
         wanted = set(entries)
         for archive in self._archive_list:
-            archive_wanted = filter(lambda f: archive == self._entry_mapping[f][0], wanted)
+            archive_wanted = {}
+            for name in wanted:
+                name_archive, name_archive_name = self._entry_mapping[name]
+                if name_archive == archive:
+                    archive_wanted[name_archive_name] = name
             if 0 == len(archive_wanted):
                 continue
             root = self._archive_root[archive]
             archive_destination_dir = destination_dir
             if root is not None:
                 archive_destination_dir = os.path.join(destination_dir, root)
-            for f in archive.iter_extract(list(archive_wanted), archive_destination_dir):
-                yield f
-            wanted -= set(archive_wanted)
+            log.debug('extracting from %s to %s: %s',
+                      archive, archive_destination_dir,
+                      ' '.join(archive_wanted.keys()))
+            for f in archive.iter_extract(archive_wanted.keys(), archive_destination_dir):
+                yield archive_wanted[f]
+            wanted -= set(archive_wanted.values())
             if 0 == len(wanted):
                 break
 
