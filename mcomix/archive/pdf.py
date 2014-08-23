@@ -22,7 +22,7 @@ class PdfArchive(archive_base.BaseArchive):
     """ Concurrent calls to extract welcome! """
     support_concurrent_extractions = True
 
-    _fill_image_regex = re.compile(r'^\s*<fill_image\b.*\bmatrix="(?P<matrix>(-?[0-9.]+ *){6})".*\bwidth="(?P<width>\d+)".*\bheight="(?P<height>\d+)".*/>\s*$')
+    _fill_image_regex = re.compile(r'^\s*<fill_image\b.*\bmatrix="(?P<matrix>[^"]+)".*\bwidth="(?P<width>\d+)".*\bheight="(?P<height>\d+)".*/>\s*$')
 
     def __init__(self, archive):
         super(PdfArchive, self).__init__(archive)
