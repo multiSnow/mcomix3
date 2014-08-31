@@ -46,7 +46,7 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         if sys.platform == 'win32':
             line = line.decode('utf-8')
 
-        if line.startswith('----'):
+        if line.startswith('----------'):
             if self._state == SevenZipArchive.STATE_HEADER:
                 # First delimiter reached, start reading from next line
                 self._state = SevenZipArchive.STATE_LISTING
