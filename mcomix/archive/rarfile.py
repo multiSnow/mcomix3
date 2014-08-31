@@ -99,12 +99,10 @@ class UnrarDll(archive.archive_base.BaseArchive):
 
     def __init__(self, archive):
         """ Initialize Unrar.dll. """
-        assert isinstance(archive, unicode), "Archive must be Unicode string"
+        super(UnrarDll, self).__init__(archive)
         self._unrar = _get_unrar_dll()
-        self._archive = archive
         self._handle = None
         self._callback_function = None
-        self._password = None
         self._is_solid = False
 
         # Set up function prototypes.
@@ -131,7 +129,7 @@ class UnrarDll(archive.archive_base.BaseArchive):
         """ List archive contents. """
 
         # Obtain handle for RAR file, opening it in LIST mode
-        handle = self._open(self._archive, UnrarDll._OpenMode.RAR_OM_LIST)
+        handle = self._open(self.archive, UnrarDll._OpenMode.RAR_OM_LIST)
         try:
             # Information about the current file will be stored in this structure
             headerdata = UnrarDll._RARHeaderDataEx()
@@ -154,7 +152,7 @@ class UnrarDll(archive.archive_base.BaseArchive):
         """ Extract <filename> from the archive to <destination_dir>. """
         # Obtain handle for RAR file, opening it in EXTRACT mode
         if not self._handle:
-            handle = self._handle = self._open(self._archive, UnrarDll._OpenMode.RAR_OM_EXTRACT)
+            handle = self._handle = self._open(self.archive, UnrarDll._OpenMode.RAR_OM_EXTRACT)
         else:
             handle = self._handle
 
