@@ -42,12 +42,18 @@ class RecursiveArchive(archive_base.BaseArchive):
             yield name
         for f in sub_archive_list:
             # Extract sub-archive.
-            destination_dir = os.path.join(self._destination_dir, 'sub-archives')
+            destination_dir = self._destination_dir
             if root is not None:
                 destination_dir = os.path.join(destination_dir, root)
             archive.extract(f, destination_dir)
+            sub_archive_ext = os.path.splitext(f)[1].lower()[1:]
+            sub_archive_path = os.path.join(
+                self._destination_dir, 'sub-archives',
+                '%04u.%s' % (len(self._archive_list), sub_archive_ext
+            ))
+            self._create_directory(os.path.dirname(sub_archive_path))
+            os.rename(os.path.join(destination_dir, f), sub_archive_path)
             # And open it and list its contents.
-            sub_archive_path = os.path.join(destination_dir, f)
             sub_archive = archive_tools.get_archive_handler(sub_archive_path)
             if sub_archive is None:
                 log.warning('Non-supported archive format: %s' %
