@@ -27,30 +27,36 @@ class RecursiveArchive(archive_base.BaseArchive):
         self._archive_list.append(archive)
         self._archive_root[archive] = root
         supported_archive_regexp = archive_tools.get_supported_archive_regex()
+        sub_archive_list = []
         for f in archive.iter_contents():
             if supported_archive_regexp.search(f):
-                # Extract sub-archive.
-                destination_dir = os.path.join(self._destination_dir, 'sub-archives')
-                if root is not None:
-                    destination_dir = os.path.join(destination_dir, root)
-                archive.extract(f, destination_dir)
-                # And open it and list its contents.
-                sub_archive_path = os.path.join(destination_dir, f)
-                sub_archive = archive_tools.get_archive_handler(sub_archive_path)
-                if sub_archive is None:
-                    log.warning('Non-supported archive format: %s' %
-                                os.path.basename(sub_archive_path))
-                    continue
-                sub_root = f
-                if root is not None:
-                    sub_root = os.path.join(root, sub_root)
-                for name in self._iter_contents(sub_archive, sub_root):
-                    yield name
-            else:
-                name = f
-                if root is not None:
-                    name = os.path.join(root, name)
-                self._entry_mapping[name] = (archive, f)
+                # We found a sub-archive, don't try to extract it now, as we
+                # must finish listing the containing archive contents before
+                # any extraction can be done.
+                sub_archive_list.append(f)
+                continue
+            name = f
+            if root is not None:
+                name = os.path.join(root, name)
+            self._entry_mapping[name] = (archive, f)
+            yield name
+        for f in sub_archive_list:
+            # Extract sub-archive.
+            destination_dir = os.path.join(self._destination_dir, 'sub-archives')
+            if root is not None:
+                destination_dir = os.path.join(destination_dir, root)
+            archive.extract(f, destination_dir)
+            # And open it and list its contents.
+            sub_archive_path = os.path.join(destination_dir, f)
+            sub_archive = archive_tools.get_archive_handler(sub_archive_path)
+            if sub_archive is None:
+                log.warning('Non-supported archive format: %s' %
+                            os.path.basename(sub_archive_path))
+                continue
+            sub_root = f
+            if root is not None:
+                sub_root = os.path.join(root, sub_root)
+            for name in self._iter_contents(sub_archive, sub_root):
                 yield name
 
     def _check_concurrent_extraction_support(self):
