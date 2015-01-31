@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.98\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2014-05-23 15:50+0200\n"
+"POT-Creation-Date: 2015-01-31 08:55+0100\n"
 "PO-Revision-Date: 2012-04-03 16:41+GMT\n"
 "Last-Translator: Moritz Brunner <oddegamra@gmx.org>\n"
 "Language-Team: \n"
@@ -40,22 +40,22 @@ msgstr "%s ist unter der \"GNU General Public License\" lizensiert."
 msgid "A copy of this license can be obtained from %s"
 msgstr "Eine Kopie dieser Lizenz kann unter %s bezogen werden"
 
-#: mcomix/archive_extractor.py:45
+#: mcomix/archive_extractor.py:46
 #, python-format
 msgid "Non-supported archive format: %s"
 msgstr "Nicht unterstütztes Archiv-Format: %s"
 
-#: mcomix/archive_extractor.py:153
+#: mcomix/archive_extractor.py:191 mcomix/archive_extractor.py:209
 #, python-format
 msgid "! Extraction error: %s"
 msgstr "! Extraktions-Fehler: %s"
 
-#: mcomix/archive_packer.py:57
+#: mcomix/archive_packer.py:58
 #, python-format
 msgid "! Could not create archive at path \"%s\""
 msgstr "! Konnte Archiv \"%s\" nicht erstellen"
 
-#: mcomix/archive_packer.py:71 mcomix/archive_packer.py:96
+#: mcomix/archive_packer.py:72 mcomix/archive_packer.py:97
 #, python-format
 msgid ""
 "! Could not add file %(sourcefile)s to archive %(archivefile)s, aborting..."
@@ -63,7 +63,7 @@ msgstr ""
 "! Konnte Datei %(sourcefile)s nicht zum Archiv %(archivefile)s hinzufügen, "
 "breche ab..."
 
-#: mcomix/archive_tools.py:99
+#: mcomix/archive_tools.py:101
 #, python-format
 msgid "! Could not read %s"
 msgstr "! %s kann nicht gelesen werden"
@@ -110,7 +110,7 @@ msgstr "Typ"
 msgid "Name"
 msgstr "Name"
 
-#: mcomix/bookmark_dialog.py:53 mcomix/main.py:975
+#: mcomix/bookmark_dialog.py:53 mcomix/main.py:978
 #: mcomix/library/control_area.py:135
 msgid "Page"
 msgstr "Seite"
@@ -133,7 +133,7 @@ msgstr "_Lesezeichen hinzufügen"
 msgid "_Edit Bookmarks..."
 msgstr "Lesezeichen _bearbeiten..."
 
-#: mcomix/callback.py:85
+#: mcomix/callback.py:86
 #, python-format
 msgid "! Callback %(function)r failed: %(error)s"
 msgstr "! Callback-Funktion %(function)r fehlgeschlagen: %(error)s"
@@ -305,32 +305,32 @@ msgstr "TIFF-Bilder"
 msgid "BMP images"
 msgstr "BMP-Bilder"
 
-#: mcomix/file_handler.py:166 mcomix/file_handler.py:281
+#: mcomix/file_handler.py:180 mcomix/file_handler.py:293
 #, python-format
 msgid "No images in '%s'"
 msgstr "Keine Bilder in »%s«"
 
-#: mcomix/file_handler.py:275
+#: mcomix/file_handler.py:287
 #, python-format
 msgid "Could not open %s: No such file."
 msgstr "%s kann nicht geöffnet werden: Datei nicht gefunden."
 
-#: mcomix/file_handler.py:278 mcomix/file_provider.py:141
+#: mcomix/file_handler.py:290 mcomix/file_provider.py:141
 #, python-format
 msgid "Could not open %s: Permission denied."
 msgstr "%s kann nicht geöffnet werden: Zugriff verweigert."
 
-#: mcomix/file_handler.py:286
+#: mcomix/file_handler.py:298
 #, python-format
 msgid "Could not open %s: Unknown file type."
 msgstr "%s kann nicht geöffnet werden: Unbekannter Dateityp."
 
-#: mcomix/file_handler.py:485
+#: mcomix/file_handler.py:425
 #, python-format
 msgid "Continue reading from page %d?"
 msgstr "Auf Seite %d weiterlesen?"
 
-#: mcomix/file_handler.py:486
+#: mcomix/file_handler.py:426
 #, python-format
 msgid ""
 "You stopped reading here on %(date)s, %(time)s. If you choose \"Yes\", "
@@ -341,7 +341,7 @@ msgstr ""
 "\"Ja\" wählen, wird Seite %(page)d geöffnet. Ansonsten wird die erste Seite "
 "geladen."
 
-#: mcomix/file_handler.py:801
+#: mcomix/file_handler.py:744
 #, python-format
 msgid "! Corrupt preferences file \"%s\", deleting..."
 msgstr "! Korrupte Options-Datei \"%s\", wird gelöscht..."
@@ -356,7 +356,7 @@ msgstr "Ungültiger Pfad: '%s'"
 msgid "! Could not load icon \"%s\""
 msgstr "! Icon %s kann nicht geladen werden"
 
-#: mcomix/image_handler.py:461
+#: mcomix/image_handler.py:462
 msgid "Unknown filetype"
 msgstr "Unbekannter Dateityp"
 
@@ -732,26 +732,26 @@ msgstr "Konnte Tastaturbelegung nicht laden: %s"
 msgid "! Could neither find pysqlite2 nor sqlite3."
 msgstr "! Weder pysqlite2 noch sqlite3 konnten gefunden werden."
 
-#: mcomix/last_read_page.py:210 mcomix/thumbnail_tools.py:110
+#: mcomix/last_read_page.py:210 mcomix/thumbnail_tools.py:111
 #: mcomix/library/book_area.py:567
 #, python-format
 msgid "! Could not remove file \"%s\""
 msgstr "! Konnte %s nicht entfernen"
 
-#: mcomix/main.py:850
+#: mcomix/main.py:849
 msgid "SLIDESHOW"
 msgstr "DIASCHAU"
 
-#: mcomix/main.py:911
+#: mcomix/main.py:914
 msgid "Save page as"
 msgstr "Seite speichern als"
 
-#: mcomix/main.py:931
+#: mcomix/main.py:934
 #, python-format
 msgid "Delete \"%s\"?"
 msgstr "\"%s\" löschen?"
 
-#: mcomix/main.py:932
+#: mcomix/main.py:935
 msgid "The file will be deleted from your harddisk."
 msgstr "Die Datei wird von Ihrer Festplatte gelöscht."
 
@@ -800,46 +800,46 @@ msgstr "Datei-Variablen können nur für Dateien verwendet werden."
 msgid "Archive-related variables can only be used for archives."
 msgstr "Variablen für Archive können nur in Archiven verwendet werden."
 
-#: mcomix/openwith.py:244
+#: mcomix/openwith.py:264
 #, python-format
 msgid "Invalid escape sequence: %%%s"
 msgstr "Ungültige Escape-Sequenz: %%%s"
 
-#: mcomix/openwith.py:262
+#: mcomix/openwith.py:282
 msgid "Edit external commands"
 msgstr "Externe Programme bearbeiten"
 
-#: mcomix/openwith.py:272
+#: mcomix/openwith.py:292
 msgid "Add _separator"
 msgstr "_Trennzeile hinzufügen"
 
-#: mcomix/openwith.py:283
+#: mcomix/openwith.py:303
 msgid "Run _command"
 msgstr "Befehl _ausführen"
 
-#: mcomix/openwith.py:346
+#: mcomix/openwith.py:366
 msgid "This is a separator pseudo-command."
 msgstr "Das ist ein Pseudo-Befehl für eine Trennzeile."
 
-#: mcomix/openwith.py:357
+#: mcomix/openwith.py:377
 #, python-format
 msgid "\"%s\" does not have a valid working directory."
 msgstr "\"%s\" hat kein gültiges Arbeitsverzeichnis."
 
-#: mcomix/openwith.py:360
+#: mcomix/openwith.py:380
 #, python-format
 msgid "\"%s\" does not appear to have a valid executable."
 msgstr "\"%s\" scheint keine gültige ausführbare Datei zu haben."
 
-#: mcomix/openwith.py:369
+#: mcomix/openwith.py:389
 msgid "Command label"
 msgstr "Programm-Bezeichnung"
 
-#: mcomix/openwith.py:462
+#: mcomix/openwith.py:482
 msgid "Preview:"
 msgstr "Vorschau:"
 
-#: mcomix/openwith.py:470
+#: mcomix/openwith.py:490
 #, python-format
 msgid ""
 "Please refer to the <a href=\"%s\">external command documentation</a> for a "
@@ -848,27 +848,27 @@ msgstr ""
 "Die <a href=\"%s\">Dokumentation für externe Befehle</a> enthält eine Liste "
 "aller Variablen und Hinweise zur Benutzung."
 
-#: mcomix/openwith.py:478
+#: mcomix/openwith.py:498
 msgid "Label"
 msgstr "Bezeichnung"
 
-#: mcomix/openwith.py:478
+#: mcomix/openwith.py:498
 msgid "Command"
 msgstr "Befehl"
 
-#: mcomix/openwith.py:478
+#: mcomix/openwith.py:498
 msgid "Working directory"
 msgstr "Arbeitsverzeichnis"
 
-#: mcomix/openwith.py:492
+#: mcomix/openwith.py:512
 msgid "Disabled in archives"
 msgstr "In Archiven deaktiviert"
 
-#: mcomix/openwith.py:547
+#: mcomix/openwith.py:567
 msgid "Save changes to commands?"
 msgstr "Änderungen an Befehlen speichern?"
 
-#: mcomix/openwith.py:548
+#: mcomix/openwith.py:568
 msgid ""
 "You have made changes to the list of external commands that have not been "
 "saved yet. Press \"Yes\" to save all changes, or \"No\" to discard them."
@@ -1455,12 +1455,12 @@ msgstr "Bilinear"
 msgid "Hyperbolic (slow)"
 msgstr "Hyperbolisch (langsam)"
 
-#: mcomix/process.py:51
+#: mcomix/process.py:59
 #, python-format
 msgid "! Error spawning process \"%(command)s\": %(error)s."
 msgstr "! Prozess \"%(command)s\" konnte nicht gestartet werden: %(error)s."
 
-#: mcomix/process.py:53
+#: mcomix/process.py:61
 #, python-format
 msgid "\"%(command)s\" must be on your system PATH to be found."
 msgstr ""
@@ -1787,7 +1787,7 @@ msgstr "Hebräische Übersetzung"
 msgid "Icon design"
 msgstr "Symbol-Design"
 
-#: mcomix/thumbnail_tools.py:223
+#: mcomix/thumbnail_tools.py:212
 #, python-format
 msgid "! Could not save thumbnail \"%(thumbpath)s\": %(error)s"
 msgstr "! Konnte Vorschaubild \"%(thumbpath)s\" nicht speichern: %(error)s"
@@ -2091,6 +2091,12 @@ msgstr "Bild aufbesser_n..."
 msgid "_Library..."
 msgstr "Bibliothe_k ..."
 
+#: mcomix/worker_thread.py:66
+#, python-format
+msgid "! Worker thread processing %(function)r failed: %(error)s"
+msgstr ""
+"! Arbeiter-Thread in Bearbeitung von %(function)r fehlgeschlagen: %(error)s"
+
 #: mcomix/archive/__init__.py:13
 msgid "The archive is password-protected."
 msgstr "Das Archiv ist passwortgeschützt."
@@ -2099,7 +2105,7 @@ msgstr "Das Archiv ist passwortgeschützt."
 msgid "Please enter the password to continue:"
 msgstr "Bitte geben Sie das Passwort ein, um fortzufahren:"
 
-#: mcomix/archive/zip.py:61
+#: mcomix/archive/zip.py:58
 #, python-format
 msgid ""
 "%(filename)s's extracted size is %(actual_size)d bytes, but should be "

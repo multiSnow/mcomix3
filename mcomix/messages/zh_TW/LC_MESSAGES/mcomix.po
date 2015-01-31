@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix zh_TW\n"
 "Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2014-05-23 15:50+0200\n"
+"POT-Creation-Date: 2015-01-31 08:55+0100\n"
 "PO-Revision-Date: 2013-07-05 21:37+0800\n"
 "Last-Translator: Wayne Su <mstarmstar@hotmail.com>\n"
 "Language-Team: \n"
@@ -45,29 +45,29 @@ msgstr "%s 依據 GNU 的 GPL 相關條款提供授權。"
 msgid "A copy of this license can be obtained from %s"
 msgstr "可以在 %s 取得授權協定的複製本"
 
-#: mcomix/archive_extractor.py:45
+#: mcomix/archive_extractor.py:46
 #, python-format
 msgid "Non-supported archive format: %s"
 msgstr "不支援的壓縮檔格式：%s"
 
-#: mcomix/archive_extractor.py:153
+#: mcomix/archive_extractor.py:191 mcomix/archive_extractor.py:209
 #, python-format
 msgid "! Extraction error: %s"
 msgstr "！ 解壓縮錯誤：%s"
 
-#: mcomix/archive_packer.py:57
+#: mcomix/archive_packer.py:58
 #, python-format
 msgid "! Could not create archive at path \"%s\""
 msgstr "！ 無法在 %s 路徑下建立壓縮檔"
 
-#: mcomix/archive_packer.py:71 mcomix/archive_packer.py:96
+#: mcomix/archive_packer.py:72 mcomix/archive_packer.py:97
 #, python-format
 msgid ""
 "! Could not add file %(sourcefile)s to archive %(archivefile)s, aborting..."
 msgstr ""
 "！ 無法將檔案 %(sourcefile)s 加入壓縮檔 %(archivefile)s 中，正在取消..."
 
-#: mcomix/archive_tools.py:99
+#: mcomix/archive_tools.py:101
 #, python-format
 msgid "! Could not read %s"
 msgstr "！ 無法讀取 %s"
@@ -110,7 +110,7 @@ msgstr "類型"
 msgid "Name"
 msgstr "檔案名稱"
 
-#: mcomix/bookmark_dialog.py:53 mcomix/main.py:975
+#: mcomix/bookmark_dialog.py:53 mcomix/main.py:978
 #: mcomix/library/control_area.py:135
 msgid "Page"
 msgstr "頁次"
@@ -133,7 +133,7 @@ msgstr "新增書籤(_B)"
 msgid "_Edit Bookmarks..."
 msgstr "編輯書籤(_E)..."
 
-#: mcomix/callback.py:85
+#: mcomix/callback.py:86
 #, python-format
 msgid "! Callback %(function)r failed: %(error)s"
 msgstr "！ 呼叫 %(function)r 失敗：%(error)s"
@@ -307,32 +307,32 @@ msgstr "TIFF 圖片"
 msgid "BMP images"
 msgstr "BMP 圖片"
 
-#: mcomix/file_handler.py:166 mcomix/file_handler.py:281
+#: mcomix/file_handler.py:180 mcomix/file_handler.py:293
 #, python-format
 msgid "No images in '%s'"
 msgstr "%s 裏沒有圖片"
 
-#: mcomix/file_handler.py:275
+#: mcomix/file_handler.py:287
 #, python-format
 msgid "Could not open %s: No such file."
 msgstr "無法開啟 %s：沒有這個檔案。"
 
-#: mcomix/file_handler.py:278 mcomix/file_provider.py:141
+#: mcomix/file_handler.py:290 mcomix/file_provider.py:141
 #, python-format
 msgid "Could not open %s: Permission denied."
 msgstr "無法開啟 %s：沒有權限。"
 
-#: mcomix/file_handler.py:286
+#: mcomix/file_handler.py:298
 #, python-format
 msgid "Could not open %s: Unknown file type."
 msgstr "無法開啟 %s：不明的檔案類型。"
 
-#: mcomix/file_handler.py:485
+#: mcomix/file_handler.py:425
 #, python-format
 msgid "Continue reading from page %d?"
 msgstr "要從第%d頁開始繼續讀嗎？"
 
-#: mcomix/file_handler.py:486
+#: mcomix/file_handler.py:426
 #, python-format
 msgid ""
 "You stopped reading here on %(date)s, %(time)s. If you choose \"Yes\", "
@@ -342,7 +342,7 @@ msgstr ""
 "你在 %(date)s %(time)s 時讀到這裏就停了。如果你選「是」，可以從第 %(page)d 頁"
 "開始讀；否則就會載入第一頁。"
 
-#: mcomix/file_handler.py:801
+#: mcomix/file_handler.py:744
 #, python-format
 msgid "! Corrupt preferences file \"%s\", deleting..."
 msgstr "！ 設定檔 %s 損壞，正在刪除..."
@@ -357,7 +357,7 @@ msgstr "不正確的路徑：%s"
 msgid "! Could not load icon \"%s\""
 msgstr "！ 無法載入「%s」圖示"
 
-#: mcomix/image_handler.py:461
+#: mcomix/image_handler.py:462
 msgid "Unknown filetype"
 msgstr "不明的檔案類型"
 
@@ -736,26 +736,26 @@ msgstr "無法載入快速鍵設定：%s"
 msgid "! Could neither find pysqlite2 nor sqlite3."
 msgstr "！ 無法找到 pysqlite2 或 sqlite3。"
 
-#: mcomix/last_read_page.py:210 mcomix/thumbnail_tools.py:110
+#: mcomix/last_read_page.py:210 mcomix/thumbnail_tools.py:111
 #: mcomix/library/book_area.py:567
 #, python-format
 msgid "! Could not remove file \"%s\""
 msgstr "！ 無法移除檔案 %s"
 
-#: mcomix/main.py:850
+#: mcomix/main.py:849
 msgid "SLIDESHOW"
 msgstr "投影片放映"
 
-#: mcomix/main.py:911
+#: mcomix/main.py:914
 msgid "Save page as"
 msgstr "頁面另存為"
 
-#: mcomix/main.py:931
+#: mcomix/main.py:934
 #, python-format
 msgid "Delete \"%s\"?"
 msgstr "要刪除 %s ？"
 
-#: mcomix/main.py:932
+#: mcomix/main.py:935
 msgid "The file will be deleted from your harddisk."
 msgstr "檔案將會從你的硬碟中刪除。"
 
@@ -801,46 +801,46 @@ msgstr "檔案相關變數只能用於檔案。"
 msgid "Archive-related variables can only be used for archives."
 msgstr "壓縮檔相關變數只能用於壓縮檔。"
 
-#: mcomix/openwith.py:244
+#: mcomix/openwith.py:264
 #, python-format
 msgid "Invalid escape sequence: %%%s"
 msgstr "變數字元不正確：%%%s"
 
-#: mcomix/openwith.py:262
+#: mcomix/openwith.py:282
 msgid "Edit external commands"
 msgstr "編輯外部指令"
 
-#: mcomix/openwith.py:272
+#: mcomix/openwith.py:292
 msgid "Add _separator"
 msgstr "插入分隔行(_S)"
 
-#: mcomix/openwith.py:283
+#: mcomix/openwith.py:303
 msgid "Run _command"
 msgstr "執行指令(_C)"
 
-#: mcomix/openwith.py:346
+#: mcomix/openwith.py:366
 msgid "This is a separator pseudo-command."
 msgstr "這是做分隔用的假指令。"
 
-#: mcomix/openwith.py:357
+#: mcomix/openwith.py:377
 #, python-format
 msgid "\"%s\" does not have a valid working directory."
 msgstr "「%s」沒有可用的工作目錄。"
 
-#: mcomix/openwith.py:360
+#: mcomix/openwith.py:380
 #, python-format
 msgid "\"%s\" does not appear to have a valid executable."
 msgstr "「%s」無法正確執行。"
 
-#: mcomix/openwith.py:369
+#: mcomix/openwith.py:389
 msgid "Command label"
 msgstr "指令標題"
 
-#: mcomix/openwith.py:462
+#: mcomix/openwith.py:482
 msgid "Preview:"
 msgstr "預覽："
 
-#: mcomix/openwith.py:470
+#: mcomix/openwith.py:490
 #, python-format
 msgid ""
 "Please refer to the <a href=\"%s\">external command documentation</a> for a "
@@ -849,27 +849,27 @@ msgstr ""
 "請到「<a href=\"%s\">external command documentation</a>」查閱可用變數清單和其"
 "他說明。"
 
-#: mcomix/openwith.py:478
+#: mcomix/openwith.py:498
 msgid "Label"
 msgstr "標題"
 
-#: mcomix/openwith.py:478
+#: mcomix/openwith.py:498
 msgid "Command"
 msgstr "指令"
 
-#: mcomix/openwith.py:478
+#: mcomix/openwith.py:498
 msgid "Working directory"
 msgstr "工作目錄"
 
-#: mcomix/openwith.py:492
+#: mcomix/openwith.py:512
 msgid "Disabled in archives"
 msgstr "不用於壓縮檔"
 
-#: mcomix/openwith.py:547
+#: mcomix/openwith.py:567
 msgid "Save changes to commands?"
 msgstr "儲存指令變更？"
 
-#: mcomix/openwith.py:548
+#: mcomix/openwith.py:568
 msgid ""
 "You have made changes to the list of external commands that have not been "
 "saved yet. Press \"Yes\" to save all changes, or \"No\" to discard them."
@@ -1405,12 +1405,12 @@ msgstr "雙線性"
 msgid "Hyperbolic (slow)"
 msgstr "雙曲線 (慢)"
 
-#: mcomix/process.py:51
+#: mcomix/process.py:59
 #, python-format
 msgid "! Error spawning process \"%(command)s\": %(error)s."
 msgstr "！ 執行「%(command)s」時發生錯誤：%(error)s"
 
-#: mcomix/process.py:53
+#: mcomix/process.py:61
 #, python-format
 msgid "\"%(command)s\" must be on your system PATH to be found."
 msgstr "「%(command)s」必須能在系統變數 PATH 的路徑裏找得到。"
@@ -1733,7 +1733,7 @@ msgstr "希伯來文翻譯"
 msgid "Icon design"
 msgstr "圖示設計"
 
-#: mcomix/thumbnail_tools.py:223
+#: mcomix/thumbnail_tools.py:212
 #, python-format
 msgid "! Could not save thumbnail \"%(thumbpath)s\": %(error)s"
 msgstr "！ 無法儲存預覽縮圖「%(thumbpath)s」：%(error)s"
@@ -2031,6 +2031,11 @@ msgstr "圖片強化(_H)..."
 msgid "_Library..."
 msgstr "書庫(_L)..."
 
+#: mcomix/worker_thread.py:66
+#, fuzzy, python-format
+msgid "! Worker thread processing %(function)r failed: %(error)s"
+msgstr "！ 呼叫 %(function)r 失敗：%(error)s"
+
 #: mcomix/archive/__init__.py:13
 msgid "The archive is password-protected."
 msgstr "這個壓縮檔有密碼保護。"
@@ -2039,7 +2044,7 @@ msgstr "這個壓縮檔有密碼保護。"
 msgid "Please enter the password to continue:"
 msgstr "請輸入密碼才能繼續："
 
-#: mcomix/archive/zip.py:61
+#: mcomix/archive/zip.py:58
 #, python-format
 msgid ""
 "%(filename)s's extracted size is %(actual_size)d bytes, but should be "
