@@ -1,3 +1,7 @@
+MComix 1.02
+
+    - ChangeLog updated for MComix 1.01
+
 MComix 1.01
 Release date: 31.01.2015
 
@@ -50,6 +54,12 @@ Release date: 31.01.2015
 
     - MComix can now read PDF files using tools provided by mupdf,
       namely mutool and mudraw. (by Benoit Pierre)
+
+    - Double page mode will not implicitly resize images anymore.
+
+    - The smart scrolling algorithm has been improved.
+
+    - Some issues with the magnifying glass have been fixed.
 
     - MComix will now use the current GTK theme's icons for
       Next/Previous buttons.
