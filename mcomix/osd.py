@@ -50,10 +50,6 @@ class OnScreenDisplay(object):
         rect = (pos_x - 10, pos_y - 20,
                 layout_width + 20, layout_height + 20)
 
-        # Catch up on events - OSD doesn't work otherwise after just starting up.
-        while gtk.events_pending():
-            gtk.main_iteration(False)
-        # Draw OSD
         self._draw_osd(layout, rect)
 
         self._last_osd_rect = rect
