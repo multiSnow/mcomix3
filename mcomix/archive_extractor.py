@@ -209,6 +209,8 @@ class Extractor:
             log.error(_('! Extraction error: %s'), ex)
             log.debug('Traceback:\n%s', traceback.format_exc())
 
+        if self._extract_thread.must_stop():
+            return
         self._extraction_finished(name)
 
     def _list_contents(self, archive):
