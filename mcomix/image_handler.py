@@ -276,25 +276,19 @@ class ImageHandler:
             return self._window.filehandler.get_path_to_base()
         return self.get_path_to_page()
 
-    def close(self, *args):
-        """Run tasks for "closing" the currently opened file(s)."""
+    def cleanup(self):
+        """Run clean-up tasks. Should be called prior to exit."""
 
         self.first_wanted = 0
         self.last_wanted = 1
 
-        self.cleanup()
+        self._thread.stop()
         self._base_path = None
         self._image_files = []
         self._current_image_index = None
         self._available_images.clear()
         self._raw_pixbufs.clear()
         self._cache_pages = prefs['max pages to cache']
-
-        tools.garbage_collect()
-
-    def cleanup(self):
-        """Run clean-up tasks. Should be called prior to exit."""
-        self._thread.stop()
 
     def page_is_available(self, page=None):
         """ Returns True if <page> is available and calls to get_pixbufs

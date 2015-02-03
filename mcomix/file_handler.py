@@ -98,6 +98,8 @@ class FileHandler(object):
         Return True if the file is successfully loaded.
         """
 
+        self.cleanup()
+
         try:
             path = self._initialize_fileprovider(path, keep_fileprovider)
         except ValueError, ex:
@@ -117,14 +119,6 @@ class FileHandler(object):
             self._window.statusbar.set_message(error_message)
             self._window.osd.show(error_message)
             return False
-
-        # We close the previously opened file.
-        if self.file_loaded:
-            self.close_file()
-
-        # Catch up on UI events before actually starting to open the file(s).
-        while gtk.events_pending():
-            gtk.main_iteration(False)
 
         self.filelist = filelist
         self.archive_type = archive_type
@@ -237,12 +231,11 @@ class FileHandler(object):
         self._window.clear()
         self._window.uimanager.set_sensitivities()
         self._extractor.stop()
-        self.thread_delete(self._tmp_dir)
-        self._tmp_dir = tempfile.mkdtemp(prefix=u'mcomix.', suffix=os.sep)
-        self._window.imagehandler.close()
+        self._window.imagehandler.cleanup()
         self._window.thumbnailsidebar.clear()
         self._window.set_icon_list(*icons.mcomix_icons())
-        tools.garbage_collect()
+        self.thread_delete(self._tmp_dir)
+        self._tmp_dir = tempfile.mkdtemp(prefix=u'mcomix.', suffix=os.sep)
 
     def _initialize_fileprovider(self, path, keep_fileprovider):
         """ Creates the L{file_provider.FileProvider} for C{path}.
@@ -477,11 +470,14 @@ class FileHandler(object):
         return filelist, current_image_index
 
     def cleanup(self):
-        """Run clean-up tasks. Should be called prior to exit."""
-        self._stop_waiting = True
-        self._extractor.stop()
-        self.thread_delete(self._tmp_dir)
-        self.update_last_read_page()
+        """Run clean-up tasks. Should be called prior to exit or switching to a new file."""
+        if not self.file_loaded and not self.file_loading:
+            return
+        self.close_file()
+        # Catch up on UI events, so we don't leave idle callbacks.
+        while gtk.events_pending():
+            gtk.main_iteration(False)
+        tools.garbage_collect()
 
     def get_number_of_comments(self):
         """Return the number of comments in the current archive."""
@@ -551,8 +547,7 @@ class FileHandler(object):
 
             for path in files[current_index + 1:]:
                 if archive_tools.archive_mime_type(path) is not None:
-                    self.close_file()
-                    self._window.imagehandler.close()
+                    self.cleanup()
                     self._window.scroll_to_predefined(
                         (constants.SCROLL_TO_START,) * 2, constants.FIRST_INDEX)
                     self.open_file(path, keep_fileprovider=True)
@@ -574,8 +569,7 @@ class FileHandler(object):
 
             for path in reversed(files[:current_index]):
                 if archive_tools.archive_mime_type(path) is not None:
-                    self.close_file()
-                    self._window.imagehandler.close()
+                    self.cleanup()
                     self._window.scroll_to_predefined(
                         (constants.SCROLL_TO_END,) * 2, constants.LAST_INDEX)
                     self.open_file(path, -1, keep_fileprovider=True)
@@ -597,7 +591,7 @@ class FileHandler(object):
             files = self._file_provider.list_files(listmode)
 
             if len(files) > 0:
-                self.close_file()
+                self.cleanup()
                 self._window.scroll_to_predefined(
                     (constants.SCROLL_TO_START,) * 2, constants.FIRST_INDEX)
                 self.open_file(files[0], keep_fileprovider=True)
@@ -621,8 +615,7 @@ class FileHandler(object):
             files = self._file_provider.list_files(listmode)
 
             if len(files) > 0:
-                self.close_file()
-                self._window.imagehandler.close()
+                self.cleanup()
                 self._window.scroll_to_predefined(
                     (constants.SCROLL_TO_END,) * 2, constants.LAST_INDEX)
                 self.open_file(files[-1], -1, keep_fileprovider=True)
