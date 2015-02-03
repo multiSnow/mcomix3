@@ -54,16 +54,11 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         self._treeview.enable_model_drag_source(gtk.gdk.BUTTON1_MASK,
             [('text/uri-list', 0, 0)], gtk.gdk.ACTION_COPY)
 
-        bg_colour = prefs['thumb bg colour']
-
         # Page column
         self._thumbnail_page_treeviewcolumn = gtk.TreeViewColumn(None)
         self._treeview.append_column(self._thumbnail_page_treeviewcolumn)
 
         self._text_cellrenderer = gtk.CellRendererText()
-        self._text_cellrenderer.set_property('background-gdk',
-            gtk.gdk.colormap_get_system().alloc_color(gtk.gdk.Color(
-                bg_colour[0], bg_colour[1], bg_colour[2]), False, True))
 
         self._thumbnail_page_treeviewcolumn.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
         self._thumbnail_page_treeviewcolumn.pack_start(self._text_cellrenderer, False)
@@ -77,9 +72,6 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         self._treeview.append_column(self._thumbnail_image_treeviewcolumn)
 
         self._pixbuf_cellrenderer = gtk.CellRendererPixbuf()
-        self._pixbuf_cellrenderer.set_property('cell-background-gdk',
-            gtk.gdk.colormap_get_system().alloc_color(gtk.gdk.Color(
-                bg_colour[0], bg_colour[1], bg_colour[2]), False, True))
 
         self._thumbnail_image_treeviewcolumn.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
         self._thumbnail_image_treeviewcolumn.pack_start(self._pixbuf_cellrenderer, True)
@@ -88,6 +80,7 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
 
         self.add(self._treeview)
         self.update_layout_size()
+        self.change_thumbnail_background_color(prefs['thumb bg colour'])
         self.show_all()
 
         self._visible = False
@@ -191,6 +184,8 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
                 color)
         self._text_cellrenderer.set_property('background-gdk',
                 color)
+        self._text_cellrenderer.set_property('foreground-gdk',
+                image_tools.text_color_for_background_color(colour))
 
     def _load(self):
         # Detach model for performance reasons

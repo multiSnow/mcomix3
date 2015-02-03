@@ -11,6 +11,7 @@ import PIL.ImageEnhance as ImageEnhance
 import PIL.ImageOps as ImageOps
 
 from mcomix.preferences import prefs
+from mcomix import constants
 
 # File formats supported by PyGTK (sorted list of extensions)
 _supported_formats = sorted(
@@ -363,5 +364,12 @@ def is_image_file(path):
 
 def convert_rgb16list_to_rgba8int(c):
     return 0x000000FF | (c[0] >> 8 << 24) | (c[1] >> 8 << 16) | (c[2] >> 8 << 8)
+
+def rgb_to_y_601(color):
+    return color[0] * 0.299 + color[1] * 0.587 + color[2] * 0.114
+
+def text_color_for_background_color(bgcolor):
+    return constants.GTK_GDK_COLOR_BLACK if rgb_to_y_601(bgcolor) >= \
+        65535.0 / 2.0 else constants.GTK_GDK_COLOR_WHITE
 
 # vim: expandtab:sw=4:ts=4

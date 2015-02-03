@@ -3,6 +3,7 @@
 
 import re
 import os
+import gtk
 
 from mcomix import tools
 
@@ -86,6 +87,11 @@ PDF_FORMATS = (
         ('application/pdf',),
         ('*.pdf',))
 
+
+GTK_GDK_COLOR_BLACK = gtk.gdk.colormap_get_system().alloc_color(
+                      gtk.gdk.Color(0, 0, 0), False, True)
+GTK_GDK_COLOR_WHITE = gtk.gdk.colormap_get_system().alloc_color(
+                      gtk.gdk.Color(65535, 65535, 65535), False, True)
 
 
 MISSING_IMAGE_ICON = None
