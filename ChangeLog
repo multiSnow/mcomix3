@@ -1,5 +1,8 @@
 MComix 1.02
 
+    - Fixed a bug that could lead to crashes if the thumbnailer uses a dynamic
+      background color.
+
     - ChangeLog updated for MComix 1.01
 
 MComix 1.01
