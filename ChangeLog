@@ -61,6 +61,10 @@ Release date: 31.01.2015
 
     - Some issues with the magnifying glass have been fixed.
 
+    - Some new variables have been introduced that you can use when running
+      external commands. See the documentation for details:
+      https://sourceforge.net/p/mcomix/wiki/External_Commands
+
     - MComix will now use the current GTK theme's icons for
       Next/Previous buttons.
 
