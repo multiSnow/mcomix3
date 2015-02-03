@@ -179,23 +179,8 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         """ Changes the background color of the thumbnail bar. """
 
         self.set_thumbnail_background(colour)
-
-        # this hides or shows the control and quickly hides/shows it.
-        # this allows the thumbnail background to update
-        # when changing the color.  if there is a better
-        # or easier way to force a refresh I have not found it.
-
-        if (prefs['show thumbnails'] and
-            not (self._window.is_fullscreen and
-                 prefs['hide all in fullscreen'])):
-            self.hide_all()
-            self.show_all()
-        else:
-            self.show_all()
-            self.hide_all()
-
-        while gtk.events_pending():
-            gtk.main_iteration(False)
+        # Force a redraw of the widget.
+        self.queue_draw()
 
     def set_thumbnail_background(self, colour):
 
