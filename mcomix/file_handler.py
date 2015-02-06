@@ -50,7 +50,7 @@ class FileHandler(object):
         #: Path to opened archive file, or directory containing current images.
         self._base_path = None
         #: Temporary directory used for extracting archives.
-        self._tmp_dir = tempfile.mkdtemp(prefix=u'mcomix.', suffix=os.sep)
+        self._tmp_dir = None
         #: If C{True}, no longer wait for files to get extracted.
         self._stop_waiting = False
         #: List of comment files inside of the currently opened archive.
@@ -234,8 +234,6 @@ class FileHandler(object):
         self._window.imagehandler.cleanup()
         self._window.thumbnailsidebar.clear()
         self._window.set_icon_list(*icons.mcomix_icons())
-        self.thread_delete(self._tmp_dir)
-        self._tmp_dir = tempfile.mkdtemp(prefix=u'mcomix.', suffix=os.sep)
 
     def _initialize_fileprovider(self, path, keep_fileprovider):
         """ Creates the L{file_provider.FileProvider} for C{path}.
@@ -301,7 +299,7 @@ class FileHandler(object):
 
         @return: A tuple containing C{(image_files, image_index)}. """
 
-
+        self._tmp_dir = tempfile.mkdtemp(prefix=u'mcomix.', suffix=os.sep)
         self._base_path = path
         try:
             self._condition = self._extractor.setup(self._base_path,
@@ -471,13 +469,15 @@ class FileHandler(object):
 
     def cleanup(self):
         """Run clean-up tasks. Should be called prior to exit or switching to a new file."""
-        if not self.file_loaded and not self.file_loading:
-            return
-        self.close_file()
+        if self.file_loaded or self.file_loading:
+            self.close_file()
         # Catch up on UI events, so we don't leave idle callbacks.
         while gtk.events_pending():
             gtk.main_iteration(False)
         tools.garbage_collect()
+        if self._tmp_dir is not None:
+            self.thread_delete(self._tmp_dir)
+            self._tmp_dir = None
 
     def get_number_of_comments(self):
         """Return the number of comments in the current archive."""
