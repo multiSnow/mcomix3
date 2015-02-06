@@ -98,7 +98,7 @@ class FileHandler(object):
         Return True if the file is successfully loaded.
         """
 
-        self.cleanup()
+        self.close_file()
 
         try:
             path = self._initialize_fileprovider(path, keep_fileprovider)
@@ -219,21 +219,29 @@ class FileHandler(object):
     @callback.Callback
     def close_file(self, *args):
         """Run tasks for "closing" the currently opened file(s)."""
-        self.update_last_read_page()
-        self.file_loaded = False
-        self.file_loading = False
-        self.archive_type = None
-        self._current_file = None
-        self._base_path = None
-        self._stop_waiting = True
-        self._comment_files = []
-        self._name_table.clear()
-        self._window.clear()
-        self._window.uimanager.set_sensitivities()
-        self._extractor.stop()
-        self._window.imagehandler.cleanup()
-        self._window.thumbnailsidebar.clear()
-        self._window.set_icon_list(*icons.mcomix_icons())
+        if self.file_loaded or self.file_loading:
+            self.update_last_read_page()
+            self.file_loaded = False
+            self.file_loading = False
+            self.archive_type = None
+            self._current_file = None
+            self._base_path = None
+            self._stop_waiting = True
+            self._comment_files = []
+            self._name_table.clear()
+            self._window.clear()
+            self._window.uimanager.set_sensitivities()
+            self._extractor.stop()
+            self._window.imagehandler.cleanup()
+            self._window.thumbnailsidebar.clear()
+            self._window.set_icon_list(*icons.mcomix_icons())
+        # Catch up on UI events, so we don't leave idle callbacks.
+        while gtk.events_pending():
+            gtk.main_iteration(False)
+        tools.garbage_collect()
+        if self._tmp_dir is not None:
+            self.thread_delete(self._tmp_dir)
+            self._tmp_dir = None
 
     def _initialize_fileprovider(self, path, keep_fileprovider):
         """ Creates the L{file_provider.FileProvider} for C{path}.
@@ -467,18 +475,6 @@ class FileHandler(object):
 
         return filelist, current_image_index
 
-    def cleanup(self):
-        """Run clean-up tasks. Should be called prior to exit or switching to a new file."""
-        if self.file_loaded or self.file_loading:
-            self.close_file()
-        # Catch up on UI events, so we don't leave idle callbacks.
-        while gtk.events_pending():
-            gtk.main_iteration(False)
-        tools.garbage_collect()
-        if self._tmp_dir is not None:
-            self.thread_delete(self._tmp_dir)
-            self._tmp_dir = None
-
     def get_number_of_comments(self):
         """Return the number of comments in the current archive."""
         return len(self._comment_files)
@@ -547,7 +543,7 @@ class FileHandler(object):
 
             for path in files[current_index + 1:]:
                 if archive_tools.archive_mime_type(path) is not None:
-                    self.cleanup()
+                    self.close_file()
                     self._window.scroll_to_predefined(
                         (constants.SCROLL_TO_START,) * 2, constants.FIRST_INDEX)
                     self.open_file(path, keep_fileprovider=True)
@@ -569,7 +565,7 @@ class FileHandler(object):
 
             for path in reversed(files[:current_index]):
                 if archive_tools.archive_mime_type(path) is not None:
-                    self.cleanup()
+                    self.close_file()
                     self._window.scroll_to_predefined(
                         (constants.SCROLL_TO_END,) * 2, constants.LAST_INDEX)
                     self.open_file(path, -1, keep_fileprovider=True)
@@ -591,7 +587,7 @@ class FileHandler(object):
             files = self._file_provider.list_files(listmode)
 
             if len(files) > 0:
-                self.cleanup()
+                self.close_file()
                 self._window.scroll_to_predefined(
                     (constants.SCROLL_TO_START,) * 2, constants.FIRST_INDEX)
                 self.open_file(files[0], keep_fileprovider=True)
@@ -615,7 +611,7 @@ class FileHandler(object):
             files = self._file_provider.list_files(listmode)
 
             if len(files) > 0:
-                self.cleanup()
+                self.close_file()
                 self._window.scroll_to_predefined(
                     (constants.SCROLL_TO_END,) * 2, constants.LAST_INDEX)
                 self.open_file(files[-1], -1, keep_fileprovider=True)

@@ -1023,7 +1023,7 @@ class MainWindow(gtk.Window):
 
         self.write_config_files()
 
-        self.filehandler.cleanup()
+        self.filehandler.close_file()
         if main_dialog._dialog is not None:
             main_dialog._dialog.close()
         backend.LibraryBackend().close()
