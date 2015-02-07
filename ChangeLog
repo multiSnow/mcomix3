@@ -6,6 +6,11 @@ MComix 1.02
     - Fixed a bug that could lead to crashes if the thumbnailer uses a dynamic
       background color.
 
+    - Some encoding issues with the library have been fixed.
+
+    - Temporary directories will be created only when necessary and will be
+      deleted as soon as the corresponding book has been closed.
+
     - ChangeLog updated for MComix 1.01
 
 MComix 1.01
