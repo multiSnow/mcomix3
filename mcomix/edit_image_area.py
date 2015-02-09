@@ -154,4 +154,7 @@ class _ImageArea(gtk.ScrolledWindow):
 
         context.set_icon_pixbuf(pointer, -5, -5)
 
+    def cleanup(self):
+        self._iconview.stop_update()
+
 # vim: expandtab:sw=4:ts=4

@@ -228,6 +228,10 @@ class _EditArchiveDialog(gtk.Dialog):
             _close_dialog()
             self.kill = True
 
+    def destroy(self):
+        self._image_area.cleanup()
+        gtk.Dialog.destroy(self)
+
 def open_dialog(action, window):
     global _dialog
 
