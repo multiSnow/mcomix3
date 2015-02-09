@@ -135,14 +135,13 @@ class FileHandler(object):
             try:
                 self._open_archive(self._current_file, start_page)
             except Exception, ex:
-                self.file_loaded = False
-                self.file_loading = False
                 self._window.statusbar.set_message(unicode(ex))
                 self._window.osd.show(unicode(ex))
                 self._window.uimanager.set_sensitivities()
                 return False
             self.file_loading = True
         else:
+            self.file_loaded = True
             image_files, current_image_index = \
                 self._open_image_files(filelist, self._current_file)
             self._archive_opened(image_files, current_image_index)
@@ -168,7 +167,6 @@ class FileHandler(object):
             self._window.statusbar.set_file_number(0, 0)
 
         if not image_files:
-            self.file_loaded = False
             self.file_load_failed = True
             self._window.imagehandler._image_files = None
             msg = _("No images in '%s'") % os.path.basename(self._current_file)
@@ -179,7 +177,6 @@ class FileHandler(object):
             self._window.uimanager.set_sensitivities()
 
         else:
-            self.file_loaded = True
             self.file_load_failed = False
             self._window.imagehandler._image_files = image_files
             self._window.imagehandler._current_image_index = current_image_index
@@ -322,6 +319,7 @@ class FileHandler(object):
         if not self.file_loading:
             return
         self.file_loading = False
+        self.file_loaded = True
 
         files = self._extractor.get_files()
         archive_images = [image for image in files
