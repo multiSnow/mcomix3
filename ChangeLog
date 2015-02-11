@@ -11,6 +11,10 @@ MComix 1.02
     - Temporary directories will be created only when necessary and will be
       deleted as soon as the corresponding book has been closed.
 
+    - Fixed a bug that prevented MComix from shutting down properly if an
+      archive with no images in it has been opened or the "Edit archive" dialog
+      has been used.
+
     - ChangeLog updated for MComix 1.01
 
 MComix 1.01
