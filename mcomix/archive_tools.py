@@ -95,7 +95,7 @@ def archive_mime_type(path):
                 return constants.LHA
 
             if magic[0:4] == '%PDF':
-               return constants.PDF
+                return constants.PDF
 
     except Exception:
         log.warning(_('! Could not read %s'), path)
