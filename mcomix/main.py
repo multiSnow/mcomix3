@@ -272,6 +272,13 @@ class MainWindow(gtk.Window):
             self.actiongroup.get_action('library').activate()
 
         self.cursor_handler.auto_hide_on()
+        # Make sure we receive *all* mouse motion events,
+        # even if a modal dialog is being shown.
+        def _on_event(event):
+            if gtk.gdk.MOTION_NOTIFY == event.type:
+                self.cursor_handler.refresh()
+            gtk.main_do_event(event)
+        gtk.gdk.event_handler_set(_on_event)
 
     def gained_focus(self, *args):
         self.is_in_focus = True

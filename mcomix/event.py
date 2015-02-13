@@ -577,9 +577,6 @@ class EventHandler:
                 self._last_pointer_pos_y = event.y_root
             self._drag_timer = event.time
 
-        else:
-            self._window.cursor_handler.refresh()
-
     def drag_n_drop_event(self, widget, context, x, y, selection, drag_id,
       eventtime):
         """Handle drag-n-drop events on the main layout area."""
