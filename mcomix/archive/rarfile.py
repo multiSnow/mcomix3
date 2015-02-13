@@ -8,7 +8,6 @@ import ctypes, ctypes.util
 import threading
 
 from mcomix import constants
-from mcomix import callback
 from mcomix import archive
 
 if sys.platform == 'win32':
