@@ -1,5 +1,7 @@
 MComix 1.02
 
+    - You can select the text in the Properties dialog now.
+
     - The thumbnailer now displays page numbers in a reasonable color
       appropriate for the respective background color.
 
@@ -14,6 +16,14 @@ MComix 1.02
     - Fixed a bug that prevented MComix from shutting down properly if an
       archive with no images in it has been opened or the "Edit archive" dialog
       has been used.
+
+    - Modal dialogs do not hide the mouse cursor in the main area anymore.
+
+    - Various issues with the Preferences dialog, the Properties dialog and the
+      library have been fixed.
+
+    - Applying changes in the "Edit archive" dialog could raise an exception
+      under certain circumstances. This has been fixed.
 
     - ChangeLog updated for MComix 1.01
 
