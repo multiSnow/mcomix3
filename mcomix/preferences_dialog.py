@@ -67,9 +67,9 @@ class _PreferencesDialog(gtk.Dialog):
         page = preferences_page._PreferencePage(None)
 
         page.new_section(_('User interface'))
-        label = gtk.Label(_('Language (needs restart):'))
-        language_box = self._create_language_control()
-        page.add_row(label, language_box)
+
+        page.add_row(gtk.Label(_('Language (needs restart):')),
+            self._create_language_control())
 
         page.add_row(self._create_pref_check_button(
             _('Escape key closes program'), 'escape quits',
@@ -85,7 +85,6 @@ class _PreferencesDialog(gtk.Dialog):
             _('Use dynamic background colour'),
             'smart bg',
             _('Automatically pick a background colour that fits the viewed image.'))
-
         page.add_row(fixed_bg_button, self._create_color_button('bg colour'))
         page.add_row(dynamic_bg_button)
 
@@ -98,7 +97,6 @@ class _PreferencesDialog(gtk.Dialog):
             'Use dynamic background colour',
             'smart thumb bg',
             _('Automatically use the colour that fits the viewed image for the thumbnail background.'))
-
         page.add_row(thumb_fixed_bg_button, self._create_color_button('thumb bg colour'))
         page.add_row(thumb_dynamic_bg_button)
 
@@ -129,6 +127,7 @@ class _PreferencesDialog(gtk.Dialog):
         # The "Behaviour" tab.
         # ----------------------------------------------------------------
         page = preferences_page._PreferencePage(None)
+
         page.new_section(_('Scroll'))
 
         page.add_row(self._create_pref_check_button(
@@ -182,12 +181,9 @@ class _PreferencesDialog(gtk.Dialog):
             'double step in double page mode',
             _('Flip two pages, instead of one, each time we flip pages in double page mode.')))
 
-        label = gtk.Label(_('Show only one page where appropriate:'))
-        doublepage_control = self._create_doublepage_as_one_control()
-        doublepage_control.set_tooltip_text(
-            _("When showing the first page of an archive, or an image's width "
-              "exceeds its height, only a single page will be displayed."))
-        page.add_row(label, doublepage_control)
+        page.add_row(gtk.Label(_('Show only one page where appropriate:')),
+            self._create_doublepage_as_one_control())
+
         page.new_section(_('Files'))
 
         page.add_row(self._create_pref_check_button(
@@ -195,12 +191,8 @@ class _PreferencesDialog(gtk.Dialog):
             'auto load last file',
             _('Automatically open, on startup, the file that was open when MComix was last closed.')))
 
-        store_recent_label = gtk.Label(
-            _('Store information about recently opened files:'))
-        store_recent_box = self._create_store_recent_combobox()
-        store_recent_box.set_tooltip_text(
-            _('Add information about all files opened from within MComix to the shared recent files list.'))
-        page.add_row(store_recent_label, store_recent_box)
+        page.add_row(gtk.Label(_('Store information about recently opened files:')),
+            self._create_store_recent_combobox())
 
         return page
 
@@ -209,6 +201,7 @@ class _PreferencesDialog(gtk.Dialog):
         # The "Display" tab.
         # ----------------------------------------------------------------
         page = preferences_page._PreferencePage(None)
+
         page.new_section(_('Fullscreen'))
 
         page.add_row(self._create_pref_check_button(
@@ -221,9 +214,8 @@ class _PreferencesDialog(gtk.Dialog):
 
         page.new_section(_('Fit to size mode'))
 
-        fitside_label = gtk.Label(_('Fit to width or height:'))
-        fitmode = self._create_fitmode_control()
-        page.add_row(fitside_label, fitmode)
+        page.add_row(gtk.Label(_('Fit to width or height:')),
+            self._create_fitmode_control())
 
         page.add_row(gtk.Label(_('Fixed size for this mode:')),
             self._create_pref_spinner('fit to size px',
@@ -234,6 +226,7 @@ class _PreferencesDialog(gtk.Dialog):
         page.add_row(gtk.Label(_('Slideshow delay (in seconds):')),
             self._create_pref_spinner('slideshow delay',
             1000.0, 0.01, 3600.0, 0.1, 1, 2, None))
+
         page.add_row(gtk.Label(_('Slideshow step (in pixels):')),
             self._create_pref_spinner('number of pixels to scroll per slideshow event',
             1, -500, 500, 1, 1, 0,
@@ -252,11 +245,9 @@ class _PreferencesDialog(gtk.Dialog):
             _('Automatically rotate images when an orientation is specified in the image metadata, such as in an Exif tag.')))
 
         page.new_section(_('Image quality'))
-        label = gtk.Label(_('Scaling mode'))
-        scaling_box = self._create_scaling_quality_combobox()
-        scaling_box.set_tooltip_text(
-            _('Changes how images are scaled. Slower algorithms result in higher quality resizing, but longer page loading times.'))
-        page.add_row(label, scaling_box)
+
+        page.add_row(gtk.Label(_('Scaling mode')),
+            self._create_scaling_quality_combobox())
 
         return page
 
@@ -264,23 +255,23 @@ class _PreferencesDialog(gtk.Dialog):
         # ----------------------------------------------------------------
         # The "Advanced" tab.
         # ----------------------------------------------------------------
-        page = preferences_page._PreferencePage(None)
 
+        page = preferences_page._PreferencePage(None)
 
         page.new_section(_('File order'))
 
-        label = gtk.Label(_('Sort files and directories by:'))
-        page.add_row(label, self._create_sort_by_control())
+        page.add_row(gtk.Label(_('Sort files and directories by:')),
+            self._create_sort_by_control())
 
-        label = gtk.Label(_('Sort archives by:'))
-        page.add_row(label, self._create_archive_sort_by_control())
+        page.add_row(gtk.Label(_('Sort archives by:')),
+            self._create_archive_sort_by_control())
 
         page.new_section(_('Extraction and cache'))
 
         page.add_row(gtk.Label(_('Maximum number of concurrent extraction threads:')),
             self._create_pref_spinner('max extract threads',
             1, 1, 16, 1, 4, 0,
-          _('Set the maximum number of concurrent threads for formats that support it.')))
+            _('Set the maximum number of concurrent threads for formats that support it.')))
 
         page.add_row(self._create_pref_check_button(
             _('Store thumbnails for opened files'),
@@ -305,16 +296,9 @@ class _PreferencesDialog(gtk.Dialog):
             _('Set the magnification factor of the magnifying lens.')))
 
         page.new_section(_('Comments'))
-        label = gtk.Label(_('Comment extensions:'))
-        extensions_entry = gtk.Entry()
-        extensions_entry.set_size_request(200, -1)
-        extensions_entry.set_text(', '.join(prefs['comment extensions']))
-        extensions_entry.connect('activate', self._entry_cb)
-        extensions_entry.connect('focus_out_event', self._entry_cb)
-        extensions_entry.set_tooltip_text(
-            _('Treat all files found within archives, that have one of these file endings, as comments.'))
-        page.add_row(label, extensions_entry)
 
+        page.add_row(gtk.Label(_('Comment extensions:')),
+            self._create_extensions_entry())
 
         return page
 
@@ -417,6 +401,10 @@ class _PreferencesDialog(gtk.Dialog):
         box = self._create_combobox(items,
                 prefs['virtual double page for fitting images'],
                 self._double_page_changed_cb)
+
+        box.set_tooltip_text(
+            _("When showing the first page of an archive, or an image's width "
+              "exceeds its height, only a single page will be displayed."))
 
         return box
 
@@ -562,6 +550,8 @@ class _PreferencesDialog(gtk.Dialog):
             selection = prefs['store recent file info']
 
         box = self._create_combobox(items, selection, self._store_recent_changed_cb)
+        box.set_tooltip_text(
+            _('Add information about all files opened from within MComix to the shared recent files list.'))
         return box
 
     def _store_recent_changed_cb(self, combobox, *args):
@@ -602,7 +592,11 @@ class _PreferencesDialog(gtk.Dialog):
 
         selection = prefs['scaling quality']
 
-        return self._create_combobox(items, selection, self._scaling_quality_changed_cb)
+        box = self._create_combobox(items, selection, self._scaling_quality_changed_cb)
+        box.set_tooltip_text(
+            _('Changes how images are scaled. Slower algorithms result in higher quality resizing, but longer page loading times.'))
+
+        return box
 
     def _scaling_quality_changed_cb(self, combobox, *args):
         """ Called whan image scaling quality changes. """
@@ -652,6 +646,17 @@ class _PreferencesDialog(gtk.Dialog):
             box.connect('changed', change_callback)
 
         return box
+
+
+    def _create_extensions_entry(self):
+        entry = gtk.Entry()
+        entry.set_size_request(200, -1)
+        entry.set_text(', '.join(prefs['comment extensions']))
+        entry.connect('activate', self._entry_cb)
+        entry.connect('focus_out_event', self._entry_cb)
+        entry.set_tooltip_text(
+            _('Treat all files found within archives, that have one of these file endings, as comments.'))
+        return entry
 
 
     def _create_pref_check_button(self, label, prefkey, tooltip_text):
