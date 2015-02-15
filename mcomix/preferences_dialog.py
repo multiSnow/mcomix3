@@ -78,44 +78,34 @@ class _PreferencesDialog(gtk.Dialog):
 
         page.new_section(_('Background'))
 
-        fixed_bg_button = gtk.RadioButton(None,
-            _('Use this colour as background:'))
-        fixed_bg_button.set_tooltip_text(
-            _('Always use this selected colour as the background colour.'))
-        fixed_bg_button.connect('toggled', self._check_button_cb, 'color box bg')
+        fixed_bg_button, dynamic_bg_button = self._create_binary_pref_radio_buttons(
+            _('Use this colour as background:'),
+            'color box bg',
+            _('Always use this selected colour as the background colour.'),
+            _('Use dynamic background colour'),
+            'smart bg',
+            _('Automatically pick a background colour that fits the viewed image.'))
+
         bg_color_button = gtk.ColorButton(gtk.gdk.Color(*prefs['bg colour']))
         bg_color_button.connect('color_set', self._color_button_cb, 'bg colour')
 
         page.add_row(fixed_bg_button, bg_color_button)
-
-        dynamic_bg_button = gtk.RadioButton(fixed_bg_button,
-            _('Use dynamic background colour'))
-        dynamic_bg_button.set_active(prefs['smart bg'])
-        dynamic_bg_button.connect('toggled', self._check_button_cb, 'smart bg')
-        dynamic_bg_button.set_tooltip_text(
-            _('Automatically pick a background colour that fits the viewed image.'))
-
         page.add_row(dynamic_bg_button)
 
         page.new_section(_('Thumbnails'))
 
-        thumb_fixed_bg_button = gtk.RadioButton(None,
-            _('Use this colour as the thumbnail background:'))
-        thumb_fixed_bg_button.set_tooltip_text(
-            _('Always use this selected colour as the thumbnail background colour.'))
-        thumb_fixed_bg_button.connect('toggled', self._check_button_cb, 'color box thumb bg')
+        thumb_fixed_bg_button, thumb_dynamic_bg_button = self._create_binary_pref_radio_buttons(
+            'Use this colour as the thumbnail background:',
+            'color box thumb bg',
+            _('Always use this selected colour as the thumbnail background colour.'),
+            'Use dynamic background colour',
+            'smart thumb bg',
+            _('Automatically use the colour that fits the viewed image for the thumbnail background.'))
+
         thumb_bg_color_button = gtk.ColorButton(gtk.gdk.Color(*prefs['thumb bg colour']))
         thumb_bg_color_button.connect('color_set', self._color_button_cb, 'thumb bg colour')
 
         page.add_row(thumb_fixed_bg_button, thumb_bg_color_button)
-
-        thumb_dynamic_bg_button = gtk.RadioButton(thumb_fixed_bg_button,
-            _('Use dynamic background colour'))
-        thumb_dynamic_bg_button.set_active(prefs['smart thumb bg'])
-        thumb_dynamic_bg_button.set_tooltip_text(
-            _('Automatically use the colour that fits the viewed image for the thumbnail background.'))
-        thumb_dynamic_bg_button.connect('toggled', self._check_button_cb, 'smart thumb bg')
-
         page.add_row(thumb_dynamic_bg_button)
 
         page.add_row(self._create_pref_check_button(
@@ -677,6 +667,20 @@ class _PreferencesDialog(gtk.Dialog):
         if tooltip_text:
             button.set_tooltip_text(tooltip_text)
         return button
+
+
+    def _create_binary_pref_radio_buttons(self, label1, prefkey1, tooltip_text1,
+        label2, prefkey2, tooltip_text2):
+        button1 = gtk.RadioButton(None, label1)
+        button1.connect('toggled', self._check_button_cb, prefkey1)
+        if tooltip_text1:
+            button1.set_tooltip_text(tooltip_text1)
+        button2 = gtk.RadioButton(button1, label2)
+        button2.connect('toggled', self._check_button_cb, prefkey2)
+        if tooltip_text2:
+            button2.set_tooltip_text(tooltip_text2)
+        button2.set_active(prefs[prefkey2])
+        return button1, button2
 
 
     def _check_button_cb(self, button, preference):
