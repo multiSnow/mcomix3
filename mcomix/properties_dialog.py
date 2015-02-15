@@ -21,13 +21,14 @@ class _PropertiesDialog(gtk.Dialog):
         gtk.Dialog.__init__(self, _('Properties'), window, 0,
             (gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE))
 
+        self.resize(400, 400)
         self.set_resizable(True)
         self.set_has_separator(False)
         self.set_default_response(gtk.RESPONSE_CLOSE)
         notebook = gtk.Notebook()
         self.set_border_width(4)
         notebook.set_border_width(6)
-        self.vbox.pack_start(notebook, False, False, 0)
+        self.vbox.pack_start(notebook)
 
         if window.filehandler.archive_type is not None:
             # ------------------------------------------------------------

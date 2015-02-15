@@ -6,18 +6,21 @@ from mcomix import i18n
 from mcomix import image_tools
 from mcomix import labels
 
-class _Page(gtk.VBox):
+class _Page(gtk.ScrolledWindow):
 
     """A page to put in the gtk.Notebook. Contains info about a file (an
     image or an archive.)
     """
 
     def __init__(self):
-        gtk.VBox.__init__(self, False, 12)
+        gtk.ScrolledWindow.__init__(self)
+        self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self._vbox = gtk.VBox(False, 12)
+        self.add_with_viewport(self._vbox)
 
         self.set_border_width(12)
         topbox = gtk.HBox(False, 12)
-        self.pack_start(topbox, False)
+        self._vbox.pack_start(topbox, False)
         self._thumb = gtk.Image()
         topbox.pack_start(self._thumb, False, False)
         borderbox = gtk.Frame()
@@ -61,7 +64,7 @@ class _Page(gtk.VBox):
         sequence <info>. Each entry in info should be a tuple (desc, value).
         """
         hbox = gtk.HBox(False, 10)
-        self.pack_start(hbox, False, False)
+        self._vbox.pack_start(hbox, False, False)
         left_box = gtk.VBox(True, 8)
         right_box = gtk.VBox(True, 8)
         hbox.pack_start(left_box, False, False)
