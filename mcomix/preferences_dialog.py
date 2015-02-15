@@ -783,7 +783,7 @@ class _PreferencesDialog(gtk.Dialog):
             prefs[preference] = value
 
         elif preference == 'slideshow delay':
-            prefs[preference] = int(value * 1000)
+            prefs[preference] = int(round(value * 1000))
             self._window.slideshow.update_delay()
 
         elif preference == 'number of pixels to scroll per slideshow event':
