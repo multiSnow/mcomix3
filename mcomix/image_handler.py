@@ -366,13 +366,12 @@ class ImageHandler:
         page if <page> is None.
         """
         if page is None:
-            if self._current_image_index < len(self._image_files):
-                return self._image_files[self._current_image_index]
-            else:
-                return None
+            index = self._current_image_index
+        else:
+            index = page - 1
 
-        if page - 1 < len(self._image_files):
-            return self._image_files[page - 1]
+        if 0 <= index < len(self._image_files):
+            return self._image_files[index]
         else:
             return None
 
@@ -466,8 +465,6 @@ class ImageHandler:
 
         If <nowait> is True, don't wait for <page> to be available.
         """
-        if page is None:
-            page = self.get_current_page()
         if not self._wait_on_page(page, check_only=nowait):
             # Page is not available!
             return None
@@ -508,7 +505,10 @@ class ImageHandler:
 
         If <check_only> is True, only check (and return status), don't wait.
         """
-        index = page - 1
+        if page is None:
+            index = self._current_image_index
+        else:
+            index = page - 1
         if index in self._available_images:
             # Already extracted!
             return True
