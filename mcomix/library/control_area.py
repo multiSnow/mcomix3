@@ -37,7 +37,7 @@ class _ControlArea(gtk.HBox):
 
         infobox = gtk.VBox(False, 5)
         infobox.set_border_width(10)
-        self.pack_start(borderbox, False, False)
+        self.pack_start(borderbox)
         borderbox.add(insidebox)
         insidebox.add(infobox)
 
@@ -59,7 +59,8 @@ class _ControlArea(gtk.HBox):
         infobox.pack_start(self._dirlabel, False, False)
 
         vbox = gtk.VBox(False, 10)
-        self.pack_start(vbox, True, True)
+        vbox.set_size_request(250, -1)
+        self.pack_start(vbox, False, False)
 
         # First line of controls, containing the search box
         hbox = gtk.HBox(False)
@@ -77,8 +78,8 @@ class _ControlArea(gtk.HBox):
         label.set_mnemonic_widget(search_entry)
 
         # Last line of controls, containing buttons like 'Open'
-        hbox = gtk.HBox(False, 10)
-        vbox.pack_end(hbox, False, False)
+        hbox = gtk.HBox(True, 10)
+        vbox.pack_end(hbox)
 
         watchlist_button = gtk.Button(_("_Watch list"))
         watchlist_button.set_image(
@@ -94,7 +95,7 @@ class _ControlArea(gtk.HBox):
             self._library.book_area.open_selected_book)
         self._open_button.set_tooltip_text(_('Open the selected book.'))
         self._open_button.set_sensitive(False)
-        hbox.pack_end(self._open_button, False, False)
+        hbox.pack_end(self._open_button, expand=False)
 
     def update_info(self, selected):
         """Update the info box using the currently <selected> books from
