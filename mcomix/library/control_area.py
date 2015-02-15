@@ -27,13 +27,13 @@ class _ControlArea(gtk.HBox):
         self._library = library
         self.set_border_width(10)
 
-        borderbox = gtk.EventBox()
-        borderbox.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse('#333'))
+        borderbox = gtk.Frame()
+        borderbox.set_shadow_type(gtk.SHADOW_ETCHED_IN)
         borderbox.set_size_request(350, -1)
 
         insidebox = gtk.EventBox()
         insidebox.set_border_width(1)
-        insidebox.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse('#ddb'))
+        insidebox.set_state(gtk.STATE_ACTIVE)
 
         infobox = gtk.VBox(False, 5)
         infobox.set_border_width(10)
