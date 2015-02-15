@@ -212,17 +212,9 @@ class _EditArchiveDialog(gtk.Dialog):
             self._window.imagehandler._image_files = new_image_array
             self._window.imagehandler._raw_pixbufs = {}
             self._window.imagehandler.do_cacheing()
-
             self._window.thumbnailsidebar.clear()
-            self._window.thumbnailsidebar.load_thumbnails()
-
-            while self._window.imagehandler.is_cacheing and \
-                  not self._window.thumbnailsidebar._is_loading:
-                while gtk.events_pending():
-                    gtk.main_iteration(False)
-
             self._window.set_page(1)
-            self._window.thumbnailsidebar._selection_is_forced = False
+            self._window.thumbnailsidebar.load_thumbnails()
 
         else:
             _close_dialog()
