@@ -140,12 +140,9 @@ class _PreferencesDialog(gtk.Dialog):
             'archive thumbnail as icon')
         page.add_row(thumb_as_preview_icon)
 
-        label = gtk.Label(_('Thumbnail size (in pixels):'))
-        adjustment = gtk.Adjustment(prefs['thumbnail size'], 20, 500, 1, 10)
-        thumb_size_spinner = gtk.SpinButton(adjustment)
-        thumb_size_spinner.connect('value_changed', self._spinner_cb,
-            'thumbnail size')
-        page.add_row(label, thumb_size_spinner)
+        page.add_row(gtk.Label(_('Thumbnail size (in pixels):')),
+            self._create_pref_spinner('thumbnail size',
+            1, 20, 500, 1, 10, 0, None))
 
         page.new_section(_('Transparency'))
         checkered_bg_button = gtk.CheckButton(
@@ -204,43 +201,27 @@ class _PreferencesDialog(gtk.Dialog):
             _('Automatically open the first file in the next sibling directory when flipping past the last page of the last file in a directory, or the previous directory when flipping past the first page of the first file.'))
         page.add_row(auto_open_dir_button)
 
-        label = gtk.Label(_('Number of pixels to scroll per arrow key press:'))
-        adjustment = gtk.Adjustment(prefs['number of pixels to scroll per key event'], 1, 500, 1, 3)
-        scroll_key_spinner = gtk.SpinButton(adjustment, digits=0)
-        scroll_key_spinner.connect('value_changed', self._spinner_cb,
-            'number of pixels to scroll per key event')
-        scroll_key_spinner.set_tooltip_text(
-            _('Set the number of pixels to scroll on a page when using the arrow keys.'))
-        page.add_row(label, scroll_key_spinner)
+        page.add_row(gtk.Label(_('Number of pixels to scroll per arrow key press:')),
+            self._create_pref_spinner('number of pixels to scroll per key event',
+            1, 1, 500, 1, 3, 0,
+            _('Set the number of pixels to scroll on a page when using the arrow keys.')))
 
-        label = gtk.Label(_('Number of pixels to scroll per mouse wheel turn:'))
-        adjustment = gtk.Adjustment(prefs['number of pixels to scroll per mouse wheel event'], 1, 500, 1, 3)
-        scroll_key_spinner = gtk.SpinButton(adjustment, digits=0)
-        scroll_key_spinner.connect('value_changed', self._spinner_cb,
-            'number of pixels to scroll per mouse wheel event')
-        scroll_key_spinner.set_tooltip_text(
-            _('Set the number of pixels to scroll on a page when using a mouse wheel.'))
-        page.add_row(label, scroll_key_spinner)
+        page.add_row(gtk.Label(_('Number of pixels to scroll per mouse wheel turn:')),
+            self._create_pref_spinner('number of pixels to scroll per mouse wheel event',
+            1, 1, 500, 1, 3, 0,
+            _('Set the number of pixels to scroll on a page when using a mouse wheel.')))
 
-        smart_scroll_label = gtk.Label(_('Fraction of page to scroll '
-            'per space key press (in percent):'))
-        adjustment = gtk.Adjustment(int(prefs['smart scroll percentage'] * 100),
-            1, 100, 1, 5)
-        spinner = gtk.SpinButton(adjustment, digits=0)
-        spinner.connect('value-changed', self._spinner_cb,
-            'smart scroll percentage')
-        spinner.set_tooltip_text(_('Sets the percentage by which the page '
-            'will be scrolled down or up when the space key is pressed.'))
-        page.add_row(smart_scroll_label, spinner)
+        page.add_row(gtk.Label(_('Fraction of page to scroll '
+            'per space key press (in percent):')),
+            self._create_pref_spinner('smart scroll percentage',
+            0.01, 1, 100, 1, 5, 0,
+            _('Sets the percentage by which the page '
+            'will be scrolled down or up when the space key is pressed.')))
 
-        label = gtk.Label(_('Number of "steps" to take before flipping the page:'))
-        adjustment = gtk.Adjustment(prefs['number of key presses before page turn'], 1, 100, 1, 3)
-        flipping_spinner = gtk.SpinButton(adjustment, digits=0)
-        flipping_spinner.connect('value_changed', self._spinner_cb,
-            'number of key presses before page turn')
-        flipping_spinner.set_tooltip_text(
-            _('Set the number of "steps" needed to flip to the next or previous page.  Less steps will allow for very fast page turning but you might find yourself accidentally turning pages.'))
-        page.add_row(label, flipping_spinner)
+        page.add_row(gtk.Label(_('Number of "steps" to take before flipping the page:')),
+            self._create_pref_spinner('number of key presses before page turn',
+            1, 1, 100, 1, 3, 0,
+            _('Set the number of "steps" needed to flip to the next or previous page.  Less steps will allow for very fast page turning but you might find yourself accidentally turning pages.')))
 
         page.new_section(_('Double page mode'))
 
@@ -305,34 +286,19 @@ class _PreferencesDialog(gtk.Dialog):
         fitmode = self._create_fitmode_control()
         page.add_row(fitside_label, fitmode)
 
-        fitsize_label = gtk.Label(_('Fixed size for this mode:'))
-        adjustment = gtk.Adjustment(prefs['fit to size px'], 10, 10000, 10, 50)
-        fitsize_spinner = gtk.SpinButton(adjustment, digits=0)
-        fitsize_spinner.set_size_request(80, -1)
-        fitsize_spinner.connect('value-changed', self._spinner_cb,
-            'fit to size px')
-        page.add_row(fitsize_label, fitsize_spinner)
+        page.add_row(gtk.Label(_('Fixed size for this mode:')),
+            self._create_pref_spinner('fit to size px',
+            1, 10, 10000, 10, 50, 0, None))
 
         page.new_section(_('Slideshow'))
-        label = gtk.Label(_('Slideshow delay (in seconds):'))
-        adjustment = gtk.Adjustment(prefs['slideshow delay'] / 1000.0,
-            0.01, 3600.0, 0.1, 1)
-        delay_spinner = gtk.SpinButton(adjustment, digits=2)
-        delay_spinner.set_size_request(80, -1)
-        delay_spinner.connect('value_changed', self._spinner_cb,
-            'slideshow delay')
-        page.add_row(label, delay_spinner)
 
-        label = gtk.Label(_('Slideshow step (in pixels):'))
-        adjustment = gtk.Adjustment(prefs['number of pixels to scroll per slideshow event'],
-            -500, 500, 1, 1)
-        slideshow_step_spinner = gtk.SpinButton(adjustment, digits=0)
-        slideshow_step_spinner.set_size_request(80, -1)
-        slideshow_step_spinner.connect('value_changed', self._spinner_cb,
-            'number of pixels to scroll per slideshow event')
-        slideshow_step_spinner.set_tooltip_text(
-            _('Specify the number of pixels to scroll while in slideshow mode. A positive value will scroll forward, a negative value will scroll backwards, and a value of 0 will cause the slideshow to always flip to a new page.'))
-        page.add_row(label, slideshow_step_spinner)
+        page.add_row(gtk.Label(_('Slideshow delay (in seconds):')),
+            self._create_pref_spinner('slideshow delay',
+            1000.0, 0.01, 3600.0, 0.1, 1, 2, None))
+        page.add_row(gtk.Label(_('Slideshow step (in pixels):')),
+            self._create_pref_spinner('number of pixels to scroll per slideshow event',
+            1, -500, 500, 1, 1, 0,
+            _('Specify the number of pixels to scroll while in slideshow mode. A positive value will scroll forward, a negative value will scroll backwards, and a value of 0 will cause the slideshow to always flip to a new page.')))
 
         slideshow_auto_open_button = gtk.CheckButton(
             _('During a slideshow automatically open the next archive'))
@@ -379,14 +345,10 @@ class _PreferencesDialog(gtk.Dialog):
 
         page.new_section(_('Extraction and cache'))
 
-        label = gtk.Label(_('Maximum number of concurrent extraction threads:'))
-        adjustment = gtk.Adjustment(prefs['max extract threads'], 1, 16, 1, 4)
-        extract_threads_spinner = gtk.SpinButton(adjustment, digits=0)
-        extract_threads_spinner.connect('value-changed', self._spinner_cb,
-                                        'max extract threads')
-        extract_threads_spinner.set_tooltip_text(
-            _('Set the maximum number of concurrent threads for formats that support it.'))
-        page.add_row(label, extract_threads_spinner)
+        page.add_row(gtk.Label(_('Maximum number of concurrent extraction threads:')),
+            self._create_pref_spinner('max extract threads',
+            1, 1, 16, 1, 4, 0,
+          _('Set the maximum number of concurrent threads for formats that support it.')))
 
         create_thumbs_button = gtk.CheckButton(
             _('Store thumbnails for opened files'))
@@ -397,34 +359,22 @@ class _PreferencesDialog(gtk.Dialog):
             _('Store thumbnails for opened files according to the freedesktop.org specification. These thumbnails are shared by many other applications, such as most file managers.'))
         page.add_row(create_thumbs_button)
 
-        label = gtk.Label(_('Maximum number of pages to store in the cache:'))
-        adjustment = gtk.Adjustment(prefs['max pages to cache'], -1, 500, 1, 3)
-        cache_spinner = gtk.SpinButton(adjustment, digits=0)
-        cache_spinner.connect('value-changed', self._spinner_cb,
-                                            'max pages to cache')
-        cache_spinner.set_tooltip_text(
-            _('Set the max number of pages to cache. A value of -1 will cache the entire archive.'))
-        page.add_row(label, cache_spinner)
+        page.add_row(gtk.Label(_('Maximum number of pages to store in the cache:')),
+            self._create_pref_spinner('max pages to cache',
+            1, -1, 500, 1, 3, 0,
+            _('Set the max number of pages to cache. A value of -1 will cache the entire archive.')))
 
         page.new_section(_('Magnifying Lens'))
 
-        label = gtk.Label(_('Magnifying lens size (in pixels):'))
-        adjustment = gtk.Adjustment(prefs['lens size'], 50, 400, 1, 10)
-        lens_size_spinner = gtk.SpinButton(adjustment)
-        lens_size_spinner.connect('value_changed', self._spinner_cb,
-            'lens size')
-        lens_size_spinner.set_tooltip_text(
-            _('Set the size of the magnifying lens. It is a square with a side of this many pixels.'))
-        page.add_row(label, lens_size_spinner)
-        label = gtk.Label(_('Magnification factor:'))
-        adjustment = gtk.Adjustment(prefs['lens magnification'], 1.1, 10.0,
-            0.1, 1.0)
-        lens_magnification_spinner = gtk.SpinButton(adjustment, digits=1)
-        lens_magnification_spinner.connect('value_changed', self._spinner_cb,
-            'lens magnification')
-        lens_magnification_spinner.set_tooltip_text(
-            _('Set the magnification factor of the magnifying lens.'))
-        page.add_row(label, lens_magnification_spinner)
+        page.add_row(gtk.Label(_('Magnifying lens size (in pixels):')),
+            self._create_pref_spinner('lens size',
+            1, 50, 400, 1, 10, 0,
+            _('Set the size of the magnifying lens. It is a square with a side of this many pixels.')))
+
+        page.add_row(gtk.Label(_('Magnification factor:')),
+            self._create_pref_spinner('lens magnification',
+            1, 1.1, 10.0, 0.1, 1.0, 1,
+            _('Set the magnification factor of the magnifying lens.')))
 
         page.new_section(_('Comments'))
         label = gtk.Label(_('Comment extensions:'))
@@ -845,6 +795,19 @@ class _PreferencesDialog(gtk.Dialog):
 
             if not prefs['smart thumb bg'] or not self._window.filehandler.file_loaded:
                 self._window.thumbnailsidebar.change_thumbnail_background_color( prefs['thumb bg colour'] )
+
+
+    def _create_pref_spinner(self, prefkey, scale, lower, upper, step_incr,
+        page_incr, digits, tooltip_text):
+        value = prefs[prefkey] / scale
+        adjustment = gtk.Adjustment(value, lower, upper, step_incr, page_incr)
+        spinner = gtk.SpinButton(adjustment, digits=digits)
+        spinner.set_size_request(80, -1)
+        spinner.connect('value_changed', self._spinner_cb, prefkey)
+        if tooltip_text:
+            spinner.set_tooltip_text(tooltip_text)
+        return spinner
+
 
     def _spinner_cb(self, spinbutton, preference):
         """Callback for spinner-type preferences."""
