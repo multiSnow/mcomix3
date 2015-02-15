@@ -86,10 +86,7 @@ class _PreferencesDialog(gtk.Dialog):
             'smart bg',
             _('Automatically pick a background colour that fits the viewed image.'))
 
-        bg_color_button = gtk.ColorButton(gtk.gdk.Color(*prefs['bg colour']))
-        bg_color_button.connect('color_set', self._color_button_cb, 'bg colour')
-
-        page.add_row(fixed_bg_button, bg_color_button)
+        page.add_row(fixed_bg_button, self._create_color_button('bg colour'))
         page.add_row(dynamic_bg_button)
 
         page.new_section(_('Thumbnails'))
@@ -102,10 +99,7 @@ class _PreferencesDialog(gtk.Dialog):
             'smart thumb bg',
             _('Automatically use the colour that fits the viewed image for the thumbnail background.'))
 
-        thumb_bg_color_button = gtk.ColorButton(gtk.gdk.Color(*prefs['thumb bg colour']))
-        thumb_bg_color_button.connect('color_set', self._color_button_cb, 'thumb bg colour')
-
-        page.add_row(thumb_fixed_bg_button, thumb_bg_color_button)
+        page.add_row(thumb_fixed_bg_button, self._create_color_button('thumb bg colour'))
         page.add_row(thumb_dynamic_bg_button)
 
         page.add_row(self._create_pref_check_button(
@@ -681,6 +675,12 @@ class _PreferencesDialog(gtk.Dialog):
             button2.set_tooltip_text(tooltip_text2)
         button2.set_active(prefs[prefkey2])
         return button1, button2
+
+
+    def _create_color_button(self, prefkey):
+        button = gtk.ColorButton(gtk.gdk.Color(*prefs[prefkey]))
+        button.connect('color_set', self._color_button_cb, prefkey)
+        return button
 
 
     def _check_button_cb(self, button, preference):
