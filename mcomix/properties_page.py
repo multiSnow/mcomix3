@@ -42,6 +42,7 @@ class _Page(gtk.VBox):
         """
         label = labels.BoldLabel(i18n.to_unicode(filename))
         label.set_alignment(0, 0.5)
+        label.set_selectable(True)
         self._mainbox.pack_start(label, False, False)
         self._mainbox.pack_start(gtk.VBox()) # Just to add space (better way?)
 
@@ -52,6 +53,7 @@ class _Page(gtk.VBox):
         for text in info:
             label = gtk.Label(text)
             label.set_alignment(0, 0.5)
+            label.set_selectable(True)
             self._mainbox.pack_start(label, False, False)
 
     def set_secondary_info(self, info):
@@ -70,6 +72,7 @@ class _Page(gtk.VBox):
             left_box.pack_start(desc_label, True, True)
             value_label = gtk.Label(value)
             value_label.set_alignment(0, 1.0)
+            value_label.set_selectable(True)
             right_box.pack_start(value_label, True, True)
 
 # vim: expandtab:sw=4:ts=4
