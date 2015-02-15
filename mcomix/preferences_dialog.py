@@ -71,14 +71,10 @@ class _PreferencesDialog(gtk.Dialog):
         language_box = self._create_language_control()
         page.add_row(label, language_box)
 
-        esc_quits = gtk.CheckButton(_('Escape key closes program'))
-        esc_quits.set_active(prefs['escape quits'])
-        esc_quits.connect('toggled', self._check_button_cb,
-            'escape quits')
-        esc_quits.set_tooltip_text(
+        page.add_row(self._create_pref_check_button(
+            _('Escape key closes program'), 'escape quits',
             _('When active, the ESC key closes the program, instead of only '
-              'disabling fullscreen mode.'))
-        page.add_row(esc_quits)
+              'disabling fullscreen mode.')))
 
         page.new_section(_('Background'))
 
@@ -122,38 +118,25 @@ class _PreferencesDialog(gtk.Dialog):
 
         page.add_row(thumb_dynamic_bg_button)
 
-        thumb_number_button = gtk.CheckButton(
-            _('Show page numbers on thumbnails'))
-        thumb_number_button.set_active(
-            prefs['show page numbers on thumbnails'])
-        thumb_number_button.connect('toggled', self._check_button_cb,
-            'show page numbers on thumbnails')
-        page.add_row(thumb_number_button)
+        page.add_row(self._create_pref_check_button(
+            _('Show page numbers on thumbnails'),
+            'show page numbers on thumbnails', None))
 
-        thumb_as_preview_icon = gtk.CheckButton(
-            _('Use archive thumbnail as application icon'))
-        thumb_as_preview_icon.set_tooltip_text(
-            _('By enabling this setting, the first page of a book will be used as application icon instead of the standard icon.'))
-        thumb_as_preview_icon.set_active(
-            prefs['archive thumbnail as icon'])
-        thumb_as_preview_icon.connect('toggled', self._check_button_cb,
-            'archive thumbnail as icon')
-        page.add_row(thumb_as_preview_icon)
+        page.add_row(self._create_pref_check_button(
+            _('Use archive thumbnail as application icon'),
+            'archive thumbnail as icon',
+            _('By enabling this setting, the first page of a book will be used as application icon instead of the standard icon.')))
 
         page.add_row(gtk.Label(_('Thumbnail size (in pixels):')),
             self._create_pref_spinner('thumbnail size',
             1, 20, 500, 1, 10, 0, None))
 
         page.new_section(_('Transparency'))
-        checkered_bg_button = gtk.CheckButton(
-            _('Use checkered background for transparent images'))
-        checkered_bg_button.set_active(
-            prefs['checkered bg for transparent images'])
-        checkered_bg_button.connect('toggled', self._check_button_cb,
-            'checkered bg for transparent images')
-        checkered_bg_button.set_tooltip_text(
-            _('Use a grey checkered background for transparent images. If this preference is unset, the background is plain white instead.'))
-        page.add_row(checkered_bg_button)
+
+        page.add_row(self._create_pref_check_button(
+            _('Use checkered background for transparent images'),
+            'checkered bg for transparent images',
+            _('Use a grey checkered background for transparent images. If this preference is unset, the background is plain white instead.')))
 
         return page
 
@@ -163,43 +146,28 @@ class _PreferencesDialog(gtk.Dialog):
         # ----------------------------------------------------------------
         page = preferences_page._PreferencePage(None)
         page.new_section(_('Scroll'))
-        smart_space_button = gtk.CheckButton(
-            _('Use smart scrolling'))
-        smart_space_button.set_active(prefs['smart scroll'])
-        smart_space_button.connect('toggled', self._check_button_cb,
-            'smart scroll')
-        smart_space_button.set_tooltip_text(
+
+        page.add_row(self._create_pref_check_button(
+            _('Use smart scrolling'),
+            'smart scroll',
             _('With this preference set, the space key and mouse wheel '
               'do not only scroll down or up, but also sideways and so '
-              'try to follow the natural reading order of the comic book.'))
-        page.add_row(smart_space_button)
+              'try to follow the natural reading order of the comic book.')))
 
-        flip_with_wheel_button = gtk.CheckButton(
-            _('Flip pages when scrolling off the edges of the page'))
-        flip_with_wheel_button.set_active(prefs['flip with wheel'])
-        flip_with_wheel_button.connect('toggled', self._check_button_cb,
-            'flip with wheel')
-        flip_with_wheel_button.set_tooltip_text(
-            _('Flip pages when scrolling "off the page" with the scroll wheel or with the arrow keys. It takes n consecutive "steps" with the scroll wheel or the arrow keys for the pages to be flipped.'))
-        page.add_row(flip_with_wheel_button)
+        page.add_row(self._create_pref_check_button(
+            _('Flip pages when scrolling off the edges of the page'),
+            'flip with wheel',
+            _('Flip pages when scrolling "off the page" with the scroll wheel or with the arrow keys. It takes n consecutive "steps" with the scroll wheel or the arrow keys for the pages to be flipped.')))
 
-        auto_open_next_button = gtk.CheckButton(
-            _('Automatically open the next archive'))
-        auto_open_next_button.set_active(prefs['auto open next archive'])
-        auto_open_next_button.connect('toggled', self._check_button_cb,
-            'auto open next archive')
-        auto_open_next_button.set_tooltip_text(
-            _('Automatically open the next archive in the directory when flipping past the last page, or the previous archive when flipping past the first page.'))
-        page.add_row(auto_open_next_button)
+        page.add_row(self._create_pref_check_button(
+            _('Automatically open the next archive'),
+            'auto open next archive',
+            _('Automatically open the next archive in the directory when flipping past the last page, or the previous archive when flipping past the first page.')))
 
-        auto_open_dir_button = gtk.CheckButton(
-            _('Automatically open next directory'))
-        auto_open_dir_button.set_active(prefs['auto open next directory'])
-        auto_open_dir_button.connect('toggled', self._check_button_cb,
-            'auto open next directory')
-        auto_open_dir_button.set_tooltip_text(
-            _('Automatically open the first file in the next sibling directory when flipping past the last page of the last file in a directory, or the previous directory when flipping past the first page of the first file.'))
-        page.add_row(auto_open_dir_button)
+        page.add_row(self._create_pref_check_button(
+            _('Automatically open next directory'),
+            'auto open next directory',
+            _('Automatically open the first file in the next sibling directory when flipping past the last page of the last file in a directory, or the previous directory when flipping past the first page of the first file.')))
 
         page.add_row(gtk.Label(_('Number of pixels to scroll per arrow key press:')),
             self._create_pref_spinner('number of pixels to scroll per key event',
@@ -225,14 +193,10 @@ class _PreferencesDialog(gtk.Dialog):
 
         page.new_section(_('Double page mode'))
 
-        step_length_button = gtk.CheckButton(
-            _('Flip two pages in double page mode'))
-        step_length_button.set_active(prefs['double step in double page mode'])
-        step_length_button.connect('toggled', self._check_button_cb,
-            'double step in double page mode')
-        step_length_button.set_tooltip_text(
-            _('Flip two pages, instead of one, each time we flip pages in double page mode.'))
-        page.add_row(step_length_button)
+        page.add_row(self._create_pref_check_button(
+            _('Flip two pages in double page mode'),
+            'double step in double page mode',
+            _('Flip two pages, instead of one, each time we flip pages in double page mode.')))
 
         label = gtk.Label(_('Show only one page where appropriate:'))
         doublepage_control = self._create_doublepage_as_one_control()
@@ -242,14 +206,10 @@ class _PreferencesDialog(gtk.Dialog):
         page.add_row(label, doublepage_control)
         page.new_section(_('Files'))
 
-        auto_open_last_button = gtk.CheckButton(
-            _('Automatically open the last viewed file on startup'))
-        auto_open_last_button.set_active(prefs['auto load last file'])
-        auto_open_last_button.connect('toggled', self._check_button_cb,
-            'auto load last file')
-        auto_open_last_button.set_tooltip_text(
-            _('Automatically open, on startup, the file that was open when MComix was last closed.'))
-        page.add_row(auto_open_last_button)
+        page.add_row(self._create_pref_check_button(
+            _('Automatically open the last viewed file on startup'),
+            'auto load last file',
+            _('Automatically open, on startup, the file that was open when MComix was last closed.')))
 
         store_recent_label = gtk.Label(
             _('Store information about recently opened files:'))
@@ -267,18 +227,13 @@ class _PreferencesDialog(gtk.Dialog):
         page = preferences_page._PreferencePage(None)
         page.new_section(_('Fullscreen'))
 
-        fullscreen_button = gtk.CheckButton(_('Use fullscreen by default'))
-        fullscreen_button.set_active(prefs['default fullscreen'])
-        fullscreen_button.connect('toggled', self._check_button_cb,
-            'default fullscreen')
-        page.add_row(fullscreen_button)
+        page.add_row(self._create_pref_check_button(
+            _('Use fullscreen by default'),
+            'default fullscreen', None))
 
-        hide_in_fullscreen_button = gtk.CheckButton(
-            _('Automatically hide all toolbars in fullscreen'))
-        hide_in_fullscreen_button.set_active(prefs['hide all in fullscreen'])
-        hide_in_fullscreen_button.connect('toggled', self._check_button_cb,
-            'hide all in fullscreen')
-        page.add_row(hide_in_fullscreen_button)
+        page.add_row(self._create_pref_check_button(
+            _('Automatically hide all toolbars in fullscreen'),
+            'hide all in fullscreen', None))
 
         page.new_section(_('Fit to size mode'))
 
@@ -300,24 +255,17 @@ class _PreferencesDialog(gtk.Dialog):
             1, -500, 500, 1, 1, 0,
             _('Specify the number of pixels to scroll while in slideshow mode. A positive value will scroll forward, a negative value will scroll backwards, and a value of 0 will cause the slideshow to always flip to a new page.')))
 
-        slideshow_auto_open_button = gtk.CheckButton(
-            _('During a slideshow automatically open the next archive'))
-        slideshow_auto_open_button.set_active(prefs['slideshow can go to next archive'])
-        slideshow_auto_open_button.connect('toggled', self._check_button_cb,
-            'slideshow can go to next archive')
-        slideshow_auto_open_button.set_tooltip_text(
-            _('While in slideshow mode allow the next archive to automatically be opened.'))
-        page.add_row(slideshow_auto_open_button)
+        page.add_row(self._create_pref_check_button(
+            _('During a slideshow automatically open the next archive'),
+            'slideshow can go to next archive',
+            _('While in slideshow mode allow the next archive to automatically be opened.')))
 
         page.new_section(_('Rotation'))
-        auto_rotate_button = gtk.CheckButton(
-            _('Automatically rotate images according to their metadata'))
-        auto_rotate_button.set_active(prefs['auto rotate from exif'])
-        auto_rotate_button.connect('toggled', self._check_button_cb,
-            'auto rotate from exif')
-        auto_rotate_button.set_tooltip_text(
-            _('Automatically rotate images when an orientation is specified in the image metadata, such as in an Exif tag.'))
-        page.add_row(auto_rotate_button)
+
+        page.add_row(self._create_pref_check_button(
+            _('Automatically rotate images according to their metadata'),
+            'auto rotate from exif',
+            _('Automatically rotate images when an orientation is specified in the image metadata, such as in an Exif tag.')))
 
         page.new_section(_('Image quality'))
         label = gtk.Label(_('Scaling mode'))
@@ -350,14 +298,10 @@ class _PreferencesDialog(gtk.Dialog):
             1, 1, 16, 1, 4, 0,
           _('Set the maximum number of concurrent threads for formats that support it.')))
 
-        create_thumbs_button = gtk.CheckButton(
-            _('Store thumbnails for opened files'))
-        create_thumbs_button.set_active(prefs['create thumbnails'])
-        create_thumbs_button.connect('toggled', self._check_button_cb,
-            'create thumbnails')
-        create_thumbs_button.set_tooltip_text(
-            _('Store thumbnails for opened files according to the freedesktop.org specification. These thumbnails are shared by many other applications, such as most file managers.'))
-        page.add_row(create_thumbs_button)
+        page.add_row(self._create_pref_check_button(
+            _('Store thumbnails for opened files'),
+            'create thumbnails',
+            _('Store thumbnails for opened files according to the freedesktop.org specification. These thumbnails are shared by many other applications, such as most file managers.')))
 
         page.add_row(gtk.Label(_('Maximum number of pages to store in the cache:')),
             self._create_pref_spinner('max pages to cache',
@@ -724,6 +668,16 @@ class _PreferencesDialog(gtk.Dialog):
             box.connect('changed', change_callback)
 
         return box
+
+
+    def _create_pref_check_button(self, label, prefkey, tooltip_text):
+        button = gtk.CheckButton(label)
+        button.set_active(prefs[prefkey])
+        button.connect('toggled', self._check_button_cb, prefkey)
+        if tooltip_text:
+            button.set_tooltip_text(tooltip_text)
+        return button
+
 
     def _check_button_cb(self, button, preference):
         """Callback for all checkbutton-type preferences."""
