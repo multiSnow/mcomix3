@@ -25,7 +25,7 @@ class _PreferencesDialog(gtk.Dialog):
     """
 
     def __init__(self, window):
-        gtk.Dialog.__init__(self, _('Preferences'), window, gtk.DIALOG_MODAL)
+        gtk.Dialog.__init__(self, _('Preferences'), window)
 
         # Button text is set later depending on active tab
         self.reset_button = self.add_button('', constants.RESPONSE_REVERT_TO_DEFAULT)

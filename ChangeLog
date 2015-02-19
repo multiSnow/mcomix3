@@ -5,6 +5,8 @@ MComix 1.02
     - The thumbnailer now displays page numbers in a reasonable color
       appropriate for the respective background color.
 
+    - The Preferences dialog is not modal anymore.
+
     - Fixed a bug that could lead to crashes if the thumbnailer uses a dynamic
       background color.
 
