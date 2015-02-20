@@ -340,13 +340,6 @@ class ImageHandler:
             if tools.bin_search(available, imgpath) >= 0:
                 self.page_available(i + 1)
 
-    def is_last_page(self):
-        """Return True if at the last page."""
-        if self._window.displayed_double():
-            return self.get_current_page() + 1 >= self.get_number_of_pages()
-        else:
-            return self.get_current_page() == self.get_number_of_pages()
-
     def get_number_of_pages(self):
         """Return the number of pages in the current archive/directory."""
         if self._image_files is not None:
