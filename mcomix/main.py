@@ -416,6 +416,9 @@ class MainWindow(gtk.Window):
         """ Updates the window with information that can be gathered
         even when the page pixbuf(s) aren't ready yet. """
 
+        page_number = self.imagehandler.get_current_page()
+        if not page_number:
+            return
         if self.displayed_double():
             self.statusbar.set_page_number(
                 self.imagehandler.get_current_page(),
