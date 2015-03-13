@@ -10,7 +10,7 @@
 === Installation ==============================================================
 
 
-  Run "python setup.py install" as root. This will install MComix in the
+  Run "python2 setup.py install" as root. This will install MComix in the
   site-packages folder of Python. An executable "mcomix" will be placed in
   /usr/bin.
 
@@ -20,14 +20,14 @@
 
   Example:
 
-      # python setup.py --prefix /usr install
+      # python2 setup.py --prefix /usr install
 
   As an example of how to install MComix from the downloaded tar.gz file, run
   as the root user (via su or sudo):
 
       # tar -xzf mcomix-x.y.tar.gz
       # cd mcomix-x.y
-      # python setup.py install
+      # python2 setup.py install
 
   If you don't want to install MComix in some system directory, you can just
   execute the file mcomixstarter.py in the unpacked MComix directory to
@@ -40,7 +40,7 @@
   man page, or other optional files normally placed into /usr/share. To do so,
   setup.py must be called with a additonal options:
 
-      # python setup.py install --single-version-externally-managed \
+      # python2 setup.py install --single-version-externally-managed \
 	                            --prefix /usr --root / --record mcomix-files.txt
 
   This sort of installation is only recommended for advanced users, as no
