@@ -1,4 +1,5 @@
 import hashlib
+import locale
 import os
 import re
 import shutil
@@ -48,6 +49,13 @@ def make_archive(outfile, contents, format='zip', solid=False):
             cmd = ['7z', 'a']
             cmd.append('-ms=on' if solid else '-ms=off')
             cmd.extend(('--', outpath))
+            # To avoid @ being treated as a special character...
+            tmp_file = tempfile.NamedTemporaryFile(prefix='mcomix.test.', delete=False)
+            cleanup.append(lambda: os.unlink(tmp_file.name))
+            for entry in entry_list:
+                tmp_file.write(entry.encode(locale.getpreferredencoding()) + '\n')
+            tmp_file.close()
+            entry_list = ['@' + tmp_file.name]
         elif 'lha' == format:
             if solid:
                 raise UnsupportedOption(format, 'solid')
@@ -257,6 +265,13 @@ for name, handler, is_available, format, not_solid, solid in (
             ('dir2/subdir1/bar.jpg', 'dir2/subdir1/bar.jpg', 'test/files/images/02-JPG-RGB.jpg'    ),
             ('meh.png'             , 'meh.png'             , 'test/files/images/03-PNG-RGB.png'    ),
         )),
+        # Check we don't treat an entry name as an option or command line switch.
+        ('OptEntry', True, (
+            ('-rg.jpeg'            , '-rg.jpeg'            , 'test/files/images/01-JPG-Indexed.jpg'),
+            ('--o.JPG'             , '--o.JPG'             , 'test/files/images/04-PNG-Indexed.png'),
+            ('+ar.jpg'             , '+ar.jpg'             , 'test/files/images/02-JPG-RGB.jpg'    ),
+            ('@eh.png'             , '@eh.png'             , 'test/files/images/03-PNG-RGB.png'    ),
+        )),
         # Check how invalid filesystem characters are handled.
         # ('InvalidFileSystemChars', 'win32' == sys.platform, (
         #     ('a<g.jpeg'            , 'a_g.jpeg'            ,'test/files/images/01-JPG-Indexed.jpg'),
@@ -288,8 +303,9 @@ for name, handler, is_available, format, not_solid, solid in (
 # Expected failures.
 for klass, attr in (
     # No support for detecting solid RAR archives when using external tool.
-    (ArchiveFormatRarExternalSolidFlatTest, 'test_is_solid'),
-    (ArchiveFormatRarExternalSolidTreeTest, 'test_is_solid'),
+    (ArchiveFormatRarExternalSolidFlatTest    , 'test_is_solid'),
+    (ArchiveFormatRarExternalSolidOptEntryTest, 'test_is_solid'),
+    (ArchiveFormatRarExternalSolidTreeTest    , 'test_is_solid'),
 ):
     setattr(klass, attr, unittest.expectedFailure(getattr(klass, attr)))
 
