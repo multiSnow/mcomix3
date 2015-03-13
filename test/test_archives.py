@@ -358,6 +358,24 @@ xfail_list = [
     (ArchiveFormatRarExternalSolidOptEntryTest   , 'test_is_solid'),
     (ArchiveFormatRarExternalSolidGlobEntriesTest, 'test_is_solid'),
     (ArchiveFormatRarExternalSolidTreeTest       , 'test_is_solid'),
+    # No password support when using external tools.
+    (ArchiveFormatRarExternalPasswordTest       , 'test_extract'     ),
+    (ArchiveFormatRarExternalPasswordTest       , 'test_iter_extract'),
+    (ArchiveFormat7zExternalPasswordTest        , 'test_extract'     ),
+    (ArchiveFormat7zExternalPasswordTest        , 'test_iter_extract'),
+    (ArchiveFormat7zExternalSolidPasswordTest   , 'test_extract'     ),
+    (ArchiveFormat7zExternalSolidPasswordTest   , 'test_iter_extract'),
+    (ArchiveFormat7zExternalRarPasswordTest     , 'test_extract'     ),
+    (ArchiveFormat7zExternalRarPasswordTest     , 'test_iter_extract'),
+    (ArchiveFormat7zExternalZipPasswordTest     , 'test_extract'     ),
+    (ArchiveFormat7zExternalZipPasswordTest     , 'test_iter_extract'),
+    (ArchiveFormat7zExternalRarSolidPasswordTest, 'test_extract'     ),
+    (ArchiveFormat7zExternalRarSolidPasswordTest, 'test_iter_extract'),
+    (ArchiveFormatZipExternalPasswordTest       , 'test_extract'     ),
+    (ArchiveFormatZipExternalPasswordTest       , 'test_iter_extract'),
+    (ArchiveFormatRarExternalSolidPasswordTest  , 'test_extract'     ),
+    (ArchiveFormatRarExternalSolidPasswordTest  , 'test_is_solid'    ),
+    (ArchiveFormatRarExternalSolidPasswordTest  , 'test_iter_extract'),
 ]
 
 if 'win32' == sys.platform:
