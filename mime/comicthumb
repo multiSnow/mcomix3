@@ -16,6 +16,7 @@ from mcomix import thumbnail_tools
 from mcomix import portability
 
 import sys
+import urllib2
 
 if __name__ == '__main__':
     argv = portability.get_commandline_args()
@@ -29,6 +30,9 @@ if __name__ == '__main__':
     except:
         print __doc__
         sys.exit(1)
+
+    if in_path.startswith('file://'):
+        in_path = urllib2.unquote(in_path[7:])
 
     thumbnailer = thumbnail_tools.Thumbnailer()
     thumbnailer.set_force_recreation(True)
