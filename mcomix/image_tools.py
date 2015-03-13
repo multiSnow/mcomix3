@@ -360,4 +360,13 @@ def text_color_for_background_color(bgcolor):
     return constants.GTK_GDK_COLOR_BLACK if rgb_to_y_601(bgcolor) >= \
         65535.0 / 2.0 else constants.GTK_GDK_COLOR_WHITE
 
+def get_image_info(path):
+    """Return image informations:
+        (format, width, height)
+    """
+    infos = gtk.gdk.pixbuf_get_file_info(path)
+    if infos is None:
+        return (_('Unknown filetype'), 0, 0)
+    return infos[0]['name'].upper(), infos[1], infos[2]
+
 # vim: expandtab:sw=4:ts=4
