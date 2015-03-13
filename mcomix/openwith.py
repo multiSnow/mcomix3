@@ -322,7 +322,7 @@ class OpenWithEditor(gtk.Dialog):
         self.connect('response', self._response)
         self._window.page_changed += self.test_command
         self._window.filehandler.file_opened += self.test_command
-        self._window.filehandler.close_file += lambda *args: self.test_command()
+        self._window.filehandler.file_closed += self.test_command
 
         self.resize(600, 400)
 
