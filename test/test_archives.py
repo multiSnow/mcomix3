@@ -415,14 +415,46 @@ xfail_list = [
 if 'win32' == sys.platform:
     xfail_list.extend([
         # Bug...
-        ('RarDllGlobEntries'     , 'test_iter_contents'),
-        ('RarDllGlobEntries'     , 'test_list_contents'),
-        ('RarDllGlobEntries'     , 'test_iter_extract' ),
-        ('RarDllGlobEntries'     , 'test_extract'      ),
-        ('RarDllSolidGlobEntries', 'test_iter_contents'),
-        ('RarDllSolidGlobEntries', 'test_list_contents'),
-        ('RarDllSolidGlobEntries', 'test_iter_extract' ),
-        ('RarDllSolidGlobEntries', 'test_extract'      ),
+        ('RarDllGlobEntries'      , 'test_iter_contents'),
+        ('RarDllGlobEntries'      , 'test_list_contents'),
+        ('RarDllGlobEntries'      , 'test_iter_extract' ),
+        ('RarDllGlobEntries'      , 'test_extract'      ),
+        ('RarDllSolidGlobEntries' , 'test_iter_contents'),
+        ('RarDllSolidGlobEntries' , 'test_list_contents'),
+        ('RarDllSolidGlobEntries' , 'test_iter_extract' ),
+        ('RarDllSolidGlobEntries' , 'test_extract'      ),
+        # Not supported by 7z executable...
+        ('7zExternalLhaUnicode'   , 'test_iter_contents'),
+        ('7zExternalLhaUnicode'   , 'test_list_contents'),
+        ('7zExternalLhaUnicode'   , 'test_iter_extract' ),
+        ('7zExternalLhaUnicode'   , 'test_extract'      ),
+        # Unicode not supported by the tar executable we used.
+        ('TarBzip2SolidUnicode'   , 'test_iter_contents'),
+        ('TarBzip2SolidUnicode'   , 'test_list_contents'),
+        ('TarBzip2SolidUnicode'   , 'test_iter_extract' ),
+        ('TarBzip2SolidUnicode'   , 'test_extract'      ),
+        ('TarGzipSolidUnicode'    , 'test_iter_contents'),
+        ('TarGzipSolidUnicode'    , 'test_list_contents'),
+        ('TarGzipSolidUnicode'    , 'test_iter_extract' ),
+        ('TarGzipSolidUnicode'    , 'test_extract'      ),
+        ('TarSolidUnicode'        , 'test_iter_contents'),
+        ('TarSolidUnicode'        , 'test_list_contents'),
+        ('TarSolidUnicode'        , 'test_iter_extract' ),
+        ('TarSolidUnicode'        , 'test_extract'      ),
+        # Idem with unzip...
+        ('ZipExternalUnicode'     , 'test_iter_contents'),
+        ('ZipExternalUnicode'     , 'test_list_contents'),
+        ('ZipExternalUnicode'     , 'test_iter_extract' ),
+        ('ZipExternalUnicode'     , 'test_extract'      ),
+        # ...and unrar!
+        ('RarExternalUnicode'     , 'test_iter_contents'),
+        ('RarExternalUnicode'     , 'test_list_contents'),
+        ('RarExternalUnicode'     , 'test_iter_extract' ),
+        ('RarExternalUnicode'     , 'test_extract'      ),
+        ('RarExternalSolidUnicode', 'test_iter_contents'),
+        ('RarExternalSolidUnicode', 'test_list_contents'),
+        ('RarExternalSolidUnicode', 'test_iter_extract' ),
+        ('RarExternalSolidUnicode', 'test_extract'      ),
     ])
 
 # Expected failures.
