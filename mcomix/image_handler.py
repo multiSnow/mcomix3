@@ -296,16 +296,17 @@ class ImageHandler:
 
         if page is None:
             current_page = self.get_current_page()
-            if self._window.displayed_double():
-                pages = [ current_page, current_page + 1 ]
-            else:
-                pages = [ current_page ]
+            if not current_page:
+                # Current 'book' has no page.
+                return False
+            index_list = [ current_page - 1 ]
+            if self._window.displayed_double() and current_page < len(self._image_files):
+                index_list.append(current_page)
         else:
-            pages = [ page ]
+            index_list = [ page - 1 ]
 
-        for page in pages:
-            path = self.get_path_to_page(page)
-            if not self._window.filehandler.file_is_available(path):
+        for index in index_list:
+            if not index in self._available_images:
                 return False
 
         return True
