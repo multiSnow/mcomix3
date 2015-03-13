@@ -192,8 +192,6 @@ class FileHandler(object):
             if self.archive_type is None:
                 self.file_available(self.filelist)
 
-        tools.alphanumeric_sort(self._comment_files)
-
         self._window.uimanager.recent.add(self._current_file)
 
         if self._must_call_draw:
@@ -326,19 +324,17 @@ class FileHandler(object):
             # Remove MacOS meta files from image list
             and not u'__MACOSX' in os.path.normpath(image).split(os.sep)]
 
-        archive_images = self._sort_archive_images(archive_images)
+        self._sort_archive_images(archive_images)
         image_files = [ os.path.join(self._tmp_dir, f)
                         for f in archive_images ]
 
         comment_files = filter(self._comment_re.search, files)
+        tools.alphanumeric_sort(comment_files)
         self._comment_files = [ os.path.join(self._tmp_dir, f)
                                 for f in comment_files ]
 
-        for name, full_path in zip(archive_images, image_files):
-            self._name_table[full_path] = name
-
-        for name, full_path in zip(comment_files, self._comment_files):
-            self._name_table[full_path] = name
+        self._name_table = dict(zip(image_files, archive_images))
+        self._name_table.update(zip(self._comment_files, comment_files))
 
         # Determine current archive image index.
         current_image_index = self._get_index_for_page(self._start_page,
@@ -364,8 +360,7 @@ class FileHandler(object):
 
     def _sort_archive_images(self, filelist):
         """ Sorts the image list passed in C{filelist} based on the sorting
-        preference option, and returns the newly sorted list. """
-        filelist = list(filelist)  # Create a copy of the list
+        preference option. """
 
         if prefs['sort archive by'] == constants.SORT_NAME:
             tools.alphanumeric_sort(filelist)
@@ -377,8 +372,6 @@ class FileHandler(object):
 
         if prefs['sort archive order'] == constants.SORT_DESCENDING:
             filelist.reverse()
-
-        return filelist
 
     def _get_index_for_page(self, start_page, num_of_pages, path, confirm=False):
         """ Returns the page that should be displayed for an archive.
