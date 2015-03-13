@@ -3,7 +3,6 @@
 
 import re
 import os
-import gtk
 
 from mcomix import tools
 
@@ -88,12 +87,6 @@ PDF_FORMATS = (
         ('*.pdf',))
 
 
-GTK_GDK_COLOR_BLACK = gtk.gdk.colormap_get_system().alloc_color(
-                      gtk.gdk.Color(0, 0, 0), False, True)
-GTK_GDK_COLOR_WHITE = gtk.gdk.colormap_get_system().alloc_color(
-                      gtk.gdk.Color(65535, 65535, 65535), False, True)
-
-
 MISSING_IMAGE_ICON = None
 try:
     import gtk
@@ -107,6 +100,12 @@ try:
     if _missing_icon_pixbuf:
         MISSING_IMAGE_ICON = _missing_icon_pixbuf.scale_simple(
                 128, 128, gtk.gdk.INTERP_TILES)
+
+    GTK_GDK_COLOR_BLACK = gtk.gdk.colormap_get_system().alloc_color(
+            gtk.gdk.Color(0, 0, 0), False, True)
+    GTK_GDK_COLOR_WHITE = gtk.gdk.colormap_get_system().alloc_color(
+            gtk.gdk.Color(65535, 65535, 65535), False, True)
+
 except ImportError:
     # Missing GTK is already handled in mcomixstarter.py,
     # but this file is imported first, so ignore exceptions here.
