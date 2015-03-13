@@ -14,6 +14,7 @@ from mcomix.archive import sevenzip
 from mcomix.archive import tar
 from mcomix.archive import zip
 from mcomix.archive import zip_external
+import mcomix
 
 
 class UnsupportedFormat(Exception):
@@ -26,7 +27,7 @@ class UnsupportedOption(Exception):
     def __init__(self, format, option):
         super(UnsupportedOption, self).__init__('unsuported option for %s format: %s' % (format, option))
 
-def make_archive(outfile, contents, format='zip', solid=False):
+def make_archive(outfile, contents, format='zip', solid=False, password=None):
     if os.path.exists(outfile):
         raise Exception('%s already exists' % outfile)
     cleanup = []
@@ -48,6 +49,8 @@ def make_archive(outfile, contents, format='zip', solid=False):
         if '7z' == format:
             cmd = ['7z', 'a']
             cmd.append('-ms=on' if solid else '-ms=off')
+            if password is not None:
+                cmd.append('-p' + password)
             cmd.extend(('--', outpath))
             # To avoid @ being treated as a special character...
             tmp_file = tempfile.NamedTemporaryFile(prefix='mcomix.test.', delete=False)
@@ -63,6 +66,8 @@ def make_archive(outfile, contents, format='zip', solid=False):
         elif 'rar' == format:
             cmd = ['rar', 'a', '-r']
             cmd.append('-s' if solid else '-s-')
+            if password is not None:
+                cmd.append('-p' + password)
             cmd.extend(('--', outpath))
         elif format.startswith('tar'):
             if not solid:
@@ -80,7 +85,10 @@ def make_archive(outfile, contents, format='zip', solid=False):
         elif 'zip' == format:
             if solid:
                 raise UnsupportedOption(format, 'solid')
-            cmd = ['zip', '-r', outpath, '--']
+            cmd = ['zip', '-r']
+            if password is not None:
+                cmd.extend(['-P', password])
+            cmd.extend([outpath, '--'])
         else:
             raise UnsupportedFormat(format)
         cmd.extend(entry_list)
@@ -119,8 +127,15 @@ class ArchiveFormatTest:
     handler = None
     format = ''
     solid = False
+    password = None
     contents = ()
     archive = None
+
+    @classmethod
+    def _ask_password(cls, archive):
+        if cls.password:
+            return cls.password
+        raise Exception('asked for password on unprotected archive!')
 
     @classmethod
     def setUpClass(cls):
@@ -133,6 +148,7 @@ class ArchiveFormatTest:
             for name, archive_name, filename
             in cls.contents
         ])
+        mcomix.archive.ask_for_password = cls._ask_password
         if os.path.exists(cls.archive_path):
             return
         if 'win32' == sys.platform:
@@ -141,7 +157,9 @@ class ArchiveFormatTest:
                      [(name, filename)
                       for name, archive_name, filename
                       in cls.contents],
-                     format=cls.format, solid=cls.solid)
+                     format=cls.format,
+                     solid=cls.solid,
+                     password=cls.password)
 
     @classmethod
     def tearDownClass(cls):
@@ -219,18 +237,18 @@ _FORMAT_EXECUTABLE = {
 }
 
 
-for name, handler, is_available, format, not_solid, solid in (
-    ('7z (external)'    , sevenzip.SevenZipArchive   , sevenzip.SevenZipArchive.is_available()   , '7z'     , True , True) ,
-    ('7z (external) lha', sevenzip.SevenZipArchive   , sevenzip.SevenZipArchive.is_available()   , 'lha'    , True , False),
-    ('7z (external) rar', sevenzip.SevenZipArchive   , sevenzip.SevenZipArchive.is_available()   , 'rar'    , True , True) ,
-    ('7z (external) zip', sevenzip.SevenZipArchive   , sevenzip.SevenZipArchive.is_available()   , 'zip'    , True , False),
-    ('tar'              , tar.TarArchive             , True                                      , 'tar'    , False, True) ,
-    ('tar (gzip)'       , tar.TarArchive             , True                                      , 'tar.gz' , False, True) ,
-    ('tar (bzip2)'      , tar.TarArchive             , True                                      , 'tar.bz2', False, True) ,
-    ('rar (external)'   , rar.RarExecArchive         , rar.RarExecArchive.is_available()         , 'rar'    , True , True) ,
-    ('rar (dll)'        , rarfile.UnrarDll           , rarfile.UnrarDll.is_available()           , 'rar'    , True , True) ,
-    ('zip'              , zip.ZipArchive             , True                                      , 'zip'    , True , False),
-    ('zip (external)'   , zip_external.ZipExecArchive, zip_external.ZipExecArchive.is_available(), 'zip'    , True , False),
+for name, handler, is_available, format, not_solid, solid, password in (
+    ('7z (external)'    , sevenzip.SevenZipArchive   , sevenzip.SevenZipArchive.is_available()   , '7z'     , True , True , True ),
+    ('7z (external) lha', sevenzip.SevenZipArchive   , sevenzip.SevenZipArchive.is_available()   , 'lha'    , True , False, False),
+    ('7z (external) rar', sevenzip.SevenZipArchive   , sevenzip.SevenZipArchive.is_available()   , 'rar'    , True , True , True ),
+    ('7z (external) zip', sevenzip.SevenZipArchive   , sevenzip.SevenZipArchive.is_available()   , 'zip'    , True , False, True ),
+    ('tar'              , tar.TarArchive             , True                                      , 'tar'    , False, True , False),
+    ('tar (gzip)'       , tar.TarArchive             , True                                      , 'tar.gz' , False, True , False),
+    ('tar (bzip2)'      , tar.TarArchive             , True                                      , 'tar.bz2', False, True , False),
+    ('rar (external)'   , rar.RarExecArchive         , rar.RarExecArchive.is_available()         , 'rar'    , True , True , True ),
+    ('rar (dll)'        , rarfile.UnrarDll           , rarfile.UnrarDll.is_available()           , 'rar'    , True , True , True ),
+    ('zip'              , zip.ZipArchive             , True                                      , 'zip'    , True , False, True ),
+    ('zip (external)'   , zip_external.ZipExecArchive, zip_external.ZipExecArchive.is_available(), 'zip'    , True , False, True ),
 ):
     base_class_name = 'ArchiveFormat'
     base_class_name += ''.join([part.capitalize() for part in re.sub('[^\w]+', ' ', name).split()])
@@ -253,6 +271,20 @@ for name, handler, is_available, format, not_solid, solid in (
         base_class_list.append(('Solid', {'solid': True}))
 
     class_list = []
+
+    if password:
+        for variant, params in base_class_list:
+            variant = variant + 'Password'
+            params = dict(params)
+            params['password'] = 'password'
+            params['contents'] = (
+                ('arg.jpeg', 'arg.jpeg', 'test/files/images/01-JPG-Indexed.jpg'),
+                ('foo.JPG' , 'foo.JPG' , 'test/files/images/04-PNG-Indexed.png'),
+                ('bar.jpg' , 'bar.jpg' , 'test/files/images/02-JPG-RGB.jpg'    ),
+                ('meh.png' , 'meh.png' , 'test/files/images/03-PNG-RGB.png'    ),
+            )
+            class_list.append((variant, params))
+
     for sub_variant, is_supported, contents in (
         ('Flat', True, (
             ('arg.jpeg'            , 'arg.jpeg'            , 'test/files/images/01-JPG-Indexed.jpg'),
