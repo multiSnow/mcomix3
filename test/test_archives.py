@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import hashlib
 import locale
 import os
@@ -308,6 +310,12 @@ for name, handler, is_available, format, not_solid, solid, password in (
             ('dir2/subdir1/bar.jpg', 'dir2/subdir1/bar.jpg', 'test/files/images/02-JPG-RGB.jpg'    ),
             ('meh.png'             , 'meh.png'             , 'test/files/images/03-PNG-RGB.png'    ),
         )),
+        ('Unicode', True, (
+            (u'1-قفهسا.jpg'        , u'1-قفهسا.jpg'        , 'test/files/images/01-JPG-Indexed.jpg'),
+            (u'2-רדןקמא.png'       , u'2-רדןקמא.png'       , 'test/files/images/04-PNG-Indexed.png'),
+            (u'3-りえsち.jpg'      , u'3-りえsち.jpg'      , 'test/files/images/02-JPG-RGB.jpg'    ),
+            (u'4-щжвщджл.png'      , u'4-щжвщджл.png'      , 'test/files/images/03-PNG-RGB.png'    ),
+        )),
         # Check we don't treat an entry name as an option or command line switch.
         ('OptEntry', True, (
             ('-rg.jpeg'            , '-rg.jpeg'            , 'test/files/images/01-JPG-Indexed.jpg'),
@@ -373,6 +381,7 @@ xfail_list = [
     ('RarExternalSolidOptEntry'   , 'test_is_solid'),
     ('RarExternalSolidGlobEntries', 'test_is_solid'),
     ('RarExternalSolidTree'       , 'test_is_solid'),
+    ('RarExternalSolidUnicode'    , 'test_is_solid'),
     # No password support when using external tools.
     ('RarExternalPassword'       , 'test_extract'     ),
     ('RarExternalPassword'       , 'test_iter_extract'),
