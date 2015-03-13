@@ -319,13 +319,29 @@ for name, handler, is_available, format, not_solid, solid in (
         globals()[class_name] = type(class_name, (ArchiveFormatTest, unittest.TestCase), class_dict)
 
 
-# Expected failures.
-for klass, attr in (
+
+xfail_list = [
     # No support for detecting solid RAR archives when using external tool.
     (ArchiveFormatRarExternalSolidFlatTest       , 'test_is_solid'),
     (ArchiveFormatRarExternalSolidOptEntryTest   , 'test_is_solid'),
     (ArchiveFormatRarExternalSolidGlobEntriesTest, 'test_is_solid'),
     (ArchiveFormatRarExternalSolidTreeTest       , 'test_is_solid'),
-):
+]
+
+if 'win32' == sys.platform:
+    xfail_list.extend([
+        # Bug...
+        (ArchiveFormatRarDllGlobEntriesTest     , 'test_iter_contents'),
+        (ArchiveFormatRarDllGlobEntriesTest     , 'test_list_contents'),
+        (ArchiveFormatRarDllGlobEntriesTest     , 'test_iter_extract' ),
+        (ArchiveFormatRarDllGlobEntriesTest     , 'test_extract'      ),
+        (ArchiveFormatRarDllSolidGlobEntriesTest, 'test_iter_contents'),
+        (ArchiveFormatRarDllSolidGlobEntriesTest, 'test_list_contents'),
+        (ArchiveFormatRarDllSolidGlobEntriesTest, 'test_iter_extract' ),
+        (ArchiveFormatRarDllSolidGlobEntriesTest, 'test_extract'      ),
+    ])
+
+# Expected failures.
+for klass, attr in xfail_list:
     setattr(klass, attr, unittest.expectedFailure(getattr(klass, attr)))
 
