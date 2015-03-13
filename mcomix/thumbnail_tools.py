@@ -77,8 +77,8 @@ class Thumbnailer(object):
             self.width = prefs['thumbnail size']
             self.height = prefs['thumbnail size']
 
-        thumbpath = self._path_to_thumbpath(filepath)
         if self._thumbnail_exists(filepath):
+            thumbpath = self._path_to_thumbpath(filepath)
             pixbuf = image_tools.load_pixbuf(thumbpath)
             self.thumbnail_finished(filepath, pixbuf)
             return pixbuf
@@ -139,9 +139,12 @@ class Thumbnailer(object):
                     return None, None
 
                 pixbuf = image_tools.load_pixbuf_size(image_path, self.width, self.height)
-                tEXt_data = self._get_text_data(image_path)
-                # Use the archive's mTime instead of the extracted file's mtime
-                tEXt_data['tEXt::Thumb::MTime'] = str(long(os.stat(filepath).st_mtime))
+                if self.store_on_disk:
+                    tEXt_data = self._get_text_data(image_path)
+                    # Use the archive's mTime instead of the extracted file's mtime
+                    tEXt_data['tEXt::Thumb::MTime'] = str(long(os.stat(filepath).st_mtime))
+                else:
+                    tEXt_data = None
 
                 return pixbuf, tEXt_data
             finally:
@@ -150,7 +153,10 @@ class Thumbnailer(object):
 
         elif image_tools.is_image_file(filepath):
             pixbuf = image_tools.load_pixbuf_size(filepath, self.width, self.height)
-            tEXt_data = self._get_text_data(filepath)
+            if self.store_on_disk:
+                tEXt_data = self._get_text_data(filepath)
+            else:
+                tEXt_data = None
 
             return pixbuf, tEXt_data
         else:
