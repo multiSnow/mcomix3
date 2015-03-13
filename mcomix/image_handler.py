@@ -2,6 +2,7 @@
 
 import os
 import gtk
+import traceback
 
 from mcomix.preferences import prefs
 from mcomix import i18n
@@ -383,6 +384,8 @@ class ImageHandler:
             thumbnailer.set_size(width, height)
             return thumbnailer.thumbnail(path)
         except Exception:
+            log.debug("Failed to create thumbnail for image `%s':\n%s",
+                      path, traceback.format_exc())
             return constants.MISSING_IMAGE_ICON
 
     def _wait_on_page(self, page, check_only=False):
