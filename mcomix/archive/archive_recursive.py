@@ -11,6 +11,7 @@ import os
 class RecursiveArchive(archive_base.BaseArchive):
 
     def __init__(self, archive, destination_dir):
+        archive_base.BaseArchive.__init__(self, archive.archive)
         self._main_archive = archive
         self._destination_dir = destination_dir
         self._archive_list = []
