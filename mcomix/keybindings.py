@@ -283,14 +283,14 @@ class _KeybindingManager(object):
                     gtk.accelerator_name(keyval, modifiers) for
                     (keyval, modifiers) in bindings
                 ]
-        fp = file(constants.KEYBINDINGS_CONF_PATH, "w")
+        fp = open(constants.KEYBINDINGS_CONF_PATH, "w")
         json.dump(action_to_keys, fp, indent=2)
         fp.close()
 
     def _initialize(self):
         """ Restore keybindings from disk. """
         try:
-            fp = file(constants.KEYBINDINGS_CONF_PATH, "r")
+            fp = open(constants.KEYBINDINGS_CONF_PATH, "r")
             stored_action_bindings = json.load(fp)
             fp.close()
         except Exception, e:
