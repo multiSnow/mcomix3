@@ -783,9 +783,10 @@ class MainWindow(gtk.Window):
 
     def displayed_double(self):
         """Return True if two pages are currently displayed."""
-        return (self.is_double_page and not self.is_virtual_double_page and
-            self.imagehandler.get_current_page() !=
-            self.imagehandler.get_number_of_pages())
+        return (self.imagehandler.get_current_page() and
+                self.is_double_page and not self.is_virtual_double_page and
+                self.imagehandler.get_current_page() !=
+                self.imagehandler.get_number_of_pages())
 
     def get_visible_area_size(self):
         """Return a 2-tuple with the width and height of the visible part
