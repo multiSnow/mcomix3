@@ -416,6 +416,7 @@ class FileHandler(object):
 
             dialog = message_dialog.MessageDialog(self._window, gtk.DIALOG_MODAL, gtk.MESSAGE_INFO,
                 gtk.BUTTONS_YES_NO)
+            dialog.set_default_response(gtk.RESPONSE_YES)
             dialog.set_should_remember_choice('resume-from-last-read-page',
                 (gtk.RESPONSE_YES, gtk.RESPONSE_NO))
             dialog.set_text(
