@@ -29,17 +29,13 @@ class RarExecArchive(archive_base.ExternalExecutableArchive):
         global _rar_executable
         if _rar_executable != -1:
             return _rar_executable
-        else:
-            for command in (u'unrar', u'rar'):
-                proc = process.Process([command])
-                fd = proc.spawn()
-                if fd is not None:
-                    fd.close()
-                    _rar_executable = command
-                    return command
-
-            _rar_executable = None
-            return None
+        for _rar_executable in (u'unrar', u'rar'):
+            try:
+                process.call([_rar_executable])
+                break
+            except:
+                _rar_executable = None
+        return _rar_executable
 
     @staticmethod
     def is_available():

@@ -2,7 +2,6 @@
 import sys
 import os
 import re
-import subprocess
 import gtk
 import gobject
 
@@ -92,7 +91,7 @@ class OpenWithCommand(object):
             if sys.platform == 'win32':
                 proc = process.Win32Popen(args)
             else:
-                proc = subprocess.Popen(args)
+                proc = process.popen(args, stdout=process.NULL)
             del proc
 
         except Exception, e:

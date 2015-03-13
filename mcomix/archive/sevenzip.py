@@ -93,22 +93,16 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
 
             tmplistfile.write(desired_filename + os.linesep)
             tmplistfile.close()
-            proc = process.Process([self._get_executable(),
-                                    u'x', u'-so', u'-p',
-                                    u'-i@' + tmplistfile.name,
-                                    u'--', self.archive])
-            fd = proc.spawn()
 
-            if fd:
-                # Create new file
-                new = self._create_file(os.path.join(destination_dir, filename))
-                stdout, stderr = proc.communicate()
-                new.write(stdout)
-                new.close()
-
-                # Wait for process to finish
-                fd.close()
-                proc.wait()
+            output = self._create_file(os.path.join(destination_dir, filename))
+            try:
+                process.call([self._get_executable(),
+                              u'x', u'-so', u'-p',
+                              u'-i@' + tmplistfile.name,
+                              u'--', self.archive],
+                             stdout=output)
+            finally:
+                output.close()
         finally:
             os.unlink(tmplistfile.name)
 
@@ -120,19 +114,15 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         if not self.filenames_initialized:
             self.list_contents()
 
-        proc = process.Process([self._get_executable(),
-                                u'x', u'-so', u'-p',
-                                u'--', self.archive])
-        fd = proc.spawn(stdin=process.NULL)
-        if not fd:
-            return
-
+        proc = process.popen([self._get_executable(),
+                             u'x', u'-so', u'-p',
+                             u'--', self.archive])
         try:
             wanted = dict([(self._original_filename(unicode_name), unicode_name)
                            for unicode_name in entries])
 
             for filename, filesize in self._contents:
-                data = fd.read(filesize)
+                data = proc.stdout.read(filesize)
                 if filename not in wanted:
                     continue
                 unicode_name = wanted.get(filename, None)
@@ -147,8 +137,7 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
                     break
 
         finally:
-            # Wait for process to finish
-            fd.close()
+            proc.stdout.close()
             proc.wait()
 
     @staticmethod
@@ -158,16 +147,12 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         global _7z_executable
         if _7z_executable != -1:
             return _7z_executable
-        else:
-            proc = process.Process([u'7z'])
-            fd = proc.spawn()
-            if fd is not None:
-                fd.close()
-                _7z_executable = u'7z'
-                return u'7z'
-            else:
-                _7z_executable = None
-                return None
+        _7z_executable = u'7z'
+        try:
+            process.call([_7z_executable])
+        except:
+            _7z_executable = None
+        return _7z_executable
 
     @staticmethod
     def is_available():

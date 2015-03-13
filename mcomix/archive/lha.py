@@ -36,16 +36,12 @@ class LhaArchive(archive_base.ExternalExecutableArchive):
         global _lha_executable
         if _lha_executable != -1:
             return _lha_executable
-        else:
-            proc = process.Process([u'lha'])
-            fd = proc.spawn()
-            if fd is not None:
-                fd.close()
-                _lha_executable = u'lha'
-                return u'lha'
-            else:
-                _lha_executable = None
-                return None
+        _lha_executable = u'lha'
+        try:
+            process.call([_lha_executable])
+        except:
+            _lha_executable = None
+        return _lha_executable
 
     @staticmethod
     def is_available():

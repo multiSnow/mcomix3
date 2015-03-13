@@ -29,16 +29,13 @@ class PdfArchive(archive_base.BaseArchive):
         self.pdf = archive
 
     def iter_contents(self):
-        proc = process.Process(['mutool', 'show', '--', self.pdf, 'pages'])
-        fd = proc.spawn()
-        if fd is None:
-            return
+        proc = process.popen(['mutool', 'show', '--', self.pdf, 'pages'])
         try:
-            for line in fd:
+            for line in proc.stdout:
                 if line.startswith('page '):
                     yield line.split()[1] + '.png'
         finally:
-            fd.close()
+            proc.stdout.close()
             proc.wait()
 
     def extract(self, filename, destination_dir):
@@ -46,12 +43,11 @@ class PdfArchive(archive_base.BaseArchive):
         destination_path = os.path.join(destination_dir, filename)
         page_num = int(filename[0:-4])
         # Try to find optimal DPI.
-        proc = process.Process(['mudraw', '-x', '--', self.pdf, str(page_num)])
-        fd = proc.spawn()
-        max_size = 0
-        max_dpi = PDF_RENDER_DPI_DEF
-        if fd is not None:
-            for line in fd:
+        proc = process.popen(['mudraw', '-x', '--', self.pdf, str(page_num)])
+        try:
+            max_size = 0
+            max_dpi = PDF_RENDER_DPI_DEF
+            for line in proc.stdout:
                 match = self._fill_image_regex.match(line)
                 if not match:
                     continue
@@ -68,16 +64,13 @@ class PdfArchive(archive_base.BaseArchive):
                         dpi = PDF_RENDER_DPI_MAX
                     max_size = size
                     max_dpi = dpi
-            fd.close()
+        finally:
+            proc.stdout.close()
             proc.wait()
         # Render...
         cmd = ['mudraw', '-r', str(max_dpi), '-o', destination_path, '--', self.pdf, str(page_num)]
         log.debug('rendering %s: %s', filename, ' '.join(cmd))
-        proc = process.Process(cmd)
-        fd = proc.spawn()
-        if fd is not None:
-            fd.close()
-            proc.wait()
+        process.call(cmd)
 
     def close(self):
         self.pdf = None
@@ -86,13 +79,10 @@ class PdfArchive(archive_base.BaseArchive):
     def is_available():
         global _pdf_possible
         if _pdf_possible is None:
-            proc = process.Process(['mudraw'])
-            fd = proc.spawn()
-            if fd is not None:
-                fd.close()
-                proc.wait()
+            try:
+                process.call(['mudraw'])
                 _pdf_possible = True
-            else:
+            except:
                 log.info('MuPDF not available.')
                 _pdf_possible = False
         return _pdf_possible
