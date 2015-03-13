@@ -1,4 +1,0 @@
-[Thumbnailer Entry]
-TryExec=comicthumb
-Exec=comicthumb %u %o %s
-MimeType=application/x-cbr;application/x-cbz;application/x-cbt;
