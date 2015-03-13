@@ -182,8 +182,7 @@ class FileHandler(object):
             self.file_load_failed = False
             self._window.set_page(current_image_index + 1)
             self._window.scroll_to_predefined((constants.SCROLL_TO_START,) * 2,
-                constants.FIRST_INDEX)
-
+                                              constants.FIRST_INDEX)
             self._window.uimanager.set_sensitivities()
             self._window.thumbnailsidebar.load_thumbnails()
             self._window.uimanager.set_sensitivities()
