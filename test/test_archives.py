@@ -14,6 +14,7 @@ from mcomix.archive import sevenzip
 from mcomix.archive import tar
 from mcomix.archive import zip
 from mcomix.archive import zip_external
+from mcomix.archive import archive_recursive
 import mcomix
 
 
@@ -226,6 +227,15 @@ class ArchiveFormatTest:
         self.assertEqual(extracted, contents)
 
 
+class RecursiveArchiveFormatTest(ArchiveFormatTest):
+
+    base_handler = None
+
+    def handler(self, archive):
+        main_archive = self.base_handler(archive)
+        return archive_recursive.RecursiveArchive(main_archive, self.dest_dir)
+
+
 _FORMAT_EXECUTABLE = {
     '7z'     : '7z',
     'lha'    : 'lha',
@@ -349,49 +359,61 @@ for name, handler, is_available, format, not_solid, solid, password in (
         class_dict.update(params)
         class_dict['archive'] = variant
         globals()[class_name] = type(class_name, (ArchiveFormatTest, unittest.TestCase), class_dict)
+        class_name = 'Recursive' + class_name
+        class_dict = dict(class_dict)
+        class_dict['base_handler'] = class_dict['handler']
+        del class_dict['handler']
+        globals()[class_name] = type(class_name, (RecursiveArchiveFormatTest, unittest.TestCase), class_dict)
 
 
 
 xfail_list = [
     # No support for detecting solid RAR archives when using external tool.
-    (ArchiveFormatRarExternalSolidFlatTest       , 'test_is_solid'),
-    (ArchiveFormatRarExternalSolidOptEntryTest   , 'test_is_solid'),
-    (ArchiveFormatRarExternalSolidGlobEntriesTest, 'test_is_solid'),
-    (ArchiveFormatRarExternalSolidTreeTest       , 'test_is_solid'),
+    ('RarExternalSolidFlat'       , 'test_is_solid'),
+    ('RarExternalSolidOptEntry'   , 'test_is_solid'),
+    ('RarExternalSolidGlobEntries', 'test_is_solid'),
+    ('RarExternalSolidTree'       , 'test_is_solid'),
     # No password support when using external tools.
-    (ArchiveFormatRarExternalPasswordTest       , 'test_extract'     ),
-    (ArchiveFormatRarExternalPasswordTest       , 'test_iter_extract'),
-    (ArchiveFormat7zExternalPasswordTest        , 'test_extract'     ),
-    (ArchiveFormat7zExternalPasswordTest        , 'test_iter_extract'),
-    (ArchiveFormat7zExternalSolidPasswordTest   , 'test_extract'     ),
-    (ArchiveFormat7zExternalSolidPasswordTest   , 'test_iter_extract'),
-    (ArchiveFormat7zExternalRarPasswordTest     , 'test_extract'     ),
-    (ArchiveFormat7zExternalRarPasswordTest     , 'test_iter_extract'),
-    (ArchiveFormat7zExternalZipPasswordTest     , 'test_extract'     ),
-    (ArchiveFormat7zExternalZipPasswordTest     , 'test_iter_extract'),
-    (ArchiveFormat7zExternalRarSolidPasswordTest, 'test_extract'     ),
-    (ArchiveFormat7zExternalRarSolidPasswordTest, 'test_iter_extract'),
-    (ArchiveFormatZipExternalPasswordTest       , 'test_extract'     ),
-    (ArchiveFormatZipExternalPasswordTest       , 'test_iter_extract'),
-    (ArchiveFormatRarExternalSolidPasswordTest  , 'test_extract'     ),
-    (ArchiveFormatRarExternalSolidPasswordTest  , 'test_is_solid'    ),
-    (ArchiveFormatRarExternalSolidPasswordTest  , 'test_iter_extract'),
+    ('RarExternalPassword'       , 'test_extract'     ),
+    ('RarExternalPassword'       , 'test_iter_extract'),
+    ('7zExternalPassword'        , 'test_extract'     ),
+    ('7zExternalPassword'        , 'test_iter_extract'),
+    ('7zExternalSolidPassword'   , 'test_extract'     ),
+    ('7zExternalSolidPassword'   , 'test_iter_extract'),
+    ('7zExternalRarPassword'     , 'test_extract'     ),
+    ('7zExternalRarPassword'     , 'test_iter_extract'),
+    ('7zExternalZipPassword'     , 'test_extract'     ),
+    ('7zExternalZipPassword'     , 'test_iter_extract'),
+    ('7zExternalRarSolidPassword', 'test_extract'     ),
+    ('7zExternalRarSolidPassword', 'test_iter_extract'),
+    ('ZipExternalPassword'       , 'test_extract'     ),
+    ('ZipExternalPassword'       , 'test_iter_extract'),
+    ('RarExternalSolidPassword'  , 'test_extract'     ),
+    ('RarExternalSolidPassword'  , 'test_is_solid'    ),
+    ('RarExternalSolidPassword'  , 'test_iter_extract'),
 ]
 
 if 'win32' == sys.platform:
     xfail_list.extend([
         # Bug...
-        (ArchiveFormatRarDllGlobEntriesTest     , 'test_iter_contents'),
-        (ArchiveFormatRarDllGlobEntriesTest     , 'test_list_contents'),
-        (ArchiveFormatRarDllGlobEntriesTest     , 'test_iter_extract' ),
-        (ArchiveFormatRarDllGlobEntriesTest     , 'test_extract'      ),
-        (ArchiveFormatRarDllSolidGlobEntriesTest, 'test_iter_contents'),
-        (ArchiveFormatRarDllSolidGlobEntriesTest, 'test_list_contents'),
-        (ArchiveFormatRarDllSolidGlobEntriesTest, 'test_iter_extract' ),
-        (ArchiveFormatRarDllSolidGlobEntriesTest, 'test_extract'      ),
+        ('RarDllGlobEntries'     , 'test_iter_contents'),
+        ('RarDllGlobEntries'     , 'test_list_contents'),
+        ('RarDllGlobEntries'     , 'test_iter_extract' ),
+        ('RarDllGlobEntries'     , 'test_extract'      ),
+        ('RarDllSolidGlobEntries', 'test_iter_contents'),
+        ('RarDllSolidGlobEntries', 'test_list_contents'),
+        ('RarDllSolidGlobEntries', 'test_iter_extract' ),
+        ('RarDllSolidGlobEntries', 'test_extract'      ),
     ])
 
 # Expected failures.
-for klass, attr in xfail_list:
-    setattr(klass, attr, unittest.expectedFailure(getattr(klass, attr)))
+for test, attr in xfail_list:
+    for name in (
+        'ArchiveFormat%sTest' % test,
+        'RecursiveArchiveFormat%sTest' % test,
+    ):
+        if not name in globals():
+            continue
+        klass = globals()[name]
+        setattr(klass, attr, unittest.expectedFailure(getattr(klass, attr)))
 
