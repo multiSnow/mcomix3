@@ -1,7 +1,6 @@
 """image_handler.py - Image handler that takes care of cacheing and giving out images."""
 
 import os
-import gtk
 import traceback
 
 from mcomix.preferences import prefs
@@ -330,16 +329,11 @@ class ImageHandler:
         self._wait_on_page(page)
 
         page_path = self.get_path_to_page(page)
-
-        if page_path != None:
-            info = gtk.gdk.pixbuf_get_file_info(page_path)
-        else:
-            return None
-
-        if info is not None:
-            return (info[1], info[2])
-        else:
+        if page_path is None:
             return (0, 0)
+
+        format, width, height = image_tools.get_image_info(page_path)
+        return (width, height)
 
     def get_mime_name(self, page=None):
         """Return a string with the name of the mime type of <page>. If
@@ -348,16 +342,11 @@ class ImageHandler:
         self._wait_on_page(page)
 
         page_path = self.get_path_to_page(page)
-
-        if page_path != None:
-            info = gtk.gdk.pixbuf_get_file_info(page_path)
-        else:
+        if page_path is None:
             return None
 
-        if info is not None:
-            return info[0]['name'].upper()
-        else:
-            return _('Unknown filetype')
+        format, width, height = image_tools.get_image_info(page_path)
+        return format
 
     def get_thumbnail(self, page=None, width=128, height=128, create=False,
                       nowait=False):
