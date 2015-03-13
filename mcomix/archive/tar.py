@@ -9,23 +9,33 @@ import archive_base
 class TarArchive(archive_base.NonUnicodeArchive):
     def __init__(self, archive):
         super(TarArchive, self).__init__(archive)
-        self.tar = tarfile.open(archive, 'r')
         # Track if archive contents have been listed at least one time: this
         # must be done before attempting to extract contents.
         self._contents_listed = False
+        self._contents = []
 
     def is_solid(self):
         return True
 
     def iter_contents(self):
+        if self._contents_listed:
+            for name in self._contents:
+                yield name
+            return
         # Make sure we start back at the beginning of the tar.
-        self.tar.offset = 0
+        self.tar = tarfile.open(self.archive, 'r')
+        self._contents = []
         while True:
             info = self.tar.next()
             if info is None:
                 break
-            yield self._unicode_filename(info.name)
+            name = self._unicode_filename(info.name)
+            self._contents.append(name)
+            yield name
         self._contents_listed = True
+
+    def list_contents(self):
+        return [f for f in self.iter_contents()]
 
     def extract(self, filename, destination_dir):
         if not self._contents_listed:
