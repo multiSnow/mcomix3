@@ -184,22 +184,14 @@ class Thumbnailer(object):
         # MTime could be floating point number, so convert to long first to have a fixed point number
         mtime = str(long(stat.st_mtime))
         size = str(stat.st_size)
-        try:
-            img = Image.open(filepath)
-            width = str(img.size[0])
-            height = str(img.size[1])
-        except:
-            width = height = 0
-            log.debug("Failed to open image `%s':\n%s",
-                      filepath, traceback.format_exc())
-
+        format, width, height = image_tools.get_image_info(filepath)
         return {
             'tEXt::Thumb::URI':           uri,
             'tEXt::Thumb::MTime':         mtime,
             'tEXt::Thumb::Size':          size,
             'tEXt::Thumb::Mimetype':      mime,
-            'tEXt::Thumb::Image::Width':  width,
-            'tEXt::Thumb::Image::Height': height,
+            'tEXt::Thumb::Image::Width':  str(width),
+            'tEXt::Thumb::Image::Height': str(height),
             'tEXt::Software':             'MComix %s' % constants.VERSION
         }
 
