@@ -320,7 +320,7 @@ class OpenWithEditor(gtk.Dialog):
         self._setup_table()
 
         self.connect('response', self._response)
-        self._window.draw_image += lambda *args, **kwargs: self.test_command()
+        self._window.page_changed += self.test_command
         self._window.filehandler.file_opened += self.test_command
         self._window.filehandler.close_file += lambda *args: self.test_command()
 
