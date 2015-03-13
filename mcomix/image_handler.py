@@ -376,7 +376,7 @@ class ImageHandler:
         page) and p' is the filename of the page after.
         """
         if page is None:
-            page = self._current_image_index + 1
+            page = self.get_current_page()
 
         first_path = self.get_path_to_page(page)
         if first_path == None:
