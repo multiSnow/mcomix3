@@ -19,7 +19,7 @@ class RarExecArchive(archive_base.ExternalExecutableArchive):
         return [u'vb', u'-p-', u'--']
 
     def _get_extract_arguments(self):
-        return [u'p', u'-inul', u'-p-', u'--']
+        return [u'p', u'-inul', u'-@', u'-p-', u'--']
 
     @staticmethod
     def _find_unrar_executable():
