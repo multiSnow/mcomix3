@@ -166,9 +166,11 @@ class FileHandler(object):
             # Update status bar (0 disables file numbers for images)
             self._window.statusbar.set_file_number(0, 0)
 
+        self._window.imagehandler._base_path = self._base_path
+        self._window.imagehandler._image_files = image_files
+
         if not image_files:
             self.file_load_failed = True
-            self._window.imagehandler._image_files = None
             msg = _("No images in '%s'") % os.path.basename(self._current_file)
             self._window.statusbar.set_message(msg)
             self._window.osd.show(msg)
@@ -178,9 +180,7 @@ class FileHandler(object):
 
         else:
             self.file_load_failed = False
-            self._window.imagehandler._image_files = image_files
             self._window.imagehandler._current_image_index = current_image_index
-            self._window.imagehandler._base_path = self._base_path
             self._window.imagehandler._current_file = self._current_file
             self._window.imagehandler._name_table = self._name_table
 
