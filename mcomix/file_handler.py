@@ -180,11 +180,7 @@ class FileHandler(object):
 
         else:
             self.file_load_failed = False
-            self._window.imagehandler._current_image_index = current_image_index
-            self._window.imagehandler._current_file = self._current_file
-            self._window.imagehandler._name_table = self._name_table
-
-            self._window.imagehandler.do_cacheing()
+            self._window.set_page(current_image_index + 1)
             self._window.scroll_to_predefined((constants.SCROLL_TO_START,) * 2,
                 constants.FIRST_INDEX)
 
