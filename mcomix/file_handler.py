@@ -133,7 +133,7 @@ class FileHandler(object):
         # Actually open the file(s)/archive passed in path.
         if self.archive_type is not None:
             try:
-                self._open_archive(self._current_file, start_page)
+                self._open_archive(self._current_file)
             except Exception, ex:
                 self._window.statusbar.set_message(unicode(ex))
                 self._window.osd.show(unicode(ex))
@@ -144,11 +144,11 @@ class FileHandler(object):
             self.file_loaded = True
             image_files, current_image_index = \
                 self._open_image_files(filelist, self._current_file)
-            self._archive_opened(image_files, current_image_index)
+            self._archive_opened(image_files)
 
         return True
 
-    def _archive_opened(self, image_files, current_image_index):
+    def _archive_opened(self, image_files):
         """ Called once the archive has been opened and its contents listed.
         """
         if self.archive_type is not None:
@@ -180,17 +180,43 @@ class FileHandler(object):
 
         else:
             self.file_load_failed = False
+
+            if self.archive_type is None:
+                # If no extraction is required, mark all files as available.
+                self.file_available(self.filelist)
+                # Set current page to current file.
+                if self._current_file in self.filelist:
+                    current_image_index = self.filelist.index(self._current_file)
+                else:
+                    current_image_index = 0
+            else:
+                last_image_index = self._get_index_for_page(self._start_page,
+                                                            len(image_files),
+                                                            self._current_file)
+                if self._start_page or \
+                   prefs['stored dialog choices'].get('resume-from-last-read-page', False):
+                    current_image_index = last_image_index
+                else:
+                    # Don't switch to last page yet; since we have not asked
+                    # the user for confirmation yet.
+                    current_image_index = 0
+                if last_image_index != current_image_index:
+                    # Bump last page closer to the front of the extractor queue.
+                    self._window.set_page(last_image_index + 1)
+
             self._window.set_page(current_image_index + 1)
             self._window.scroll_to_predefined((constants.SCROLL_TO_START,) * 2,
                                               constants.FIRST_INDEX)
             self._window.uimanager.set_sensitivities()
             self._window.thumbnailsidebar.load_thumbnails()
 
-            self.write_fileinfo_file()
+            if self.archive_type is not None:
+                self._extractor.extract()
+                if last_image_index != current_image_index and \
+                   self._ask_goto_last_read_page(self._current_file, last_image_index + 1):
+                    self._window.set_page(last_image_index + 1)
 
-            # If no extraction is required, mark all files as available instantly.
-            if self.archive_type is None:
-                self.file_available(self.filelist)
+            self.write_fileinfo_file()
 
         self._window.uimanager.recent.add(self._current_file)
 
@@ -293,7 +319,7 @@ class FileHandler(object):
         else:
             return None
 
-    def _open_archive(self, path, start_page):
+    def _open_archive(self, path):
         """ Opens the archive passed in C{path}.
 
         Creates an L{archive_extractor.Extractor} and extracts all images
@@ -336,27 +362,9 @@ class FileHandler(object):
         self._name_table = dict(zip(image_files, archive_images))
         self._name_table.update(zip(self._comment_files, comment_files))
 
-        # Determine current archive image index.
-        current_image_index = self._get_index_for_page(self._start_page,
-            len(image_files), self._current_file)
-
-        # Sort files to determine extraction order.
-        self._sort_archive_files(archive_images, current_image_index)
-
         self._extractor.set_files(archive_images + comment_files)
-        self._extractor.extract()
 
-        # Preemptively set _image files of ImageHandler, to prevent extraction callbacks
-        # from being ignored, as the ImageHandler needs the list of files
-        # to translate from file name to page index
-        self._window.imagehandler._image_files = image_files
-
-        # Image index may have changed after additional files were extracted.
-        # This call might block due to displaying a confirmation dialog.
-        current_image_index = self._get_index_for_page(self._start_page,
-            len(image_files), self._current_file, confirm=True)
-
-        self._archive_opened(image_files, current_image_index)
+        self._archive_opened(image_files)
 
     def _sort_archive_images(self, filelist):
         """ Sorts the image list passed in C{filelist} based on the sorting
@@ -373,7 +381,7 @@ class FileHandler(object):
         if prefs['sort archive order'] == constants.SORT_DESCENDING:
             filelist.reverse()
 
-    def _get_index_for_page(self, start_page, num_of_pages, path, confirm=False):
+    def _get_index_for_page(self, start_page, num_of_pages, path):
         """ Returns the page that should be displayed for an archive.
         @param start_page: If -1, show last page. If 0, show either first page
                            or last read page. If > 0, show C{start_page}.
@@ -385,68 +393,35 @@ class FileHandler(object):
         elif start_page < 0 and not self._window.is_double_page:
             current_image_index = num_of_pages - 1
         elif start_page == 0:
-            if confirm:
-                current_image_index = self._get_last_read_page(path) - 1
-            else:
-                current_image_index = (self.last_read_page.get_page(path) or 1) - 1
+            current_image_index = (self.last_read_page.get_page(path) or 1) - 1
         else:
             current_image_index = start_page - 1
 
         return min(max(0, current_image_index), num_of_pages - 1)
 
-    def _get_last_read_page(self, path):
+    def _ask_goto_last_read_page(self, path, last_read_page):
         """ If the user read an archive previously, ask to continue from
         that time, or from page 1. This method returns a page index, that is,
         index + 1. """
-        if (isinstance(path, list) and len(path) > 0
-            and isinstance(path[0], (str, unicode))):
-            path = path[0]
 
-        last_read_page = self.last_read_page.get_page(path)
-        if last_read_page is not None:
-            read_date = self.last_read_page.get_date(path)
+        read_date = self.last_read_page.get_date(path)
 
-            dialog = message_dialog.MessageDialog(self._window, gtk.DIALOG_MODAL, gtk.MESSAGE_INFO,
-                gtk.BUTTONS_YES_NO)
-            dialog.set_default_response(gtk.RESPONSE_YES)
-            dialog.set_should_remember_choice('resume-from-last-read-page',
-                (gtk.RESPONSE_YES, gtk.RESPONSE_NO))
-            dialog.set_text(
-                (_('Continue reading from page %d?') % last_read_page),
-                _('You stopped reading here on %(date)s, %(time)s. '
-                'If you choose "Yes", reading will resume on page %(page)d. Otherwise, '
-                'the first page will be loaded.') % {'date': read_date.date().strftime("%x"),
-                    'time': read_date.time().strftime("%X"), 'page': last_read_page})
-            result = dialog.run()
+        dialog = message_dialog.MessageDialog(self._window, gtk.DIALOG_MODAL, gtk.MESSAGE_INFO,
+            gtk.BUTTONS_YES_NO)
+        dialog.set_default_response(gtk.RESPONSE_YES)
+        dialog.set_should_remember_choice('resume-from-last-read-page',
+            (gtk.RESPONSE_YES, gtk.RESPONSE_NO))
+        dialog.set_text(
+            (_('Continue reading from page %d?') % last_read_page),
+            _('You stopped reading here on %(date)s, %(time)s. '
+            'If you choose "Yes", reading will resume on page %(page)d. Otherwise, '
+            'the first page will be loaded.') % {'date': read_date.date().strftime("%x"),
+                'time': read_date.time().strftime("%X"), 'page': last_read_page})
+        result = dialog.run()
 
-            self._must_call_draw = True
+        self._must_call_draw = True
 
-            if result == gtk.RESPONSE_YES:
-                return last_read_page
-            else:
-                return 1
-        else:
-            return 1
-
-    def _sort_archive_files(self, archive_images, current_image_index):
-        """ Sorts the list C{archive_images} in place based on a priority order
-        algorithm. """
-
-        depth = self._window.is_double_page and 2 or 1
-
-        priority_ordering = (
-            range(current_image_index,
-                current_image_index + depth * 2) +
-            range(current_image_index - depth,
-                current_image_index)[::-1])
-
-        priority_ordering = [archive_images[p] for p in priority_ordering
-            if 0 <= p <= len(archive_images) - 1]
-
-        for i, name in enumerate(priority_ordering):
-            archive_images.remove(name)
-            archive_images.insert(i, name)
-
+        return result == gtk.RESPONSE_YES
 
     def _open_image_files(self, filelist, image_path):
         """ Opens all files passed in C{filelist}.
