@@ -19,7 +19,7 @@ class ZipExecArchive(archive_base.ExternalExecutableArchive):
         return [u'-Z1']
 
     def _get_extract_arguments(self):
-        return [u'-p']
+        return [u'-p', u'-P', u'']
 
     @staticmethod
     def _find_unzip_executable():
