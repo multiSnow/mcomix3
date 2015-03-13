@@ -111,13 +111,6 @@ def make_archive(outfile, contents, format='zip', solid=False, password=None):
             ' '.join(cmd), stdout, stderr
         ))
 
-def exe_available(exe):
-    try:
-        process.call([exe])
-    except:
-        return False
-    return True
-
 def md5(path):
     hash = hashlib.md5()
     hash.update(open(path, 'rb').read())
