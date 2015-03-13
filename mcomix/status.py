@@ -222,11 +222,11 @@ class TooltipStatusHelper(object):
         if isinstance(widget, gtk.MenuItem) and tooltip:
             cid = widget.connect('select', self._on_item_select, tooltip)
             cid2 = widget.connect('deselect', self._on_item_deselect)
-            widget.set_data('app::connect-ids', (cid, cid2))
+            setattr(widget, 'app::connect-ids', (cid, cid2))
 
     def _on_disconnect_proxy(self, uimgr, action, widget):
         """ Disconnects the widget's selection handlers. """
-        cids = widget.get_data('app::connect-ids') or ()
+        cids = getattr(widget, 'app::connect-ids', ())
         for cid in cids:
             widget.disconnect(cid)
 
