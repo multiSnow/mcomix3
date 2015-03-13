@@ -202,6 +202,16 @@ def run():
             open_path = open_path, open_page = open_page)
     main.set_main_window(window)
 
+    if 'win32' != sys.platform:
+        # Add a SIGCHLD handler to reap zombie processes.
+        def on_sigchld(signum, frame):
+            while True:
+                try:
+                    os.waitpid(-1, os.WNOHANG)
+                except OSError:
+                    break
+        signal.signal(signal.SIGCHLD, on_sigchld)
+
     signal.signal(signal.SIGTERM, lambda: gobject.idle_add(window.terminate_program))
     try:
         gtk.main()
