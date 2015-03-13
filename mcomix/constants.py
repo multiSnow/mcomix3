@@ -101,10 +101,8 @@ try:
         MISSING_IMAGE_ICON = _missing_icon_pixbuf.scale_simple(
                 128, 128, gtk.gdk.INTERP_TILES)
 
-    GTK_GDK_COLOR_BLACK = gtk.gdk.colormap_get_system().alloc_color(
-            gtk.gdk.Color(0, 0, 0), False, True)
-    GTK_GDK_COLOR_WHITE = gtk.gdk.colormap_get_system().alloc_color(
-            gtk.gdk.Color(65535, 65535, 65535), False, True)
+    GTK_GDK_COLOR_BLACK = gtk.gdk.color_parse('black')
+    GTK_GDK_COLOR_WHITE = gtk.gdk.color_parse('white')
 
     SUPPORTED_IMAGE_REGEX = re.compile(r'\.(%s)$' %
                                        '|'.join(sorted(reduce(

@@ -176,9 +176,7 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
 
     def set_thumbnail_background(self, colour):
 
-        color = gtk.gdk.colormap_get_system().alloc_color(
-                    gtk.gdk.Color(colour[0], colour[1], colour[2]),
-                    False, True)
+        color = gtk.gdk.Color(colour[0], colour[1], colour[2])
         self._pixbuf_cellrenderer.set_property('cell-background-gdk',
                 color)
         self._text_cellrenderer.set_property('background-gdk',

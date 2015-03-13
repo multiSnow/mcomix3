@@ -899,8 +899,9 @@ class MainWindow(gtk.Window):
         format (r, g, b). Values are 16-bit.
         """
         self._main_layout.modify_bg(gtk.STATE_NORMAL,
-            gtk.gdk.colormap_get_system().alloc_color(gtk.gdk.Color(
-            colour[0], colour[1], colour[2]), False, True))
+                                    gtk.gdk.Color(colour[0],
+                                                  colour[1],
+                                                  colour[2]))
 
         if prefs['thumbnail bg uses main colour']:
             self.thumbnailsidebar.change_thumbnail_background_color(prefs['bg colour'])
