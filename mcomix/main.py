@@ -420,24 +420,18 @@ class MainWindow(gtk.Window):
         if not page_number:
             return
         if self.displayed_double():
-            self.statusbar.set_page_number(
-                self.imagehandler.get_current_page(),
-                self.imagehandler.get_number_of_pages(), 2) # XXX implied by self.displayed_double() == True
-
-            left_filename, right_filename = \
-                self.imagehandler.get_page_filename(double=True)
-
+            number_of_pages = 2
+            left_filename, right_filename = self.imagehandler.get_page_filename(double=True)
             if self.is_manga_mode:
                 left_filename, right_filename = right_filename, left_filename
-
-            self.statusbar.set_filename(left_filename + ', ' + right_filename)
+            filename = left_filename + ', ' + right_filename
         else:
-            self.statusbar.set_page_number(
-                self.imagehandler.get_current_page(),
-                self.imagehandler.get_number_of_pages(), 1) # XXX implied by self.displayed_double() == False
-
-            self.statusbar.set_filename(self.imagehandler.get_page_filename())
-
+            number_of_pages = 1
+            filename = self.imagehandler.get_page_filename()
+        self.statusbar.set_page_number(page_number,
+                                       self.imagehandler.get_number_of_pages(),
+                                       number_of_pages)
+        self.statusbar.set_filename(filename)
         self.statusbar.set_root(self.filehandler.get_base_filename())
         self.statusbar.update()
         self.update_title()
