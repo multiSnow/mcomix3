@@ -9,6 +9,7 @@ import tempfile
 import mimetypes
 import threading
 import itertools
+import traceback
 import PIL.Image as Image
 from urllib import pathname2url
 
@@ -187,8 +188,10 @@ class Thumbnailer(object):
             img = Image.open(filepath)
             width = str(img.size[0])
             height = str(img.size[1])
-        except IOError:
+        except:
             width = height = 0
+            log.debug("Failed to open image `%s':\n%s",
+                      filepath, traceback.format_exc())
 
         return {
             'tEXt::Thumb::URI':           uri,
