@@ -254,10 +254,20 @@ def load_pixbuf(path):
 def load_pixbuf_size(path, width, height):
     """ Loads a pixbuf from a given image file and scale it to fit
     inside (width, height). """
-    try:
-        return fit_in_rectangle(load_pixbuf(path), width, height)
-    except:
-        return None
+    format, src_width, src_height = get_image_info(path)
+    if src_width <= width and src_height <= height:
+        src = gtk.gdk.pixbuf_new_from_file(path)
+    else:
+        src = gtk.gdk.pixbuf_new_from_file_at_size(path, width, height)
+        src_width, src_height = src.get_width(), src.get_height()
+    if src.get_has_alpha():
+        if prefs['checkered bg for transparent images']:
+            src = src.composite_color_simple(src_width, src_height,
+                prefs['scaling quality'], 255, 8, 0x777777, 0x999999)
+        else:
+            src = src.composite_color_simple(src_width, src_height,
+                prefs['scaling quality'], 255, 1024, 0xFFFFFF, 0xFFFFFF)
+    return src
 
 def load_pixbuf_data(imgdata):
     """ Loads a pixbuf from the data passed in <imgdata>. """
