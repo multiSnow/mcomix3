@@ -79,10 +79,9 @@ class PdfArchive(archive_base.BaseArchive):
     def is_available():
         global _pdf_possible
         if _pdf_possible is None:
-            try:
-                process.call(['mudraw'])
+            if process.find_executable((u'mudraw',)):
                 _pdf_possible = True
-            except:
+            else:
                 log.info('MuPDF not available.')
                 _pdf_possible = False
         return _pdf_possible

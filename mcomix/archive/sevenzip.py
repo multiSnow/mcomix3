@@ -145,13 +145,8 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         """ Tries to start 7z, and returns either '7z' if
         it was started successfully or None otherwise. """
         global _7z_executable
-        if _7z_executable != -1:
-            return _7z_executable
-        _7z_executable = u'7z'
-        try:
-            process.call([_7z_executable])
-        except:
-            _7z_executable = None
+        if _7z_executable == -1:
+            _7z_executable = process.find_executable((u'7z',))
         return _7z_executable
 
     @staticmethod

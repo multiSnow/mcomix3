@@ -27,14 +27,8 @@ class RarExecArchive(archive_base.ExternalExecutableArchive):
         one of them was started successfully.
         Returns None if neither could be started. """
         global _rar_executable
-        if _rar_executable != -1:
-            return _rar_executable
-        for _rar_executable in (u'unrar', u'rar'):
-            try:
-                process.call([_rar_executable])
-                break
-            except:
-                _rar_executable = None
+        if _rar_executable == -1:
+            _rar_executable = process.find_executable((u'unrar', u'rar'))
         return _rar_executable
 
     @staticmethod

@@ -34,13 +34,8 @@ class LhaArchive(archive_base.ExternalExecutableArchive):
         """ Tries to start lha, and returns either 'lha' if
         it was started successfully or None otherwise. """
         global _lha_executable
-        if _lha_executable != -1:
-            return _lha_executable
-        _lha_executable = u'lha'
-        try:
-            process.call([_lha_executable])
-        except:
-            _lha_executable = None
+        if _lha_executable == -1:
+            _lha_executable = process.find_executable((u'lha',))
         return _lha_executable
 
     @staticmethod

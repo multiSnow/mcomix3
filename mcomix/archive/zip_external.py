@@ -25,13 +25,8 @@ class ZipExecArchive(archive_base.ExternalExecutableArchive):
         """ Tries to run unzip, and returns 'unzip' on success.
         Returns None on failure. """
         global _zip_executable
-        if -1 != _zip_executable:
-            return _zip_executable
-        _zip_executable = u'unzip'
-        try:
-            process.call([_zip_executable])
-        except:
-            _zip_executable = None
+        if -1 == _zip_executable:
+            _zip_executable = process.find_executable((u'unzip',))
         return _zip_executable
 
     @staticmethod
