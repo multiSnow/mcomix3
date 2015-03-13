@@ -3,6 +3,7 @@
 
 import re
 import os
+import operator
 
 from mcomix import tools
 
@@ -65,7 +66,6 @@ SORT_DESCENDING, SORT_ASCENDING = 1, 2
 SIZE_HUGE, SIZE_LARGE, SIZE_NORMAL, SIZE_SMALL, SIZE_TINY = MAX_LIBRARY_COVER_SIZE, 300, 250, 125, 80
 
 ACCEPTED_COMMENT_EXTENSIONS = ['txt', 'nfo', 'xml']
-SUPPORTED_IMAGE_REGEX = re.compile(r'\.(jpg|jpeg|png|gif|tif|tiff|bmp|ppm|pgm|pbm)\s*$', re.I)
 
 ZIP_FORMATS = (
         ('application/x-zip', 'application/zip', 'application/x-zip-compressed', 'application/x-cbz'),
@@ -105,6 +105,13 @@ try:
             gtk.gdk.Color(0, 0, 0), False, True)
     GTK_GDK_COLOR_WHITE = gtk.gdk.colormap_get_system().alloc_color(
             gtk.gdk.Color(65535, 65535, 65535), False, True)
+
+    SUPPORTED_IMAGE_REGEX = re.compile(r'\.(%s)$' %
+                                       '|'.join(sorted(reduce(
+                                           operator.add,
+                                           map(operator.itemgetter("extensions"),
+                                               gtk.gdk.pixbuf_get_formats())))),
+                                       re.I)
 
 except ImportError:
     # Missing GTK is already handled in mcomixstarter.py,

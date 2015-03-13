@@ -1,10 +1,7 @@
 """image_tools.py - Various image manipulations."""
 
 import sys
-import os
 import operator
-import itertools
-import bisect
 import gtk
 import PIL.Image as Image
 import PIL.ImageEnhance as ImageEnhance
@@ -12,13 +9,6 @@ import PIL.ImageOps as ImageOps
 
 from mcomix.preferences import prefs
 from mcomix import constants
-
-# File formats supported by PyGTK (sorted list of extensions)
-_supported_formats = sorted(
-    [ extension.lower() for extlist in
-        itertools.imap(operator.itemgetter("extensions"),
-                       gtk.gdk.pixbuf_get_formats())
-        for extension in extlist])
 
 def fit_pixbuf_to_rectangle(src, rect, rotation):
 
@@ -358,9 +348,7 @@ def combine_pixbufs( pixbuf1, pixbuf2, are_in_manga_mode ):
 def is_image_file(path):
     """Return True if the file at <path> is an image file recognized by PyGTK.
     """
-    ext = os.path.splitext(path)[1][1:].lower()
-    ext_index = bisect.bisect_left(_supported_formats, ext)
-    return ext_index != len(_supported_formats) and _supported_formats[ext_index] == ext
+    return constants.SUPPORTED_IMAGE_REGEX.search(path) is not None
 
 def convert_rgb16list_to_rgba8int(c):
     return 0x000000FF | (c[0] >> 8 << 24) | (c[1] >> 8 << 16) | (c[2] >> 8 << 8)
