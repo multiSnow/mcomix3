@@ -266,11 +266,16 @@ class OpenWithCommand(object):
     def _get_context_type(self, window, check_restrictions=True):
         if not check_restrictions:
             return DEBUGGING_CONTEXT # ignore context, reflect variable name
-        if not(window and window.filehandler.file_loaded):
-            return NO_FILE_CONTEXT # no file loaded
-        if not(window and window.filehandler.archive_type is None):
-            return IMAGE_FILE_CONTEXT|ARCHIVE_CONTEXT # archive loaded
-        return IMAGE_FILE_CONTEXT # image loaded (no archive)
+        context = 0
+        if not window.filehandler.file_loaded:
+            context = NO_FILE_CONTEXT # no file loaded
+        elif window.filehandler.archive_type is not None:
+            context = IMAGE_FILE_CONTEXT|ARCHIVE_CONTEXT # archive loaded
+        else:
+            context = IMAGE_FILE_CONTEXT # image loaded (no archive)
+        if not window.imagehandler.get_current_page():
+            context &= ~IMAGE_FILE_CONTEXT # empty archive
+        return context
 
 
 class OpenWithEditor(gtk.Dialog):
