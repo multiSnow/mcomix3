@@ -209,6 +209,10 @@ class FileHandler(object):
         pass
 
     @callback.Callback
+    def file_closed(self):
+        """ Called when the current file has been closed. """
+        pass
+
     def close_file(self, *args):
         """Run tasks for "closing" the currently opened file(s)."""
         if self.file_loaded or self.file_loading:
@@ -227,6 +231,7 @@ class FileHandler(object):
             self._window.imagehandler.cleanup()
             self._window.thumbnailsidebar.clear()
             self._window.set_icon_list(*icons.mcomix_icons())
+            self.file_closed()
         # Catch up on UI events, so we don't leave idle callbacks.
         while gtk.events_pending():
             gtk.main_iteration(False)
