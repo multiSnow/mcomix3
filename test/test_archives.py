@@ -76,6 +76,7 @@ def make_archive(outfile, contents, format='zip', solid=False):
             else:
                 raise UnsupportedFormat(format)
             cmd = ['tar', '-cv%sf' % compression, outpath, '--']
+            # entry_list = [ name.replace('\\', '\\\\') for name in entry_list]
         elif 'zip' == format:
             if solid:
                 raise UnsupportedOption(format, 'solid')
@@ -272,6 +273,24 @@ for name, handler, is_available, format, not_solid, solid in (
             ('+ar.jpg'             , '+ar.jpg'             , 'test/files/images/02-JPG-RGB.jpg'    ),
             ('@eh.png'             , '@eh.png'             , 'test/files/images/03-PNG-RGB.png'    ),
         )),
+        # Check an entry name is not used as glob pattern.
+        ('GlobEntries', 'win32' != sys.platform, (
+            ('[rg.jpeg'            , '[rg.jpeg'            , 'test/files/images/01-JPG-Indexed.jpg'),
+            ('[]rg.jpeg'           , '[]rg.jpeg'           , 'test/files/images/02-JPG-RGB.jpg'    ),
+            ('*oo.JPG'             , '*oo.JPG'             , 'test/files/images/04-PNG-Indexed.png'),
+            ('?eh.png'             , '?eh.png'             , 'test/files/images/03-PNG-RGB.png'    ),
+            # ('\\r.jpg'             , '\\r.jpg'             , 'test/files/images/blue.png'          ),
+            # ('ba\\.jpg'            , 'ba\\.jpg'            , 'test/files/images/red.png'           ),
+        )),
+        # Same, Windows version.
+        ('GlobEntries', 'win32' == sys.platform, (
+            ('[rg.jpeg'            , '[rg.jpeg'            , 'test/files/images/01-JPG-Indexed.jpg'),
+            ('[]rg.jpeg'           , '[]rg.jpeg'           , 'test/files/images/02-JPG-RGB.jpg'    ),
+            ('*oo.JPG'             , '_oo.JPG'             , 'test/files/images/04-PNG-Indexed.png'),
+            ('?eh.png'             , '_eh.png'             , 'test/files/images/03-PNG-RGB.png'    ),
+            # ('\\r.jpg'             , '\\r.jpg'             , 'test/files/images/blue.png'          ),
+            # ('ba\\.jpg'            , 'ba\\.jpg'            , 'test/files/images/red.png'           ),
+        )),
         # Check how invalid filesystem characters are handled.
         # ('InvalidFileSystemChars', 'win32' == sys.platform, (
         #     ('a<g.jpeg'            , 'a_g.jpeg'            ,'test/files/images/01-JPG-Indexed.jpg'),
@@ -303,9 +322,10 @@ for name, handler, is_available, format, not_solid, solid in (
 # Expected failures.
 for klass, attr in (
     # No support for detecting solid RAR archives when using external tool.
-    (ArchiveFormatRarExternalSolidFlatTest    , 'test_is_solid'),
-    (ArchiveFormatRarExternalSolidOptEntryTest, 'test_is_solid'),
-    (ArchiveFormatRarExternalSolidTreeTest    , 'test_is_solid'),
+    (ArchiveFormatRarExternalSolidFlatTest       , 'test_is_solid'),
+    (ArchiveFormatRarExternalSolidOptEntryTest   , 'test_is_solid'),
+    (ArchiveFormatRarExternalSolidGlobEntriesTest, 'test_is_solid'),
+    (ArchiveFormatRarExternalSolidTreeTest       , 'test_is_solid'),
 ):
     setattr(klass, attr, unittest.expectedFailure(getattr(klass, attr)))
 
