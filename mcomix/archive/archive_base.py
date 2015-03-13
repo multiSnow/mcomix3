@@ -112,7 +112,7 @@ class BaseArchive(object):
         If an empty string is set, assume that the user did not provide
         a password. """
 
-        password = archive.ask_for_password()
+        password = archive.ask_for_password(self.archive)
         if password is None:
             password = ""
 
