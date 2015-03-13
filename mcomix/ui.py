@@ -24,6 +24,9 @@ class MainUI(gtk.UIManager):
         self._window = window
         self._tooltipstatus = status.TooltipStatusHelper(self, window.statusbar)
 
+        def _action_lambda(fn, *args):
+            return lambda *_: fn(*args)
+
         # ----------------------------------------------------------------
         # Create actions for the menus.
         # ----------------------------------------------------------------
@@ -36,13 +39,13 @@ class MainUI(gtk.UIManager):
                 None, _('Deletes the current file or archive from disk.'),
                 window.delete),
             ('next_page', gtk.STOCK_GO_FORWARD, _('_Next page'),
-                None, _('Next page'), window.next_page),
+             None, _('Next page'), _action_lambda(window.flip_page, +1)),
             ('previous_page', gtk.STOCK_GO_BACK, _('_Previous page'),
-                None, _('Previous page'), window.previous_page),
+             None, _('Previous page'), _action_lambda(window.flip_page, -1)),
             ('first_page', gtk.STOCK_GOTO_FIRST, _('_First page'),
-                None, _('First page'), window.first_page),
+             None, _('First page'), _action_lambda(window.first_page)),
             ('last_page', gtk.STOCK_GOTO_LAST, _('_Last page'),
-                None, _('Last page'), window.last_page),
+             None, _('Last page'), _action_lambda(window.last_page)),
             ('go_to', gtk.STOCK_JUMP_TO, _('_Go to page...'),
                 None, _('Go to page...'), window.page_select),
             ('refresh_archive', gtk.STOCK_REFRESH, _('Re_fresh'),

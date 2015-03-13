@@ -291,7 +291,6 @@ class MainWindow(gtk.Window):
         # isn't properly unset.
         self.imagehandler.force_single_step = False
 
-    @callback.Callback
     def draw_image(self, at_bottom=False, scroll=False):
         """Draw the current pages and update the titlebar and statusbar.
         """
@@ -495,44 +494,86 @@ class MainWindow(gtk.Window):
 
         self.draw_image(at_bottom=at_bottom, scroll=True)
 
+    @callback.Callback
+    def page_changed(self):
+        """ Called on page change. """
+        pass
+
     def set_page(self, num, at_bottom=False):
-        if self.imagehandler.set_page(num):
-            self.new_page(at_bottom=at_bottom)
-            self.slideshow.update_delay()
-            return True
-        else:
-            return False
+        if num == self.imagehandler.get_current_page():
+            return
+        self.imagehandler.set_page(num)
+        self.page_changed()
+        self.new_page(at_bottom=at_bottom)
+        self.slideshow.update_delay()
 
-    def next_page(self, *args):
-        new_page_number = self.imagehandler.next_page()
+    def next_book(self):
+        archive_open = self.filehandler.archive_type is not None
+        next_archive_opened = False
+        if (self.slideshow.is_running() and \
+            prefs['slideshow can go to next archive']) or \
+           prefs['auto open next archive']:
+            next_archive_opened = self.filehandler._open_next_archive()
 
-        if new_page_number >= 1:
-            self.set_page(new_page_number)
+        # If "Auto open next archive" is disabled, do not go to the next
+        # directory if current file was an archive.
+        if not next_archive_opened and \
+           prefs['auto open next directory'] and \
+           (not archive_open or prefs['auto open next archive']):
+            self.filehandler.open_next_directory()
 
-    def next_page_fast_forward(self, *args):
-        page_num = self.imagehandler.get_current_page()
-        if not self.set_page(page_num + 10):
-            self.last_page()
+    def previous_book(self):
+        archive_open = self.filehandler.archive_type is not None
+        previous_archive_opened = False
+        if (self.slideshow.is_running() and \
+            prefs['slideshow can go to next archive']) or \
+            prefs['auto open next archive']:
+            previous_archive_opened = self.filehandler._open_previous_archive()
 
-    def previous_page(self, *args):
-        new_page_number = self.imagehandler.previous_page()
-        if new_page_number >= 1:
-            self.set_page(new_page_number, at_bottom=True)
+        # If "Auto open next archive" is disabled, do not go to the previous
+        # directory if current file was an archive.
+        if not previous_archive_opened and \
+            prefs['auto open next directory'] and \
+            (not archive_open or prefs['auto open next archive']):
+            self.filehandler.open_previous_directory()
 
-    def previous_page_fast_forward(self, *args):
-        page_num = self.imagehandler.get_current_page()
-        if not self.set_page(page_num - 10):
-            self.first_page()
+    def flip_page(self, step, single_step=False):
 
-    def first_page(self, *args):
-        new_page_number = self.imagehandler.first_page()
-        if new_page_number >= 1:
-            self.set_page(new_page_number)
+        current_page = self.imagehandler.get_current_page()
+        if not current_page:
+            return
 
-    def last_page(self, *args):
-        new_page_number = self.imagehandler.last_page()
-        if new_page_number >= 1:
-            self.set_page(new_page_number)
+        new_page = current_page + step
+        if (1 == abs(step) and not single_step and self.is_double_page and
+            prefs['double step in double page mode']):
+            if +1 == step and not self.imagehandler.get_virtual_double_page():
+                new_page += 1
+            elif -1 == step and not self.imagehandler.get_virtual_double_page(new_page):
+                new_page -= 1
+
+        number_of_pages = self.imagehandler.get_number_of_pages()
+
+        if new_page <= 0:
+            if -1 == step:
+                return self.previous_book()
+            new_page = 1
+        elif new_page > number_of_pages:
+            if 1 == step:
+                return self.next_book()
+            new_page = number_of_pages
+
+        if new_page != current_page:
+            self.set_page(new_page, at_bottom=(-1 == step))
+
+    def first_page(self):
+        number_of_pages = self.imagehandler.get_number_of_pages()
+        if number_of_pages:
+            self.set_page(1)
+
+    def last_page(self):
+        number_of_pages = self.imagehandler.get_number_of_pages()
+        if number_of_pages:
+            self.set_page(number_of_pages)
 
     def page_select(self, *args):
         pageselect.Pageselector(self)

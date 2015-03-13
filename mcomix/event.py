@@ -729,23 +729,7 @@ class EventHandler:
         """ Switches a number of pages forwards/backwards. If C{single_step} is True,
         the page count will be advanced by only one page even in double page mode. """
         self._extra_scroll_events = 0
-        old_stepping = self._window.imagehandler.force_single_step
-        self._window.imagehandler.force_single_step = old_stepping or single_step
-
-        # TODO needs even better abstraction
-        if number_of_pages == 1:
-            self._window.next_page()
-        elif number_of_pages == -1:
-            self._window.previous_page()
-        elif number_of_pages == 10:
-            self._window.next_page_fast_forward()
-        elif number_of_pages == -10:
-            self._window.previous_page_fast_forward()
-        else:
-            assert False, "_flip_page(" + str(number_of_pages) + ")"
-
-        self._window.imagehandler.force_single_step = old_stepping
-
+        self._window.flip_page(number_of_pages, single_step=single_step)
 
     def _left_right_page_progress(self, number_of_pages=1):
         """ If number_of_pages is positive, this function advances the specified

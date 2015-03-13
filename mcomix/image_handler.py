@@ -52,9 +52,6 @@ class ImageHandler:
         #: How many pages to keep in cache
         self._cache_pages = prefs['max pages to cache']
 
-        #: Advance only one page instead of two in double page mode
-        self.force_single_step = False
-
         self._window.filehandler.file_available += self._file_available
 
     def _get_pixbuf(self, index):
@@ -142,100 +139,12 @@ class ImageHandler:
         log.debug('Caching page %u', index + 1)
         self._get_pixbuf(index)
 
-    def next_page(self):
-        """Set up filehandler to the next page. Return the new page number.
-        """
-        if not self._window.filehandler.file_loaded and self._window.filehandler.archive_type is None:
-            return False
-
-        viewed = self._window.displayed_double() and 2 or 1
-
-        if self.get_current_page() + viewed > self.get_number_of_pages():
-
-            archive_open = self._window.filehandler.archive_type is not None
-            next_archive_opened = False
-            if (self._window.slideshow.is_running() and \
-                prefs['slideshow can go to next archive']) or \
-                prefs['auto open next archive']:
-                next_archive_opened = self._window.filehandler._open_next_archive()
-
-            # If "Auto open next archive" is disabled, do not go to the next
-            # directory if current file was an archive.
-            if not next_archive_opened and \
-                prefs['auto open next directory'] and \
-                (not archive_open or prefs['auto open next archive']):
-                self._window.filehandler.open_next_directory()
-
-            return False
-
-        self._current_image_index += self._get_forward_step_length()
-
-        return self.get_current_page()
-
-    def previous_page(self):
-        """Set up filehandler to the previous page. Return the new page number.
-        """
-        if not self._window.filehandler.file_loaded and self._window.filehandler.archive_type is None:
-            return False
-
-        if self.get_current_page() <= 1:
-
-            archive_open = self._window.filehandler.archive_type is not None
-            previous_archive_opened = False
-            if (self._window.slideshow.is_running() and \
-                prefs['slideshow can go to next archive']) or \
-                prefs['auto open next archive']:
-                previous_archive_opened = self._window.filehandler._open_previous_archive()
-
-            # If "Auto open next archive" is disabled, do not go to the previous
-            # directory if current file was an archive.
-            if not previous_archive_opened and \
-                prefs['auto open next directory'] and \
-                (not archive_open or prefs['auto open next archive']):
-                self._window.filehandler.open_previous_directory()
-
-            return False
-
-        step = self._get_backward_step_length()
-        step = min(self._current_image_index, step)
-        self._current_image_index -= step
-
-        if (step == 2 and self.get_virtual_double_page()):
-            self._current_image_index += 1
-
-        return self.get_current_page()
-
-    def first_page(self):
-        """Set up filehandler to the first page. Return the new page number.
-        """
-        if not self._window.filehandler.file_loaded:
-            return False
-
-        self._current_image_index = 0
-        return self.get_current_page()
-
-    def last_page(self):
-        """Set up filehandler to the last page. Return the new page number.
-        """
-        if not self._window.filehandler.file_loaded:
-            return False
-        offset = self._window.is_double_page and 2 or 1
-        offset = min(self.get_number_of_pages(), offset)
-        self._current_image_index = self.get_number_of_pages() - offset
-        if (offset == 2 and self.get_virtual_double_page()):
-            self._current_image_index += 1
-        return self.get_current_page()
-
     def set_page(self, page_num):
         """Set up filehandler to the page <page_num>. Return the new page number.
         """
-        if not 0 < page_num <= self.get_number_of_pages():
-            return False
-
+        assert 0 < page_num <= self.get_number_of_pages()
         self._current_image_index = page_num - 1
         self.do_cacheing()
-
-        return self.get_current_page()
 
     def get_virtual_double_page(self, page=None):
         """Return True if the current state warrants use of virtual
@@ -477,24 +386,6 @@ class ImageHandler:
             return thumbnailer.thumbnail(path)
         except Exception:
             return constants.MISSING_IMAGE_ICON
-
-    def _get_forward_step_length(self):
-        """Return the step length for switching pages forwards."""
-        if self.force_single_step:
-            return 1
-        elif (prefs['double step in double page mode'] and \
-            self._window.displayed_double()):
-            return 2
-        return 1
-
-    def _get_backward_step_length(self):
-        """Return the step length for switching pages backwards."""
-        if self.force_single_step:
-            return 1
-        elif (prefs['double step in double page mode'] and \
-            self._window.is_double_page):
-            return 2
-        return 1
 
     def _wait_on_page(self, page, check_only=False):
         """Block the running (main) thread until the file corresponding to
