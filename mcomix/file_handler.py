@@ -185,7 +185,6 @@ class FileHandler(object):
                                               constants.FIRST_INDEX)
             self._window.uimanager.set_sensitivities()
             self._window.thumbnailsidebar.load_thumbnails()
-            self._window.uimanager.set_sensitivities()
 
             self.write_fileinfo_file()
 
