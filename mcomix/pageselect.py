@@ -19,7 +19,6 @@ class Pageselector(gtk.Dialog):
         self.add_buttons(_('_Go'), gtk.RESPONSE_OK,
                          _('_Cancel'), gtk.RESPONSE_CANCEL,)
         self.set_default_response(gtk.RESPONSE_OK)
-        self.set_has_separator(False)
         self.connect('response', self._response)
         self.set_resizable(True)
 

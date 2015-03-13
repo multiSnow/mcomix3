@@ -19,7 +19,6 @@ class _BookmarksDialog(gtk.Dialog):
 
         self._bookmarks_store = bookmarks_store
 
-        self.set_has_separator(False)
         self.set_resizable(True)
         self.set_default_response(gtk.RESPONSE_CLOSE)
         # scroll area fill to the edge (TODO window should not really be a dialog)

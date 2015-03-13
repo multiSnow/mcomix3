@@ -25,7 +25,6 @@ class _PropertiesDialog(gtk.Dialog):
         self._window = window
         self.resize(400, 400)
         self.set_resizable(True)
-        self.set_has_separator(False)
         self.set_default_response(gtk.RESPONSE_CLOSE)
         notebook = gtk.Notebook()
         self.set_border_width(4)

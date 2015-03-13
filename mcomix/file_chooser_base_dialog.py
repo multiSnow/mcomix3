@@ -51,7 +51,6 @@ class _BaseFileChooserDialog(gtk.Dialog):
 
         gtk.Dialog.__init__(self, title, None, 0, buttons)
         self.set_default_response(gtk.RESPONSE_OK)
-        self.set_has_separator(False)
 
         self.filechooser = gtk.FileChooserWidget(action=action)
         self.filechooser.set_size_request(680, 420)

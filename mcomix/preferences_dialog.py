@@ -30,7 +30,6 @@ class _PreferencesDialog(gtk.Dialog):
         self.add_button(gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
 
         self._window = window
-        self.set_has_separator(False)
         self.set_resizable(True)
         self.set_default_response(gtk.RESPONSE_CLOSE)
 

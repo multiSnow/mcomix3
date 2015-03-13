@@ -24,7 +24,6 @@ class _AddLibraryProgressDialog(gtk.Dialog):
         self._window = window
         self._destroy = False
         self.set_size_request(400, -1)
-        self.set_has_separator(False)
         self.set_resizable(False)
         self.set_border_width(4)
         self.connect('response', self._response)

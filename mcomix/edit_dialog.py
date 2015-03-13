@@ -41,7 +41,6 @@ class _EditArchiveDialog(gtk.Dialog):
         self._import_button.set_image(gtk.image_new_from_stock(gtk.STOCK_ADD,
             gtk.ICON_SIZE_BUTTON))
 
-        self.set_has_separator(False)
         self.set_border_width(4)
         self.resize(min(gtk.gdk.screen_get_default().get_width() - 50, 750),
             min(gtk.gdk.screen_get_default().get_height() - 50, 600))

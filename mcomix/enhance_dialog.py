@@ -26,7 +26,6 @@ class _EnhanceImageDialog(gtk.Dialog):
         self.add_action_widget(save, gtk.RESPONSE_APPLY)
         self.add_button(gtk.STOCK_OK, gtk.RESPONSE_OK)
 
-        self.set_has_separator(False)
         self.set_resizable(False)
         self.connect('response', self._response)
         self.set_default_response(gtk.RESPONSE_OK)
