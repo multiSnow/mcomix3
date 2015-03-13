@@ -10,7 +10,6 @@ from mcomix import constants
 from mcomix import cursor_handler
 from mcomix import i18n
 from mcomix import enhance_backend
-from mcomix import enhance_dialog
 from mcomix import event
 from mcomix import file_handler
 from mcomix import image_handler
@@ -810,7 +809,6 @@ class MainWindow(gtk.Window):
         self._clear_main_area()
         self.set_title(constants.APPNAME)
         self.statusbar.set_message('')
-        enhance_dialog.clear_histogram()
 
     def _clear_main_area(self):
         for i in self.images:

@@ -90,17 +90,33 @@ class _EnhanceImageDialog(gtk.Dialog):
         self._contrast_scale.set_sensitive(
             not self._autocontrast_button.get_active())
 
-        self.draw_histogram(self._window.images[0]) # XXX transitional(double page limitation)
+        self._window.imagehandler.page_available += self._on_page_available
+        self._window.filehandler.file_closed += self._on_book_close
+        self._window.page_changed += self._on_page_change
+        self._on_page_change()
 
         self.show_all()
 
-    def draw_histogram(self, image):
-        """Draw a histogram representing <image> in the dialog."""
-        pixbuf = image.get_pixbuf()
+    def _on_book_close(self):
+        self.clear_histogram()
 
-        if pixbuf is not None:
-            self._hist_image.set_from_pixbuf(histogram.draw_histogram(pixbuf,
-                text=False))
+    def _on_page_change(self):
+        if not self._window.imagehandler.page_is_available():
+            self.clear_histogram()
+            return
+        # XXX transitional(double page limitation)
+        pixbuf = self._window.imagehandler.get_pixbufs(1)[0]
+        self.draw_histogram(pixbuf)
+
+    def _on_page_available(self, page_number):
+        current_page_number = self._window.imagehandler.get_current_page()
+        if current_page_number == page_number:
+            self._on_page_change()
+
+    def draw_histogram(self, pixbuf):
+        """Draw a histogram representing <pixbuf> in the dialog."""
+        histogram_pixbuf = histogram.draw_histogram(pixbuf, text=False)
+        self._hist_image.set_from_pixbuf(histogram_pixbuf)
 
     def clear_histogram(self):
         """Clear the histogram in the dialog."""
@@ -143,25 +159,12 @@ class _EnhanceImageDialog(gtk.Dialog):
             self._change_values(self)
 
 
-def draw_histogram(image):
-    """Draw a histogram of <image> in the dialog, if there is one."""
-    if _dialog is not None:
-        _dialog.draw_histogram(image)
-
-
-def clear_histogram():
-    """Clear the histogram in the dialog, if there is one."""
-    if _dialog is not None:
-        _dialog.clear_histogram()
-
 def open_dialog(action, window):
     """Create and display the (singleton) image enhancement dialog."""
     global _dialog
 
     if _dialog is None:
         _dialog = _EnhanceImageDialog(window)
-        draw_histogram(window.images[0]) # XXX transitional(double page limitation)
-
     else:
         _dialog.present()
 
