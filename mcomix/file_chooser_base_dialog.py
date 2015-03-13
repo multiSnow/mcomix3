@@ -68,12 +68,14 @@ class _BaseFileChooserDialog(gtk.Dialog):
         preview_box.pack_start(self._preview_image, False, False)
         self.filechooser.set_preview_widget(preview_box)
 
+        pango_scale_small = (1 / 1.2)
+
         self._namelabel = labels.FormattedLabel(weight=pango.WEIGHT_BOLD,
-            scale=pango.SCALE_SMALL)
+            scale=pango_scale_small)
         self._namelabel.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
         preview_box.pack_start(self._namelabel, False, False)
 
-        self._sizelabel = labels.FormattedLabel(scale=pango.SCALE_SMALL)
+        self._sizelabel = labels.FormattedLabel(scale=pango_scale_small)
         self._sizelabel.set_ellipsize(pango.ELLIPSIZE_MIDDLE)
         preview_box.pack_start(self._sizelabel, False, False)
         self.filechooser.set_use_preview_label(False)

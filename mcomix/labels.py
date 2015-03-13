@@ -10,7 +10,7 @@ class FormattedLabel(gtk.Label):
     """
 
     def __init__(self, text='', weight=pango.WEIGHT_NORMAL,
-      style=pango.STYLE_NORMAL, scale=pango.SCALE_MEDIUM):
+      style=pango.STYLE_NORMAL, scale=1.0):
         gtk.Label.__init__(self, text)
         self._weight = weight
         self._style = style
