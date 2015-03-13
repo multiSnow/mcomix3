@@ -6,6 +6,8 @@ import gobject
 import pango
 import textwrap
 
+from mcomix import constants
+
 class OnScreenDisplay(object):
 
     """ The OSD shows information such as currently opened file, archive and
@@ -117,13 +119,11 @@ class OnScreenDisplay(object):
         self._clear_osd(osd_region)
 
         # Set up drawing context
-        colormap = gtk.gdk.colormap_get_system()
-        black = colormap.alloc_color(5000, 5000, 5000)
-        white = colormap.alloc_color("white")
-        gc = window.new_gc(foreground=black, background=black)
+        gc = window.new_gc(foreground=constants.GTK_GDK_COLOR_BLACK,
+                           background=constants.GTK_GDK_COLOR_BLACK)
 
         window.draw_rectangle(gc, True, *rect)
-        window.draw_layout(gc, rect[0] + 10, rect[1] + 10, layout, foreground=white)
+        window.draw_layout(gc, rect[0] + 10, rect[1] + 10, layout, foreground=constants.GTK_GDK_COLOR_WHITE)
         window.end_paint()
 
 # vim: expandtab:sw=4:ts=4
