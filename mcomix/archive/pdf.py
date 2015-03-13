@@ -72,7 +72,7 @@ class PdfArchive(archive_base.BaseArchive):
             proc.wait()
         # Render...
         cmd = ['mudraw', '-r', str(max_dpi), '-o', destination_path, '--', self.pdf, str(page_num)]
-        log.debug('rendering %s: %s' % (filename, ' '.join(cmd)))
+        log.debug('rendering %s: %s', filename, ' '.join(cmd))
         proc = process.Process(cmd)
         fd = proc.spawn()
         if fd is not None:

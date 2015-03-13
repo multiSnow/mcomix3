@@ -56,7 +56,7 @@ class RecursiveArchive(archive_base.BaseArchive):
             # And open it and list its contents.
             sub_archive = archive_tools.get_archive_handler(sub_archive_path)
             if sub_archive is None:
-                log.warning('Non-supported archive format: %s' %
+                log.warning('Non-supported archive format: %s',
                             os.path.basename(sub_archive_path))
                 continue
             sub_root = f
