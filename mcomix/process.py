@@ -3,6 +3,7 @@
 import gc
 import sys
 import os
+from distutils import spawn
 
 from mcomix import log
 from mcomix import i18n
@@ -46,6 +47,14 @@ def popen(args, stdin=NULL, stdout=PIPE, stderr=NULL):
     finally:
         if not _using_subprocess32:
             gc.enable()
+
+
+def find_executable(candidates):
+    for name in candidates:
+        exe = spawn.find_executable(name)
+        if exe is not None:
+            return exe
+    return None
 
 
 def Win32Popen(cmd):
