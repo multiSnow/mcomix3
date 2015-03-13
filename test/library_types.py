@@ -1,5 +1,6 @@
 import unittest
 import tempfile
+import shutil
 import os
 
 from mcomix import constants
@@ -129,24 +130,32 @@ class CollectionTest(unittest.TestCase):
 class WatchListEntryTest(unittest.TestCase):
 
     def test_invalid_dir(self):
-        entry = backend_types._WatchListEntry("/root/invalid-directory", False, None)
-
+        tmpdir = tempfile.mkdtemp(dir=u'test', prefix=u'tmp.library_types.')
+        entry = backend_types._WatchListEntry(os.path.join(tmpdir, "invalid-directory"), False, None)
         self.assertFalse(entry.is_valid())
         self.assertIsInstance(entry.get_new_files([]), list)
         self.assertEqual(len(entry.get_new_files([])), 0)
+        shutil.rmtree(tmpdir)
 
     def test_valid_dir(self):
+        tmpdir = os.path.abspath(tempfile.mkdtemp(dir=u'test', prefix=u'tmp.library_types.'))
         directory = unicode(os.path.abspath('test/files/archives'))
-        available = [os.path.join(directory, u'01-ZIP-Normal.zip'),
-                     os.path.join(directory, u'02-TAR-Normal.tar')]
-        others = [os.path.join(directory, u'03-RAR-Normal.rar'),
-                  os.path.join(directory, u'04-7Z-Normal.7z')]
+        available = [u'01-ZIP-Normal.zip', u'02-TAR-Normal.tar']
+        others = [u'03-RAR-Normal.rar', u'04-7Z-Normal.7z']
+        for entry_list in (available, others):
+            for n, entry in enumerate(entry_list):
+                src = os.path.join(directory, entry)
+                dst = os.path.join(tmpdir, entry)
+                shutil.copy(src, dst)
+                entry_list[n] = dst
 
-        entry = backend_types._WatchListEntry(directory, True, None)
+        entry = backend_types._WatchListEntry(tmpdir, True, None)
         new_files = entry.get_new_files(available)
         new_files.sort()
 
         self.assertIsInstance(new_files, list)
         self.assertEqual(new_files, others)
+
+        shutil.rmtree(tmpdir)
 
 # vim: expandtab:sw=4:ts=4
