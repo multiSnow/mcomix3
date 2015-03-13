@@ -257,7 +257,7 @@ class FileHandler(object):
             self.file_closed()
         # Catch up on UI events, so we don't leave idle callbacks.
         while gtk.events_pending():
-            gtk.main_iteration(False)
+            gtk.main_iteration_do(False)
         tools.garbage_collect()
         if self._tmp_dir is not None:
             self.thread_delete(self._tmp_dir)

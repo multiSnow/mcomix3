@@ -86,7 +86,7 @@ class _EditArchiveDialog(gtk.Dialog):
         self._window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
 
         while gtk.events_pending():
-            gtk.main_iteration(False)
+            gtk.main_iteration_do(False)
 
         image_files = self._image_area.get_file_listing()
         comment_files = self._comment_area.get_file_listing()

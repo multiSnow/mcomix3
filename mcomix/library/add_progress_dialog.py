@@ -71,7 +71,7 @@ class _AddLibraryProgressDialog(gtk.Dialog):
             bar.set_fraction(total_added / total_paths_float)
 
             while gtk.events_pending():
-                gtk.main_iteration(False)
+                gtk.main_iteration_do(False)
 
             if self._destroy:
                 return
