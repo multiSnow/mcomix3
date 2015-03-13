@@ -5,7 +5,18 @@ MComix 1.02
     - The thumbnailer now displays page numbers in a reasonable color
       appropriate for the respective background color.
 
+    - MComix uses czipfile if available to speed up extraction from zip files.
+
     - The Preferences dialog is not modal anymore.
+
+    - The "Continue reading" dialog defaults to "Yes" now.
+
+    - Dialogs refresh their respective contents whenever you switch to another
+      page or book.
+
+    - The password dialog now displays the path of the archive.
+
+    - Zombie processes will be removed if possible.
 
     - Fixed a bug that could lead to crashes if the thumbnailer uses a dynamic
       background color.
@@ -19,13 +30,29 @@ MComix 1.02
       archive with no images in it has been opened or the "Edit archive" dialog
       has been used.
 
-    - Modal dialogs do not hide the mouse cursor in the main area anymore.
+    - Fixed a lot of issues with empty directories and empty archives.
+
+    - Modal dialogs do not immediately hide the mouse cursor in the main area
+      anymore.
 
     - Various issues with the Preferences dialog, the Properties dialog and the
       library have been fixed.
 
     - Applying changes in the "Edit archive" dialog could raise an exception
       under certain circumstances. This has been fixed.
+
+    - The shebangs now ask for python2 instead of just python so we do not
+      accidentally run Python 3.
+
+    - comicthumb has been rewritten to make it consistent with MComix.
+
+    - The MIME database has been updated.
+
+    - Code refactoring
+
+    - New code and examples for testing
+
+    - Various minor bug fixes and improvements
 
     - ChangeLog updated for MComix 1.01
 
