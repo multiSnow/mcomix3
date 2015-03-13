@@ -237,31 +237,34 @@ class ImageHandler:
 
         return self.get_current_page()
 
-    def get_virtual_double_page(self):
+    def get_virtual_double_page(self, page=None):
         """Return True if the current state warrants use of virtual
         double page mode (i.e. if double page mode is on, the corresponding
         preference is set, and one of the two images that should normally
         be displayed has a width that exceeds its height), or if currently
         on the first page.
         """
-        if (self.get_current_page() == 1 and
+        if page == None:
+            page = self.get_current_page()
+
+        if (page == 1 and
             prefs['virtual double page for fitting images'] & constants.SHOW_DOUBLE_AS_ONE_TITLE and
             self._window.filehandler.archive_type is not None):
             return True
 
         if (not self._window.is_double_page or
-          not prefs['virtual double page for fitting images'] & constants.SHOW_DOUBLE_AS_ONE_WIDE or
-          self.get_current_page() == self.get_number_of_pages()):
+            not prefs['virtual double page for fitting images'] & constants.SHOW_DOUBLE_AS_ONE_WIDE or
+            page == self.get_number_of_pages()):
             return False
 
-        if not self.page_is_available(self._current_image_index + 1):
+        if not self.page_is_available(page):
             return False
-        page1 = self._get_pixbuf(self._current_image_index)
+        page1 = self._get_pixbuf(page - 1)
         if page1.get_width() > page1.get_height():
             return True
-        if not self.page_is_available(self._current_image_index + 2):
+        if not self.page_is_available(page + 1):
             return False
-        page2 = self._get_pixbuf(self._current_image_index + 1)
+        page2 = self._get_pixbuf(page)
         if page2.get_width() > page2.get_height():
             return True
 
