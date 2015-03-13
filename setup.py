@@ -11,7 +11,6 @@ Example usage:
     $ ./setup.py install --single-version-externally-managed --root /tmp/mcomix --prefix /usr
 """
 
-import sys
 import os
 import glob
 import setuptools

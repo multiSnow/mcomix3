@@ -2,8 +2,6 @@
 
 """preferences_dialog.py - Preferences dialog."""
 
-from itertools import groupby
-from collections import defaultdict
 import operator
 import gtk
 import gobject

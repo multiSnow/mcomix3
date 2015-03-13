@@ -6,7 +6,6 @@ import threading
 import traceback
 
 from mcomix import archive_tools
-from mcomix import constants
 from mcomix import callback
 from mcomix import log
 from mcomix.preferences import prefs

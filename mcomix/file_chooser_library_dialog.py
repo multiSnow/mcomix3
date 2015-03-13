@@ -1,6 +1,5 @@
 """file_chooser_library_dialog.py - Custom FileChooserDialog implementations."""
 
-import os
 import gtk
 
 from mcomix.preferences import prefs

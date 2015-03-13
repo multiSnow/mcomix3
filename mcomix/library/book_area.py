@@ -6,7 +6,6 @@ import gtk
 import gobject
 import PIL.Image as Image
 import PIL.ImageDraw as ImageDraw
-import pkg_resources
 
 from mcomix.preferences import prefs
 from mcomix import thumbnail_view

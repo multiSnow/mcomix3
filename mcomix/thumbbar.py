@@ -1,6 +1,5 @@
 """thumbbar.py - Thumbnail sidebar for main window."""
 
-import sys
 import urllib
 import gtk
 import gobject

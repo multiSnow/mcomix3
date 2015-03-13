@@ -1,9 +1,7 @@
 """image_handler.py - Image handler that takes care of cacheing and giving out images."""
 
 import os
-import threading
 import gtk
-import Queue
 
 from mcomix.preferences import prefs
 from mcomix import i18n

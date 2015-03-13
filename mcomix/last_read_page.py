@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import os
-import datetime
 
 from mcomix import log
 from mcomix import constants

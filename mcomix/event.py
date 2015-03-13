@@ -3,7 +3,6 @@
 
 import urllib
 import gtk
-import gtk.gdk
 
 from mcomix.preferences import prefs
 from mcomix import constants

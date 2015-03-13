@@ -7,7 +7,6 @@ import operator
 import datetime
 import time
 
-from mcomix.preferences import prefs
 from mcomix import constants
 from mcomix import log
 from mcomix import bookmark_menu_item
