@@ -36,7 +36,7 @@ def make_archive(outfile, contents, format='zip', solid=False, password=None):
     cleanup = []
     try:
         outpath = os.path.abspath(outfile)
-        tmp_dir = tempfile.mkdtemp(prefix=u'mcomix.test.', suffix=os.sep)
+        tmp_dir = tempfile.mkdtemp(prefix=u'make_archive.')
         cleanup.append(lambda: shutil.rmtree(tmp_dir))
         entry_list = []
         for name, filename in contents:
@@ -56,7 +56,7 @@ def make_archive(outfile, contents, format='zip', solid=False, password=None):
                 cmd.append('-p' + password)
             cmd.extend(('--', outpath))
             # To avoid @ being treated as a special character...
-            tmp_file = tempfile.NamedTemporaryFile(prefix='mcomix.test.', delete=False)
+            tmp_file = tempfile.NamedTemporaryFile(prefix=u'make_archive.', delete=False)
             cleanup.append(lambda: os.unlink(tmp_file.name))
             for entry in entry_list:
                 tmp_file.write(entry.encode(locale.getpreferredencoding()) + '\n')
@@ -144,7 +144,6 @@ class ArchiveFormatTest:
     def setUpClass(cls):
         if cls.skip is not None:
             raise unittest.SkipTest(cls.skip)
-        cls.tmp_dir = tempfile.mkdtemp(prefix=u'mcomix.test.', suffix=os.sep)
         cls.archive_path = u'test/files/archives/%s.%s' % (cls.archive, cls.format)
         cls.archive_contents = dict([
             (archive_name, filename)
@@ -164,16 +163,27 @@ class ArchiveFormatTest:
                      solid=cls.solid,
                      password=cls.password)
 
-    @classmethod
-    def tearDownClass(cls):
-        shutil.rmtree(cls.tmp_dir)
-
     def setUp(self):
-        self.dest_dir = os.path.join(self.tmp_dir, 'contents')
-        os.mkdir(self.dest_dir)
+        self.dest_dir = tempfile.mkdtemp(dir=u'test', prefix=u'tmp.test_archives.')
 
     def tearDown(self):
-        shutil.rmtree(self.dest_dir)
+        failed = False
+        if hasattr(self._resultForDoCleanups, '_excinfo'):
+            # When running under py.test2
+            exclist = self._resultForDoCleanups._excinfo
+            if exclist is not None:
+                for exc in exclist:
+                    if 'XFailed' != exc.typename:
+                        failed = True
+                        break
+        if hasattr(self._resultForDoCleanups, 'failures'):
+            # When running under nosetest2
+            for failure, traceback in self._resultForDoCleanups.failures:
+                if failure.id() == self.id():
+                    failed = True
+                    break
+        if not failed:
+            shutil.rmtree(self.dest_dir)
 
     def test_init_not_unicode(self):
         self.assertRaises(AssertionError, self.handler, 'test')
