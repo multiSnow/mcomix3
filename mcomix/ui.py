@@ -68,7 +68,7 @@ class MainUI(gtk.UIManager):
             ('minimize', gtk.STOCK_LEAVE_FULLSCREEN, _('Mi_nimize'),
                 None, None, window.minimize),
             ('close', gtk.STOCK_CLOSE, _('_Close'),
-                None, _('Closes all opened files.'), window.filehandler.close_file),
+                None, _('Closes all opened files.'), _action_lambda(window.filehandler.close_file)),
             ('quit', gtk.STOCK_QUIT, _('_Quit'),
                 None, None, window.close_program),
             ('save_and_quit', gtk.STOCK_QUIT, _('_Save and quit'),
