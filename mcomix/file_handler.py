@@ -541,6 +541,9 @@ class FileHandler(object):
         """ Opens the next sibling directory of the current file, as specified by
         file provider. Returns True if a new directory was opened and files found. """
 
+        if self._file_provider is None:
+            return
+
         if self.archive_type is not None:
             listmode = file_provider.FileProvider.ARCHIVES
         else:
@@ -564,6 +567,9 @@ class FileHandler(object):
     def open_previous_directory(self, *args):
         """ Opens the previous sibling directory of the current file, as specified by
         file provider. Returns True if a new directory was opened and files found. """
+
+        if self._file_provider is None:
+            return
 
         if self.archive_type is not None:
             listmode = file_provider.FileProvider.ARCHIVES
