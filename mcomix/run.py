@@ -205,11 +205,10 @@ def run():
     if 'win32' != sys.platform:
         # Add a SIGCHLD handler to reap zombie processes.
         def on_sigchld(signum, frame):
-            while True:
-                try:
-                    os.waitpid(-1, os.WNOHANG)
-                except OSError:
-                    break
+            try:
+                os.waitpid(-1, os.WNOHANG)
+            except OSError:
+                pass
         signal.signal(signal.SIGCHLD, on_sigchld)
 
     signal.signal(signal.SIGTERM, lambda: gobject.idle_add(window.terminate_program))
