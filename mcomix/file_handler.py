@@ -118,6 +118,7 @@ class FileHandler(object):
         if error_message:
             self._window.statusbar.set_message(error_message)
             self._window.osd.show(error_message)
+            self.file_load_failed = False
             return False
 
         self.filelist = filelist
@@ -169,7 +170,6 @@ class FileHandler(object):
         self._window.imagehandler._image_files = image_files
 
         if not image_files:
-            self.file_load_failed = True
             msg = _("No images in '%s'") % os.path.basename(self._current_file)
             self._window.statusbar.set_message(msg)
             self._window.osd.show(msg)
@@ -177,8 +177,6 @@ class FileHandler(object):
             self._window.uimanager.set_sensitivities()
 
         else:
-            self.file_load_failed = False
-
             if self.archive_type is None:
                 # If no extraction is required, mark all files as available.
                 self.file_available(self.filelist)
@@ -311,14 +309,6 @@ class FileHandler(object):
 
         elif not os.access(path, os.R_OK):
             return _('Could not open %s: Permission denied.') % path
-
-        elif archive_type is None and len(filelist) == 0:
-            return _("No images in '%s'") % path
-
-        elif (archive_type is None and
-            not image_tools.is_image_file(path) and
-            len(filelist) == 0):
-            return _('Could not open %s: Unknown file type.') % path
 
         else:
             return None
@@ -556,19 +546,21 @@ class FileHandler(object):
             listmode = file_provider.FileProvider.IMAGES
 
         current_dir = self._file_provider.get_directory()
-        while self._file_provider.next_directory():
-            files = self._file_provider.list_files(listmode)
+        if not self._file_provider.next_directory():
+            # Restore current directory if no files were found
+            self._file_provider.set_directory(current_dir)
+            return False
 
-            if len(files) > 0:
-                self._close()
-                self._window.scroll_to_predefined(
-                    (constants.SCROLL_TO_START,) * 2, constants.FIRST_INDEX)
-                self.open_file(files[0], keep_fileprovider=True)
-                return True
-
-        # Restore current directory if no files were found
-        self._file_provider.set_directory(current_dir)
-        return False
+        files = self._file_provider.list_files(listmode)
+        self._close()
+        self._window.scroll_to_predefined(
+            (constants.SCROLL_TO_START,) * 2, constants.FIRST_INDEX)
+        if len(files) > 0:
+            path = files[0]
+        else:
+            path = self._file_provider.get_directory()
+        self.open_file(path, keep_fileprovider=True)
+        return True
 
     def open_previous_directory(self, *args):
         """ Opens the previous sibling directory of the current file, as specified by
@@ -583,19 +575,21 @@ class FileHandler(object):
             listmode = file_provider.FileProvider.IMAGES
 
         current_dir = self._file_provider.get_directory()
-        while self._file_provider.previous_directory():
-            files = self._file_provider.list_files(listmode)
+        if not self._file_provider.previous_directory():
+            # Restore current directory if no files were found
+            self._file_provider.set_directory(current_dir)
+            return False
 
-            if len(files) > 0:
-                self._close()
-                self._window.scroll_to_predefined(
-                    (constants.SCROLL_TO_END,) * 2, constants.LAST_INDEX)
-                self.open_file(files[-1], -1, keep_fileprovider=True)
-                return True
-
-        # Restore current directory if no files were found
-        self._file_provider.set_directory(current_dir)
-        return False
+        files = self._file_provider.list_files(listmode)
+        self._close()
+        self._window.scroll_to_predefined(
+            (constants.SCROLL_TO_END,) * 2, constants.LAST_INDEX)
+        if len(files) > 0:
+            path = files[-1]
+        else:
+            path = self._file_provider.get_directory()
+        self.open_file(path, -1, keep_fileprovider=True)
+        return True
 
     def file_is_available(self, filepath):
         """ Returns True if the file specified by "filepath" is available
