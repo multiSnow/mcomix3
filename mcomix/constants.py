@@ -98,8 +98,7 @@ try:
     # Pixbuf is None when running without X server.
     # Setup.py could fail because of this.
     if _missing_icon_pixbuf:
-        MISSING_IMAGE_ICON = _missing_icon_pixbuf.scale_simple(
-                128, 128, gtk.gdk.INTERP_TILES)
+        MISSING_IMAGE_ICON = _missing_icon_pixbuf
 
     GTK_GDK_COLOR_BLACK = gtk.gdk.color_parse('black')
     GTK_GDK_COLOR_WHITE = gtk.gdk.color_parse('white')
