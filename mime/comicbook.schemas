@@ -66,5 +66,27 @@
                 <long></long>
             </locale>
         </schema>
+        <schema>
+            <key>/schemas/desktop/gnome/thumbnailers/application@x-cb7/enable</key>
+            <applyto>/desktop/gnome/thumbnailers/application@x-cb7/enable</applyto>
+            <owner>comicthumb</owner>
+            <type>bool</type>
+            <default>true</default>
+            <locale name="C">
+                <short></short>
+                <long></long>
+            </locale>
+        </schema>
+        <schema>
+            <key>/schemas/desktop/gnome/thumbnailers/application@x-cb7/command</key>
+            <applyto>/desktop/gnome/thumbnailers/application@x-cb7/command</applyto>
+            <owner>comicthumb</owner>
+            <type>string</type>
+            <default>comicthumb %i %o %s</default>
+            <locale name="C">
+                <short></short>
+                <long></long>
+            </locale>
+        </schema>
     </schemalist>
 </gconfschemafile>
