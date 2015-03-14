@@ -98,7 +98,7 @@ class FileHandler(object):
         Return True if the file is successfully loaded.
         """
 
-        self.close_file()
+        self._close()
 
         try:
             path = self._initialize_fileprovider(path, keep_fileprovider)
@@ -234,9 +234,15 @@ class FileHandler(object):
         """ Called when the current file has been closed. """
         pass
 
-    def close_file(self, *args):
+    def close_file(self):
+        """Close the currently opened file and its provider. """
+        self._close(close_provider=True)
+
+    def _close(self, close_provider=False):
         """Run tasks for "closing" the currently opened file(s)."""
         if self.file_loaded or self.file_loading:
+            if close_provider:
+                self._file_provider = None
             self.update_last_read_page()
             self.file_loaded = False
             self.file_loading = False
@@ -507,7 +513,7 @@ class FileHandler(object):
 
             for path in files[current_index + 1:]:
                 if archive_tools.archive_mime_type(path) is not None:
-                    self.close_file()
+                    self._close()
                     self._window.scroll_to_predefined(
                         (constants.SCROLL_TO_START,) * 2, constants.FIRST_INDEX)
                     self.open_file(path, keep_fileprovider=True)
@@ -529,7 +535,7 @@ class FileHandler(object):
 
             for path in reversed(files[:current_index]):
                 if archive_tools.archive_mime_type(path) is not None:
-                    self.close_file()
+                    self._close()
                     self._window.scroll_to_predefined(
                         (constants.SCROLL_TO_END,) * 2, constants.LAST_INDEX)
                     self.open_file(path, -1, keep_fileprovider=True)
@@ -554,7 +560,7 @@ class FileHandler(object):
             files = self._file_provider.list_files(listmode)
 
             if len(files) > 0:
-                self.close_file()
+                self._close()
                 self._window.scroll_to_predefined(
                     (constants.SCROLL_TO_START,) * 2, constants.FIRST_INDEX)
                 self.open_file(files[0], keep_fileprovider=True)
@@ -581,7 +587,7 @@ class FileHandler(object):
             files = self._file_provider.list_files(listmode)
 
             if len(files) > 0:
-                self.close_file()
+                self._close()
                 self._window.scroll_to_predefined(
                     (constants.SCROLL_TO_END,) * 2, constants.LAST_INDEX)
                 self.open_file(files[-1], -1, keep_fileprovider=True)
