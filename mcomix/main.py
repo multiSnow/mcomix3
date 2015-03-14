@@ -538,6 +538,9 @@ class MainWindow(gtk.Window):
 
     def flip_page(self, step, single_step=False):
 
+        if not self.filehandler.file_loaded:
+            return
+
         current_page = self.imagehandler.get_current_page()
         number_of_pages = self.imagehandler.get_number_of_pages()
 
