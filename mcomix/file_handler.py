@@ -126,7 +126,6 @@ class FileHandler(object):
         self._current_file = os.path.abspath(path)
         self._stop_waiting = False
 
-        result = False
         image_files = []
         current_image_index = 0
 
@@ -175,7 +174,6 @@ class FileHandler(object):
             self._window.statusbar.set_message(msg)
             self._window.osd.show(msg)
 
-            result = False
             self._window.uimanager.set_sensitivities()
 
         else:
