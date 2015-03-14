@@ -15,6 +15,9 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
 
     """A thumbnail sidebar including scrollbar for the main window."""
 
+    # Thumbnail border width in pixels.
+    _BORDER_SIZE = 1
+
     def __init__(self, window):
         gtk.ScrolledWindow.__init__(self)
 
@@ -184,6 +187,11 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         self._text_cellrenderer.set_property('foreground-gdk',
                 image_tools.text_color_for_background_color(colour))
 
+    @property
+    def _pixbuf_size(self):
+        # Don't forget the extra pixels for the border!
+        return prefs['thumbnail size'] + 2 * self._BORDER_SIZE
+
     def _load(self):
         # Detach model for performance reasons
         model = self._treeview.get_model()
@@ -225,7 +233,7 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         pixbuf = self._window.imagehandler.get_thumbnail(page,
                 prefs['thumbnail size'], prefs['thumbnail size'], nowait=True)
         if pixbuf is not None:
-            pixbuf = image_tools.add_border(pixbuf, 1)
+            pixbuf = image_tools.add_border(pixbuf, self._BORDER_SIZE)
 
         return pixbuf
 
@@ -302,9 +310,10 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
     def _get_empty_thumbnail(self):
         """ Create an empty filler pixmap. """
         pixbuf = gtk.gdk.Pixbuf(colorspace=gtk.gdk.COLORSPACE_RGB,
-                has_alpha=True,
-                bits_per_sample=8,
-                width=prefs['thumbnail size'], height=prefs['thumbnail size'])
+                                has_alpha=True,
+                                bits_per_sample=8,
+                                width=self._pixbuf_size,
+                                height=self._pixbuf_size)
 
         # Make the pixbuf transparent.
         pixbuf.fill(0)
