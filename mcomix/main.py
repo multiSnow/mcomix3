@@ -539,8 +539,7 @@ class MainWindow(gtk.Window):
     def flip_page(self, step, single_step=False):
 
         current_page = self.imagehandler.get_current_page()
-        if not current_page:
-            return
+        number_of_pages = self.imagehandler.get_number_of_pages()
 
         new_page = current_page + step
         if (1 == abs(step) and not single_step and self.is_double_page and
@@ -550,12 +549,11 @@ class MainWindow(gtk.Window):
             elif -1 == step and not self.imagehandler.get_virtual_double_page(new_page):
                 new_page -= 1
 
-        number_of_pages = self.imagehandler.get_number_of_pages()
-
         if new_page <= 0:
             if -1 == step:
                 return self.previous_book()
-            new_page = 1
+            # Handle empty archive case.
+            new_page = min(1, number_of_pages)
         elif new_page > number_of_pages:
             if 1 == step:
                 return self.next_book()
