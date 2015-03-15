@@ -1,10 +1,10 @@
 """preferences_page.py - MComix preference page."""
 
-import gtk
+from gi.repository import Gtk
 
 from mcomix import preferences_section
 
-class _PreferencePage(gtk.VBox):
+class _PreferencePage(Gtk.VBox):
 
     """The _PreferencePage is a conveniece class for making one "page"
     in a preferences-style dialog that contains one or more
@@ -25,21 +25,21 @@ class _PreferencePage(gtk.VBox):
         <header>.
         """
         self._section = preferences_section._PreferenceSection(header, self._right_column_width)
-        self.pack_start(self._section, False, False)
+        self.pack_start(self._section, False, False, 0)
 
     def add_row(self, left_item, right_item=None):
         """Add a row to the page (in the latest section), containing one
         or two items. If the left item is a label it is automatically
         aligned properly.
         """
-        if isinstance(left_item, gtk.Label):
+        if isinstance(left_item, Gtk.Label):
             left_item.set_alignment(0, 0.5)
 
         if right_item is None:
-            self._section.contentbox.pack_start(left_item)
+            self._section.contentbox.pack_start(left_item, True, True, 0)
         else:
             left_box, right_box = self._section.new_split_vboxes()
-            left_box.pack_start(left_item)
-            right_box.pack_start(right_item)
+            left_box.pack_start(left_item, True, True, 0)
+            right_box.pack_start(right_item, True, True, 0)
 
 # vim: expandtab:sw=4:ts=4

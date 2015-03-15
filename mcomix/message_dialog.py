@@ -1,13 +1,13 @@
-""" Simple extension of gtk.MessageDialog for consistent formating. Also
+""" Simple extension of Gtk.MessageDialog for consistent formating. Also
     supports remembering the dialog result.
 """
 
-import gtk
+from gi.repository import Gtk
 
 from mcomix.preferences import prefs
 
 
-class MessageDialog(gtk.MessageDialog):
+class MessageDialog(Gtk.MessageDialog):
 
     def __init__(self, parent=None, flags=0, type=0, buttons=0):
         """ Creates a dialog window.
@@ -29,10 +29,10 @@ class MessageDialog(gtk.MessageDialog):
         #: Automatically destroy dialog after run?
         self.auto_destroy = True
 
-        self.remember_checkbox = gtk.CheckButton(_('Do not ask again.'))
+        self.remember_checkbox = Gtk.CheckButton(_('Do not ask again.'))
         self.remember_checkbox.set_no_show_all(True)
         self.remember_checkbox.set_can_focus(False)
-        self.get_message_area().pack_end(self.remember_checkbox, padding=6)
+        self.get_message_area().pack_end(self.remember_checkbox, True, True, 6)
 
     def set_text(self, primary, secondary=None):
         """ Formats the dialog's text fields.

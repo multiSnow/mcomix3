@@ -1,6 +1,6 @@
 """properties_dialog.py - Properties dialog that displays information about the archive/file."""
 
-import gtk
+from gi.repository import Gtk
 import os
 import time
 import stat
@@ -15,26 +15,26 @@ from mcomix import i18n
 from mcomix import strings
 from mcomix import properties_page
 
-class _PropertiesDialog(gtk.Dialog):
+class _PropertiesDialog(Gtk.Dialog):
 
     def __init__(self, window):
 
         super(_PropertiesDialog, self).__init__(_('Properties'), window, 0,
-            (gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE))
+            (Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
 
         self._window = window
         self.resize(400, 400)
         self.set_resizable(True)
-        self.set_default_response(gtk.RESPONSE_CLOSE)
-        notebook = gtk.Notebook()
+        self.set_default_response(Gtk.ResponseType.CLOSE)
+        notebook = Gtk.Notebook()
         self.set_border_width(4)
         notebook.set_border_width(6)
-        self.vbox.pack_start(notebook)
+        self.vbox.pack_start(notebook, True, True, 0)
 
         self._archive_page = properties_page._Page()
-        notebook.append_page(self._archive_page, gtk.Label(_('Archive')))
+        notebook.append_page(self._archive_page, Gtk.Label(label=_('Archive')))
         self._image_page = properties_page._Page()
-        notebook.append_page(self._image_page, gtk.Label(_('Image')))
+        notebook.append_page(self._image_page, Gtk.Label(label=_('Image')))
         self._update_archive_page()
         self._window.page_changed += self._on_page_change
         self._window.filehandler.file_opened += self._on_book_change

@@ -1,39 +1,38 @@
 """bookmark_dialog.py - Bookmarks dialog handler."""
 
-import gtk
-import gobject
+from gi.repository import Gdk, GdkPixbuf, Gtk, GObject
 
 from mcomix import constants
 from mcomix import bookmark_menu_item
 
-class _BookmarksDialog(gtk.Dialog):
+class _BookmarksDialog(Gtk.Dialog):
 
     """_BookmarksDialog lets the user remove or rearrange bookmarks."""
 
     _SORT_TYPE, _SORT_NAME, _SORT_PAGE, _SORT_ADDED = 100, 101, 102, 103
 
     def __init__(self, window, bookmarks_store):
-        super(_BookmarksDialog, self).__init__(_('Edit Bookmarks'), window, gtk.DIALOG_DESTROY_WITH_PARENT,
-            (gtk.STOCK_REMOVE, constants.RESPONSE_REMOVE,
-             gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE))
+        super(_BookmarksDialog, self).__init__(_('Edit Bookmarks'), window, Gtk.DialogFlags.DESTROY_WITH_PARENT,
+            (Gtk.STOCK_REMOVE, constants.RESPONSE_REMOVE,
+             Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
 
         self._bookmarks_store = bookmarks_store
 
         self.set_resizable(True)
-        self.set_default_response(gtk.RESPONSE_CLOSE)
+        self.set_default_response(Gtk.ResponseType.CLOSE)
         # scroll area fill to the edge (TODO window should not really be a dialog)
         self.set_border_width(0)
 
-        scrolled = gtk.ScrolledWindow()
+        scrolled = Gtk.ScrolledWindow()
         scrolled.set_border_width(0)
-        scrolled.set_shadow_type(gtk.SHADOW_IN)
-        scrolled.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        self.vbox.pack_start(scrolled)
+        scrolled.set_shadow_type(Gtk.ShadowType.IN)
+        scrolled.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+        self.vbox.pack_start(scrolled, True, True, 0)
 
-        self._liststore = gtk.ListStore(gtk.gdk.Pixbuf, gobject.TYPE_STRING,
-            gobject.TYPE_STRING, gobject.TYPE_STRING, gobject.TYPE_STRING, bookmark_menu_item._Bookmark)
+        self._liststore = Gtk.ListStore(GdkPixbuf.Pixbuf, GObject.TYPE_STRING,
+            GObject.TYPE_STRING, GObject.TYPE_STRING, GObject.TYPE_STRING, bookmark_menu_item._Bookmark)
 
-        self._treeview = gtk.TreeView(self._liststore)
+        self._treeview = Gtk.TreeView(self._liststore)
         self._treeview.set_rules_hint(True)
         self._treeview.set_reorderable(True)
         # search by typing first few letters of name
@@ -44,15 +43,15 @@ class _BookmarksDialog(gtk.Dialog):
 
         scrolled.add(self._treeview)
 
-        cellrenderer_text = gtk.CellRendererText()
-        cellrenderer_pbuf = gtk.CellRendererPixbuf()
+        cellrenderer_text = Gtk.CellRendererText()
+        cellrenderer_pbuf = Gtk.CellRendererPixbuf()
 
-        self._icon_col = gtk.TreeViewColumn(_('Type'), cellrenderer_pbuf)
-        self._name_col = gtk.TreeViewColumn(_('Name'), cellrenderer_text)
-        self._page_col = gtk.TreeViewColumn(_('Page'), cellrenderer_text)
-        self._path_col = gtk.TreeViewColumn(_('Location'), cellrenderer_text)
+        self._icon_col = Gtk.TreeViewColumn(_('Type'), cellrenderer_pbuf)
+        self._name_col = Gtk.TreeViewColumn(_('Name'), cellrenderer_text)
+        self._page_col = Gtk.TreeViewColumn(_('Page'), cellrenderer_text)
+        self._path_col = Gtk.TreeViewColumn(_('Location'), cellrenderer_text)
         # TRANSLATORS: "Added" as in "Date Added"
-        self._date_add_col = gtk.TreeViewColumn(_('Added'), cellrenderer_text)
+        self._date_add_col = Gtk.TreeViewColumn(_('Added'), cellrenderer_text)
 
         self._treeview.append_column(self._icon_col)
         self._treeview.append_column(self._name_col)
@@ -82,11 +81,11 @@ class _BookmarksDialog(gtk.Dialog):
         self._path_col.set_sort_column_id(3)
         self._date_add_col.set_sort_column_id(_BookmarksDialog._SORT_ADDED)
 
-        self._icon_col.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
-        self._name_col.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
-        self._page_col.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
-        self._path_col.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
-        self._date_add_col.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
+        self._icon_col.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
+        self._name_col.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
+        self._page_col.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
+        self._path_col.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
+        self._date_add_col.set_sizing(Gtk.TreeViewColumnSizing.AUTOSIZE)
 
         # FIXME Hide extra columns. Needs UI controls to enable these.
         self._path_col.set_visible(False)
@@ -154,7 +153,7 @@ class _BookmarksDialog(gtk.Dialog):
 
     def _response(self, dialog, response):
 
-        if response == gtk.RESPONSE_CLOSE:
+        if response == Gtk.ResponseType.CLOSE:
             self._close()
 
         elif response == constants.RESPONSE_REMOVE:
@@ -165,7 +164,7 @@ class _BookmarksDialog(gtk.Dialog):
 
     def _key_press_event(self, dialog, event, *args):
 
-        if event.keyval == gtk.keysyms.Delete:
+        if event.keyval == Gdk.KEY_Delete:
             self._remove_selected()
 
     def _close(self, *args):
@@ -173,7 +172,7 @@ class _BookmarksDialog(gtk.Dialog):
         ordering."""
 
         ordering = []
-        treeiter = self._liststore.get_iter_root()
+        treeiter = self._liststore.get_iter_first()
 
         while treeiter is not None:
             bookmark = self._liststore.get_value(treeiter, 5)

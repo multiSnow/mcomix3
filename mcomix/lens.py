@@ -1,7 +1,8 @@
 """lens.py - Magnifying lens."""
 
 import math
-import gtk
+from gi.repository import Gdk, GdkPixbuf, Gtk
+from gi.repository import cairo as Cairo
 
 from mcomix.preferences import prefs
 from mcomix import image_tools
@@ -63,18 +64,23 @@ class MagnifyingLens(object):
         rectangle = self._calculate_lens_rect(x, y, prefs['lens size'], prefs['lens size'])
         pixbuf = self._get_lens_pixbuf(x, y)
 
-        # Region used to draw the pixbuf
-        lens_region = gtk.gdk.region_rectangle(rectangle)
-        # Combined regions (area that will be drawn to in this operation
-        full_region = lens_region.copy()
+        draw_region = Cairo.RectangleInt()
+        draw_region.x, draw_region.y, draw_region.width, draw_region.height = rectangle
         if self._last_lens_rect:
-            last_region = gtk.gdk.region_rectangle(self._last_lens_rect)
-            full_region.union(last_region)
+            last_region = Cairo.RectangleInt()
+            last_region.x, last_region.y, last_region.width, last_region.height = self._last_lens_rect
+            draw_region = Gdk.rectangle_union(draw_region, last_region)
 
-        window = self._area.get_bin_window()
-        window.begin_paint_region(full_region)
-        self._clear_lens(lens_region)
-        window.draw_pixbuf(None, pixbuf, 0, 0, *rectangle)
+        window = self._window._main_layout.get_bin_window()
+        window.begin_paint_rect(draw_region)
+
+        self._clear_lens()
+
+        cr = window.cairo_create()
+        surface = Gdk.cairo_surface_create_from_pixbuf(pixbuf, 0, window)
+        cr.set_source_surface(surface, rectangle[0], rectangle[1])
+        cr.paint()
+
         window.end_paint()
 
         self._last_lens_rect = rectangle
@@ -97,17 +103,17 @@ class MagnifyingLens(object):
         return lens_x, lens_y, width + 2, height + 2
 
     def _clear_lens(self, current_lens_region=None):
-        """ Invalidates the area that was damaged by the last call to draw_lens.
-        If <current_lens_region> is not None, this region will not be invalidated. """
+        """ Invalidates the area that was damaged by the last call to draw_lens. """
 
         if not self._last_lens_rect:
             return
 
-        last_region = gtk.gdk.region_rectangle(self._last_lens_rect)
-        if current_lens_region:
-            last_region.subtract(current_lens_region)
-
-        self._area.get_bin_window().invalidate_region(last_region, True)
+        window = self._window._main_layout.get_bin_window()
+        crect = Cairo.RectangleInt()
+        crect.x, crect.y, crect.width, crect.height = self._last_lens_rect
+        window.invalidate_rect(crect, True)
+        window.process_updates(True)
+        self._last_lens_rect = None
 
     def toggle(self, action):
         """Toggle on or off the lens depending on the state of <action>."""
@@ -123,8 +129,10 @@ class MagnifyingLens(object):
         """Get a pixbuf containing the appropiate image data for the lens
         where <x> and <y> are the positions of the cursor.
         """
-        canvas = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8,
-            prefs['lens size'], prefs['lens size'])
+        canvas = GdkPixbuf.Pixbuf.new(colorspace=GdkPixbuf.Colorspace.RGB,
+                                      has_alpha=True, bits_per_sample=8,
+                                      width=prefs['lens size'],
+                                      height=prefs['lens size'])
         canvas.fill(image_tools.convert_rgb16list_to_rgba8int(self._window.get_bg_colour()))
         cb = self._window.layout.get_content_boxes()
         source_pixbufs = self._window.imagehandler.get_pixbufs(len(cb))
@@ -199,7 +207,7 @@ class MagnifyingLens(object):
         if width < 1 or height < 1:
             return
 
-        subpixbuf = source_pixbuf.subpixbuf(int(src_x), int(src_y),
+        subpixbuf = source_pixbuf.new_subpixbuf(int(src_x), int(src_y),
             int(width), int(height))
         subpixbuf = subpixbuf.scale_simple(
             int(math.ceil(source_mag * subpixbuf.get_width())),
@@ -208,13 +216,13 @@ class MagnifyingLens(object):
 
         if rotation == 90:
             subpixbuf = subpixbuf.rotate_simple(
-                gtk.gdk.PIXBUF_ROTATE_CLOCKWISE)
+                Gdk.PIXBUF_ROTATE_CLOCKWISE)
         elif rotation == 180:
             subpixbuf = subpixbuf.rotate_simple(
-                gtk.gdk.PIXBUF_ROTATE_UPSIDEDOWN)
+                Gdk.PIXBUF_ROTATE_UPSIDEDOWN)
         elif rotation == 270:
             subpixbuf = subpixbuf.rotate_simple(
-                gtk.gdk.PIXBUF_ROTATE_COUNTERCLOCKWISE)
+                Gdk.PIXBUF_ROTATE_COUNTERCLOCKWISE)
         if prefs['horizontal flip']:
             subpixbuf = subpixbuf.flip(horizontal=True)
         if prefs['vertical flip']:
@@ -233,7 +241,7 @@ class MagnifyingLens(object):
 
         if subpixbuf.get_has_alpha() and prefs['checkered bg for transparent images']:
             subpixbuf = subpixbuf.composite_color_simple(subpixbuf.get_width(), subpixbuf.get_height(),
-                gtk.gdk.INTERP_NEAREST, 255, 8, 0x777777, 0x999999)
+                GdkPixbuf.InterpType.NEAREST, 255, 8, 0x777777, 0x999999)
 
         subpixbuf.copy_area(0, 0, subpixbuf.get_width(),
             subpixbuf.get_height(), canvas, dest_x, dest_y)

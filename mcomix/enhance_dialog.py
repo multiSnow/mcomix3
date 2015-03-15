@@ -1,15 +1,15 @@
 """enhance_dialog.py - Image enhancement dialog."""
 
-import gtk
+from gi.repository import Gtk
 import histogram
 
 from mcomix.preferences import prefs
 
 _dialog = None
 
-class _EnhanceImageDialog(gtk.Dialog):
+class _EnhanceImageDialog(Gtk.Dialog):
 
-    """A gtk.Dialog which allows modification of the values belonging to
+    """A Gtk.Dialog which allows modification of the values belonging to
     an ImageEnhancer.
     """
 
@@ -18,49 +18,50 @@ class _EnhanceImageDialog(gtk.Dialog):
 
         self._window = window
 
-        reset = gtk.Button(None, gtk.STOCK_REVERT_TO_SAVED)
+        reset = Gtk.Button(stock=Gtk.STOCK_REVERT_TO_SAVED)
         reset.set_tooltip_text(_('Reset to defaults.'))
-        self.add_action_widget(reset, gtk.RESPONSE_REJECT)
-        save = gtk.Button(None, gtk.STOCK_SAVE)
+        self.add_action_widget(reset, Gtk.ResponseType.REJECT)
+        save = Gtk.Button(stock=Gtk.STOCK_SAVE)
         save.set_tooltip_text(_('Save the selected values as default for future files.'))
-        self.add_action_widget(save, gtk.RESPONSE_APPLY)
-        self.add_button(gtk.STOCK_OK, gtk.RESPONSE_OK)
+        self.add_action_widget(save, Gtk.ResponseType.APPLY)
+        self.add_button(Gtk.STOCK_OK, Gtk.ResponseType.OK)
 
         self.set_resizable(False)
         self.connect('response', self._response)
-        self.set_default_response(gtk.RESPONSE_OK)
+        self.set_default_response(Gtk.ResponseType.OK)
 
         self._enhancer = window.enhancer
         self._block = False
 
-        vbox = gtk.VBox(False, 10)
+        vbox = Gtk.VBox(False, 10)
         self.set_border_width(4)
         vbox.set_border_width(6)
         self.vbox.add(vbox)
 
-        self._hist_image = gtk.Image()
+        self._hist_image = Gtk.Image()
         self._hist_image.set_size_request(262, 170)
-        vbox.pack_start(self._hist_image)
-        vbox.pack_start(gtk.HSeparator())
+        vbox.pack_start(self._hist_image, True, True, 0)
+        vbox.pack_start(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL), True, True, 0)
 
-        hbox = gtk.HBox(False, 4)
+        hbox = Gtk.HBox(False, 4)
         vbox.pack_start(hbox, False, False, 2)
-        vbox_left = gtk.VBox(False, 4)
-        vbox_right = gtk.VBox(False, 4)
+        vbox_left = Gtk.VBox(False, 4)
+        vbox_right = Gtk.VBox(False, 4)
         hbox.pack_start(vbox_left, False, False, 2)
         hbox.pack_start(vbox_right, True, True, 2)
 
         def _create_scale(label_text):
-            label = gtk.Label(label_text)
+            label = Gtk.Label(label=label_text)
             label.set_alignment(1, 0.5)
             label.set_use_underline(True)
             vbox_left.pack_start(label, True, False, 2)
-            adj = gtk.Adjustment(0.0, -1.0, 1.0, 0.01, 0.1)
-            scale = gtk.HScale(adj)
+            adj = Gtk.Adjustment(0.0, -1.0, 1.0, 0.01, 0.1)
+            scale = Gtk.HScale.new(adj)
             scale.set_digits(2)
-            scale.set_value_pos(gtk.POS_RIGHT)
+            scale.set_value_pos(Gtk.PositionType.RIGHT)
             scale.connect('value-changed', self._change_values)
-            scale.set_update_policy(gtk.UPDATE_DELAYED)
+            # FIXME
+            # scale.set_update_policy(Gtk.UPDATE_DELAYED)
             label.set_mnemonic_widget(scale)
             vbox_right.pack_start(scale, True, False, 2)
             return scale
@@ -70,10 +71,10 @@ class _EnhanceImageDialog(gtk.Dialog):
         self._saturation_scale = _create_scale(_('S_aturation:'))
         self._sharpness_scale = _create_scale(_('S_harpness:'))
 
-        vbox.pack_start(gtk.HSeparator())
+        vbox.pack_start(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL), True, True, 0)
 
         self._autocontrast_button = \
-            gtk.CheckButton(_('_Automatically adjust contrast'))
+            Gtk.CheckButton(_('_Automatically adjust contrast'))
         self._autocontrast_button.set_tooltip_text(
             _('Automatically adjust contrast (both lightness and darkness), separately for each colour band.'))
         vbox.pack_start(self._autocontrast_button, False, False, 2)
@@ -136,10 +137,10 @@ class _EnhanceImageDialog(gtk.Dialog):
 
     def _response(self, dialog, response):
 
-        if response in [gtk.RESPONSE_OK, gtk.RESPONSE_DELETE_EVENT]:
+        if response in [Gtk.ResponseType.OK, Gtk.ResponseType.DELETE_EVENT]:
             _close_dialog()
 
-        elif response == gtk.RESPONSE_APPLY:
+        elif response == Gtk.ResponseType.APPLY:
             self._change_values(self)
             prefs['brightness'] = self._enhancer.brightness
             prefs['contrast'] = self._enhancer.contrast
@@ -147,7 +148,7 @@ class _EnhanceImageDialog(gtk.Dialog):
             prefs['sharpness'] = self._enhancer.sharpness
             prefs['auto contrast'] = self._enhancer.autocontrast
 
-        elif response == gtk.RESPONSE_REJECT:
+        elif response == Gtk.ResponseType.REJECT:
             self._block = True
             self._brightness_scale.set_value(prefs['brightness'] - 1.0)
             self._contrast_scale.set_value(prefs['contrast'] - 1.0)

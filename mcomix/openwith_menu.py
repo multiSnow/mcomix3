@@ -1,6 +1,6 @@
 """ openwith_menu.py - Menu shell for the Open with... menu. """
 
-import gtk
+from gi.repository import Gtk
 
 from mcomix import openwith
 
@@ -9,7 +9,7 @@ _openwith_manager = openwith.OpenWithManager()
 # Reference to the edit dialog (to keep only one instance)
 _openwith_edit_diag = None
 
-class OpenWithMenu(gtk.Menu):
+class OpenWithMenu(Gtk.Menu):
     def __init__(self, ui, window):
         """ Constructor. """
         super(OpenWithMenu, self).__init__()
@@ -17,9 +17,9 @@ class OpenWithMenu(gtk.Menu):
         self._window = window
         self._openwith_manager = _openwith_manager
 
-        actiongroup = gtk.ActionGroup('mcomix-openwith')
+        actiongroup = Gtk.ActionGroup('mcomix-openwith')
         actiongroup.add_actions([
-            ('edit_commands', gtk.STOCK_EDIT, _('_Edit commands'),
+            ('edit_commands', Gtk.STOCK_EDIT, _('_Edit commands'),
              None, None, self._edit_commands)])
 
         action = actiongroup.get_action('edit_commands')
@@ -44,18 +44,18 @@ class OpenWithMenu(gtk.Menu):
         commandlist = self._openwith_manager.get_commands()
 
         if len(commandlist) > 0:
-            separator = gtk.SeparatorMenuItem()
+            separator = Gtk.SeparatorMenuItem()
             separator.show()
             self.prepend(separator)
 
         for command in reversed(commandlist):
             if not command.is_separator():
-                menuitem = gtk.MenuItem(command.get_label())
+                menuitem = Gtk.MenuItem(command.get_label())
                 menuitem.connect('activate', self._commandmenu_clicked,
                         command.get_command(), command.get_label(),
                         command.get_cwd(), command.is_disabled_for_archives())
             else:
-                menuitem = gtk.SeparatorMenuItem()
+                menuitem = Gtk.SeparatorMenuItem()
 
             menuitem.show()
             self.prepend(menuitem)

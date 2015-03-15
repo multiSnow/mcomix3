@@ -26,7 +26,7 @@ Each action_name can have multiple keybindings.
 
 import os
 import shutil
-import gtk
+from gi.repository import Gtk
 import json
 from collections import defaultdict
 
@@ -163,7 +163,7 @@ class _KeybindingManager(object):
         """ Registers an action for a predefined keybinding name.
         @param name: Action name, defined in L{BINDING_INFO}.
         @param bindings: List of keybinding strings, as understood
-                         by L{gtk.accelerator_parse}. Only used if no
+                         by L{Gtk.accelerator_parse}. Only used if no
                          bindings were loaded for this action.
         @param callback: Function callback
         @param args: List of arguments to pass to the callback
@@ -174,7 +174,7 @@ class _KeybindingManager(object):
         # Load stored keybindings, or fall back to passed arguments
         keycodes = self._action_to_bindings[name]
         if keycodes == []:
-            keycodes = [gtk.accelerator_parse(binding) for binding in bindings ]
+            keycodes = [Gtk.accelerator_parse(binding) for binding in bindings ]
 
         for keycode in keycodes:
             if keycode in self._binding_to_action.keys():
@@ -189,7 +189,7 @@ class _KeybindingManager(object):
         # Add gtk accelerator for labels in menu
         if len(self._action_to_bindings[name]) > 0:
             key, mod = self._action_to_bindings[name][0]
-            gtk.accel_map_change_entry('<Actions>/mcomix-main/%s' % name, key, mod, True)
+            Gtk.AccelMap.change_entry('<Actions>/mcomix-main/%s' % name, key, mod, True)
 
         self._action_to_callback[name] = (callback, args, kwargs)
 
@@ -205,7 +205,7 @@ class _KeybindingManager(object):
         """
         assert name in BINDING_INFO, "'%s' isn't a valid keyboard action." % name
 
-        nb = gtk.accelerator_parse(new_binding)
+        nb = Gtk.accelerator_parse(new_binding)
         old_action_with_nb = self._binding_to_action.get(nb)
         if old_action_with_nb is not None:
             # The new key is already bound to an action, erase the action
@@ -214,7 +214,7 @@ class _KeybindingManager(object):
 
         if old_binding and name != old_action_with_nb:
             # The action already had a key that is now being replaced
-            ob = gtk.accelerator_parse(old_binding)
+            ob = Gtk.accelerator_parse(old_binding)
             self._binding_to_action[nb] = name
 
             # Remove action bound to the key.
@@ -236,7 +236,7 @@ class _KeybindingManager(object):
         """ Remove binding for an action """
         assert name in BINDING_INFO, "'%s' isn't a valid keyboard action." % name
 
-        ob = gtk.accelerator_parse(binding)
+        ob = Gtk.accelerator_parse(binding)
         self._action_to_bindings[name].remove(ob)
         self._binding_to_action.pop(ob)
 
@@ -277,7 +277,7 @@ class _KeybindingManager(object):
         for action, bindings in self._action_to_bindings.iteritems():
             if bindings is not None:
                 action_to_keys[action] = [
-                    gtk.accelerator_name(keyval, modifiers) for
+                    Gtk.accelerator_name(keyval, modifiers) for
                     (keyval, modifiers) in bindings
                 ]
         fp = open(constants.KEYBINDINGS_CONF_PATH, "w")
@@ -297,7 +297,7 @@ class _KeybindingManager(object):
         for action in BINDING_INFO.iterkeys():
             if action in stored_action_bindings:
                 bindings = [
-                    gtk.accelerator_parse(keyname)
+                    Gtk.accelerator_parse(keyname)
                     for keyname in stored_action_bindings[action] ]
                 self._action_to_bindings[action] = bindings
                 for binding in bindings:
@@ -313,7 +313,7 @@ class _KeybindingManager(object):
         """ This method deals with upgrading from MComix 1.0 and older to
         MComix 1.01, which integrated all UI hotkeys into this class. Simply
         remove old files and start from default values. """
-        gtkrc = os.path.join(constants.CONFIG_DIR, 'keybindings-gtk.rc')
+        gtkrc = os.path.join(constants.CONFIG_DIR, 'keybindings-Gtk.rc')
         if os.path.isfile(gtkrc):
             # In case the user has made modifications to his files,
             # keep the old ones around for reference.
