@@ -476,7 +476,7 @@ class EventHandler:
 
         elif event.direction == gtk.gdk.SCROLL_RIGHT:
             if not self._window.is_manga_mode:
-                self._window.next_page()
+                self._window.flip_page(+1)
             else:
                 self._previous_page_with_protection()
 
@@ -484,7 +484,7 @@ class EventHandler:
             if not self._window.is_manga_mode:
                 self._previous_page_with_protection()
             else:
-                self._window.next_page()
+                self._window.flip_page(+1)
 
     def mouse_press_event(self, widget, event):
         """Handle mouse click events on the main layout area."""
