@@ -1005,9 +1005,9 @@ class MainWindow(gtk.Window):
                 if self.imagehandler.get_number_of_pages() > 1:
                     # Open the next/previous file
                     if self.imagehandler.get_current_page() >= self.imagehandler.get_number_of_pages():
-                        self.previous_page()
+                        self.flip_page(-1)
                     else:
-                        self.next_page()
+                        self.flip_page(+1)
                     # Unlink the desired file
                     if os.path.isfile(current_file):
                         os.unlink(current_file)
