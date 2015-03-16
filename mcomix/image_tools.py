@@ -33,7 +33,7 @@ def fit_pixbuf_to_rectangle(src, rect, rotation):
         src = src.rotate_simple(gtk.gdk.PIXBUF_ROTATE_COUNTERCLOCKWISE)
     return src
 
-def fit_in_rectangle(src, width, height, scale_up=False, rotation=0):
+def fit_in_rectangle(src, width, height, scale_up=False, rotation=0, scaling_quality=None):
     """Scale (and return) a pixbuf so that it fits in a rectangle with
     dimensions <width> x <height>. A negative <width> or <height>
     means an unbounded dimension - both cannot be negative.
@@ -58,6 +58,9 @@ def fit_in_rectangle(src, width, height, scale_up=False, rotation=0):
     if rotation in (90, 270):
         width, height = height, width
 
+    if scaling_quality is None:
+        scaling_quality = prefs['scaling quality']
+
     src_width = src.get_width()
     src_height = src.get_height()
 
@@ -65,10 +68,10 @@ def fit_in_rectangle(src, width, height, scale_up=False, rotation=0):
         if src.get_has_alpha():
             if prefs['checkered bg for transparent images']:
                 src = src.composite_color_simple(src_width, src_height,
-                    prefs['scaling quality'], 255, 8, 0x777777, 0x999999)
+                    scaling_quality, 255, 8, 0x777777, 0x999999)
             else:
                 src = src.composite_color_simple(src_width, src_height,
-                    prefs['scaling quality'], 255, 1024, 0xFFFFFF, 0xFFFFFF)
+                    scaling_quality, 255, 1024, 0xFFFFFF, 0xFFFFFF)
     else:
         if float(src_width) / width > float(src_height) / height:
             height = int(max(src_height * width / src_width, 1))
@@ -78,10 +81,10 @@ def fit_in_rectangle(src, width, height, scale_up=False, rotation=0):
         if src.get_has_alpha():
             if prefs['checkered bg for transparent images']:
                 src = src.composite_color_simple(width, height,
-                    prefs['scaling quality'], 255, 8, 0x777777, 0x999999)
+                    scaling_quality, 255, 8, 0x777777, 0x999999)
             else:
                 src = src.composite_color_simple(width, height,
-                    prefs['scaling quality'], 255, 1024, 0xFFFFFF, 0xFFFFFF)
+                    scaling_quality, 255, 1024, 0xFFFFFF, 0xFFFFFF)
         elif width != src_width or height != src_height:
             src = src.scale_simple(width, height, prefs['scaling quality'])
 
@@ -252,6 +255,10 @@ def load_pixbuf_size(path, width, height):
     if src_width <= width and src_height <= height:
         src = gtk.gdk.pixbuf_new_from_file(path)
     else:
+        # Work around GdkPixbuf bug: https://bugzilla.gnome.org/show_bug.cgi?id=735422
+        if 'GIF' == format:
+            src = gtk.gdk.pixbuf_new_from_file(path)
+            return fit_in_rectangle(src, width, height, scaling_quality=gtk.gdk.INTERP_BILINEAR)
         src = gtk.gdk.pixbuf_new_from_file_at_size(path, width, height)
         src_width, src_height = src.get_width(), src.get_height()
     if src.get_has_alpha():
