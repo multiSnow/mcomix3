@@ -43,6 +43,10 @@ MComix 1.02
     - Applying changes in the "Edit archive" dialog could raise an exception
       under certain circumstances. This has been fixed.
 
+    - Added a workaround for a bug in gdk-pixbuf that could prevent thumbnails
+      of animated GIF images from being rendered properly. For details, see
+      https://bugzilla.gnome.org/show_bug.cgi?id=735422
+
     - The shebangs now ask for python2 instead of just python so we do not
       accidentally run Python 3.
 
