@@ -157,6 +157,19 @@ class _BaseFileChooserDialog(gtk.Dialog):
         self.filechooser.add_filter(ffilter)
         return ffilter
 
+    def add_image_filters(self):
+        """Add images filters to the filechooser.
+        """
+        ffilter = gtk.FileFilter()
+        ffilter.add_pixbuf_formats()
+        ffilter.set_name(_('All images'))
+        self.filechooser.add_filter(ffilter)
+        self.add_filter(_('JPEG images'), ('image/jpeg',), ('*.jpg', '*.jpeg'))
+        self.add_filter(_('PNG images'), ('image/png',), ('*.png',))
+        self.add_filter(_('GIF images'), ('image/gif',), ('*.gif',))
+        self.add_filter(_('TIFF images'), ('image/tiff',), ('*.tiff',))
+        self.add_filter(_('BMP images'), ('image/bmp',), ('*.bmp',))
+
     def _filter(self, filter_info, data):
         """ Callback function used to determine if a file
         should be filtered or not. C{data} is a tuple containing
