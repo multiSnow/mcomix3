@@ -16,6 +16,8 @@ PDF_RENDER_DPI_DEF = 72 * 4
 PDF_RENDER_DPI_MAX = 72 * 10
 
 _pdf_possible = None
+_mudraw_executable = None
+_mutool_executable = None
 
 class PdfArchive(archive_base.BaseArchive):
 
@@ -29,7 +31,7 @@ class PdfArchive(archive_base.BaseArchive):
         self.pdf = archive
 
     def iter_contents(self):
-        proc = process.popen(['mutool', 'show', '--', self.pdf, 'pages'])
+        proc = process.popen([_mutool_executable, 'show', '--', self.pdf, 'pages'])
         try:
             for line in proc.stdout:
                 if line.startswith('page '):
@@ -43,7 +45,7 @@ class PdfArchive(archive_base.BaseArchive):
         destination_path = os.path.join(destination_dir, filename)
         page_num = int(filename[0:-4])
         # Try to find optimal DPI.
-        proc = process.popen(['mudraw', '-x', '--', self.pdf, str(page_num)])
+        proc = process.popen([_mudraw_executable, '-x', '--', self.pdf, str(page_num)])
         try:
             max_size = 0
             max_dpi = PDF_RENDER_DPI_DEF
@@ -68,7 +70,7 @@ class PdfArchive(archive_base.BaseArchive):
             proc.stdout.close()
             proc.wait()
         # Render...
-        cmd = ['mudraw', '-r', str(max_dpi), '-o', destination_path, '--', self.pdf, str(page_num)]
+        cmd = [_mudraw_executable, '-r', str(max_dpi), '-o', destination_path, '--', self.pdf, str(page_num)]
         log.debug('rendering %s: %s', filename, ' '.join(cmd))
         process.call(cmd)
 
@@ -77,13 +79,15 @@ class PdfArchive(archive_base.BaseArchive):
 
     @staticmethod
     def is_available():
-        global _pdf_possible
+        global _pdf_possible, _mudraw_executable, _mutool_executable
         if _pdf_possible is None:
-            if process.find_executable((u'mudraw',)):
-                _pdf_possible = True
-            else:
+            _mudraw_executable = process.find_executable((u'mudraw',))
+            _mutool_executable = process.find_executable((u'mutool',))
+            if _mudraw_executable is None or _mutool_executable is None:
                 log.info('MuPDF not available.')
                 _pdf_possible = False
+            else:
+                _pdf_possible = True
         return _pdf_possible
 
 # vim: expandtab:sw=4:ts=4
