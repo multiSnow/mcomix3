@@ -37,8 +37,6 @@ class FileHandler(object):
         #: Indicates if files/archives are currently loaded/loading.
         self.file_loaded = False
         self.file_loading = False
-        #: Indicate if files/archives load has failed.
-        self.file_load_failed = False
         #: None if current file is not an archive, or unrecognized format.
         self.archive_type = None
 
@@ -116,7 +114,7 @@ class FileHandler(object):
         if error_message:
             self._window.statusbar.set_message(error_message)
             self._window.osd.show(error_message)
-            self.file_load_failed = False
+            self.file_loaded = True
             return False
 
         self.filelist = filelist
