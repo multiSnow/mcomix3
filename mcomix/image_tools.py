@@ -116,7 +116,7 @@ def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False, rotati
                 src = src.composite_color_simple(width, height,
                     scaling_quality, 255, 1024, 0xFFFFFF, 0xFFFFFF)
         elif width != src_width or height != src_height:
-            src = src.scale_simple(width, height, prefs['scaling quality'])
+            src = src.scale_simple(width, height, scaling_quality)
 
     src = rotate_pixbuf(src, rotation)
 
