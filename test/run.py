@@ -24,7 +24,11 @@ if __name__ == '__main__':
     while n < len(sys.argv):
         a = sys.argv[n]
         if '-' == a[0]:
-            args.append(a)
+            if '-V' == a:
+                n += 1
+                os.environ['MCOMIXPATH'] = sys.argv[n]
+            else:
+                args.append(a)
         elif os.path.exists(a):
             custom_testsuite = a
             args.append(a)

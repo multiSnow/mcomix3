@@ -1,5 +1,13 @@
 # -*- coding: utf-8 -*-
 
+import os
+import sys
+
+# Useful to be able to run the current testsuite with another MComix version.
+mcomix_path = os.environ.get('MCOMIXPATH', None)
+if mcomix_path is not None:
+    sys.path.insert(0, mcomix_path)
+
 # Configure locale.
 
 import locale
