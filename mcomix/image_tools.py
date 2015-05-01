@@ -12,14 +12,6 @@ from mcomix.preferences import prefs
 from mcomix import constants
 
 
-SUPPORTED_IMAGE_REGEX = re.compile(r'\.(%s)$' %
-                                   '|'.join(sorted(reduce(
-                                       operator.add,
-                                       map(operator.itemgetter("extensions"),
-                                           gtk.gdk.pixbuf_get_formats())))),
-                                   re.I)
-
-
 def fit_pixbuf_to_rectangle(src, rect, rotation):
 
     if rotation in (90, 270):
@@ -389,5 +381,24 @@ def get_image_info(path):
     if infos is None:
         return (_('Unknown filetype'), 0, 0)
     return infos[0]['name'].upper(), infos[1], infos[2]
+
+def get_supported_formats():
+    supported_formats = {}
+    for format in gtk.gdk.pixbuf_get_formats():
+        name = format['name'].upper()
+        assert name not in supported_formats
+        supported_formats[name] = (
+            format['mime_types'],
+            format['extensions'],
+        )
+    return supported_formats
+
+# Set supported image extensions regexp from list of supported formats.
+SUPPORTED_IMAGE_REGEX = re.compile(r'\.(%s)$' %
+                                   '|'.join(sorted(reduce(
+                                       operator.add,
+                                       [fmt[1] for fmt
+                                        in get_supported_formats().values()]
+                                   ))), re.I)
 
 # vim: expandtab:sw=4:ts=4
