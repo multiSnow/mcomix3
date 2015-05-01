@@ -364,12 +364,45 @@ class MainWindow(gtk.Window):
         if self.imagehandler.page_is_available():
             distribution_axis = constants.DISTRIBUTION_AXIS
             alignment_axis = constants.ALIGNMENT_AXIS
-            n = 2 if self.displayed_double() else 1 # XXX limited to at most 2 pages
-            pixbufs = list(self.imagehandler.get_pixbufs(n))
-            rotations = [self._get_pixbuf_rotation(x, True) for x in pixbufs]
-            sizes = map(lambda y: tuple(reversed(y[1])) \
-                if rotations[y[0]] in (90, 270) else y[1], # 2D only
-                enumerate([(x.get_width(), x.get_height()) for x in pixbufs]))
+            pixbuf_count = 2 if self.displayed_double() else 1 # XXX limited to at most 2 pages
+            pixbuf_list = list(self.imagehandler.get_pixbufs(pixbuf_count))
+            size_list = [[pixbuf.get_width(), pixbuf.get_height()]
+                         for pixbuf in pixbuf_list]
+
+            if self.is_manga_mode:
+                orientation = constants.MANGA_ORIENTATION
+            else:
+                orientation = constants.WESTERN_ORIENTATION
+
+            # Rotation handling:
+            # - apply Exif rotation on individual images
+            # - apply automatic rotation (size based) on whole page
+            # - apply manual rotation on whole page
+            if prefs['auto rotate from exif']:
+                rotation_list = [image_tools.get_implied_rotation(pixbuf)
+                                 for pixbuf in pixbuf_list]
+            else:
+                rotation_list = [0] * len(pixbuf_list)
+            virtual_size = [0, 0]
+            for i in range(pixbuf_count):
+                if rotation_list[i] in (90, 270):
+                    size_list[i].reverse()
+                size = size_list[i]
+                virtual_size[distribution_axis] += size[distribution_axis]
+                virtual_size[alignment_axis] = max(virtual_size[alignment_axis],
+                                                   size[alignment_axis])
+            rotation = self._get_size_rotation(*virtual_size)
+            rotation = (rotation + prefs['rotation']) % 360
+            if rotation in (90, 270):
+                distribution_axis, alignment_axis = alignment_axis, distribution_axis
+                orientation = list(orientation)
+                orientation.reverse()
+                for i in range(pixbuf_count):
+                    size_list[i].reverse()
+            if rotation in (180, 270):
+                orientation = tools.vector_opposite(orientation)
+            for i in range(pixbuf_count):
+                rotation_list[i] = (rotation_list[i] + rotation) % 360
 
             viewport_size = () # dummy
             expand_area = False
@@ -383,16 +416,19 @@ class MainWindow(gtk.Window):
                 viewport_size = new_viewport_size
                 zoom_dummy_size = list(viewport_size)
                 dasize = zoom_dummy_size[distribution_axis] - \
-                    self._spacing * (n - 1)
+                    self._spacing * (pixbuf_count - 1)
                 if dasize <= 0:
                     dasize = 1
                 zoom_dummy_size[distribution_axis] = dasize
-                scaled_sizes = self.zoom.get_zoomed_size(sizes, zoom_dummy_size,
+                scaled_sizes = self.zoom.get_zoomed_size(size_list, zoom_dummy_size,
                     distribution_axis)
-                self.layout = layout.FiniteLayout(scaled_sizes, viewport_size,
-                    constants.MANGA_ORIENTATION if self.is_manga_mode
-                    else constants.WESTERN_ORIENTATION, self._spacing,
-                    expand_area, distribution_axis, alignment_axis)
+                self.layout = layout.FiniteLayout(scaled_sizes,
+                                                  viewport_size,
+                                                  orientation,
+                                                  self._spacing,
+                                                  expand_area,
+                                                  distribution_axis,
+                                                  alignment_axis)
                 union_scaled_size = self.layout.get_union_box().get_size()
                 scrollbar_requests = map(operator.or_, scrollbar_requests,
                     tools.smaller(viewport_size, union_scaled_size))
@@ -400,24 +436,24 @@ class MainWindow(gtk.Window):
                     expand_area = True
                     viewport_size = () # start anew
 
-            for i in range(n):
-                pixbufs[i] = image_tools.fit_pixbuf_to_rectangle(
-                    pixbufs[i], scaled_sizes[i], rotations[i])
+            for i in range(pixbuf_count):
+                pixbuf_list[i] = image_tools.fit_pixbuf_to_rectangle(
+                    pixbuf_list[i], scaled_sizes[i], rotation_list[i])
 
-            for i in range(n):
+            for i in range(pixbuf_count):
                 if prefs['horizontal flip']: # 2D only
-                    pixbufs[i] = pixbufs[i].flip(horizontal=True)
+                    pixbuf_list[i] = pixbuf_list[i].flip(horizontal=True)
                 if prefs['vertical flip']: # 2D only
-                    pixbufs[i] = pixbufs[i].flip(horizontal=False)
-                pixbufs[i] = self.enhancer.enhance(pixbufs[i])
+                    pixbuf_list[i] = pixbuf_list[i].flip(horizontal=False)
+                pixbuf_list[i] = self.enhancer.enhance(pixbuf_list[i])
 
-            for i in range(n):
-                self.images[i].set_from_pixbuf(pixbufs[i])
+            for i in range(pixbuf_count):
+                self.images[i].set_from_pixbuf(pixbuf_list[i])
 
             scales = tuple(map(lambda x, y: math.sqrt(tools.div(
-                tools.volume(x), tools.volume(y))), scaled_sizes, sizes))
+                tools.volume(x), tools.volume(y))), scaled_sizes, size_list))
 
-            resolutions = tuple(map(lambda x, y: x + (y,), sizes, scales))
+            resolutions = tuple(map(lambda x, y: x + [y,], size_list, scales))
             if self.is_manga_mode:
                 resolutions = tuple(reversed(resolutions))
             self.statusbar.set_resolution(resolutions)
@@ -426,7 +462,7 @@ class MainWindow(gtk.Window):
             smartbg = prefs['smart bg']
             smartthumbbg = prefs['smart thumb bg'] and prefs['show thumbnails']
             if smartbg or smartthumbbg:
-                bg_colour = self.imagehandler.get_pixbuf_auto_background(n)
+                bg_colour = self.imagehandler.get_pixbuf_auto_background(pixbuf_count)
             if smartbg:
                 self.set_bg_colour(bg_colour)
             if smartthumbbg:
@@ -436,14 +472,20 @@ class MainWindow(gtk.Window):
 
             self._main_layout.set_size(*union_scaled_size)
             content_boxes = self.layout.get_content_boxes()
-            for i in range(n):
+            for i in range(pixbuf_count):
                 self._main_layout.move(self.images[i],
                     *content_boxes[i].get_position())
 
-            for i in range(n):
+            for i in range(pixbuf_count):
                 self.images[i].show()
-            for i in range(n, len(self.images)):
+            for i in range(pixbuf_count, len(self.images)):
                 self.images[i].hide()
+
+            # Reset orientation so scrolling behaviour is sane.
+            if self.is_manga_mode:
+                self.layout.set_orientation(constants.MANGA_ORIENTATION)
+            else:
+                self.layout.set_orientation(constants.WESTERN_ORIENTATION)
 
             if scroll_to is not None:
                 destination = (scroll_to,) * 2
@@ -494,36 +536,30 @@ class MainWindow(gtk.Window):
         self.statusbar.update()
         self.update_title()
 
-    def _get_pixbuf_rotation(self, pixbuf, no_autorotation=False):
-        """ Determines if a pixbuf must be rotated before being displayed.
+    def _get_size_rotation(self, width, height):
+        """ Determines the rotation to be applied.
         Returns the degree of rotation (0, 90, 180, 270). """
-        
-        width, height = pixbuf.get_width(), pixbuf.get_height()
-        rotation = prefs['rotation']
-        if prefs['auto rotate from exif']:
-            rotation += image_tools.get_implied_rotation(pixbuf)
-            rotation = rotation % 360
+
+        size_rotation = 0
 
         if (height > width and
-            not no_autorotation and
             prefs['auto rotate depending on size'] in
                 (constants.AUTOROTATE_HEIGHT_90, constants.AUTOROTATE_HEIGHT_270)):
 
             if prefs['auto rotate depending on size'] == constants.AUTOROTATE_HEIGHT_90:
-                rotation = 90
+                size_rotation = 90
             else:
-                rotation = 270
+                size_rotation = 270
         elif (width > height and
-              not no_autorotation and
               prefs['auto rotate depending on size'] in
                 (constants.AUTOROTATE_WIDTH_90, constants.AUTOROTATE_WIDTH_270)):
 
             if prefs['auto rotate depending on size'] == constants.AUTOROTATE_WIDTH_90:
-                rotation = 90
+                size_rotation = 90
             else:
-                rotation = 270
+                size_rotation = 270
 
-        return rotation
+        return size_rotation
 
     def _page_available(self, page):
         """ Called whenever a new page is ready for displaying. """

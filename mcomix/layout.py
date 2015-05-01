@@ -138,6 +138,10 @@ class FiniteLayout(object): # 2D only
         return self.orientation
 
 
+    def set_orientation(self, orientation):
+        self.orientation = orientation
+
+
     def _reset(self, content_sizes, viewport_size, orientation, spacing,
         wrap_individually, distribution_axis, alignment_axis):
         # reverse order if necessary
