@@ -78,12 +78,9 @@ class OpenWithCommand(object):
 
         current_dir = os.getcwd()
         try:
-            if self.get_cwd() and len(self.get_cwd().strip()) > 0:
-                directories = self.parse(window, text=self.get_cwd())
-                if self.is_valid_workdir(window):
-                    os.chdir(directories[0])
-                else:
-                    raise OpenWithException(_('Invalid working directory.'))
+            if self.is_valid_workdir(window):
+                workdir = self.parse(window, text=self.get_cwd())[0]
+                os.chdir(workdir)
 
             # Redirect process output to null here?
             # FIXME: Close process when finished to avoid zombie process
@@ -127,12 +124,13 @@ class OpenWithCommand(object):
 
         return False
 
-    def is_valid_workdir(self, window):
+    def is_valid_workdir(self, window, allow_empty=False):
         """ Check if the working directory is valid. """
-        if len(self.get_cwd().strip()) == 0:
-            return True
+        cwd = self.get_cwd().strip()
+        if not cwd:
+            return allow_empty
 
-        args = self.parse(window, text=self.get_cwd())
+        args = self.parse(window, text=cwd)
         if len(args) > 1:
             return False
 
@@ -376,7 +374,7 @@ class OpenWithEditor(gtk.Dialog):
             self._test_field.set_text(" ".join(args))
             self._run_button.set_sensitive(True)
 
-            if not command.is_valid_workdir(self._window):
+            if not command.is_valid_workdir(self._window, allow_empty=True):
                 self._set_exec_text(
                     _('"%s" does not have a valid working directory.') % command.get_label())
             elif not command.is_executable(self._window):
