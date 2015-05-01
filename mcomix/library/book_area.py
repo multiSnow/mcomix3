@@ -33,6 +33,9 @@ class _BookArea(gtk.ScrolledWindow):
     covers are displayed.
     """
 
+    # Thumbnail border width in pixels.
+    _BORDER_SIZE = 1
+
     def __init__(self, library):
         super(_BookArea, self).__init__()
 
@@ -362,8 +365,6 @@ class _BookArea(gtk.ScrolledWindow):
     def _icon_added(self, model, path, iter, *args):
         """ Justifies the alignment of all cell renderers when new data is
         added to the model. """
-        # FIXME Setting the alignment for all cells each time something
-        # is added seems rather wasteful. Find better way to do this.
         for cell in self._iconview.get_cells():
             cell.set_alignment(0.5, 0.5)
 
@@ -413,6 +414,12 @@ class _BookArea(gtk.ScrolledWindow):
             collection = self._library.collection_area.get_current_collection()
             gobject.idle_add(self.display_covers, collection)
 
+    def _pixbuf_size(self, border_size=_BORDER_SIZE):
+        # Don't forget the extra pixels for the border!
+        # The ratio (0.67) is just above the normal aspect ratio for books.
+        return (int(0.67 * prefs['library cover size']) + 2 * border_size,
+                prefs['library cover size'] + 2 * border_size)
+
     def _get_pixbuf(self, uid):
         """ Get or create the thumbnail for the selected book <uid>. """
         assert isinstance(uid, int)
@@ -420,11 +427,9 @@ class _BookArea(gtk.ScrolledWindow):
         if self._cache.exists(book.path):
             pixbuf = self._cache.get(book.path)
         else:
+            width, height = self._pixbuf_size(border_size=0)
             pixbuf = self._library.backend.get_book_thumbnail(book.path) or constants.MISSING_IMAGE_ICON
-            # The ratio (0.67) is just above the normal aspect ratio for books.
-            pixbuf = image_tools.fit_in_rectangle(pixbuf,
-                int(0.67 * prefs['library cover size']),
-                prefs['library cover size'], True)
+            pixbuf = image_tools.fit_in_rectangle(pixbuf, width, height, scale_up=True)
             pixbuf = image_tools.add_border(pixbuf, 1, 0xFFFFFFFF)
             self._cache.add(book.path, pixbuf)
 
@@ -452,10 +457,11 @@ class _BookArea(gtk.ScrolledWindow):
 
     def _get_empty_thumbnail(self):
         """ Create an empty filler pixmap. """
+        width, height = self._pixbuf_size()
         pixbuf = gtk.gdk.Pixbuf(colorspace=gtk.gdk.COLORSPACE_RGB,
-                has_alpha=True,
-                bits_per_sample=8,
-                width=int(0.67 * prefs['library cover size']), height=prefs['library cover size'])
+                                has_alpha=True,
+                                bits_per_sample=8,
+                                width=width, height=height)
 
         # Make the pixbuf transparent.
         pixbuf.fill(0)
