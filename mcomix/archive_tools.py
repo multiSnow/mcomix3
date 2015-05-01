@@ -7,6 +7,7 @@ import zipfile
 import tarfile
 import tempfile
 
+from mcomix import image_tools
 from mcomix import constants
 from mcomix import log
 from mcomix.archive import zip
@@ -118,7 +119,7 @@ def get_archive_info(path):
         cleanup.append(archive.close)
 
         files = archive.list_contents()
-        num_pages = len(filter(constants.SUPPORTED_IMAGE_REGEX.search, files))
+        num_pages = len(filter(image_tools.SUPPORTED_IMAGE_REGEX.search, files))
         size = os.stat(path).st_size
 
         return (mime, num_pages, size)

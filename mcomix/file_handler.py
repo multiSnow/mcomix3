@@ -68,7 +68,7 @@ class FileHandler(object):
         #: Keeps track of the last read page in archives
         self.last_read_page = last_read_page.LastReadPage(backend.LibraryBackend())
         #: Regexp used for determining which archive files are images.
-        self._image_re = constants.SUPPORTED_IMAGE_REGEX
+        self._image_re = image_tools.SUPPORTED_IMAGE_REGEX
         #: Regexp used for determining which archive files are comment files.
         self._comment_re = None
         self.update_comment_extensions()

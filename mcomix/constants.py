@@ -103,13 +103,6 @@ try:
     GTK_GDK_COLOR_BLACK = gtk.gdk.color_parse('black')
     GTK_GDK_COLOR_WHITE = gtk.gdk.color_parse('white')
 
-    SUPPORTED_IMAGE_REGEX = re.compile(r'\.(%s)$' %
-                                       '|'.join(sorted(reduce(
-                                           operator.add,
-                                           map(operator.itemgetter("extensions"),
-                                               gtk.gdk.pixbuf_get_formats())))),
-                                       re.I)
-
 except ImportError:
     # Missing GTK is already handled in mcomixstarter.py,
     # but this file is imported first, so ignore exceptions here.
