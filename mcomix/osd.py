@@ -61,8 +61,10 @@ class OnScreenDisplay(object):
 
     def clear(self):
         """ Removes the OSD. """
-        self._clear_osd()
+        if self._timeout_event:
+            gobject.source_remove(self._timeout_event)
         self._timeout_event = None
+        self._clear_osd()
         return 0 # To unregister gobject timer event
 
     def _wrap_text(self, text, width=70):
