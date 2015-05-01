@@ -363,7 +363,7 @@ helper_dist_shell()
 
 helper_mcomix()
 {
-  winecmd wine python.exe "$mcomixdir/mcomixstarter.py" "$@"
+  winecmd wine python.exe "$(winepath -w "$mcomixdir/mcomixstarter.py")" "$@"
 }
 
 helper_wine()
