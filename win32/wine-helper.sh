@@ -33,6 +33,9 @@ programfiles="$winedir/drive_c/Program Files"
 
 export WINEARCH='win32' WINEPREFIX="$winedir" WINEDEBUG="-all"
 unset PYTHONPATH
+unset GTK2_RC_FILES
+unset GTK_IM_MODULE
+unset GTK_MODULES
 
 add_to_wine_path()
 {
