@@ -58,11 +58,73 @@ def popen(args, stdin=NULL, stdout=PIPE, stderr=NULL):
             gc.enable()
 
 
-def find_executable(candidates):
+if 'win32' == sys.platform:
+    _exe_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+
+def find_executable(candidates, workdir=None):
+    """ Find executable in path.
+
+    Return an absolute path to a valid executable or None.
+
+    <workdir> default to the current working directory if not set.
+
+    If a candidate has a directory component,
+    it will be checked relative to <workdir>.
+
+    On Windows:
+
+    - '.exe' will be appended to each candidate if not already
+
+    - MComix executable directory is prepended to the path on Windows
+      (to support embedded tools/executables in the distribution).
+
+    - <workdir> will be inserted first in the path.
+
+    On Unix:
+
+    - a valid candidate must have execution right
+
+    """
+    if workdir is None:
+        workdir = os.getcwd()
+    workdir = os.path.abspath(workdir)
+
+    search_path = os.environ['PATH'].split(os.pathsep)
+    if 'win32' == sys.platform:
+        if workdir is not None:
+            search_path.insert(0, workdir)
+        search_path.insert(0, _exe_dir)
+
+    valid_exe = lambda exe: \
+            os.path.isfile(exe) and \
+            os.access(exe, os.R_OK|os.X_OK)
+
     for name in candidates:
-        exe = spawn.find_executable(name)
-        if exe is not None:
-            return exe
+
+        # On Windows, must end with '.exe'
+        if 'win32' == sys.platform:
+            if not name.endswith('.exe'):
+                name = name + '.exe'
+
+        # Absolute path?
+        if os.path.isabs(name):
+            if valid_exe(name):
+                return name
+
+        # Does candidate have a directory component?
+        elif os.path.dirname(name):
+            # Yes, check relative to working directory.
+            path = os.path.normpath(os.path.join(workdir, name))
+            if valid_exe(path):
+                return path
+
+        # Look in search path.
+        else:
+            for dir in search_path:
+                path = os.path.abspath(os.path.join(dir, name))
+                if valid_exe(path):
+                    return path
+
     return None
 
 
