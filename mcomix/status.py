@@ -60,6 +60,7 @@ class Statusbar(gtk.EventBox):
         self._root = ''
         self._filename = ''
         self._update_sensitivity()
+        self.show_all()
 
         self._loading = False
 
