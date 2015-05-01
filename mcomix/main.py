@@ -565,8 +565,6 @@ class MainWindow(gtk.Window):
             prefs['horizontal flip'] = False
             prefs['vertical flip'] = False
 
-        self.thumbnailsidebar.update_select()
-
         if at_bottom:
             scroll_to = constants.SCROLL_TO_END
         else:

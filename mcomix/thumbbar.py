@@ -24,9 +24,8 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         self._window = window
         #: Thumbnail load status
         self._loaded = False
-        #: Selected page in treeview
-        self._currently_selected_page = 0
-        self._selection_is_forced = False
+        #: Selected row in treeview
+        self._currently_selected_row = 0
 
         self.set_policy(gtk.POLICY_NEVER, gtk.POLICY_ALWAYS)
         self.get_vadjustment().step_increment = 15
@@ -49,7 +48,7 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
 
         self._treeview.connect_after('drag_begin', self._drag_begin)
         self._treeview.connect('drag_data_get', self._drag_data_get)
-        self._treeview.get_selection().connect('changed', self._selection_event)
+        self._treeview.connect('cursor-changed', self._cursor_changed_event)
 
         # enable drag and dropping of images from thumbnail bar to some file
         # manager
@@ -83,7 +82,8 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         self.change_thumbnail_background_color(prefs['thumb bg colour'])
         self.show_all()
 
-        self._window.imagehandler.page_available += self._page_available
+        self._window.page_changed += self._on_page_change
+        self._window.imagehandler.page_available += self._on_page_available
 
     def toggle_page_numbers_visible(self):
         """ Enables or disables page numbers on the thumbnail bar. """
@@ -114,9 +114,9 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
     def clear(self):
         """Clear the ThumbnailSidebar of any loaded thumbnails."""
 
+        self._loaded = False
         self._treeview.stop_update()
         self._thumbnail_liststore.clear()
-        self._loaded = False
         self._currently_selected_page = 0
 
     def resize(self):
@@ -126,20 +126,6 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         self.clear()
         self._thumbnail_image_treeviewcolumn.set_fixed_width(self._pixbuf_size)
         self.load_thumbnails()
-
-    def update_select(self):
-        """Select the thumbnail for the currently viewed page and make sure
-        that the thumbbar is scrolled so that the selected thumb is in view.
-        """
-
-        # this is set to True so that when the event 'scroll-event' is triggered
-        # the function _scroll_event will not automatically jump to that page.
-        # this allows for the functionality that when going to a previous page the
-        # main window will start at the bottom of the image.
-        self._selection_is_forced = True
-        path = self._window.imagehandler.get_current_page() - 1
-        self._treeview.get_selection().select_path(path)
-        self._treeview.scroll_to_cell(path)
 
     def change_thumbnail_background_color(self, colour):
         """ Changes the background color of the thumbnail bar. """
@@ -187,8 +173,8 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         # Re-attach model
         self._treeview.set_model(model)
 
-        # Update layout and current image selection in the thumb bar.
-        self.update_select()
+        # Update current image selection in the thumb bar.
+        self._set_selected_row(self._currently_selected_row)
 
     def _generate_thumbnail(self, uid):
         """ Generate the pixbuf for C{path} at demand. """
@@ -201,59 +187,52 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
 
         return pixbuf
 
+    def _set_selected_row(self, row, scroll=True):
+        """Set currently selected row.
+        If <scroll> is True, the tree is automatically
+        scrolled to ensure the selected row is visible.
+        """
+        self._currently_selected_row = row
+        self._treeview.get_selection().select_path(row)
+        if self._loaded and scroll:
+            self._treeview.scroll_to_cell(row)
+
     def _get_selected_row(self):
         """Return the index of the currently selected row."""
         try:
             return self._treeview.get_selection().get_selected_rows()[1][0][0]
 
         except IndexError:
-            return None
+            return 0
 
-    def _selection_event(self, tree_selection, *args):
+    def _cursor_changed_event(self, treeview, *args):
         """Handle events due to changed thumbnail selection."""
 
-        if not self._treeview.get_realized():
+        if not self._loaded or not self._treeview.get_realized():
             # Skip event processing before widget is actually ready
-            self._selection_is_forced = False
             return
 
         if not self._window.was_out_of_focus:
-            try:
-                selected_row = self._get_selected_row()
-                self._currently_selected_page = selected_row
-
-                if not self._selection_is_forced:
-                    self._window.set_page(selected_row + 1)
-
-            except Exception:
-                pass
-
+            selected_row = self._get_selected_row()
+            self._set_selected_row(selected_row, scroll=False)
+            self._window.set_page(selected_row + 1)
         else:
-
             # if the window was out of focus and the user clicks on
             # the thumbbar then do not select that page because they
             # more than likely have many pages open and are simply trying
             # to give mcomix focus again
-            path = self._currently_selected_page
-            self._treeview.get_selection().select_path(path)
-            self._treeview.scroll_to_cell(path)
+            self._set_selected_row(self._currently_selected_row)
             self._window.was_out_of_focus = False
-
-        self._selection_is_forced = False
 
     def _drag_data_get(self, treeview, context, selection, *args):
         """Put the URI of the selected file into the SelectionData, so that
         the file can be copied (e.g. to a file manager).
         """
 
-        try:
-            selected = self._get_selected_row()
-            path = self._window.imagehandler.get_path_to_page(selected + 1)
-            uri = 'file://localhost' + urllib.pathname2url(path)
-            selection.set_uris([uri])
-
-        except Exception:
-            pass
+        selected = self._get_selected_row()
+        path = self._window.imagehandler.get_path_to_page(selected + 1)
+        uri = 'file://localhost' + urllib.pathname2url(path)
+        selection.set_uris([uri])
 
     def _drag_begin(self, treeview, context):
         """We hook up on drag_begin events so that we can set the hotspot
@@ -284,7 +263,13 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
 
         return pixbuf
 
-    def _page_available(self, page):
+    def _on_page_change(self):
+        row = self._window.imagehandler.get_current_page() - 1
+        if row == self._currently_selected_row:
+            return
+        self._set_selected_row(row)
+
+    def _on_page_available(self, page):
         """ Called whenever a new page is ready for display. """
         if self.get_visible():
             self._treeview.draw_thumbnails_on_screen()
