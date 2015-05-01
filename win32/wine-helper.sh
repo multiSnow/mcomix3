@@ -337,37 +337,7 @@ helper_python()
 
 helper_test()
 {
-  has_custom_testsuite=0
-  args=()
-
-  while [[ 0 -ne $# ]]
-  do
-    if [[ -r "$1" ]]
-    then
-      has_custom_testsuite=1
-      args+=("$1")
-    else
-      if [[ "$1" == -* ]]
-      then
-        args+=("$1")
-      else
-        args+=(-k "$1")
-      fi
-    fi
-    shift
-  done
-
-  if [[ 0 -eq $has_custom_testsuite ]]
-  then
-    args=(test "${args[@]}")
-  fi
-
-  export PYTHONPATH="$(winepath -w "$comixdir")"
-
-  # py.test will complain if __file__ does not match.
-  find "$mcomixdir/test" -name '*.pyc' -print0 | xargs -0 --no-run-if-empty rm
-
-  winecmd wine py.test.exe -r sFEX "${args[@]}"
+  helper_python test/run.py "$@"
 }
 
 helper_shell()
