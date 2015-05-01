@@ -36,37 +36,38 @@ class Thumbnailer(object):
     it either stores thumbnails on disk and retrieves them later,
     or simply creates new thumbnails each time it is called. """
 
-    def __init__(self, dst_dir=constants.THUMBNAIL_PATH):
+    def __init__(self, dst_dir=constants.THUMBNAIL_PATH, store_on_disk=None,
+                 size=None, force_recreation=False, archive_support=False):
+        """
+        <dst_dir> set the thumbnailer's storage directory.
 
-        self.store_on_disk = prefs['create thumbnails']
+        If <store_on_disk> on disk is True, it changes the thumbnailer's
+        behaviour to store files on disk, or just create new thumbnails each
+        time it was called when set to False. Defaults to the 'create
+        thumbnails' preference if not set.
+
+        The dimensions for the created thumbnails is set by <size>, a (width,
+        height) tupple. Defaults to the 'thumbnail size' preference if not set.
+
+        If <force_recreation> is True, thumbnails stored on disk
+        will always be re-created instead of being re-used.
+
+        If <archive_support> is True, support for archive thumbnail creation
+        (based on cover detection) is enabled. Otherwise, only image files are
+        supported.
+        """
         self.dst_dir = dst_dir
-        self.width = prefs['thumbnail size']
-        self.height = prefs['thumbnail size']
-        self.default_sizes = True
-        self.force_recreation = False
-        self.archive_support = True
-
-    def set_size(self, width, height):
-        """ Sets <weight> and <height> for created thumbnails. """
-        self.width = width
-        self.height = height
-        self.default_sizes = False
-
-    def set_force_recreation(self, force_recreation):
-        """ If <force_recreation> is True, thumbnails stored on disk
-        will always be re-created instead of being re-used. """
+        if store_on_disk is None:
+            self.store_on_disk = prefs['create thumbnails']
+        else:
+            self.store_on_disk = store_on_disk
+        if size is None:
+            self.width = self.height = prefs['thumbnail size']
+            self.default_sizes = True
+        else:
+            self.width, self.height = size
+            self.default_sizes = False
         self.force_recreation = force_recreation
-
-    def set_store_on_disk(self, store_on_disk):
-        """ Changes the thumbnailer's behaviour to store files on
-        disk, or just create new thumbnails each time it was called. """
-        self.store_on_disk = store_on_disk
-
-    def set_destination_dir(self, dst_dir):
-        """ Changes the Thumbnailer's storage directory. """
-        self.dst_dir = dst_dir
-
-    def set_archive_support(self, archive_support):
         self.archive_support = archive_support
 
     def thumbnail(self, filepath, async=False):

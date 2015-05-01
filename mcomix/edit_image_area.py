@@ -39,10 +39,9 @@ class _ImageArea(gtk.ScrolledWindow):
         self.add(self._iconview)
 
         self._thumbnail_size = 128
-        self._thumbnailer = thumbnail_tools.Thumbnailer()
-        self._thumbnailer.set_archive_support(False)
-        self._thumbnailer.set_store_on_disk(False)
-        self._thumbnailer.set_size(self._thumbnail_size, self._thumbnail_size)
+        self._thumbnailer = thumbnail_tools.Thumbnailer(store_on_disk=False,
+                                                        size=(self._thumbnail_size,
+                                                              self._thumbnail_size))
 
         self._filler = gtk.gdk.Pixbuf(colorspace=gtk.gdk.COLORSPACE_RGB,
                                       has_alpha=True, bits_per_sample=8,

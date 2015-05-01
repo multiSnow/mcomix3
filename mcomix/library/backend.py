@@ -153,11 +153,13 @@ class _LibraryBackend:
         """ Returns a pixbuf with a thumbnail of the cover of the book at <path>,
         or None, if no thumbnail could be generated. """
 
-        thumbnailer = thumbnail_tools.Thumbnailer(dst_dir=constants.LIBRARY_COVERS_PATH)
-        thumbnailer.set_store_on_disk(True)
-        # This is the maximum image size allowed by the library, so that thumbnails might be downscaled,
-        # but never need to be upscaled (and look ugly)
-        thumbnailer.set_size(constants.MAX_LIBRARY_COVER_SIZE, constants.MAX_LIBRARY_COVER_SIZE)
+        # Use the maximum image size allowed by the library, so that thumbnails
+        # might be downscaled, but never need to be upscaled (and look ugly).
+        thumbnailer = thumbnail_tools.Thumbnailer(dst_dir=constants.LIBRARY_COVERS_PATH,
+                                                  store_on_disk=True,
+                                                  archive_support=True,
+                                                  size=(constants.MAX_LIBRARY_COVER_SIZE,
+                                                        constants.MAX_LIBRARY_COVER_SIZE))
         thumb = thumbnailer.thumbnail(path)
 
         if thumb is None: log.warning( _('! Could not get cover for book "%s"'), path )

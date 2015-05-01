@@ -34,10 +34,10 @@ if __name__ == '__main__':
     if in_path.startswith('file://'):
         in_path = urllib2.unquote(in_path[7:])
 
-    thumbnailer = thumbnail_tools.Thumbnailer()
-    thumbnailer.set_force_recreation(True)
-    thumbnailer.set_store_on_disk(False)
-    thumbnailer.set_size(size, size)
+    thumbnailer = thumbnail_tools.Thumbnailer(force_recreation=True,
+                                              archive_support=True,
+                                              store_on_disk=False,
+                                              size=(size, size))
     thumb = thumbnailer.thumbnail(in_path)
     thumb.save(out_path, 'png')
 

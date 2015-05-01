@@ -370,10 +370,8 @@ class ImageHandler:
             return None
 
         try:
-            thumbnailer = thumbnail_tools.Thumbnailer()
-            thumbnailer.set_archive_support(False)
-            thumbnailer.set_store_on_disk(create)
-            thumbnailer.set_size(width, height)
+            thumbnailer = thumbnail_tools.Thumbnailer(store_on_disk=create,
+                                                      size=(width, height))
             return thumbnailer.thumbnail(path)
         except Exception:
             log.debug("Failed to create thumbnail for image `%s':\n%s",
