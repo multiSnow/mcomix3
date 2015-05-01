@@ -1,5 +1,7 @@
 """image_tools.py - Various image manipulations."""
 
+from collections import namedtuple
+import binascii
 import re
 import sys
 import operator
@@ -7,6 +9,7 @@ import gtk
 import PIL.Image as Image
 import PIL.ImageEnhance as ImageEnhance
 import PIL.ImageOps as ImageOps
+from PIL.JpegImagePlugin import _getexif
 
 from mcomix.preferences import prefs
 from mcomix import constants
@@ -300,6 +303,33 @@ def enhance(pixbuf, brightness=1.0, contrast=1.0, saturation=1.0,
         im = ImageEnhance.Sharpness(im).enhance(sharpness)
     return pil_to_pixbuf(im)
 
+def _get_png_implied_rotation(pixbuf):
+    """Same as <get_implied_rotation> for PNG files.
+
+    Lookup for Exif data in the tEXt chunk.
+    """
+    exif = pixbuf.get_option('tEXt::Raw profile type exif')
+    if exif is None:
+        return None
+    exif = exif.split('\n')
+    if len(exif) < 4 or 'exif' != exif[1]:
+        # Not valid Exif data.
+        return None
+    size = int(exif[2])
+    try:
+        data = binascii.unhexlify(''.join(exif[3:]))
+    except TypeError:
+        # Not valid hexadecimal content.
+        return None
+    if size != len(data):
+        # Sizes should match.
+        return None
+    im = namedtuple('FakeImage', 'info')({ 'exif': data })
+    exif = _getexif(im)
+    orientation = exif.get(274, None)
+    if orientation is not None:
+        orientation = str(orientation)
+    return orientation
 
 def get_implied_rotation(pixbuf):
     """Return the implied rotation in degrees: 0, 90, 180, or 270.
@@ -310,6 +340,9 @@ def get_implied_rotation(pixbuf):
     and the pixbuf loader will set the orientation option correspondingly.
     """
     orientation = pixbuf.get_option('orientation')
+    if orientation is None:
+        # Maybe it's a PNG? Try alternative method.
+        orientation = _get_png_implied_rotation(pixbuf)
     if orientation == '3':
         return 180
     elif orientation == '6':
