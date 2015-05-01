@@ -20,16 +20,16 @@ class _ImageArea(gtk.ScrolledWindow):
         self._edit_dialog = edit_dialog
         self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
 
-        # The ListStore layout is (thumbnail, basename, full path, pagenumber, thumbnail status).
+        # The ListStore layout is (thumbnail, basename, full path, thumbnail status).
         # Basename is used as image tooltip.
-        self._liststore = gtk.ListStore(gtk.gdk.Pixbuf, str, str, int, bool)
-        self._iconview = thumbnail_view.ThumbnailIconView(self._liststore)
-        self._iconview.pixbuf_column = 0
-        self._iconview.status_column = 4
-        # This method isn't necessary, as generate_thumbnail doesn't need the path
-        self._iconview.get_file_path_from_model = lambda *args: None
+        self._liststore = gtk.ListStore(gtk.gdk.Pixbuf, str, str, bool)
+        self._iconview = thumbnail_view.ThumbnailIconView(
+            self._liststore,
+            2, # UID
+            0, # pixbuf
+            3, # status
+        )
         self._iconview.generate_thumbnail = self._generate_thumbnail
-        self._iconview.set_pixbuf_column(0)
         self._iconview.set_tooltip_column(1)
         self._iconview.set_reorderable(True)
         self._iconview.set_selection_mode(gtk.SELECTION_MULTIPLE)
@@ -37,6 +37,21 @@ class _ImageArea(gtk.ScrolledWindow):
         self._iconview.connect('key_press_event', self._key_press)
         self._iconview.connect_after('drag_begin', self._drag_begin)
         self.add(self._iconview)
+
+        self._thumbnail_size = 128
+        self._thumbnailer = thumbnail_tools.Thumbnailer()
+        self._thumbnailer.set_archive_support(False)
+        self._thumbnailer.set_store_on_disk(False)
+        self._thumbnailer.set_size(self._thumbnail_size, self._thumbnail_size)
+
+        self._filler = gtk.gdk.Pixbuf(colorspace=gtk.gdk.COLORSPACE_RGB,
+                                      has_alpha=True, bits_per_sample=8,
+                                      width=self._thumbnail_size,
+                                      height=self._thumbnail_size)
+        # Make the pixbuf transparent.
+        self._filler.fill(0)
+
+        self._window.imagehandler.page_available += self._on_page_available
 
         self._ui_manager = gtk.UIManager()
         ui_description = """
@@ -57,57 +72,33 @@ class _ImageArea(gtk.ScrolledWindow):
 
     def fetch_images(self):
         """Load all the images in the archive or directory."""
-
-        pixbuf = gtk.gdk.Pixbuf(colorspace=gtk.gdk.COLORSPACE_RGB,
-                has_alpha=True,
-                bits_per_sample=8,
-                width=prefs['thumbnail size'], height=prefs['thumbnail size'])
-
-        # Make the pixbuf transparent.
-        pixbuf.fill(0)
-
         for page in xrange(1, self._window.imagehandler.get_number_of_pages() + 1):
             path = self._window.imagehandler.get_path_to_page(page)
             encoded_path = i18n.to_unicode(os.path.basename(path))
             encoded_path = encoded_path.replace('&', '&amp;')
+            self._liststore.append([self._filler, encoded_path, path, False])
 
-            self._liststore.append([pixbuf, encoded_path, path, page, False])
-
-    def _generate_thumbnail(self, file_path, path):
-        """ Creates the thumbnail for the passed model path. """
-
-        if path is None:
-            return constants.MISSING_IMAGE_ICON
-
-        model = self._liststore
-        iter = model.get_iter(path)
-        page = model.get_value(iter, 3)
-        pixbuf = self._window.imagehandler.get_thumbnail(page) or \
-            constants.MISSING_IMAGE_ICON
-
+    def _generate_thumbnail(self, uid):
+        assert isinstance(uid, str)
+        path = uid
+        try:
+            if not self._window.filehandler.file_is_available(path):
+                return None
+        except KeyError:
+            # Not a page from the current archive, ignore.
+            pass
+        pixbuf = self._thumbnailer.thumbnail(path)
+        if pixbuf is None:
+            pixbuf = constants.MISSING_IMAGE_ICON
         return pixbuf
 
     def add_extra_image(self, path):
         """Add an imported image (at <path>) to the end of the image list."""
-        thumbnailer = thumbnail_tools.Thumbnailer()
-        thumbnailer.set_archive_support(False)
-        thumbnailer.set_store_on_disk(False)
-        thumb = thumbnailer.thumbnail(path)
-
-        if thumb is None:
-            thumb = self.render_icon(gtk.STOCK_MISSING_IMAGE,
-                gtk.ICON_SIZE_DIALOG)
-
-        self._liststore.append([thumb, os.path.basename(path), path, -1, True])
+        self._liststore.append([self._filler, os.path.basename(path), path, False])
 
     def get_file_listing(self):
         """Return a list with the full paths to all the images, in order."""
-        file_list = []
-
-        for row in self._liststore:
-            file_list.append(row[2].decode('utf-8'))
-
-        return file_list
+        return [row[2] for row in self._liststore]
 
     def _remove_pages(self, *args):
         """Remove the currently selected pages from the list."""
@@ -157,5 +148,9 @@ class _ImageArea(gtk.ScrolledWindow):
 
     def cleanup(self):
         self._iconview.stop_update()
+
+    def _on_page_available(self, page):
+        """ Called whenever a new page is ready for display. """
+        self._iconview.draw_thumbnails_on_screen()
 
 # vim: expandtab:sw=4:ts=4
