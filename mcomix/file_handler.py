@@ -13,7 +13,6 @@ from mcomix.preferences import prefs
 from mcomix import archive_extractor
 from mcomix import archive_tools
 from mcomix import image_tools
-from mcomix import icons
 from mcomix import tools
 from mcomix import constants
 from mcomix import file_provider
@@ -146,20 +145,6 @@ class FileHandler(object):
     def _archive_opened(self, image_files):
         """ Called once the archive has been opened and its contents listed.
         """
-        if self.archive_type is not None:
-            # Update status bar
-            archive_list = self._file_provider.list_files(
-                file_provider.FileProvider.ARCHIVES)
-            if self._current_file in archive_list:
-                current_index = archive_list.index(self._current_file)
-            else:
-                current_index = 0
-
-            self._window.statusbar.set_file_number(current_index + 1,
-                len(archive_list))
-        else:
-            # Update status bar (0 disables file numbers for images)
-            self._window.statusbar.set_file_number(0, 0)
 
         self._window.imagehandler._base_path = self._base_path
         self._window.imagehandler._image_files = image_files
@@ -195,7 +180,6 @@ class FileHandler(object):
                     self._window.set_page(last_image_index + 1)
 
             self._window.set_page(current_image_index + 1)
-            self._window.thumbnailsidebar.load_thumbnails()
 
             if self.archive_type is not None:
                 self._extractor.extract()
@@ -235,11 +219,8 @@ class FileHandler(object):
             self._stop_waiting = True
             self._comment_files = []
             self._name_table.clear()
-            self._window.clear()
             self._extractor.stop()
             self._window.imagehandler.cleanup()
-            self._window.thumbnailsidebar.clear()
-            self._window.set_icon_list(*icons.mcomix_icons())
             self.file_closed()
         # Catch up on UI events, so we don't leave idle callbacks.
         while gtk.events_pending():
@@ -415,6 +396,17 @@ class FileHandler(object):
             current_image_index = 0
 
         return filelist, current_image_index
+
+    def get_file_number(self):
+        if self.archive_type is None:
+            # No file numbers for images.
+            return 0, 0
+        file_list = self._file_provider.list_files(file_provider.FileProvider.ARCHIVES)
+        if self._current_file in file_list:
+            current_index = file_list.index(self._current_file)
+        else:
+            current_index = 0
+        return current_index + 1, len(file_list)
 
     def get_number_of_comments(self):
         """Return the number of comments in the current archive."""

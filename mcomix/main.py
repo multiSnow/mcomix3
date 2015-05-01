@@ -9,6 +9,7 @@ import gobject
 from mcomix import constants
 from mcomix import cursor_handler
 from mcomix import i18n
+from mcomix import icons
 from mcomix import enhance_backend
 from mcomix import event
 from mcomix import file_handler
@@ -361,8 +362,6 @@ class MainWindow(gtk.Window):
             self._waiting_for_redraw = False
             return False
 
-        self.is_virtual_double_page = self.imagehandler.get_virtual_double_page()
-
         if self.imagehandler.page_is_available():
             distribution_axis = constants.DISTRIBUTION_AXIS
             alignment_axis = constants.ALIGNMENT_AXIS
@@ -423,6 +422,7 @@ class MainWindow(gtk.Window):
             if self.is_manga_mode:
                 resolutions = tuple(reversed(resolutions))
             self.statusbar.set_resolution(resolutions)
+            self.statusbar.update()
 
             smartbg = prefs['smart bg']
             smartthumbbg = prefs['smart thumb bg'] and prefs['show thumbnails']
@@ -467,7 +467,6 @@ class MainWindow(gtk.Window):
                 self.images[i].hide()
             self._show_scrollbars([False] * len(self._scroll))
 
-        self._update_page_information()
         self._waiting_for_redraw = False
 
         return False
@@ -533,7 +532,9 @@ class MainWindow(gtk.Window):
         current_page = self.imagehandler.get_current_page()
         nb_pages = 2 if self.displayed_double() else 1
         if current_page <= page < (current_page + nb_pages):
+            self.is_virtual_double_page = self.imagehandler.get_virtual_double_page()
             self.draw_image(scroll_to=self._last_scroll_destination)
+            self._update_page_information()
 
         # Use first page as application icon when opening archives.
         if (page == 1
@@ -544,10 +545,16 @@ class MainWindow(gtk.Window):
 
     def _on_file_opened(self):
         self.uimanager.set_sensitivities()
+        number, count = self.filehandler.get_file_number()
+        self.statusbar.set_file_number(number, count)
+        self.statusbar.update()
 
     def _on_file_closed(self):
+        self.clear()
+        self.thumbnailsidebar.hide()
         self.thumbnailsidebar.clear()
         self.uimanager.set_sensitivities()
+        self.set_icon_list(*icons.mcomix_icons())
 
     def new_page(self, at_bottom=False):
         """Draw a *new* page correctly (as opposed to redrawing the same
@@ -570,7 +577,9 @@ class MainWindow(gtk.Window):
     @callback.Callback
     def page_changed(self):
         """ Called on page change. """
-        pass
+        self.is_virtual_double_page = self.imagehandler.get_virtual_double_page()
+        self.thumbnailsidebar.load_thumbnails()
+        self._update_page_information()
 
     def set_page(self, num, at_bottom=False):
         if num == self.imagehandler.get_current_page():
@@ -680,6 +689,7 @@ class MainWindow(gtk.Window):
 
     def change_double_page(self, toggleaction):
         prefs['default double page'] = toggleaction.get_active()
+        self._update_page_information()
         self.draw_image()
 
     def change_manga_mode(self, toggleaction):
