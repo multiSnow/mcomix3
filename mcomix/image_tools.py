@@ -242,30 +242,33 @@ def get_most_common_edge_colour(pixbufs, edge=2):
     most_used = group_colors(ungrouped_colors)
     return [color * 257 for color in most_used]
 
-def pil_to_pixbuf(image, keep_orientation=False):
-    """Return a pixbuf created from the PIL <image>."""
-    if image.mode.startswith('RGB'):
-        imagestr = image.tostring()
-        has_alpha = image.mode == 'RGBA'
+def pil_to_pixbuf(im, keep_orientation=False):
+    """Return a pixbuf created from the PIL <im>."""
+    if im.mode.startswith('RGB'):
+        has_alpha = im.mode == 'RGBA'
+    elif im.mode in ('LA', 'P'):
+        has_alpha = True
     else:
-        imagestr = image.convert('RGB').tostring()
         has_alpha = False
+    target_mode = 'RGBA' if has_alpha else 'RGB'
+    if im.mode != target_mode:
+        im = im.convert(target_mode)
     pixbuf = gtk.gdk.pixbuf_new_from_data(
-        imagestr, gtk.gdk.COLORSPACE_RGB,
+        im.tobytes(), gtk.gdk.COLORSPACE_RGB,
         has_alpha, 8,
-        image.size[0], image.size[1],
-        (4 if has_alpha else 3) * image.size[0]
+        im.size[0], im.size[1],
+        (4 if has_alpha else 3) * im.size[0]
     )
     if keep_orientation:
         # Keep orientation metadata.
         orientation = None
-        exif = image.info.get('exif')
+        exif = im.info.get('exif')
         if exif is not None:
-            exif = _getexif(image)
+            exif = _getexif(im)
             orientation = exif.get(274, None)
         if orientation is None:
             # Maybe it's a PNG? Try alternative method.
-            orientation = _get_png_implied_rotation(image)
+            orientation = _get_png_implied_rotation(im)
         if orientation is not None:
             setattr(pixbuf, 'orientation', str(orientation))
     return pixbuf
