@@ -9,6 +9,8 @@ import sys
 import tempfile
 import unittest
 
+from . import MComixTest
+
 from mcomix import process
 from mcomix.archive import rar
 from mcomix.archive import rarfile
@@ -116,7 +118,7 @@ def md5(path):
     hash.update(open(path, 'rb').read())
     return hash.hexdigest()
 
-class ArchiveFormatTest:
+class ArchiveFormatTest(object):
 
     name = ''
     skip = None
@@ -157,6 +159,7 @@ class ArchiveFormatTest:
                      password=cls.password)
 
     def setUp(self):
+        super(ArchiveFormatTest, self).setUp()
         self.dest_dir = tempfile.mkdtemp(dir=u'test', prefix=u'tmp.test_archives.')
 
     def tearDown(self):
@@ -177,6 +180,7 @@ class ArchiveFormatTest:
                     break
         if not failed:
             shutil.rmtree(self.dest_dir)
+        super(ArchiveFormatTest, self).tearDown()
 
     def test_init_not_unicode(self):
         self.assertRaises(AssertionError, self.handler, 'test')
@@ -369,12 +373,12 @@ for name, handler, is_available, format, not_solid, solid, password in (
         class_dict = dict(base_class_dict)
         class_dict.update(params)
         class_dict['archive'] = variant
-        globals()[class_name] = type(class_name, (ArchiveFormatTest, unittest.TestCase), class_dict)
+        globals()[class_name] = type(class_name, (ArchiveFormatTest, MComixTest), class_dict)
         class_name = 'Recursive' + class_name
         class_dict = dict(class_dict)
         class_dict['base_handler'] = class_dict['handler']
         del class_dict['handler']
-        globals()[class_name] = type(class_name, (RecursiveArchiveFormatTest, unittest.TestCase), class_dict)
+        globals()[class_name] = type(class_name, (RecursiveArchiveFormatTest, MComixTest), class_dict)
 
 
 

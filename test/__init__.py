@@ -28,3 +28,32 @@ from mcomix import log
 
 log.setLevel('DEBUG')
 
+# Use a custom testcase class:
+# - isolate tests: do not use or modify the user current
+#   configuration for MComix (preferences, library, ...)
+# - make sure MComix state is reset before each test
+
+import shutil
+import tempfile
+import unittest
+
+from mcomix.preferences import prefs
+
+default_prefs = {}
+default_prefs.update(prefs)
+
+class MComixTest(unittest.TestCase):
+
+    def setUp(self):
+        # Change storage directories.
+        self.home_dir = tempfile.mkdtemp(dir=u'test', prefix=u'tmp.home.')
+        os.environ['HOME'] = self.home_dir
+        os.environ['XDG_DATA_HOME'] = os.path.join(self.home_dir, 'data')
+        os.environ['XDG_CONFIG_HOME'] = os.path.join(self.home_dir, 'config')
+        # Reset preferences to default.
+        prefs.clear()
+        prefs.update(default_prefs)
+
+    def tearDown(self):
+        shutil.rmtree(self.home_dir)
+

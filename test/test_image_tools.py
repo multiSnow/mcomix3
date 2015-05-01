@@ -1,12 +1,13 @@
 # coding: utf-8
 
-import unittest
 import os
+
+from . import MComixTest
 
 from mcomix import image_tools
 
 
-class ImageToolsTest(unittest.TestCase):
+class ImageToolsTest(MComixTest):
 
     def test_implied_rotation(self):
         for image, rotation in (
