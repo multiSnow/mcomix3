@@ -83,7 +83,6 @@ class _BaseFileChooserDialog(gtk.Dialog):
         self.filechooser.connect('update-preview', self._update_preview)
 
         self._all_files_filter = self.add_filter( _('All files'), [], ['*'])
-        self.add_archive_filters()
 
         try:
             current_file = self._current_file()

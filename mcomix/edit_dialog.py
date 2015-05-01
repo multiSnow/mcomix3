@@ -151,6 +151,7 @@ class _EditArchiveDialog(gtk.Dialog):
                 os.path.basename(src_path))[0])
             dialog.filechooser.set_extra_widget(gtk.Label(
                 _('Archives are stored as ZIP files.')))
+            dialog.add_archive_filters()
             dialog.run()
 
             paths = dialog.get_paths()
@@ -162,6 +163,7 @@ class _EditArchiveDialog(gtk.Dialog):
         elif response == constants.RESPONSE_IMPORT:
 
             dialog = file_chooser_simple_dialog.SimpleFileChooserDialog()
+            dialog.add_image_filters()
             dialog.run()
             paths = dialog.get_paths()
             dialog.destroy()

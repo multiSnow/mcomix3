@@ -17,7 +17,6 @@ class SimpleFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog):
         if action == gtk.FILE_CHOOSER_ACTION_OPEN:
             self.filechooser.set_select_multiple(True)
         self._paths = None
-        self.add_image_filters()
 
     def get_paths(self):
         """Return the selected paths. To be called after run() has returned

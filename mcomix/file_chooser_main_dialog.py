@@ -16,6 +16,7 @@ class _MainFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog):
         self._window = window
         self.set_transient_for(window)
         self.filechooser.set_select_multiple(True)
+        self.add_archive_filters()
         self.add_image_filters()
         filters = self.filechooser.list_filters()
         try:

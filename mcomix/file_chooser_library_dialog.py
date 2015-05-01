@@ -19,6 +19,7 @@ class _LibraryFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog)
         self._library = library
 
         self.filechooser.set_select_multiple(True)
+        self.add_archive_filters()
 
         # Remove 'All files' filter from base class
         filters = self.filechooser.list_filters()
