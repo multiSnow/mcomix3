@@ -211,6 +211,9 @@ class FileHandler(object):
             if close_provider:
                 self._file_provider = None
             self.update_last_read_page()
+            if self.archive_type is not None:
+                self._extractor.close()
+            self._window.imagehandler.cleanup()
             self.file_loaded = False
             self.file_loading = False
             self.archive_type = None
@@ -219,8 +222,6 @@ class FileHandler(object):
             self._stop_waiting = True
             self._comment_files = []
             self._name_table.clear()
-            self._extractor.stop()
-            self._window.imagehandler.cleanup()
             self.file_closed()
         # Catch up on UI events, so we don't leave idle callbacks.
         while gtk.events_pending():
