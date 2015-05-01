@@ -195,7 +195,7 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         self._currently_selected_row = row
         self._treeview.get_selection().select_path(row)
         if self._loaded and scroll:
-            self._treeview.scroll_to_cell(row)
+            self._treeview.scroll_to_cell(row, use_align=True, row_align=0.25)
 
     def _get_selected_row(self):
         """Return the index of the currently selected row."""
