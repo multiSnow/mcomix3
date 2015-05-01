@@ -83,7 +83,6 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         self.change_thumbnail_background_color(prefs['thumb bg colour'])
         self.show_all()
 
-        self._visible = False
         self._window.imagehandler.page_available += self._page_available
 
     def toggle_page_numbers_visible(self):
@@ -104,13 +103,11 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
 
     def show(self, *args):
         """Show the ThumbnailSidebar."""
-        self._visible = True
         self.load_thumbnails()
         super(ThumbnailSidebar, self).show()
 
     def hide(self):
         """Hide the ThumbnailSidebar."""
-        self._visible = False
         super(ThumbnailSidebar, self).hide()
         self._treeview.stop_update()
 
@@ -289,7 +286,7 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
 
     def _page_available(self, page):
         """ Called whenever a new page is ready for display. """
-        if self._visible:
+        if self.get_visible():
             self._treeview.draw_thumbnails_on_screen()
 
 # vim: expandtab:sw=4:ts=4
