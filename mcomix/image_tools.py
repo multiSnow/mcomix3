@@ -275,14 +275,15 @@ def pixbuf_to_pil(pixbuf):
     dimensions = pixbuf.get_width(), pixbuf.get_height()
     stride = pixbuf.get_rowstride()
     pixels = pixbuf.get_pixels()
-    mode = pixbuf.get_has_alpha() and 'RGBA' or 'RGB'
-    image = Image.frombuffer(mode, dimensions, pixels, 'raw', mode, stride, 1)
-    return image
+    mode = 'RGBA' if pixbuf.get_has_alpha() else 'RGB'
+    im = Image.frombuffer(mode, dimensions, pixels, 'raw', mode, stride, 1)
+    return im
 
 def load_pixbuf(path):
     """ Loads a pixbuf from a given image file. """
     if USE_PIL:
-        pixbuf = pil_to_pixbuf(Image.open(path), keep_orientation=True)
+        im = Image.open(path)
+        pixbuf = pil_to_pixbuf(im, keep_orientation=True)
     else:
         pixbuf = gtk.gdk.pixbuf_new_from_file(path)
     return pixbuf
