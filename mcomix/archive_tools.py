@@ -27,6 +27,9 @@ def rar_available():
 def lha_available():
     return lha.LhaArchive.is_available() or szip_available()
 
+def pdf_available():
+    return pdf.PdfArchive.is_available()
+
 def get_supported_archive_regex():
     """ Returns a compiled regular expression that contains extensions
     of all currently supported file types, based on available applications.
@@ -42,7 +45,7 @@ def get_supported_archive_regex():
     if lha_available():
         formats.extend(constants.LHA_FORMATS[1])
 
-    if pdf.PdfArchive.is_available():
+    if pdf_available():
         formats.extend(constants.PDF_FORMATS[1])
 
     # Strip leading glob characters "*." from file extensions
