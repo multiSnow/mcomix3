@@ -135,7 +135,6 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
 
         self._treeview.stop_update()
         self._thumbnail_liststore.clear()
-        self.hide()
         self._loaded = False
         self._currently_selected_page = 0
 
