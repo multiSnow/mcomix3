@@ -32,18 +32,27 @@ def _fix_args(args):
             fixed_args.append(arg)
     return fixed_args
 
+def _get_creationflags():
+    if 'win32' == sys.platform:
+        # Do not create a console window.
+        return 0x08000000
+    else:
+        return 0
+
 # Cannot spawn processes with PythonW/Win32 unless stdin
 # and stderr are redirected to a pipe/devnull as well.
 def call(args, stdin=NULL, stdout=NULL, stderr=NULL):
     return 0 == subprocess.call(_fix_args(args), stdin=stdin,
-                                stdout=stdout, stderr=stderr)
+                                stdout=stdout, stderr=stderr,
+                                creationflags=_get_creationflags())
 
 def popen(args, stdin=NULL, stdout=PIPE, stderr=NULL):
     if not _using_subprocess32:
         gc.disable() # Avoid Python issue #1336!
     try:
         return subprocess.Popen(_fix_args(args), stdin=stdin,
-                                stdout=stdout, stderr=stderr)
+                                stdout=stdout, stderr=stderr,
+                                creationflags=_get_creationflags())
     finally:
         if not _using_subprocess32:
             gc.enable()
@@ -109,6 +118,9 @@ def Win32Popen(cmd):
     # Some required structures for the method call...
     startupinfo = StartupInfo()
     ctypes.memset(ctypes.addressof(startupinfo), 0, ctypes.sizeof(startupinfo))
+    # Do not create a console window.
+    startupinfo.dwFlags = subprocess.STARTF_USESHOWWINDOW
+    startupinfo.wShowWindow = subprocess.SW_HIDE
     startupinfo.cb = ctypes.sizeof(startupinfo)
     processinfo = ProcessInformation()
 
