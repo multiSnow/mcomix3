@@ -76,6 +76,8 @@ prefs = {
     'sharpness': 1.0,
     'auto contrast': False,
     'max pages to cache': 7,
+    'window x': 0,
+    'window y': 0,
     'window height': 600,
     'window width': 500,
     'pageselector height': -1,

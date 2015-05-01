@@ -52,11 +52,11 @@ class MainWindow(gtk.Window):
         # ----------------------------------------------------------------
         # Attributes
         # ----------------------------------------------------------------
-        self.is_fullscreen = False
+        # Used to detect window fullscreen state transitions.
+        self.was_fullscreen = False
         self.is_manga_mode = False
         self.is_virtual_double_page = False  # I.e. a wide image is displayed
-        self.width = None
-        self.height = None
+        self.previous_size = (None, None)
         self.was_out_of_focus = False
         #: Used to remember if changing to fullscreen enabled 'Hide all'
         self.hide_all_forced = False
@@ -103,7 +103,7 @@ class MainWindow(gtk.Window):
         # ----------------------------------------------------------------
         self.set_title(constants.APPNAME)
         self.set_size_request(300, 300)  # Avoid making the window *too* small
-        self.resize(prefs['window width'], prefs['window height'])
+        self.restore_window_geometry()
 
         # Hook up keyboard shortcuts
         self._event_handler.register_key_events()
@@ -240,6 +240,7 @@ class MainWindow(gtk.Window):
         self.connect('key_press_event', self._event_handler.key_press_event)
         self.connect('key_release_event', self._event_handler.key_release_event)
         self.connect('configure_event', self._event_handler.resize_event)
+        self.connect('window-state-event', self._event_handler.window_state_event)
 
         self._main_layout.connect('button_release_event',
             self._event_handler.mouse_release_event)
@@ -255,11 +256,9 @@ class MainWindow(gtk.Window):
         self.uimanager.set_sensitivities()
         self.show()
 
-        # If MComix is set to start in fullscreen mode, it
-        # cannot switch to windowed mode on Win32 unless this
-        # condition is set to trigger after normal show().
         if prefs['default fullscreen'] or fullscreen:
-            self.actiongroup.get_action('fullscreen').activate()
+            toggleaction = self.actiongroup.get_action('fullscreen')
+            toggleaction.set_active(True)
 
         if prefs['previous quit was quit and save']:
             fileinfo = self.filehandler.read_fileinfo_file()
@@ -322,8 +321,7 @@ class MainWindow(gtk.Window):
 
     def _should_toggle_be_visible(self, preference):
         ''' Return <True> if "toggle" widget for <preference> should be visible. '''
-        window_state = self.window.get_state()
-        if 0 != (window_state & gtk.gdk.WINDOW_STATE_FULLSCREEN):
+        if self.is_fullscreen:
             visible = not prefs['hide all in fullscreen']
         else:
             visible = not prefs['hide all']
@@ -737,15 +735,22 @@ class MainWindow(gtk.Window):
     def change_invert_scroll(self, toggleaction):
         prefs['invert smart scroll'] = toggleaction.get_active()
 
+    @property
+    def is_fullscreen(self):
+        window_state = self.window.get_state()
+        return 0 != (window_state & gtk.gdk.WINDOW_STATE_FULLSCREEN)
+
     def change_fullscreen(self, toggleaction):
-        self.is_fullscreen = toggleaction.get_active()
-        if self.is_fullscreen:
+        # Disable action until transition if complete.
+        toggleaction.set_sensitive(False)
+        if toggleaction.get_active():
+            self.save_window_geometry()
             self.fullscreen()
         else:
             self.unfullscreen()
-        self._update_toggles_sensitivity()
         # No need to call draw_image explicitely,
-        # as we'll be receiving a resize event.
+        # as we'll be receiving a window state
+        # change or resize event.
 
     def change_zoom_mode(self, radioaction=None, *args):
         if radioaction:
@@ -1099,7 +1104,31 @@ class MainWindow(gtk.Window):
 
         self.terminate_program()
 
+    def get_window_geometry(self):
+        return self.get_position() + self.get_size()
+
+    def save_window_geometry(self):
+        (
+            prefs['window x'],
+            prefs['window y'],
+            prefs['window width'],
+            prefs['window height'],
+
+        ) = self.get_window_geometry()
+
+    def restore_window_geometry(self):
+        if self.get_window_geometry() == (prefs['window x'],
+                                          prefs['window y'],
+                                          prefs['window width'],
+                                          prefs['window height']):
+            return False
+        self.resize(prefs['window width'], prefs['window height'])
+        self.move(prefs['window x'], prefs['window y'])
+        return True
+
     def close_program(self, *args):
+        if not self.is_fullscreen:
+            self.save_window_geometry()
         self.terminate_program()
 
     def terminate_program(self):

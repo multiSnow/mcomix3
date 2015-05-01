@@ -28,19 +28,28 @@ class EventHandler:
 
     def resize_event(self, widget, event):
         """Handle events from resizing and moving the main window."""
-        if not self._window.is_fullscreen:
-            prefs['window x'], prefs['window y'] = self._window.get_position()
-
-        if (event.width != self._window.width or
-            event.height != self._window.height):
-
-            if not self._window.is_fullscreen:
-                prefs['window width'] = event.width
-                prefs['window height'] = event.height
-
-            self._window.width = event.width
-            self._window.height = event.height
+        size = (event.width, event.height)
+        if size != self._window.previous_size:
+            self._window.previous_size = size
             self._window.draw_image()
+
+    def window_state_event(self, widget, event):
+        is_fullscreen = self._window.is_fullscreen
+        if self._window.was_fullscreen != is_fullscreen:
+            # Fullscreen state changed.
+            self._window.was_fullscreen = is_fullscreen
+            # Re-enable control, now that transition is complete.
+            toggleaction = self._window.actiongroup.get_action('fullscreen')
+            toggleaction.set_sensitive(True)
+            if is_fullscreen:
+                redraw = True
+            else:
+                # Only redraw if we don't need to restore geometry.
+                redraw = not self._window.restore_window_geometry()
+            self._window._update_toggles_sensitivity()
+            if redraw:
+                self._window.previous_size = self._window.get_size()
+                self._window.draw_image()
 
     def register_key_events(self):
         """ Registers keyboard events and their default binings, and hooks
