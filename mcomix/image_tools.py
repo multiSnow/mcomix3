@@ -14,31 +14,25 @@ from PIL.JpegImagePlugin import _getexif
 from mcomix.preferences import prefs
 from mcomix import constants
 
+def rotate_pixbuf(src, rotation):
+    rotation %= 360
+    if 0 == rotation:
+        return src
+    if 90 == rotation:
+        return src.rotate_simple(gtk.gdk.PIXBUF_ROTATE_CLOCKWISE)
+    if 180 == rotation:
+        return src.rotate_simple(gtk.gdk.PIXBUF_ROTATE_UPSIDEDOWN)
+    if 270 == rotation:
+        return src.rotate_simple(gtk.gdk.PIXBUF_ROTATE_COUNTERCLOCKWISE)
+    raise ValueError("unsupported rotation: %s" % rotation)
 
 def fit_pixbuf_to_rectangle(src, rect, rotation):
+    return fit_in_rectangle(src, rect[0], rect[1],
+                            rotation=rotation,
+                            keep_ratio=False,
+                            scale_up=True)
 
-    if rotation in (90, 270):
-        rect = (rect[1], rect[0])
-
-    if src.get_has_alpha():
-        if prefs['checkered bg for transparent images']:
-            src = src.composite_color_simple(rect[0], rect[1],
-                prefs['scaling quality'], 255, 8, 0x777777, 0x999999)
-        else:
-            src = src.composite_color_simple(rect[0], rect[1],
-                prefs['scaling quality'], 255, 1024, 0xFFFFFF, 0xFFFFFF)
-    elif rect[0] != src.get_width() or rect[1] != src.get_height():
-        src = src.scale_simple(rect[0], rect[1], prefs['scaling quality'])
-
-    if rotation == 90:
-        src = src.rotate_simple(gtk.gdk.PIXBUF_ROTATE_CLOCKWISE)
-    elif rotation == 180:
-        src = src.rotate_simple(gtk.gdk.PIXBUF_ROTATE_UPSIDEDOWN)
-    elif rotation == 270:
-        src = src.rotate_simple(gtk.gdk.PIXBUF_ROTATE_COUNTERCLOCKWISE)
-    return src
-
-def fit_in_rectangle(src, width, height, scale_up=False, rotation=0, scaling_quality=None):
+def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False, rotation=0, scaling_quality=None):
     """Scale (and return) a pixbuf so that it fits in a rectangle with
     dimensions <width> x <height>. A negative <width> or <height>
     means an unbounded dimension - both cannot be negative.
@@ -48,6 +42,9 @@ def fit_in_rectangle(src, width, height, scale_up=False, rotation=0, scaling_qua
 
     Unless <scale_up> is True we don't stretch images smaller than the
     given rectangle.
+
+    If <keep_ratio> is True, the image ratio is kept, and the result
+    dimensions may be smaller than the target dimensions.
 
     If <src> has an alpha channel it gets a checkboard background.
     """
@@ -60,6 +57,9 @@ def fit_in_rectangle(src, width, height, scale_up=False, rotation=0, scaling_qua
     width = max(width, 1)
     height = max(height, 1)
 
+    rotation %= 360
+    if rotation not in (0, 90, 180, 270):
+        raise ValueError("unsupported rotation: %s" % rotation)
     if rotation in (90, 270):
         width, height = height, width
 
@@ -78,10 +78,11 @@ def fit_in_rectangle(src, width, height, scale_up=False, rotation=0, scaling_qua
                 src = src.composite_color_simple(src_width, src_height,
                     scaling_quality, 255, 1024, 0xFFFFFF, 0xFFFFFF)
     else:
-        if float(src_width) / width > float(src_height) / height:
-            height = int(max(src_height * width / src_width, 1))
-        else:
-            width = int(max(src_width * height / src_height, 1))
+        if keep_ratio:
+            if float(src_width) / width > float(src_height) / height:
+                height = int(max(src_height * width / src_width, 1))
+            else:
+                width = int(max(src_width * height / src_height, 1))
 
         if src.get_has_alpha():
             if prefs['checkered bg for transparent images']:
@@ -93,12 +94,8 @@ def fit_in_rectangle(src, width, height, scale_up=False, rotation=0, scaling_qua
         elif width != src_width or height != src_height:
             src = src.scale_simple(width, height, prefs['scaling quality'])
 
-    if rotation == 90:
-        src = src.rotate_simple(gtk.gdk.PIXBUF_ROTATE_CLOCKWISE)
-    elif rotation == 180:
-        src = src.rotate_simple(gtk.gdk.PIXBUF_ROTATE_UPSIDEDOWN)
-    elif rotation == 270:
-        src = src.rotate_simple(gtk.gdk.PIXBUF_ROTATE_COUNTERCLOCKWISE)
+    src = rotate_pixbuf(src, rotation)
+
     return src
 
 
