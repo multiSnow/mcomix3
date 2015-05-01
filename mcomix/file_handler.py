@@ -72,8 +72,6 @@ class FileHandler(object):
         #: Regexp used for determining which archive files are comment files.
         self._comment_re = None
         self.update_comment_extensions()
-        #: Forces call to window.draw_image (if loading is delayed by user interaction)
-        self._must_call_draw = False
 
         self.last_read_page.set_enabled(bool(prefs['store recent file info']))
 
@@ -213,10 +211,6 @@ class FileHandler(object):
             self.write_fileinfo_file()
 
         self._window.uimanager.recent.add(self._current_file)
-
-        if self._must_call_draw:
-            self._must_call_draw = False
-            self._window.draw_image()
 
         self.file_opened()
 
@@ -410,8 +404,6 @@ class FileHandler(object):
             'the first page will be loaded.') % {'date': read_date.date().strftime("%x"),
                 'time': read_date.time().strftime("%X"), 'page': last_read_page})
         result = dialog.run()
-
-        self._must_call_draw = True
 
         return result == gtk.RESPONSE_YES
 
