@@ -33,18 +33,18 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         self.get_vadjustment().page_increment = 1
 
         # models - contains data
-        self._thumbnail_liststore = gtk.ListStore(gobject.TYPE_INT,
-            gtk.gdk.Pixbuf, gobject.TYPE_BOOLEAN)
+        self._thumbnail_liststore = gtk.ListStore(int, gtk.gdk.Pixbuf, bool)
 
         # view - responsible for laying out the columns
-        self._treeview = thumbnail_view.ThumbnailTreeView(self._thumbnail_liststore)
+        self._treeview = thumbnail_view.ThumbnailTreeView(
+            self._thumbnail_liststore,
+            0, # UID
+            1, # pixbuf
+            2, # status
+        )
         # Reduces flickering on update
         self._treeview.unset_flags(gtk.DOUBLE_BUFFERED)
         self._treeview.set_headers_visible(False)
-        self._treeview.pixbuf_column = 1
-        self._treeview.status_column = 2
-        # This method isn't necessary, as generate_thumbnail doesn't need the path
-        self._treeview.get_file_path_from_model = lambda *args: None
         self._treeview.generate_thumbnail = self._generate_thumbnail
 
         self._treeview.connect_after('drag_begin', self._drag_begin)
@@ -198,10 +198,8 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
 
         # Create empty preview thumbnails.
         filler = self._get_empty_thumbnail()
-        page_count = self._window.imagehandler.get_number_of_pages()
-        while len(self._thumbnail_liststore) < page_count:
-            self._thumbnail_liststore.append(
-                [len(self._thumbnail_liststore) + 1, filler, False])
+        for row in range(self._window.imagehandler.get_number_of_pages()):
+            self._thumbnail_liststore.append((row + 1, filler, False))
 
         self._loaded = True
 
@@ -218,17 +216,10 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         self.update_layout_size()
         self.update_select()
 
-    def _generate_thumbnail(self, file_path, path):
+    def _generate_thumbnail(self, uid):
         """ Generate the pixbuf for C{path} at demand. """
-        if isinstance(path, tuple):
-            page = path[0] + 1
-        elif isinstance(path, int):
-            page = path + 1
-        elif path is None:
-            return constants.MISSING_IMAGE_ICON
-        else:
-            assert False, "Expected int or tuple as tree path."
-
+        assert isinstance(uid, int)
+        page = uid
         pixbuf = self._window.imagehandler.get_thumbnail(page,
                 prefs['thumbnail size'], prefs['thumbnail size'], nowait=True)
         if pixbuf is not None:
