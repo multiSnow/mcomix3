@@ -107,6 +107,10 @@ def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False, rotati
             check_size, color1, color2 = 8, 0x777777, 0x999999
         else:
             check_size, color1, color2 = 1024, 0xFFFFFF, 0xFFFFFF
+        if width == src_width and height == src_height:
+            # Using anything other than INTERP_NEAREST will result in a
+            # modified image even if it's opaque and no resizing takes place.
+            scaling_quality = gtk.gdk.INTERP_NEAREST
         src = src.composite_color_simple(width, height, scaling_quality,
                                          255, check_size, color1, color2)
     elif width != src_width or height != src_height:
