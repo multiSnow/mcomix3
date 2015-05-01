@@ -403,6 +403,10 @@ class MainWindow(gtk.Window):
                 orientation = tools.vector_opposite(orientation)
             for i in range(pixbuf_count):
                 rotation_list[i] = (rotation_list[i] + rotation) % 360
+            if prefs['vertical flip'] and rotation in (90, 270):
+                orientation = tools.vector_opposite(orientation)
+            if prefs['horizontal flip'] and rotation in (0, 180):
+                orientation = tools.vector_opposite(orientation)
 
             viewport_size = () # dummy
             expand_area = False
@@ -441,9 +445,9 @@ class MainWindow(gtk.Window):
                     pixbuf_list[i], scaled_sizes[i], rotation_list[i])
 
             for i in range(pixbuf_count):
-                if prefs['horizontal flip']: # 2D only
+                if prefs['horizontal flip']:
                     pixbuf_list[i] = pixbuf_list[i].flip(horizontal=True)
-                if prefs['vertical flip']: # 2D only
+                if prefs['vertical flip']:
                     pixbuf_list[i] = pixbuf_list[i].flip(horizontal=False)
                 pixbuf_list[i] = self.enhancer.enhance(pixbuf_list[i])
 
