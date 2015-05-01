@@ -25,10 +25,11 @@ class WorkerThread:
         self._unique_orders = unique_orders
         self._stop = False
         self._threads = []
-        # List of orders waiting for processing.
-        self._waiting_orders = []
-        # List of orders currently being processed.
-        self._processing_orders = []
+        # Queue of orders waiting for processing.
+        self._orders_queue = []
+        if self._unique_orders:
+            # Track orders.
+            self._orders_set = set()
         self._condition = threading.Condition()
 
     def __enter__(self):
@@ -48,18 +49,24 @@ class WorkerThread:
             thread.start()
             self._threads.append(thread)
 
+    def _order_uid(self, order):
+        if isinstance(order, tuple) or isinstance(order, list):
+            return order[0]
+        return order
+
     def _run(self):
-        order = None
+        order_uid = None
         while True:
             with self._condition:
-                if order is not None:
-                    self._processing_orders.remove(order)
-                while not self._stop and 0 == len(self._waiting_orders):
+                if order_uid is not None:
+                    self._orders_set.remove(order_uid)
+                while not self._stop and 0 == len(self._orders_queue):
                     self._condition.wait()
                 if self._stop:
                     return
-                order = self._waiting_orders.pop(0)
-                self._processing_orders.append(order)
+                order = self._orders_queue.pop(0)
+                if self._unique_orders:
+                    order_uid = self._order_uid(order)
             try:
                 self._process_order(order)
             except Exception, e:
@@ -77,37 +84,49 @@ class WorkerThread:
     def clear_orders(self):
         """Clear the current orders queue."""
         with self._condition:
-            self._waiting_orders = []
+            if self._unique_orders:
+                # We can't just clear the set, as some orders
+                # can be in the process of being processed.
+                for order in self._orders_queue:
+                    order_uid = self._order_uid(order)
+                    self._orders_set.remove(order_uid)
+            self._orders_queue = []
 
     def append_order(self, order):
         """Append work order to the thread orders queue."""
         with self._condition:
             if self._unique_orders:
-                if order in self._waiting_orders or \
-                   order in self._processing_orders:
+                order_uid = self._order_uid(order)
+                if order_uid in self._orders_set:
+                    # Duplicate order.
                     return
-            self._waiting_orders.append(order)
+                self._orders_set.add(order_uid)
+            self._orders_queue.append(order)
             if self._sort_orders:
-                self._waiting_orders.sort()
+                self._orders_queue.sort()
             self._condition.notifyAll()
             self._start()
 
-    def extend_orders(self, orders):
+    def extend_orders(self, orders_list):
         """Append work orders to the thread orders queue."""
         with self._condition:
             if self._unique_orders:
                 nb_added = 0
-                for o in orders:
-                    if o in self._waiting_orders or \
-                       o in self._processing_orders:
+                for order in orders_list:
+                    order_uid = self._order_uid(order)
+                    if order_uid in self._orders_set:
+                        # Duplicate order.
                         continue
-                    self._waiting_orders.append(o)
+                    self._orders_set.add(order_uid)
+                    self._orders_queue.append(order)
                     nb_added += 1
             else:
-                self._waiting_orders.extend(orders)
-                nb_added = len(orders)
+                self._orders_queue.extend(orders_list)
+                nb_added = len(orders_list)
+            if 0 == nb_added:
+                return
             if self._sort_orders:
-                self._waiting_orders.sort()
+                self._orders_queue.sort()
             self._condition.notifyAll()
             self._start(nb_threads=nb_added)
 
@@ -120,7 +139,8 @@ class WorkerThread:
             thread.join()
         self._threads = []
         self._stop = False
-        self._waiting_orders = []
-        self._processing_orders = []
+        self._orders_queue = []
+        if self._unique_orders:
+            self._orders_set.clear()
 
 # vim: expandtab:sw=4:ts=4
