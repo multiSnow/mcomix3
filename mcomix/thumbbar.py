@@ -80,6 +80,8 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         self._thumbnail_image_treeviewcolumn.add_attribute(self._pixbuf_cellrenderer, 'pixbuf', 1)
         self._thumbnail_image_treeviewcolumn.set_alignment(0.0)
 
+        self._treeview.set_can_focus(False)
+
         self.add(self._treeview)
         self.update_layout_size()
         self.change_thumbnail_background_color(prefs['thumb bg colour'])
