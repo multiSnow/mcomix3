@@ -73,8 +73,8 @@ def parse_arguments(argv):
 
     debugopts = optparse.OptionGroup(parser, _('Debug options'))
     debugopts.add_option('-W', dest='loglevel', action='store',
-            choices=('all', 'warn', 'error'), default='warn',
-            metavar='[ all | warn | error ]',
+            choices=('all', 'debug', 'info', 'warn', 'error'), default='warn',
+            metavar='[ all | debug | info | warn | error ]',
             help=_('Sets the desired output log level.'))
     # This supresses an error when MComix is used with cProfile
     debugopts.add_option('-o', dest='output', action='store',
@@ -86,6 +86,10 @@ def parse_arguments(argv):
     # Fix up log level to use constants from log.
     if opts.loglevel == 'all':
         opts.loglevel = log.DEBUG
+    if opts.loglevel == 'debug':
+        opts.loglevel = log.DEBUG
+    if opts.loglevel == 'info':
+        opts.loglevel = log.INFO
     elif opts.loglevel == 'warn':
         opts.loglevel = log.WARNING
     elif opts.loglevel == 'error':
@@ -156,10 +160,8 @@ except ImportError:
     print_( _('No version of the Python Imaging Library was found on your system.') )
     wait_and_exit()
 
-# Import required mcomix modules for this script.
-# This should be done only after install_gettext() has been called.
-from mcomix import main
-from mcomix import icons
+# Only import log modules for now, and wait for its level to have been set
+# before importing any other MComix module.
 from mcomix import log
 
 def run():
@@ -170,12 +172,16 @@ def run():
     argv = portability.get_commandline_args()
     opts, args = parse_arguments(argv)
 
+    # First things first: set the log level.
+    log.setLevel(opts.loglevel)
+
     if not os.path.exists(constants.DATA_DIR):
         os.makedirs(constants.DATA_DIR, 0700)
 
     if not os.path.exists(constants.CONFIG_DIR):
         os.makedirs(constants.CONFIG_DIR, 0700)
 
+    from mcomix import icons
     icons.load_icons()
 
     if len(args) == 1:
@@ -188,14 +194,13 @@ def run():
         open_path = preferences.prefs['path to last file']
         open_page = preferences.prefs['page of last file']
 
-    log.setLevel(opts.loglevel)
-
     # Some languages require a RTL layout
     if preferences.prefs['language'] in ('he', 'fa'):
         gtk.widget_set_default_direction(gtk.TEXT_DIR_RTL)
 
     gtk.gdk.set_program_class(constants.APPNAME)
 
+    from mcomix import main
     window = main.MainWindow(fullscreen = opts.fullscreen, is_slideshow = opts.slideshow,
             show_library = opts.library, manga_mode = opts.manga,
             double_page = opts.doublepage, zoom_mode = opts.zoommode,
