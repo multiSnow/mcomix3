@@ -376,7 +376,8 @@ class MainWindow(gtk.Window):
             if smartthumbbg:
                 self.thumbnailsidebar.change_thumbnail_background_color(bg_colour)
 
-            #self._image_box.window.freeze_updates() # XXX replacement necessary?
+            self._main_layout.window.freeze_updates()
+
             self._main_layout.set_size(*union_scaled_size)
             content_boxes = self.layout.get_content_boxes()
             for i in range(n):
@@ -396,7 +397,7 @@ class MainWindow(gtk.Window):
                     self.scroll_to_predefined((constants.SCROLL_TO_START,) * 2,
                         constants.FIRST_INDEX)
 
-            #self._image_box.window.thaw_updates() # XXX replacement necessary?
+            self._main_layout.window.thaw_updates()
         else:
             # If the pixbuf for the current page(s) isn't available,
             # hide all images to clear any old pixbufs.
