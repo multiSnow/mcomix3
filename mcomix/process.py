@@ -177,6 +177,9 @@ def Win32Popen(cmd):
     cmdline = subprocess.list2cmdline(cmd)
     buffer = ctypes.create_unicode_buffer(cmdline)
 
+    # Resolve executable path.
+    exe = find_executable((cmd[0],))
+
     # Some required structures for the method call...
     startupinfo = StartupInfo()
     ctypes.memset(ctypes.addressof(startupinfo), 0, ctypes.sizeof(startupinfo))
@@ -187,7 +190,7 @@ def Win32Popen(cmd):
     processinfo = ProcessInformation()
 
     # Spawn new process
-    success = ctypes.windll.kernel32.CreateProcessW(cmd[0], buffer,
+    success = ctypes.windll.kernel32.CreateProcessW(exe, buffer,
             None, None, False, 0, None, None, ctypes.byref(startupinfo),
             ctypes.byref(processinfo))
 
