@@ -164,16 +164,18 @@ class ImageHandler:
             page == self.get_number_of_pages()):
             return False
 
-        if not self.page_is_available(page):
-            return False
-        page1 = self._get_pixbuf(page - 1)
-        if page1.get_width() > page1.get_height():
-            return True
-        if not self.page_is_available(page + 1):
-            return False
-        page2 = self._get_pixbuf(page)
-        if page2.get_width() > page2.get_height():
-            return True
+        for page in (page, page + 1):
+            if not self.page_is_available(page):
+                return False
+            pixbuf = self._get_pixbuf(page - 1)
+            width, height = pixbuf.get_width(), pixbuf.get_height()
+            if prefs['auto rotate from exif']:
+                rotation = image_tools.get_implied_rotation(pixbuf)
+                assert rotation in (0, 90, 180, 270)
+                if rotation in (90, 270):
+                    width, height = height, width
+            if width > height:
+                return True
 
         return False
 
