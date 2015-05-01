@@ -457,10 +457,6 @@ class MainUI(gtk.UIManager):
                    'keep_transformation',
                    'enhance_image')
 
-        unavailable_file = ('next_archive',
-                              'previous_archive',
-                              'next_directory',
-                              'previous_directory')
         comment = ('comments',)
 
         general_sensitive = False
@@ -477,10 +473,6 @@ class MainUI(gtk.UIManager):
 
         for name in comment:
             self._actiongroup.get_action(name).set_sensitive(comment_sensitive)
-
-        if self._window.filehandler.file_load_failed:
-            for name in unavailable_file:
-                self._actiongroup.get_action(name).set_sensitive(True)
 
         self.bookmarks.set_sensitive(general_sensitive)
         self.bookmarks_popup.set_sensitive(general_sensitive)
