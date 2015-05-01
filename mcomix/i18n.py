@@ -71,11 +71,15 @@ def install_gettext():
     locale.setlocale(locale.LC_ALL, '')
 
     if preferences.prefs['language'] != 'auto':
-        lang_identifiers = [ preferences.prefs['language'] ]
+        lang = preferences.prefs['language']
+        lang_identifiers = [ lang ]
     else:
         # Get the user's current locale
-        code = portability.get_default_locale()
-        lang_identifiers = gettext._expand_lang(code)
+        lang = portability.get_default_locale()
+        lang_identifiers = gettext._expand_lang(lang)
+
+    # Make sure GTK uses the correct language.
+    os.environ['LANGUAGE'] = lang
 
     domain = constants.APPNAME.lower()
     translation = gettext.NullTranslations()
