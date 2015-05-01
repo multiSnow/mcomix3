@@ -6,13 +6,37 @@ import re
 import sys
 import operator
 import gtk
-import PIL.Image as Image
-import PIL.ImageEnhance as ImageEnhance
-import PIL.ImageOps as ImageOps
+from PIL import Image
+from PIL import ImageEnhance
+from PIL import ImageOps
 from PIL.JpegImagePlugin import _getexif
+try:
+    from PIL import PILLOW_VERSION
+    PIL_VERSION = ('Pillow', PILLOW_VERSION)
+except ImportError:
+    from PIL import VERSION as PIL_VERSION
+    PIL_VERSION = ('PIL', PIL_VERSION)
+from cStringIO import StringIO
 
 from mcomix.preferences import prefs
 from mcomix import constants
+from mcomix import log
+
+
+if sys.platform == 'win32':
+    # Works around GTK's slowness on Win32 by using PIL
+    # for loading instead and converting it afterwards.
+    USE_PIL = True
+else:
+    USE_PIL = False
+
+log.info('Using %s for loading images (versions: %s [%s], GDK [%s])',
+         'PIL' if USE_PIL else 'GDK',
+         PIL_VERSION[0], PIL_VERSION[1],
+         # Unfortunately gdk_pixbuf_version is not exported,
+         # so show the GTK+ version instead.
+         'GTK+ ' + '.'.join(map(str, gtk.gtk_version)))
+
 
 def rotate_pixbuf(src, rotation):
     rotation %= 360
@@ -224,19 +248,33 @@ def get_most_common_edge_colour(pixbufs, edge=2):
     most_used = group_colors(ungrouped_colors)
     return [color * 257 for color in most_used]
 
-def pil_to_pixbuf(image):
+def pil_to_pixbuf(image, keep_orientation=False):
     """Return a pixbuf created from the PIL <image>."""
     if image.mode.startswith('RGB'):
         imagestr = image.tostring()
-        IS_RGBA = image.mode == 'RGBA'
-        return gtk.gdk.pixbuf_new_from_data(imagestr, gtk.gdk.COLORSPACE_RGB,
-            IS_RGBA, 8, image.size[0], image.size[1],
-            (IS_RGBA and 4 or 3) * image.size[0])
+        has_alpha = image.mode == 'RGBA'
     else:
         imagestr = image.convert('RGB').tostring()
-        return gtk.gdk.pixbuf_new_from_data(imagestr, gtk.gdk.COLORSPACE_RGB,
-            False, 8, image.size[0], image.size[1],
-            3 * image.size[0])
+        has_alpha = False
+    pixbuf = gtk.gdk.pixbuf_new_from_data(
+        imagestr, gtk.gdk.COLORSPACE_RGB,
+        has_alpha, 8,
+        image.size[0], image.size[1],
+        (4 if has_alpha else 3) * image.size[0]
+    )
+    if keep_orientation:
+        # Keep orientation metadata.
+        orientation = None
+        exif = image.info.get('exif')
+        if exif is not None:
+            exif = _getexif(image)
+            orientation = exif.get(274, None)
+        if orientation is None:
+            # Maybe it's a PNG? Try alternative method.
+            orientation = _get_png_implied_rotation(image)
+        if orientation is not None:
+            setattr(pixbuf, 'orientation', str(orientation))
+    return pixbuf
 
 def pixbuf_to_pil(pixbuf):
     """Return a PIL image created from <pixbuf>."""
@@ -244,40 +282,56 @@ def pixbuf_to_pil(pixbuf):
     stride = pixbuf.get_rowstride()
     pixels = pixbuf.get_pixels()
     mode = pixbuf.get_has_alpha() and 'RGBA' or 'RGB'
-    return Image.frombuffer(mode, dimensions, pixels, 'raw', mode, stride, 1)
+    image = Image.frombuffer(mode, dimensions, pixels, 'raw', mode, stride, 1)
+    return image
 
 def load_pixbuf(path):
     """ Loads a pixbuf from a given image file. """
-    return gtk.gdk.pixbuf_new_from_file(path)
+    if USE_PIL:
+        pixbuf = pil_to_pixbuf(Image.open(path), keep_orientation=True)
+    else:
+        pixbuf = gtk.gdk.pixbuf_new_from_file(path)
+    return pixbuf
 
 def load_pixbuf_size(path, width, height):
     """ Loads a pixbuf from a given image file and scale it to fit
     inside (width, height). """
-    format, src_width, src_height = get_image_info(path)
-    if src_width <= width and src_height <= height:
-        src = gtk.gdk.pixbuf_new_from_file(path)
+    if USE_PIL:
+        im = Image.open(path)
+        im.thumbnail((width, height))
+        pixbuf = pil_to_pixbuf(im, keep_orientation=True)
     else:
-        # Work around GdkPixbuf bug: https://bugzilla.gnome.org/show_bug.cgi?id=735422
-        if 'GIF' == format:
-            src = gtk.gdk.pixbuf_new_from_file(path)
-            return fit_in_rectangle(src, width, height, scaling_quality=gtk.gdk.INTERP_BILINEAR)
-        src = gtk.gdk.pixbuf_new_from_file_at_size(path, width, height)
-        src_width, src_height = src.get_width(), src.get_height()
-    if src.get_has_alpha():
+        format, image_width, image_height = get_image_info(path)
+        # Do not rescale if smaller than target dimensions.
+        if image_width <= width and image_height <= height:
+            pixbuf = gtk.gdk.pixbuf_new_from_file(path)
+            width, height = image_width, image_height
+        else:
+            # Work around GdkPixbuf bug: https://bugzilla.gnome.org/show_bug.cgi?id=735422
+            if 'GIF' == format:
+                pixbuf = gtk.gdk.pixbuf_new_from_file(path)
+                pixbuf = fit_in_rectangle(pixbuf, width, height, scaling_quality=gtk.gdk.INTERP_BILINEAR)
+            else:
+                pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(path, width, height)
+    if pixbuf.get_has_alpha():
         if prefs['checkered bg for transparent images']:
-            src = src.composite_color_simple(src_width, src_height,
+            pixbuf = pixbuf.composite_color_simple(width, height,
                 prefs['scaling quality'], 255, 8, 0x777777, 0x999999)
         else:
-            src = src.composite_color_simple(src_width, src_height,
+            pixbuf = pixbuf.composite_color_simple(width, height,
                 prefs['scaling quality'], 255, 1024, 0xFFFFFF, 0xFFFFFF)
-    return src
+    return pixbuf
 
 def load_pixbuf_data(imgdata):
     """ Loads a pixbuf from the data passed in <imgdata>. """
-    loader = gtk.gdk.PixbufLoader()
-    loader.write(imgdata, len(imgdata))
-    loader.close()
-    return loader.get_pixbuf()
+    if USE_PIL:
+        pixbuf = pil_to_pixbuf(Image.open(StringIO(imgdata)), keep_orientation=True)
+    else:
+        loader = gtk.gdk.PixbufLoader()
+        loader.write(imgdata, len(imgdata))
+        loader.close()
+        pixbuf = loader.get_pixbuf()
+    return pixbuf
 
 def enhance(pixbuf, brightness=1.0, contrast=1.0, saturation=1.0,
   sharpness=1.0, autocontrast=False):
@@ -300,12 +354,17 @@ def enhance(pixbuf, brightness=1.0, contrast=1.0, saturation=1.0,
         im = ImageEnhance.Sharpness(im).enhance(sharpness)
     return pil_to_pixbuf(im)
 
-def _get_png_implied_rotation(pixbuf):
+def _get_png_implied_rotation(pixbuf_or_image):
     """Same as <get_implied_rotation> for PNG files.
 
     Lookup for Exif data in the tEXt chunk.
     """
-    exif = pixbuf.get_option('tEXt::Raw profile type exif')
+    if isinstance(pixbuf_or_image, gtk.gdk.Pixbuf):
+        exif = pixbuf_or_image.get_option('tEXt::Raw profile type exif')
+    elif isinstance(pixbuf_or_image, Image.Image):
+        exif = pixbuf_or_image.info.get('Raw profile type exif')
+    else:
+        raise ValueError()
     if exif is None:
         return None
     exif = exif.split('\n')
@@ -336,7 +395,9 @@ def get_implied_rotation(pixbuf):
     by a camera that is held sideways might store this fact in its Exif data,
     and the pixbuf loader will set the orientation option correspondingly.
     """
-    orientation = pixbuf.get_option('orientation')
+    orientation = getattr(pixbuf, 'orientation', None)
+    if orientation is None:
+        orientation = pixbuf.get_option('orientation')
     if orientation is None:
         # Maybe it's a PNG? Try alternative method.
         orientation = _get_png_implied_rotation(pixbuf)
@@ -406,20 +467,64 @@ def get_image_info(path):
     """Return image informations:
         (format, width, height)
     """
-    infos = gtk.gdk.pixbuf_get_file_info(path)
-    if infos is None:
-        return (_('Unknown filetype'), 0, 0)
-    return infos[0]['name'].upper(), infos[1], infos[2]
+    info = None
+    if USE_PIL:
+        try:
+            im = Image.open(path)
+            info = (im.format,) + im.size
+        except IOError:
+            # If the file cannot be found, or the image
+            # cannot be opened and identified.
+            im = None
+    else:
+        info = gtk.gdk.pixbuf_get_file_info(path)
+        if info is not None:
+            info = info[0]['name'].upper(), info[1], info[2]
+    if info is None:
+        info = (_('Unknown filetype'), 0, 0)
+    return info
 
 def get_supported_formats():
-    supported_formats = {}
-    for format in gtk.gdk.pixbuf_get_formats():
-        name = format['name'].upper()
-        assert name not in supported_formats
-        supported_formats[name] = (
-            format['mime_types'],
-            format['extensions'],
-        )
+    if USE_PIL:
+        # Make sure all supported formats are registered.
+        Image.init()
+        # Not all PIL formats register a mime type,
+        # fill in the blanks ourselves.
+        supported_formats = {
+            'BMP': (['image/bmp', 'image/x-bmp', 'image/x-MS-bmp'], []),
+            'ICO': (['image/x-icon', 'image/x-ico', 'image/x-win-bitmap'], []),
+            'PCX': (['image/x-pcx'], []),
+            'PPM': (['image/x-portable-pixmap'], []),
+            'TGA': (['image/x-tga'], []),
+        }
+        for name, mime in Image.MIME.items():
+            mime_types, extensions = supported_formats.get(name, ([], []))
+            supported_formats[name] = mime_types + [mime], extensions
+        for ext, name in Image.EXTENSION.items():
+            assert '.' == ext[0]
+            mime_types, extensions = supported_formats.get(name, ([], []))
+            supported_formats[name] = mime_types, extensions + [ext[1:]]
+        # Remove formats with no mime type or extension.
+        for name in supported_formats.keys():
+            mime_types, extensions = supported_formats[name]
+            if not mime_types or not extensions:
+                del supported_formats[name]
+        # Remove archives/videos formats.
+        for name in (
+            'MPEG',
+            'PDF',
+        ):
+            if name in supported_formats:
+                del supported_formats[name]
+    else:
+        supported_formats = {}
+        for format in gtk.gdk.pixbuf_get_formats():
+            name = format['name'].upper()
+            assert name not in supported_formats
+            supported_formats[name] = (
+                format['mime_types'],
+                format['extensions'],
+            )
     return supported_formats
 
 # Set supported image extensions regexp from list of supported formats.
