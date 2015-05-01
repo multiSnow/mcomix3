@@ -94,13 +94,7 @@ def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False, rotati
     src_height = src.get_height()
 
     if not scale_up and src_width <= width and src_height <= height:
-        if src.get_has_alpha():
-            if prefs['checkered bg for transparent images']:
-                src = src.composite_color_simple(src_width, src_height,
-                    scaling_quality, 255, 8, 0x777777, 0x999999)
-            else:
-                src = src.composite_color_simple(src_width, src_height,
-                    scaling_quality, 255, 1024, 0xFFFFFF, 0xFFFFFF)
+        width, height = src_width, src_height
     else:
         if keep_ratio:
             if float(src_width) / width > float(src_height) / height:
@@ -108,15 +102,15 @@ def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False, rotati
             else:
                 width = int(max(src_width * height / src_height, 1))
 
-        if src.get_has_alpha():
-            if prefs['checkered bg for transparent images']:
-                src = src.composite_color_simple(width, height,
-                    scaling_quality, 255, 8, 0x777777, 0x999999)
-            else:
-                src = src.composite_color_simple(width, height,
-                    scaling_quality, 255, 1024, 0xFFFFFF, 0xFFFFFF)
-        elif width != src_width or height != src_height:
-            src = src.scale_simple(width, height, scaling_quality)
+    if src.get_has_alpha():
+        if prefs['checkered bg for transparent images']:
+            check_size, color1, color2 = 8, 0x777777, 0x999999
+        else:
+            check_size, color1, color2 = 1024, 0xFFFFFF, 0xFFFFFF
+        src = src.composite_color_simple(width, height, scaling_quality,
+                                         255, check_size, color1, color2)
+    elif width != src_width or height != src_height:
+        src = src.scale_simple(width, height, scaling_quality)
 
     src = rotate_pixbuf(src, rotation)
 
