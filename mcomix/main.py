@@ -1047,12 +1047,12 @@ class MainWindow(gtk.Window):
     def save_and_terminate_program(self, *args):
         prefs['previous quit was quit and save'] = True
 
-        self.terminate_program(save_current_file=True)
+        self.terminate_program()
 
     def close_program(self, *args):
-        self.terminate_program(save_current_file=False)
+        self.terminate_program()
 
-    def terminate_program(self, save_current_file=False):
+    def terminate_program(self):
         """Run clean-up tasks and exit the program."""
 
         self.hide()
