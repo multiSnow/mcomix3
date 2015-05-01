@@ -76,6 +76,8 @@ class MainWindow(gtk.Window):
             gtk.VScrollbar(self._vadjust))
 
         self.filehandler = file_handler.FileHandler(self)
+        self.filehandler.file_closed += self._on_file_closed
+        self.filehandler.file_opened += self._on_file_opened
         self.imagehandler = image_handler.ImageHandler(self)
         self.imagehandler.page_available += self._page_available
         self.thumbnailsidebar = thumbbar.ThumbnailSidebar(self)
@@ -486,6 +488,12 @@ class MainWindow(gtk.Window):
             and prefs['archive thumbnail as icon']):
             pixbuf = self.imagehandler.get_thumbnail(page, 48, 48)
             self.set_icon(pixbuf)
+
+    def _on_file_opened(self):
+        self.uimanager.set_sensitivities()
+
+    def _on_file_closed(self):
+        self.uimanager.set_sensitivities()
 
     def new_page(self, at_bottom=False):
         """Draw a *new* page correctly (as opposed to redrawing the same

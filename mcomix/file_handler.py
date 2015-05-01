@@ -133,7 +133,6 @@ class FileHandler(object):
             except Exception, ex:
                 self._window.statusbar.set_message(unicode(ex))
                 self._window.osd.show(unicode(ex))
-                self._window.uimanager.set_sensitivities()
                 self.file_opened()
                 return False
             self.file_loading = True
@@ -171,8 +170,6 @@ class FileHandler(object):
             self._window.statusbar.set_message(msg)
             self._window.osd.show(msg)
 
-            self._window.uimanager.set_sensitivities()
-
         else:
             if self.archive_type is None:
                 # If no extraction is required, mark all files as available.
@@ -198,7 +195,6 @@ class FileHandler(object):
                     self._window.set_page(last_image_index + 1)
 
             self._window.set_page(current_image_index + 1)
-            self._window.uimanager.set_sensitivities()
             self._window.thumbnailsidebar.load_thumbnails()
 
             if self.archive_type is not None:
@@ -240,7 +236,6 @@ class FileHandler(object):
             self._comment_files = []
             self._name_table.clear()
             self._window.clear()
-            self._window.uimanager.set_sensitivities()
             self._extractor.stop()
             self._window.imagehandler.cleanup()
             self._window.thumbnailsidebar.clear()
