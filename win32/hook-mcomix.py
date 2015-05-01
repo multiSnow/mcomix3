@@ -110,6 +110,10 @@ datas.extend((
     ('C:/Program Files/7-Zip/License.txt', 'doc/7z'),
 ))
 
+# Add w9xpopen.exe.
+
+datas.append(('C:/Python27/w9xpopen.exe', '.'))
+
 # Add PIL hidden imports.
 
 pil_modules = set(collect_submodules('PIL'))
