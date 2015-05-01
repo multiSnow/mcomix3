@@ -292,29 +292,16 @@ def load_pixbuf_size(path, width, height):
     inside (width, height). """
     if USE_PIL:
         im = Image.open(path)
-        im.thumbnail((width, height))
+        im.draft(None, (width, height))
         pixbuf = pil_to_pixbuf(im, keep_orientation=True)
     else:
-        format, image_width, image_height = get_image_info(path)
-        # Do not rescale if smaller than target dimensions.
-        if image_width <= width and image_height <= height:
+        # Work around GdkPixbuf bug: https://bugzilla.gnome.org/show_bug.cgi?id=735422
+        format = get_image_info(path)[0]
+        if 'GIF' == format:
             pixbuf = gtk.gdk.pixbuf_new_from_file(path)
-            width, height = image_width, image_height
         else:
-            # Work around GdkPixbuf bug: https://bugzilla.gnome.org/show_bug.cgi?id=735422
-            if 'GIF' == format:
-                pixbuf = gtk.gdk.pixbuf_new_from_file(path)
-                pixbuf = fit_in_rectangle(pixbuf, width, height, scaling_quality=gtk.gdk.INTERP_BILINEAR)
-            else:
-                pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(path, width, height)
-    if pixbuf.get_has_alpha():
-        if prefs['checkered bg for transparent images']:
-            pixbuf = pixbuf.composite_color_simple(width, height,
-                prefs['scaling quality'], 255, 8, 0x777777, 0x999999)
-        else:
-            pixbuf = pixbuf.composite_color_simple(width, height,
-                prefs['scaling quality'], 255, 1024, 0xFFFFFF, 0xFFFFFF)
-    return pixbuf
+            pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(path, width, height)
+    return fit_in_rectangle(pixbuf, width, height, scaling_quality=gtk.gdk.INTERP_BILINEAR)
 
 def load_pixbuf_data(imgdata):
     """ Loads a pixbuf from the data passed in <imgdata>. """
