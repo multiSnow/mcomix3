@@ -191,7 +191,7 @@ install_python_source()
 
   rm -rf "$tmpdir/$dir"
 
-  aunpack --quiet --extract-to "$winedir/tmp" "$distdir/$file"
+  aunpack --quiet --extract-to "$tmpdir" "$distdir/$file"
 
   (
     cd "$tmpdir/$dir"
