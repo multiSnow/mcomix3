@@ -111,18 +111,9 @@ class OpenWithCommand(object):
         else:
             workdir = os.getcwd()
 
-        arg = args[0]
-        fullcmd = os.path.join(workdir, arg)
-        if os.path.isfile(fullcmd) and os.access(fullcmd, os.R_OK|os.X_OK):
-            return True
+        exe = process.find_executable((args[0],), workdir=workdir)
 
-        for path in os.environ["PATH"].split(os.pathsep):
-            path = path.strip('"')
-            exe = os.path.join(path, arg)
-            if os.path.isfile(exe) and os.access(exe, os.R_OK|os.X_OK):
-                return True
-
-        return False
+        return exe is not None
 
     def is_valid_workdir(self, window, allow_empty=False):
         """ Check if the working directory is valid. """
