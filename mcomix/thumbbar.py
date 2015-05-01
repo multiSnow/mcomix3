@@ -221,8 +221,7 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
             # the thumbbar then do not select that page because they
             # more than likely have many pages open and are simply trying
             # to give mcomix focus again
-            self._set_selected_row(self._currently_selected_row)
-            self._window.was_out_of_focus = False
+            self._set_selected_row(self._currently_selected_row, scroll=False)
 
     def _drag_data_get(self, treeview, context, selection, *args):
         """Put the URI of the selected file into the SelectionData, so that

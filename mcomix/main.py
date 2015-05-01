@@ -52,7 +52,6 @@ class MainWindow(gtk.Window):
         # ----------------------------------------------------------------
         # Attributes
         # ----------------------------------------------------------------
-        self.is_in_focus = True
         self.is_fullscreen = False
         self.is_manga_mode = False
         self.is_virtual_double_page = False  # I.e. a wide image is displayed
@@ -291,10 +290,10 @@ class MainWindow(gtk.Window):
         gtk.gdk.event_handler_set(_on_event)
 
     def gained_focus(self, *args):
-        self.is_in_focus = True
+        self.was_out_of_focus = False
 
     def lost_focus(self, *args):
-        self.is_in_focus = False
+        self.was_out_of_focus = True
 
         # If the user presses CTRL for a keyboard shortcut, e.g. to
         # open the library, key_release_event isn't fired and force_single_step

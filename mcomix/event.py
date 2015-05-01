@@ -489,6 +489,9 @@ class EventHandler:
     def mouse_press_event(self, widget, event):
         """Handle mouse click events on the main layout area."""
 
+        if self._window.was_out_of_focus:
+            return
+
         if event.button == 1:
             self._pressed_pointer_pos_x = event.x_root
             self._pressed_pointer_pos_y = event.y_root
@@ -538,11 +541,6 @@ class EventHandler:
 
     def mouse_move_event(self, widget, event):
         """Handle mouse pointer movement events."""
-
-        if not self._window.is_in_focus:
-            self._window.was_out_of_focus = True
-        else:
-            self._window.was_out_of_focus = False
 
         event = _get_latest_event_of_same_type(event)
 
