@@ -1028,12 +1028,21 @@ class MainWindow(gtk.Window):
         if not self.filehandler.file_loaded:
             return
 
-        filename = self.imagehandler.get_pretty_current_filename().encode('utf-8')
-        page_text = '%s %s' % (_('Page'), self.statusbar.get_page_number())
-        if self.statusbar.get_file_number():
-            page_text += ' ' + self.statusbar.get_file_number()
-
-        self.osd.show(filename + "\n\n" + page_text)
+        text = u''
+        filename = self.imagehandler.get_pretty_current_filename()
+        if filename:
+            text += u'%s\n' % filename
+        file_number, file_count = self.filehandler.get_file_number()
+        if file_count:
+            text += u'(%d / %d)\n' % (file_number, file_count)
+        else:
+            text += u'\n'
+        page_number = self.imagehandler.get_current_page()
+        if page_number:
+            text += u'%s %s' % (_('Page'), page_number)
+        text = text.strip('\n')
+        if text:
+            self.osd.show(text)
 
     def minimize(self, *args):
         """ Minimizes the MComix window. """
