@@ -208,6 +208,16 @@ install_python_source()
   return 0
 }
 
+install_mimetypes()
+{
+  file="$1"
+  src="$distdir/$file"
+  dst="$winedir/drive_c/Python27/Lib/$file"
+
+  cp -v "$src" "$dst"
+  winecmd wine python.exe -m py_compile "$dst"
+}
+
 helper_setup()
 {
   winecmd wineboot --init
@@ -215,6 +225,8 @@ helper_setup()
   touch "$installed"
   # Bare minimum for running MComix.
   install python-2.7.9.msi 719832e0159eebf9cd48104c7db49aa978f6156c 'https://www.python.org/ftp/python/2.7.9' install_msi /q
+  # Install fixed mimetypes module.
+  install mimetypes.py 28eae6fccbcc454496a3ee616ff690c30abd3f8b https://hg.python.org/cpython/raw-file/7c4c4e43c452/Lib install_mimetypes
   install pygtk-all-in-one-2.24.2.win32-py2.7.msi 9e057b87734b81d76cf479247b74c3d2936b0a6d 'http://ftp.gnome.org/pub/GNOME/binaries/win32/pygtk/2.24' install_msi
   install Pillow-2.8.1.win32-py2.7.exe 9221e1695cc3b510ceb4748035fffc03c823f9e0 'https://pypi.python.org/packages/2.7/P/Pillow' install_exe
   # Better support for password protected zip files.
