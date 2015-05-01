@@ -365,7 +365,9 @@ class _BookArea(gtk.ScrolledWindow):
     def _icon_added(self, model, path, iter, *args):
         """ Justifies the alignment of all cell renderers when new data is
         added to the model. """
+        width, height = self._pixbuf_size()
         for cell in self._iconview.get_cells():
+            cell.set_fixed_size(width, height)
             cell.set_alignment(0.5, 0.5)
 
     def _book_size_changed(self, old, current):
