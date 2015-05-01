@@ -369,6 +369,7 @@ class ImageHandler:
 
         try:
             thumbnailer = thumbnail_tools.Thumbnailer()
+            thumbnailer.set_archive_support(False)
             thumbnailer.set_store_on_disk(create)
             thumbnailer.set_size(width, height)
             return thumbnailer.thumbnail(path)
