@@ -302,12 +302,11 @@ def enhance(pixbuf, brightness=1.0, contrast=1.0, saturation=1.0,
 
 
 def get_implied_rotation(pixbuf):
-    """Return the implied rotation of the pixbuf, as given by the pixbuf's
-    orientation option (the value of which is based on EXIF data etc.).
+    """Return the implied rotation in degrees: 0, 90, 180, or 270.
 
     The implied rotation is the angle (in degrees) that the raw pixbuf should
     be rotated in order to be displayed "correctly". E.g. a photograph taken
-    by a camera that is held sideways might store this fact in its EXIF data,
+    by a camera that is held sideways might store this fact in its Exif data,
     and the pixbuf loader will set the orientation option correspondingly.
     """
     orientation = pixbuf.get_option('orientation')
