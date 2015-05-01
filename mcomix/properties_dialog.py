@@ -72,15 +72,14 @@ class _PropertiesDialog(gtk.Dialog):
         filename = window.filehandler.get_pretty_current_filename()
         page.set_filename(filename)
         path = window.filehandler.get_path_to_base()
-        stats = os.stat(path)
         main_info = (
             _('%d pages') % window.imagehandler.get_number_of_pages(),
             _('%d comments') %
                 window.filehandler.get_number_of_comments(),
-            strings.ARCHIVE_DESCRIPTIONS[window.filehandler.archive_type],
-            '%.1f MiB' % (stats.st_size / 1048576.0))
+            strings.ARCHIVE_DESCRIPTIONS[window.filehandler.archive_type]
+        )
         page.set_main_info(main_info)
-        self._update_page_secondary_info(page, stats, path)
+        self._update_page_secondary_info(page, path)
         page.show_all()
 
     def _update_image_page(self):
@@ -93,14 +92,13 @@ class _PropertiesDialog(gtk.Dialog):
         path = window.imagehandler.get_path_to_page()
         filename = os.path.basename(path)
         page.set_filename(filename)
-        stats = os.stat(path)
         width, height = window.imagehandler.get_size()
         main_info = (
             '%dx%d px' % (width, height),
             window.imagehandler.get_mime_name(),
-            '%.1f KiB' % (stats.st_size / 1024.0))
+        )
         page.set_main_info(main_info)
-        self._update_page_secondary_info(page, stats, path)
+        self._update_page_secondary_info(page, path)
         page.show_all()
 
     def _update_page_image(self, page, page_number=None):
@@ -109,19 +107,32 @@ class _PropertiesDialog(gtk.Dialog):
         thumb = self._window.imagehandler.get_thumbnail(page_number, width=128, height=128)
         page.set_thumbnail(thumb)
 
-    def _update_page_secondary_info(self, page, stats, location):
+    def _update_page_secondary_info(self, page, location):
+        secondary_info = [
+            (_('Location'), i18n.to_unicode(os.path.dirname(location))),
+        ]
+        try:
+            stats = os.stat(location)
+        except OSError as e:
+            page.set_secondary_info(secondary_info)
+            return
         if _has_pwd:
             uid = pwd.getpwuid(stats.st_uid)[0]
         else:
             uid = str(stats.st_uid)
-        secondary_info = (
-            (_('Location'), i18n.to_unicode(os.path.dirname(location))),
+        if stats.st_size > 1048576.0:
+            size = '%.1f MiB' % (stats.st_size / 1048576.0)
+        else:
+            size = '%.1f KiB' % (stats.st_size / 1024.0)
+        secondary_info.extend((
+            (_('Size'), size),
             (_('Accessed'), time.strftime('%Y-%m-%d, %H:%M:%S',
             time.localtime(stats.st_atime))),
             (_('Modified'), time.strftime('%Y-%m-%d, %H:%M:%S',
             time.localtime(stats.st_mtime))),
             (_('Permissions'), oct(stat.S_IMODE(stats.st_mode))),
-            (_('Owner'), uid))
+            (_('Owner'), uid)
+        ))
         page.set_secondary_info(secondary_info)
 
 # vim: expandtab:sw=4:ts=4
