@@ -289,15 +289,15 @@ class MainWindow(gtk.Window):
         # isn't properly unset.
         self.imagehandler.force_single_step = False
 
-    def draw_image(self, at_bottom=False, scroll=False):
+    def draw_image(self, scroll_to=None):
         """Draw the current pages and update the titlebar and statusbar.
         """
         if not self._waiting_for_redraw:  # Don't stack up redraws.
             self._waiting_for_redraw = True
-            gobject.idle_add(self._draw_image, at_bottom, scroll,
-                priority=gobject.PRIORITY_HIGH_IDLE)
+            gobject.idle_add(self._draw_image, scroll_to,
+                             priority=gobject.PRIORITY_HIGH_IDLE)
 
-    def _draw_image(self, at_bottom, scroll):
+    def _draw_image(self, scroll_to):
         self._display_active_widgets()
 
         if not self.filehandler.file_loaded:
@@ -389,13 +389,15 @@ class MainWindow(gtk.Window):
             for i in range(n, len(self.images)):
                 self.images[i].hide()
 
-            if scroll:
-                if at_bottom:
-                    self.scroll_to_predefined((constants.SCROLL_TO_END,) * 2,
-                        constants.LAST_INDEX)
+            if scroll_to is not None:
+                destination = (scroll_to,) * 2
+                if constants.SCROLL_TO_START == scroll_to:
+                    index = constants.FIRST_INDEX
+                elif constants.SCROLL_TO_END == scroll_to:
+                    index = constants.LAST_INDEX
                 else:
-                    self.scroll_to_predefined((constants.SCROLL_TO_START,) * 2,
-                        constants.FIRST_INDEX)
+                    index = None
+                self.scroll_to_predefined(destination, index)
 
             self._main_layout.window.thaw_updates()
         else:
@@ -468,10 +470,10 @@ class MainWindow(gtk.Window):
     def _page_available(self, page):
         """ Called whenever a new page is ready for displaying. """
         # Refresh display when currently opened page becomes available.
-        if page == self.imagehandler.get_current_page() \
-            or (self.displayed_double() and page == self.imagehandler.get_current_page() + 1):
-
-            self.draw_image(False, True)
+        current_page = self.imagehandler.get_current_page()
+        nb_pages = 2 if self.displayed_double() else 1
+        if current_page <= page < (current_page + nb_pages):
+            self.draw_image(scroll_to=constants.SCROLL_TO_START)
 
         # Use first page as application icon when opening archives.
         if (page == 1
@@ -491,7 +493,12 @@ class MainWindow(gtk.Window):
 
         self.thumbnailsidebar.update_select()
 
-        self.draw_image(at_bottom=at_bottom, scroll=True)
+        if at_bottom:
+            scroll_to = constants.SCROLL_TO_END
+        else:
+            scroll_to = constants.SCROLL_TO_START
+
+        self.draw_image(scroll_to=scroll_to)
 
     @callback.Callback
     def page_changed(self):
