@@ -60,6 +60,8 @@ class MainWindow(gtk.Window):
         self.was_out_of_focus = False
         #: Used to remember if changing to fullscreen enabled 'Hide all'
         self.hide_all_forced = False
+        # Remember last scroll destination.
+        self._last_scroll_destination = constants.SCROLL_TO_START
 
         self.layout = _dummy_layout()
         self._spacing = 2
@@ -292,6 +294,7 @@ class MainWindow(gtk.Window):
     def draw_image(self, scroll_to=None):
         """Draw the current pages and update the titlebar and statusbar.
         """
+        # FIXME: what if scroll_to is different?
         if not self._waiting_for_redraw:  # Don't stack up redraws.
             self._waiting_for_redraw = True
             gobject.idle_add(self._draw_image, scroll_to,
@@ -401,6 +404,8 @@ class MainWindow(gtk.Window):
 
             self._main_layout.window.thaw_updates()
         else:
+            # Save scroll destination for when the page becomes available.
+            self._last_scroll_destination = scroll_to
             # If the pixbuf for the current page(s) isn't available,
             # hide all images to clear any old pixbufs.
             # XXX How about calling self._clear_main_area?
@@ -473,7 +478,7 @@ class MainWindow(gtk.Window):
         current_page = self.imagehandler.get_current_page()
         nb_pages = 2 if self.displayed_double() else 1
         if current_page <= page < (current_page + nb_pages):
-            self.draw_image(scroll_to=constants.SCROLL_TO_START)
+            self.draw_image(scroll_to=self._last_scroll_destination)
 
         # Use first page as application icon when opening archives.
         if (page == 1
