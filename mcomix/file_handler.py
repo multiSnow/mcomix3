@@ -114,7 +114,7 @@ class FileHandler(object):
         if error_message:
             self._window.statusbar.set_message(error_message)
             self._window.osd.show(error_message)
-            self.file_loaded = True
+            self.file_opened()
             return False
 
         self.filelist = filelist
@@ -134,10 +134,10 @@ class FileHandler(object):
                 self._window.statusbar.set_message(unicode(ex))
                 self._window.osd.show(unicode(ex))
                 self._window.uimanager.set_sensitivities()
+                self.file_opened()
                 return False
             self.file_loading = True
         else:
-            self.file_loaded = True
             image_files, current_image_index = \
                 self._open_image_files(filelist, self._current_file)
             self._archive_opened(image_files)
@@ -164,6 +164,7 @@ class FileHandler(object):
 
         self._window.imagehandler._base_path = self._base_path
         self._window.imagehandler._image_files = image_files
+        self.file_opened()
 
         if not image_files:
             msg = _("No images in '%s'") % os.path.basename(self._current_file)
@@ -210,12 +211,10 @@ class FileHandler(object):
 
         self._window.uimanager.recent.add(self._current_file)
 
-        self.file_opened()
-
     @callback.Callback
     def file_opened(self):
         """ Called when a new set of files has successfully been opened. """
-        pass
+        self.file_loaded = True
 
     @callback.Callback
     def file_closed(self):
@@ -326,7 +325,6 @@ class FileHandler(object):
         if not self.file_loading:
             return
         self.file_loading = False
-        self.file_loaded = True
 
         files = self._extractor.get_files()
         archive_images = [image for image in files
