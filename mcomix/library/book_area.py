@@ -55,13 +55,13 @@ class _BookArea(gtk.ScrolledWindow):
         self._liststore.set_sort_func(constants.SORT_PATH, self._sort_by_path, None)
         self.set_sort_order()
         self._liststore.connect('row-inserted', self._icon_added)
-        self._iconview = thumbnail_view.ThumbnailIconView(self._liststore)
-        self._iconview.set_pixbuf_column(0)
-        self._iconview.pixbuf_column = 0
-        self._iconview.status_column = 5
+        self._iconview = thumbnail_view.ThumbnailIconView(
+            self._liststore,
+            1, # UID
+            0, # pixbuf
+            5, # status
+        )
         self._iconview.generate_thumbnail = self._get_pixbuf
-        self._iconview.get_file_path_from_model = lambda model, iter: \
-                model.get_value(iter, 2).decode('utf-8')
         self._iconview.connect('item_activated', self._book_activated)
         self._iconview.connect('selection_changed', self._selection_changed)
         self._iconview.connect_after('drag_begin', self._drag_begin)
@@ -239,7 +239,8 @@ class _BookArea(gtk.ScrolledWindow):
         for book in books:
             # Fill the liststore with a filler pixbuf.
             self._liststore.append([filler, book.id,
-                book.path.encode('utf-8'), book.size, book.added, False])
+                                    book.path.encode('utf-8'),
+                                    book.size, book.added, False])
 
         self._iconview.draw_thumbnails_on_screen()
 
@@ -412,18 +413,20 @@ class _BookArea(gtk.ScrolledWindow):
             collection = self._library.collection_area.get_current_collection()
             gobject.idle_add(self.display_covers, collection)
 
-    def _get_pixbuf(self, path, model_path):
-        """ Get or create the thumbnail for the selected book at <path>. """
-        if self._cache.exists(path):
-            pixbuf = self._cache.get(path)
+    def _get_pixbuf(self, uid):
+        """ Get or create the thumbnail for the selected book <uid>. """
+        assert isinstance(uid, int)
+        book = self._library.backend.get_book_by_id(uid)
+        if self._cache.exists(book.path):
+            pixbuf = self._cache.get(book.path)
         else:
-            pixbuf = self._library.backend.get_book_thumbnail(path) or constants.MISSING_IMAGE_ICON
+            pixbuf = self._library.backend.get_book_thumbnail(book.path) or constants.MISSING_IMAGE_ICON
             # The ratio (0.67) is just above the normal aspect ratio for books.
             pixbuf = image_tools.fit_in_rectangle(pixbuf,
                 int(0.67 * prefs['library cover size']),
                 prefs['library cover size'], True)
             pixbuf = image_tools.add_border(pixbuf, 1, 0xFFFFFFFF)
-            self._cache.add(path, pixbuf)
+            self._cache.add(book.path, pixbuf)
 
         # Display indicator of having finished reading the book.
         # This information isn't cached in the pixbuf cache, as it changes frequently.
@@ -432,9 +435,7 @@ class _BookArea(gtk.ScrolledWindow):
         if prefs['library cover size'] < 50:
             return pixbuf
 
-        book = self._library.backend.get_book_by_path(path)
         last_read_page = book.get_last_read_page()
-
         if last_read_page is None or last_read_page != book.pages:
             return pixbuf
 
