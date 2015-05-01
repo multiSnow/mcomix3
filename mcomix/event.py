@@ -613,15 +613,11 @@ class EventHandler:
 
         if y > 0 or (self._window.is_manga_mode and x < 0) or (
           not self._window.is_manga_mode and x > 0):
-            forwards_scroll = True
-
+            page_flipped = self._next_page_with_protection()
         else:
-            forwards_scroll = False
+            page_flipped = self._previous_page_with_protection()
 
-        if forwards_scroll:
-            return not self._next_page_with_protection()
-        else:
-            return not self._previous_page_with_protection()
+        return not page_flipped
 
     def _scroll_down(self):
         """ Scrolls down. """
