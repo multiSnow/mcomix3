@@ -361,6 +361,13 @@ helper_dist_shell()
   "$SHELL" "$@"
 )}
 
+helper_dist_test()
+{
+  helper_dist
+  helper_dist_setup
+  helper_dist_mcomix "$@"
+}
+
 helper_mcomix()
 {
   winecmd wine python.exe "$(winepath -w "$mcomixdir/mcomixstarter.py")" "$@"
