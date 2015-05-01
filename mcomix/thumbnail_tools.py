@@ -44,6 +44,7 @@ class Thumbnailer(object):
         self.height = prefs['thumbnail size']
         self.default_sizes = True
         self.force_recreation = False
+        self.archive_support = True
 
     def set_size(self, width, height):
         """ Sets <weight> and <height> for created thumbnails. """
@@ -64,6 +65,9 @@ class Thumbnailer(object):
     def set_destination_dir(self, dst_dir):
         """ Changes the Thumbnailer's storage directory. """
         self.dst_dir = dst_dir
+
+    def set_archive_support(self, archive_support):
+        self.archive_support = archive_support
 
     def thumbnail(self, filepath, async=False):
         """ Returns a thumbnail pixbuf for <filepath>, transparently handling
@@ -116,7 +120,10 @@ class Thumbnailer(object):
         """ Creates a thumbnail pixbuf from <filepath>, and returns it as a
         tuple along with a file metadata dictionary: (pixbuf, tEXt_data) """
 
-        mime = archive_tools.archive_mime_type(filepath)
+        if self.archive_support:
+            mime = archive_tools.archive_mime_type(filepath)
+        else:
+            mime = None
         if mime is not None:
             cleanup = []
             try:
