@@ -161,14 +161,17 @@ class _BaseFileChooserDialog(gtk.Dialog):
         """Add images filters to the filechooser.
         """
         ffilter = gtk.FileFilter()
-        ffilter.add_pixbuf_formats()
         ffilter.set_name(_('All images'))
         self.filechooser.add_filter(ffilter)
-        self.add_filter(_('JPEG images'), ('image/jpeg',), ('*.jpg', '*.jpeg'))
-        self.add_filter(_('PNG images'), ('image/png',), ('*.png',))
-        self.add_filter(_('GIF images'), ('image/gif',), ('*.gif',))
-        self.add_filter(_('TIFF images'), ('image/tiff',), ('*.tiff',))
-        self.add_filter(_('BMP images'), ('image/bmp',), ('*.bmp',))
+        supported_formats = image_tools.get_supported_formats()
+        for name in sorted(supported_formats):
+            mime_types, extensions = supported_formats[name]
+            patterns = ['*.%s' % ext for ext in extensions]
+            self.add_filter(_('%s images') % name, mime_types, patterns)
+            for mime in mime_types:
+                ffilter.add_mime_type(mime)
+            for pat in patterns:
+                ffilter.add_pattern(pat)
 
     def _filter(self, filter_info, data):
         """ Callback function used to determine if a file
