@@ -30,6 +30,20 @@ def lha_available():
 def pdf_available():
     return pdf.PdfArchive.is_available()
 
+def get_supported_formats():
+    supported_formats = {}
+    for name, formats, is_available in (
+        ('ZIP', constants.ZIP_FORMATS , True            ),
+        ('Tar', constants.TAR_FORMATS , True            ),
+        ('RAR', constants.RAR_FORMATS , rar_available() ),
+        ('7z' , constants.SZIP_FORMATS, szip_available()),
+        ('LHA', constants.LHA_FORMATS , lha_available() ),
+        ('PDF', constants.PDF_FORMATS , pdf_available() ),
+    ):
+        if is_available:
+            supported_formats[name] = formats
+    return supported_formats
+
 def get_supported_archive_regex():
     """ Returns a compiled regular expression that contains extensions
     of all currently supported file types, based on available applications.
