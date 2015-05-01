@@ -437,10 +437,9 @@ class _BookArea(gtk.ScrolledWindow):
 
         if last_read_page is None or last_read_page != book.pages:
             return pixbuf
-        if last_read_page == book.pages:
-            book_pixbuf = self.render_icon(gtk.STOCK_APPLY, gtk.ICON_SIZE_LARGE_TOOLBAR)
 
         # Composite icon on the lower right corner of the book cover pixbuf.
+        book_pixbuf = self.render_icon(gtk.STOCK_APPLY, gtk.ICON_SIZE_LARGE_TOOLBAR)
         translation_x = pixbuf.get_width() - book_pixbuf.get_width() - 1
         translation_y = pixbuf.get_height() - book_pixbuf.get_height() - 1
         book_pixbuf.composite(pixbuf, translation_x, translation_y,
