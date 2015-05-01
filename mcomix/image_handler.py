@@ -138,7 +138,7 @@ class ImageHandler:
         self._get_pixbuf(index)
 
     def set_page(self, page_num):
-        """Set up filehandler to the page <page_num>. Return the new page number.
+        """Set up filehandler to the page <page_num>.
         """
         assert 0 < page_num <= self.get_number_of_pages()
         self._current_image_index = page_num - 1
