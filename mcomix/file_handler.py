@@ -201,8 +201,6 @@ class FileHandler(object):
                     self._window.set_page(last_image_index + 1)
 
             self._window.set_page(current_image_index + 1)
-            self._window.scroll_to_predefined((constants.SCROLL_TO_START,) * 2,
-                                              constants.FIRST_INDEX)
             self._window.uimanager.set_sensitivities()
             self._window.thumbnailsidebar.load_thumbnails()
 
@@ -504,8 +502,6 @@ class FileHandler(object):
             for path in files[current_index + 1:]:
                 if archive_tools.archive_mime_type(path) is not None:
                     self._close()
-                    self._window.scroll_to_predefined(
-                        (constants.SCROLL_TO_START,) * 2, constants.FIRST_INDEX)
                     self.open_file(path, keep_fileprovider=True)
                     return True
 
@@ -526,8 +522,6 @@ class FileHandler(object):
             for path in reversed(files[:current_index]):
                 if archive_tools.archive_mime_type(path) is not None:
                     self._close()
-                    self._window.scroll_to_predefined(
-                        (constants.SCROLL_TO_END,) * 2, constants.LAST_INDEX)
                     self.open_file(path, -1, keep_fileprovider=True)
                     return True
 
@@ -553,8 +547,6 @@ class FileHandler(object):
 
         files = self._file_provider.list_files(listmode)
         self._close()
-        self._window.scroll_to_predefined(
-            (constants.SCROLL_TO_START,) * 2, constants.FIRST_INDEX)
         if len(files) > 0:
             path = files[0]
         else:
@@ -582,8 +574,6 @@ class FileHandler(object):
 
         files = self._file_provider.list_files(listmode)
         self._close()
-        self._window.scroll_to_predefined(
-            (constants.SCROLL_TO_END,) * 2, constants.LAST_INDEX)
         if len(files) > 0:
             path = files[-1]
         else:
