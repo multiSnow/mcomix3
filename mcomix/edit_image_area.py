@@ -14,7 +14,7 @@ class _ImageArea(gtk.ScrolledWindow):
     """The area used for displaying and handling image files."""
 
     def __init__(self, edit_dialog, window):
-        gtk.ScrolledWindow.__init__(self)
+        super(_ImageArea, self).__init__()
 
         self._window = window
         self._edit_dialog = edit_dialog

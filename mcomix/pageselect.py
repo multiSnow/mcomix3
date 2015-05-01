@@ -14,7 +14,7 @@ class Pageselector(gtk.Dialog):
 
     def __init__(self, window):
         self._window = window
-        self._page_selector_dialog = gtk.Dialog.__init__(self, "Go to page...", window,
+        super(Pageselector, self).__init__("Go to page...", window,
                                      gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT)
         self.add_buttons(_('_Go'), gtk.RESPONSE_OK,
                          _('_Cancel'), gtk.RESPONSE_CANCEL,)

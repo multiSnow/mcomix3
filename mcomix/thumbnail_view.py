@@ -116,7 +116,7 @@ class ThumbnailViewBase(object):
 
 class ThumbnailIconView(gtk.IconView, ThumbnailViewBase):
     def __init__(self, model):
-        gtk.IconView.__init__(self, model)
+        super(ThumbnailIconView, self).__init__(model)
         ThumbnailViewBase.__init__(self, model)
 
         # Connect events
@@ -127,7 +127,7 @@ class ThumbnailIconView(gtk.IconView, ThumbnailViewBase):
 
 class ThumbnailTreeView(gtk.TreeView, ThumbnailViewBase):
     def __init__(self, model):
-        gtk.TreeView.__init__(self, model)
+        super(ThumbnailTreeView, self).__init__(model)
         ThumbnailViewBase.__init__(self, model)
 
         # Connect events

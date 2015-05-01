@@ -13,7 +13,7 @@ class _BookmarksDialog(gtk.Dialog):
     _SORT_TYPE, _SORT_NAME, _SORT_PAGE, _SORT_ADDED = 100, 101, 102, 103
 
     def __init__(self, window, bookmarks_store):
-        gtk.Dialog.__init__(self, _('Edit Bookmarks'), window, gtk.DIALOG_DESTROY_WITH_PARENT,
+        super(_BookmarksDialog, self).__init__(_('Edit Bookmarks'), window, gtk.DIALOG_DESTROY_WITH_PARENT,
             (gtk.STOCK_REMOVE, constants.RESPONSE_REMOVE,
              gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE))
 

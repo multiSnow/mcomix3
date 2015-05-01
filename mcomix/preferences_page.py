@@ -15,7 +15,7 @@ class _PreferencePage(gtk.VBox):
         """Create a new page where any possible right columns have the
         width request <right_column_width>.
         """
-        gtk.VBox.__init__(self, False, 12)
+        super(_PreferencePage, self).__init__(False, 12)
         self.set_border_width(12)
         self._right_column_width = right_column_width
         self._section = None

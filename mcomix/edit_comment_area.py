@@ -8,7 +8,7 @@ class _CommentArea(gtk.VBox):
     """The area used for displaying and handling non-image files."""
 
     def __init__(self, edit_dialog):
-        gtk.VBox.__init__(self)
+        super(_CommentArea, self).__init__()
         self._edit_dialog = edit_dialog
 
         scrolled = gtk.ScrolledWindow()

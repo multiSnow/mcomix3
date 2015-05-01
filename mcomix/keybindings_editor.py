@@ -11,7 +11,7 @@ class KeybindingEditorWindow(gtk.ScrolledWindow):
 
     def __init__(self, keymanager):
         """ @param keymanager: KeybindingManager instance. """
-        gtk.ScrolledWindow.__init__(self)
+        super(KeybindingEditorWindow, self).__init__()
         self.set_border_width(5)
         self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
 

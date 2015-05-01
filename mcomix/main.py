@@ -46,7 +46,7 @@ class MainWindow(gtk.Window):
     def __init__(self, fullscreen=False, is_slideshow=slideshow,
             show_library=False, manga_mode=False, double_page=False,
             zoom_mode=None, open_path=None, open_page=1):
-        gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
+        super(MainWindow, self).__init__(gtk.WINDOW_TOPLEVEL)
 
         # ----------------------------------------------------------------
         # Attributes

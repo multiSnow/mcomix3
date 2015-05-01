@@ -16,7 +16,7 @@ class _PreferenceSection(gtk.VBox):
         <header>, and the width request of the (possible) right columns
         set to that of <right_column_width>.
         """
-        gtk.VBox.__init__(self, False, 0)
+        super(_PreferenceSection, self).__init__(False, 0)
         self._right_column_width = right_column_width
         self.contentbox = gtk.VBox(False, 6)
         label = labels.BoldLabel(header)

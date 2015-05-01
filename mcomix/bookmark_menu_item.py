@@ -9,6 +9,7 @@ class _Bookmark(gtk.ImageMenuItem):
     """
 
     def __init__(self, window, file_handler, name, path, page, numpages, archive_type, date_added):
+
         self._name = name
         self._path = path
         self._page = page
@@ -18,7 +19,7 @@ class _Bookmark(gtk.ImageMenuItem):
         self._file_handler = file_handler
         self._date_added = date_added
 
-        gtk.MenuItem.__init__(self, str(self), False)
+        super(_Bookmark, self).__init__(str(self), False)
 
         if self._archive_type is not None:
             im = gtk.image_new_from_stock('mcomix-archive', gtk.ICON_SIZE_MENU)

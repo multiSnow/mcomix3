@@ -25,7 +25,7 @@ class _EditArchiveDialog(gtk.Dialog):
     """
 
     def __init__(self, window):
-        gtk.Dialog.__init__(self, _('Edit archive'), window, gtk.DIALOG_MODAL,
+        super(_EditArchiveDialog, self).__init__(_('Edit archive'), window, gtk.DIALOG_MODAL,
             (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL))
 
         self._accept_changes_button = self.add_button(gtk.STOCK_APPLY, gtk.RESPONSE_APPLY)

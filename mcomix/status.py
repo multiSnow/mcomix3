@@ -11,7 +11,7 @@ class Statusbar(gtk.EventBox):
     SPACING = 5
 
     def __init__(self):
-        gtk.EventBox.__init__(self)
+        super(Statusbar, self).__init__()
 
         self._loading = True
 

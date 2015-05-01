@@ -19,7 +19,7 @@ class _PropertiesDialog(gtk.Dialog):
 
     def __init__(self, window):
 
-        gtk.Dialog.__init__(self, _('Properties'), window, 0,
+        super(_PropertiesDialog, self).__init__(_('Properties'), window, 0,
             (gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE))
 
         self._window = window

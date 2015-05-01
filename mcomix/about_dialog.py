@@ -12,7 +12,7 @@ from mcomix import image_tools
 class _AboutDialog(gtk.AboutDialog):
 
     def __init__(self, window):
-        gtk.AboutDialog.__init__(self)
+        super(_AboutDialog, self).__init__()
 
         self.set_name(constants.APPNAME)
         self.set_program_name(constants.APPNAME)

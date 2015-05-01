@@ -27,7 +27,7 @@ class _LibraryDialog(gtk.Window):
     """
 
     def __init__(self, window, file_handler):
-        gtk.Window.__init__(self, gtk.WINDOW_TOPLEVEL)
+        super(_LibraryDialog, self).__init__(gtk.WINDOW_TOPLEVEL)
 
         self._window = window
 

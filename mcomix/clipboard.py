@@ -15,9 +15,9 @@ class Clipboard(gtk.Clipboard):
     """
 
     def __init__(self, window):
-        self._window = window
-        gtk.Clipboard.__init__(self, display=gtk.gdk.display_get_default(),
+        super(Clipboard, self).__init__(display=gtk.gdk.display_get_default(),
             selection="CLIPBOARD")
+        self._window = window
 
     def copy(self, text, pixbuf):
         """ Copies C{text} and C{pixbuf} to clipboard. """

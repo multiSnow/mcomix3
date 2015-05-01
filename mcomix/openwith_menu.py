@@ -12,7 +12,7 @@ _openwith_edit_diag = None
 class OpenWithMenu(gtk.Menu):
     def __init__(self, ui, window):
         """ Constructor. """
-        gtk.Menu.__init__(self)
+        super(OpenWithMenu, self).__init__()
 
         self._window = window
         self._openwith_manager = _openwith_manager

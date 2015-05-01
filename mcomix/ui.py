@@ -19,7 +19,7 @@ from mcomix.library import main_dialog as library_main_dialog
 class MainUI(gtk.UIManager):
 
     def __init__(self, window):
-        gtk.UIManager.__init__(self)
+        super(MainUI, self).__init__()
 
         self._window = window
         self._tooltipstatus = status.TooltipStatusHelper(self, window.statusbar)

@@ -12,7 +12,7 @@ class _MainFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog):
     """The normal filechooser dialog used with the "Open" menu item."""
 
     def __init__(self, window):
-        file_chooser_base_dialog._BaseFileChooserDialog.__init__(self)
+        super(_MainFileChooserDialog, self).__init__()
         self._window = window
         self.set_transient_for(window)
         self.filechooser.set_select_multiple(True)

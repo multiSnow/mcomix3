@@ -13,7 +13,7 @@ class BookmarksMenu(gtk.Menu):
     """
 
     def __init__(self, ui, window):
-        gtk.Menu.__init__(self)
+        super(BookmarksMenu, self).__init__()
 
         self._window = window
         self._bookmarks_store = bookmark_backend.BookmarksStore

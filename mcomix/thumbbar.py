@@ -19,7 +19,7 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
     _BORDER_SIZE = 1
 
     def __init__(self, window):
-        gtk.ScrolledWindow.__init__(self)
+        super(ThumbnailSidebar, self).__init__()
 
         self._window = window
         #: Thumbnail load status

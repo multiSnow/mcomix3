@@ -14,7 +14,7 @@ class _EnhanceImageDialog(gtk.Dialog):
     """
 
     def __init__(self, window):
-        gtk.Dialog.__init__(self, _('Enhance image'), window, 0)
+        super(_EnhanceImageDialog, self).__init__(_('Enhance image'), window, 0)
 
         self._window = window
 

@@ -24,7 +24,7 @@ class _CollectionArea(gtk.ScrolledWindow):
     """
 
     def __init__(self, library):
-        gtk.ScrolledWindow.__init__(self)
+        super(_CollectionArea, self).__init__()
         self._library = library
         self.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
 

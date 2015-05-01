@@ -22,7 +22,7 @@ class _ControlArea(gtk.HBox):
     """
 
     def __init__(self, library):
-        gtk.HBox.__init__(self, False, 12)
+        super(_ControlArea, self).__init__(False, 12)
 
         self._library = library
         self.set_border_width(10)

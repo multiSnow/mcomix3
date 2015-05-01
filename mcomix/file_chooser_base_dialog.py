@@ -49,7 +49,7 @@ class _BaseFileChooserDialog(gtk.Dialog):
             buttons = (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                 gtk.STOCK_SAVE, gtk.RESPONSE_OK)
 
-        gtk.Dialog.__init__(self, title, None, 0, buttons)
+        super(_BaseFileChooserDialog, self).__init__(title, None, 0, buttons)
         self.set_default_response(gtk.RESPONSE_OK)
 
         self.filechooser = gtk.FileChooserWidget(action=action)

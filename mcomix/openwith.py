@@ -283,7 +283,7 @@ class OpenWithEditor(gtk.Dialog):
     the external model (i.e. preferences) only when properly closed. """
 
     def __init__(self, window, openwithmanager):
-        gtk.Dialog.__init__(self, _('Edit external commands'), parent=window)
+        super(OpenWithEditor, self).__init__(_('Edit external commands'), parent=window)
         self.set_destroy_with_parent(True)
         self._window = window
         self._openwith = openwithmanager

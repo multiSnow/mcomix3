@@ -70,7 +70,7 @@ class PrintHandler(logging.Handler):
     """ Handler using L{print_} to output messages. """
 
     def __init__(self):
-        logging.Handler.__init__(self)
+        super(PrintHandler, self).__init__()
 
     def emit(self, record):
         print_(self.format(record))

@@ -34,7 +34,7 @@ class _BookArea(gtk.ScrolledWindow):
     """
 
     def __init__(self, library):
-        gtk.ScrolledWindow.__init__(self)
+        super(_BookArea, self).__init__()
 
         self._library = library
         self._cache = get_pixbuf_cache()
