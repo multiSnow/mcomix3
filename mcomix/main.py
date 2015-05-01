@@ -977,7 +977,7 @@ class MainWindow(gtk.Window):
         a confirmation dialog. """
 
         current_file = self.imagehandler.get_real_path()
-        dialog = message_dialog.MessageDialog(None, gtk.DIALOG_MODAL, gtk.MESSAGE_QUESTION,
+        dialog = message_dialog.MessageDialog(self, gtk.DIALOG_MODAL, gtk.MESSAGE_QUESTION,
                 gtk.BUTTONS_NONE)
         dialog.set_should_remember_choice('delete-opend-file', (gtk.RESPONSE_OK,))
         dialog.set_text(

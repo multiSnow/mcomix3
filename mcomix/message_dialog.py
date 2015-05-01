@@ -16,6 +16,10 @@ class MessageDialog(gtk.MessageDialog):
         @param type: Dialog icon/type
         @param buttons: Dialog buttons. Can only be a predefined BUTTONS_XXX constant.
         """
+        if parent is None:
+            # Fix "mapped without a transient parent" Gtk warning.
+            from mcomix import main
+            parent = main.main_window()
         super(MessageDialog, self).__init__(parent=parent, flags=flags, type=type, buttons=buttons)
 
         #: Unique dialog identifier (for storing 'Do not ask again')

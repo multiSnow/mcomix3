@@ -87,8 +87,7 @@ class __BookmarksStore:
         # If the same file was already bookmarked, ask to replace
         # the existing bookmarks before deleting them.
         if len(same_file_bookmarks) > 0:
-            interface = BookmarkInterface()
-            response = interface.show_replace_bookmark_dialog(same_file_bookmarks, page)
+            response = self.show_replace_bookmark_dialog(same_file_bookmarks, page)
 
             # Delete old bookmarks
             if response == gtk.RESPONSE_YES:
@@ -191,14 +190,12 @@ class __BookmarksStore:
         self._bookmarks_mtime = long(time.time())
 
 
-class BookmarkInterface(object):
-
     def show_replace_bookmark_dialog(self, old_bookmarks, new_page):
         """ Present a confirmation dialog to replace old bookmarks.
         @return RESPONSE_YES to create replace bookmarks,
             RESPONSE_NO to create a new bookmark, RESPONSE_CANCEL to abort creating
             a new bookmark. """
-        dialog = message_dialog.MessageDialog(None, gtk.DIALOG_MODAL, gtk.MESSAGE_INFO)
+        dialog = message_dialog.MessageDialog(self._window, gtk.DIALOG_MODAL, gtk.MESSAGE_INFO)
         dialog.add_buttons(gtk.STOCK_YES, gtk.RESPONSE_YES,
              gtk.STOCK_NO, gtk.RESPONSE_NO,
              gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL)
