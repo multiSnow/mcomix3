@@ -82,43 +82,8 @@ class _BaseFileChooserDialog(gtk.Dialog):
         preview_box.show_all()
         self.filechooser.connect('update-preview', self._update_preview)
 
-        self._all_files_filter = self.add_filter(
-            _('All files'), [], ['*'])
-
-        # Determine which types should go into 'All archives' based on
-        # extractor availability.
-        mimetypes = constants.ZIP_FORMATS[0] + constants.TAR_FORMATS[0]
-        patterns = constants.ZIP_FORMATS[1] + constants.TAR_FORMATS[1]
-        if archive_tools.rar_available():
-            mimetypes += constants.RAR_FORMATS[0]
-            patterns += constants.RAR_FORMATS[1]
-        if archive_tools.szip_available():
-            mimetypes += constants.SZIP_FORMATS[0]
-            patterns += constants.SZIP_FORMATS[1]
-        if archive_tools.lha_available():
-            mimetypes += constants.LHA_FORMATS[0]
-            patterns += constants.LHA_FORMATS[1]
-
-        self.add_filter(_('All Archives'),
-            mimetypes, patterns)
-
-        self.add_filter(_('ZIP archives'),
-                *constants.ZIP_FORMATS)
-
-        self.add_filter(_('Tar archives'),
-            *constants.TAR_FORMATS)
-
-        if archive_tools.rar_available():
-            self.add_filter(_('RAR archives'),
-                *constants.RAR_FORMATS)
-
-        if archive_tools.szip_available():
-            self.add_filter(_('7z archives'),
-                *constants.SZIP_FORMATS)
-
-        if archive_tools.lha_available():
-            self.add_filter(_('LHA archives'),
-                *constants.LHA_FORMATS)
+        self._all_files_filter = self.add_filter( _('All files'), [], ['*'])
+        self.add_archive_filters()
 
         try:
             current_file = self._current_file()
@@ -156,6 +121,21 @@ class _BaseFileChooserDialog(gtk.Dialog):
         ffilter.set_name(name)
         self.filechooser.add_filter(ffilter)
         return ffilter
+
+    def add_archive_filters(self):
+        """Add archive filters to the filechooser.
+        """
+        ffilter = gtk.FileFilter()
+        ffilter.set_name(_('All archives'))
+        self.filechooser.add_filter(ffilter)
+        supported_formats = archive_tools.get_supported_formats()
+        for name in sorted(supported_formats):
+            mime_types, patterns = supported_formats[name]
+            self.add_filter(_('%s archives') % name, mime_types, patterns)
+            for mime in mime_types:
+                ffilter.add_mime_type(mime)
+            for pat in patterns:
+                ffilter.add_pattern(pat)
 
     def add_image_filters(self):
         """Add images filters to the filechooser.
