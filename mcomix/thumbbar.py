@@ -59,31 +59,27 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         # Page column
         self._thumbnail_page_treeviewcolumn = gtk.TreeViewColumn(None)
         self._treeview.append_column(self._thumbnail_page_treeviewcolumn)
-
         self._text_cellrenderer = gtk.CellRendererText()
-
-        self._thumbnail_page_treeviewcolumn.set_sizing(gtk.TREE_VIEW_COLUMN_GROW_ONLY)
+        # Right align page numbers.
+        self._text_cellrenderer.set_property('xalign', 1.0)
+        self._thumbnail_page_treeviewcolumn.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
         self._thumbnail_page_treeviewcolumn.pack_start(self._text_cellrenderer, False)
         self._thumbnail_page_treeviewcolumn.add_attribute(self._text_cellrenderer, 'text', 0)
-
-        if not prefs['show page numbers on thumbnails']:
-            self._thumbnail_page_treeviewcolumn.set_property('visible', False)
+        self._thumbnail_page_treeviewcolumn.set_visible(False)
 
         # Pixbuf column
         self._thumbnail_image_treeviewcolumn = gtk.TreeViewColumn(None)
         self._treeview.append_column(self._thumbnail_image_treeviewcolumn)
-
         self._pixbuf_cellrenderer = gtk.CellRendererPixbuf()
-
-        self._thumbnail_image_treeviewcolumn.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
+        self._thumbnail_image_treeviewcolumn.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
+        self._thumbnail_image_treeviewcolumn.set_fixed_width(self._pixbuf_size)
         self._thumbnail_image_treeviewcolumn.pack_start(self._pixbuf_cellrenderer, True)
         self._thumbnail_image_treeviewcolumn.add_attribute(self._pixbuf_cellrenderer, 'pixbuf', 1)
-        self._thumbnail_image_treeviewcolumn.set_alignment(0.0)
 
+        self._treeview.set_fixed_height_mode(True)
         self._treeview.set_can_focus(False)
 
         self.add(self._treeview)
-        self.update_layout_size()
         self.change_thumbnail_background_color(prefs['thumb bg colour'])
         self.show_all()
 
@@ -93,28 +89,14 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
     def toggle_page_numbers_visible(self):
         """ Enables or disables page numbers on the thumbnail bar. """
 
-        if prefs['show page numbers on thumbnails']:
-            self._thumbnail_page_treeviewcolumn.set_property('visible', True)
-        else:
-            self._thumbnail_page_treeviewcolumn.set_property('visible', False)
-
-        self.update_layout_size()
-
-    def update_layout_size(self):
-        """ Updates the thumbnail bar's width to fit to thumbnail size. """
-
-        new_width = prefs['thumbnail size'] + 9
-
-        if (self._window.filehandler.file_loaded and
-            prefs['show page numbers on thumbnails']):
-
-            new_width += tools.number_of_digits(
-                self._window.imagehandler.get_number_of_pages()) * 10
-
-            if prefs['thumbnail size'] <= 65:
-                new_width += 8
-
-        self._treeview.set_size_request(new_width, -1)
+        visible = prefs['show page numbers on thumbnails']
+        if visible:
+            number_of_pages = self._window.imagehandler.get_number_of_pages()
+            number_of_digits = tools.number_of_digits(number_of_pages)
+            self._text_cellrenderer.set_property('width-chars', number_of_digits + 1)
+            x, y, w, h = self._text_cellrenderer.get_size(self._treeview, None)
+            self._thumbnail_page_treeviewcolumn.set_fixed_width(w)
+        self._thumbnail_page_treeviewcolumn.set_visible(visible)
 
     def get_width(self):
         """Return the width in pixels of the ThumbnailSidebar."""
@@ -123,14 +105,14 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
     def show(self, *args):
         """Show the ThumbnailSidebar."""
         self._visible = True
-        self.show_all()
         self.load_thumbnails()
+        super(ThumbnailSidebar, self).show()
 
     def hide(self):
         """Hide the ThumbnailSidebar."""
         self._visible = False
+        super(ThumbnailSidebar, self).hide()
         self._treeview.stop_update()
-        self.hide_all()
 
     def clear(self):
         """Clear the ThumbnailSidebar of any loaded thumbnails."""
@@ -140,21 +122,12 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         self._loaded = False
         self._currently_selected_page = 0
 
-    def load_thumbnails(self):
-        """Load the thumbnails, if it is appropriate to do so."""
-
-        if (not self._window.filehandler.file_loaded or
-            self._window.imagehandler.get_number_of_pages() == 0 or
-            self._loaded):
-            return
-
-        self._load()
-
     def resize(self):
         """Reload the thumbnails with the size specified by in the
         preferences.
         """
         self.clear()
+        self._thumbnail_image_treeviewcolumn.set_fixed_width(self._pixbuf_size)
         self.load_thumbnails()
 
     def update_select(self):
@@ -193,7 +166,16 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         # Don't forget the extra pixels for the border!
         return prefs['thumbnail size'] + 2 * self._BORDER_SIZE
 
-    def _load(self):
+    def load_thumbnails(self):
+        """Load the thumbnails, if it is appropriate to do so."""
+
+        if (not self._window.filehandler.file_loaded or
+            self._window.imagehandler.get_number_of_pages() == 0 or
+            self._loaded):
+            return
+
+        self.toggle_page_numbers_visible()
+
         # Detach model for performance reasons
         model = self._treeview.get_model()
         self._treeview.set_model(None)
@@ -208,14 +190,7 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         # Re-attach model
         self._treeview.set_model(model)
 
-        if not prefs['show thumbnails']:
-            # The control needs to be exposed at least once to enable height
-            # calculation.
-            self.show_all()
-            self.hide_all()
-
         # Update layout and current image selection in the thumb bar.
-        self.update_layout_size()
         self.update_select()
 
     def _generate_thumbnail(self, uid):
