@@ -382,9 +382,9 @@ class FileHandler(object):
         @param num_of_pages: Page count.
         @param path: Archive path.
         """
-        if start_page < 0 and self._window.is_double_page:
+        if start_page < 0 and prefs['default double page']:
             current_image_index = num_of_pages - 2
-        elif start_page < 0 and not self._window.is_double_page:
+        elif start_page < 0 and not prefs['default double page']:
             current_image_index = num_of_pages - 1
         elif start_page == 0:
             current_image_index = (self.last_read_page.get_page(path) or 1) - 1

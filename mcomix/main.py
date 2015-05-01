@@ -53,7 +53,6 @@ class MainWindow(gtk.Window):
         # ----------------------------------------------------------------
         self.is_in_focus = True
         self.is_fullscreen = False
-        self.is_double_page = False
         self.is_manga_mode = False
         self.is_virtual_double_page = False  # I.e. a wide image is displayed
         self.width = None
@@ -549,7 +548,9 @@ class MainWindow(gtk.Window):
         number_of_pages = self.imagehandler.get_number_of_pages()
 
         new_page = current_page + step
-        if (1 == abs(step) and not single_step and self.is_double_page and
+        if (1 == abs(step) and
+            not single_step and
+            prefs['default double page'] and
             prefs['double step in double page mode']):
             if +1 == step and not self.imagehandler.get_virtual_double_page():
                 new_page += 1
@@ -604,7 +605,6 @@ class MainWindow(gtk.Window):
 
     def change_double_page(self, toggleaction):
         prefs['default double page'] = toggleaction.get_active()
-        self.is_double_page = toggleaction.get_active()
         self.draw_image()
 
     def change_manga_mode(self, toggleaction):
@@ -828,9 +828,9 @@ class MainWindow(gtk.Window):
     def displayed_double(self):
         """Return True if two pages are currently displayed."""
         return (self.imagehandler.get_current_page() and
-                self.is_double_page and not self.is_virtual_double_page and
-                self.imagehandler.get_current_page() !=
-                self.imagehandler.get_number_of_pages())
+                prefs['default double page'] and
+                not self.is_virtual_double_page and
+                self.imagehandler.get_current_page() != self.imagehandler.get_number_of_pages())
 
     def get_visible_area_size(self):
         """Return a 2-tuple with the width and height of the visible part

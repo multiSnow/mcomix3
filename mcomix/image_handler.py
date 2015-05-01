@@ -159,7 +159,7 @@ class ImageHandler:
             self._window.filehandler.archive_type is not None):
             return True
 
-        if (not self._window.is_double_page or
+        if (not prefs['default double page'] or
             not prefs['virtual double page for fitting images'] & constants.SHOW_DOUBLE_AS_ONE_WIDE or
             page == self.get_number_of_pages()):
             return False
@@ -403,7 +403,7 @@ class ImageHandler:
         """Ask for pages around <page> to be given priority extraction.
         """
         files = []
-        if self._window.is_double_page:
+        if prefs['default double page']:
             page_width = 2
         else:
             page_width = 1
