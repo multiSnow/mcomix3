@@ -176,30 +176,6 @@ class MainWindow(gtk.Window):
         if prefs['invert smart scroll']:
             self.actiongroup.get_action('invert_scroll').activate()
 
-        if prefs['show toolbar']:
-            prefs['show toolbar'] = False
-            self.actiongroup.get_action('toolbar').activate()
-
-        if prefs['show menubar']:
-            prefs['show menubar'] = False
-            self.actiongroup.get_action('menubar').activate()
-
-        if prefs['show statusbar']:
-            prefs['show statusbar'] = False
-            self.actiongroup.get_action('statusbar').activate()
-
-        if prefs['show scrollbar']:
-            prefs['show scrollbar'] = False
-            self.actiongroup.get_action('scrollbar').activate()
-
-        if prefs['show thumbnails']:
-            prefs['show thumbnails'] = False
-            self.actiongroup.get_action('thumbnails').activate()
-
-        if prefs['hide all']:
-            prefs['hide all'] = False
-            self.actiongroup.get_action('hide_all').activate()
-
         if prefs['keep transformation']:
             prefs['keep transformation'] = False
             self.actiongroup.get_action('keep_transformation').activate()
@@ -208,13 +184,44 @@ class MainWindow(gtk.Window):
             prefs['vertical flip'] = False
             prefs['horizontal flip'] = False
 
+        # List of "toggles" than can be shown/hidden by the user.
+        self._toggle_list = (
+            # Preference        Action        Widget(s)
+            ('show menubar'   , 'menubar'   , (self.menubar,)         ),
+            ('show scrollbar' , 'scrollbar' , self._scroll            ),
+            ('show statusbar' , 'statusbar' , (self.statusbar,)       ),
+            ('show thumbnails', 'thumbnails', (self.thumbnailsidebar,)),
+            ('show toolbar'   , 'toolbar'   , (self.toolbar,)         ),
+        )
+
+        # Each "toggle" widget "eats" part of the main layout visible area.
+        self._toggle_axis = {
+            self.thumbnailsidebar              : constants.WIDTH_AXIS ,
+            self._scroll[constants.HEIGHT_AXIS]: constants.WIDTH_AXIS ,
+            self._scroll[constants.WIDTH_AXIS] : constants.HEIGHT_AXIS,
+            self.statusbar                     : constants.HEIGHT_AXIS,
+            self.toolbar                       : constants.HEIGHT_AXIS,
+            self.menubar                       : constants.HEIGHT_AXIS,
+        }
+
+        # Start with all "toggle" widgets hidden to avoid ugly transitions.
+        for preference, action, widget_list in self._toggle_list:
+            for widget in widget_list:
+                widget.hide()
+
+        toggleaction = self.actiongroup.get_action('hide_all')
+        toggleaction.set_active(prefs['hide all'])
+
+        # Sync each "toggle" widget active state with its preference.
+        for preference, action, widget_list in self._toggle_list:
+            self.actiongroup.get_action(action).set_active(prefs[preference])
+
         self.actiongroup.get_action('menu_autorotate_width').set_sensitive(False)
         self.actiongroup.get_action('menu_autorotate_height').set_sensitive(False)
 
         self.add(table)
         table.show()
         self._main_layout.show()
-        self._display_active_widgets()
 
         self._main_layout.set_events(gtk.gdk.BUTTON1_MOTION_MASK |
                                      gtk.gdk.BUTTON2_MOTION_MASK |
@@ -302,10 +309,55 @@ class MainWindow(gtk.Window):
             gobject.idle_add(self._draw_image, scroll_to,
                              priority=gobject.PRIORITY_HIGH_IDLE)
 
+    def _update_toggle_preference(self, preference, toggleaction):
+        ''' Update "toggle" widget corresponding <preference>.
+
+        Note: the widget visibily itself is left unchanged. '''
+        prefs[preference] = toggleaction.get_active()
+        if 'hide all' == preference:
+            self._update_toggles_sensitivity()
+        # Since the size of the drawing area is dependent
+        # on the visible "toggles", redraw the page.
+        self.draw_image()
+
+    def _should_toggle_be_visible(self, preference):
+        ''' Return <True> if "toggle" widget for <preference> should be visible. '''
+        window_state = self.window.get_state()
+        if 0 != (window_state & gtk.gdk.WINDOW_STATE_FULLSCREEN):
+            visible = not prefs['hide all in fullscreen']
+        else:
+            visible = not prefs['hide all']
+        visible &= prefs[preference]
+        if 'show thumbnails' == preference:
+            visible &= self.filehandler.file_loaded
+            visible &= self.imagehandler.get_number_of_pages() > 0
+        return visible
+
+    def _update_toggles_sensitivity(self):
+        ''' Update each "toggle" widget sensitivity. '''
+        sensitive = True
+        if prefs['hide all']:
+            sensitive = False
+        elif prefs['hide all in fullscreen'] and self.is_fullscreen:
+            sensitive = False
+        for preference, action, widget_list in self._toggle_list:
+            self.actiongroup.get_action(action).set_sensitive(sensitive)
+
+    def _update_toggles_visibility(self):
+        ''' Update each "toggle" widget visibility. '''
+        for preference, action, widget_list in self._toggle_list:
+            should_be_visible = self._should_toggle_be_visible(preference)
+            for widget in widget_list:
+                # No change in visibility?
+                if should_be_visible != widget.get_visible():
+                    (widget.show if should_be_visible else widget.hide)()
+
     def _draw_image(self, scroll_to):
-        self._display_active_widgets()
+
+        self._update_toggles_visibility()
 
         if not self.filehandler.file_loaded:
+            self._clear_main_area()
             self._waiting_for_redraw = False
             return False
 
@@ -413,6 +465,7 @@ class MainWindow(gtk.Window):
             # XXX How about calling self._clear_main_area?
             for i in range(len(self.images)):
                 self.images[i].hide()
+            self._show_scrollbars([False] * len(self._scroll))
 
         self._update_page_information()
         self._waiting_for_redraw = False
@@ -493,6 +546,7 @@ class MainWindow(gtk.Window):
         self.uimanager.set_sensitivities()
 
     def _on_file_closed(self):
+        self.thumbnailsidebar.clear()
         self.uimanager.set_sensitivities()
 
     def new_page(self, at_bottom=False):
@@ -640,27 +694,15 @@ class MainWindow(gtk.Window):
         self.is_fullscreen = toggleaction.get_active()
         if self.is_fullscreen:
             self.fullscreen()
-
-            if (prefs['hide all in fullscreen'] and
-                not prefs['hide all']):
-
-                self.hide_all_forced = True
-                self.change_hide_all()
         else:
             self.unfullscreen()
-
-            if (prefs['hide all in fullscreen'] and
-                prefs['hide all'] and
-                self.hide_all_forced):
-
-                self.change_hide_all()
-
-            self.hide_all_forced = False
+        self._update_toggles_sensitivity()
+        # No need to call draw_image explicitely,
+        # as we'll be receiving a resize event.
 
     def change_zoom_mode(self, radioaction=None, *args):
         if radioaction:
             prefs['zoom mode'] = radioaction.get_current_value()
-
         self.zoom.set_fit_mode(prefs['zoom mode'])
         self.zoom.set_scale_up(prefs['stretch'])
         self.zoom.reset_user_zoom()
@@ -671,7 +713,6 @@ class MainWindow(gtk.Window):
         radiobutton is currently activated. """
         if radioaction:
             prefs['auto rotate depending on size'] = radioaction.get_current_value()
-
         self.draw_image()
 
     def change_stretch(self, toggleaction, *args):
@@ -680,35 +721,23 @@ class MainWindow(gtk.Window):
         self.zoom.set_scale_up(prefs['stretch'])
         self.draw_image()
 
-    def change_toolbar_visibility(self, *args):
-        prefs['show toolbar'] = not prefs['show toolbar']
-        self.draw_image()
+    def change_toolbar_visibility(self, toggleaction):
+        self._update_toggle_preference('show toolbar', toggleaction)
 
-    def change_menubar_visibility(self, *args):
-        prefs['show menubar'] = not prefs['show menubar']
-        self.draw_image()
+    def change_menubar_visibility(self, toggleaction):
+        self._update_toggle_preference('show menubar', toggleaction)
 
-    def change_statusbar_visibility(self, *args):
-        prefs['show statusbar'] = not prefs['show statusbar']
-        self.draw_image()
+    def change_statusbar_visibility(self, toggleaction):
+        self._update_toggle_preference('show statusbar', toggleaction)
 
-    def change_scrollbar_visibility(self, *args):
-        prefs['show scrollbar'] = not prefs['show scrollbar']
-        self.draw_image()
+    def change_scrollbar_visibility(self, toggleaction):
+        self._update_toggle_preference('show scrollbar', toggleaction)
 
-    def change_thumbnails_visibility(self, *args):
-        prefs['show thumbnails'] = not prefs['show thumbnails']
-        self.draw_image()
+    def change_thumbnails_visibility(self, toggleaction):
+        self._update_toggle_preference('show thumbnails', toggleaction)
 
-    def change_hide_all(self, *args):
-        prefs['hide all'] = not prefs['hide all']
-        sensitive = not prefs['hide all']
-        self.actiongroup.get_action('toolbar').set_sensitive(sensitive)
-        self.actiongroup.get_action('menubar').set_sensitive(sensitive)
-        self.actiongroup.get_action('statusbar').set_sensitive(sensitive)
-        self.actiongroup.get_action('scrollbar').set_sensitive(sensitive)
-        self.actiongroup.get_action('thumbnails').set_sensitive(sensitive)
-        self.draw_image()
+    def change_hide_all(self, toggleaction):
+        self._update_toggle_preference('hide all', toggleaction)
 
     def change_keep_transformation(self, *args):
         prefs['keep transformation'] = not prefs['keep transformation']
@@ -728,15 +757,12 @@ class MainWindow(gtk.Window):
     def _show_scrollbars(self, request):
         """ Enables scroll bars depending on requests and preferences. """
 
-        limit = prefs['show scrollbar'] and \
-            not prefs['hide all'] and\
-            not (self.is_fullscreen and \
-            prefs['hide all in fullscreen'])
+        limit = self._should_toggle_be_visible('show scrollbar')
         for i in range(len(self._scroll)):
             if limit and request[i]:
-                self._scroll[i].show_all()
+                self._scroll[i].show()
             else:
-                self._scroll[i].hide_all()
+                self._scroll[i].hide()
 
     def is_scrollable_horizontally(self):
         """ Returns True when the displayed image does not fit into the display
@@ -832,9 +858,9 @@ class MainWindow(gtk.Window):
 
     def clear(self):
         """Clear the currently displayed data (i.e. "close" the file)."""
-        self._clear_main_area()
         self.set_title(constants.APPNAME)
         self.statusbar.set_message('')
+        self.draw_image()
 
     def _clear_main_area(self):
         for i in self.images:
@@ -857,33 +883,15 @@ class MainWindow(gtk.Window):
         """Return a 2-tuple with the width and height of the visible part
         of the main layout area.
         """
-        width, height = self.get_size()
+        dimensions = list(self.get_size())
 
-        if not prefs['hide all']:
+        for preference, action, widget_list in self._toggle_list:
+            for widget in widget_list:
+                if widget.get_visible():
+                    axis = self._toggle_axis[widget]
+                    dimensions[axis] -= widget.size_request()[axis]
 
-            if prefs['show toolbar']:
-                height -= self.toolbar.size_request()[1]
-
-            if prefs['show statusbar']:
-                height -= self.statusbar.size_request()[1]
-
-            if prefs['show thumbnails']:
-                width -= self.thumbnailsidebar.get_width()
-
-            if prefs['show menubar']:
-                height -= self.menubar.size_request()[1]
-
-            if prefs['show scrollbar']:
-
-                if self._scroll[constants.HEIGHT_AXIS].get_visible():
-                    width -= self._scroll[constants.HEIGHT_AXIS]\
-                        .size_request()[constants.WIDTH_AXIS]
-
-                if self._scroll[constants.WIDTH_AXIS].get_visible():
-                    height -= self._scroll[constants.WIDTH_AXIS]\
-                        .size_request()[constants.HEIGHT_AXIS]
-
-        return width, height
+        return tuple(dimensions)
 
     def get_layout_pointer_position(self):
         """Return a 2-tuple with the x and y coordinates of the pointer
@@ -935,41 +943,6 @@ class MainWindow(gtk.Window):
 
     def get_bg_colour(self):
         return self._bg_colour
-
-    def _display_active_widgets(self):
-        """Hide and/or show main window widgets depending on the current
-        state.
-        """
-
-        if not prefs['hide all']:
-
-            if prefs['show toolbar']:
-                self.toolbar.show_all()
-            else:
-                self.toolbar.hide_all()
-
-            if prefs['show statusbar']:
-                self.statusbar.show_all()
-            else:
-                self.statusbar.hide_all()
-
-            if prefs['show menubar']:
-                self.menubar.show_all()
-            else:
-                self.menubar.hide_all()
-
-            if prefs['show thumbnails'] and self.filehandler.file_loaded:
-                self.thumbnailsidebar.show()
-            else:
-                self.thumbnailsidebar.hide()
-
-        else:
-            self.toolbar.hide_all()
-            self.menubar.hide_all()
-            self.statusbar.hide_all()
-            self.thumbnailsidebar.hide()
-            self._scroll[constants.HEIGHT_AXIS].hide_all()
-            self._scroll[constants.WIDTH_AXIS].hide_all()
 
     def extract_page(self, *args):
         """ Derive some sensible filename (archive name + _ + filename should do) and offer
