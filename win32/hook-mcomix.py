@@ -10,6 +10,7 @@ from hookutils import collect_submodules
 
 
 datas = []
+hiddenimports = []
 
 # Add GTK DLLs.
 
@@ -108,4 +109,34 @@ datas.extend((
     ('C:/Program Files/7-Zip/7z.dll', '.'),
     ('C:/Program Files/7-Zip/License.txt', 'doc/7z'),
 ))
+
+# Add PIL hidden imports.
+
+pil_modules = set(collect_submodules('PIL'))
+for unwanted in (
+    'PIL.DcxImagePlugin',
+    'PIL.EpsImagePlugin',
+    'PIL.FpxImagePlugin',
+    'PIL.GdImageFile',
+    'PIL.GimpGradientFile',
+    'PIL.GimpPaletteFile',
+    'PIL.GribStubImagePlugin',
+    'PIL.Hdf5StubImagePlugin',
+    'PIL.ImageQt',
+    'PIL.ImageTk',
+    'PIL.McIdasImagePlugin',
+    'PIL.MicImagePlugin',
+    'PIL.MpegImagePlugin',
+    'PIL.OleFileIO',
+    'PIL.PSDraw',
+    'PIL.PixarImagePlugin',
+    'PIL.SgiImagePlugin',
+    'PIL.SpiderImagePlugin',
+    'PIL.SunImagePlugin',
+    'PIL._imagingtk',
+):
+    if unwanted in pil_modules:
+        pil_modules.remove(unwanted)
+
+hiddenimports.extend(pil_modules)
 
