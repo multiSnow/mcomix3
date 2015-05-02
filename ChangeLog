@@ -1,21 +1,6 @@
 MComix 1.2
 
-    - You can select the text in the Properties dialog now.
-
-    - The thumbnailer now displays page numbers in a reasonable color
-      appropriate for the respective background color.
-
-    - The thumbnailer uses the same size for all thumbnails now. If thumbnails
-      need to be rescaled, it is done using linear interpolation.
-
-    - When clicking on the thumbnailer while the main window is unfocused, the
-      window should be focused only without switching to another page. This has
-      been fixed so it works properly now.
-
-    - When using the keyboard, the thumbnailer now tries to keep the currently
-      selected page in the upper half of its area.
-
-    - The size of the thumbnailer is calculated more reasonably now.
+    GUI/MAIN:
 
     - If metadata-based rotation is enabled, PNG files will be automatically
       rotated as well.
@@ -26,11 +11,76 @@ MComix 1.2
       transformations are applied to the union of both pages. Also, reflection
       is performed first, followed by rotation.
 
-    - The status bar has been improved a bit.
+    - Some OSD issues have been fixed.
 
-    - MComix uses czipfile if available to speed up extraction from zip files.
+    - When flipping pages, the content of the viewport does not appear
+      somewhere else first anymore.
+
+    GUI/THUMBNAILER:
+
+    - The thumbnailer now displays page numbers in a reasonable color
+      appropriate for the respective background color.
+
+    - The thumbnailer uses the same size for all thumbnails now. If thumbnails
+      need to be rescaled, it is done using linear interpolation.
+
+    - When using the keyboard, the thumbnailer now tries to keep the currently
+      selected page in the upper half of its area.
+
+    - The size of the thumbnailer is calculated more reasonably now.
+
+    - Fixed a bug that could lead to crashes if the thumbnailer uses a dynamic
+      background color.
+
+    - The "missing image" icon appears in its original size in the thumbnailer.
+
+    - Fix race condition that could lead to thumbnails being rendered with
+      different sizes.
+
+    - Added a workaround for a bug in gdk-pixbuf that could prevent thumbnails
+      of animated GIF images from being rendered properly. For details, see
+      https://bugzilla.gnome.org/show_bug.cgi?id=735422
+
+    GUI/LIBRARY:
+
+    - Some encoding issues with the library have been fixed.
+
+    - The cover display in the library has been fixed.
+
+    - The book area uses a tighter layout.
+
+    - Various other issues with the library have been fixed.
+
+    GUI/EDITARCHIVE:
+
+    - Applying changes in the "Edit archive" dialog could raise an exception
+      under certain circumstances. This has been fixed.
+
+    - Fixed a bug that prevented MComix from shutting down properly if an
+      archive with no images in it has been opened or the "Edit archive" dialog
+      has been used.
+
+    - Some issues with displaying thumbnails in the "Edit archive" dialog have
+      been fixed.
+
+    GUI/WM:
+
+    - Fullscreen handling has been improved.
 
     - The Preferences dialog is not modal anymore.
+
+    - When clicking on the thumbnailer while the main window is unfocused, the
+      window should be focused only without switching to another page. This has
+      been fixed so it works properly now.
+
+    - Modal dialogs do not immediately hide the mouse cursor in the main area
+      anymore.
+
+    - Fix various minor window manager interaction issues.
+
+    GUI/MISC:
+
+    - You can select the text in the Properties dialog now.
 
     - The "Continue reading" dialog defaults to "Yes" now.
 
@@ -38,6 +88,20 @@ MComix 1.2
       page or book.
 
     - The password dialog now displays the path of the archive.
+
+    - Overall widget handling has been fixed and improved. This also eliminates
+      some GTK warnings.
+
+    - Fixed a lot of issues with empty directories and empty archives.
+
+    - File name filters and supported formats handling have been improved.
+
+    - Various other issues with the Preferences dialog and the Properties
+      dialog have been fixed.
+
+    ENVIRONMENT/LOCALE/TRANSLATIONS:
+
+    - MComix uses czipfile if available to speed up extraction from zip files.
 
     - Zombie processes will be removed if possible.
 
@@ -49,79 +113,32 @@ MComix 1.2
 
     - Searching for external tools (e.g. MuPDF) is performed more properly now.
 
-    - Fullscreen handling has been improved.
-
-    - Some OSD issues have been fixed.
-
-    - Overall widget handling has been fixed and improved. This also eliminates
-      some GTK warnings.
-
-    - When flipping pages, the content of the viewport does not appear
-      somewhere else first anymore.
-
-    - Fix window manager interaction
-
-    - Fixed a bug that could lead to crashes if the thumbnailer uses a dynamic
-      background color.
-
-    - The "missing image" icon appears in its original size in the thumbnailer.
-
-    - Fix race condition that could lead to thumbnails being rendered with
-      different sizes.
-
-    - Some encoding issues with the library have been fixed.
-
-    - The cover display in the library has been fixed. It also uses a tighter
-      layout for the book area.
-
     - Temporary directories will be created only when necessary and will be
       deleted as soon as the corresponding book has been closed.
 
-    - Fixed a bug that prevented MComix from shutting down properly if an
-      archive with no images in it has been opened or the "Edit archive" dialog
-      has been used.
-
-    - Some issues with displaying thumbnails in the "Edit archive" dialog have
-      been fixed.
-
-    - File name filters and supported formats handling have been improved.
-
-    - Fixed a lot of issues with empty directories and empty archives.
-
-    - Modal dialogs do not immediately hide the mouse cursor in the main area
-      anymore.
-
-    - Various issues with the Preferences dialog, the Properties dialog and the
-      library have been fixed.
-
-    - Applying changes in the "Edit archive" dialog could raise an exception
-      under certain circumstances. This has been fixed.
-
-    - Added a workaround for a bug in gdk-pixbuf that could prevent thumbnails
-      of animated GIF images from being rendered properly. For details, see
-      https://bugzilla.gnome.org/show_bug.cgi?id=735422
-
     - The shebangs now ask for python2 instead of just python so we do not
       accidentally run Python 3.
+
+    - comicthumb has been rewritten to make it consistent with MComix.
+
+    - Some locale issues have been fixed.
+
+    - The French translation has been updated.
+
+    MISC:
+
+    - The MIME database has been updated.
 
     - The Py2Exe workaround has been removed.
 
     - A Wine-based helper script allows building Windows versions of MComix in
       Wine.
 
-    - comicthumb has been rewritten to make it consistent with MComix.
-
-    - The MIME database has been updated.
-
-    - Some locale issues have been fixed.
-
-    - The French translation has been updated.
-
     - Huge code refactoring, cleanups and documentation updates
 
-    - New code and examples for testing, improved logging
-
     - Various minor bug fixes and improvements
+
+    - New code and examples for testing, improved logging
 
     - New version numbering scheme in compliance with PEP440
 
