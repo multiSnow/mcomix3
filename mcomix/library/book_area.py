@@ -575,7 +575,7 @@ class _BookArea(gtk.ScrolledWindow):
                     # of a single file
                     os.remove(book_path)
                 except Exception:
-                    log.error(_('! Could not remove file "%s"') % book_path)
+                    log.error(_('! Could not remove file "%s"'), book_path)
 
     def _copy_selected(self, *args):
         """ Copies the currently selected item to clipboard. """

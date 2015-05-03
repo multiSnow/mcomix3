@@ -182,7 +182,7 @@ class _KeybindingManager(object):
                 if self._binding_to_action[keycode] != name:
                     log.warning(_('Keybinding for "%(action)s" overrides hotkey for another action.'),
                             {"action": name})
-                    log.warning('Binding %s overrides %r' % (keycode, self._binding_to_action[keycode]))
+                    log.warning('Binding %s overrides %r', keycode, self._binding_to_action[keycode])
             else:
                 self._binding_to_action[keycode] = name
                 self._action_to_bindings[name].append(keycode)
