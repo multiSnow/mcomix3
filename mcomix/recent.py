@@ -33,7 +33,8 @@ class RecentFilesMenu(gtk.RecentChooserMenu):
         supported_formats.update(image_tools.get_supported_formats())
         supported_formats.update(archive_tools.get_supported_formats())
         for name in sorted(supported_formats):
-            mime_types, patterns = supported_formats[name]
+            mime_types, extensions = supported_formats[name]
+            patterns = ['*.%s' % ext for ext in extensions]
             for mime in mime_types:
                 rfilter.add_mime_type(mime)
             for pat in patterns:

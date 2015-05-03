@@ -27,10 +27,9 @@ class RecursiveArchive(archive_base.BaseArchive):
     def _iter_contents(self, archive, root=None):
         self._archive_list.append(archive)
         self._archive_root[archive] = root
-        supported_archive_regexp = archive_tools.get_supported_archive_regex()
         sub_archive_list = []
         for f in archive.iter_contents():
-            if supported_archive_regexp.search(f):
+            if archive_tools.is_archive_file(f):
                 # We found a sub-archive, don't try to extract it now, as we
                 # must finish listing the containing archive contents before
                 # any extraction can be done.

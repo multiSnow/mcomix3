@@ -119,10 +119,9 @@ class OrderedFileProvider(FileProvider):
             Returns a list of absolute paths, already sorted. """
 
         if mode == FileProvider.IMAGES:
-            should_accept = lambda file: image_tools.is_image_file(file)
+            should_accept = image_tools.is_image_file
         elif mode == FileProvider.ARCHIVES:
-            should_accept = lambda file: \
-                archive_tools.get_supported_archive_regex().search(file, re.I) is not None
+            should_accept = archive_tools.is_archive_file
         else:
             should_accept = lambda file: True
 
@@ -215,16 +214,12 @@ class PreDefinedFileProvider(FileProvider):
 
         for file in files:
             if os.path.isfile(file) and image_tools.is_image_file(file):
-                return lambda file: \
-                        image_tools.is_image_file(file)
-
-            elif (os.path.isfile(file) and
-                  archive_tools.get_supported_archive_regex().search(file, re.I) is not None):
-                return lambda file: \
-                        archive_tools.get_supported_archive_regex().search(file, re.I) is not None
+                return image_tools.is_image_file
+            if os.path.isfile(file) and archive_tools.is_archive_file(file):
+                return archive_tools.is_archive_file
 
         # Default filter only accepts images.
-        return lambda file: image_tools.is_image_file(file)
+        return image_tools.is_image_file
 
 
 # vim: expandtab:sw=4:ts=4

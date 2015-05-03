@@ -6,6 +6,7 @@ import shutil
 import zipfile
 import tarfile
 import tempfile
+import operator
 
 from mcomix import image_tools
 from mcomix import constants
@@ -44,27 +45,18 @@ def get_supported_formats():
             supported_formats[name] = formats
     return supported_formats
 
-def get_supported_archive_regex():
-    """ Returns a compiled regular expression that contains extensions
-    of all currently supported file types, based on available applications.
+# Set supported archive extensions regexp from list of supported formats.
+SUPPORTED_ARCHIVE_REGEX = re.compile(r'\.(%s)$' %
+                                     '|'.join(sorted(reduce(
+                                         operator.add,
+                                         [map(re.escape, fmt[1]) for fmt
+                                          in get_supported_formats().values()]
+                                     ))), re.I)
+
+def is_archive_file(path):
+    """Return True if the file at <path> is a supported archive file.
     """
-    formats = list(constants.ZIP_FORMATS[1] + constants.TAR_FORMATS[1])
-
-    if szip_available():
-        formats.extend(constants.SZIP_FORMATS[1])
-
-    if rar_available():
-        formats.extend(constants.RAR_FORMATS[1])
-
-    if lha_available():
-        formats.extend(constants.LHA_FORMATS[1])
-
-    if pdf_available():
-        formats.extend(constants.PDF_FORMATS[1])
-
-    # Strip leading glob characters "*." from file extensions
-    formats = [format[2:] for format in formats]
-    return re.compile(r'\.(' + '|'.join(formats) + r')\s*$', re.I)
+    return SUPPORTED_ARCHIVE_REGEX.search(path) is not None
 
 def archive_mime_type(path):
     """Return the archive type of <path> or None for non-archives."""

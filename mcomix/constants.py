@@ -69,22 +69,22 @@ ACCEPTED_COMMENT_EXTENSIONS = ['txt', 'nfo', 'xml']
 
 ZIP_FORMATS = (
         ('application/x-zip', 'application/zip', 'application/x-zip-compressed', 'application/x-cbz'),
-        ('*.zip', '*.cbz'))
+        ('zip', 'cbz'))
 RAR_FORMATS = (
         ('application/x-rar', 'application/x-cbr'),
-        ('*.rar', '*.cbr'))
+        ('rar', 'cbr'))
 TAR_FORMATS = (
         ('application/x-tar', 'application/x-gzip', 'application/x-bzip2', 'application/x-cbt'),
-        ('*.tar', '*.gz', '*.bz2', '*.bzip2', '*.cbt'))
+        ('tar', 'gz', 'bz2', 'bzip2', 'cbt'))
 SZIP_FORMATS = (
         ('application/x-7z-compressed', 'application/x-cb7'),
-        ('*.7z', '*.cb7', '*.xz', '*.lzma'))
+        ('7z', 'cb7', 'xz', 'lzma'))
 LHA_FORMATS = (
         ('application/x-lzh', 'application/x-lha', 'application/x-lzh-compressed'),
-        ('*.lha', '*.lzh'))
+        ('lha', 'lzh'))
 PDF_FORMATS = (
         ('application/pdf',),
-        ('*.pdf',))
+        ('pdf',))
 
 
 MISSING_IMAGE_ICON = None

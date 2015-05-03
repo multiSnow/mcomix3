@@ -129,7 +129,8 @@ class _BaseFileChooserDialog(gtk.Dialog):
         self.filechooser.add_filter(ffilter)
         supported_formats = archive_tools.get_supported_formats()
         for name in sorted(supported_formats):
-            mime_types, patterns = supported_formats[name]
+            mime_types, extensions = supported_formats[name]
+            patterns = ['*.%s' % ext for ext in extensions]
             self.add_filter(_('%s archives') % name, mime_types, patterns)
             for mime in mime_types:
                 ffilter.add_mime_type(mime)

@@ -356,11 +356,11 @@ class _WatchListEntry(_BackendObject):
         if not self.recursive:
             available_files = frozenset([os.path.join(self.directory, filename)
                 for filename in os.listdir(self.directory)
-                if archive_tools.get_supported_archive_regex().search(filename)])
+                if archive_tools.is_archive_file(filename)])
         else:
             available_files = []
             for dirpath, dirnames, filenames in os.walk(self.directory):
-                for filename in filter(archive_tools.get_supported_archive_regex().search, filenames):
+                for filename in filter(archive_tools.is_archive_file, filenames):
                     path = os.path.join(dirpath, filename)
                     available_files.append(path)
 
