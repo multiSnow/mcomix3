@@ -5,6 +5,7 @@
 import os
 import sys
 import tempfile
+import threading
 
 from mcomix import process
 from mcomix.archive import archive_base
@@ -21,6 +22,7 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         super(SevenZipArchive, self).__init__(archive)
 
         self._is_solid = False
+        self._is_encrypted =  False
         #: Indicates which part of the file listing has been read
         self._state = SevenZipArchive.STATE_HEADER
         self._contents = []
@@ -35,6 +37,23 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         if sys.platform == 'win32':
             args.append(u'-sccUTF-8')  # This switch is only supported on Win32
         args.append(u'--')
+        return args
+
+    def _get_extract_arguments(self, list_file=None):
+        args = [self._get_executable(), u'x', u'-so']
+        if self._is_encrypted:
+            if self._password is None:
+                event = threading.Event()
+                self._password_required(event)
+                event.wait()
+            args.append(u'-p' + self._password)
+        else:
+            # Add an empty password anyway, to prevent deadlock on reading for
+            # input if we did not correctly detect the archive is encrypted.
+            args.append(u'-p')
+        if list_file is not None:
+            args.append(u'-i@' + list_file)
+        args.extend((u'--', self.archive))
         return args
 
     def _parse_list_output_line(self, line):
@@ -64,10 +83,12 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
             if line.startswith('Path = '):
                 self._path = line[7:]
                 return self._path
-            if line.startswith('Size ='):
+            if line.startswith('Size = '):
                 filesize = int(line[7:])
                 if filesize > 0:
                     self._contents.append((self._path, filesize))
+            elif line.startswith('Encrypted = +'):
+                self._is_encrypted = True
 
         return None
 
@@ -96,10 +117,7 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
 
             output = self._create_file(os.path.join(destination_dir, filename))
             try:
-                process.call([self._get_executable(),
-                              u'x', u'-so', u'-p',
-                              u'-i@' + tmplistfile.name,
-                              u'--', self.archive],
+                process.call(self._get_extract_arguments(list_file=tmplistfile.name),
                              stdout=output)
             finally:
                 output.close()
@@ -114,9 +132,7 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         if not self.filenames_initialized:
             self.list_contents()
 
-        proc = process.popen([self._get_executable(),
-                             u'x', u'-so', u'-p',
-                             u'--', self.archive])
+        proc = process.popen(self._get_extract_arguments())
         try:
             wanted = dict([(self._original_filename(unicode_name), unicode_name)
                            for unicode_name in entries])
