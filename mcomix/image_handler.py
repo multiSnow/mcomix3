@@ -13,7 +13,7 @@ from mcomix import callback
 from mcomix import log
 from mcomix.worker_thread import WorkerThread
 
-class ImageHandler:
+class ImageHandler(object):
 
     """The FileHandler keeps track of images, pages, caches and reads files.
 

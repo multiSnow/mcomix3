@@ -5,7 +5,7 @@ import gtk
 
 from mcomix import constants
 
-class CursorHandler:
+class CursorHandler(object):
 
     def __init__(self, window):
         self._window = window

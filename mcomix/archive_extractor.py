@@ -11,7 +11,7 @@ from mcomix import log
 from mcomix.preferences import prefs
 from mcomix.worker_thread import WorkerThread
 
-class Extractor:
+class Extractor(object):
 
     """Extractor is a threaded class for extracting different archive formats.
 

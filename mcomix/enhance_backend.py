@@ -5,7 +5,7 @@ brightness etc.)
 from mcomix.preferences import prefs
 from mcomix import image_tools
 
-class ImageEnhancer:
+class ImageEnhancer(object):
 
     """The ImageEnhancer keeps track of the "enhancement" values and performs
     these enhancements on pixbufs. Changes to the ImageEnhancer's values

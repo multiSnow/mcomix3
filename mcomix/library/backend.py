@@ -26,7 +26,7 @@ except ImportError:
 COLLECTION_RECENT = -2
 
 
-class _LibraryBackend:
+class _LibraryBackend(object):
 
     """The LibraryBackend handles the storing and retrieval of library
     data to and from disk.

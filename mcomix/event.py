@@ -11,7 +11,7 @@ from mcomix import keybindings
 from mcomix import openwith
 
 
-class EventHandler:
+class EventHandler(object):
 
     def __init__(self, window):
         self._window = window

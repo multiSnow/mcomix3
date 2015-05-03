@@ -24,17 +24,17 @@ class UnrarDll(archive.archive_base.BaseArchive):
     # Nope! Not a good idea...
     support_concurrent_extractions = False
 
-    class _OpenMode:
+    class _OpenMode(object):
         """ Rar open mode """
         RAR_OM_LIST    = 0
         RAR_OM_EXTRACT = 1
 
-    class _ProcessingMode:
+    class _ProcessingMode(object):
         """ Rar file processing mode """
         RAR_SKIP       = 0
         RAR_EXTRACT    = 2
 
-    class _ErrorCode:
+    class _ErrorCode(object):
         """ Rar error codes """
         ERAR_END_ARCHIVE = 10
         ERAR_NO_MEMORY = 11

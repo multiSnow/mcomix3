@@ -14,7 +14,7 @@ from mcomix import callback
 from mcomix import i18n
 from mcomix import message_dialog
 
-class __BookmarksStore:
+class __BookmarksStore(object):
 
     """The _BookmarksStore is a backend for both the bookmarks menu and dialog.
     Changes in the _BookmarksStore are mirrored in both.

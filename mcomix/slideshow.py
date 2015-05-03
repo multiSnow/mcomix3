@@ -5,7 +5,7 @@ import gobject
 
 from mcomix.preferences import prefs
 
-class Slideshow:
+class Slideshow(object):
 
     """Slideshow handler that manages starting and stopping of slideshows."""
 

@@ -6,7 +6,7 @@ import threading
 
 from mcomix import log
 
-class Packer:
+class Packer(object):
 
     """Packer is a threaded class for packing files into ZIP archives.
 

@@ -6,7 +6,7 @@ import traceback
 
 from mcomix import log
 
-class WorkerThread:
+class WorkerThread(object):
 
     def __init__(self, process_order, name=None, max_threads=1,
                  sort_orders=False, unique_orders=False):
