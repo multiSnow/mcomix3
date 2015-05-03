@@ -224,12 +224,13 @@ install_mimetypes()
 install_pygobject()
 {
   file="$1"
+  shift
   srcdir="$tmpdir/${file%.exe}"
   dstdir="$winedir/drive_c/Python27/Lib/site-packages"
 
   rm -rf "$srcdir"
   aunpack --extract-to="$srcdir" --format=7z "$distdir/$file" >/dev/null
-  python2 "$win32dir/pygi-aio-installer.py" "$srcdir" "$dstdir" GTK
+  python2 "$win32dir/pygi-aio-installer.py" "$srcdir" "$dstdir" "$@"
   rm -rf "$srcdir"
 }
 
@@ -254,8 +255,7 @@ helper_setup()
   install python-2.7.9.msi 719832e0159eebf9cd48104c7db49aa978f6156c 'https://www.python.org/ftp/python/2.7.9' install_msi /q
   # Install fixed mimetypes module.
   install mimetypes.py 28eae6fccbcc454496a3ee616ff690c30abd3f8b https://hg.python.org/cpython/raw-file/7c4c4e43c452/Lib install_mimetypes
-  # install pygi-aio-3.14.0_rev16-setup.exe d73904d1e386c544e13db54134b0bf1270ce749a http://downloads.sourceforge.net/project/pygobjectwin32 install_pygobject
-  install pygi-aio-3.14.0_rev15-setup.exe 9cdacc53ec3364075908b44d1f32243056103af1 http://downloads.sourceforge.net/project/pygobjectwin32 install_pygobject
+  install pygi-aio-3.14.0_rev17-setup.exe 934b3510a695e82173d6aa609ed25cef68b96e4b http://downloads.sourceforge.net/project/pygobjectwin32 install_pygobject GTK
   install legacy_pygtk-2.24.0_gtk-2.24.27+themes_py27_win32_win64.7z c9a52d1256525030b186e8c0a3c6d04c17c8b02c http://downloads.sourceforge.net/project/pygobjectwin32 install_pygtk
   install Pillow-2.8.1.win32-py2.7.exe 9221e1695cc3b510ceb4748035fffc03c823f9e0 'https://pypi.python.org/packages/2.7/P/Pillow' install_exe
   # Better support for password protected zip files.
