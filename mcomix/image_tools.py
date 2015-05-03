@@ -546,7 +546,7 @@ def get_supported_formats():
 SUPPORTED_IMAGE_REGEX = re.compile(r'\.(%s)$' %
                                    '|'.join(sorted(reduce(
                                        operator.add,
-                                       [fmt[1] for fmt
+                                       [map(re.escape, fmt[1]) for fmt
                                         in get_supported_formats().values()]
                                    ))), re.I)
 
