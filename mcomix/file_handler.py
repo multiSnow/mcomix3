@@ -102,22 +102,15 @@ class FileHandler(object):
             self._window.osd.show(unicode(ex))
             return False
 
-        if os.path.exists(path) and os.access(path, os.R_OK):
-            filelist = self._file_provider.list_files()
-            archive_type = archive_tools.archive_mime_type(path)
-        else:
-            filelist = []
-            archive_type = None
-
-        error_message = self._check_for_error_message(path, filelist, archive_type)
+        error_message = self._check_access(path)
         if error_message:
             self._window.statusbar.set_message(error_message)
             self._window.osd.show(error_message)
             self.file_opened()
             return False
 
-        self.filelist = filelist
-        self.archive_type = archive_type
+        self.filelist = self._file_provider.list_files()
+        self.archive_type = archive_tools.archive_mime_type(path)
         self._start_page = start_page
         self._current_file = os.path.abspath(path)
         self._stop_waiting = False
@@ -137,7 +130,7 @@ class FileHandler(object):
             self.file_loading = True
         else:
             image_files, current_image_index = \
-                self._open_image_files(filelist, self._current_file)
+                self._open_image_files(self.filelist, self._current_file)
             self._archive_opened(image_files)
 
         return True
@@ -262,12 +255,10 @@ class FileHandler(object):
 
             return path
 
-    def _check_for_error_message(self, path, filelist, archive_type):
+    def _check_access(self, path):
         """ Checks for various error that could occur when opening C{path}.
 
         @param path: Path to file that should be opened.
-        @param filelist: List of files in the directory of C{path}.
-        @param archive_type: Archive type, if C{path} is an archive.
         @return: An appropriate error string, or C{None} if no error was found.
         """
         if not os.path.exists(path):
