@@ -18,41 +18,45 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
 
     STATE_HEADER, STATE_LISTING, STATE_FOOTER = 1, 2, 3
 
+    class EncryptedHeader(Exception):
+        pass
+
     def __init__(self, archive):
         super(SevenZipArchive, self).__init__(archive)
 
         self._is_solid = False
         self._is_encrypted =  False
-        #: Indicates which part of the file listing has been read
-        self._state = SevenZipArchive.STATE_HEADER
         self._contents = []
-        #: Current path while listing contents
-        self._path = None
 
     def _get_executable(self):
         return SevenZipArchive._find_7z_executable()
 
-    def _get_list_arguments(self):
-        args = [u'l', u'-slt', u'-p']
-        if sys.platform == 'win32':
-            args.append(u'-sccUTF-8')  # This switch is only supported on Win32
-        args.append(u'--')
-        return args
-
-    def _get_extract_arguments(self, list_file=None):
-        args = [self._get_executable(), u'x', u'-so']
+    def _get_password_argument(self):
         if self._is_encrypted:
             if self._password is None:
                 event = threading.Event()
                 self._password_required(event)
                 event.wait()
-            args.append(u'-p' + self._password)
+            return u'-p' + self._password
         else:
             # Add an empty password anyway, to prevent deadlock on reading for
             # input if we did not correctly detect the archive is encrypted.
-            args.append(u'-p')
+            return u'-p'
+
+    def _get_list_arguments(self):
+        args = [self._get_executable(), u'l', u'-slt']
+        if sys.platform == 'win32':
+            # This switch is only supported on Win32.
+            args.append(u'-sccUTF-8')
+        args.append(self._get_password_argument())
+        args.extend((u'--', self.archive))
+        return args
+
+    def _get_extract_arguments(self, list_file=None):
+        args = [self._get_executable(), u'x', u'-so']
         if list_file is not None:
             args.append(u'-i@' + list_file)
+        args.append(self._get_password_argument())
         args.extend((u'--', self.archive))
         return args
 
@@ -61,21 +65,25 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         and end when delimiters appear again. Format:
         Date <space> Time <space> Attr <space> Size <space> Compressed <space> Name"""
 
-        # Encoding is only guaranteed on win32 due to the -scc switch
+        # Encoding is only guaranteed on win32 due to the -scc switch.
         if sys.platform == 'win32':
             line = line.decode('utf-8')
 
         if line.startswith('----------'):
             if self._state == SevenZipArchive.STATE_HEADER:
-                # First delimiter reached, start reading from next line
+                # First delimiter reached, start reading from next line.
                 self._state = SevenZipArchive.STATE_LISTING
             elif self._state == SevenZipArchive.STATE_LISTING:
-                # Last delimiter read, stop reading from now on
+                # Last delimiter read, stop reading from now on.
                 self._state = SevenZipArchive.STATE_FOOTER
 
             return None
 
         if self._state == SevenZipArchive.STATE_HEADER:
+            if line.startswith('Error:') and \
+               line.endswith(': Can not open encrypted archive. Wrong password?'):
+                self._is_encrypted = True
+                raise SevenZipArchive.EncryptedHeader()
             if 'Solid = +' == line:
                 self._is_solid = True
 
@@ -87,13 +95,44 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
                 filesize = int(line[7:])
                 if filesize > 0:
                     self._contents.append((self._path, filesize))
-            elif line.startswith('Encrypted = +'):
+            elif 'Encrypted = +' == line:
                 self._is_encrypted = True
 
         return None
 
     def is_solid(self):
         return self._is_solid
+
+    def iter_contents(self):
+        if not self._get_executable():
+            return
+
+        # We'll try at most 2 times:
+        # - the first time without a password
+        # - a second time with a password if the header is encrypted
+        for retry_count in range(2):
+            #: Indicates which part of the file listing has been read.
+            self._state = SevenZipArchive.STATE_HEADER
+            #: Current path while listing contents.
+            self._path = None
+            proc = process.popen(self._get_list_arguments())
+            try:
+                for line in proc.stdout:
+                    filename = self._parse_list_output_line(line.rstrip(os.linesep))
+                    if filename is not None:
+                        yield self._unicode_filename(filename)
+            except SevenZipArchive.EncryptedHeader:
+                # The header is encrypted, try again
+                # if it was our first attempt.
+                if 0 == retry_count:
+                    continue
+            finally:
+                proc.stdout.close()
+                proc.wait()
+            # Last and/or successful attempt.
+            break
+
+        self.filenames_initialized = True
 
     def extract(self, filename, destination_dir):
         """ Extract <filename> from the archive to <destination_dir>. """
