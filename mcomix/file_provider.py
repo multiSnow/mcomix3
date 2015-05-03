@@ -213,10 +213,11 @@ class PreDefinedFileProvider(FileProvider):
         depending on what type of file is found first in the list. """
 
         for file in files:
-            if os.path.isfile(file) and image_tools.is_image_file(file):
-                return image_tools.is_image_file
-            if os.path.isfile(file) and archive_tools.is_archive_file(file):
-                return archive_tools.is_archive_file
+            if os.path.isfile(file):
+                if image_tools.is_image_file(file):
+                    return image_tools.is_image_file
+                if archive_tools.is_archive_file(file):
+                    return archive_tools.is_archive_file
 
         # Default filter only accepts images.
         return image_tools.is_image_file
