@@ -149,8 +149,8 @@ class ExternalExecutableArchive(NonUnicodeArchive):
     """ For archives that are extracted by spawning an external
     application. """
 
-    """ Since we're using an external program for extraction, concurrent
-    calls are supported. """
+    # Since we're using an external program for extraction,
+    # concurrent calls are supported.
     support_concurrent_extractions = True
 
     def __init__(self, archive):
