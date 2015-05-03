@@ -730,6 +730,7 @@ class MainWindow(gtk.Window):
     def change_manga_mode(self, toggleaction):
         prefs['default manga mode'] = toggleaction.get_active()
         self.is_manga_mode = toggleaction.get_active()
+        self._update_page_information()
         self.draw_image()
 
     def change_invert_scroll(self, toggleaction):
