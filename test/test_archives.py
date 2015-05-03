@@ -245,17 +245,6 @@ class RecursiveArchiveFormatTest(ArchiveFormatTest):
         return archive_recursive.RecursiveArchive(main_archive, self.dest_dir)
 
 
-_FORMAT_EXECUTABLE = {
-    '7z'     : '7z',
-    'lha'    : 'lha',
-    'rar'    : 'rar',
-    'tar'    : 'tar',
-    'tar.bz2': 'tar',
-    'tar.gz' : 'tar',
-    'zip'    : 'zip',
-}
-
-
 for name, handler, is_available, format, not_solid, solid, password in (
     ('7z (external)'    , sevenzip.SevenZipArchive   , sevenzip.SevenZipArchive.is_available()   , '7z'     , True , True , True ),
     ('7z (external) lha', sevenzip.SevenZipArchive   , sevenzip.SevenZipArchive.is_available()   , 'lha'    , True , False, False),
