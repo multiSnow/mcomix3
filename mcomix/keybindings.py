@@ -169,7 +169,6 @@ class _KeybindingManager(object):
         @param args: List of arguments to pass to the callback
         @param kwargs: List of keyword arguments to pass to the callback.
         """
-        global BINDING_INFO
         assert name in BINDING_INFO, "'%s' isn't a valid keyboard action." % name
 
         # Load stored keybindings, or fall back to passed arguments
@@ -204,7 +203,6 @@ class _KeybindingManager(object):
         @return None: new_binding wasn't in any action
                 action name: where new_binding was before
         """
-        global BINDING_INFO
         assert name in BINDING_INFO, "'%s' isn't a valid keyboard action." % name
 
         nb = gtk.accelerator_parse(new_binding)
@@ -236,7 +234,6 @@ class _KeybindingManager(object):
 
     def clear_accel(self, name, binding):
         """ Remove binding for an action """
-        global BINDING_INFO
         assert name in BINDING_INFO, "'%s' isn't a valid keyboard action." % name
 
         ob = gtk.accelerator_parse(binding)
