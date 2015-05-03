@@ -32,7 +32,7 @@ class UnsupportedOption(Exception):
     def __init__(self, format, option):
         super(UnsupportedOption, self).__init__('unsuported option for %s format: %s' % (format, option))
 
-def make_archive(outfile, contents, format='zip', solid=False, password=None):
+def make_archive(outfile, contents, format='zip', solid=False, password=None, header_encryption=False):
     if os.path.exists(outfile):
         raise Exception('%s already exists' % outfile)
     cleanup = []
@@ -56,6 +56,10 @@ def make_archive(outfile, contents, format='zip', solid=False, password=None):
             cmd.append('-ms=on' if solid else '-ms=off')
             if password is not None:
                 cmd.append('-p' + password)
+                if header_encryption:
+                    cmd.append('-mhe=on')
+            else:
+                assert not header_encryption
             cmd.extend(('--', outpath))
             # To avoid @ being treated as a special character...
             tmp_file = tempfile.NamedTemporaryFile(prefix=u'make_archive.', delete=False)
@@ -65,6 +69,8 @@ def make_archive(outfile, contents, format='zip', solid=False, password=None):
             tmp_file.close()
             entry_list = ['@' + tmp_file.name]
         elif 'lha' == format:
+            assert password is None
+            assert not header_encryption
             if solid:
                 raise UnsupportedOption(format, 'solid')
             cmd = ['lha', 'a', outpath, '--']
@@ -72,9 +78,16 @@ def make_archive(outfile, contents, format='zip', solid=False, password=None):
             cmd = ['rar', 'a', '-r']
             cmd.append('-s' if solid else '-s-')
             if password is not None:
-                cmd.append('-p' + password)
+                if header_encryption:
+                    cmd.append('-hp' + password)
+                else:
+                    cmd.append('-p' + password)
+            else:
+                assert not header_encryption
             cmd.extend(('--', outpath))
         elif format.startswith('tar'):
+            assert password is None
+            assert not header_encryption
             if not solid:
                 raise UnsupportedOption(format, 'not solid')
             if 'tar' == format:
@@ -88,6 +101,7 @@ def make_archive(outfile, contents, format='zip', solid=False, password=None):
             cmd = ['tar', '-cv%sf' % compression, outpath, '--']
             # entry_list = [ name.replace('\\', '\\\\') for name in entry_list]
         elif 'zip' == format:
+            assert not header_encryption
             if solid:
                 raise UnsupportedOption(format, 'solid')
             cmd = ['zip', '-r']
@@ -126,6 +140,7 @@ class ArchiveFormatTest(object):
     format = ''
     solid = False
     password = None
+    header_encryption = False
     contents = ()
     archive = None
 
@@ -156,7 +171,8 @@ class ArchiveFormatTest(object):
                       in cls.contents],
                      format=cls.format,
                      solid=cls.solid,
-                     password=cls.password)
+                     password=cls.password,
+                     header_encryption=cls.header_encryption)
 
     def setUp(self):
         super(ArchiveFormatTest, self).setUp()
@@ -212,6 +228,7 @@ class ArchiveFormatTest(object):
     def test_extract(self):
         archive = self.handler(self.archive_path)
         contents = archive.list_contents()
+        self.assertItemsEqual(contents, self.archive_contents.keys())
         for name in contents:
             archive.extract(name, self.dest_dir)
             path = os.path.join(self.dest_dir, name)
@@ -223,6 +240,7 @@ class ArchiveFormatTest(object):
     def test_iter_extract(self):
         archive = self.handler(self.archive_path)
         contents = archive.list_contents()
+        self.assertItemsEqual(contents, self.archive_contents.keys())
         extracted = []
         for name in archive.iter_extract(reversed(contents), self.dest_dir):
             extracted.append(name)
@@ -245,18 +263,18 @@ class RecursiveArchiveFormatTest(ArchiveFormatTest):
         return archive_recursive.RecursiveArchive(main_archive, self.dest_dir)
 
 
-for name, handler, is_available, format, not_solid, solid, password in (
-    ('7z (external)'    , sevenzip.SevenZipArchive   , sevenzip.SevenZipArchive.is_available()   , '7z'     , True , True , True ),
-    ('7z (external) lha', sevenzip.SevenZipArchive   , sevenzip.SevenZipArchive.is_available()   , 'lha'    , True , False, False),
-    ('7z (external) rar', sevenzip.SevenZipArchive   , sevenzip.SevenZipArchive.is_available()   , 'rar'    , True , True , True ),
-    ('7z (external) zip', sevenzip.SevenZipArchive   , sevenzip.SevenZipArchive.is_available()   , 'zip'    , True , False, True ),
-    ('tar'              , tar.TarArchive             , True                                      , 'tar'    , False, True , False),
-    ('tar (gzip)'       , tar.TarArchive             , True                                      , 'tar.gz' , False, True , False),
-    ('tar (bzip2)'      , tar.TarArchive             , True                                      , 'tar.bz2', False, True , False),
-    ('rar (external)'   , rar.RarExecArchive         , rar.RarExecArchive.is_available()         , 'rar'    , True , True , True ),
-    ('rar (dll)'        , rarfile.UnrarDll           , rarfile.UnrarDll.is_available()           , 'rar'    , True , True , True ),
-    ('zip'              , zip.ZipArchive             , True                                      , 'zip'    , True , False, True ),
-    ('zip (external)'   , zip_external.ZipExecArchive, zip_external.ZipExecArchive.is_available(), 'zip'    , True , False, True ),
+for name, handler, is_available, format, not_solid, solid, password, header_encryption in (
+    ('7z (external)'    , sevenzip.SevenZipArchive   , sevenzip.SevenZipArchive.is_available()   , '7z'     , True , True , True , True  ),
+    ('7z (external) lha', sevenzip.SevenZipArchive   , sevenzip.SevenZipArchive.is_available()   , 'lha'    , True , False, False, False ),
+    ('7z (external) rar', sevenzip.SevenZipArchive   , sevenzip.SevenZipArchive.is_available()   , 'rar'    , True , True , True , True  ),
+    ('7z (external) zip', sevenzip.SevenZipArchive   , sevenzip.SevenZipArchive.is_available()   , 'zip'    , True , False, True , False ),
+    ('tar'              , tar.TarArchive             , True                                      , 'tar'    , False, True , False, False ),
+    ('tar (gzip)'       , tar.TarArchive             , True                                      , 'tar.gz' , False, True , False, False ),
+    ('tar (bzip2)'      , tar.TarArchive             , True                                      , 'tar.bz2', False, True , False, False ),
+    ('rar (external)'   , rar.RarExecArchive         , rar.RarExecArchive.is_available()         , 'rar'    , True , True , True , True  ),
+    ('rar (dll)'        , rarfile.UnrarDll           , rarfile.UnrarDll.is_available()           , 'rar'    , True , True , True , True  ),
+    ('zip'              , zip.ZipArchive             , True                                      , 'zip'    , True , False, True , False ),
+    ('zip (external)'   , zip_external.ZipExecArchive, zip_external.ZipExecArchive.is_available(), 'zip'    , True , False, True , False ),
 ):
     base_class_name = 'ArchiveFormat'
     base_class_name += ''.join([part.capitalize() for part in re.sub('[^\w]+', ' ', name).split()])
@@ -282,7 +300,7 @@ for name, handler, is_available, format, not_solid, solid, password in (
 
     if password:
         for variant, params in base_class_list:
-            variant = variant + 'Password'
+            variant = variant + 'Encrypted'
             params = dict(params)
             params['password'] = 'password'
             params['contents'] = (
@@ -292,6 +310,13 @@ for name, handler, is_available, format, not_solid, solid, password in (
                 ('meh.png' , 'meh.png' , 'test/files/images/03-PNG-RGB.png'    ),
             )
             class_list.append((variant, params))
+            if header_encryption:
+                variant = variant + 'Header'
+                params = dict(params)
+                params['header_encryption'] = True
+                class_list.append((variant, params))
+    else:
+        assert not header_encryption
 
     for sub_variant, is_supported, contents in (
         ('Flat', True, (
@@ -379,23 +404,50 @@ xfail_list = [
     ('RarExternalSolidTree'       , 'test_is_solid'),
     ('RarExternalSolidUnicode'    , 'test_is_solid'),
     # No password support when using external tools.
-    ('RarExternalPassword'       , 'test_extract'     ),
-    ('RarExternalPassword'       , 'test_iter_extract'),
-    ('7zExternalPassword'        , 'test_extract'     ),
-    ('7zExternalPassword'        , 'test_iter_extract'),
-    ('7zExternalSolidPassword'   , 'test_extract'     ),
-    ('7zExternalSolidPassword'   , 'test_iter_extract'),
-    ('7zExternalRarPassword'     , 'test_extract'     ),
-    ('7zExternalRarPassword'     , 'test_iter_extract'),
-    ('7zExternalZipPassword'     , 'test_extract'     ),
-    ('7zExternalZipPassword'     , 'test_iter_extract'),
-    ('7zExternalRarSolidPassword', 'test_extract'     ),
-    ('7zExternalRarSolidPassword', 'test_iter_extract'),
-    ('ZipExternalPassword'       , 'test_extract'     ),
-    ('ZipExternalPassword'       , 'test_iter_extract'),
-    ('RarExternalSolidPassword'  , 'test_extract'     ),
-    ('RarExternalSolidPassword'  , 'test_is_solid'    ),
-    ('RarExternalSolidPassword'  , 'test_iter_extract'),
+    ('7zExternalEncrypted'              , 'test_extract'      ),
+    ('7zExternalEncrypted'              , 'test_iter_extract' ),
+    ('7zExternalEncryptedHeader'        , 'test_extract'      ),
+    ('7zExternalEncryptedHeader'        , 'test_iter_contents'),
+    ('7zExternalEncryptedHeader'        , 'test_iter_extract' ),
+    ('7zExternalEncryptedHeader'        , 'test_list_contents'),
+    ('7zExternalRarEncrypted'           , 'test_extract'      ),
+    ('7zExternalRarEncrypted'           , 'test_iter_extract' ),
+    ('7zExternalRarEncryptedHeader'     , 'test_extract'      ),
+    ('7zExternalRarEncryptedHeader'     , 'test_iter_contents'),
+    ('7zExternalRarEncryptedHeader'     , 'test_iter_extract' ),
+    ('7zExternalRarEncryptedHeader'     , 'test_list_contents'),
+    ('7zExternalRarSolidEncrypted'      , 'test_extract'      ),
+    ('7zExternalRarSolidEncrypted'      , 'test_iter_extract' ),
+    ('7zExternalRarSolidEncryptedHeader', 'test_extract'      ),
+    ('7zExternalRarSolidEncryptedHeader', 'test_is_solid'     ),
+    ('7zExternalRarSolidEncryptedHeader', 'test_iter_contents'),
+    ('7zExternalRarSolidEncryptedHeader', 'test_iter_extract' ),
+    ('7zExternalRarSolidEncryptedHeader', 'test_list_contents'),
+    ('7zExternalSolidEncrypted'         , 'test_extract'      ),
+    ('7zExternalSolidEncrypted'         , 'test_iter_extract' ),
+    ('7zExternalSolidEncryptedHeader'   , 'test_extract'      ),
+    ('7zExternalSolidEncryptedHeader'   , 'test_is_solid'     ),
+    ('7zExternalSolidEncryptedHeader'   , 'test_iter_contents'),
+    ('7zExternalSolidEncryptedHeader'   , 'test_iter_extract' ),
+    ('7zExternalSolidEncryptedHeader'   , 'test_list_contents'),
+    ('7zExternalZipEncrypted'           , 'test_extract'      ),
+    ('7zExternalZipEncrypted'           , 'test_iter_extract' ),
+    ('RarExternalEncrypted'             , 'test_extract'      ),
+    ('RarExternalEncrypted'             , 'test_iter_extract' ),
+    ('RarExternalEncryptedHeader'       , 'test_extract'      ),
+    ('RarExternalEncryptedHeader'       , 'test_iter_contents'),
+    ('RarExternalEncryptedHeader'       , 'test_iter_extract' ),
+    ('RarExternalEncryptedHeader'       , 'test_list_contents'),
+    ('RarExternalSolidEncrypted'        , 'test_extract'      ),
+    ('RarExternalSolidEncrypted'        , 'test_is_solid'     ),
+    ('RarExternalSolidEncrypted'        , 'test_iter_extract' ),
+    ('RarExternalSolidEncryptedHeader'  , 'test_extract'      ),
+    ('RarExternalSolidEncryptedHeader'  , 'test_is_solid'     ),
+    ('RarExternalSolidEncryptedHeader'  , 'test_iter_contents'),
+    ('RarExternalSolidEncryptedHeader'  , 'test_iter_extract' ),
+    ('RarExternalSolidEncryptedHeader'  , 'test_list_contents'),
+    ('ZipExternalEncrypted'             , 'test_extract'      ),
+    ('ZipExternalEncrypted'             , 'test_iter_extract' ),
 ]
 
 if 'win32' == sys.platform:
