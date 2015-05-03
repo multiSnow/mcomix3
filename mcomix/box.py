@@ -266,7 +266,7 @@ class Box(object):
             p[axis] = partial_sum
             result[bi] = Box(p, s)
             partial_sum += s[axis] + spacing
-        partial_sum = initialSum;
+        partial_sum = initialSum
         for bi in range(fix - 1, -1, -1):
             b = boxes[bi]
             s = b.get_size()

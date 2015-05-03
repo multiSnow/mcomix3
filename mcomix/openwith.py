@@ -249,7 +249,7 @@ class OpenWithCommand(object):
                 return os.path.dirname(os.path.dirname(window.imagehandler.get_path_to_page()))
         else:
             raise OpenWithException(
-                _("Invalid escape sequence: %%%s") % identifier);
+                _("Invalid escape sequence: %%%s") % identifier)
 
     def _get_context_type(self, window, check_restrictions=True):
         if not check_restrictions:
@@ -300,7 +300,7 @@ class OpenWithEditor(gtk.Dialog):
         self._test_field.set_property('editable', gtk.FALSE)
         self._exec_label = gtk.Label()
         self._exec_label.set_alignment(0, 0)
-        self._set_exec_text('');
+        self._set_exec_text('')
         self._save_button = self.add_button(gtk.STOCK_SAVE, gtk.RESPONSE_ACCEPT)
         self.set_default_response(gtk.RESPONSE_ACCEPT)
 

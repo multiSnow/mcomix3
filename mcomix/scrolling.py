@@ -214,14 +214,14 @@ class Scrolling(object):
         https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm for details.
         """
         if num < 0:
-            raise ValueError("num < 0");
+            raise ValueError("num < 0")
         if denom < 1:
-            raise ValueError("denom < 1");
-        quotient = num // denom;
-        remainder = num % denom;
+            raise ValueError("denom < 1")
+        quotient = num // denom
+        remainder = num % denom
         needs_up = half_up and (remainder != 0) and ((denom & 1) == 0)
         up_flag = False
-        error = denom >> 1;
+        error = denom >> 1
         result = [0]
         partial_sum = 0
         for i in range(denom):
@@ -234,11 +234,11 @@ class Scrolling(object):
 
             # round half up, if necessary
             if up_flag:
-                partial_sum -= 1;
-                up_flag = False;
+                partial_sum -= 1
+                up_flag = False
             elif needs_up and error == 0:
-                partial_sum += 1;
-                up_flag = True;
+                partial_sum += 1
+                up_flag = True
 
             result.append(partial_sum)
         return result
