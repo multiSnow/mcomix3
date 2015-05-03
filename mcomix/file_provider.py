@@ -96,20 +96,14 @@ class OrderedFileProvider(FileProvider):
         """ Sets the base directory. """
 
         if os.path.isdir(file_or_directory):
-            self.base_dir = os.path.abspath(file_or_directory)
-            self.mode = OrderedFileProvider.IMAGES
+            dir = file_or_directory
         elif os.path.isfile(file_or_directory):
-            self.base_dir = os.path.abspath(os.path.dirname(file_or_directory))
-
-            if image_tools.is_image_file(file_or_directory):
-                self.mode = OrderedFileProvider.IMAGES
-            elif archive_tools.archive_mime_type(file_or_directory) is not None:
-                self.mode = OrderedFileProvider.ARCHIVES
-            else:
-                self.mode = OrderedFileProvider.IMAGES
+            dir = os.path.dirname(file_or_directory)
         else:
             # Passed file doesn't exist
             raise ValueError(_("Invalid path: '%s'") % file_or_directory)
+
+        self.base_dir = os.path.abspath(dir)
 
     def get_directory(self):
         return self.base_dir
