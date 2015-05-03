@@ -20,7 +20,7 @@ locale.setlocale(locale.LC_ALL, '')
 import __builtin__
 
 if '_' not in __builtin__.__dict__:
-    __builtin__.__dict__['_'] = lambda text: unicode(text)
+    __builtin__.__dict__['_'] = unicode
 
 # Enable debug logging to make post-mortem analysis easier.
 
