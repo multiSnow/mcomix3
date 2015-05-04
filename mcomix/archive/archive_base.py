@@ -26,6 +26,12 @@ class BaseArchive(object):
 
         self.archive = archive
         self._password = None
+        self._event = threading.Event()
+        if self.support_concurrent_extractions:
+            # When multiple concurrent extractions are supported,
+            # we need a lock to handle concurent calls to _get_password.
+            self._lock = threading.Lock()
+            self._waiting_for_password = False
 
     def iter_contents(self):
         """ Generator for listing the archive contents.
@@ -108,7 +114,7 @@ class BaseArchive(object):
         return open(dst_path, 'wb')
 
     @callback.Callback
-    def _password_required(self, event):
+    def _password_required(self):
         """ Asks the user for a password and sets <self._password>.
         If <self._password> is None, no password has been requested yet.
         If an empty string is set, assume that the user did not provide
@@ -119,13 +125,20 @@ class BaseArchive(object):
             password = ""
 
         self._password = password
-        event.set()
+        self._event.set()
 
     def _get_password(self):
-        if self._password is None:
-            event = threading.Event()
-            self._password_required(event)
-            event.wait()
+        ask_for_password = self._password is None
+        # Don't trigger concurrent password dialogs.
+        if ask_for_password and self.support_concurrent_extractions:
+            with self._lock:
+                if self._waiting_for_password:
+                    ask_for_password = False
+                else:
+                    self._waiting_for_password = True
+        if ask_for_password:
+            self._password_required()
+        self._event.wait()
 
 class NonUnicodeArchive(BaseArchive):
     """ Base class for archives that manage a conversion of byte member names ->
