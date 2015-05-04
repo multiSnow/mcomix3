@@ -8,14 +8,15 @@ from mcomix import constants
 
 
 _EXTENSION_TO_MIME_TYPES = {
-    'zip': constants.ZIP,
-    'rar': constants.RAR,
-    'tar': constants.TAR,
-    'gz' : constants.GZIP,
-    'bz2': constants.BZIP2,
-    'pdf': constants.PDF,
-    '7z' : constants.SEVENZIP,
-    'lha': constants.LHA,
+    'zip'    : constants.ZIP,
+    'zip.bz2': constants.ZIP_EXTERNAL,
+    'rar'    : constants.RAR,
+    'tar'    : constants.TAR,
+    'tar.gz' : constants.GZIP,
+    'tar.bz2': constants.BZIP2,
+    'pdf'    : constants.PDF,
+    '7z'     : constants.SEVENZIP,
+    'lha'    : constants.LHA,
 }
 
 _ARCHIVE_TYPE_NAMES = {
@@ -36,7 +37,7 @@ class ArchiveToolsTest(MComixTest):
 
        dir = os.path.join(os.path.dirname(__file__), 'files', 'archives')
        for filename in os.listdir(dir):
-           ext = filename.split('.')[-1]
+           ext = '.'.join(filename.split('.')[1:])
            path = os.path.join(dir, filename)
            archive_type = archive_tools.archive_mime_type(path)
            expected_type = _EXTENSION_TO_MIME_TYPES[ext]
