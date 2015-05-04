@@ -6,6 +6,7 @@ from mcomix import log
 from mcomix import process
 from mcomix.archive import archive_base
 
+from distutils.version import LooseVersion
 import math
 import os
 import re
@@ -17,6 +18,7 @@ PDF_RENDER_DPI_MAX = 72 * 10
 
 _pdf_possible = None
 _mudraw_executable = None
+_mudraw_trace_args = None
 _mutool_executable = None
 
 class PdfArchive(archive_base.BaseArchive):
@@ -45,7 +47,9 @@ class PdfArchive(archive_base.BaseArchive):
         destination_path = os.path.join(destination_dir, filename)
         page_num = int(filename[0:-4])
         # Try to find optimal DPI.
-        proc = process.popen([_mudraw_executable, '-x', '--', self.pdf, str(page_num)])
+        cmd = [_mudraw_executable] + _mudraw_trace_args + ['--', self.pdf, str(page_num)]
+        log.debug('finding optimal DPI for %s: %s', filename, ' '.join(cmd))
+        proc = process.popen(cmd)
         try:
             max_size = 0
             max_dpi = PDF_RENDER_DPI_DEF
@@ -79,14 +83,33 @@ class PdfArchive(archive_base.BaseArchive):
 
     @staticmethod
     def is_available():
-        global _pdf_possible, _mudraw_executable, _mutool_executable
+        global _pdf_possible
         if _pdf_possible is None:
+            global _mudraw_executable, _mudraw_trace_args, _mutool_executable
             _mudraw_executable = process.find_executable((u'mudraw',))
             _mutool_executable = process.find_executable((u'mutool',))
             if _mudraw_executable is None or _mutool_executable is None:
                 log.info('MuPDF not available.')
                 _pdf_possible = False
             else:
+                # Find MuPDF version; assume 1.6 version since
+                # the '-v' switch is only supported from 1.7 onward...
+                version = '1.6'
+                proc = process.popen([_mudraw_executable, '-v'],
+                                     stdout=process.NULL,
+                                     stderr=process.PIPE)
+                try:
+                    output = proc.stderr.read()
+                    if output.startswith('mudraw version '):
+                        version = output[15:]
+                finally:
+                    proc.stderr.close()
+                    proc.wait()
+                if LooseVersion(version) < LooseVersion('1.7'):
+                    _mudraw_trace_args = ['-x']
+                else:
+                    _mudraw_trace_args = ['-F', 'trace']
+                log.info('Using MuPDF version: %s', version)
                 _pdf_possible = True
         return _pdf_possible
 
