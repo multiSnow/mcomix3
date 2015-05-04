@@ -101,7 +101,7 @@ def archive_mime_type(path):
             if magic[0:5] == '\xFD7zXZ' or magic[0:5] == ']\x00\x00\x80\x00':
                 return constants.SEVENZIP
 
-            if magic[2:] == '-l':
+            if magic[2:4] == '-l':
                 return constants.LHA
 
             if magic[0:4] == '%PDF':
