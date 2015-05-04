@@ -94,14 +94,14 @@ def archive_mime_type(path):
             if magic[0:4] == 'Rar!':
                 return constants.RAR
 
-            elif magic[0:4] == '7z\xBC\xAF':
+            if magic[0:4] == '7z\xBC\xAF':
                 return constants.SEVENZIP
 
             # Headers for TAR-XZ and TAR-LZMA that aren't supported by tarfile
-            elif magic[0:5] == '\xFD7zXZ' or magic[0:5] == ']\x00\x00\x80\x00':
+            if magic[0:5] == '\xFD7zXZ' or magic[0:5] == ']\x00\x00\x80\x00':
                 return constants.SEVENZIP
 
-            elif magic[2:] == '-l':
+            if magic[2:] == '-l':
                 return constants.LHA
 
             if magic[0:4] == '%PDF':
