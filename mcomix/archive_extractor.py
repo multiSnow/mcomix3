@@ -37,10 +37,9 @@ class Extractor(object):
         """
         self._src = src
         self._dst = dst
-        self._type = type or archive_tools.archive_mime_type(src)
         self._files = []
         self._extracted = set()
-        self._archive = archive_tools.get_recursive_archive_handler(src, dst, type=self._type)
+        self._archive = archive_tools.get_recursive_archive_handler(src, dst, type=type)
         if self._archive is None:
             msg = _('Non-supported archive format: %s') % os.path.basename(src)
             log.warning(msg)
@@ -95,10 +94,6 @@ class Extractor(object):
         """
         with self._condition:
             return name in self._extracted
-
-    def get_mime_type(self):
-        """Return the mime type name of the extractor's current archive."""
-        return self._type
 
     def stop(self):
         """Signal the extractor to stop extracting and kill the extracting
