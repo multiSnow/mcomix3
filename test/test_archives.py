@@ -12,13 +12,17 @@ import unittest
 from . import MComixTest
 
 from mcomix import process
-from mcomix.archive import rar
-from mcomix.archive import rarfile
-from mcomix.archive import sevenzip
-from mcomix.archive import tar
-from mcomix.archive import zip
-from mcomix.archive import zip_external
-from mcomix.archive import archive_recursive
+from mcomix.archive import (
+    archive_recursive,
+    lha_external,
+    pdf_external,
+    rar,
+    rar_external,
+    sevenzip_external,
+    tar,
+    zip,
+    zip_external,
+)
 import mcomix
 
 
@@ -264,17 +268,17 @@ class RecursiveArchiveFormatTest(ArchiveFormatTest):
 
 
 for name, handler, is_available, format, not_solid, solid, password, header_encryption in (
-    ('7z (external)'    , sevenzip.SevenZipArchive   , sevenzip.SevenZipArchive.is_available()   , '7z'     , True , True , True , True  ),
-    ('7z (external) lha', sevenzip.SevenZipArchive   , sevenzip.SevenZipArchive.is_available()   , 'lha'    , True , False, False, False ),
-    ('7z (external) rar', sevenzip.SevenZipArchive   , sevenzip.SevenZipArchive.is_available()   , 'rar'    , True , True , True , True  ),
-    ('7z (external) zip', sevenzip.SevenZipArchive   , sevenzip.SevenZipArchive.is_available()   , 'zip'    , True , False, True , False ),
-    ('tar'              , tar.TarArchive             , True                                      , 'tar'    , False, True , False, False ),
-    ('tar (gzip)'       , tar.TarArchive             , True                                      , 'tar.gz' , False, True , False, False ),
-    ('tar (bzip2)'      , tar.TarArchive             , True                                      , 'tar.bz2', False, True , False, False ),
-    ('rar (external)'   , rar.RarExecArchive         , rar.RarExecArchive.is_available()         , 'rar'    , True , True , True , True  ),
-    ('rar (dll)'        , rarfile.UnrarDll           , rarfile.UnrarDll.is_available()           , 'rar'    , True , True , True , True  ),
-    ('zip'              , zip.ZipArchive             , True                                      , 'zip'    , True , False, True , False ),
-    ('zip (external)'   , zip_external.ZipExecArchive, zip_external.ZipExecArchive.is_available(), 'zip'    , True , False, True , False ),
+    ('7z (external)'    , sevenzip_external.SevenZipArchive, sevenzip_external.SevenZipArchive.is_available(), '7z'     , True , True , True , True  ),
+    ('7z (external) lha', sevenzip_external.SevenZipArchive, sevenzip_external.SevenZipArchive.is_available(), 'lha'    , True , False, False, False ),
+    ('7z (external) rar', sevenzip_external.SevenZipArchive, sevenzip_external.SevenZipArchive.is_available(), 'rar'    , True , True , True , True  ),
+    ('7z (external) zip', sevenzip_external.SevenZipArchive, sevenzip_external.SevenZipArchive.is_available(), 'zip'    , True , False, True , False ),
+    ('tar'              , tar.TarArchive                   , True                                            , 'tar'    , False, True , False, False ),
+    ('tar (gzip)'       , tar.TarArchive                   , True                                            , 'tar.gz' , False, True , False, False ),
+    ('tar (bzip2)'      , tar.TarArchive                   , True                                            , 'tar.bz2', False, True , False, False ),
+    ('rar (external)'   , rar_external.RarArchive          , rar_external.RarArchive.is_available()          , 'rar'    , True , True , True , True  ),
+    ('rar (dll)'        , rar.RarArchive                   , rar.RarArchive.is_available()                   , 'rar'    , True , True , True , True  ),
+    ('zip'              , zip.ZipArchive                   , True                                            , 'zip'    , True , False, True , False ),
+    ('zip (external)'   , zip_external.ZipArchive          , zip_external.ZipArchive.is_available()          , 'zip'    , True , False, True , False ),
 ):
     base_class_name = 'ArchiveFormat'
     base_class_name += ''.join([part.capitalize() for part in re.sub('[^\w]+', ' ', name).split()])

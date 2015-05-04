@@ -11,25 +11,79 @@ import operator
 from mcomix import image_tools
 from mcomix import constants
 from mcomix import log
-from mcomix.archive import zip
-from mcomix.archive import zip_external
-from mcomix.archive import rar
-from mcomix.archive import tar
-from mcomix.archive import sevenzip
-from mcomix.archive import lha
-from mcomix.archive import pdf
+from mcomix.archive import (
+    lha_external,
+    pdf_external,
+    rar,
+    rar_external,
+    sevenzip_external,
+    tar,
+    zip,
+    zip_external,
+)
+
+# Handlers for each archive type.
+_HANDLERS = {
+    constants.ZIP: (
+        zip.ZipArchive,
+    ),
+    # Prefer 7z over zip executable for encryption and Unicode support.
+    constants.ZIP_EXTERNAL: (
+        sevenzip_external.SevenZipArchive,
+        zip_external.ZipArchive
+    ),
+    constants.TAR: (
+        tar.TarArchive,
+    ),
+    constants.GZIP: (
+        tar.TarArchive,
+    ),
+    constants.BZIP2: (
+        tar.TarArchive,
+    ),
+    # Prefer 7z over rar executable for encryption and Unicode support.
+    constants.RAR: (
+        rar.RarArchive,
+        sevenzip_external.SevenZipArchive,
+        rar_external.RarArchive
+    ),
+    # Prefer 7z over lha executable for Unicode support.
+    constants.LHA: (
+        sevenzip_external.SevenZipArchive,
+        lha_external.LhaArchive,
+    ),
+    constants.SEVENZIP: (
+        sevenzip_external.SevenZipArchive,
+    ),
+    constants.PDF: (
+        pdf_external.PdfArchive,
+    ),
+}
+
+def _get_handler(archive_type):
+    """ Return best archive class for format <archive_type> """
+
+    for handler in _HANDLERS[archive_type]:
+        if not hasattr(handler, 'is_available'):
+            return handler
+        if handler.is_available():
+            return handler
+
+def _is_available(archive_type):
+    """ Return True if a handler supporting the <archive_type> format is available """
+    return _get_handler(archive_type) is not None
 
 def szip_available():
-    return sevenzip.SevenZipArchive.is_available()
+    return _is_available(constants.SEVENZIP)
 
 def rar_available():
-    return rar.RarArchive.is_available() or szip_available()
+    return _is_available(constants.RAR)
 
 def lha_available():
-    return lha.LhaArchive.is_available() or szip_available()
+    return _is_available(constants.LHA)
 
 def pdf_available():
-    return pdf.PdfArchive.is_available()
+    return _is_available(constants.PDF)
 
 def get_supported_formats():
     supported_formats = {}
@@ -143,32 +197,14 @@ def get_archive_handler(path, type=None):
     """
     if type is None:
         type = archive_mime_type(path)
+        if type is None:
+            return None
 
-    if type == constants.ZIP:
-        return zip.ZipArchive(path)
-    elif type == constants.ZIP_EXTERNAL and zip_external.ZipExecArchive.is_available():
-        return zip_external.ZipExecArchive(path)
-    elif type == constants.ZIP_EXTERNAL and sevenzip.SevenZipArchive.is_available():
-        log.info('Using Sevenzip for unsupported zip archives.')
-        return sevenzip.SevenZipArchive(path)
-    elif type in (constants.TAR, constants.GZIP, constants.BZIP2):
-        return tar.TarArchive(path)
-    elif type == constants.RAR and rar.RarArchive.is_available():
-        return rar.RarArchive(path)
-    elif type == constants.RAR and sevenzip.SevenZipArchive.is_available():
-        log.info('Using Sevenzip for RAR archives.')
-        return sevenzip.SevenZipArchive(path)
-    elif type == constants.SEVENZIP and sevenzip.SevenZipArchive.is_available():
-        return sevenzip.SevenZipArchive(path)
-    elif type == constants.LHA and lha.LhaArchive.is_available():
-        return lha.LhaArchive(path)
-    elif type == constants.LHA and sevenzip.SevenZipArchive.is_available():
-        log.info('Using Sevenzip for LHA archives.')
-        return sevenzip.SevenZipArchive(path)
-    elif type == constants.PDF and pdf.PdfArchive.is_available():
-        return pdf.PdfArchive(path)
-    else:
+    handler = _get_handler(type)
+    if handler is None:
         return None
+
+    return handler(path)
 
 def get_recursive_archive_handler(path, destination_dir, type=None):
     """ Same as <get_archive_handler> but the handler will transparently handle

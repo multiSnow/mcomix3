@@ -6,14 +6,14 @@ from mcomix import i18n
 from mcomix import process
 from mcomix.archive import archive_base
 
-# Filled on-demand by ZipExecArchive
+# Filled on-demand by ZipArchive
 _zip_executable = -1
 
-class ZipExecArchive(archive_base.ExternalExecutableArchive):
+class ZipArchive(archive_base.ExternalExecutableArchive):
     """ ZIP file extractor using unzip executable. """
 
     def _get_executable(self):
-        return ZipExecArchive._find_unzip_executable()
+        return ZipArchive._find_unzip_executable()
 
     def _get_list_arguments(self):
         return [u'-Z1']
@@ -32,7 +32,7 @@ class ZipExecArchive(archive_base.ExternalExecutableArchive):
 
     @staticmethod
     def is_available():
-        return bool(ZipExecArchive._find_unzip_executable())
+        return bool(ZipArchive._find_unzip_executable())
 
     def _unicode_filename(self, filename, conversion_func=i18n.to_unicode):
         unicode_name = conversion_func(filename)
