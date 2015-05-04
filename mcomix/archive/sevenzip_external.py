@@ -5,7 +5,6 @@
 import os
 import sys
 import tempfile
-import threading
 
 from mcomix import process
 from mcomix.archive import archive_base
@@ -33,10 +32,7 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
 
     def _get_password_argument(self):
         if self._is_encrypted:
-            if self._password is None:
-                event = threading.Event()
-                self._password_required(event)
-                event.wait()
+            self._get_password()
             return u'-p' + self._password
         else:
             # Add an empty password anyway, to prevent deadlock on reading for

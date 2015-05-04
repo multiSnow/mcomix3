@@ -3,7 +3,6 @@
 """ Unicode-aware wrapper for zipfile.ZipFile. """
 
 import os
-import threading
 from contextlib import closing
 
 from mcomix import log
@@ -37,18 +36,8 @@ class ZipArchive(archive_base.NonUnicodeArchive):
         self._password = None
 
     def iter_contents(self):
-        if self._encryption_supported \
-            and self._has_encryption()\
-            and self._password is None:
-
-            # Wait for the main thread to set self._password
-            event = threading.Event()
-            self._password_required(event)
-            event.wait()
-
-        if self._encryption_supported \
-            and self._password is not None:
-
+        if self._encryption_supported and self._has_encryption():
+            self._get_password()
             self.zip.setpassword(self._password)
 
         for filename in self.zip.namelist():

@@ -5,6 +5,8 @@ extraction and adding new archive formats. """
 
 import os
 import errno
+import threading
+
 from mcomix import portability
 from mcomix import i18n
 from mcomix import process
@@ -118,6 +120,12 @@ class BaseArchive(object):
 
         self._password = password
         event.set()
+
+    def _get_password(self):
+        if self._password is None:
+            event = threading.Event()
+            self._password_required(event)
+            event.wait()
 
 class NonUnicodeArchive(BaseArchive):
     """ Base class for archives that manage a conversion of byte member names ->
