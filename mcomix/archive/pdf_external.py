@@ -30,10 +30,9 @@ class PdfArchive(archive_base.BaseArchive):
 
     def __init__(self, archive):
         super(PdfArchive, self).__init__(archive)
-        self.pdf = archive
 
     def iter_contents(self):
-        proc = process.popen([_mutool_executable, 'show', '--', self.pdf, 'pages'])
+        proc = process.popen([_mutool_executable, 'show', '--', self.archive, 'pages'])
         try:
             for line in proc.stdout:
                 if line.startswith('page '):
@@ -47,7 +46,7 @@ class PdfArchive(archive_base.BaseArchive):
         destination_path = os.path.join(destination_dir, filename)
         page_num = int(filename[0:-4])
         # Try to find optimal DPI.
-        cmd = [_mudraw_executable] + _mudraw_trace_args + ['--', self.pdf, str(page_num)]
+        cmd = [_mudraw_executable] + _mudraw_trace_args + ['--', self.archive, str(page_num)]
         log.debug('finding optimal DPI for %s: %s', filename, ' '.join(cmd))
         proc = process.popen(cmd)
         try:
@@ -74,12 +73,9 @@ class PdfArchive(archive_base.BaseArchive):
             proc.stdout.close()
             proc.wait()
         # Render...
-        cmd = [_mudraw_executable, '-r', str(max_dpi), '-o', destination_path, '--', self.pdf, str(page_num)]
+        cmd = [_mudraw_executable, '-r', str(max_dpi), '-o', destination_path, '--', self.archive, str(page_num)]
         log.debug('rendering %s: %s', filename, ' '.join(cmd))
         process.call(cmd)
-
-    def close(self):
-        self.pdf = None
 
     @staticmethod
     def is_available():
