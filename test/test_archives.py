@@ -281,7 +281,7 @@ for name, handler, is_available, format, not_solid, solid, password, header_encr
     ('zip (external)'   , zip_external.ZipArchive          , zip_external.ZipArchive.is_available()          , 'zip'    , True , False, True , False ),
 ):
     base_class_name = 'ArchiveFormat'
-    base_class_name += ''.join([part.capitalize() for part in re.sub('[^\w]+', ' ', name).split()])
+    base_class_name += ''.join([part.capitalize() for part in re.sub(r'[^\w]+', ' ', name).split()])
     base_class_name += '%sTest'
     base_class_dict = {
         'name': name,
