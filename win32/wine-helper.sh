@@ -33,9 +33,21 @@ programfiles="$winedir/drive_c/Program Files"
 
 export WINEARCH='win32' WINEPREFIX="$winedir" WINEDEBUG="-all"
 unset PYTHONPATH
-unset GTK2_RC_FILES
-unset GTK_IM_MODULE
-unset GTK_MODULES
+# Make sure GTK environment variables don't spill over to the Wine environment.
+unset \
+  GDK_BACKEND \
+  GDK_NATIVE_WINDOWS \
+  GDK_PIXBUF_MODULE_FILE \
+  GDK_RENDERING \
+  GTK2_RC_FILES \
+  GTK3_MODULES \
+  GTK_DATA_PREFIX \
+  GTK_EXE_PREFIX \
+  GTK_IM_MODULE \
+  GTK_IM_MODULE_FILE \
+  GTK_MODULES \
+  GTK_PATH \
+  GTK_THEME \
 
 add_to_wine_path()
 {
