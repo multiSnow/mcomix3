@@ -99,9 +99,12 @@ MComix 1.2
     - Various other issues with the Preferences dialog and the Properties
       dialog have been fixed.
 
+    - Recently opened PDF files are now listed in the "Recent Files" menu.
+
     ENVIRONMENT/LOCALE/TRANSLATIONS:
 
-    - MComix uses czipfile if available to speed up extraction from zip files.
+    - MComix uses czipfile when available to speed up extraction of
+    encrypted zip files.
 
     - Zombie processes will be removed if possible.
 
@@ -124,6 +127,17 @@ MComix 1.2
     - Some locale issues have been fixed.
 
     - The French translation has been updated.
+
+    - Fixed PDF support with newer versions of MuPDF (1.7).
+
+    - Better support for using the 7z executable: encrypted files are now
+    supported (including encrypted header support, and for all supported
+    formats: 7z, RAR and ZIP).
+
+    - The 7z executable is now prefered over the RAR/ZIP/LHA executables
+    (for better encryption and Unicode support).
+
+    - Fixed support for LHA archives (they were always marked as empty).
 
     MISC:
 
