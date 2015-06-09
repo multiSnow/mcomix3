@@ -27,14 +27,26 @@ orig_findall = distutils.filelist.findall
 
 def findall(dir = os.curdir):
     manifest = os.environ.get('SETUPTOOLS_MANIFEST', None)
+    data = None
     if manifest is not None:
         print 'findall(%s): using contents from %s' % (dir, manifest)
         data = open(manifest).read()
-    elif os.path.exists(os.path.join(dir, '.git')):
-        data = subprocess.check_output(['git', '-C', dir, 'ls-files'])
-    elif os.path.exists(os.path.join(dir, '.svn')):
-        data = subprocess.check_output(['svn', 'list', '-R', dir])
     else:
+        cmd = None
+        if os.path.exists(os.path.join(dir, '.git')):
+            cmd = ['git', '-C', dir, 'ls-files']
+        elif os.path.exists(os.path.join(dir, '.svn')):
+            cmd = ['svn', 'list', '-R', dir]
+        if cmd is not None:
+            print 'findall(%s): using %s' % (dir, ' '.join(cmd))
+            try:
+                data = subprocess.check_output(cmd)
+            except subprocess.CalledProcessError, ex:
+                print 'findall(%s): command failed with exit code %d: %s' %(
+                    dir, ex.returncode, ex.output
+                )
+                print 'findall(%s): falling back to original code' % dir
+    if data is None:
         return orig_findall(dir=dir)
     if '\n' == data[-1]:
         data = data[:-1]
