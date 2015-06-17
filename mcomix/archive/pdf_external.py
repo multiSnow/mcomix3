@@ -97,7 +97,7 @@ class PdfArchive(archive_base.BaseArchive):
                 try:
                     output = proc.stderr.read()
                     if output.startswith('mudraw version '):
-                        version = output[15:]
+                        version = output[15:].rstrip()
                 finally:
                     proc.stderr.close()
                     proc.wait()
