@@ -7,7 +7,7 @@ import sys, os
 import ctypes, ctypes.util
 
 from mcomix import constants
-from mcomix import archive
+from mcomix.archive import archive_base
 
 if sys.platform == 'win32':
     UNRARCALLBACK = ctypes.WINFUNCTYPE(ctypes.c_int, ctypes.c_uint,
@@ -16,7 +16,7 @@ else:
     UNRARCALLBACK = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_uint,
         ctypes.c_long, ctypes.c_long, ctypes.c_long)
 
-class RarArchive(archive.archive_base.BaseArchive):
+class RarArchive(archive_base.BaseArchive):
     """ Wrapper class for libunrar. All string values passed to this class must be unicode objects.
     In turn, all values returned are also unicode. """
 
