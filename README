@@ -50,9 +50,8 @@
 
 === Dependencies ==============================================================
 
-  MComix needs Python 2.5, Setuptools 0.6, PyGTK 2.12 and PIL (Python
-  Imaging Library) 1.1.5 or newer to function. It is possible to use
-  Pillow (an up-to-date fork) as drop-in replacement for PIL.
+  MComix needs Python 2.5, Setuptools 0.6, PyGTK 2.12 and Pillow (Python
+  Imaging Library Fork) 2.2.1 or newer to function.
 
   To use the library you need pysqlite (which is usually included in the
   standard library for Python 2.5 and later).
@@ -70,7 +69,7 @@
   substitute for both "unrar" and "lha", but extraction of Unicode filenames
   on Windows will be broken in that case.
 
-  To read PDF files, MComix can use the tools provided by mupdf, namely
+  To read PDF files, MComix can use the tools provided by MuPDF, namely
   mutool and mudraw.
 
 === Credits ===================================================================
