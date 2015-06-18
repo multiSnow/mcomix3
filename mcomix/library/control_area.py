@@ -59,12 +59,12 @@ class _ControlArea(gtk.HBox):
         infobox.pack_start(self._dirlabel, False, False)
 
         vbox = gtk.VBox(False, 10)
-        vbox.set_size_request(250, -1)
-        self.pack_start(vbox, False, False)
+        vbox.set_size_request(350, -1)
+        self.pack_start(vbox, False)
 
         # First line of controls, containing the search box
         hbox = gtk.HBox(False)
-        vbox.pack_start(hbox, False, False)
+        vbox.pack_start(hbox)
 
         label = gtk.Label(_('_Search:'))
         label.set_use_underline(True)
@@ -78,7 +78,7 @@ class _ControlArea(gtk.HBox):
         label.set_mnemonic_widget(search_entry)
 
         # Last line of controls, containing buttons like 'Open'
-        hbox = gtk.HBox(True, 10)
+        hbox = gtk.HBox(False, 10)
         vbox.pack_end(hbox)
 
         watchlist_button = gtk.Button(_("_Watch list"))
@@ -88,14 +88,14 @@ class _ControlArea(gtk.HBox):
             lambda *args: WatchListDialog(self._library))
         watchlist_button.set_tooltip_text(
             _('Open the watchlist management dialog.'))
-        hbox.pack_start(watchlist_button, expand=False)
+        hbox.pack_start(watchlist_button)
 
         self._open_button = gtk.Button(None, gtk.STOCK_OPEN)
         self._open_button.connect('clicked',
             self._library.book_area.open_selected_book)
         self._open_button.set_tooltip_text(_('Open the selected book.'))
         self._open_button.set_sensitive(False)
-        hbox.pack_end(self._open_button, expand=False)
+        hbox.pack_end(self._open_button)
 
     def update_info(self, selected):
         """Update the info box using the currently <selected> books from
