@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: https://sourceforge.net/projects/mcomix/\n"
-"POT-Creation-Date: 2015-04-05 04:49+0200\n"
+"Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
+"POT-Creation-Date: 2015-06-18 20:26+0200\n"
 "PO-Revision-Date: 2009-05-04 23:52+0300\n"
 "Last-Translator: Oleksandr Zaiats <ai@eth0.net.ua>\n"
 "Language-Team: \n"
@@ -33,24 +33,12 @@ msgstr ""
 msgid "A copy of this license can be obtained from %s"
 msgstr ""
 
-#: mcomix/archive/__init__.py:13
-msgid "The archive is password-protected:"
-msgstr ""
-
-#: mcomix/archive/zip.py:65
-#, python-format
-msgid ""
-"%(filename)s's extracted size is %(actual_size)d bytes, but should be "
-"%(expected_size)d bytes. The archive might be corrupt or in an unsupported "
-"format."
-msgstr ""
-
-#: mcomix/archive_extractor.py:45
+#: mcomix/archive_extractor.py:44
 #, python-format
 msgid "Non-supported archive format: %s"
 msgstr ""
 
-#: mcomix/archive_extractor.py:190 mcomix/archive_extractor.py:208
+#: mcomix/archive_extractor.py:185 mcomix/archive_extractor.py:203
 #, python-format
 msgid "! Extraction error: %s"
 msgstr ""
@@ -66,7 +54,7 @@ msgid ""
 "! Could not add file %(sourcefile)s to archive %(archivefile)s, aborting..."
 msgstr ""
 
-#: mcomix/archive_tools.py:119
+#: mcomix/archive_tools.py:165
 #, python-format
 msgid "! Could not read %s"
 msgstr ""
@@ -109,8 +97,8 @@ msgstr ""
 msgid "Name"
 msgstr "Ім’я"
 
-#: mcomix/bookmark_dialog.py:52 mcomix/library/control_area.py:136
-#: mcomix/main.py:1081
+#: mcomix/bookmark_dialog.py:52 mcomix/main.py:1085
+#: mcomix/library/control_area.py:136
 msgid "Page"
 msgstr "Сторінка"
 
@@ -248,7 +236,7 @@ msgstr "Зберезти"
 msgid "All files"
 msgstr "Усі файли"
 
-#: mcomix/file_chooser_base_dialog.py:129
+#: mcomix/file_chooser_base_dialog.py:128
 #, fuzzy
 msgid "All archives"
 msgstr "Усі архіви"
@@ -280,27 +268,27 @@ msgstr "Заміна перепише його вміст."
 msgid "Add books"
 msgstr "Додати книжки"
 
-#: mcomix/file_handler.py:156
+#: mcomix/file_handler.py:147
 #, python-format
 msgid "No images in '%s'"
 msgstr "Немає зображень у '%s'"
 
-#: mcomix/file_handler.py:279
+#: mcomix/file_handler.py:265
 #, python-format
 msgid "Could not open %s: No such file."
 msgstr "Не можу відкрити %s: Нема такого файла."
 
-#: mcomix/file_handler.py:282 mcomix/file_provider.py:141
+#: mcomix/file_handler.py:268 mcomix/file_provider.py:134
 #, python-format
 msgid "Could not open %s: Permission denied."
 msgstr "Не можу відкрити %s: Доступ заборонено."
 
-#: mcomix/file_handler.py:379
+#: mcomix/file_handler.py:365
 #, python-format
 msgid "Continue reading from page %d?"
 msgstr ""
 
-#: mcomix/file_handler.py:380
+#: mcomix/file_handler.py:366
 #, python-format
 msgid ""
 "You stopped reading here on %(date)s, %(time)s. If you choose \"Yes\", "
@@ -308,12 +296,12 @@ msgid ""
 "loaded."
 msgstr ""
 
-#: mcomix/file_handler.py:676
+#: mcomix/file_handler.py:660
 #, python-format
 msgid "! Corrupt preferences file \"%s\", deleting..."
 msgstr ""
 
-#: mcomix/file_provider.py:112
+#: mcomix/file_provider.py:104
 #, python-format
 msgid "Invalid path: '%s'"
 msgstr ""
@@ -323,9 +311,14 @@ msgstr ""
 msgid "! Could not load icon \"%s\""
 msgstr ""
 
-#: mcomix/image_tools.py:450
+#: mcomix/image_tools.py:499
 msgid "Unknown filetype"
 msgstr "Невідомий тип файлу"
+
+#: mcomix/keybindings_editor.py:42
+#, python-format
+msgid "Key %d"
+msgstr ""
 
 #: mcomix/keybindings.py:40 mcomix/ui.py:44
 msgid "Previous page"
@@ -710,459 +703,40 @@ msgstr ""
 msgid "External commands"
 msgstr "Впорядкувати закладки"
 
-#: mcomix/keybindings.py:183
+#: mcomix/keybindings.py:182
 #, python-format
 msgid "Keybinding for \"%(action)s\" overrides hotkey for another action."
 msgstr ""
 
-#: mcomix/keybindings.py:297
+#: mcomix/keybindings.py:294
 #, python-format
 msgid "Couldn't load keybindings: %s"
-msgstr ""
-
-#: mcomix/keybindings_editor.py:42
-#, python-format
-msgid "Key %d"
 msgstr ""
 
 #: mcomix/last_read_page.py:16 mcomix/library/backend.py:21
 msgid "! Could neither find pysqlite2 nor sqlite3."
 msgstr ""
 
-#: mcomix/last_read_page.py:209 mcomix/library/book_area.py:576
-#: mcomix/thumbnail_tools.py:113
+#: mcomix/last_read_page.py:209 mcomix/thumbnail_tools.py:117
+#: mcomix/library/book_area.py:578
 #, python-format
 msgid "! Could not remove file \"%s\""
 msgstr ""
 
-#: mcomix/library/add_progress_dialog.py:21
-msgid "Adding books"
-msgstr "Додавання книжок"
-
-#: mcomix/library/add_progress_dialog.py:42
-#, fuzzy
-msgid "Added books:"
-msgstr "Книжки додані"
-
-#: mcomix/library/add_progress_dialog.py:69
-#, python-format
-msgid "Adding '%s'..."
-msgstr "Додаю '%s'…"
-
-#: mcomix/library/backend.py:134 mcomix/library/backend.py:147
-#, python-format
-msgid "! Non-existant book #%i"
-msgstr ""
-
-#: mcomix/library/backend.py:163
-#, python-format
-msgid "! Could not get cover for book \"%s\""
-msgstr ""
-
-#: mcomix/library/backend.py:341
-#, python-format
-msgid "! Could not add book \"%s\" to the library"
-msgstr ""
-
-#: mcomix/library/backend.py:380
-#, python-format
-msgid "! Could not add collection \"%s\""
-msgstr ""
-
-#: mcomix/library/backend.py:393
-#, python-format
-msgid "! Could not add book %(book)s to collection %(collection)s"
-msgstr ""
-
-#: mcomix/library/backend.py:420
-#, python-format
-msgid "! Could not rename collection to \"%s\""
-msgstr ""
-
-#: mcomix/library/backend.py:431 mcomix/library/backend.py:433
-msgid "(Copy)"
-msgstr "(Копія)"
-
-#: mcomix/library/backend.py:533
-msgid "Could not determine library database version!"
-msgstr ""
-
-#: mcomix/library/backend.py:562
-#, python-format
-msgid "Upgrading library database version from %(from)d to %(to)d."
-msgstr ""
-
-#: mcomix/library/backend.py:662
-msgid "Recent"
-msgstr ""
-
-#: mcomix/library/backend_types.py:200 mcomix/library/collection_area.py:142
-msgid "All books"
-msgstr "Усі книжки"
-
-#: mcomix/library/book_area.py:134
-msgid "Library books"
-msgstr ""
-
-#: mcomix/library/book_area.py:136
-msgid "_Open"
-msgstr ""
-
-#: mcomix/library/book_area.py:137
-msgid "Opens the selected books for viewing."
-msgstr ""
-
-#: mcomix/library/book_area.py:140
-msgid "Open _without closing library"
-msgstr ""
-
-#: mcomix/library/book_area.py:141
-msgid "Opens the selected books, but keeps the library window open."
-msgstr ""
-
-#: mcomix/library/book_area.py:143 mcomix/library/collection_area.py:77
-msgid "_Add..."
-msgstr ""
-
-#: mcomix/library/book_area.py:144 mcomix/library/collection_area.py:78
-msgid "Add more books to the library."
-msgstr "Додати ще книжок до бібліотеки."
-
-#: mcomix/library/book_area.py:147
-msgid "Remove from this _collection"
-msgstr ""
-
-#: mcomix/library/book_area.py:148
-msgid "Removes the selected books from the current collection."
-msgstr ""
-
-#: mcomix/library/book_area.py:151
-msgid "Remove from the _library"
-msgstr ""
-
-#: mcomix/library/book_area.py:152
-msgid "Completely removes the selected books from the library."
-msgstr ""
-
-#: mcomix/library/book_area.py:155
-msgid "_Remove and delete from disk"
-msgstr ""
-
-#: mcomix/library/book_area.py:156
-msgid "Deletes the selected books from disk."
-msgstr ""
-
-#: mcomix/library/book_area.py:159 mcomix/ui.py:35
-#, fuzzy
-msgid "_Copy"
-msgstr "(Копія)"
-
-#: mcomix/library/book_area.py:160
-#, fuzzy
-msgid "Copies the selected book's path to clipboard."
-msgstr "Відкрити обрану книгу."
-
-#: mcomix/library/book_area.py:162
-msgid "_Sort"
-msgstr ""
-
-#: mcomix/library/book_area.py:163
-msgid "Changes the sort order of the library."
-msgstr ""
-
-#: mcomix/library/book_area.py:164
-msgid "Cover si_ze"
-msgstr ""
-
-#: mcomix/library/book_area.py:165
-msgid "Changes the book cover size."
-msgstr ""
-
-#: mcomix/library/book_area.py:169
-msgid "Book name"
-msgstr ""
-
-#: mcomix/library/book_area.py:170
-msgid "Full path"
-msgstr ""
-
-#: mcomix/library/book_area.py:171 mcomix/preferences_dialog.py:443
-msgid "File size"
-msgstr ""
-
-#: mcomix/library/book_area.py:172
-msgid "Date added"
-msgstr ""
-
-#: mcomix/library/book_area.py:175 mcomix/preferences_dialog.py:450
-#: mcomix/preferences_dialog.py:497
-msgid "Ascending"
-msgstr ""
-
-#: mcomix/library/book_area.py:177 mcomix/preferences_dialog.py:451
-#: mcomix/preferences_dialog.py:498
-msgid "Descending"
-msgstr ""
-
-#: mcomix/library/book_area.py:183
-msgid "Huge"
-msgstr ""
-
-#: mcomix/library/book_area.py:185
-msgid "Large"
-msgstr ""
-
-#: mcomix/library/book_area.py:187
-msgid "Normal"
-msgstr ""
-
-#: mcomix/library/book_area.py:189
-msgid "Small"
-msgstr ""
-
-#: mcomix/library/book_area.py:191
-msgid "Tiny"
-msgstr ""
-
-#: mcomix/library/book_area.py:193
-msgid "Custom..."
-msgstr ""
-
-#: mcomix/library/book_area.py:393
-msgid "Set library cover size"
-msgstr ""
-
-#: mcomix/library/book_area.py:511
-#, fuzzy, python-format
-msgid "Removed %(num)d book from '%(collection)s'."
-msgid_plural "Removed %(num)d books from '%(collection)s'."
-msgstr[0] "Видалено %(num)d книг(а, и) з '%(collection)s'."
-msgstr[1] "Видалено %(num)d книг(а, и) з '%(collection)s'."
-
-#: mcomix/library/book_area.py:533 mcomix/library/collection_area.py:190
-#, python-format
-msgid "Removed %d book from the library."
-msgid_plural "Removed %d books from the library."
-msgstr[0] ""
-msgstr[1] ""
-
-#: mcomix/library/book_area.py:551
-msgid "Remove books from the library?"
-msgstr "Видалити книжки з колекції?"
-
-#: mcomix/library/book_area.py:552
-#, fuzzy
-msgid ""
-"The selected books will be removed from the library and permanently deleted. "
-"Are you sure that you want to continue?"
-msgstr ""
-"Обрані книжки будуть видалені з бібліотеки (але оригінальні файли залишаться "
-"нетронутими). Ви впевнені, що бажаєте продовжити?"
-
-#: mcomix/library/collection_area.py:75
-msgid "Library collections"
-msgstr ""
-
-#: mcomix/library/collection_area.py:80
-msgid "New"
-msgstr ""
-
-#: mcomix/library/collection_area.py:81
-msgid "Add a new empty collection."
-msgstr "Додати нову порожню колекцію."
-
-#: mcomix/library/collection_area.py:83
-msgid "Re_name"
-msgstr ""
-
-#: mcomix/library/collection_area.py:84
-msgid "Renames the selected collection."
-msgstr ""
-
-#: mcomix/library/collection_area.py:86
-msgid "_Duplicate"
-msgstr ""
-
-#: mcomix/library/collection_area.py:87
-msgid "Creates a duplicate of the selected collection."
-msgstr ""
-
-#: mcomix/library/collection_area.py:89
-msgid "_Clean up"
-msgstr ""
-
-#: mcomix/library/collection_area.py:90
-msgid "Removes no longer existant books from the collection."
-msgstr ""
-
-#: mcomix/library/collection_area.py:92 mcomix/library/watchlist.py:70
-msgid "_Remove"
-msgstr ""
-
-#: mcomix/library/collection_area.py:93
-msgid "Deletes the selected collection."
-msgstr ""
-
-#: mcomix/library/collection_area.py:154
-msgid "Add new collection?"
-msgstr "Додати нову колекцію?"
-
-#: mcomix/library/collection_area.py:155
-msgid "Please enter a name for the new collection."
-msgstr "Будь ласка введіть ім’я для нової колекції."
-
-#: mcomix/library/collection_area.py:174
-#, python-format
-msgid "Could not add a new collection called '%s'."
-msgstr "Не можу додати нову колекцію з ім’ям '%s'."
-
-#: mcomix/library/collection_area.py:179 mcomix/library/collection_area.py:272
-msgid "A collection by that name already exists."
-msgstr "Колекція з таким ім’ям вже існує."
-
-#: mcomix/library/collection_area.py:248
-msgid "Rename collection?"
-msgstr "Перейменувати колекцію?"
-
-#: mcomix/library/collection_area.py:249
-msgid "Please enter a new name for the selected collection."
-msgstr "Будь ласка введіть нове ім’я для обраної колекції."
-
-#: mcomix/library/collection_area.py:268
-#, python-format
-msgid "Could not change the name to '%s'."
-msgstr "Не можу змінити ім’я на '%s'."
-
-#: mcomix/library/collection_area.py:282
-msgid "Could not duplicate collection."
-msgstr "Не можу скопіювати колекцію."
-
-#: mcomix/library/collection_area.py:409
-msgid "Root"
-msgstr "Корінь"
-
-#: mcomix/library/collection_area.py:413
-#, python-format
-msgid ""
-"Put the collection '%(subcollection)s' in the collection "
-"'%(supercollection)s'."
-msgstr ""
-"Покласти колекцію '%(subcollection)s' в колекцію '%(supercollection)s'."
-
-#: mcomix/library/collection_area.py:434
-#, python-format
-msgid "Add books to '%s'."
-msgstr "Додати книжки до '%s'."
-
-#: mcomix/library/collection_area.py:438
-#, python-format
-msgid ""
-"Move books from '%(source collection)s' to '%(destination collection)s'."
-msgstr ""
-"Перемістити книжки з '%(source collection)s' до '%(destination collection)s'."
-
-#: mcomix/library/control_area.py:69
-#, fuzzy
-msgid "_Search:"
-msgstr "Пошук"
-
-#: mcomix/library/control_area.py:75
-msgid ""
-"Display only those books that have the specified text string in their full "
-"path. The search is not case sensitive."
-msgstr ""
-"Показувати лише ті книжки, в повному шляху яких є вказаний текст. Пошук не "
-"враховує  регістр."
-
-#: mcomix/library/control_area.py:84
-msgid "_Watch list"
-msgstr ""
-
-#: mcomix/library/control_area.py:90
-msgid "Open the watchlist management dialog."
-msgstr ""
-
-#: mcomix/library/control_area.py:96
-msgid "Open the selected book."
-msgstr "Відкрити обрану книгу."
-
-#: mcomix/library/control_area.py:138 mcomix/properties_dialog.py:76
-#, python-format
-msgid "%d pages"
-msgstr "%d сторінок"
-
-#: mcomix/library/control_area.py:145
-#, python-format
-msgid "Finished reading on %(date)s, %(time)s"
-msgstr ""
-
-#: mcomix/library/main_dialog.py:84
-msgid "Scanning for new books..."
-msgstr ""
-
-#: mcomix/library/main_dialog.py:99
-#, python-format
-msgid "Added new book '%(bookname)s' from directory '%(directory)s'."
-msgstr ""
-
-#: mcomix/library/main_dialog.py:102
-#, fuzzy, python-format
-msgid "Added %(count)d new books from directory '%(directory)s'."
-msgstr "Видалено %(num)d книг(а, и) з '%(collection)s'."
-
-#: mcomix/library/main_dialog.py:109
-#, python-format
-msgid "No new books found in directory '%s'."
-msgstr ""
-
-#: mcomix/library/main_dialog.py:169
-msgid "! You need an sqlite wrapper to use the library."
-msgstr ""
-
-#: mcomix/library/watchlist.py:25
-msgid "Library watch list"
-msgstr ""
-
-#: mcomix/library/watchlist.py:27
-msgid "_Scan now"
-msgstr ""
-
-#: mcomix/library/watchlist.py:43
-msgid "Directory"
-msgstr ""
-
-#: mcomix/library/watchlist.py:55
-#, fuzzy
-msgid "Collection"
-msgstr "Нова колекція"
-
-#: mcomix/library/watchlist.py:63
-msgid "With subdirectories"
-msgstr ""
-
-#: mcomix/library/watchlist.py:68
-msgid "_Add"
-msgstr ""
-
-#: mcomix/library/watchlist.py:87
-#, fuzzy
-msgid "Automatically scan for new books when library is _opened"
-msgstr "Автоматично додати книжки до цієї колекції"
-
-#: mcomix/main.py:976
+#: mcomix/main.py:980
 msgid "SLIDESHOW"
 msgstr "СЛАЙДШОУ"
 
-#: mcomix/main.py:1007
+#: mcomix/main.py:1011
 msgid "Save page as"
 msgstr ""
 
-#: mcomix/main.py:1027
+#: mcomix/main.py:1031
 #, python-format
 msgid "Delete \"%s\"?"
 msgstr ""
 
-#: mcomix/main.py:1028
+#: mcomix/main.py:1032
 msgid "The file will be deleted from your harddisk."
 msgstr ""
 
@@ -1170,125 +744,120 @@ msgstr ""
 msgid "Do not ask again."
 msgstr ""
 
+#: mcomix/openwith_menu.py:22
+#, fuzzy
+msgid "_Edit commands"
+msgstr "Впорядкувати закладки"
+
 #: mcomix/openwith.py:76
 #, python-format
 msgid "'%s' is disabled for archives."
 msgstr ""
 
-#: mcomix/openwith.py:86
-#, fuzzy
-msgid "Invalid working directory."
-msgstr "Каталог мініатюр"
-
-#: mcomix/openwith.py:98
+#: mcomix/openwith.py:95
 #, python-format
 msgid "Could not run command %(cmdlabel)s: %(exception)s"
 msgstr ""
 
-#: mcomix/openwith.py:154
+#: mcomix/openwith.py:143
 msgid "Command line is empty."
 msgstr ""
 
-#: mcomix/openwith.py:197
+#: mcomix/openwith.py:186
 msgid "Incomplete escape sequence. For a literal '%', use '%%'."
 msgstr ""
 
-#: mcomix/openwith.py:201
+#: mcomix/openwith.py:190
 msgid "Incomplete quote sequence. For a literal '\"', use '%\"'."
 msgstr ""
 
-#: mcomix/openwith.py:217
+#: mcomix/openwith.py:206
 #, fuzzy
 msgid "File-related variables can only be used for files."
 msgstr "Архіви зберігаються як ZIP файли."
 
-#: mcomix/openwith.py:221
+#: mcomix/openwith.py:210
 #, fuzzy
 msgid "Archive-related variables can only be used for archives."
 msgstr "Архіви зберігаються як ZIP файли."
 
-#: mcomix/openwith.py:263
+#: mcomix/openwith.py:252
 #, python-format
 msgid "Invalid escape sequence: %%%s"
 msgstr ""
 
-#: mcomix/openwith.py:286
+#: mcomix/openwith.py:275
 msgid "Edit external commands"
 msgstr ""
 
-#: mcomix/openwith.py:296
+#: mcomix/openwith.py:285
 msgid "Add _separator"
 msgstr ""
 
-#: mcomix/openwith.py:307
+#: mcomix/openwith.py:296
 #, fuzzy
 msgid "Run _command"
 msgstr "Коментарі"
 
-#: mcomix/openwith.py:370
+#: mcomix/openwith.py:359
 msgid "This is a separator pseudo-command."
 msgstr ""
 
-#: mcomix/openwith.py:381
+#: mcomix/openwith.py:370
 #, python-format
 msgid "\"%s\" does not have a valid working directory."
 msgstr ""
 
-#: mcomix/openwith.py:384
+#: mcomix/openwith.py:373
 #, python-format
 msgid "\"%s\" does not appear to have a valid executable."
 msgstr ""
 
-#: mcomix/openwith.py:393
+#: mcomix/openwith.py:382
 #, fuzzy
 msgid "Command label"
 msgstr "Коментарі"
 
-#: mcomix/openwith.py:486
+#: mcomix/openwith.py:475
 #, fuzzy
 msgid "Preview:"
 msgstr "_Попередня сторінка"
 
-#: mcomix/openwith.py:494
+#: mcomix/openwith.py:483
 #, python-format
 msgid ""
 "Please refer to the <a href=\"%s\">external command documentation</a> for a "
 "list of usable variables and other hints."
 msgstr ""
 
-#: mcomix/openwith.py:502
+#: mcomix/openwith.py:491
 msgid "Label"
 msgstr ""
 
-#: mcomix/openwith.py:502
+#: mcomix/openwith.py:491
 #, fuzzy
 msgid "Command"
 msgstr "Коментарі"
 
-#: mcomix/openwith.py:502
+#: mcomix/openwith.py:491
 #, fuzzy
 msgid "Working directory"
 msgstr "Каталог мініатюр"
 
-#: mcomix/openwith.py:516
+#: mcomix/openwith.py:505
 #, fuzzy
 msgid "Disabled in archives"
 msgstr "Tar архіви"
 
-#: mcomix/openwith.py:571
+#: mcomix/openwith.py:560
 msgid "Save changes to commands?"
 msgstr ""
 
-#: mcomix/openwith.py:572
+#: mcomix/openwith.py:561
 msgid ""
 "You have made changes to the list of external commands that have not been "
 "saved yet. Press \"Yes\" to save all changes, or \"No\" to discard them."
 msgstr ""
-
-#: mcomix/openwith_menu.py:22
-#, fuzzy
-msgid "_Edit commands"
-msgstr "Впорядкувати закладки"
 
 #: mcomix/pageselect.py:19 mcomix/ui.py:100 mcomix/ui.py:101
 msgid "_Go"
@@ -1768,8 +1337,22 @@ msgstr ""
 msgid "File name"
 msgstr ""
 
+#: mcomix/preferences_dialog.py:443 mcomix/library/book_area.py:173
+msgid "File size"
+msgstr ""
+
 #: mcomix/preferences_dialog.py:444
 msgid "Last modified"
+msgstr ""
+
+#: mcomix/preferences_dialog.py:450 mcomix/preferences_dialog.py:497
+#: mcomix/library/book_area.py:177
+msgid "Ascending"
+msgstr ""
+
+#: mcomix/preferences_dialog.py:451 mcomix/preferences_dialog.py:498
+#: mcomix/library/book_area.py:179
+msgid "Descending"
 msgstr ""
 
 #: mcomix/preferences_dialog.py:461
@@ -1846,6 +1429,11 @@ msgstr "Архів"
 #: mcomix/properties_dialog.py:37
 msgid "Image"
 msgstr "Зображення"
+
+#: mcomix/properties_dialog.py:76 mcomix/library/control_area.py:138
+#, python-format
+msgid "%d pages"
+msgstr "%d сторінок"
 
 #: mcomix/properties_dialog.py:77
 #, python-format
@@ -1932,58 +1520,58 @@ msgstr ""
 msgid "Sets the desired output log level."
 msgstr ""
 
-#: mcomix/run.py:127
+#: mcomix/run.py:131
 msgid "You do not have the required versions of GTK+ and PyGTK installed."
 msgstr ""
 
-#: mcomix/run.py:128
+#: mcomix/run.py:132
 #, python-format
 msgid "Installed GTK+ version is: %s"
 msgstr ""
 
-#: mcomix/run.py:130
+#: mcomix/run.py:134
 msgid "Required GTK+ version is: 2.12.0 or higher\n"
 msgstr ""
 
-#: mcomix/run.py:131
+#: mcomix/run.py:135
 #, python-format
 msgid "Installed PyGTK version is: %s"
 msgstr ""
 
-#: mcomix/run.py:133 mcomix/run.py:137
+#: mcomix/run.py:137 mcomix/run.py:141
 msgid "Required PyGTK version is: 2.12.0 or higher"
 msgstr ""
 
-#: mcomix/run.py:138
+#: mcomix/run.py:142
 msgid "No version of PyGTK was found on your system."
 msgstr ""
 
-#: mcomix/run.py:139
+#: mcomix/run.py:143
 msgid "This error might be caused by missing GTK+ libraries."
 msgstr ""
 
-#: mcomix/run.py:148
+#: mcomix/run.py:152
 msgid "You don't have the required version of the Python Imaging"
 msgstr ""
 
-#: mcomix/run.py:149
+#: mcomix/run.py:153
 msgid "Library (PIL) installed."
 msgstr ""
 
-#: mcomix/run.py:150
+#: mcomix/run.py:154
 #, python-format
 msgid "Installed PIL version is: %s"
 msgstr ""
 
-#: mcomix/run.py:151
+#: mcomix/run.py:155
 msgid "Required PIL version is: 1.1.5 or higher"
 msgstr ""
 
-#: mcomix/run.py:155
+#: mcomix/run.py:159
 msgid "Python Imaging Library (PIL) 1.1.5 or higher is required."
 msgstr ""
 
-#: mcomix/run.py:156
+#: mcomix/run.py:160
 msgid "No version of the Python Imaging Library was found on your system."
 msgstr ""
 
@@ -2161,10 +1749,15 @@ msgstr "Переклад грецькою"
 msgid "Icon design"
 msgstr "Дизайн іконок"
 
-#: mcomix/thumbnail_tools.py:214
+#: mcomix/thumbnail_tools.py:221
 #, python-format
 msgid "! Could not save thumbnail \"%(thumbpath)s\": %(error)s"
 msgstr ""
+
+#: mcomix/ui.py:35 mcomix/library/book_area.py:161
+#, fuzzy
+msgid "_Copy"
+msgstr "(Копія)"
 
 #: mcomix/ui.py:36
 msgid "Copies the current page to clipboard."
@@ -2463,6 +2056,412 @@ msgstr "_Бібліотека…"
 #, python-format
 msgid "! Worker thread processing %(function)r failed: %(error)s"
 msgstr ""
+
+#: mcomix/archive/__init__.py:13
+msgid "The archive is password-protected:"
+msgstr ""
+
+#: mcomix/archive/zip.py:54
+#, python-format
+msgid ""
+"%(filename)s's extracted size is %(actual_size)d bytes, but should be "
+"%(expected_size)d bytes. The archive might be corrupt or in an unsupported "
+"format."
+msgstr ""
+
+#: mcomix/library/add_progress_dialog.py:21
+msgid "Adding books"
+msgstr "Додавання книжок"
+
+#: mcomix/library/add_progress_dialog.py:42
+#, fuzzy
+msgid "Added books:"
+msgstr "Книжки додані"
+
+#: mcomix/library/add_progress_dialog.py:69
+#, python-format
+msgid "Adding '%s'..."
+msgstr "Додаю '%s'…"
+
+#: mcomix/library/backend.py:134 mcomix/library/backend.py:147
+#, python-format
+msgid "! Non-existant book #%i"
+msgstr ""
+
+#: mcomix/library/backend.py:165
+#, python-format
+msgid "! Could not get cover for book \"%s\""
+msgstr ""
+
+#: mcomix/library/backend.py:343
+#, python-format
+msgid "! Could not add book \"%s\" to the library"
+msgstr ""
+
+#: mcomix/library/backend.py:382
+#, python-format
+msgid "! Could not add collection \"%s\""
+msgstr ""
+
+#: mcomix/library/backend.py:395
+#, python-format
+msgid "! Could not add book %(book)s to collection %(collection)s"
+msgstr ""
+
+#: mcomix/library/backend.py:422
+#, python-format
+msgid "! Could not rename collection to \"%s\""
+msgstr ""
+
+#: mcomix/library/backend.py:433 mcomix/library/backend.py:435
+msgid "(Copy)"
+msgstr "(Копія)"
+
+#: mcomix/library/backend.py:535
+msgid "Could not determine library database version!"
+msgstr ""
+
+#: mcomix/library/backend.py:564
+#, python-format
+msgid "Upgrading library database version from %(from)d to %(to)d."
+msgstr ""
+
+#: mcomix/library/backend.py:664
+msgid "Recent"
+msgstr ""
+
+#: mcomix/library/backend_types.py:200 mcomix/library/collection_area.py:142
+msgid "All books"
+msgstr "Усі книжки"
+
+#: mcomix/library/book_area.py:136
+msgid "Library books"
+msgstr ""
+
+#: mcomix/library/book_area.py:138
+msgid "_Open"
+msgstr ""
+
+#: mcomix/library/book_area.py:139
+msgid "Opens the selected books for viewing."
+msgstr ""
+
+#: mcomix/library/book_area.py:142
+msgid "Open _without closing library"
+msgstr ""
+
+#: mcomix/library/book_area.py:143
+msgid "Opens the selected books, but keeps the library window open."
+msgstr ""
+
+#: mcomix/library/book_area.py:145 mcomix/library/collection_area.py:77
+msgid "_Add..."
+msgstr ""
+
+#: mcomix/library/book_area.py:146 mcomix/library/collection_area.py:78
+msgid "Add more books to the library."
+msgstr "Додати ще книжок до бібліотеки."
+
+#: mcomix/library/book_area.py:149
+msgid "Remove from this _collection"
+msgstr ""
+
+#: mcomix/library/book_area.py:150
+msgid "Removes the selected books from the current collection."
+msgstr ""
+
+#: mcomix/library/book_area.py:153
+msgid "Remove from the _library"
+msgstr ""
+
+#: mcomix/library/book_area.py:154
+msgid "Completely removes the selected books from the library."
+msgstr ""
+
+#: mcomix/library/book_area.py:157
+msgid "_Remove and delete from disk"
+msgstr ""
+
+#: mcomix/library/book_area.py:158
+msgid "Deletes the selected books from disk."
+msgstr ""
+
+#: mcomix/library/book_area.py:162
+#, fuzzy
+msgid "Copies the selected book's path to clipboard."
+msgstr "Відкрити обрану книгу."
+
+#: mcomix/library/book_area.py:164
+msgid "_Sort"
+msgstr ""
+
+#: mcomix/library/book_area.py:165
+msgid "Changes the sort order of the library."
+msgstr ""
+
+#: mcomix/library/book_area.py:166
+msgid "Cover si_ze"
+msgstr ""
+
+#: mcomix/library/book_area.py:167
+msgid "Changes the book cover size."
+msgstr ""
+
+#: mcomix/library/book_area.py:171
+msgid "Book name"
+msgstr ""
+
+#: mcomix/library/book_area.py:172
+msgid "Full path"
+msgstr ""
+
+#: mcomix/library/book_area.py:174
+msgid "Date added"
+msgstr ""
+
+#: mcomix/library/book_area.py:185
+msgid "Huge"
+msgstr ""
+
+#: mcomix/library/book_area.py:187
+msgid "Large"
+msgstr ""
+
+#: mcomix/library/book_area.py:189
+msgid "Normal"
+msgstr ""
+
+#: mcomix/library/book_area.py:191
+msgid "Small"
+msgstr ""
+
+#: mcomix/library/book_area.py:193
+msgid "Tiny"
+msgstr ""
+
+#: mcomix/library/book_area.py:195
+msgid "Custom..."
+msgstr ""
+
+#: mcomix/library/book_area.py:395
+msgid "Set library cover size"
+msgstr ""
+
+#: mcomix/library/book_area.py:513
+#, fuzzy, python-format
+msgid "Removed %(num)d book from '%(collection)s'."
+msgid_plural "Removed %(num)d books from '%(collection)s'."
+msgstr[0] "Видалено %(num)d книг(а, и) з '%(collection)s'."
+msgstr[1] "Видалено %(num)d книг(а, и) з '%(collection)s'."
+
+#: mcomix/library/book_area.py:535 mcomix/library/collection_area.py:190
+#, python-format
+msgid "Removed %d book from the library."
+msgid_plural "Removed %d books from the library."
+msgstr[0] ""
+msgstr[1] ""
+
+#: mcomix/library/book_area.py:553
+msgid "Remove books from the library?"
+msgstr "Видалити книжки з колекції?"
+
+#: mcomix/library/book_area.py:554
+#, fuzzy
+msgid ""
+"The selected books will be removed from the library and permanently deleted. "
+"Are you sure that you want to continue?"
+msgstr ""
+"Обрані книжки будуть видалені з бібліотеки (але оригінальні файли залишаться "
+"нетронутими). Ви впевнені, що бажаєте продовжити?"
+
+#: mcomix/library/collection_area.py:75
+msgid "Library collections"
+msgstr ""
+
+#: mcomix/library/collection_area.py:80
+msgid "New"
+msgstr ""
+
+#: mcomix/library/collection_area.py:81
+msgid "Add a new empty collection."
+msgstr "Додати нову порожню колекцію."
+
+#: mcomix/library/collection_area.py:83
+msgid "Re_name"
+msgstr ""
+
+#: mcomix/library/collection_area.py:84
+msgid "Renames the selected collection."
+msgstr ""
+
+#: mcomix/library/collection_area.py:86
+msgid "_Duplicate"
+msgstr ""
+
+#: mcomix/library/collection_area.py:87
+msgid "Creates a duplicate of the selected collection."
+msgstr ""
+
+#: mcomix/library/collection_area.py:89
+msgid "_Clean up"
+msgstr ""
+
+#: mcomix/library/collection_area.py:90
+msgid "Removes no longer existant books from the collection."
+msgstr ""
+
+#: mcomix/library/collection_area.py:92 mcomix/library/watchlist.py:70
+msgid "_Remove"
+msgstr ""
+
+#: mcomix/library/collection_area.py:93
+msgid "Deletes the selected collection."
+msgstr ""
+
+#: mcomix/library/collection_area.py:154
+msgid "Add new collection?"
+msgstr "Додати нову колекцію?"
+
+#: mcomix/library/collection_area.py:155
+msgid "Please enter a name for the new collection."
+msgstr "Будь ласка введіть ім’я для нової колекції."
+
+#: mcomix/library/collection_area.py:174
+#, python-format
+msgid "Could not add a new collection called '%s'."
+msgstr "Не можу додати нову колекцію з ім’ям '%s'."
+
+#: mcomix/library/collection_area.py:179 mcomix/library/collection_area.py:272
+msgid "A collection by that name already exists."
+msgstr "Колекція з таким ім’ям вже існує."
+
+#: mcomix/library/collection_area.py:248
+msgid "Rename collection?"
+msgstr "Перейменувати колекцію?"
+
+#: mcomix/library/collection_area.py:249
+msgid "Please enter a new name for the selected collection."
+msgstr "Будь ласка введіть нове ім’я для обраної колекції."
+
+#: mcomix/library/collection_area.py:268
+#, python-format
+msgid "Could not change the name to '%s'."
+msgstr "Не можу змінити ім’я на '%s'."
+
+#: mcomix/library/collection_area.py:282
+msgid "Could not duplicate collection."
+msgstr "Не можу скопіювати колекцію."
+
+#: mcomix/library/collection_area.py:409
+msgid "Root"
+msgstr "Корінь"
+
+#: mcomix/library/collection_area.py:413
+#, python-format
+msgid ""
+"Put the collection '%(subcollection)s' in the collection "
+"'%(supercollection)s'."
+msgstr ""
+"Покласти колекцію '%(subcollection)s' в колекцію '%(supercollection)s'."
+
+#: mcomix/library/collection_area.py:434
+#, python-format
+msgid "Add books to '%s'."
+msgstr "Додати книжки до '%s'."
+
+#: mcomix/library/collection_area.py:438
+#, python-format
+msgid ""
+"Move books from '%(source collection)s' to '%(destination collection)s'."
+msgstr ""
+"Перемістити книжки з '%(source collection)s' до '%(destination collection)s'."
+
+#: mcomix/library/control_area.py:69
+#, fuzzy
+msgid "_Search:"
+msgstr "Пошук"
+
+#: mcomix/library/control_area.py:75
+msgid ""
+"Display only those books that have the specified text string in their full "
+"path. The search is not case sensitive."
+msgstr ""
+"Показувати лише ті книжки, в повному шляху яких є вказаний текст. Пошук не "
+"враховує  регістр."
+
+#: mcomix/library/control_area.py:84
+msgid "_Watch list"
+msgstr ""
+
+#: mcomix/library/control_area.py:90
+msgid "Open the watchlist management dialog."
+msgstr ""
+
+#: mcomix/library/control_area.py:96
+msgid "Open the selected book."
+msgstr "Відкрити обрану книгу."
+
+#: mcomix/library/control_area.py:145
+#, python-format
+msgid "Finished reading on %(date)s, %(time)s"
+msgstr ""
+
+#: mcomix/library/main_dialog.py:84
+msgid "Scanning for new books..."
+msgstr ""
+
+#: mcomix/library/main_dialog.py:99
+#, python-format
+msgid "Added new book '%(bookname)s' from directory '%(directory)s'."
+msgstr ""
+
+#: mcomix/library/main_dialog.py:102
+#, fuzzy, python-format
+msgid "Added %(count)d new books from directory '%(directory)s'."
+msgstr "Видалено %(num)d книг(а, и) з '%(collection)s'."
+
+#: mcomix/library/main_dialog.py:109
+#, python-format
+msgid "No new books found in directory '%s'."
+msgstr ""
+
+#: mcomix/library/main_dialog.py:169
+msgid "! You need an sqlite wrapper to use the library."
+msgstr ""
+
+#: mcomix/library/watchlist.py:25
+msgid "Library watch list"
+msgstr ""
+
+#: mcomix/library/watchlist.py:27
+msgid "_Scan now"
+msgstr ""
+
+#: mcomix/library/watchlist.py:43
+msgid "Directory"
+msgstr ""
+
+#: mcomix/library/watchlist.py:55
+#, fuzzy
+msgid "Collection"
+msgstr "Нова колекція"
+
+#: mcomix/library/watchlist.py:63
+msgid "With subdirectories"
+msgstr ""
+
+#: mcomix/library/watchlist.py:68
+msgid "_Add"
+msgstr ""
+
+#: mcomix/library/watchlist.py:87
+#, fuzzy
+msgid "Automatically scan for new books when library is _opened"
+msgstr "Автоматично додати книжки до цієї колекції"
+
+#, fuzzy
+#~ msgid "Invalid working directory."
+#~ msgstr "Каталог мініатюр"
 
 #~ msgid "Tar archives"
 #~ msgstr "Tar архіви"
