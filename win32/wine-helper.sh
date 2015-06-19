@@ -74,6 +74,12 @@ winecmd()
   return $code
 }
 
+winetricks()
+{
+  info "winetricks $@"
+  env WINETRICKS_OPT_SHAREDPREFIX=1 winetricks "$@"
+}
+
 install()
 {
   file="$1"
@@ -290,6 +296,7 @@ helper_setup()
   install colorama-0.3.3.tar.gz a8ee91adf4644bbdccfc73ead88f4cd0df7e3552 'https://pypi.python.org/packages/source/c/colorama' install_python_source
   install py-1.4.26.tar.gz 5d9aaa67c1da2ded5f978aa13e03dfe780771fea 'https://pypi.python.org/packages/source/p/py' install_python_source
   install pytest-2.7.0.tar.gz 297b27dc5a77ec3a22bb2bee1dfa178ec162d9e4 'https://pypi.python.org/packages/source/p/pytest' install_python_source
+  winetricks corefonts
   true
 }
 
