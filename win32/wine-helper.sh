@@ -364,6 +364,7 @@ helper_dist_setup()
   version="$(python2 -c 'from mcomix.constants import VERSION; print VERSION')"
   cp "$mcomixdir/dist/mcomix-$version.win32.all-in-one.zip" "$distdir/"
   install_archive "mcomix-$version.win32.all-in-one.zip" MComix
+  winetricks corefonts
 )}
 
 helper_dist_mcomix()
