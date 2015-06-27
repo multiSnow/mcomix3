@@ -108,6 +108,8 @@ datas.extend((
     ('C:/Program Files/7-Zip/7z.exe', '.'),
     ('C:/Program Files/7-Zip/7z.dll', '.'),
     ('C:/Program Files/7-Zip/License.txt', 'doc/7z'),
+    # Override GTK configuration (fix fonts).
+    ('win32/gtkrc', 'etc/gtk-2.0'),
 ))
 
 # Add w9xpopen.exe.
