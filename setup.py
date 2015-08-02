@@ -143,8 +143,10 @@ setuptools.setup(
     maintainer_email = 'oddegamra@gmx.org',
     url = 'http://mcomix.sourceforge.net',
     description = 'GTK comic book viewer',
-    long_description = 'MComix is a fork of Comix and is a user-friendly, customizable image viewer. '
-        'It is specifically designed to handle comic books.',
+    long_description = 'MComix is a user-friendly, customizable image viewer. '
+        'It is specifically designed to handle comic books (both Western comics and manga) '
+        'and supports a variety of container formats (including CBR, CBZ, CB7, CBT, LHA and PDF). '
+        'MComix is a fork of Comix.',
     license = "License :: OSI Approved :: GNU General Public License (GPL)",
     download_url = "http://sourceforge.net/projects/mcomix/files",
     platforms = ['Operating System :: POSIX :: Linux',
