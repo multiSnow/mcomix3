@@ -82,9 +82,10 @@ winetricks()
 
 install()
 {
-  file="$1"
-  sha1="$2"
-  src="$3/$file"
+  name="$1"
+  src="$2"
+  crc="$3"
+  file="$(basename "$src")"
   dst="$distdir/$file"
 
   if grep -qxF "$file" "$installed"
@@ -94,18 +95,18 @@ install()
 
   if [ ! -r "$dst" ]
   then
-    info "downloading $file"
+    info "downloading $name"
     wget --quiet --show-progress --continue -O "$dst" "$src"
   fi
 
-  if ! sha1sum --quiet --check --status - <<<"$sha1 $dst"
+  if ! sha1sum --quiet --check --status - <<<"$crc $dst"
   then
-    err "sha1 does not match: calculated $(sha1sum "$dst" | cut -d' ' -f1) (instead of $sha1)"
+    err "SHA1 does not match: calculated $(sha1sum "$dst" | cut -d' ' -f1) (instead of $crc)"
     notrap rm -vf "$dst"
     return 1
   fi
 
-  info "installing $file"
+  info "installing $name"
 
   shift 3
   if [ 0 -eq $# ]
@@ -270,32 +271,32 @@ helper_setup()
   mkdir -p "$distdir" "$tmpdir"
   touch "$installed"
   # Bare minimum for running MComix.
-  install python-2.7.9.msi 719832e0159eebf9cd48104c7db49aa978f6156c 'https://www.python.org/ftp/python/2.7.9' install_msi /q
+  install 'Python' 'https://www.python.org/ftp/python/2.7.9/python-2.7.9.msi' 719832e0159eebf9cd48104c7db49aa978f6156c install_msi /q
   # Install fixed mimetypes module.
-  install mimetypes.py 28eae6fccbcc454496a3ee616ff690c30abd3f8b https://hg.python.org/cpython/raw-file/7c4c4e43c452/Lib install_mimetypes
-  install pygi-aio-3.14.0_rev19-setup.exe c65908162000e47ab910f30cd0c58947bed20002 http://downloads.sourceforge.net/project/pygobjectwin32 install_pygobject GTK
-  install legacy_pygtk-2.24.0_gtk-2.24.28+themes_py27_win32_win64.7z 295fe473cea9eeeb20a75b8b0c6b2a7215347566 http://downloads.sourceforge.net/project/pygobjectwin32 install_pygtk
-  install Pillow-2.8.1.win32-py2.7.exe 9221e1695cc3b510ceb4748035fffc03c823f9e0 'https://pypi.python.org/packages/2.7/P/Pillow' install_exe
+  install 'Python: fixed mimetypes module' 'https://hg.python.org/cpython/raw-file/7c4c4e43c452/Lib/mimetypes.py' 28eae6fccbcc454496a3ee616ff690c30abd3f8b install_mimetypes
+  install 'PyGObject for Windows' 'http://downloads.sourceforge.net/project/pygobjectwin32/pygi-aio-3.14.0_rev19-setup.exe' c65908162000e47ab910f30cd0c58947bed20002 install_pygobject GTK
+  install 'PyGObject for Windows: legacy PyGTK' 'http://downloads.sourceforge.net/project/pygobjectwin32/legacy_pygtk-2.24.0_gtk-2.24.28+themes_py27_win32_win64.7z' 295fe473cea9eeeb20a75b8b0c6b2a7215347566 install_pygtk
+  install 'Pillow' 'https://pypi.python.org/packages/2.7/P/Pillow/Pillow-2.8.1.win32-py2.7.exe' 9221e1695cc3b510ceb4748035fffc03c823f9e0 install_exe
   # Better support for password protected zip files.
-  install czipfile-1.0.0.win32-py2.7.exe 8478c1d659821259c1140cd8600d61a2fa13128f 'https://pypi.python.org/packages/2.7/c/czipfile' install_exe
+  install 'Python: czipfile' 'https://pypi.python.org/packages/2.7/c/czipfile/czipfile-1.0.0.win32-py2.7.exe' 8478c1d659821259c1140cd8600d61a2fa13128f install_exe
   # Support for RAR files.
-  install UnRARDLL.exe fd59db7b5dcc3e54ce18fc50fb4645bc80b0e02a 'http://www.rarlab.com/rar' install_archive UnrarDLL rar
+  install 'UnRAR DLL' 'http://www.rarlab.com/rar/UnRARDLL.exe' fd59db7b5dcc3e54ce18fc50fb4645bc80b0e02a install_archive UnrarDLL rar
   # Support for PDF files.
-  install mupdf-1.7-windows.zip fe2118bc14de7ab5569f3d700c5827ed21b49687 'http://mupdf.com/downloads/archive' install_archive MuPDF
+  install 'MuPDF' 'http://mupdf.com/downloads/archive/mupdf-1.7-windows.zip' fe2118bc14de7ab5569f3d700c5827ed21b49687 install_archive MuPDF
   # Support for 7z files.
-  install 7z938.msi 5f66856e4bacd1801054b6cd3c40d34d0dfc4609 'http://7-zip.org/a' install_7zip
+  install '7zip' 'http://7-zip.org/a/7z938.msi' 5f66856e4bacd1801054b6cd3c40d34d0dfc4609 install_7zip
   # Additional extractors for testing.
-  install unrarw32.exe e932d697d50a1d6d5775153b83d684de10909616 'http://www.rarlab.com/rar' install_archive Unrar rar
-  install unz600xn.exe 5ae7a23e7abf2c5ca44cefb0d6bf6248e6563db1 'ftp://ftp.info-zip.org/pub/infozip/win32' install_archive unzip zip
+  install 'UnrarDLL executable' 'http://www.rarlab.com/rar/unrarw32.exe' e932d697d50a1d6d5775153b83d684de10909616 install_archive Unrar rar
+  install 'UnZIP executable' 'ftp://ftp.info-zip.org/pub/infozip/win32/unz600xn.exe' 5ae7a23e7abf2c5ca44cefb0d6bf6248e6563db1 install_archive unzip zip
   # Install PyInstaller and dependencies.
-  install pywin32-219.win32-py2.7.exe 8bc39008383c646bed01942584117113ddaefe6b 'http://downloads.sourceforge.net/project/pywin32/pywin32/Build 219' install_exe
-  install setuptools-14.3.1.zip fb16eea8e9ddb5a973e98362aabb9675c8ec63ee 'https://pypi.python.org/packages/source/s/setuptools' install_python_source
-  install distribute-0.7.3.zip 297bd0725027ca39dcb35fa00327bc35b2f2c5e3 'https://pypi.python.org/packages/source/d/distribute' install_python_source build_distribute
-  install PyInstaller-2.1.tar.gz 530e0496087ea955ebed6f11b0172c50c73952af 'https://pypi.python.org/packages/source/P/PyInstaller' install_python_source
+  install 'PyInstaller dependency: Python for Windows Extensions' 'http://downloads.sourceforge.net/project/pywin32/pywin32/Build 219/pywin32-219.win32-py2.7.exe' 8bc39008383c646bed01942584117113ddaefe6b install_exe
+  install 'PyInstaller dependency: setuptools' 'https://pypi.python.org/packages/source/s/setuptools/setuptools-14.3.1.zip' fb16eea8e9ddb5a973e98362aabb9675c8ec63ee install_python_source
+  install 'PyInstaller dependency: distribute' 'https://pypi.python.org/packages/source/d/distribute/distribute-0.7.3.zip' 297bd0725027ca39dcb35fa00327bc35b2f2c5e3 install_python_source build_distribute
+  install 'PyInstaller' 'https://pypi.python.org/packages/source/P/PyInstaller/PyInstaller-2.1.tar.gz' 530e0496087ea955ebed6f11b0172c50c73952af install_python_source
   # Install pytest and dependencies.
-  install colorama-0.3.3.tar.gz a8ee91adf4644bbdccfc73ead88f4cd0df7e3552 'https://pypi.python.org/packages/source/c/colorama' install_python_source
-  install py-1.4.26.tar.gz 5d9aaa67c1da2ded5f978aa13e03dfe780771fea 'https://pypi.python.org/packages/source/p/py' install_python_source
-  install pytest-2.7.0.tar.gz 297b27dc5a77ec3a22bb2bee1dfa178ec162d9e4 'https://pypi.python.org/packages/source/p/pytest' install_python_source
+  install 'PyTest dependency: colorama' 'https://pypi.python.org/packages/source/c/colorama/colorama-0.3.3.tar.gz' a8ee91adf4644bbdccfc73ead88f4cd0df7e3552 install_python_source
+  install 'PyTest dependency: py' 'https://pypi.python.org/packages/source/p/py/py-1.4.26.tar.gz' 5d9aaa67c1da2ded5f978aa13e03dfe780771fea install_python_source
+  install 'PyTest' 'https://pypi.python.org/packages/source/p/pytest/pytest-2.7.0.tar.gz' 297b27dc5a77ec3a22bb2bee1dfa178ec162d9e4 install_python_source
   winetricks corefonts
   true
 }
