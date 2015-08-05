@@ -271,9 +271,7 @@ helper_setup()
   mkdir -p "$distdir" "$tmpdir"
   touch "$installed"
   # Bare minimum for running MComix.
-  install 'Python' 'https://www.python.org/ftp/python/2.7.9/python-2.7.9.msi' 719832e0159eebf9cd48104c7db49aa978f6156c install_msi /q
-  # Install fixed mimetypes module.
-  install 'Python: fixed mimetypes module' 'https://hg.python.org/cpython/raw-file/7c4c4e43c452/Lib/mimetypes.py' 28eae6fccbcc454496a3ee616ff690c30abd3f8b install_mimetypes
+  install 'Python' 'https://www.python.org/ftp/python/2.7.10/python-2.7.10.msi' 9e62f37407e6964ee0374b32869b7b4ab050d12a install_msi /q
   install 'PyGObject for Windows' 'http://downloads.sourceforge.net/project/pygobjectwin32/pygi-aio-3.14.0_rev19-setup.exe' c65908162000e47ab910f30cd0c58947bed20002 install_pygobject GTK
   install 'PyGObject for Windows: legacy PyGTK' 'http://downloads.sourceforge.net/project/pygobjectwin32/legacy_pygtk-2.24.0_gtk-2.24.28+themes_py27_win32_win64.7z' 295fe473cea9eeeb20a75b8b0c6b2a7215347566 install_pygtk
   install 'Pillow' 'https://pypi.python.org/packages/2.7/P/Pillow/Pillow-2.8.1.win32-py2.7.exe' 9221e1695cc3b510ceb4748035fffc03c823f9e0 install_exe
