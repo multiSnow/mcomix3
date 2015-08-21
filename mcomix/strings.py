@@ -20,7 +20,9 @@ ARCHIVE_DESCRIPTIONS = {
 AUTHORS = (
             ('Pontus Ekberg', _('Original vision/developer of Comix')),
             ('Louis Casillas', _('MComix developer')),
-            ('Moritz Brunner', _('MComix developer'))
+            ('Moritz Brunner', _('MComix developer')),
+            ('Ark', _('MComix developer')),
+            ('Benoit Pierre', _('MComix developer')),
           )
 TRANSLATORS = (
             ('Emfox Zhou', _('Simplified Chinese translation')),
