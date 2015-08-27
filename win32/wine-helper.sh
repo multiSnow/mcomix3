@@ -357,6 +357,7 @@ helper_dist_setup()
 
   export WINEARCH='win32' WINEPREFIX="$winedir"
 
+  cd "$mcomixdir"
   rm -rf "$winedir"
   winecmd wineboot --init
   mkdir -p "$distdir" "$tmpdir"
