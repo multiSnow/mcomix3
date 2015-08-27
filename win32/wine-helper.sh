@@ -278,7 +278,7 @@ helper_setup()
   # Better support for password protected zip files.
   install 'Python: czipfile' 'https://pypi.python.org/packages/2.7/c/czipfile/czipfile-1.0.0.win32-py2.7.exe' 8478c1d659821259c1140cd8600d61a2fa13128f install_exe
   # Support for RAR files.
-  install 'UnRAR DLL' 'http://www.rarlab.com/rar/UnRARDLL.exe' fd59db7b5dcc3e54ce18fc50fb4645bc80b0e02a install_archive UnrarDLL rar
+  install 'UnRAR DLL' 'http://www.rarlab.com/rar/UnRARDLL.exe' 37e55d4677ca7c24478ad7392693d72728b00713 install_archive UnrarDLL rar
   # Support for PDF files.
   install 'MuPDF' 'http://mupdf.com/downloads/archive/mupdf-1.7-windows.zip' fe2118bc14de7ab5569f3d700c5827ed21b49687 install_archive MuPDF
   # Support for 7z files.
