@@ -413,6 +413,43 @@ helper_shell()
   "$SHELL" "$@"
 }
 
+helper_help()
+{
+  cat <<EOF
+
+Usage: $(basename "$0") [command] [arguments...]
+
+General commands:
+
+  help                    Show this help.
+  setup                   Initialize Wine prefix for development.
+                          Note: the prefix is created in win32/.wine,
+                          and contains everything needed to develop,
+                          run, and package MComix Windows version.
+
+Commands using the Wine prefix created by 'setup':
+
+  mcomix [args...]        Run Windows version of MComix from source.
+  wine [args...]          Run 'wine' with the specified arguments.
+  python [args...]        Run 'python' with the specified arguments.
+  test [args...]          Run Windows version of MComix test suite.
+  shell [args...]         Run \$SHELL with the specified arguments.
+  dist                    Create Windows distribution from MComix source.
+  dist-setup              Create Wine prefix for testing the distribution.
+                          Note: depend on the result of the 'dist' command,
+                          the prefix is created in win32/.wine-dist, and
+                          deleted before being recreated if already existing.
+  dist-test [args...]     Equivalent to using 'dist', followed by 'dist-setup'
+                          and 'dist-mcomix' with the specified arguments.
+
+Commands using the Wine prefix created by 'dist-setup':
+
+  dist-mcomix [args...]   Run Windows distribution version of MComix.
+  dist-shell [args...]    Run \$SHELL with the specified arguments.
+
+EOF
+}
+
 helper="$(echo -n "$1" | tr - _)"
 shift
 helper_"$helper" "$@"
