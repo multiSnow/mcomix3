@@ -265,6 +265,15 @@ install_pygtk()
   rm -rf "$srcdir"
 }
 
+install_mcomix()
+{
+  file="$1"
+  version="$2"
+
+  echo install_mcomix "$version"
+  aunpack --extract-to="$programfiles" "$distdir/$file" >/dev/null
+}
+
 helper_setup()
 {
   winecmd wineboot --init
@@ -295,6 +304,9 @@ helper_setup()
   install 'PyTest dependency: colorama' 'https://pypi.python.org/packages/source/c/colorama/colorama-0.3.3.tar.gz' a8ee91adf4644bbdccfc73ead88f4cd0df7e3552 install_python_source
   install 'PyTest dependency: py' 'https://pypi.python.org/packages/source/p/py/py-1.4.26.tar.gz' 5d9aaa67c1da2ded5f978aa13e03dfe780771fea install_python_source
   install 'PyTest' 'https://pypi.python.org/packages/source/p/pytest/pytest-2.7.0.tar.gz' 297b27dc5a77ec3a22bb2bee1dfa178ec162d9e4 install_python_source
+  # Install last 2 releases of MComix for easier regression testing.
+  install 'MComix 1.00' http://downloads.sourceforge.net/project/mcomix/MComix-1.00/mcomix-1.00.win32.all-in-one.zip 4002cf441abd4fb616bb409407d86861b1224fca install_mcomix 1.00
+  install 'MComix 1.01' http://downloads.sourceforge.net/project/mcomix/MComix-1.01/mcomix-1.01-2.win32.all-in-one.zip 44b24db3cec4fd66c2df05d25d70f47125da2100 install_mcomix 1.01
   winetricks corefonts
   true
 }
@@ -390,7 +402,22 @@ helper_dist_test()
 
 helper_mcomix()
 {
-  winecmd wine python.exe "$(winepath -w "$mcomixdir/mcomixstarter.py")" "$@"
+  execmd=(python.exe "$(winepath -w "$mcomixdir/mcomixstarter.py")")
+  exeargs=()
+  for arg in "$@"
+  do
+    case "$arg" in
+      -src)
+        ;;
+      -[0-9]*)
+        execmd=("$(winepath -w "$programfiles/MComix$arg/MComix.exe")" )
+        ;;
+      *)
+        exeargs+=("$arg")
+        ;;
+    esac
+  done
+  winecmd wine "${execmd[@]}" "${exeargs[@]}"
 }
 
 helper_wine()
@@ -429,7 +456,10 @@ General commands:
 
 Commands using the Wine prefix created by 'setup':
 
-  mcomix [args...]        Run Windows version of MComix from source.
+  mcomix [-ver] [args...] Run Windows version of MComix.
+                          -ver handling:
+                            - run from source with -src or when unspecifed
+                            - -x.xx to run installed release version x.xx
   wine [args...]          Run 'wine' with the specified arguments.
   python [args...]        Run 'python' with the specified arguments.
   test [args...]          Run Windows version of MComix test suite.
