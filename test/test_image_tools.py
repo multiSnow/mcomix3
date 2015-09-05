@@ -228,27 +228,23 @@ class ImageToolsTest(object):
             self.assertImagesEqual(pixbuf, im, msg=msg)
 
     def test_load_pixbuf_modes(self):
-        tmp_file = tempfile.NamedTemporaryFile(dir=u'test',
-                                               prefix=u'tmp.test_image_tools.',
+        tmp_file = tempfile.NamedTemporaryFile(prefix=u'image.',
                                                suffix=u'.png', delete=False)
-        try:
-            tmp_file.close()
-            base_im = Image.open(get_image_path('transparent.png'))
-            for supported, expected_pixbuf_mode, mode in _IMAGE_MODES:
-                if not supported:
-                    continue
-                input_im = base_im.convert(mode)
-                input_im.save(tmp_file.name)
-                pixbuf = image_tools.load_pixbuf(tmp_file.name)
-                expected_im = input_im.convert(expected_pixbuf_mode)
-                msg = (
-                    'load_pixbuf("%s") failed; '
-                    'result %%(diff_type)s differs: %%(diff)s'
-                    % (mode,)
-                )
-                self.assertImagesEqual(pixbuf, expected_im, msg=msg)
-        finally:
-            os.unlink(tmp_file.name)
+        tmp_file.close()
+        base_im = Image.open(get_image_path('transparent.png'))
+        for supported, expected_pixbuf_mode, mode in _IMAGE_MODES:
+            if not supported:
+                continue
+            input_im = base_im.convert(mode)
+            input_im.save(tmp_file.name)
+            pixbuf = image_tools.load_pixbuf(tmp_file.name)
+            expected_im = input_im.convert(expected_pixbuf_mode)
+            msg = (
+                'load_pixbuf("%s") failed; '
+                'result %%(diff_type)s differs: %%(diff)s'
+                % (mode,)
+            )
+            self.assertImagesEqual(pixbuf, expected_im, msg=msg)
 
     def test_load_pixbuf_invalid(self):
         if self.use_pil:

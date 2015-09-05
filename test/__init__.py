@@ -45,15 +45,50 @@ default_prefs.update(prefs)
 class MComixTest(unittest.TestCase):
 
     def setUp(self):
+        base_tmpdir = os.path.join('test', 'tmp')
+        if not os.path.exists(base_tmpdir):
+            os.mkdir(base_tmpdir)
+        name = '.'.join((
+            self.__module__.split('.')[-1],
+            self.__class__.__name__,
+            self._testMethodName))
+        self.tmp_dir = tempfile.mkdtemp(dir=base_tmpdir, prefix=u'%s.' % name)
         # Change storage directories.
-        self.home_dir = tempfile.mkdtemp(dir=u'test', prefix=u'tmp.home.')
-        os.environ['HOME'] = self.home_dir
-        os.environ['XDG_DATA_HOME'] = os.path.join(self.home_dir, 'data')
-        os.environ['XDG_CONFIG_HOME'] = os.path.join(self.home_dir, 'config')
+        home_dir = os.path.join(self.tmp_dir, 'home')
+        os.mkdir(home_dir)
+        os.environ['HOME'] = home_dir
+        os.environ['XDG_DATA_HOME'] = os.path.join(home_dir, 'data')
+        os.environ['XDG_CONFIG_HOME'] = os.path.join(home_dir, 'config')
+        # Create and setup temporary directory.
+        temp_dir = os.path.join(self.tmp_dir, 'tmp')
+        os.mkdir(temp_dir)
+        os.environ['TMPDIR'] = os.environ['TEMP'] = os.environ['TMP'] = temp_dir
+        # Make sure tempfile module uses the correct directory.
+        tempfile.tempdir = temp_dir
         # Reset preferences to default.
         prefs.clear()
         prefs.update(default_prefs)
 
     def tearDown(self):
-        shutil.rmtree(self.home_dir)
+        name = '.'.join((
+            self.__module__.split('.')[-1],
+            self.__class__.__name__,
+            self._testMethodName))
+        failed = False
+        if hasattr(self._resultForDoCleanups, '_excinfo'):
+            # When running under py.test2
+            exclist = self._resultForDoCleanups._excinfo
+            if exclist is not None:
+                for exc in exclist:
+                    if 'XFailed' != exc.typename:
+                        failed = True
+                        break
+        if hasattr(self._resultForDoCleanups, 'failures'):
+            # When running under nosetest2
+            for failure, traceback in self._resultForDoCleanups.failures:
+                if failure.id() == self.id():
+                    failed = True
+                    break
+        if not failed:
+            shutil.rmtree(self.tmp_dir)
 

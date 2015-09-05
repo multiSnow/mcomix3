@@ -42,7 +42,7 @@ def make_archive(outfile, contents, format='zip', solid=False, password=None, he
     cleanup = []
     try:
         outpath = os.path.abspath(outfile)
-        tmp_dir = tempfile.mkdtemp(prefix=u'make_archive.')
+        tmp_dir = tempfile.mkdtemp(dir=u'test/tmp', prefix=u'make_archive.')
         cleanup.append(lambda: shutil.rmtree(tmp_dir))
         entry_list = []
         for name, filename in contents:
@@ -66,7 +66,9 @@ def make_archive(outfile, contents, format='zip', solid=False, password=None, he
                 assert not header_encryption
             cmd.extend(('--', outpath))
             # To avoid @ being treated as a special character...
-            tmp_file = tempfile.NamedTemporaryFile(prefix=u'make_archive.', delete=False)
+            tmp_file = tempfile.NamedTemporaryFile(dir=u'test/tmp',
+                                                   prefix=u'make_archive.',
+                                                   delete=False)
             cleanup.append(lambda: os.unlink(tmp_file.name))
             for entry in entry_list:
                 tmp_file.write(entry.encode(locale.getpreferredencoding()) + '\n')
@@ -180,27 +182,7 @@ class ArchiveFormatTest(object):
 
     def setUp(self):
         super(ArchiveFormatTest, self).setUp()
-        self.dest_dir = tempfile.mkdtemp(dir=u'test', prefix=u'tmp.test_archives.')
-
-    def tearDown(self):
-        failed = False
-        if hasattr(self._resultForDoCleanups, '_excinfo'):
-            # When running under py.test2
-            exclist = self._resultForDoCleanups._excinfo
-            if exclist is not None:
-                for exc in exclist:
-                    if 'XFailed' != exc.typename:
-                        failed = True
-                        break
-        if hasattr(self._resultForDoCleanups, 'failures'):
-            # When running under nosetest2
-            for failure, traceback in self._resultForDoCleanups.failures:
-                if failure.id() == self.id():
-                    failed = True
-                    break
-        if not failed:
-            shutil.rmtree(self.dest_dir)
-        super(ArchiveFormatTest, self).tearDown()
+        self.dest_dir = tempfile.mkdtemp(prefix=u'extract.')
 
     def test_init_not_unicode(self):
         self.assertRaises(AssertionError, self.handler, 'test')
