@@ -92,3 +92,8 @@ class MComixTest(unittest.TestCase):
         if not failed:
             shutil.rmtree(self.tmp_dir)
 
+# Helper to get path to testsuite sample files.
+
+def get_testfile_path(*components):
+    return unicode(os.path.join(os.path.dirname(__file__), 'files', *components))
+

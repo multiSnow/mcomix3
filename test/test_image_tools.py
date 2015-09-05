@@ -12,7 +12,7 @@ from PIL import Image, ImageDraw
 from cStringIO import StringIO
 from difflib import unified_diff
 
-from . import MComixTest
+from . import MComixTest, get_testfile_path
 
 from mcomix import image_tools
 from mcomix.preferences import prefs
@@ -78,7 +78,7 @@ def get_test_image(name):
     return _TEST_IMAGE_BY_NAME[name]
 
 def get_image_path(basename):
-    return os.path.join(os.path.dirname(__file__), 'files', 'images', basename)
+    return get_testfile_path('images', basename)
 
 def new_pixbuf(size, with_alpha, fill_colour):
     pixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB,

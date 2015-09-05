@@ -1,7 +1,7 @@
 
 import os
 
-from . import MComixTest
+from . import MComixTest, get_testfile_path
 
 from mcomix import archive_tools
 from mcomix import constants
@@ -35,7 +35,7 @@ class ArchiveToolsTest(MComixTest):
 
     def test_archive_mime_type(self):
 
-       dir = os.path.join(os.path.dirname(__file__), 'files', 'archives')
+       dir = get_testfile_path('archives')
        for filename in os.listdir(dir):
            ext = '.'.join(filename.split('.')[1:])
            path = os.path.join(dir, filename)

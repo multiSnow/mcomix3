@@ -9,7 +9,7 @@ import sys
 import tempfile
 import unittest
 
-from . import MComixTest
+from . import MComixTest, get_testfile_path
 
 from mcomix import process
 from mcomix.archive import (
@@ -160,7 +160,7 @@ class ArchiveFormatTest(object):
     def setUpClass(cls):
         if cls.skip is not None:
             raise unittest.SkipTest(cls.skip)
-        cls.archive_path = u'test/files/archives/%s.%s' % (cls.archive, cls.format)
+        cls.archive_path = u'%s.%s' % (get_testfile_path('archives', cls.archive), cls.format)
         cls.archive_contents = dict([
             (archive_name, filename)
             for name, archive_name, filename
@@ -172,7 +172,7 @@ class ArchiveFormatTest(object):
         if 'win32' == sys.platform:
             raise Exception('archive creation unsupported on Windows!')
         make_archive(cls.archive_path,
-                     [(name, filename)
+                     [(name, get_testfile_path(filename))
                       for name, archive_name, filename
                       in cls.contents],
                      format=cls.format,
@@ -220,7 +220,7 @@ class ArchiveFormatTest(object):
             path = os.path.join(self.dest_dir, name)
             self.assertTrue(os.path.isfile(path))
             extracted_md5 = md5(path)
-            original_md5 = md5(self.archive_contents[name])
+            original_md5 = md5(get_testfile_path(self.archive_contents[name]))
             self.assertEqual((name, extracted_md5), (name, original_md5))
 
     def test_iter_extract(self):
@@ -233,7 +233,7 @@ class ArchiveFormatTest(object):
             path = os.path.join(self.dest_dir, name)
             self.assertTrue(os.path.isfile(path))
             extracted_md5 = md5(path)
-            original_md5 = md5(self.archive_contents[name])
+            original_md5 = md5(get_testfile_path(self.archive_contents[name]))
             self.assertEqual((name, extracted_md5), (name, original_md5))
         # Entries must have been extracted in the order they are listed in the archive.
         # (necessary to prevent bad performances on solid archives)
@@ -290,10 +290,10 @@ for name, handler, is_available, format, not_solid, solid, password, header_encr
             params = dict(params)
             params['password'] = 'password'
             params['contents'] = (
-                ('arg.jpeg', 'arg.jpeg', 'test/files/images/01-JPG-Indexed.jpg'),
-                ('foo.JPG' , 'foo.JPG' , 'test/files/images/04-PNG-Indexed.png'),
-                ('bar.jpg' , 'bar.jpg' , 'test/files/images/02-JPG-RGB.jpg'    ),
-                ('meh.png' , 'meh.png' , 'test/files/images/03-PNG-RGB.png'    ),
+                ('arg.jpeg', 'arg.jpeg', 'images/01-JPG-Indexed.jpg'),
+                ('foo.JPG' , 'foo.JPG' , 'images/04-PNG-Indexed.png'),
+                ('bar.jpg' , 'bar.jpg' , 'images/02-JPG-RGB.jpg'    ),
+                ('meh.png' , 'meh.png' , 'images/03-PNG-RGB.png'    ),
             )
             class_list.append((variant, params))
             if header_encryption:
@@ -306,54 +306,54 @@ for name, handler, is_available, format, not_solid, solid, password, header_encr
 
     for sub_variant, is_supported, contents in (
         ('Flat', True, (
-            ('arg.jpeg'            , 'arg.jpeg'            , 'test/files/images/01-JPG-Indexed.jpg'),
-            ('foo.JPG'             , 'foo.JPG'             , 'test/files/images/04-PNG-Indexed.png'),
-            ('bar.jpg'             , 'bar.jpg'             , 'test/files/images/02-JPG-RGB.jpg'    ),
-            ('meh.png'             , 'meh.png'             , 'test/files/images/03-PNG-RGB.png'    ),
+            ('arg.jpeg'            , 'arg.jpeg'            , 'images/01-JPG-Indexed.jpg'),
+            ('foo.JPG'             , 'foo.JPG'             , 'images/04-PNG-Indexed.png'),
+            ('bar.jpg'             , 'bar.jpg'             , 'images/02-JPG-RGB.jpg'    ),
+            ('meh.png'             , 'meh.png'             , 'images/03-PNG-RGB.png'    ),
         )),
         ('Tree', True, (
-            ('dir1/arg.jpeg'       , 'dir1/arg.jpeg'       , 'test/files/images/01-JPG-Indexed.jpg'),
-            ('dir1/subdir1/foo.JPG', 'dir1/subdir1/foo.JPG', 'test/files/images/04-PNG-Indexed.png'),
-            ('dir2/subdir1/bar.jpg', 'dir2/subdir1/bar.jpg', 'test/files/images/02-JPG-RGB.jpg'    ),
-            ('meh.png'             , 'meh.png'             , 'test/files/images/03-PNG-RGB.png'    ),
+            ('dir1/arg.jpeg'       , 'dir1/arg.jpeg'       , 'images/01-JPG-Indexed.jpg'),
+            ('dir1/subdir1/foo.JPG', 'dir1/subdir1/foo.JPG', 'images/04-PNG-Indexed.png'),
+            ('dir2/subdir1/bar.jpg', 'dir2/subdir1/bar.jpg', 'images/02-JPG-RGB.jpg'    ),
+            ('meh.png'             , 'meh.png'             , 'images/03-PNG-RGB.png'    ),
         )),
         ('Unicode', True, (
-            (u'1-قفهسا.jpg'        , u'1-قفهسا.jpg'        , 'test/files/images/01-JPG-Indexed.jpg'),
-            (u'2-רדןקמא.png'       , u'2-רדןקמא.png'       , 'test/files/images/04-PNG-Indexed.png'),
-            (u'3-りえsち.jpg'      , u'3-りえsち.jpg'      , 'test/files/images/02-JPG-RGB.jpg'    ),
-            (u'4-щжвщджл.png'      , u'4-щжвщджл.png'      , 'test/files/images/03-PNG-RGB.png'    ),
+            (u'1-قفهسا.jpg'        , u'1-قفهسا.jpg'        , 'images/01-JPG-Indexed.jpg'),
+            (u'2-רדןקמא.png'       , u'2-רדןקמא.png'       , 'images/04-PNG-Indexed.png'),
+            (u'3-りえsち.jpg'      , u'3-りえsち.jpg'      , 'images/02-JPG-RGB.jpg'    ),
+            (u'4-щжвщджл.png'      , u'4-щжвщджл.png'      , 'images/03-PNG-RGB.png'    ),
         )),
         # Check we don't treat an entry name as an option or command line switch.
         ('OptEntry', True, (
-            ('-rg.jpeg'            , '-rg.jpeg'            , 'test/files/images/01-JPG-Indexed.jpg'),
-            ('--o.JPG'             , '--o.JPG'             , 'test/files/images/04-PNG-Indexed.png'),
-            ('+ar.jpg'             , '+ar.jpg'             , 'test/files/images/02-JPG-RGB.jpg'    ),
-            ('@eh.png'             , '@eh.png'             , 'test/files/images/03-PNG-RGB.png'    ),
+            ('-rg.jpeg'            , '-rg.jpeg'            , 'images/01-JPG-Indexed.jpg'),
+            ('--o.JPG'             , '--o.JPG'             , 'images/04-PNG-Indexed.png'),
+            ('+ar.jpg'             , '+ar.jpg'             , 'images/02-JPG-RGB.jpg'    ),
+            ('@eh.png'             , '@eh.png'             , 'images/03-PNG-RGB.png'    ),
         )),
         # Check an entry name is not used as glob pattern.
         ('GlobEntries', 'win32' != sys.platform, (
-            ('[rg.jpeg'            , '[rg.jpeg'            , 'test/files/images/01-JPG-Indexed.jpg'),
-            ('[]rg.jpeg'           , '[]rg.jpeg'           , 'test/files/images/02-JPG-RGB.jpg'    ),
-            ('*oo.JPG'             , '*oo.JPG'             , 'test/files/images/04-PNG-Indexed.png'),
-            ('?eh.png'             , '?eh.png'             , 'test/files/images/03-PNG-RGB.png'    ),
-            # ('\\r.jpg'             , '\\r.jpg'             , 'test/files/images/blue.png'          ),
-            # ('ba\\.jpg'            , 'ba\\.jpg'            , 'test/files/images/red.png'           ),
+            ('[rg.jpeg'            , '[rg.jpeg'            , 'images/01-JPG-Indexed.jpg'),
+            ('[]rg.jpeg'           , '[]rg.jpeg'           , 'images/02-JPG-RGB.jpg'    ),
+            ('*oo.JPG'             , '*oo.JPG'             , 'images/04-PNG-Indexed.png'),
+            ('?eh.png'             , '?eh.png'             , 'images/03-PNG-RGB.png'    ),
+            # ('\\r.jpg'             , '\\r.jpg'             , 'images/blue.png'          ),
+            # ('ba\\.jpg'            , 'ba\\.jpg'            , 'images/red.png'           ),
         )),
         # Same, Windows version.
         ('GlobEntries', 'win32' == sys.platform, (
-            ('[rg.jpeg'            , '[rg.jpeg'            , 'test/files/images/01-JPG-Indexed.jpg'),
-            ('[]rg.jpeg'           , '[]rg.jpeg'           , 'test/files/images/02-JPG-RGB.jpg'    ),
-            ('*oo.JPG'             , '_oo.JPG'             , 'test/files/images/04-PNG-Indexed.png'),
-            ('?eh.png'             , '_eh.png'             , 'test/files/images/03-PNG-RGB.png'    ),
-            # ('\\r.jpg'             , '\\r.jpg'             , 'test/files/images/blue.png'          ),
-            # ('ba\\.jpg'            , 'ba\\.jpg'            , 'test/files/images/red.png'           ),
+            ('[rg.jpeg'            , '[rg.jpeg'            , 'images/01-JPG-Indexed.jpg'),
+            ('[]rg.jpeg'           , '[]rg.jpeg'           , 'images/02-JPG-RGB.jpg'    ),
+            ('*oo.JPG'             , '_oo.JPG'             , 'images/04-PNG-Indexed.png'),
+            ('?eh.png'             , '_eh.png'             , 'images/03-PNG-RGB.png'    ),
+            # ('\\r.jpg'             , '\\r.jpg'             , 'images/blue.png'          ),
+            # ('ba\\.jpg'            , 'ba\\.jpg'            , 'images/red.png'           ),
         )),
         # Check how invalid filesystem characters are handled.
         # ('InvalidFileSystemChars', 'win32' == sys.platform, (
-        #     ('a<g.jpeg'            , 'a_g.jpeg'            ,'test/files/images/01-JPG-Indexed.jpg'),
-        #     ('f*o.JPG'             , 'f_o.JPG'             ,'test/files/images/04-PNG-Indexed.png'),
-        #     ('b:r.jpg'             , 'b_r.jpg'             ,'test/files/images/02-JPG-RGB.jpg'    ),
-        #     ('m?h.png'             , 'm_h.png'             ,'test/files/images/03-PNG-RGB.png'    ),
+        #     ('a<g.jpeg'            , 'a_g.jpeg'            ,'images/01-JPG-Indexed.jpg'),
+        #     ('f*o.JPG'             , 'f_o.JPG'             ,'images/04-PNG-Indexed.png'),
+        #     ('b:r.jpg'             , 'b_r.jpg'             ,'images/02-JPG-RGB.jpg'    ),
+        #     ('m?h.png'             , 'm_h.png'             ,'images/03-PNG-RGB.png'    ),
         # )),
     ):
         if not is_supported:
