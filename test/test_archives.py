@@ -389,6 +389,88 @@ for name, handler, is_available, format, not_solid, solid, password, header_encr
         globals()[class_name] = type(class_name, (RecursiveArchiveFormatTest, MComixTest), class_dict)
 
 
+# Custom tests for recursive archives support.
+
+class RecursiveArchiveFormatRedAndBluesTest(RecursiveArchiveFormatTest):
+
+    @classmethod
+    def setUpClass(cls):
+        skip = None
+        if not cls.is_available:
+            raise unittest.SkipTest('support for archive format not available')
+        if not os.path.exists(cls.archive_path):
+            skip = 'archive is missing: %s' % cls.archive_path
+        if skip is not None:
+            raise unittest.SkipTest(skip)
+        cls.archive_contents = dict([
+            (archive_name.replace('/', os.sep),
+             get_testfile_path(filename))
+            for archive_name, filename in
+            cls.contents])
+
+class RecursiveArchiveFormatTarRedAndBluesTest(RecursiveArchiveFormatRedAndBluesTest, MComixTest):
+
+    base_handler = tar.TarArchive
+    is_available = True
+    archive_path = get_testfile_path('archives', 'red_and_blues.tar')
+    contents = (
+        ('red_and_blues.7z/blues.rar/blue0.png', 'images/blue.png'),
+        ('red_and_blues.7z/blues.rar/blue1.png', 'images/blue.png'),
+        ('red_and_blues.7z/blues.rar/blue2.png', 'images/blue.png'),
+        ('red_and_blues.7z/red.png'            , 'images/red.png' ),
+        ('red_and_blues.rar/blues.7z/blue0.png', 'images/blue.png'),
+        ('red_and_blues.rar/blues.7z/blue1.png', 'images/blue.png'),
+        ('red_and_blues.rar/blues.7z/blue2.png', 'images/blue.png'),
+        ('red_and_blues.rar/red.png'           , 'images/red.png' ),
+    )
+    solid = True
+
+class RecursiveArchiveFormat7zRedAndBluesTest(RecursiveArchiveFormatRedAndBluesTest, MComixTest):
+
+    base_handler = sevenzip_external.SevenZipArchive
+    is_available = rar.RarArchive.is_available()
+    archive_path = get_testfile_path('archives', 'red_and_blues.7z')
+    contents = (
+        ('blues.rar/blue0.png', 'images/blue.png'),
+        ('blues.rar/blue1.png', 'images/blue.png'),
+        ('blues.rar/blue2.png', 'images/blue.png'),
+        ('red.png'            , 'images/red.png' ),
+    )
+    solid = True
+
+class RecursiveArchiveFormatExternalRarRedAndBluesTest(RecursiveArchiveFormatRedAndBluesTest, MComixTest):
+
+    base_handler = rar_external.RarArchive
+    is_available = rar_external.RarArchive.is_available()
+    archive_path = get_testfile_path('archives', 'red_and_blues.rar')
+    contents = (
+        ('blues.7z/blue0.png', 'images/blue.png'),
+        ('blues.7z/blue1.png', 'images/blue.png'),
+        ('blues.7z/blue2.png', 'images/blue.png'),
+        ('red.png'           , 'images/red.png' ),
+    )
+    solid = True
+
+class RecursiveArchiveFormatExternalRarEmbeddedRedAndBluesRarTest(RecursiveArchiveFormatExternalRarRedAndBluesTest):
+
+    archive_path = get_testfile_path('archives', 'embedded_red_and_blues_rar.rar')
+    contents = (
+        ('red_and_blues.rar/blues.7z/blue0.png', 'images/blue.png'),
+        ('red_and_blues.rar/blues.7z/blue1.png', 'images/blue.png'),
+        ('red_and_blues.rar/blues.7z/blue2.png', 'images/blue.png'),
+        ('red_and_blues.rar/red.png'           , 'images/red.png' ),
+    )
+
+class RecursiveArchiveFormatRarRedAndBluesTest(RecursiveArchiveFormatExternalRarRedAndBluesTest):
+
+    base_handler = rar.RarArchive
+    is_available = rar.RarArchive.is_available()
+
+class RecursiveArchiveFormatRarEmbeddedRedAndBluesRarTest(RecursiveArchiveFormatExternalRarEmbeddedRedAndBluesRarTest):
+
+    base_handler = rar.RarArchive
+    is_available = rar.RarArchive.is_available()
+
 
 xfail_list = [
     # No support for detecting solid RAR archives when using external tool.
