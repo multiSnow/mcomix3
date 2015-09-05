@@ -8,6 +8,7 @@ import ctypes, ctypes.util
 
 from mcomix import constants
 from mcomix.archive import archive_base
+from mcomix import log
 
 if sys.platform == 'win32':
     UNRARCALLBACK = ctypes.WINFUNCTYPE(ctypes.c_int, ctypes.c_uint,
@@ -102,6 +103,9 @@ class RarArchive(archive_base.BaseArchive):
         self._handle = None
         self._callback_function = None
         self._is_solid = False
+        # Information about the current file will be stored in this structure
+        self._headerdata = RarArchive._RARHeaderDataEx()
+        self._current_filename = None
 
         # Set up function prototypes.
         # Mandatory since pointers get truncated on x64 otherwise!
@@ -125,109 +129,115 @@ class RarArchive(archive_base.BaseArchive):
 
     def iter_contents(self):
         """ List archive contents. """
-
-        # Obtain handle for RAR file, opening it in LIST mode
-        handle = self._open(self.archive, RarArchive._OpenMode.RAR_OM_LIST)
+        self._close()
+        self._open()
         try:
-            # Information about the current file will be stored in this structure
-            headerdata = RarArchive._RARHeaderDataEx()
-
-            # Read first header
-            result = self._unrar.RARReadHeaderEx(handle, ctypes.byref(headerdata))
-            while result == 0:
-                if 0 != (0x10 & headerdata.Flags):
+            while True:
+                self._read_header()
+                if 0 != (0x10 & self._headerdata.Flags):
                     self._is_solid = True
-                yield headerdata.FileNameW
-                # Skip to the next entry
-                self._unrar.RARProcessFileW(handle, RarArchive._ProcessingMode.RAR_SKIP, None, None)
-                # Read its header
-                result = self._unrar.RARReadHeaderEx(handle, ctypes.byref(headerdata))
-
+                filename = self._current_filename
+                yield filename
+                # Skip to the next entry if we're still on the same name
+                # (extract may have been called by iter_extract).
+                if filename == self._current_filename:
+                    self._process()
+        except UnrarException as exc:
+            log.error('Error while listing contents: %s', str(exc))
+        except EOFError:
+            # End of archive reached.
+            pass
         finally:
-            self._close(handle)
+            self._close()
 
-    def extract(self, filename, destination_dir, try_again=True):
+    def extract(self, filename, destination_dir):
         """ Extract <filename> from the archive to <destination_dir>. """
-        # Obtain handle for RAR file, opening it in EXTRACT mode
         if not self._handle:
-            handle = self._handle = self._open(self.archive, RarArchive._OpenMode.RAR_OM_EXTRACT)
-        else:
-            handle = self._handle
-
-        # Information about the current file will be stored in this structure
-        headerdata = RarArchive._RARHeaderDataEx()
-
-        # Read first header
-        errorcode = self._unrar.RARReadHeaderEx(handle, ctypes.byref(headerdata))
-        while errorcode == 0:
-            # Check if the current file matches the requested file
-            if (headerdata.FileNameW == filename):
-                # Extract file and stop processing
-                destination_path = os.path.join(destination_dir, filename)
-                result = self._unrar.RARProcessFileW(handle,
-                    RarArchive._ProcessingMode.RAR_EXTRACT, None,
-                    ctypes.c_wchar_p(destination_path))
-                if result != 0:
-                    # Close archive
-                    self.close()
-                    errormessage = UnrarException.get_error_message(result)
-                    raise UnrarException("Couldn't extract file: %s" % errormessage)
-
-                break
-            else:
-                # Skip to the next entry
-                self._unrar.RARProcessFileW(handle, RarArchive._ProcessingMode.RAR_SKIP, None, None)
-                # Read it's header
-                errorcode = self._unrar.RARReadHeaderEx(handle, ctypes.byref(headerdata))
-
-        # Archive end was reached, this might be due to out-of-order extraction
-        # while the handle was still open.
-        if errorcode == RarArchive._ErrorCode.ERAR_END_ARCHIVE:
-            # Close the archive and jump back to archive start and try to extract file again.
-            # Do this only once; if the file isn't found after a second full pass,
-            # it probably doesn't even exist in the archive.
-            self.close()
-            if try_again:
-                self.extract(filename, destination_dir, False)
-        elif errorcode == RarArchive._ErrorCode.ERAR_BAD_DATA:
-            self.close()
-
-            errormessage = UnrarException.get_error_message(errorcode)
-            raise UnrarException("Couldn't extract file: %s" % errormessage)
-
+            self._open()
+        looped = False
+        while True:
+            # Check if the current entry matches the requested file.
+            if self._current_filename is not None:
+                if (self._current_filename == filename):
+                    # It's the entry we're looking for, extract it.
+                    dest = ctypes.c_wchar_p(os.path.join(destination_dir, filename))
+                    self._process(dest)
+                    break
+                # Not the right entry, skip it.
+                self._process()
+            try:
+                self._read_header()
+            except EOFError:
+                # Archive end was reached, this might be due to out-of-order
+                # extraction while the handle was still open.  Close the
+                # archive and jump back to archive start and try to extract
+                # file again.  Do this only once; if the file isn't found after
+                # a second full pass, it probably doesn't even exist in the
+                # archive.
+                if looped:
+                    break
+                self._open()
         # After the method returns, the RAR handler is still open and pointing
         # to the next archive file. This will improve extraction speed for sequential file reads.
         # After all files have been extracted, close() should be called to free the handler resources.
 
     def close(self):
         """ Close the archive handle """
-        if self._handle:
-            self._close(self._handle)
-            self._handle = None
+        self._close()
 
-    def _open(self, path, openmode):
-        """ Opens the rar file specified by <path> and returns its handle. """
-        assert isinstance(path, unicode), "Path must be Unicode string"
-
+    def _open(self):
+        """ Open rar handle for extraction. """
         self._callback_function = UNRARCALLBACK(self._password_callback)
-        archivedata = RarArchive._RAROpenArchiveDataEx(ArcNameW=path,
-            OpenMode=openmode, Callback=self._callback_function, UserData=0)
+        archivedata = RarArchive._RAROpenArchiveDataEx(ArcNameW=self.archive,
+                                                       OpenMode=RarArchive._OpenMode.RAR_OM_EXTRACT,
+                                                       Callback=self._callback_function,
+                                                       UserData=0)
 
         handle = self._unrar.RAROpenArchiveEx(ctypes.byref(archivedata))
-        if handle:
-            self._unrar.RARSetCallback(handle, self._callback_function, 0)
-            return handle
-        else:
+        if not handle:
             errormessage = UnrarException.get_error_message(archivedata.OpenResult)
             raise UnrarException("Couldn't open archive: %s" % errormessage)
+        self._unrar.RARSetCallback(handle, self._callback_function, 0)
+        self._handle = handle
 
-    def _close(self, handle):
+    def _check_errorcode(self, errorcode):
+        if 0 == errorcode:
+            # No error.
+            return
+        self._close()
+        if RarArchive._ErrorCode.ERAR_END_ARCHIVE == errorcode:
+            # End of archive reached.
+            exc = EOFError()
+        else:
+            errormessage = UnrarException.get_error_message(errorcode)
+            exc = UnrarException(errormessage)
+        raise exc
+
+    def _read_header(self):
+        self._current_filename = None
+        errorcode = self._unrar.RARReadHeaderEx(self._handle, ctypes.byref(self._headerdata))
+        self._check_errorcode(errorcode)
+        self._current_filename = self._headerdata.FileNameW
+
+    def _process(self, dest=None):
+        """ Process current entry: extract or skip it. """
+        if dest is None:
+            mode = RarArchive._ProcessingMode.RAR_SKIP
+        else:
+            mode = RarArchive._ProcessingMode.RAR_EXTRACT
+        errorcode = self._unrar.RARProcessFileW(self._handle, mode, None, dest)
+        self._current_filename = None
+        self._check_errorcode(errorcode)
+
+    def _close(self):
         """ Close the rar handle previously obtained by open. """
-        errorcode = self._unrar.RARCloseArchive(handle)
-
+        if self._handle is None:
+            return
+        errorcode = self._unrar.RARCloseArchive(self._handle)
         if errorcode != 0:
             errormessage = UnrarException.get_error_message(errorcode)
             raise UnrarException("Couldn't close archive: %s" % errormessage)
+        self._handle = None
 
     def _password_callback(self, msg, userdata, buffer_address, buffer_size):
         """ Called by the unrar library in case of missing password. """
