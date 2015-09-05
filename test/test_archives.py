@@ -182,43 +182,49 @@ class ArchiveFormatTest(object):
     def setUp(self):
         super(ArchiveFormatTest, self).setUp()
         self.dest_dir = tempfile.mkdtemp(prefix=u'extract.')
+        self.archive = None
+
+    def tearDown(self):
+        if self.archive is not None:
+            self.archive.close()
+        super(ArchiveFormatTest, self).tearDown()
 
     def test_init_not_unicode(self):
         self.assertRaises(AssertionError, self.handler, 'test')
 
     def test_archive(self):
-        archive = self.handler(self.archive_path)
-        self.assertEqual(archive.archive, self.archive_path)
+        self.archive = self.handler(self.archive_path)
+        self.assertEqual(self.archive.archive, self.archive_path)
 
     def test_list_contents(self):
-        archive = self.handler(self.archive_path)
-        contents = archive.list_contents()
+        self.archive = self.handler(self.archive_path)
+        contents = self.archive.list_contents()
         self.assertItemsEqual(contents, self.archive_contents.keys())
 
     def test_iter_contents(self):
-        archive = self.handler(self.archive_path)
+        self.archive = self.handler(self.archive_path)
         contents = []
-        for name in archive.iter_contents():
+        for name in self.archive.iter_contents():
             contents.append(name)
         self.assertItemsEqual(contents, self.archive_contents.keys())
 
     def test_is_solid(self):
-        archive = self.handler(self.archive_path)
-        archive.list_contents()
-        self.assertEqual(self.solid, archive.is_solid())
+        self.archive = self.handler(self.archive_path)
+        self.archive.list_contents()
+        self.assertEqual(self.solid, self.archive.is_solid())
 
     def test_iter_is_solid(self):
-        archive = self.handler(self.archive_path)
-        list(archive.iter_contents())
-        self.assertEqual(self.solid, archive.is_solid())
+        self.archive = self.handler(self.archive_path)
+        list(self.archive.iter_contents())
+        self.assertEqual(self.solid, self.archive.is_solid())
 
     def test_extract(self):
-        archive = self.handler(self.archive_path)
-        contents = archive.list_contents()
+        self.archive = self.handler(self.archive_path)
+        contents = self.archive.list_contents()
         self.assertItemsEqual(contents, self.archive_contents.keys())
         # Use out-of-order extraction to try to trip implementation.
         for name in reversed(contents):
-            archive.extract(name, self.dest_dir)
+            self.archive.extract(name, self.dest_dir)
             path = os.path.join(self.dest_dir, name)
             self.assertTrue(os.path.isfile(path))
             extracted_md5 = md5(path)
@@ -226,11 +232,11 @@ class ArchiveFormatTest(object):
             self.assertEqual((name, extracted_md5), (name, original_md5))
 
     def test_iter_extract(self):
-        archive = self.handler(self.archive_path)
-        contents = archive.list_contents()
+        self.archive = self.handler(self.archive_path)
+        contents = self.archive.list_contents()
         self.assertItemsEqual(contents, self.archive_contents.keys())
         extracted = []
-        for name in archive.iter_extract(reversed(contents), self.dest_dir):
+        for name in self.archive.iter_extract(reversed(contents), self.dest_dir):
             extracted.append(name)
             path = os.path.join(self.dest_dir, name)
             self.assertTrue(os.path.isfile(path))
