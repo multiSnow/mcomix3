@@ -13,6 +13,7 @@ class TarArchive(archive_base.NonUnicodeArchive):
         # must be done before attempting to extract contents.
         self._contents_listed = False
         self._contents = []
+        self.tar = None
 
     def is_solid(self):
         return True
@@ -53,6 +54,8 @@ class TarArchive(archive_base.NonUnicodeArchive):
             yield f
 
     def close(self):
-        self.tar.close()
+        if self.tar is not None:
+            self.tar.close()
+            self.tar = None
 
 # vim: expandtab:sw=4:ts=4
