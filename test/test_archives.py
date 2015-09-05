@@ -216,7 +216,8 @@ class ArchiveFormatTest(object):
         archive = self.handler(self.archive_path)
         contents = archive.list_contents()
         self.assertItemsEqual(contents, self.archive_contents.keys())
-        for name in contents:
+        # Use out-of-order extraction to try to trip implementation.
+        for name in reversed(contents):
             archive.extract(name, self.dest_dir)
             path = os.path.join(self.dest_dir, name)
             self.assertTrue(os.path.isfile(path))
