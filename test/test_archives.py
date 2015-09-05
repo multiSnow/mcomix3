@@ -140,7 +140,6 @@ def md5(path):
 
 class ArchiveFormatTest(object):
 
-    name = ''
     skip = None
     handler = None
     format = ''
