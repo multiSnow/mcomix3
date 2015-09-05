@@ -206,6 +206,8 @@ class ArchiveFormatTest(object):
         archive = self.handler(self.archive_path)
         archive.list_contents()
         self.assertEqual(self.solid, archive.is_solid())
+
+    def test_iter_is_solid(self):
         archive = self.handler(self.archive_path)
         list(archive.iter_contents())
         self.assertEqual(self.solid, archive.is_solid())
@@ -383,11 +385,16 @@ for name, handler, is_available, format, not_solid, solid, password, header_encr
 
 xfail_list = [
     # No support for detecting solid RAR archives when using external tool.
-    ('RarExternalSolidFlat'       , 'test_is_solid'),
-    ('RarExternalSolidOptEntry'   , 'test_is_solid'),
-    ('RarExternalSolidGlobEntries', 'test_is_solid'),
-    ('RarExternalSolidTree'       , 'test_is_solid'),
-    ('RarExternalSolidUnicode'    , 'test_is_solid'),
+    ('RarExternalSolidFlat'       , 'test_is_solid'     ),
+    ('RarExternalSolidFlat'       , 'test_iter_is_solid'),
+    ('RarExternalSolidOptEntry'   , 'test_is_solid'     ),
+    ('RarExternalSolidOptEntry'   , 'test_iter_is_solid'),
+    ('RarExternalSolidGlobEntries', 'test_is_solid'     ),
+    ('RarExternalSolidGlobEntries', 'test_iter_is_solid'),
+    ('RarExternalSolidTree'       , 'test_is_solid'     ),
+    ('RarExternalSolidTree'       , 'test_iter_is_solid'),
+    ('RarExternalSolidUnicode'    , 'test_is_solid'     ),
+    ('RarExternalSolidUnicode'    , 'test_iter_is_solid'),
     # No password support when using some external tools.
     ('RarExternalEncrypted'             , 'test_extract'      ),
     ('RarExternalEncrypted'             , 'test_iter_extract' ),
@@ -397,9 +404,11 @@ xfail_list = [
     ('RarExternalEncryptedHeader'       , 'test_list_contents'),
     ('RarExternalSolidEncrypted'        , 'test_extract'      ),
     ('RarExternalSolidEncrypted'        , 'test_is_solid'     ),
+    ('RarExternalSolidEncrypted'        , 'test_iter_is_solid'),
     ('RarExternalSolidEncrypted'        , 'test_iter_extract' ),
     ('RarExternalSolidEncryptedHeader'  , 'test_extract'      ),
     ('RarExternalSolidEncryptedHeader'  , 'test_is_solid'     ),
+    ('RarExternalSolidEncryptedHeader'  , 'test_iter_is_solid'),
     ('RarExternalSolidEncryptedHeader'  , 'test_iter_contents'),
     ('RarExternalSolidEncryptedHeader'  , 'test_iter_extract' ),
     ('RarExternalSolidEncryptedHeader'  , 'test_list_contents'),
