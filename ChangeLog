@@ -137,6 +137,9 @@ MComix 1.2
     - The 7z executable is now prefered over the RAR/ZIP/LHA executables
     (for better encryption and Unicode support).
 
+    - Fixed an issue with unrar.dll that could lead to crashes if 7z is also
+    present.
+
     - Fixed support for LHA archives (they were always marked as empty).
 
     MISC:
