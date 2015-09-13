@@ -142,6 +142,9 @@ MComix 1.2
 
     - Fixed support for LHA archives (they were always marked as empty).
 
+    - Fix MComix not starting when 'auto load last file' is on and the last
+    attempt at opening a file was an invalid path
+
     MISC:
 
     - The MIME database has been updated.
