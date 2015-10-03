@@ -55,7 +55,6 @@ class MainWindow(gtk.Window):
         # Used to detect window fullscreen state transitions.
         self.was_fullscreen = False
         self.is_manga_mode = False
-        self.is_virtual_double_page = False  # I.e. a wide image is displayed
         self.previous_size = (None, None)
         self.was_out_of_focus = False
         #: Used to remember if changing to fullscreen enabled 'Hide all'
@@ -569,7 +568,6 @@ class MainWindow(gtk.Window):
         current_page = self.imagehandler.get_current_page()
         nb_pages = 2 if self.displayed_double() else 1
         if current_page <= page < (current_page + nb_pages):
-            self.is_virtual_double_page = self.imagehandler.get_virtual_double_page()
             self.draw_image(scroll_to=self._last_scroll_destination)
             self._update_page_information()
 
@@ -612,7 +610,6 @@ class MainWindow(gtk.Window):
     @callback.Callback
     def page_changed(self):
         """ Called on page change. """
-        self.is_virtual_double_page = self.imagehandler.get_virtual_double_page()
         self.thumbnailsidebar.load_thumbnails()
         self._update_page_information()
 
@@ -932,7 +929,7 @@ class MainWindow(gtk.Window):
         """Return True if two pages are currently displayed."""
         return (self.imagehandler.get_current_page() and
                 prefs['default double page'] and
-                not self.is_virtual_double_page and
+                not self.imagehandler.get_virtual_double_page() and
                 self.imagehandler.get_current_page() != self.imagehandler.get_number_of_pages())
 
     def get_visible_area_size(self):
