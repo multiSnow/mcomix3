@@ -135,15 +135,14 @@ class ThumbnailSidebar(Gtk.ScrolledWindow):
         # Force a redraw of the widget.
         self._treeview.queue_draw()
 
-    def set_thumbnail_background(self, colour):
+    def set_thumbnail_background(self, color):
 
-        color = Gdk.Color(colour[0], colour[1], colour[2])
-        self._pixbuf_cellrenderer.set_property('cell-background-gdk',
-                color)
-        self._text_cellrenderer.set_property('background-gdk',
-                color)
-        self._text_cellrenderer.set_property('foreground-gdk',
-                image_tools.text_color_for_background_color(colour))
+        rgba = Gdk.RGBA(*image_tools.color_to_floats_rgba(color))
+        self._pixbuf_cellrenderer.set_property('cell-background-rgba', rgba)
+        self._text_cellrenderer.set_property('background-rgba', rgba)
+        fg_color = image_tools.text_color_for_background_color(color)
+        fg_rgba = Gdk.RGBA(*(fg_color.to_floats() + (1.0,)))
+        self._text_cellrenderer.set_property('foreground-rgba', fg_rgba)
 
     @property
     def _pixbuf_size(self):
