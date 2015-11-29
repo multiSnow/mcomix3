@@ -289,7 +289,7 @@ helper_setup()
   # Support for RAR files.
   install 'UnRAR DLL' 'http://www.rarlab.com/rar/UnRARDLL.exe' 9242cd1b756c1428f168db74cf99000afbbff861 install_archive UnrarDLL rar
   # Support for PDF files.
-  install 'MuPDF' 'http://mupdf.com/downloads/archive/mupdf-1.7-windows.zip' fe2118bc14de7ab5569f3d700c5827ed21b49687 install_archive MuPDF
+  install 'MuPDF' 'http://mupdf.com/downloads/archive/mupdf-1.8-windows.zip' 27683c9186eab0bd53674e959c102bc88c384017 install_archive MuPDF
   # Support for 7z files.
   install '7zip' 'http://7-zip.org/a/7z938.msi' 5f66856e4bacd1801054b6cd3c40d34d0dfc4609 install_7zip
   # Additional extractors for testing.
