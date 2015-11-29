@@ -287,13 +287,13 @@ helper_setup()
   # Better support for password protected zip files.
   install 'Python: czipfile' 'https://pypi.python.org/packages/2.7/c/czipfile/czipfile-1.0.0.win32-py2.7.exe' 8478c1d659821259c1140cd8600d61a2fa13128f install_exe
   # Support for RAR files.
-  install 'UnRAR DLL' 'http://www.rarlab.com/rar/UnRARDLL.exe' 37e55d4677ca7c24478ad7392693d72728b00713 install_archive UnrarDLL rar
+  install 'UnRAR DLL' 'http://www.rarlab.com/rar/UnRARDLL.exe' 9242cd1b756c1428f168db74cf99000afbbff861 install_archive UnrarDLL rar
   # Support for PDF files.
   install 'MuPDF' 'http://mupdf.com/downloads/archive/mupdf-1.7-windows.zip' fe2118bc14de7ab5569f3d700c5827ed21b49687 install_archive MuPDF
   # Support for 7z files.
   install '7zip' 'http://7-zip.org/a/7z938.msi' 5f66856e4bacd1801054b6cd3c40d34d0dfc4609 install_7zip
   # Additional extractors for testing.
-  install 'UnrarDLL executable' 'http://www.rarlab.com/rar/unrarw32.exe' e932d697d50a1d6d5775153b83d684de10909616 install_archive Unrar rar
+  install 'UnrarDLL executable' 'http://www.rarlab.com/rar/unrarw32.exe' bff8bf0c385113daee39abb819323275db08adf1 install_archive Unrar rar
   install 'UnZIP executable' 'ftp://ftp.info-zip.org/pub/infozip/win32/unz600xn.exe' 5ae7a23e7abf2c5ca44cefb0d6bf6248e6563db1 install_archive unzip zip
   # Install PyInstaller and dependencies.
   install 'PyInstaller dependency: Python for Windows Extensions' 'http://downloads.sourceforge.net/project/pywin32/pywin32/Build 219/pywin32-219.win32-py2.7.exe' 8bc39008383c646bed01942584117113ddaefe6b install_exe
