@@ -307,7 +307,7 @@ helper_setup()
   # Install last 2 releases of MComix for easier regression testing.
   install 'MComix 1.00' http://downloads.sourceforge.net/project/mcomix/MComix-1.00/mcomix-1.00.win32.all-in-one.zip 4002cf441abd4fb616bb409407d86861b1224fca install_mcomix 1.00
   install 'MComix 1.01' http://downloads.sourceforge.net/project/mcomix/MComix-1.01/mcomix-1.01-2.win32.all-in-one.zip 44b24db3cec4fd66c2df05d25d70f47125da2100 install_mcomix 1.01
-  winetricks corefonts
+  winetricks -q corefonts vcrun2008
   true
 }
 
@@ -376,7 +376,7 @@ helper_dist_setup()
   version="$(python2 -c 'from mcomix.constants import VERSION; print VERSION')"
   cp "$mcomixdir/dist/mcomix-$version.win32.all-in-one.zip" "$distdir/"
   install_archive "mcomix-$version.win32.all-in-one.zip" MComix
-  winetricks corefonts
+  winetricks -q corefonts vcrun2008
 )}
 
 helper_dist_mcomix()
