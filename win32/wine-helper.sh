@@ -291,7 +291,7 @@ helper_setup()
   # Support for PDF files.
   install 'MuPDF' 'http://mupdf.com/downloads/archive/mupdf-1.8-windows.zip' 27683c9186eab0bd53674e959c102bc88c384017 install_archive MuPDF
   # Support for 7z files.
-  install '7zip' 'http://7-zip.org/a/7z938.msi' 5f66856e4bacd1801054b6cd3c40d34d0dfc4609 install_7zip
+  install '7zip' 'http://7-zip.org/a/7z1512.msi' 43a87ae650b3e0651d55da055c82d58336e6c257 install_7zip
   # Additional extractors for testing.
   install 'UnrarDLL executable' 'http://www.rarlab.com/rar/unrarw32.exe' bff8bf0c385113daee39abb819323275db08adf1 install_archive Unrar rar
   install 'UnZIP executable' 'ftp://ftp.info-zip.org/pub/infozip/win32/unz600xn.exe' 5ae7a23e7abf2c5ca44cefb0d6bf6248e6563db1 install_archive unzip zip
