@@ -283,7 +283,7 @@ helper_setup()
   install 'Python' 'https://www.python.org/ftp/python/2.7.10/python-2.7.10.msi' 9e62f37407e6964ee0374b32869b7b4ab050d12a install_msi /q
   install 'PyGObject for Windows' 'http://downloads.sourceforge.net/project/pygobjectwin32/pygi-aio-3.18.2_rev3-setup.exe' f54d00b245da423465081c01df1347282c289049 install_pygobject GTK
   install 'PyGObject for Windows: legacy PyGTK' 'http://downloads.sourceforge.net/project/pygobjectwin32/legacy_pygtk-2.24.0_gtk-2.24.28+themes_py27_win32_win64.7z' 295fe473cea9eeeb20a75b8b0c6b2a7215347566 install_pygtk
-  install 'Pillow' 'https://pypi.python.org/packages/2.7/P/Pillow/Pillow-2.8.1.win32-py2.7.exe' 9221e1695cc3b510ceb4748035fffc03c823f9e0 install_exe
+  install 'Pillow' 'https://pypi.python.org/packages/2.7/P/Pillow/Pillow-3.0.0.win32-py2.7.exe' fece9ecc988f9424564ea818a8fb8726846d649c install_exe
   # Better support for password protected zip files.
   install 'Python: czipfile' 'https://pypi.python.org/packages/2.7/c/czipfile/czipfile-1.0.0.win32-py2.7.exe' 8478c1d659821259c1140cd8600d61a2fa13128f install_exe
   # Support for RAR files.
