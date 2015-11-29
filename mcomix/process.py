@@ -19,6 +19,7 @@ except ImportError:
 
 NULL = open(os.devnull, 'r+b')
 PIPE = subprocess.PIPE
+STDOUT = subprocess.STDOUT
 
 # Convert argument vector to system's file encoding where necessary
 # to prevent automatic conversion when appending Unicode strings
