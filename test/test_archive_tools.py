@@ -8,6 +8,7 @@ from mcomix import constants
 
 
 _EXTENSION_TO_MIME_TYPES = {
+    'cbz'    : constants.ZIP,
     'zip'    : constants.ZIP,
     'zip.bz2': constants.ZIP_EXTERNAL,
     'rar'    : constants.RAR,
