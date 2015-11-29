@@ -186,7 +186,7 @@ class ImageToolsTest(object):
                 mode = 'RGBA' if im.get_has_alpha() else 'RGB'
                 return mode, (im.get_width(), im.get_height()), pixels
             if isinstance(im, Image.Image):
-                return im.mode, im.size, im.tostring()
+                return im.mode, im.size, im.tobytes()
             raise ValueError('unsupported class %s' % type(im))
         mode1, size1, pixels1 = info(im1)
         mode2, size2, pixels2 = info(im2)
