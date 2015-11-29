@@ -76,7 +76,7 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
             return None
 
         if self._state == SevenZipArchive.STATE_HEADER:
-            if line.startswith('Error:') and \
+            if (line.startswith('Error:') or line.startswith('ERROR:')) and \
                line.endswith(': Can not open encrypted archive. Wrong password?'):
                 self._is_encrypted = True
                 raise SevenZipArchive.EncryptedHeader()
@@ -111,7 +111,7 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
             self._state = SevenZipArchive.STATE_HEADER
             #: Current path while listing contents.
             self._path = None
-            proc = process.popen(self._get_list_arguments())
+            proc = process.popen(self._get_list_arguments(), stderr=process.STDOUT)
             try:
                 for line in proc.stdout:
                     filename = self._parse_list_output_line(line.rstrip(os.linesep))
