@@ -104,7 +104,7 @@ MComix 1.2
     ENVIRONMENT/LOCALE/TRANSLATIONS:
 
     - MComix uses czipfile when available to speed up extraction of
-    encrypted zip files.
+      encrypted zip files.
 
     - Zombie processes will be removed if possible.
 
@@ -131,19 +131,21 @@ MComix 1.2
     - Fixed PDF support with newer versions of MuPDF (1.7).
 
     - Better support for using the 7z executable: encrypted files are now
-    supported (including encrypted header support, and for all supported
-    formats: 7z, RAR and ZIP).
+      supported (including encrypted header support, and for all supported
+      formats: 7z, RAR and ZIP).
 
     - The 7z executable is now prefered over the RAR/ZIP/LHA executables
-    (for better encryption and Unicode support).
+      (for better encryption and Unicode support).
 
     - Fixed an issue with unrar.dll that could lead to crashes if 7z is also
-    present.
+      present.
 
     - Fixed support for LHA archives (they were always marked as empty).
 
     - Fix MComix not starting when 'auto load last file' is on and the last
-    attempt at opening a file was an invalid path
+      attempt at opening a file was an invalid path
+
+    - The Windows icon file mcomix.ico has been updated.
 
     MISC:
 
