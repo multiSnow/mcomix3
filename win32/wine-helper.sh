@@ -313,26 +313,28 @@ helper_setup()
 
 helper_dist()
 {(
-  manifest="$mcomixdir/build/manifest"
+  src="$mcomixdir/build/src"
 
   cd "$mcomixdir"
   rm -rf build dist
-  mkdir build
   version="$(python2 -c 'from mcomix.constants import VERSION; print VERSION')"
 
-  # Create manifest ourselves (see setup.py...).
+  # Make a copy of the sources, keeping only versioned entries.
+  mkdir -p build dist "$src"
   if [ -d "$mcomixdir/.git" ]
   then
-    git -C "$mcomixdir" ls-files >"$manifest"
+    git ls-files -z | xargs -0 cp -a --no-dereference --parents --target-directory="$src"
   elif [ -d "$mcomixdir/.svn" ]
   then
-    svn list -R "$mcomixdir" >"$manifest"
+    svn list -R "$mcomixdir" | xargs -d '\n' cp -a --no-dereference --parents --target-directory="$src"
   else
     err "no supported VCS"
     return 1
   fi
 
-  export SETUPTOOLS_MANIFEST="$manifest"
+  ln -s "$mcomixdir/build" "$src/build"
+  ln -s "$mcomixdir/dist" "$src/dist"
+  cd "$src"
 
   # Build egg.
   info "building egg"
