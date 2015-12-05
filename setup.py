@@ -13,48 +13,8 @@ Example usage:
 
 import os
 import glob
-import subprocess
 import setuptools
 
-
-# Prevent retarded distutils.filelist.findall from trying to list the whole
-# system because of symlinks in the win32/wine directory... That and possibly
-# adding files that are not commited...
-
-import distutils.filelist
-
-orig_findall = distutils.filelist.findall
-
-def findall(dir = os.curdir):
-    manifest = os.environ.get('SETUPTOOLS_MANIFEST', None)
-    data = None
-    if manifest is not None:
-        print 'findall(%s): using contents from %s' % (dir, manifest)
-        data = open(manifest).read()
-    else:
-        cmd = None
-        if os.path.exists(os.path.join(dir, '.git')):
-            cmd = ['git', '-C', dir, 'ls-files']
-        elif os.path.exists(os.path.join(dir, '.svn')):
-            cmd = ['svn', 'list', '-R', dir]
-        if cmd is not None:
-            print 'findall(%s): using %s' % (dir, ' '.join(cmd))
-            try:
-                data = subprocess.check_output(cmd)
-            except subprocess.CalledProcessError, ex:
-                print 'findall(%s): command failed with exit code %d: %s' %(
-                    dir, ex.returncode, ex.output
-                )
-                print 'findall(%s): falling back to original code' % dir
-    if data is None:
-        return orig_findall(dir=dir)
-    if '\n' == data[-1]:
-        data = data[:-1]
-    filelist = data.split('\n')
-    return filelist
-
-
-distutils.filelist.findall = findall
 
 try:
     import py2exe
