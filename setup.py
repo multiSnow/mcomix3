@@ -56,7 +56,9 @@ setuptools.setup(
         'mcomix.messages' : get_data_patterns('mcomix/messages', '*.mo'),
         'mcomix.images' : images },
     entry_points = {
-        'console_scripts' : [ 'mcomix = mcomix.run:run' ] },
+        'console_scripts' : [ 'mcomix = mcomix.run:run' ],
+        'setuptools.installation': [ 'eggsecutable=mcomix.run:run' ],
+    },
     test_suite = "test",
     requires = ['pygtk (>=2.12.0)', 'PIL (>=1.15)'],
     install_requires = ['setuptools'],
