@@ -326,7 +326,7 @@ helper_dist()
     git ls-files -z | xargs -0 cp -a --no-dereference --parents --target-directory="$src"
   elif [ -d "$mcomixdir/.svn" ]
   then
-    svn list -R "$mcomixdir" | xargs -d '\n' cp -a --no-dereference --parents --target-directory="$src"
+    svn list -R "$mcomixdir" | grep -v '/$' | xargs -d '\n' cp -a --no-dereference --parents --target-directory="$src"
   else
     err "no supported VCS"
     return 1
