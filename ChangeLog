@@ -103,6 +103,13 @@ MComix 1.2
 
     ENVIRONMENT/LOCALE/TRANSLATIONS:
 
+    - The list of supported image formats is now determined dynamically,
+      depending on the underlying libraries. This might implicitly add support
+      for image formats such as WebP.
+
+    - Due to a bug, PIL (or Pillow) was preferred over GdkPixbuf on Windows
+      in earlier versions. Now, GdkPixbuf will be preferred on Windows as well.
+
     - MComix uses czipfile when available to speed up extraction of
       encrypted zip files.
 
@@ -128,7 +135,7 @@ MComix 1.2
 
     - The French translation has been updated.
 
-    - Fixed PDF support with newer versions of MuPDF (1.7).
+    - Fixed PDF support with newer versions of MuPDF (1.7 and 1.8).
 
     - Better support for using the 7z executable: encrypted files are now
       supported (including encrypted header support, and for all supported
