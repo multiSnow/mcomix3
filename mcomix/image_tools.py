@@ -26,7 +26,8 @@ from mcomix import log
 if sys.platform == 'win32':
     # Works around GTK's slowness on Win32 by using PIL
     # for loading instead and converting it afterwards.
-    USE_PIL = True
+    # NOTE: Using False here should work fine for Windows, too.
+    USE_PIL = False
 else:
     USE_PIL = False
 
