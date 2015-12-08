@@ -184,9 +184,6 @@ def Win32Popen(cmd):
     # Some required structures for the method call...
     startupinfo = StartupInfo()
     ctypes.memset(ctypes.addressof(startupinfo), 0, ctypes.sizeof(startupinfo))
-    # Do not create a console window.
-    startupinfo.dwFlags = subprocess.STARTF_USESHOWWINDOW
-    startupinfo.wShowWindow = subprocess.SW_HIDE
     startupinfo.cb = ctypes.sizeof(startupinfo)
     processinfo = ProcessInformation()
 
