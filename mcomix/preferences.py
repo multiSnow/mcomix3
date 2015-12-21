@@ -94,7 +94,7 @@ prefs = {
     'max threads': 3,
     'max extract threads': 1,
     'wrap mouse scroll': False,
-    'scaling quality': 1,  # gtk.gdk.INTERP_TILES
+    'scaling quality': 2,  # gtk.gdk.INTERP_BILINEAR
     'escape quits': False,
     'fit to size mode': constants.ZOOM_MODE_HEIGHT,
     'fit to size px': 1800,
