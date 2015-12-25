@@ -41,11 +41,11 @@ _HANDLERS = {
     constants.BZIP2: (
         tar.TarArchive,
     ),
-    # Prefer 7z over rar executable for encryption and Unicode support.
     constants.RAR: (
         rar.RarArchive,
+        rar_external.RarArchive,
+        # Last resort: some versions of 7z support RAR.
         sevenzip_external.SevenZipArchive,
-        rar_external.RarArchive
     ),
     # Prefer 7z over lha executable for Unicode support.
     constants.LHA: (
