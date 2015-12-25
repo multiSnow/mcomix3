@@ -22,7 +22,6 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
 
     def __init__(self, archive):
         super(SevenZipArchive, self).__init__(archive)
-
         self._is_solid = False
         self._is_encrypted =  False
         self._contents = []
@@ -66,24 +65,24 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
             line = line.decode('utf-8')
 
         if line.startswith('----------'):
-            if self._state == SevenZipArchive.STATE_HEADER:
+            if self._state == self.STATE_HEADER:
                 # First delimiter reached, start reading from next line.
-                self._state = SevenZipArchive.STATE_LISTING
-            elif self._state == SevenZipArchive.STATE_LISTING:
+                self._state = self.STATE_LISTING
+            elif self._state == self.STATE_LISTING:
                 # Last delimiter read, stop reading from now on.
-                self._state = SevenZipArchive.STATE_FOOTER
+                self._state = self.STATE_FOOTER
 
             return None
 
-        if self._state == SevenZipArchive.STATE_HEADER:
+        if self._state == self.STATE_HEADER:
             if (line.startswith('Error:') or line.startswith('ERROR:')) and \
                line.endswith(': Can not open encrypted archive. Wrong password?'):
                 self._is_encrypted = True
-                raise SevenZipArchive.EncryptedHeader()
+                raise self.EncryptedHeader()
             if 'Solid = +' == line:
                 self._is_solid = True
 
-        if self._state == SevenZipArchive.STATE_LISTING:
+        if self._state == self.STATE_LISTING:
             if line.startswith('Path = '):
                 self._path = line[7:]
                 return self._path
@@ -108,7 +107,7 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         # - a second time with a password if the header is encrypted
         for retry_count in range(2):
             #: Indicates which part of the file listing has been read.
-            self._state = SevenZipArchive.STATE_HEADER
+            self._state = self.STATE_HEADER
             #: Current path while listing contents.
             self._path = None
             proc = process.popen(self._get_list_arguments(), stderr=process.STDOUT)
@@ -117,7 +116,7 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
                     filename = self._parse_list_output_line(line.rstrip(os.linesep))
                     if filename is not None:
                         yield self._unicode_filename(filename)
-            except SevenZipArchive.EncryptedHeader:
+            except self.EncryptedHeader:
                 # The header is encrypted, try again
                 # if it was our first attempt.
                 if 0 == retry_count:
