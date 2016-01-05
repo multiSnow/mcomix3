@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.98\n"
-"Report-Msgid-Bugs-To: oddegamra@gmx.org\n"
-"POT-Creation-Date: 2015-06-18 20:26+0200\n"
+"Report-Msgid-Bugs-To: https://sourceforge.net/projects/mcomix/\n"
+"POT-Creation-Date: 2016-01-05 22:41+0100\n"
 "PO-Revision-Date: 2012-04-03 16:41+GMT\n"
 "Last-Translator: Moritz Brunner <oddegamra@gmx.org>\n"
 "Language-Team: \n"
@@ -45,7 +45,7 @@ msgstr "Eine Kopie dieser Lizenz kann unter %s bezogen werden"
 msgid "Non-supported archive format: %s"
 msgstr "Nicht unterstütztes Archiv-Format: %s"
 
-#: mcomix/archive_extractor.py:185 mcomix/archive_extractor.py:203
+#: mcomix/archive_extractor.py:188 mcomix/archive_extractor.py:206
 #, python-format
 msgid "! Extraction error: %s"
 msgstr "! Extraktions-Fehler: %s"
@@ -320,7 +320,7 @@ msgstr "Ungültiger Pfad: '%s'"
 msgid "! Could not load icon \"%s\""
 msgstr "! Icon %s kann nicht geladen werden"
 
-#: mcomix/image_tools.py:499
+#: mcomix/image_tools.py:500
 msgid "Unknown filetype"
 msgstr "Unbekannter Dateityp"
 
@@ -531,7 +531,8 @@ msgstr "Doppelseitiger Modus"
 #: mcomix/keybindings.py:97 mcomix/keybindings.py:98 mcomix/keybindings.py:99
 #: mcomix/keybindings.py:101 mcomix/keybindings.py:102
 #: mcomix/keybindings.py:104 mcomix/keybindings.py:105
-#: mcomix/keybindings.py:106 mcomix/keybindings.py:107 mcomix/keybindings.py:108
+#: mcomix/keybindings.py:106 mcomix/keybindings.py:107
+#: mcomix/keybindings.py:108
 msgid "View mode"
 msgstr "Ansicht"
 
@@ -634,7 +635,8 @@ msgstr "Löschen"
 #: mcomix/keybindings.py:129 mcomix/keybindings.py:130
 #: mcomix/keybindings.py:132 mcomix/keybindings.py:133
 #: mcomix/keybindings.py:134 mcomix/keybindings.py:136
-#: mcomix/keybindings.py:137 mcomix/keybindings.py:138 mcomix/keybindings.py:139
+#: mcomix/keybindings.py:137 mcomix/keybindings.py:138
+#: mcomix/keybindings.py:139
 msgid "File"
 msgstr "Datei"
 
@@ -1208,9 +1210,9 @@ msgid ""
 "specification. These thumbnails are shared by many other applications, such "
 "as most file managers."
 msgstr ""
-"Vorschaubilder für geöffnete Dateien gemäß der Spezifikation von "
-"freedesktop.org speichern. Diese Vorschaubilder werden mit vielen anderen "
-"Anwendungen, zumeist Dateimanagern, gemeinsam benutzt."
+"Vorschaubilder für geöffnete Dateien gemäß der Spezifikation von freedesktop."
+"org speichern. Diese Vorschaubilder werden mit vielen anderen Anwendungen, "
+"zumeist Dateimanagern, gemeinsam benutzt."
 
 #: mcomix/preferences_dialog.py:278
 msgid "Maximum number of pages to store in the cache:"
@@ -1626,112 +1628,113 @@ msgstr "LHA-Archiv"
 msgid "Original vision/developer of Comix"
 msgstr "Ursprüngliche Entwicklung von Comix"
 
-#: mcomix/strings.py:22 mcomix/strings.py:23
+#: mcomix/strings.py:22 mcomix/strings.py:23 mcomix/strings.py:24
+#: mcomix/strings.py:25
 msgid "MComix developer"
 msgstr "Entwickler von MComix"
 
-#: mcomix/strings.py:26 mcomix/strings.py:27 mcomix/strings.py:28
+#: mcomix/strings.py:28 mcomix/strings.py:29 mcomix/strings.py:30
 msgid "Simplified Chinese translation"
 msgstr "Vereinfachte chinesische Übersetzung"
 
-#: mcomix/strings.py:29 mcomix/strings.py:30
+#: mcomix/strings.py:31 mcomix/strings.py:32
 msgid "Spanish translation"
 msgstr "Spanische Übersetzung"
 
-#: mcomix/strings.py:31
+#: mcomix/strings.py:33
 msgid "Brazilian Portuguese translation"
 msgstr "Portugiesische Übersetzung"
 
-#: mcomix/strings.py:32
+#: mcomix/strings.py:34
 msgid "German translation and Nautilus thumbnailer"
 msgstr "Deutsche Übersetzung und Vorschaubildersteller für Nautilus"
 
-#: mcomix/strings.py:33
+#: mcomix/strings.py:35
 msgid "German translation"
 msgstr "Deutsche Übersetzung"
 
-#: mcomix/strings.py:34 mcomix/strings.py:35 mcomix/strings.py:36
+#: mcomix/strings.py:36 mcomix/strings.py:37 mcomix/strings.py:38
 msgid "Italian translation"
 msgstr "Italienische Übersetzung"
 
-#: mcomix/strings.py:37
+#: mcomix/strings.py:39
 msgid "Dutch translation"
 msgstr "Holländische Übersetzung"
 
-#: mcomix/strings.py:38 mcomix/strings.py:39 mcomix/strings.py:40
-#: mcomix/strings.py:41
+#: mcomix/strings.py:40 mcomix/strings.py:41 mcomix/strings.py:42
+#: mcomix/strings.py:43
 msgid "French translation"
 msgstr "Französische Übersetzung"
 
-#: mcomix/strings.py:42
+#: mcomix/strings.py:44
 msgid "Polish translatin"
 msgstr "Polnische Übersetzung"
 
-#: mcomix/strings.py:43
+#: mcomix/strings.py:45
 msgid "Polish translation"
 msgstr "Polnische Übersetzung"
 
-#: mcomix/strings.py:44
+#: mcomix/strings.py:46
 msgid "Greek translation"
 msgstr "Griechische Übersetzung"
 
-#: mcomix/strings.py:45
+#: mcomix/strings.py:47
 msgid "Catalan translation"
 msgstr "Katalanische Übersetzung"
 
-#: mcomix/strings.py:46 mcomix/strings.py:47
+#: mcomix/strings.py:48 mcomix/strings.py:49
 msgid "Traditional Chinese translation"
 msgstr "Traditionell-chinesische Übersetzung"
 
-#: mcomix/strings.py:48 mcomix/strings.py:49 mcomix/strings.py:50
+#: mcomix/strings.py:50 mcomix/strings.py:51 mcomix/strings.py:52
 msgid "Japanese translation"
 msgstr "Japanische Übersetzung"
 
-#: mcomix/strings.py:51
+#: mcomix/strings.py:53
 msgid "Hungarian translation"
 msgstr "Ungarische Übersetzung"
 
-#: mcomix/strings.py:52 mcomix/strings.py:53
+#: mcomix/strings.py:54 mcomix/strings.py:55
 msgid "Russian translation"
 msgstr "Russische Übersetzung"
 
-#: mcomix/strings.py:54
+#: mcomix/strings.py:56
 msgid "Croatian translation"
 msgstr "Kroatische Übersetzung"
 
-#: mcomix/strings.py:55
+#: mcomix/strings.py:57
 msgid "Korean translation"
 msgstr "Koreanische Übersetzung"
 
-#: mcomix/strings.py:56
+#: mcomix/strings.py:58
 msgid "Persian translation"
 msgstr "Persische Übersetzung"
 
-#: mcomix/strings.py:57
+#: mcomix/strings.py:59
 msgid "Indonesian translation"
 msgstr "Indonesische Übersetzung"
 
-#: mcomix/strings.py:58
+#: mcomix/strings.py:60
 msgid "Czech translation"
 msgstr "Tschechische Übersetzung"
 
-#: mcomix/strings.py:59
+#: mcomix/strings.py:61
 msgid "Ukrainian translation"
 msgstr "Ukrainische Übersetzung"
 
-#: mcomix/strings.py:60
+#: mcomix/strings.py:62
 msgid "Galician translation"
 msgstr "Gallische Übersetzung"
 
-#: mcomix/strings.py:61
+#: mcomix/strings.py:63
 msgid "Swedish translation"
 msgstr "Schwedische Übersetzung"
 
-#: mcomix/strings.py:62
+#: mcomix/strings.py:64
 msgid "Hebrew translation"
 msgstr "Hebräische Übersetzung"
 
-#: mcomix/strings.py:65
+#: mcomix/strings.py:67
 msgid "Icon design"
 msgstr "Symbol-Design"
 
@@ -2941,8 +2944,8 @@ msgstr "Aut_omatisch nach Büchern suchen, wenn Bibliothek geöffnet wird"
 
 #~ msgid ""
 #~ "Crash recovery saves the current configuration information every "
-#~ "specified seconds.  In case of a crash the previous file will be "
-#~ "re-loaded."
+#~ "specified seconds.  In case of a crash the previous file will be re-"
+#~ "loaded."
 #~ msgstr ""
 #~ "Automatische Wiederherstellung speichert die derzeitige Konfiguration in "
 #~ "spezifizierten Abständen. Sollte MComix abstürzen, wird die zuletzt "
