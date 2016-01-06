@@ -41,8 +41,10 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
             1, # pixbuf
             2, # status
         )
-        # Reduces flickering on update
-        self._treeview.unset_flags(gtk.DOUBLE_BUFFERED)
+        # Whether or not unset_flags(gtk.DOUBLE_BUFFERED) reduces flickering on
+        # update seems to depend on various circumstances, including the OS this
+        # code is running on, and probably scheduling/threading issues.
+        #self._treeview.unset_flags(gtk.DOUBLE_BUFFERED)
         self._treeview.set_headers_visible(False)
         self._treeview.generate_thumbnail = self._generate_thumbnail
 
