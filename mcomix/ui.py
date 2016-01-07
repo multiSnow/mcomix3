@@ -87,7 +87,7 @@ class MainUI(Gtk.UIManager):
             ('extract_page', Gtk.STOCK_SAVE_AS, _('Save _As'),
                 None, None, window.extract_page),
             ('menu_zoom', 'mcomix-zoom', _('_Zoom')),
-            ('menu_recent', Gtk.STOCK_DND_MULTIPLE, _('_Recent')),
+            ('menu_recent', Gtk.STOCK_FILE, _('_Recent')),
             ('menu_bookmarks_popup', 'comix-add-bookmark', _('_Bookmarks')),
             ('menu_bookmarks', None, _('_Bookmarks')),
             ('menu_toolbars', None, _('T_oolbars')),
