@@ -322,19 +322,21 @@ def load_pixbuf_size(path, width, height):
     inside (width, height). """
     if USE_PIL:
         im = Image.open(path)
-        width, height = get_fitting_size(im.size, (width, height))
         im.draft(None, (width, height))
         pixbuf = pil_to_pixbuf(im, keep_orientation=True)
     else:
         image_format, image_width, image_height = get_image_info(path)
         # If we could not get the image info, still try to load
         # the image to let GdkPixbuf raise the appropriate exception.
-        if 0 != image_width and 0 != image_height:
-            width, height = get_fitting_size((image_width, image_height), (width, height))
+        if (0, 0) == (image_width, image_height):
+            pixbuf = gtk.gdk.pixbuf_new_from_file(path)
         # Work around GdkPixbuf bug: https://bugzilla.gnome.org/show_bug.cgi?id=735422
-        if 'GIF' == image_format:
+        elif 'GIF' == image_format:
             pixbuf = gtk.gdk.pixbuf_new_from_file(path)
         else:
+            # Don't upscale if smaller than target dimensions!
+            if image_width <= width and image_height <= height:
+                width, height = image_width, image_height
             pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(path, width, height)
     return fit_in_rectangle(pixbuf, width, height, scaling_quality=gtk.gdk.INTERP_BILINEAR)
 

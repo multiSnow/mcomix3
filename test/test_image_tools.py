@@ -327,6 +327,19 @@ class ImageToolsTest(object):
             exception = gobject.GError
         self.assertRaises(exception, image_tools.load_pixbuf_size, os.devnull, 50, 50)
 
+    # Expose a rounding error bug in load_pixbuf_size.
+    def test_load_pixbuf_rounding_error(self):
+        image_size = (2063, 3131)
+        target_size = (500, 500)
+        expected_size = (329, 500)
+        tmp_file = tempfile.NamedTemporaryFile(prefix=u'image.',
+                                               suffix=u'.png', delete=False)
+        tmp_file.close()
+        im = Image.new('RGB', image_size)
+        im.save(tmp_file.name)
+        pixbuf = image_tools.load_pixbuf_size(tmp_file.name, *target_size)
+        self.assertEqual((pixbuf.get_width(), pixbuf.get_height()), expected_size)
+
     def test_pixbuf_to_pil(self):
         for image in (
             'transparent.png',
