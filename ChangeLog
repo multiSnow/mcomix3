@@ -80,6 +80,8 @@ MComix 1.2
 
     - Fix various minor window manager interaction issues.
 
+    - The default window width is now 640 pixels.
+
     GUI/MISC:
 
     - You can select the text in the Properties dialog now.

@@ -79,7 +79,7 @@ prefs = {
     'window x': 0,
     'window y': 0,
     'window height': 600,
-    'window width': 500,
+    'window width': 640,
     'pageselector height': -1,
     'pageselector width': -1,
     'library cover size': 125,
