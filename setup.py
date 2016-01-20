@@ -15,12 +15,6 @@ import os
 import glob
 import setuptools
 
-
-try:
-    import py2exe
-except ImportError:
-    pass
-
 from mcomix import constants
 
 def get_data_patterns(directory, *patterns):
@@ -114,19 +108,6 @@ setuptools.setup(
     platforms = ['Operating System :: POSIX :: Linux',
         'Operating System :: Microsoft :: Windows',
         'Operating System :: POSIX :: BSD'],
-
-    # Py2Exe options
-    windows = [{ 'script' : 'mcomixstarter.py',
-        'icon_resources' : [(1, "mcomix/images/mcomix.ico")]  }],
-    options = {
-        'py2exe' : {
-            'packages' : 'mcomix.messages, mcomix.images, encodings',
-            'includes' : 'cairo, pango, pangocairo, atk, gobject, gio, gtk.keysyms',
-            'dist_dir' : 'dist_py2exe',
-            'excludes' : ['_ssl', 'pyreadline', 'difflib', 'doctest', 
-                          'pdb', 'unittest', 'inspect']
-        }
-    }
 )
 
 # vim: expandtab:sw=4:ts=4
