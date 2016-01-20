@@ -434,7 +434,7 @@ class _BookArea(gtk.ScrolledWindow):
             pixbuf = self._cache.get(book.path)
         else:
             width, height = self._pixbuf_size(border_size=0)
-            pixbuf = self._library.backend.get_book_thumbnail(book.path) or constants.MISSING_IMAGE_ICON
+            pixbuf = self._library.backend.get_book_thumbnail(book.path) or image_tools.MISSING_IMAGE_ICON
             pixbuf = image_tools.fit_in_rectangle(pixbuf, width, height, scale_up=True)
             pixbuf = image_tools.add_border(pixbuf, 1, 0xFFFFFFFF)
             self._cache.add(book.path, pixbuf)
@@ -652,7 +652,7 @@ class _BookArea(gtk.ScrolledWindow):
 
         cover = self._library.backend.get_book_cover(book)
         if cover is None:
-            cover = constants.MISSING_IMAGE_ICON
+            cover = image_tools.MISSING_IMAGE_ICON
 
         cover = cover.scale_simple(max(0, cover.get_width() // 2),
             max(0, cover.get_height() // 2), prefs['scaling quality'])

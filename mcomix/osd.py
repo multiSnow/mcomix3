@@ -6,7 +6,7 @@ import gobject
 import pango
 import textwrap
 
-from mcomix import constants
+from mcomix import image_tools
 
 class OnScreenDisplay(object):
 
@@ -121,11 +121,11 @@ class OnScreenDisplay(object):
         self._clear_osd(osd_region)
 
         # Set up drawing context
-        gc = window.new_gc(foreground=constants.GTK_GDK_COLOR_BLACK,
-                           background=constants.GTK_GDK_COLOR_BLACK)
+        gc = window.new_gc(foreground=image_tools.GTK_GDK_COLOR_BLACK,
+                           background=image_tools.GTK_GDK_COLOR_BLACK)
 
         window.draw_rectangle(gc, True, *rect)
-        window.draw_layout(gc, rect[0] + 10, rect[1] + 10, layout, foreground=constants.GTK_GDK_COLOR_WHITE)
+        window.draw_layout(gc, rect[0] + 10, rect[1] + 10, layout, foreground=image_tools.GTK_GDK_COLOR_WHITE)
         window.end_paint()
 
 # vim: expandtab:sw=4:ts=4

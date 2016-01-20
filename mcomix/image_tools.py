@@ -39,6 +39,19 @@ log.info('Using %s for loading images (versions: %s [%s], GDK [%s])',
          'GTK+ ' + '.'.join(map(str, gtk.gtk_version)))
 
 
+# Fallback pixbuf for missing images.
+MISSING_IMAGE_ICON = None
+
+_missing_icon_dialog = gtk.Dialog()
+_missing_icon_pixbuf = _missing_icon_dialog.render_icon(
+        gtk.STOCK_MISSING_IMAGE, gtk.ICON_SIZE_LARGE_TOOLBAR)
+MISSING_IMAGE_ICON = _missing_icon_pixbuf
+assert MISSING_IMAGE_ICON
+
+GTK_GDK_COLOR_BLACK = gtk.gdk.color_parse('black')
+GTK_GDK_COLOR_WHITE = gtk.gdk.color_parse('white')
+
+
 def rotate_pixbuf(src, rotation):
     rotation %= 360
     if 0 == rotation:
@@ -478,8 +491,8 @@ def rgb_to_y_601(color):
     return color[0] * 0.299 + color[1] * 0.587 + color[2] * 0.114
 
 def text_color_for_background_color(bgcolor):
-    return constants.GTK_GDK_COLOR_BLACK if rgb_to_y_601(bgcolor) >= \
-        65535.0 / 2.0 else constants.GTK_GDK_COLOR_WHITE
+    return GTK_GDK_COLOR_BLACK if rgb_to_y_601(bgcolor) >= \
+        65535.0 / 2.0 else GTK_GDK_COLOR_WHITE
 
 def get_image_info(path):
     """Return image informations:

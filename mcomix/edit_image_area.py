@@ -3,7 +3,7 @@
 import os
 import gtk
 
-from mcomix import constants
+from mcomix import image_tools
 from mcomix import i18n
 from mcomix import thumbnail_tools
 from mcomix import thumbnail_view
@@ -88,7 +88,7 @@ class _ImageArea(gtk.ScrolledWindow):
             pass
         pixbuf = self._thumbnailer.thumbnail(path)
         if pixbuf is None:
-            pixbuf = constants.MISSING_IMAGE_ICON
+            pixbuf = image_tools.MISSING_IMAGE_ICON
         return pixbuf
 
     def add_extra_image(self, path):
