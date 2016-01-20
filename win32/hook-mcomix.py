@@ -97,6 +97,7 @@ datas.extend((
     ('C:/Python27/Lib/site-packages/gnome/share/fonts', 'share'),
     ('C:/Python27/Lib/site-packages/gnome/share/icons/hicolor', 'share/icons'),
     ('C:/Python27/Lib/site-packages/gnome/share/themes/MS-Windows/gtk-2.0', 'share/themes/MS-Windows'),
+    ('C:/Python27/Lib/site-packages/gnome/fc-cache.exe', './'),
     # Add Unrar DLL and documentation.
     ('C:/Program Files/UnrarDLL/unrar.dll', '.'),
     ('C:/Program Files/UnrarDLL/*.txt', 'doc/unrar'),

@@ -45,7 +45,7 @@ setuptools.setup(
     name = constants.APPNAME.lower(),
     version = constants.VERSION,
     packages = ['mcomix', 'mcomix.archive', 'mcomix.library',
-        'mcomix.messages', 'mcomix.images'],
+        'mcomix.messages', 'mcomix.images', 'mcomix.win32'],
     package_data = {
         'mcomix.messages' : get_data_patterns('mcomix/messages', '*.mo'),
         'mcomix.images' : images },
