@@ -62,12 +62,16 @@ def popen(args, stdin=NULL, stdout=PIPE, stderr=NULL):
 if 'win32' == sys.platform:
     _exe_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
 
-def find_executable(candidates, workdir=None):
+def find_executable(candidates, workdir=None, is_valid_candidate=None):
     """ Find executable in path.
 
     Return an absolute path to a valid executable or None.
 
     <workdir> default to the current working directory if not set.
+
+    <is_valid_candidate> is an optional function that must return True
+    if the path passed in argument is a valid candidate (to check for
+    version number, symlinks to an unsupported variant, etc...).
 
     If a candidate has a directory component,
     it will be checked relative to <workdir>.
@@ -96,9 +100,16 @@ def find_executable(candidates, workdir=None):
             search_path.insert(0, workdir)
         search_path.insert(0, _exe_dir)
 
-    valid_exe = lambda exe: \
+    is_valid_exe = lambda exe: \
             os.path.isfile(exe) and \
             os.access(exe, os.R_OK|os.X_OK)
+
+    if is_valid_candidate is None:
+        is_valid = is_valid_exe
+    else:
+        is_valid = lambda exe: \
+                is_valid_exe(exe) and \
+                is_valid_candidate(exe)
 
     for name in candidates:
 
@@ -109,21 +120,21 @@ def find_executable(candidates, workdir=None):
 
         # Absolute path?
         if os.path.isabs(name):
-            if valid_exe(name):
+            if is_valid(name):
                 return name
 
         # Does candidate have a directory component?
         elif os.path.dirname(name):
             # Yes, check relative to working directory.
             path = os.path.normpath(os.path.join(workdir, name))
-            if valid_exe(path):
+            if is_valid(path):
                 return path
 
         # Look in search path.
         else:
             for dir in search_path:
                 path = os.path.abspath(os.path.join(dir, name))
-                if valid_exe(path):
+                if is_valid(path):
                     return path
 
     return None
