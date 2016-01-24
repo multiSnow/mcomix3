@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix zh_TW\n"
 "Report-Msgid-Bugs-To: https://sourceforge.net/projects/mcomix/\n"
-"POT-Creation-Date: 2016-01-05 22:41+0100\n"
+"POT-Creation-Date: 2016-01-24 17:01+0100\n"
 "PO-Revision-Date: 2013-07-05 21:37+0800\n"
 "Last-Translator: Wayne Su <mstarmstar@hotmail.com>\n"
 "Language-Team: \n"
@@ -316,7 +316,7 @@ msgstr "不正確的路徑：%s"
 msgid "! Could not load icon \"%s\""
 msgstr "！ 無法載入「%s」圖示"
 
-#: mcomix/image_tools.py:500
+#: mcomix/image_tools.py:515
 msgid "Unknown filetype"
 msgstr "不明的檔案類型"
 
@@ -1414,98 +1414,107 @@ msgstr "啟動時顯示這個書庫。"
 msgid "Show the version number and exit."
 msgstr "顯示這個版本號碼後退出。"
 
-#: mcomix/run.py:53
+#: mcomix/run.py:56
+msgid "Don't update fontconfig cache at startup."
+msgstr ""
+
+#: mcomix/run.py:61
+msgid "Update fontconfig cache at startup."
+msgstr ""
+
+#: mcomix/run.py:63
 msgid "View modes"
 msgstr "檢視模式"
 
-#: mcomix/run.py:55
+#: mcomix/run.py:65
 msgid "Start the application in fullscreen mode."
 msgstr "啟動程式後進入全螢幕模式。"
 
-#: mcomix/run.py:57
+#: mcomix/run.py:67
 msgid "Start the application in manga mode."
 msgstr "啟動程式後進入漫畫模式。"
 
-#: mcomix/run.py:59
+#: mcomix/run.py:69
 msgid "Start the application in double page mode."
 msgstr "啟動程式後進入雙頁模式。"
 
-#: mcomix/run.py:62
+#: mcomix/run.py:72
 msgid "Zoom modes"
 msgstr "縮放模式"
 
-#: mcomix/run.py:65
+#: mcomix/run.py:75
 msgid "Start the application with zoom set to best fit mode."
 msgstr "啟動程式後進入最佳大小模式。"
 
-#: mcomix/run.py:68
+#: mcomix/run.py:78
 msgid "Start the application with zoom set to fit width."
 msgstr "啟動程式後進入符合寬度模式。"
 
-#: mcomix/run.py:71
+#: mcomix/run.py:81
 msgid "Start the application with zoom set to fit height."
 msgstr "啟動程式後進入符合高度模式。"
 
-#: mcomix/run.py:74
+#: mcomix/run.py:84
 msgid "Debug options"
 msgstr "除錯選項"
 
-#: mcomix/run.py:78
+#: mcomix/run.py:88
 msgid "Sets the desired output log level."
 msgstr "設定需要的紀錄檔輸出等級。"
 
-#: mcomix/run.py:131
+#: mcomix/run.py:183
 msgid "You do not have the required versions of GTK+ and PyGTK installed."
 msgstr "你沒有安裝所需要的 GTK+ 和 PyGTK 版本。"
 
-#: mcomix/run.py:132
+#: mcomix/run.py:184
 #, python-format
 msgid "Installed GTK+ version is: %s"
 msgstr "安裝的 GTK+ 版本：%s"
 
-#: mcomix/run.py:134
-msgid "Required GTK+ version is: 2.12.0 or higher\n"
+#: mcomix/run.py:186
+#, fuzzy
+msgid "Required GTK+ version is: 2.12.0 or higher"
 msgstr "需要的 GTK+ 版本：2.12.0 或更新版\n"
 
-#: mcomix/run.py:135
+#: mcomix/run.py:187
 #, python-format
 msgid "Installed PyGTK version is: %s"
 msgstr "安裝的 PyGTK 版本：%s"
 
-#: mcomix/run.py:137 mcomix/run.py:141
+#: mcomix/run.py:189 mcomix/run.py:193
 msgid "Required PyGTK version is: 2.12.0 or higher"
 msgstr "需要的 PyGTK 版本：2.12.0 或更新版"
 
-#: mcomix/run.py:142
+#: mcomix/run.py:194
 msgid "No version of PyGTK was found on your system."
 msgstr "在你的系統中找不到任何版本的 PyGTK。"
 
-#: mcomix/run.py:143
+#: mcomix/run.py:195
 msgid "This error might be caused by missing GTK+ libraries."
 msgstr "這個錯誤可能是因為有 GTK+ 的程式庫不見了。"
 
-#: mcomix/run.py:152
+#: mcomix/run.py:203
 msgid "You don't have the required version of the Python Imaging"
 msgstr "你沒有安裝所需要的 Python Imaging 版本"
 
-#: mcomix/run.py:153
+#: mcomix/run.py:204
 msgid "Library (PIL) installed."
 msgstr "已安裝程式庫 (PIL)。"
 
-#: mcomix/run.py:154
+#: mcomix/run.py:205
 #, python-format
 msgid "Installed PIL version is: %s"
 msgstr "安裝的 PIL 版本：%s"
 
-#: mcomix/run.py:155
+#: mcomix/run.py:206
 msgid "Required PIL version is: 1.1.5 or higher"
 msgstr "需要的 PIL 版本：1.1.5 或更新版"
 
-#: mcomix/run.py:159
+#: mcomix/run.py:210
 msgid "Python Imaging Library (PIL) 1.1.5 or higher is required."
 msgstr "需要 Python Imaging 程式庫 (PIL) 1.1.5 版或更新的版本。"
 
-#: mcomix/run.py:160
+#: mcomix/run.py:211
 msgid "No version of the Python Imaging Library was found on your system."
 msgstr "在你的系統裏找不到任何版本的 Python Imaging 程式庫。"
 

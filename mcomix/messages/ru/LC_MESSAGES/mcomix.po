@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.90.4\n"
 "Report-Msgid-Bugs-To: https://sourceforge.net/projects/mcomix/\n"
-"POT-Creation-Date: 2016-01-05 22:41+0100\n"
-"PO-Revision-Date: 2016-01-04 22:28+0200\n"
+"POT-Creation-Date: 2016-01-24 17:01+0100\n"
+"PO-Revision-Date: 2016-01-10 18:09+0200\n"
 "Last-Translator: Ulyanich Michael <ulianich_mihail@ukr.net>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
 "Language: ru_RU\n"
@@ -139,11 +139,11 @@ msgstr ""
 
 #: mcomix/bookmark_menu.py:24
 msgid "Add _Bookmark"
-msgstr ""
+msgstr "Добавить закладку"
 
 #: mcomix/bookmark_menu.py:26
 msgid "_Edit Bookmarks..."
-msgstr ""
+msgstr "Управление закладками"
 
 #: mcomix/callback.py:86
 #, python-format
@@ -194,7 +194,6 @@ msgid "Edit archive"
 msgstr "Редактировать архив"
 
 #: mcomix/edit_dialog.py:40
-#, fuzzy
 msgid "_Import"
 msgstr "Импортировать"
 
@@ -245,37 +244,32 @@ msgstr ""
 #
 # File: src/enhance.py, line: 79
 #: mcomix/enhance_dialog.py:68
-#, fuzzy
 msgid "_Brightness:"
-msgstr "Яркость"
+msgstr "Яркость:"
 
 #
 # File: src/enhance.py, line: 90
 #: mcomix/enhance_dialog.py:69
-#, fuzzy
 msgid "_Contrast:"
-msgstr "Контрастность"
+msgstr "Контрастность:"
 
 #
 # File: src/enhance.py, line: 101
 #: mcomix/enhance_dialog.py:70
-#, fuzzy
 msgid "S_aturation:"
-msgstr "Насыщенность"
+msgstr "Насыщенность:"
 
 #
 # File: src/enhance.py, line: 112
 #: mcomix/enhance_dialog.py:71
-#, fuzzy
 msgid "S_harpness:"
-msgstr "Резкость"
+msgstr "Резкость:"
 
 #
 # File: src/enhance.py, line: 126
 #: mcomix/enhance_dialog.py:76
-#, fuzzy
 msgid "_Automatically adjust contrast"
-msgstr "Автоматически подстроить контрастность."
+msgstr "Автоматически подстроить контрастность"
 
 #
 # File: src/enhance.py, line: 128
@@ -315,7 +309,7 @@ msgstr "Все архивы"
 #
 # File: src/filechooser.py, line: 82
 #: mcomix/file_chooser_base_dialog.py:134
-#, fuzzy, python-format
+#, python-format
 msgid "%s archives"
 msgstr "%s архивы"
 
@@ -330,7 +324,7 @@ msgstr "Все изображения"
 # File: src/filechooser.py, line: 171
 # File: src/filechooser.py, line: 249
 #: mcomix/file_chooser_base_dialog.py:150
-#, fuzzy, python-format
+#, python-format
 msgid "%s images"
 msgstr "%s изображения"
 
@@ -406,14 +400,14 @@ msgstr "! Не удалось прочитать значок \"%s\""
 
 #
 # File: src/filehandler.py, line: 411
-#: mcomix/image_tools.py:500
+#: mcomix/image_tools.py:515
 msgid "Unknown filetype"
 msgstr "Неизвестный тип файла"
 
 #: mcomix/keybindings_editor.py:42
 #, python-format
 msgid "Key %d"
-msgstr ""
+msgstr "Клавиша %d"
 
 #
 # File: src/ui.py, line: 284
@@ -502,11 +496,11 @@ msgstr "Предыдущий архив"
 
 #: mcomix/keybindings.py:55 mcomix/ui.py:58 mcomix/ui.py:59
 msgid "Next directory"
-msgstr ""
+msgstr "Следующий каталог"
 
 #: mcomix/keybindings.py:56 mcomix/ui.py:60 mcomix/ui.py:61
 msgid "Previous directory"
-msgstr ""
+msgstr "Предыдущий каталог"
 
 #: mcomix/keybindings.py:59
 msgid "Scroll to bottom left"
@@ -581,7 +575,7 @@ msgstr ""
 
 #: mcomix/keybindings.py:80
 msgid "Zoom in"
-msgstr "Приблизить"
+msgstr "Увеличить масштаб"
 
 #
 # File: src/ui.py, line: 42
@@ -591,7 +585,7 @@ msgstr "Масштаб"
 
 #: mcomix/keybindings.py:81
 msgid "Zoom out"
-msgstr "Отдалить"
+msgstr "Уменьшить масштаб"
 
 #: mcomix/keybindings.py:82
 msgid "Normal size"
@@ -926,16 +920,16 @@ msgstr "Редактировать команды"
 #: mcomix/openwith.py:76
 #, python-format
 msgid "'%s' is disabled for archives."
-msgstr ""
+msgstr "'%s' отмечена неприменимой к архивам."
 
 #: mcomix/openwith.py:95
 #, python-format
 msgid "Could not run command %(cmdlabel)s: %(exception)s"
-msgstr ""
+msgstr "Не получается выполнить команду %(cmdlabel)s: %(exception)s"
 
 #: mcomix/openwith.py:143
 msgid "Command line is empty."
-msgstr ""
+msgstr "Команда на указана."
 
 #: mcomix/openwith.py:186
 msgid "Incomplete escape sequence. For a literal '%', use '%%'."
@@ -948,16 +942,14 @@ msgstr ""
 #
 # File: src/edit.py, line: 115
 #: mcomix/openwith.py:206
-#, fuzzy
 msgid "File-related variables can only be used for files."
-msgstr "Архивы сохраняются как ZIP файлы."
+msgstr ""
 
 #
 # File: src/edit.py, line: 115
 #: mcomix/openwith.py:210
-#, fuzzy
 msgid "Archive-related variables can only be used for archives."
-msgstr "Архивы сохраняются как ZIP файлы."
+msgstr ""
 
 #: mcomix/openwith.py:252
 #, python-format
@@ -966,7 +958,7 @@ msgstr ""
 
 #: mcomix/openwith.py:275
 msgid "Edit external commands"
-msgstr ""
+msgstr "Редактировать внешние команды"
 
 #: mcomix/openwith.py:285
 msgid "Add _separator"
@@ -981,7 +973,7 @@ msgstr "Выполнить команду"
 
 #: mcomix/openwith.py:359
 msgid "This is a separator pseudo-command."
-msgstr ""
+msgstr "Разделитель (псевдокоманда)."
 
 #: mcomix/openwith.py:370
 #, python-format
@@ -996,16 +988,14 @@ msgstr ""
 # File: src/comment.py, line: 16
 # File: src/preferences.py, line: 288
 #: mcomix/openwith.py:382
-#, fuzzy
 msgid "Command label"
-msgstr "Комментировать файлы"
+msgstr ""
 
 #
 # File: src/ui.py, line: 36
 #: mcomix/openwith.py:475
-#, fuzzy
 msgid "Preview:"
-msgstr "П_редыдущая страница"
+msgstr ""
 
 #: mcomix/openwith.py:483
 #, python-format
@@ -1016,7 +1006,7 @@ msgstr ""
 
 #: mcomix/openwith.py:491
 msgid "Label"
-msgstr ""
+msgstr "Метка (название)"
 
 #
 # File: src/comment.py, line: 16
@@ -1034,9 +1024,8 @@ msgstr "Рабочий каталог"
 #
 # File: src/filechooser.py, line: 86
 #: mcomix/openwith.py:505
-#, fuzzy
 msgid "Disabled in archives"
-msgstr "Tar архивы"
+msgstr "Не применять к архивам"
 
 #: mcomix/openwith.py:560
 msgid "Save changes to commands?"
@@ -1052,13 +1041,13 @@ msgstr ""
 # File: src/ui.py, line: 69
 #: mcomix/pageselect.py:19 mcomix/ui.py:100 mcomix/ui.py:101
 msgid "_Go"
-msgstr "_Перейти"
+msgstr "Перейти"
 
 #
 # File: src/preferences.py, line: 230
 #: mcomix/pageselect.py:20
 msgid "_Cancel"
-msgstr "_Отменить"
+msgstr "Отменить"
 
 #: mcomix/pageselect.py:41
 #, python-format
@@ -1163,13 +1152,15 @@ msgstr "Показывать номера страниц возле миниат
 
 #: mcomix/preferences_dialog.py:105
 msgid "Use archive thumbnail as application icon"
-msgstr ""
+msgstr "Использовать обложку в качестве иконки программы"
 
 #: mcomix/preferences_dialog.py:107
 msgid ""
 "By enabling this setting, the first page of a book will be used as "
 "application icon instead of the standard icon."
 msgstr ""
+"Когда эта опция включена, первая страница комикса устанавливается в качестве "
+"иконки программы вместо стандартной иконки."
 
 #
 # File: src/preferences.py, line: 110
@@ -1255,14 +1246,15 @@ msgid "Automatically open next directory"
 msgstr "Автоматически открывать следующую директорию"
 
 #: mcomix/preferences_dialog.py:150
-#, fuzzy
 msgid ""
 "Automatically open the first file in the next sibling directory when "
 "flipping past the last page of the last file in a directory, or the previous "
 "directory when flipping past the first page of the first file."
 msgstr ""
-"Автоматически открывать первый файл в следующей директории на том же уровне "
-"при прокрутке последней страницы последнего файла в текущей директории."
+"Автоматически переходить в следующую директорию (на том же уровне "
+"вложенности) при прокрутке вниз последней страницы последнего файла в "
+"текущей директории, или, наоборот, в предыдущую директорию при прокрутке "
+"вверх первой страницы первого файла в текущей директории."
 
 #: mcomix/preferences_dialog.py:152
 msgid "Number of pixels to scroll per arrow key press:"
@@ -1420,9 +1412,8 @@ msgstr ""
 #
 # File: src/preferences.py, line: 198
 #: mcomix/preferences_dialog.py:233
-#, fuzzy
 msgid "During a slideshow automatically open the next archive"
-msgstr "Автоматически открывать следующий архив во время слайдшоу."
+msgstr "Автоматически открывать следующий архив во время слайдшоу"
 
 #: mcomix/preferences_dialog.py:235
 msgid ""
@@ -1460,7 +1451,7 @@ msgstr "Режим масштабирования"
 
 #: mcomix/preferences_dialog.py:258
 msgid "File order"
-msgstr ""
+msgstr "Порядок файлов"
 
 #: mcomix/preferences_dialog.py:260
 msgid "Sort files and directories by:"
@@ -1506,9 +1497,8 @@ msgstr ""
 "большинством файловых менеджеров."
 
 #: mcomix/preferences_dialog.py:278
-#, fuzzy
 msgid "Maximum number of pages to store in the cache:"
-msgstr "Максимальное количество страниц, хранимое в кеше"
+msgstr "Максимальное количество страниц, хранимое в кеше:"
 
 #: mcomix/preferences_dialog.py:281
 msgid ""
@@ -1601,6 +1591,8 @@ msgid ""
 "When showing the first page of an archive, or an image's width exceeds its "
 "height, only a single page will be displayed."
 msgstr ""
+"Показывать только одну страницу при просмотре первой страницы архива или "
+"изображения, у которого ширина больше высоты."
 
 #
 # File: src/preferences.py, line: 263
@@ -1784,7 +1776,7 @@ msgstr "Показать эту помощь и выйти."
 
 #: mcomix/run.py:47
 msgid "Start the application in slideshow mode."
-msgstr "Запустить приложение в режиме слайд-шоу."
+msgstr "Запустить приложение в режиме слайдшоу."
 
 #: mcomix/run.py:49
 msgid "Show the library on startup."
@@ -1794,98 +1786,107 @@ msgstr "Открыть библиотеку при запуске."
 msgid "Show the version number and exit."
 msgstr "Показать номер версии и выйти."
 
-#: mcomix/run.py:53
+#: mcomix/run.py:56
+msgid "Don't update fontconfig cache at startup."
+msgstr ""
+
+#: mcomix/run.py:61
+msgid "Update fontconfig cache at startup."
+msgstr ""
+
+#: mcomix/run.py:63
 msgid "View modes"
 msgstr "Режимы просмотра"
 
-#: mcomix/run.py:55
+#: mcomix/run.py:65
 msgid "Start the application in fullscreen mode."
 msgstr "Запустить приложение в полноэкранном режиме."
 
-#: mcomix/run.py:57
+#: mcomix/run.py:67
 msgid "Start the application in manga mode."
 msgstr "Запустить приложение в режиме манги."
 
-#: mcomix/run.py:59
+#: mcomix/run.py:69
 msgid "Start the application in double page mode."
 msgstr "Запустить приложение в двухстраничном режиме."
 
-#: mcomix/run.py:62
+#: mcomix/run.py:72
 msgid "Zoom modes"
-msgstr ""
+msgstr "Режимы масштаба."
 
-#: mcomix/run.py:65
+#: mcomix/run.py:75
 msgid "Start the application with zoom set to best fit mode."
 msgstr ""
 
-#: mcomix/run.py:68
+#: mcomix/run.py:78
 msgid "Start the application with zoom set to fit width."
 msgstr ""
 
-#: mcomix/run.py:71
+#: mcomix/run.py:81
 msgid "Start the application with zoom set to fit height."
 msgstr ""
 
-#: mcomix/run.py:74
+#: mcomix/run.py:84
 msgid "Debug options"
 msgstr "Параметры отладки"
 
-#: mcomix/run.py:78
+#: mcomix/run.py:88
 msgid "Sets the desired output log level."
 msgstr ""
 
-#: mcomix/run.py:131
+#: mcomix/run.py:183
 msgid "You do not have the required versions of GTK+ and PyGTK installed."
 msgstr ""
 
-#: mcomix/run.py:132
+#: mcomix/run.py:184
 #, python-format
 msgid "Installed GTK+ version is: %s"
 msgstr "Установленная версия GTK+ : %s"
 
-#: mcomix/run.py:134
-msgid "Required GTK+ version is: 2.12.0 or higher\n"
+#: mcomix/run.py:186
+#, fuzzy
+msgid "Required GTK+ version is: 2.12.0 or higher"
 msgstr "Необходимая версия GTK+ : 2.12.0 и выше\n"
 
-#: mcomix/run.py:135
+#: mcomix/run.py:187
 #, python-format
 msgid "Installed PyGTK version is: %s"
 msgstr "Установленная версия PyGTK : %s"
 
-#: mcomix/run.py:137 mcomix/run.py:141
+#: mcomix/run.py:189 mcomix/run.py:193
 msgid "Required PyGTK version is: 2.12.0 or higher"
 msgstr "Необходимая версия PyGTK : 2.12.0 и выше"
 
-#: mcomix/run.py:142
+#: mcomix/run.py:194
 msgid "No version of PyGTK was found on your system."
 msgstr "PyGTK не установлена."
 
-#: mcomix/run.py:143
+#: mcomix/run.py:195
 msgid "This error might be caused by missing GTK+ libraries."
 msgstr "Эта ошибка может быть вызвана отсутствием библиотек GTK+."
 
-#: mcomix/run.py:152
+#: mcomix/run.py:203
 msgid "You don't have the required version of the Python Imaging"
 msgstr "Нужная версия библиотеки PIL не найдена в системе."
 
-#: mcomix/run.py:153
+#: mcomix/run.py:204
 msgid "Library (PIL) installed."
 msgstr "Библиотека PIL установлена."
 
-#: mcomix/run.py:154
+#: mcomix/run.py:205
 #, python-format
 msgid "Installed PIL version is: %s"
 msgstr "Установленная версия PIL: %s"
 
-#: mcomix/run.py:155
+#: mcomix/run.py:206
 msgid "Required PIL version is: 1.1.5 or higher"
 msgstr "Необходимая версия PIL: 1.1.5 и выше"
 
-#: mcomix/run.py:159
+#: mcomix/run.py:210
 msgid "Python Imaging Library (PIL) 1.1.5 or higher is required."
 msgstr "Необходима библиотека PIL версии 1.1.5 и выше"
 
-#: mcomix/run.py:160
+#: mcomix/run.py:211
 msgid "No version of the Python Imaging Library was found on your system."
 msgstr "Не найдена библиотека PIL"
 
@@ -2147,7 +2148,7 @@ msgstr "Удалить текущий файл или архив с диска."
 # File: src/ui.py, line: 34
 #: mcomix/ui.py:41
 msgid "_Next page"
-msgstr "_Следующая страница"
+msgstr "Следующая страница"
 
 #
 # File: src/ui.py, line: 36
@@ -2159,7 +2160,7 @@ msgstr "П_редыдущая страница"
 # File: src/ui.py, line: 38
 #: mcomix/ui.py:45
 msgid "_First page"
-msgstr "_Первая страница"
+msgstr "Первая страница"
 
 #
 # File: src/ui.py, line: 40
@@ -2176,7 +2177,6 @@ msgid "Go to page..."
 msgstr "Перейти на страницу..."
 
 #: mcomix/ui.py:51
-#, fuzzy
 msgid "Re_fresh"
 msgstr "Обновить"
 
@@ -2185,32 +2185,26 @@ msgid "Reloads the currently opened files or archive."
 msgstr "Переоткрыть текущие файлы или архив"
 
 #: mcomix/ui.py:54
-#, fuzzy
 msgid "Next _archive"
 msgstr "Следующий архив"
 
 #: mcomix/ui.py:56
-#, fuzzy
 msgid "Previous a_rchive"
 msgstr "Предыдущий архив"
 
 #: mcomix/ui.py:62
-#, fuzzy
 msgid "Zoom _In"
-msgstr "Приблизить"
+msgstr "Увеличить масштаб"
 
 #: mcomix/ui.py:64
-#, fuzzy
 msgid "Zoom _Out"
-msgstr "Отдалить"
+msgstr "Уменьшить масштаб"
 
 #: mcomix/ui.py:66
-#, fuzzy
 msgid "_Normal Size"
 msgstr "Нормальный размер"
 
 #: mcomix/ui.py:68
-#, fuzzy
 msgid "Mi_nimize"
 msgstr "Свернуть"
 
@@ -2218,7 +2212,7 @@ msgstr "Свернуть"
 # File: src/ui.py, line: 48
 #: mcomix/ui.py:70
 msgid "_Close"
-msgstr "_Закрыть"
+msgstr "Закрыть"
 
 #: mcomix/ui.py:71
 msgid "Closes all opened files."
@@ -2232,7 +2226,7 @@ msgstr "В_ыход"
 
 #: mcomix/ui.py:74
 msgid "_Save and quit"
-msgstr "_Сохранить и выйти"
+msgstr "Сохранить и выйти"
 
 #: mcomix/ui.py:75
 msgid ""
@@ -2270,12 +2264,10 @@ msgid "Flip _vertically"
 msgstr "Отразить по _вертикали"
 
 #: mcomix/ui.py:87
-#, fuzzy
 msgid "Save _As"
 msgstr "Сохранить как..."
 
 #: mcomix/ui.py:89
-#, fuzzy
 msgid "_Zoom"
 msgstr "Масштаб"
 
@@ -2283,7 +2275,7 @@ msgstr "Масштаб"
 # File: src/ui.py, line: 63
 #: mcomix/ui.py:90
 msgid "_Recent"
-msgstr "Открыть _недавние"
+msgstr "Последние открытые"
 
 #
 # File: src/ui.py, line: 64
@@ -2307,50 +2299,49 @@ msgstr "_Редактировать"
 # File: src/filechooser.py, line: 35
 # File: src/library.py, line: 489
 #: mcomix/ui.py:95 mcomix/ui.py:96
-#, fuzzy
 msgid "Open _with"
-msgstr "_Открыть"
+msgstr "Открыть с помощью"
 
 #
 # File: src/ui.py, line: 67
 #: mcomix/ui.py:97
 msgid "_File"
-msgstr "_Файл"
+msgstr "Файл"
 
 #
 # File: src/ui.py, line: 68
 #: mcomix/ui.py:98 mcomix/ui.py:99
 msgid "_View"
-msgstr "_Вид"
+msgstr "Вид"
 
 # File: src/ui.py, line: 79
 #: mcomix/ui.py:102
 msgid "_Tools"
-msgstr "_Панель инструментов"
+msgstr "П_анель инструментов"
 
 #
 # File: src/ui.py, line: 70
 #: mcomix/ui.py:103
 msgid "_Help"
-msgstr "_Помощь"
+msgstr "Помо_щь"
 
 #
 # File: src/ui.py, line: 71
 #: mcomix/ui.py:104
 msgid "_Transform image"
-msgstr "_Преобразовать изображение"
+msgstr "Преобразовать изображение"
 
 #: mcomix/ui.py:105
 msgid "_Auto-rotate image"
-msgstr ""
+msgstr "Автоповорот изображения"
 
 #: mcomix/ui.py:106
 msgid "...when width exceeds height"
-msgstr ""
+msgstr "... когда ширина больше высоты"
 
 #: mcomix/ui.py:107
 msgid "...when height exceeds width"
-msgstr ""
+msgstr "... когда высота больше ширины"
 
 #
 # File: src/ui.py, line: 75
@@ -2366,13 +2357,13 @@ msgstr "Полноэкранный режим"
 # File: src/ui.py, line: 77
 #: mcomix/ui.py:113
 msgid "_Double page mode"
-msgstr "_Двухстраничный страниц"
+msgstr "Двухстраничный режим"
 
 #
 # File: src/ui.py, line: 79
 #: mcomix/ui.py:115
 msgid "_Toolbar"
-msgstr "_Панель инструментов"
+msgstr "П_анель инструментов"
 
 #
 # File: src/ui.py, line: 81
@@ -2478,7 +2469,6 @@ msgid "_About"
 msgstr "_О программе"
 
 #: mcomix/ui.py:176
-#, fuzzy
 msgid "Co_mments..."
 msgstr "Комментарии..."
 
@@ -2529,7 +2519,7 @@ msgstr "! Невозможно создать процесс \"%(command)\": %(e
 
 #: mcomix/archive/__init__.py:13
 msgid "The archive is password-protected:"
-msgstr ""
+msgstr "Архив защищён паролем:"
 
 #: mcomix/archive/zip.py:54
 #, python-format
@@ -2587,9 +2577,9 @@ msgstr "! Не удалось добавить коллекцию \"%s\""
 #
 # File: src/library.py, line: 876
 #: mcomix/library/backend.py:395
-#, fuzzy, python-format
+#, python-format
 msgid "! Could not add book %(book)s to collection %(collection)s"
-msgstr "Невозможно добавить книгу %(book) в коллекцию %(collection)"
+msgstr "Невозможно добавить книгу %(book)s в коллекцию %(collection)s"
 
 #
 # File: src/library.py, line: 285
@@ -2617,9 +2607,8 @@ msgstr ""
 #
 # File: src/ui.py, line: 63
 #: mcomix/library/backend.py:664
-#, fuzzy
 msgid "Recent"
-msgstr "Открыть _недавние"
+msgstr "Последние"
 
 #
 # File: src/library.py, line: 202
@@ -2800,7 +2789,6 @@ msgid "Add a new empty collection."
 msgstr "Добавить новую пустую коллекцию."
 
 #: mcomix/library/collection_area.py:83
-#, fuzzy
 msgid "Re_name"
 msgstr "Переименовать"
 
@@ -2918,9 +2906,8 @@ msgstr ""
 #
 # File: src/library.py, line: 769
 #: mcomix/library/control_area.py:69
-#, fuzzy
 msgid "_Search:"
-msgstr "Поиск"
+msgstr "Поиск:"
 
 #
 # File: src/library.py, line: 774
@@ -2987,14 +2974,13 @@ msgstr ""
 
 #: mcomix/library/watchlist.py:43
 msgid "Directory"
-msgstr ""
+msgstr "Каталог"
 
 #
 # File: src/library.py, line: 862
 #: mcomix/library/watchlist.py:55
-#, fuzzy
 msgid "Collection"
-msgstr "Новая коллекция"
+msgstr "Коллекция"
 
 #: mcomix/library/watchlist.py:63
 msgid "With subdirectories"

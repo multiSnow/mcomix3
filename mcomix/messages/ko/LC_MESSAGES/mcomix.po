@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://sourceforge.net/projects/mcomix/\n"
-"POT-Creation-Date: 2016-01-05 22:41+0100\n"
+"POT-Creation-Date: 2016-01-24 17:01+0100\n"
 "PO-Revision-Date: 2008-12-13 14:48+0900\n"
 "Last-Translator: Lv5doraki <kmk1290@gmail.com>\n"
 "Language-Team: \n"
@@ -388,7 +388,7 @@ msgstr ""
 
 #
 # File: src/filehandler.py, line: 411
-#: mcomix/image_tools.py:500
+#: mcomix/image_tools.py:515
 msgid "Unknown filetype"
 msgstr "알 수 없는 파일 형식"
 
@@ -1795,98 +1795,106 @@ msgstr ""
 msgid "Show the version number and exit."
 msgstr ""
 
-#: mcomix/run.py:53
+#: mcomix/run.py:56
+msgid "Don't update fontconfig cache at startup."
+msgstr ""
+
+#: mcomix/run.py:61
+msgid "Update fontconfig cache at startup."
+msgstr ""
+
+#: mcomix/run.py:63
 msgid "View modes"
 msgstr ""
 
-#: mcomix/run.py:55
+#: mcomix/run.py:65
 msgid "Start the application in fullscreen mode."
 msgstr ""
 
-#: mcomix/run.py:57
+#: mcomix/run.py:67
 msgid "Start the application in manga mode."
 msgstr ""
 
-#: mcomix/run.py:59
+#: mcomix/run.py:69
 msgid "Start the application in double page mode."
 msgstr ""
 
-#: mcomix/run.py:62
+#: mcomix/run.py:72
 msgid "Zoom modes"
 msgstr ""
 
-#: mcomix/run.py:65
+#: mcomix/run.py:75
 msgid "Start the application with zoom set to best fit mode."
 msgstr ""
 
-#: mcomix/run.py:68
+#: mcomix/run.py:78
 msgid "Start the application with zoom set to fit width."
 msgstr ""
 
-#: mcomix/run.py:71
+#: mcomix/run.py:81
 msgid "Start the application with zoom set to fit height."
 msgstr ""
 
-#: mcomix/run.py:74
+#: mcomix/run.py:84
 msgid "Debug options"
 msgstr ""
 
-#: mcomix/run.py:78
+#: mcomix/run.py:88
 msgid "Sets the desired output log level."
 msgstr ""
 
-#: mcomix/run.py:131
+#: mcomix/run.py:183
 msgid "You do not have the required versions of GTK+ and PyGTK installed."
 msgstr ""
 
-#: mcomix/run.py:132
+#: mcomix/run.py:184
 #, python-format
 msgid "Installed GTK+ version is: %s"
 msgstr ""
 
-#: mcomix/run.py:134
-msgid "Required GTK+ version is: 2.12.0 or higher\n"
+#: mcomix/run.py:186
+msgid "Required GTK+ version is: 2.12.0 or higher"
 msgstr ""
 
-#: mcomix/run.py:135
+#: mcomix/run.py:187
 #, python-format
 msgid "Installed PyGTK version is: %s"
 msgstr ""
 
-#: mcomix/run.py:137 mcomix/run.py:141
+#: mcomix/run.py:189 mcomix/run.py:193
 msgid "Required PyGTK version is: 2.12.0 or higher"
 msgstr ""
 
-#: mcomix/run.py:142
+#: mcomix/run.py:194
 msgid "No version of PyGTK was found on your system."
 msgstr ""
 
-#: mcomix/run.py:143
+#: mcomix/run.py:195
 msgid "This error might be caused by missing GTK+ libraries."
 msgstr ""
 
-#: mcomix/run.py:152
+#: mcomix/run.py:203
 msgid "You don't have the required version of the Python Imaging"
 msgstr ""
 
-#: mcomix/run.py:153
+#: mcomix/run.py:204
 msgid "Library (PIL) installed."
 msgstr ""
 
-#: mcomix/run.py:154
+#: mcomix/run.py:205
 #, python-format
 msgid "Installed PIL version is: %s"
 msgstr ""
 
-#: mcomix/run.py:155
+#: mcomix/run.py:206
 msgid "Required PIL version is: 1.1.5 or higher"
 msgstr ""
 
-#: mcomix/run.py:159
+#: mcomix/run.py:210
 msgid "Python Imaging Library (PIL) 1.1.5 or higher is required."
 msgstr ""
 
-#: mcomix/run.py:160
+#: mcomix/run.py:211
 msgid "No version of the Python Imaging Library was found on your system."
 msgstr ""
 

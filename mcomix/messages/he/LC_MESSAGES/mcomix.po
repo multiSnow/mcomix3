@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mcomix 0.99\n"
 "Report-Msgid-Bugs-To: https://sourceforge.net/projects/mcomix/\n"
-"POT-Creation-Date: 2016-01-05 22:41+0100\n"
+"POT-Creation-Date: 2016-01-24 17:01+0100\n"
 "PO-Revision-Date: 2013-01-07 22:51+0200\n"
 "Last-Translator: Isratine Citizen <genghiskhan@gmx.ca>\n"
 "Language-Team: Hebrew <eliz@gnu.org>\n"
@@ -333,7 +333,7 @@ msgstr "נתיב שגוי: '%s'"
 msgid "! Could not load icon \"%s\""
 msgstr ""
 
-#: mcomix/image_tools.py:500
+#: mcomix/image_tools.py:515
 msgid "Unknown filetype"
 msgstr "טיפוס קובץ לא מוכר"
 
@@ -1529,118 +1529,126 @@ msgstr "CLI"
 msgid "Show the version number and exit."
 msgstr "CLI"
 
-#: mcomix/run.py:53
+#: mcomix/run.py:56
+msgid "Don't update fontconfig cache at startup."
+msgstr ""
+
+#: mcomix/run.py:61
+msgid "Update fontconfig cache at startup."
+msgstr ""
+
+#: mcomix/run.py:63
 #, fuzzy
 msgid "View modes"
 msgstr "CLI"
 
-#: mcomix/run.py:55
+#: mcomix/run.py:65
 #, fuzzy
 msgid "Start the application in fullscreen mode."
 msgstr "CLI"
 
-#: mcomix/run.py:57
+#: mcomix/run.py:67
 #, fuzzy
 msgid "Start the application in manga mode."
 msgstr "CLI"
 
-#: mcomix/run.py:59
+#: mcomix/run.py:69
 #, fuzzy
 msgid "Start the application in double page mode."
 msgstr "CLI"
 
-#: mcomix/run.py:62
+#: mcomix/run.py:72
 #, fuzzy
 msgid "Zoom modes"
 msgstr "CLI"
 
-#: mcomix/run.py:65
+#: mcomix/run.py:75
 #, fuzzy
 msgid "Start the application with zoom set to best fit mode."
 msgstr "CLI"
 
-#: mcomix/run.py:68
+#: mcomix/run.py:78
 #, fuzzy
 msgid "Start the application with zoom set to fit width."
 msgstr "CLI"
 
-#: mcomix/run.py:71
+#: mcomix/run.py:81
 #, fuzzy
 msgid "Start the application with zoom set to fit height."
 msgstr "CLI"
 
-#: mcomix/run.py:74
+#: mcomix/run.py:84
 #, fuzzy
 msgid "Debug options"
 msgstr "CLI"
 
-#: mcomix/run.py:78
+#: mcomix/run.py:88
 #, fuzzy
 msgid "Sets the desired output log level."
 msgstr "CLI"
 
-#: mcomix/run.py:131
+#: mcomix/run.py:183
 #, fuzzy
 msgid "You do not have the required versions of GTK+ and PyGTK installed."
 msgstr "CLI"
 
-#: mcomix/run.py:132
+#: mcomix/run.py:184
 #, fuzzy, python-format
 msgid "Installed GTK+ version is: %s"
 msgstr "CLI"
 
-#: mcomix/run.py:134
+#: mcomix/run.py:186
 #, fuzzy
-msgid "Required GTK+ version is: 2.12.0 or higher\n"
+msgid "Required GTK+ version is: 2.12.0 or higher"
 msgstr "CLI"
 
-#: mcomix/run.py:135
+#: mcomix/run.py:187
 #, fuzzy, python-format
 msgid "Installed PyGTK version is: %s"
 msgstr "CLI"
 
-#: mcomix/run.py:137 mcomix/run.py:141
+#: mcomix/run.py:189 mcomix/run.py:193
 #, fuzzy
 msgid "Required PyGTK version is: 2.12.0 or higher"
 msgstr "CLI"
 
-#: mcomix/run.py:142
+#: mcomix/run.py:194
 #, fuzzy
 msgid "No version of PyGTK was found on your system."
 msgstr "CLI"
 
 # ייתכן ששגיאה זו נגרמה משום ספריות +GTK חסרות.
-#: mcomix/run.py:143
+#: mcomix/run.py:195
 #, fuzzy
 msgid "This error might be caused by missing GTK+ libraries."
 msgstr "CLI"
 
-#: mcomix/run.py:152
+#: mcomix/run.py:203
 #, fuzzy
 msgid "You don't have the required version of the Python Imaging"
 msgstr "CLI"
 
-#: mcomix/run.py:153
+#: mcomix/run.py:204
 #, fuzzy
 msgid "Library (PIL) installed."
 msgstr "CLI"
 
-#: mcomix/run.py:154
+#: mcomix/run.py:205
 #, fuzzy, python-format
 msgid "Installed PIL version is: %s"
 msgstr "CLI"
 
-#: mcomix/run.py:155
+#: mcomix/run.py:206
 #, fuzzy
 msgid "Required PIL version is: 1.1.5 or higher"
 msgstr "CLI"
 
-#: mcomix/run.py:159
+#: mcomix/run.py:210
 #, fuzzy
 msgid "Python Imaging Library (PIL) 1.1.5 or higher is required."
 msgstr "CLI"
 
-#: mcomix/run.py:160
+#: mcomix/run.py:211
 #, fuzzy
 msgid "No version of the Python Imaging Library was found on your system."
 msgstr "CLI"
