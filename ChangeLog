@@ -143,6 +143,8 @@ MComix 1.2
 
     - The Russian translation has been updated (by Ulyanich Michael).
 
+    - The Korean translation has been updated (by Gyeongmin Bak).
+
     - Fixed PDF support with newer versions of MuPDF (1.7 and 1.8).
 
     - Better support for using the 7z executable: encrypted files are now
