@@ -17,7 +17,7 @@ msgstr ""
 #: mcomix/about_dialog.py:28
 #, python-format
 msgid "%s is an image viewer specifically designed to handle comic books."
-msgstr ""
+msgstr "%s는 만화책을 전문으로 다루기 위해 제작한 이미지 뷰어입니다."
 
 #
 # File: src/about.py, line: 57
@@ -28,50 +28,52 @@ msgstr "ZIP, RAR 그리고 tar 압축파일과 일반 이미지 파일을 읽습
 #: mcomix/about_dialog.py:34
 #, python-format
 msgid "%s is licensed under the terms of the GNU General Public License."
-msgstr ""
+msgstr "%s는 GNU General Public License를 따릅니다."
 
 #: mcomix/about_dialog.py:36
 #, python-format
 msgid "A copy of this license can be obtained from %s"
-msgstr ""
+msgstr "라이센스의 전문은 %s에서 볼 수 있습니다."
 
 #: mcomix/archive_extractor.py:44
 #, python-format
 msgid "Non-supported archive format: %s"
-msgstr ""
+msgstr "지원하지 않는 압축 형식: %s"
 
 #: mcomix/archive_extractor.py:188 mcomix/archive_extractor.py:206
 #, python-format
 msgid "! Extraction error: %s"
-msgstr ""
+msgstr "! 압축 해제 에러: %s"
 
 #: mcomix/archive_packer.py:58
 #, python-format
 msgid "! Could not create archive at path \"%s\""
-msgstr ""
+msgstr "! 경로 \"%s\"에 압축파일을 생성할 수 없습니다."
 
 #: mcomix/archive_packer.py:72 mcomix/archive_packer.py:97
 #, python-format
 msgid ""
 "! Could not add file %(sourcefile)s to archive %(archivefile)s, aborting..."
 msgstr ""
+"! 파일 %(sourcefile)s을(를) %(archivefile)s에 추가할 수 없습니다. 취소하는 "
+"중..."
 
 #: mcomix/archive_tools.py:165
 #, python-format
 msgid "! Could not read %s"
-msgstr ""
+msgstr "! %s을(를) 읽을 수 없습니다."
 
 #: mcomix/bookmark_backend.py:148
 #, python-format
 msgid "! Could not parse bookmarks file %s"
-msgstr ""
+msgstr "! 책갈피 파일 %s를 해석할 수 없습니다."
 
 #: mcomix/bookmark_backend.py:209
 #, python-format
 msgid "Replace existing bookmark on page %s?"
 msgid_plural "Replace existing bookmarks on pages %s?"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "페이지 %s에 이미 존재하는 책갈피를 교체하시겠습니까?"
+msgstr[1] "페이지 %s에 이미 존재하는 책갈피들을 교체하시겠습니까?"
 
 #: mcomix/bookmark_backend.py:214
 #, python-format
@@ -79,20 +81,23 @@ msgid ""
 "The current book already contains marked pages. Do you want to replace them "
 "with a new bookmark on page %d? "
 msgstr ""
+"현재 책은 이미 책갈피로 표시된 페이지를 포함하고있습니다.기존의 책갈피를 페이"
+"지 %d의 새 책갈피로 교체하시겠습니까?"
 
 #: mcomix/bookmark_backend.py:217
 msgid ""
 "Selecting \"No\" will create a new bookmark without affecting the other "
 "bookmarks."
 msgstr ""
+"\"아니요\"를 선택하면 다른 책갈피에 영향을 주지 않고 새 책갈피를 생성합니다."
 
 #: mcomix/bookmark_dialog.py:16
 msgid "Edit Bookmarks"
-msgstr ""
+msgstr "책갈피 편집"
 
 #: mcomix/bookmark_dialog.py:50
 msgid "Type"
-msgstr ""
+msgstr "유형"
 
 #
 # File: src/bookmark.py, line: 255
@@ -119,20 +124,20 @@ msgstr "위치"
 #. TRANSLATORS: "Added" as in "Date Added"
 #: mcomix/bookmark_dialog.py:55
 msgid "Added"
-msgstr ""
+msgstr "추가됨"
 
 #: mcomix/bookmark_menu.py:24
 msgid "Add _Bookmark"
-msgstr ""
+msgstr "책갈피 추가(_B)"
 
 #: mcomix/bookmark_menu.py:26
 msgid "_Edit Bookmarks..."
-msgstr ""
+msgstr "책갈피 편집...(_E)"
 
 #: mcomix/callback.py:86
 #, python-format
 msgid "! Callback %(function)r failed: %(error)s"
-msgstr ""
+msgstr "! 콜백 %(function)r 실패: %(error)s"
 
 #
 # File: src/comment.py, line: 16
@@ -146,7 +151,7 @@ msgstr "주석"
 #: mcomix/comment_dialog.py:92
 #, python-format
 msgid "Could not read %s"
-msgstr "읽을 수 없습니다. %s"
+msgstr "%s을(를) 읽을 수 없습니다."
 
 #
 # File: src/edit.py, line: 255
@@ -156,7 +161,8 @@ msgid ""
 "Please note that the only files that are automatically added to this list "
 "are those files in archives that MComix recognizes as comments."
 msgstr ""
-"참고: Comix 가 주석으로 분류한 자료들은 이 목록에 자동적으로 추가됩니다."
+"참고: 압축파일 내 MComix가 주석으로 인식한 파일만 이 목록에 자동으로 추가합니"
+"다."
 
 #
 # File: src/edit.py, line: 270
@@ -175,11 +181,11 @@ msgstr "압축파일에서 제거"
 # File: src/edit.py, line: 28
 #: mcomix/edit_dialog.py:28 mcomix/keybindings.py:136
 msgid "Edit archive"
-msgstr "압축파일 수정"
+msgstr "압축파일 편집"
 
 #: mcomix/edit_dialog.py:40
 msgid "_Import"
-msgstr ""
+msgstr "가져오기(_I)"
 
 #
 # File: src/edit.py, line: 50
@@ -193,13 +199,13 @@ msgstr "이미지"
 #: mcomix/edit_dialog.py:56
 #, fuzzy
 msgid "Comment files"
-msgstr "주석"
+msgstr "주석 파일"
 
 #
 # File: src/edit.py, line: 99
 #: mcomix/edit_dialog.py:134
 msgid "The new archive could not be saved!"
-msgstr "새 압축파일을 저장할 수 없습니다."
+msgstr "새 압축파일을 저장할 수 없습니다!"
 
 #
 # File: src/edit.py, line: 101
@@ -217,50 +223,50 @@ msgstr "ZIP 압축파일로 저장되어있습니다."
 # File: src/enhance.py, line: 51
 #: mcomix/enhance_dialog.py:17 mcomix/keybindings.py:138
 msgid "Enhance image"
-msgstr "이미지 향상"
+msgstr "이미지 보정"
 
 #: mcomix/enhance_dialog.py:22
 msgid "Reset to defaults."
-msgstr ""
+msgstr "기본값으로 리셋"
 
 #: mcomix/enhance_dialog.py:25
 msgid "Save the selected values as default for future files."
-msgstr ""
+msgstr "앞으로를 위해 선택한 값을 기본값으로 저장."
 
 #
 # File: src/enhance.py, line: 79
 #: mcomix/enhance_dialog.py:68
 #, fuzzy
 msgid "_Brightness:"
-msgstr "명도"
+msgstr "명도(_B):"
 
 #
 # File: src/enhance.py, line: 90
 #: mcomix/enhance_dialog.py:69
 #, fuzzy
 msgid "_Contrast:"
-msgstr "대비"
+msgstr "대비(_C):"
 
 #
 # File: src/enhance.py, line: 101
 #: mcomix/enhance_dialog.py:70
 #, fuzzy
 msgid "S_aturation:"
-msgstr "채도"
+msgstr "채도(_a):"
 
 #
 # File: src/enhance.py, line: 112
 #: mcomix/enhance_dialog.py:71
 #, fuzzy
 msgid "S_harpness:"
-msgstr "선명함"
+msgstr "선명도(_h):"
 
 #
 # File: src/enhance.py, line: 126
 #: mcomix/enhance_dialog.py:76
 #, fuzzy
 msgid "_Automatically adjust contrast"
-msgstr "자동으로 명암을 조정합니다."
+msgstr "자동으로 명암 대비를 조정합니다.(_A)"
 
 #
 # File: src/enhance.py, line: 128
@@ -268,7 +274,7 @@ msgstr "자동으로 명암을 조정합니다."
 msgid ""
 "Automatically adjust contrast (both lightness and darkness), separately for "
 "each colour band."
-msgstr "자동으로 명암을 조절합니다"
+msgstr "각 색 영역마다 따로 자동으로 명암 대비를 조정합니다."
 
 #
 # File: src/filechooser.py, line: 35
@@ -296,12 +302,10 @@ msgstr "모든 파일"
 msgid "All archives"
 msgstr "모든 압축파일"
 
-#
-# File: src/filechooser.py, line: 82
 #: mcomix/file_chooser_base_dialog.py:134
 #, fuzzy, python-format
 msgid "%s archives"
-msgstr "%s 압축파일"
+msgstr "7z 압축파일"
 
 #
 # File: src/filechooser.py, line: 171
@@ -316,7 +320,7 @@ msgstr "모든 이미지"
 #: mcomix/file_chooser_base_dialog.py:150
 #, fuzzy, python-format
 msgid "%s images"
-msgstr "%s 이미지"
+msgstr "모든 이미지"
 
 #
 # File: src/filechooser.py, line: 125
@@ -335,33 +339,33 @@ msgstr "내용을 덮어 쓰게됩니다."
 # File: src/library.py, line: 789
 #: mcomix/file_chooser_library_dialog.py:17
 msgid "Add books"
-msgstr "만화책 추가"
+msgstr "책 추가"
 
 #
 # File: src/filehandler.py, line: 285
 #: mcomix/file_handler.py:147
 #, python-format
 msgid "No images in '%s'"
-msgstr "이미지가 없습니다. %s"
+msgstr "%s에 이미지가 하나도 없습니다."
 
 #
 # File: src/filehandler.py, line: 213
 #: mcomix/file_handler.py:265
 #, python-format
 msgid "Could not open %s: No such file."
-msgstr "파일을 열 수 없습니다. %s"
+msgstr "%s을(를) 열 수 없습니다.: 파일이 존재하지 않습니다."
 
 #
 # File: src/filehandler.py, line: 217
 #: mcomix/file_handler.py:268 mcomix/file_provider.py:134
 #, python-format
 msgid "Could not open %s: Permission denied."
-msgstr "퍼미션 거부. %s"
+msgstr "%s을(를) 열 수 없습니다.: 접근 권한이 거부되었습니다."
 
 #: mcomix/file_handler.py:365
 #, python-format
 msgid "Continue reading from page %d?"
-msgstr ""
+msgstr "%d 페이지부터 계속해서 읽으시겠습니까?"
 
 #: mcomix/file_handler.py:366
 #, python-format
@@ -370,21 +374,23 @@ msgid ""
 "reading will resume on page %(page)d. Otherwise, the first page will be "
 "loaded."
 msgstr ""
+"%(date)s, %(time)s에 여기까지 읽으셨습니다. \"네\"를 선택하시면 %(page)d 페이"
+"지로 돌아갑니다. 아니면 첫 페이지를 불러옵니다."
 
 #: mcomix/file_handler.py:660
 #, python-format
 msgid "! Corrupt preferences file \"%s\", deleting..."
-msgstr ""
+msgstr "! 환경설정 파일 \"%s\"이(가) 손상되었습니다. 삭제하는중..."
 
 #: mcomix/file_provider.py:104
 #, python-format
 msgid "Invalid path: '%s'"
-msgstr ""
+msgstr "유효하지 않은 경로: '%s'"
 
 #: mcomix/icons.py:58
 #, python-format
 msgid "! Could not load icon \"%s\""
-msgstr ""
+msgstr "! 아이콘 \"%s\"를 불러올 수 없습니다."
 
 #
 # File: src/filehandler.py, line: 411
@@ -395,7 +401,7 @@ msgstr "알 수 없는 파일 형식"
 #: mcomix/keybindings_editor.py:42
 #, python-format
 msgid "Key %d"
-msgstr ""
+msgstr "키 %d"
 
 #
 # File: src/ui.py, line: 284
@@ -409,7 +415,7 @@ msgstr "이전 페이지"
 #: mcomix/keybindings.py:50 mcomix/keybindings.py:51 mcomix/keybindings.py:53
 #: mcomix/keybindings.py:54 mcomix/keybindings.py:55 mcomix/keybindings.py:56
 msgid "Navigation"
-msgstr ""
+msgstr "네비게이션"
 
 #
 # File: src/ui.py, line: 285
@@ -422,39 +428,39 @@ msgstr "다음 페이지"
 #: mcomix/keybindings.py:42
 #, fuzzy
 msgid "Back ten pages"
-msgstr "마지막 페이지"
+msgstr "10 페이지 이전으로"
 
 #: mcomix/keybindings.py:43
 msgid "Forward ten pages"
-msgstr ""
+msgstr "10페이지 다음으로"
 
 #
 # File: src/ui.py, line: 284
 #: mcomix/keybindings.py:44
 #, fuzzy
 msgid "Previous page (dynamic)"
-msgstr "이전 페이지"
+msgstr "이전 페이지 (계속해서)"
 
 #
 # File: src/ui.py, line: 285
 #: mcomix/keybindings.py:45
 #, fuzzy
 msgid "Next page (dynamic)"
-msgstr "다음 페이지"
+msgstr "다음 페이지 (계속해서)"
 
 #
 # File: src/ui.py, line: 284
 #: mcomix/keybindings.py:46
 #, fuzzy
 msgid "Previous page (always one page)"
-msgstr "이전 페이지"
+msgstr "이전 페이지 (한장씩)"
 
 #
 # File: src/ui.py, line: 285
 #: mcomix/keybindings.py:47
 #, fuzzy
 msgid "Next page (always one page)"
-msgstr "다음 페이지"
+msgstr "다음 페이지(한장씩)"
 
 #
 # File: src/ui.py, line: 282
@@ -473,33 +479,33 @@ msgstr "마지막 페이지"
 #: mcomix/keybindings.py:51
 #, fuzzy
 msgid "Go to page"
-msgstr "다음 페이지"
+msgstr "페이지로 이동"
 
 #
 # File: src/edit.py, line: 28
 #: mcomix/keybindings.py:53 mcomix/ui.py:55
 #, fuzzy
 msgid "Next archive"
-msgstr "압축파일 수정"
+msgstr "다음 압축파일"
 
 #
 # File: src/ui.py, line: 284
 #: mcomix/keybindings.py:54 mcomix/ui.py:57
 #, fuzzy
 msgid "Previous archive"
-msgstr "이전 페이지"
+msgstr "이전 압축파일"
 
 #: mcomix/keybindings.py:55 mcomix/ui.py:58 mcomix/ui.py:59
 msgid "Next directory"
-msgstr ""
+msgstr "다음 디렉토리"
 
 #: mcomix/keybindings.py:56 mcomix/ui.py:60 mcomix/ui.py:61
 msgid "Previous directory"
-msgstr ""
+msgstr "이전 디렉토리"
 
 #: mcomix/keybindings.py:59
 msgid "Scroll to bottom left"
-msgstr ""
+msgstr "왼쪽 아래로 스크롤"
 
 #
 # File: src/preferences.py, line: 167
@@ -514,74 +520,74 @@ msgstr "스크롤"
 
 #: mcomix/keybindings.py:60
 msgid "Scroll to bottom center"
-msgstr ""
+msgstr "가운데 아래로 스크롤"
 
 #: mcomix/keybindings.py:61
 msgid "Scroll to bottom right"
-msgstr ""
+msgstr "오른쪽 아래로 스크롤"
 
 #: mcomix/keybindings.py:63
 msgid "Scroll to middle left"
-msgstr ""
+msgstr "왼쪽 가운데로 스크롤"
 
 #: mcomix/keybindings.py:64
 msgid "Scroll to center"
-msgstr ""
+msgstr "가운데로 스크롤"
 
 #: mcomix/keybindings.py:65
 msgid "Scroll to middle right"
-msgstr ""
+msgstr "오른쪽 가운데로 스크롤"
 
 #: mcomix/keybindings.py:67
 msgid "Scroll to top left"
-msgstr ""
+msgstr "왼쪽 위로 스크롤"
 
 #: mcomix/keybindings.py:68
 msgid "Scroll to top center"
-msgstr ""
+msgstr "가운데 위로 스크롤"
 
 #: mcomix/keybindings.py:69
 msgid "Scroll to top right"
-msgstr ""
+msgstr "오른쪽 위로 스크롤"
 
 #: mcomix/keybindings.py:71
 msgid "Scroll down"
-msgstr ""
+msgstr "아래로 스크롤"
 
 #: mcomix/keybindings.py:72
 msgid "Scroll up"
-msgstr ""
+msgstr "위로 스크롤"
 
 #: mcomix/keybindings.py:73
 msgid "Scroll right"
-msgstr ""
+msgstr "오른쪽으로 스크롤"
 
 #: mcomix/keybindings.py:74
 msgid "Scroll left"
-msgstr ""
+msgstr "왼쪽으로 스크롤"
 
 #: mcomix/keybindings.py:76
 msgid "Smart scroll up"
-msgstr ""
+msgstr "위로 스마트 스크롤"
 
 #: mcomix/keybindings.py:77
 msgid "Smart scroll down"
-msgstr ""
+msgstr "아래로 스마트 스크롤"
 
 #: mcomix/keybindings.py:80
 msgid "Zoom in"
-msgstr ""
+msgstr "확대"
 
 #
 # File: src/ui.py, line: 42
 #: mcomix/keybindings.py:80 mcomix/keybindings.py:81 mcomix/keybindings.py:82
 #, fuzzy
 msgid "Zoom"
-msgstr "확대(_Z)"
+msgstr "확대/축소"
 
 #: mcomix/keybindings.py:81
 msgid "Zoom out"
-msgstr ""
+msgstr "축소"
 
 #: mcomix/keybindings.py:82
 msgid "Normal size"
@@ -592,7 +598,7 @@ msgstr ""
 #: mcomix/keybindings.py:84
 #, fuzzy
 msgid "Keep transformation"
-msgstr "회전 상태 유지(_K)"
+msgstr "회전 상태 유지"
 
 #
 # File: src/ui.py, line: 93
@@ -601,54 +607,54 @@ msgstr "회전 상태 유지(_K)"
 #: mcomix/keybindings.py:90
 #, fuzzy
 msgid "Transformation"
-msgstr "회전 상태 유지(_K)"
+msgstr "회전"
 
 #
 # File: src/ui.py, line: 52
 #: mcomix/keybindings.py:85 mcomix/keybindings.py:92 mcomix/keybindings.py:94
 #, fuzzy
 msgid "Rotate 90 degrees CW"
-msgstr "우측으로 90도 회전(_R)"
+msgstr "시계방향 90도 회전"
 
 #
 # File: src/ui.py, line: 54
 #: mcomix/keybindings.py:86
 #, fuzzy
 msgid "Rotate 180 degrees"
-msgstr "180도 회전(_G)"
+msgstr "180도 회전"
 
 #
 # File: src/ui.py, line: 56
 #: mcomix/keybindings.py:87 mcomix/keybindings.py:93 mcomix/keybindings.py:95
 #, fuzzy
 msgid "Rotate 90 degrees CCW"
-msgstr "좌측으로 90도 회전(_E)"
+msgstr "반시계방향 90도 회전"
 
 #
 # File: src/ui.py, line: 58
 #: mcomix/keybindings.py:88
 #, fuzzy
 msgid "Flip horizontally"
-msgstr "좌우 뒤집기(_P)"
+msgstr "좌우 뒤집기"
 
 #
 # File: src/ui.py, line: 60
 #: mcomix/keybindings.py:89
 #, fuzzy
 msgid "Flip vertically"
-msgstr "상하 뒤집기(_V)"
+msgstr "상하 뒤집기"
 
 #: mcomix/keybindings.py:90
 msgid "Never autorotate"
-msgstr ""
+msgstr "자동 회전 하지 않음"
 
 #: mcomix/keybindings.py:92 mcomix/keybindings.py:93
 msgid "Autorotate by width"
-msgstr ""
+msgstr "가로 길이에 따라 자동 회전"
 
 #: mcomix/keybindings.py:94 mcomix/keybindings.py:95
 msgid "Autorotate by height"
-msgstr ""
+msgstr "세로 길이에 따라 자동 회전"
 
 #
 # File: src/preferences.py, line: 177
@@ -667,17 +673,17 @@ msgstr "양면 보기"
 #: mcomix/keybindings.py:108
 #, fuzzy
 msgid "View mode"
-msgstr "가로 폭 맞춤"
+msgstr "보기 모드"
 
 #
 # File: src/ui.py, line: 297
 #: mcomix/keybindings.py:98 mcomix/ui.py:128
 msgid "Manga mode"
-msgstr "만화 페이지순 보기"
+msgstr "일본 만화 페이지순 보기"
 
 #: mcomix/keybindings.py:99 mcomix/ui.py:129
 msgid "Invert smart scroll"
-msgstr ""
+msgstr "스마트 스크롤 방향 뒤집기"
 
 #
 # File: src/ui.py, line: 298
@@ -687,14 +693,14 @@ msgstr "돋보기"
 
 #: mcomix/keybindings.py:102 mcomix/ui.py:138
 msgid "Stretch small images"
-msgstr ""
+msgstr "작은 이미지 확대"
 
 #
 # File: src/preferences.py, line: 262
 # File: src/ui.py, line: 288
 #: mcomix/keybindings.py:104 mcomix/ui.py:146
 msgid "Best fit mode"
-msgstr "최적 보기"
+msgstr "최적 폭 맞춤 보기"
 
 #
 # File: src/preferences.py, line: 263
@@ -715,18 +721,18 @@ msgstr "세로 폭 맞춤"
 #: mcomix/keybindings.py:107
 #, fuzzy
 msgid "Fit size mode"
-msgstr "가로폭 맞춤(_W)"
+msgstr "크기 맞춤"
 
 #
 # File: src/preferences.py, line: 265
 # File: src/ui.py, line: 294
 #: mcomix/keybindings.py:108 mcomix/ui.py:154
 msgid "Manual zoom mode"
-msgstr "수동 줌 조절"
+msgstr "수동 확대/축소 조절"
 
 #: mcomix/keybindings.py:111
 msgid "Exit from fullscreen"
-msgstr ""
+msgstr "전체화면에서 나가기"
 
 #: mcomix/keybindings.py:111 mcomix/keybindings.py:113
 #: mcomix/keybindings.py:114 mcomix/keybindings.py:115
@@ -735,15 +741,15 @@ msgstr ""
 #: mcomix/keybindings.py:120 mcomix/keybindings.py:121
 #: mcomix/keybindings.py:122 mcomix/preferences_dialog.py:66
 msgid "User interface"
-msgstr ""
+msgstr "사용자 인터페이스"
 
 #: mcomix/keybindings.py:113
 msgid "Show OSD panel"
-msgstr ""
+msgstr "OSD 패널 보이기"
 
 #: mcomix/keybindings.py:114
 msgid "Minimize"
-msgstr ""
+msgstr "최소화"
 
 #
 # File: src/preferences.py, line: 271
@@ -753,49 +759,49 @@ msgstr "전체화면"
 
 #: mcomix/keybindings.py:116
 msgid "Show/hide toolbar"
-msgstr ""
+msgstr "도구 막대 보이기/숨기기"
 
 #: mcomix/keybindings.py:117
 msgid "Show/hide menubar"
-msgstr ""
+msgstr "메뉴 막대 보이기/숨기기"
 
 #
 # File: src/ui.py, line: 83
 #: mcomix/keybindings.py:118
 #, fuzzy
 msgid "Show/hide statusbar"
-msgstr "상태바(_A)"
+msgstr "상태 막대 보이기/숨기기"
 
 #
 # File: src/ui.py, line: 85
 #: mcomix/keybindings.py:119
 #, fuzzy
 msgid "Show/hide scrollbars"
-msgstr "스크롤바(_C)"
+msgstr "스크롤 막대 보이기/숨기기"
 
 #
 # File: src/preferences.py, line: 109
 #: mcomix/keybindings.py:120 mcomix/preferences_dialog.py:88
 msgid "Thumbnails"
-msgstr "미리보기"
+msgstr "썸네일"
 
 #
 # File: src/ui.py, line: 89
 #: mcomix/keybindings.py:121
 #, fuzzy
 msgid "Show/hide all"
-msgstr "모두 숨김(_I)"
+msgstr "모두 보이기/숨기기"
 
 #
 # File: src/preferences.py, line: 279
 #: mcomix/keybindings.py:122 mcomix/slideshow.py:47 mcomix/ui.py:135
 #, fuzzy
 msgid "Start slideshow"
-msgstr "슬라이드쇼"
+msgstr "슬라이드쇼 시작"
 
 #: mcomix/keybindings.py:125
 msgid "Delete"
-msgstr ""
+msgstr "삭제"
 
 #
 # File: src/preferences.py, line: 196
@@ -815,39 +821,39 @@ msgstr "파일"
 #: mcomix/keybindings.py:126
 #, fuzzy
 msgid "Refresh"
-msgstr "기타 파일"
+msgstr "새로 고침"
 
 #
 # File: src/ui.py, line: 48
 #: mcomix/keybindings.py:127
 #, fuzzy
 msgid "Close"
-msgstr "닫기(_C)"
+msgstr "닫기"
 
 #
 # File: src/ui.py, line: 50
 #: mcomix/keybindings.py:128
 #, fuzzy
 msgid "Quit"
-msgstr "종료(_Q)"
+msgstr "종료"
 
 #: mcomix/keybindings.py:129
 msgid "Save and quit"
-msgstr ""
+msgstr "저장하고 종료"
 
 #
 # File: src/filechooser.py, line: 39
 #: mcomix/keybindings.py:130
 #, fuzzy
 msgid "Save As"
-msgstr "저장"
+msgstr "다른 이름으로 저장"
 
 #
 # File: src/properties.py, line: 135
 #: mcomix/keybindings.py:132
 #, fuzzy
 msgid "Archive comments"
-msgstr "압축파일"
+msgstr "압축파일 주석"
 
 #
 # File: src/properties.py, line: 89
@@ -869,34 +875,34 @@ msgstr "라이브러리"
 
 #: mcomix/keybindings.py:145
 msgid "Execute external command"
-msgstr ""
+msgstr "외부 명령 실행"
 
 #
 # File: src/bookmark.py, line: 229
 #: mcomix/keybindings.py:146
 #, fuzzy
 msgid "External commands"
-msgstr "북마크 편집"
+msgstr "외부 명령"
 
 #: mcomix/keybindings.py:182
 #, python-format
 msgid "Keybinding for \"%(action)s\" overrides hotkey for another action."
-msgstr ""
+msgstr "\"%(action)s\"에 할당한 키는 다른 동작의 단축키보다 우선 동작합니다."
 
 #: mcomix/keybindings.py:294
 #, python-format
 msgid "Couldn't load keybindings: %s"
-msgstr ""
+msgstr "키설정을 불러오지 못했습니다.: %s"
 
 #: mcomix/last_read_page.py:16 mcomix/library/backend.py:21
 msgid "! Could neither find pysqlite2 nor sqlite3."
-msgstr ""
+msgstr "! pysqlite2, sqlite3 둘 중 어느 하나도 찾을 수 없습니다."
 
 #: mcomix/last_read_page.py:209 mcomix/thumbnail_tools.py:117
 #: mcomix/library/book_area.py:578
 #, python-format
 msgid "! Could not remove file \"%s\""
-msgstr ""
+msgstr "! 파일 \"%s\"을(를) 제거할 수 없습니다."
 
 #
 # File: src/main.py, line: 666
@@ -906,27 +912,27 @@ msgstr "슬라이드쇼"
 
 #: mcomix/main.py:1011
 msgid "Save page as"
-msgstr ""
+msgstr "페이지를 다른 이름으로 저장"
 
 #: mcomix/main.py:1031
 #, python-format
 msgid "Delete \"%s\"?"
-msgstr ""
+msgstr "\"%s\"을(를) 삭제합니까?"
 
 #: mcomix/main.py:1032
 msgid "The file will be deleted from your harddisk."
-msgstr ""
+msgstr "파일이 하드디스크에서 삭제됩니다."
 
 #: mcomix/message_dialog.py:32
 msgid "Do not ask again."
-msgstr ""
+msgstr "더 이상 묻지 않음."
 
 #
 # File: src/bookmark.py, line: 229
 #: mcomix/openwith_menu.py:22
 #, fuzzy
 msgid "_Edit commands"
-msgstr "북마크 편집"
+msgstr "주석 편집(_E)"
 
 #: mcomix/openwith.py:76
 #, python-format
@@ -2522,9 +2528,9 @@ msgid "_Library..."
 msgstr "라이브러리(_L)"
 
 #: mcomix/worker_thread.py:73
-#, python-format
+#, fuzzy, python-format
 msgid "! Worker thread processing %(function)r failed: %(error)s"
-msgstr ""
+msgstr "! 콜백 %(function)r 실패: %(error)s"
 
 #: mcomix/archive/__init__.py:13
 msgid "The archive is password-protected:"
@@ -2988,10 +2994,9 @@ msgid "Automatically scan for new books when library is _opened"
 msgstr "모음집에 자동으로 만화책을 추가"
 
 #
-# File: src/thumbremover.py, line: 58
-#, fuzzy
-#~ msgid "Invalid working directory."
-#~ msgstr "미리보기 디렉토리"
+# File: src/filechooser.py, line: 82
+#~ msgid "ZIP archives"
+#~ msgstr "ZIP 압축파일"
 
 #
 # File: src/filechooser.py, line: 86
@@ -3002,6 +3007,9 @@ msgstr "모음집에 자동으로 만화책을 추가"
 # File: src/filechooser.py, line: 84
 #~ msgid "RAR archives"
 #~ msgstr "RAR 압축파일"
+
+#~ msgid "LHA archives"
+#~ msgstr "LHA 압축파일"
 
 #
 # File: src/filechooser.py, line: 173
@@ -3020,25 +3028,31 @@ msgstr "모음집에 자동으로 만화책을 추가"
 # File: src/filechooser.py, line: 252
 #, fuzzy
 #~ msgid "GIF images"
-#~ msgstr "PNG 이미지"
+#~ msgstr "GIF 이미지"
 
 #
 # File: src/edit.py, line: 50
 #, fuzzy
 #~ msgid "TIFF images"
-#~ msgstr "이미지"
+#~ msgstr "TIFF 이미지"
 
 #
 # File: src/filechooser.py, line: 174
 # File: src/filechooser.py, line: 252
 #, fuzzy
 #~ msgid "BMP images"
-#~ msgstr "PNG 이미지"
+#~ msgstr "BMP 이미지"
 
 #
 # File: src/filehandler.py, line: 222
 #~ msgid "Could not open %s: Unknown file type."
-#~ msgstr "알 수없는 파일 형식. %s"
+#~ msgstr "%s을(를) 열 수 없습니다.: 알 수 없는 파일 형식입니다."
+
+#
+# File: src/thumbremover.py, line: 58
+#, fuzzy
+#~ msgid "Invalid working directory."
+#~ msgstr "미리보기 디렉토리"
 
 #
 # File: src/preferences.py, line: 95
