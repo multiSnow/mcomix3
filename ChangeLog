@@ -159,6 +159,8 @@ MComix 1.2
 
     - Fixed support for LHA archives (they were always marked as empty).
 
+    - Fixed support for tar.xz archives (they were always marked as empty).
+
     - Updated libraries for the Windows distribution: Pillow 3.1.0 and
       UnRAR 5.30
 
