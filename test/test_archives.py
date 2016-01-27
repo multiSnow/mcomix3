@@ -102,6 +102,8 @@ def make_archive(outfile, contents, format='zip', solid=False, password=None, he
                 compression = 'j'
             elif 'tar.gz' == format:
                 compression = 'z'
+            elif 'tar.xz' == format:
+                compression = 'J'
             else:
                 raise UnsupportedFormat(format)
             cmd = ['tar', '-cv%sf' % compression, outpath, '--']
@@ -471,6 +473,19 @@ class RecursiveArchiveFormatRarEmbeddedRedAndBluesRarTest(RecursiveArchiveFormat
     base_handler = rar.RarArchive
     is_available = rar.RarArchive.is_available()
 
+class RecursiveArchiveFormat7zExternalTarXzTest(RecursiveArchiveFormatTest, MComixTest):
+
+    base_handler = sevenzip_external.TarArchive
+    is_available = sevenzip_external.TarArchive.is_available()
+    solid = True
+    format = 'tar.xz'
+    archive = 'SolidFlat'
+    contents = (
+        ('arg.jpeg', os.path.join('archive.tar', 'arg.jpeg'), 'images/01-JPG-Indexed.jpg'),
+        ('foo.JPG' , os.path.join('archive.tar', 'foo.JPG' ), 'images/04-PNG-Indexed.png'),
+        ('bar.jpg' , os.path.join('archive.tar', 'bar.jpg' ), 'images/02-JPG-RGB.jpg'    ),
+        ('meh.png' , os.path.join('archive.tar', 'meh.png' ), 'images/03-PNG-RGB.png'    ),
+    )
 
 xfail_list = [
     # No password support when using some external tools.

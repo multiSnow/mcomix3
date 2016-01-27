@@ -41,6 +41,10 @@ _HANDLERS = {
     constants.BZIP2: (
         tar.TarArchive,
     ),
+    constants.XZ: (
+        # No LZMA support in Python 2 tarfile module.
+        sevenzip_external.TarArchive,
+    ),
     constants.RAR: (
         rar.RarArchive,
         rar_external.RarArchive,
@@ -153,7 +157,7 @@ def archive_mime_type(path):
 
             # Headers for TAR-XZ and TAR-LZMA that aren't supported by tarfile
             if magic[0:5] == '\xFD7zXZ' or magic[0:5] == ']\x00\x00\x80\x00':
-                return constants.SEVENZIP
+                return constants.XZ
 
             if magic[2:4] == '-l':
                 return constants.LHA

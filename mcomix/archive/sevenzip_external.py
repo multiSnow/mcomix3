@@ -204,4 +204,42 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         return bool(SevenZipArchive._find_7z_executable())
 
 
+class TarArchive(SevenZipArchive):
+
+    '''Special class for handling tar archives.
+
+       Needed because for XZ archives, the technical listing
+       does not contain the archive member name...
+    '''
+
+    def __init__(self, archive):
+        super(TarArchive, self).__init__(archive)
+        self._is_solid = True
+        self._is_encrypted =  False
+
+    def _get_extract_arguments(self, list_file=None):
+        # Note: we ignore the list_file argument, which
+        # contains our made up archive member name.
+        return super(TarArchive, self)._get_extract_arguments()
+
+    def iter_contents(self):
+        if not self._get_executable():
+            return
+        self._state = self.STATE_HEADER
+        # We make up a name that's guaranteed to be
+        # recognized as an archive by MComix.
+        self._path = 'archive.tar'
+        proc = process.popen(self._get_list_arguments(), stderr=process.STDOUT)
+        try:
+            for line in proc.stdout:
+                self._parse_list_output_line(line.rstrip(os.linesep))
+        finally:
+            proc.stdout.close()
+            proc.wait()
+        if self._contents:
+            # The archive should not contain more than 1 member.
+            assert 1 == len(self._contents)
+            yield self._unicode_filename(self._path)
+        self.filenames_initialized = True
+
 # vim: expandtab:sw=4:ts=4

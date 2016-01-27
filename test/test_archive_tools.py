@@ -15,6 +15,7 @@ _EXTENSION_TO_MIME_TYPES = {
     'tar'    : constants.TAR,
     'tar.gz' : constants.GZIP,
     'tar.bz2': constants.BZIP2,
+    'tar.xz' : constants.XZ,
     'pdf'    : constants.PDF,
     '7z'     : constants.SEVENZIP,
     'lha'    : constants.LHA,
@@ -26,6 +27,7 @@ _ARCHIVE_TYPE_NAMES = {
     constants.TAR         : 'tar',
     constants.GZIP        : 'gzip',
     constants.BZIP2       : 'bzip2',
+    constants.XZ          : 'xz',
     constants.PDF         : 'pdf',
     constants.SEVENZIP    : '7z',
     constants.LHA         : 'lha',
@@ -41,7 +43,7 @@ class ArchiveToolsTest(MComixTest):
            ext = '.'.join(filename.split('.')[1:])
            path = os.path.join(dir, filename)
            archive_type = archive_tools.archive_mime_type(path)
-           expected_type = _EXTENSION_TO_MIME_TYPES[ext]
+           expected_type = _EXTENSION_TO_MIME_TYPES.get(ext, '???')
            msg = (
                'archive_mime_type("%s") failed; '
                'result differs: %s [%s] instead of %s [%s]'
