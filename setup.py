@@ -95,8 +95,8 @@ setuptools.setup(
              'mime/icons/48x48/application-x-cbt.png'])],
 
     # Package metadata
-    maintainer = 'Oddegamra',
-    maintainer_email = 'oddegamra@gmx.org',
+    maintainer = 'Ark',
+    maintainer_email = 'https://sourceforge.net/u/aaku/profile/',
     url = 'http://mcomix.sourceforge.net',
     description = 'GTK comic book viewer',
     long_description = 'MComix is a user-friendly, customizable image viewer. '
