@@ -29,7 +29,7 @@ def wait_and_exit():
 
 def print_version(opt, value, parser, *args, **kwargs):
     """Print the version number and exit."""
-    print_(constants.APPNAME + ' ' + constants.VERSION)
+    print constants.APPNAME + ' ' + constants.VERSION
     sys.exit(0)
 
 def parse_arguments(argv):
