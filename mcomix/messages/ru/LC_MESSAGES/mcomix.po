@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.90.4\n"
 "Report-Msgid-Bugs-To: https://sourceforge.net/projects/mcomix/\n"
-"POT-Creation-Date: 2016-01-24 17:01+0100\n"
+"POT-Creation-Date: 2016-01-30 20:00+0100\n"
 "PO-Revision-Date: 2016-01-10 18:09+0200\n"
 "Last-Translator: Ulyanich Michael <ulianich_mihail@ukr.net>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -69,7 +69,7 @@ msgstr ""
 "действия..."
 
 # File: src/comment.py, line: 53
-#: mcomix/archive_tools.py:165
+#: mcomix/archive_tools.py:169
 #, python-format
 msgid "! Could not read %s"
 msgstr "! Невозможно прочитать %s"
@@ -1918,7 +1918,7 @@ msgstr ""
 
 #
 # File: src/archive.py, line: 301
-#: mcomix/strings.py:9 mcomix/strings.py:17
+#: mcomix/strings.py:9 mcomix/strings.py:18
 msgid "ZIP archive"
 msgstr "ZIP архив"
 
@@ -1946,177 +1946,184 @@ msgstr "Tar архив сжатый gzip"
 msgid "Bzip2 compressed tar archive"
 msgstr "Tar архив сжатый bzip2"
 
+#
+# File: src/archive.py, line: 303
 #: mcomix/strings.py:14
+#, fuzzy
+msgid "XZ compressed tar archive"
+msgstr "Tar архив сжатый gzip"
+
+#: mcomix/strings.py:15
 msgid "PDF document"
 msgstr "PDF документ"
 
 #
 # File: src/archive.py, line: 301
-#: mcomix/strings.py:15
+#: mcomix/strings.py:16
 msgid "7z archive"
 msgstr "7z архив"
 
-#: mcomix/strings.py:16
+#: mcomix/strings.py:17
 msgid "LHA archive"
 msgstr "LHA архив"
 
-#: mcomix/strings.py:21
+#: mcomix/strings.py:22
 msgid "Original vision/developer of Comix"
 msgstr "Разработчик Comix, оригинальной версии программы"
 
-#: mcomix/strings.py:22 mcomix/strings.py:23 mcomix/strings.py:24
-#: mcomix/strings.py:25
+#: mcomix/strings.py:23 mcomix/strings.py:24 mcomix/strings.py:25
+#: mcomix/strings.py:26
 msgid "MComix developer"
 msgstr "Разработчик  MComix"
 
 #
 # File: src/about.py, line: 77
-#: mcomix/strings.py:28 mcomix/strings.py:29 mcomix/strings.py:30
+#: mcomix/strings.py:29 mcomix/strings.py:30 mcomix/strings.py:31
 msgid "Simplified Chinese translation"
 msgstr "Упрощенный Китайский перевод"
 
 #
 # File: src/about.py, line: 78
-#: mcomix/strings.py:31 mcomix/strings.py:32
+#: mcomix/strings.py:32 mcomix/strings.py:33
 msgid "Spanish translation"
 msgstr "Испанский перевод"
 
 #
 # File: src/about.py, line: 79
-#: mcomix/strings.py:33
+#: mcomix/strings.py:34
 msgid "Brazilian Portuguese translation"
 msgstr "Бразильский Португальский перевод"
 
 #
 # File: src/about.py, line: 81
-#: mcomix/strings.py:34
+#: mcomix/strings.py:35
 msgid "German translation and Nautilus thumbnailer"
 msgstr "Немецкий перевод и генератор миниатюр для Nautilus"
 
 # File: src/about.py, line: 94
-#: mcomix/strings.py:35
+#: mcomix/strings.py:36
 msgid "German translation"
 msgstr "Немецкий перевод"
 
 #
 # File: src/about.py, line: 82
-#: mcomix/strings.py:36 mcomix/strings.py:37 mcomix/strings.py:38
+#: mcomix/strings.py:37 mcomix/strings.py:38 mcomix/strings.py:39
 msgid "Italian translation"
 msgstr "Итальянский перевод"
 
 #
 # File: src/about.py, line: 83
-#: mcomix/strings.py:39
+#: mcomix/strings.py:40
 msgid "Dutch translation"
 msgstr "Голландский перевод"
 
 #
 # File: src/about.py, line: 84
-#: mcomix/strings.py:40 mcomix/strings.py:41 mcomix/strings.py:42
-#: mcomix/strings.py:43
+#: mcomix/strings.py:41 mcomix/strings.py:42 mcomix/strings.py:43
+#: mcomix/strings.py:44
 msgid "French translation"
 msgstr "Французский перевод"
 
 #
 # File: src/about.py, line: 85
-#: mcomix/strings.py:44
+#: mcomix/strings.py:45
 msgid "Polish translatin"
 msgstr "Польский перевод"
 
 #
 # File: src/about.py, line: 85
-#: mcomix/strings.py:45
+#: mcomix/strings.py:46
 msgid "Polish translation"
 msgstr "Польский перевод"
 
 #
 # File: src/about.py, line: 86
-#: mcomix/strings.py:46
+#: mcomix/strings.py:47
 msgid "Greek translation"
 msgstr "Греческий перевод"
 
 #
 # File: src/about.py, line: 87
-#: mcomix/strings.py:47
+#: mcomix/strings.py:48
 msgid "Catalan translation"
 msgstr "Каталанский перевод"
 
 #
 # File: src/about.py, line: 88
-#: mcomix/strings.py:48 mcomix/strings.py:49
+#: mcomix/strings.py:49 mcomix/strings.py:50
 msgid "Traditional Chinese translation"
 msgstr "Традиционный Китайский перевод"
 
 #
 # File: src/about.py, line: 89
-#: mcomix/strings.py:50 mcomix/strings.py:51 mcomix/strings.py:52
+#: mcomix/strings.py:51 mcomix/strings.py:52 mcomix/strings.py:53
 msgid "Japanese translation"
 msgstr "Японский перевод"
 
 #
 # File: src/about.py, line: 90
-#: mcomix/strings.py:53
+#: mcomix/strings.py:54
 msgid "Hungarian translation"
 msgstr "Венгерский перевод"
 
 #
 # File: src/about.py, line: 91
-#: mcomix/strings.py:54 mcomix/strings.py:55
+#: mcomix/strings.py:55 mcomix/strings.py:56
 msgid "Russian translation"
 msgstr "Русский перевод"
 
 #
 # File: src/about.py, line: 92
-#: mcomix/strings.py:56
+#: mcomix/strings.py:57
 msgid "Croatian translation"
 msgstr "Хорватский перевод"
 
 #
 # File: src/about.py, line: 93
-#: mcomix/strings.py:57
+#: mcomix/strings.py:58 mcomix/strings.py:59
 msgid "Korean translation"
 msgstr "Корейский перевод"
 
 #
 # File: src/about.py, line: 94
-#: mcomix/strings.py:58
+#: mcomix/strings.py:60
 msgid "Persian translation"
 msgstr "Персидский перевод"
 
 #
 # File: src/about.py, line: 95
-#: mcomix/strings.py:59
+#: mcomix/strings.py:61
 msgid "Indonesian translation"
 msgstr "Индонезийский перевод"
 
 #
 # File: src/about.py, line: 96
-#: mcomix/strings.py:60
+#: mcomix/strings.py:62
 msgid "Czech translation"
 msgstr "Чешский перевод"
 
-#: mcomix/strings.py:61
+#: mcomix/strings.py:63
 msgid "Ukrainian translation"
 msgstr "Украинский перевод"
 
 # File: src/about.py, line: 82
-#: mcomix/strings.py:62
+#: mcomix/strings.py:64
 msgid "Galician translation"
 msgstr "Галисийский перевод"
 
-#: mcomix/strings.py:63
+#: mcomix/strings.py:65
 msgid "Swedish translation"
 msgstr "Шведский перевод"
 
 #
 # File: src/about.py, line: 86
-#: mcomix/strings.py:64
+#: mcomix/strings.py:66
 msgid "Hebrew translation"
 msgstr "Перевод на Иврит"
 
 #
 # File: src/about.py, line: 97
-#: mcomix/strings.py:67
+#: mcomix/strings.py:69
 msgid "Icon design"
 msgstr "Дизайн значков"
 

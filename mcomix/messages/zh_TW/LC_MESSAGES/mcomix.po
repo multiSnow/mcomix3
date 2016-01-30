@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix zh_TW\n"
 "Report-Msgid-Bugs-To: https://sourceforge.net/projects/mcomix/\n"
-"POT-Creation-Date: 2016-01-24 17:01+0100\n"
+"POT-Creation-Date: 2016-01-30 20:00+0100\n"
 "PO-Revision-Date: 2013-07-05 21:37+0800\n"
 "Last-Translator: Wayne Su <mstarmstar@hotmail.com>\n"
 "Language-Team: \n"
@@ -67,7 +67,7 @@ msgid ""
 msgstr ""
 "！ 無法將檔案 %(sourcefile)s 加入壓縮檔 %(archivefile)s 中，正在取消..."
 
-#: mcomix/archive_tools.py:165
+#: mcomix/archive_tools.py:169
 #, python-format
 msgid "! Could not read %s"
 msgstr "！ 無法讀取 %s"
@@ -1542,7 +1542,7 @@ msgstr "顯示路徑"
 msgid "Show filename"
 msgstr "顯示檔案名稱"
 
-#: mcomix/strings.py:9 mcomix/strings.py:17
+#: mcomix/strings.py:9 mcomix/strings.py:18
 msgid "ZIP archive"
 msgstr "ZIP 壓縮檔"
 
@@ -1563,128 +1563,133 @@ msgid "Bzip2 compressed tar archive"
 msgstr "以 BZIP2 壓縮的 TAR 壓縮檔"
 
 #: mcomix/strings.py:14
+#, fuzzy
+msgid "XZ compressed tar archive"
+msgstr "以 GZIP 壓縮的 TAR 壓縮檔"
+
+#: mcomix/strings.py:15
 msgid "PDF document"
 msgstr ""
 
-#: mcomix/strings.py:15
+#: mcomix/strings.py:16
 msgid "7z archive"
 msgstr "7Z 壓縮檔"
 
-#: mcomix/strings.py:16
+#: mcomix/strings.py:17
 msgid "LHA archive"
 msgstr "LHA 壓縮檔"
 
-#: mcomix/strings.py:21
+#: mcomix/strings.py:22
 msgid "Original vision/developer of Comix"
 msgstr "Comix 的原始設計開發者"
 
-#: mcomix/strings.py:22 mcomix/strings.py:23 mcomix/strings.py:24
-#: mcomix/strings.py:25
+#: mcomix/strings.py:23 mcomix/strings.py:24 mcomix/strings.py:25
+#: mcomix/strings.py:26
 msgid "MComix developer"
 msgstr "MComix 開發者"
 
-#: mcomix/strings.py:28 mcomix/strings.py:29 mcomix/strings.py:30
+#: mcomix/strings.py:29 mcomix/strings.py:30 mcomix/strings.py:31
 msgid "Simplified Chinese translation"
 msgstr "簡體中文翻譯"
 
-#: mcomix/strings.py:31 mcomix/strings.py:32
+#: mcomix/strings.py:32 mcomix/strings.py:33
 msgid "Spanish translation"
 msgstr "西班牙文翻譯"
 
-#: mcomix/strings.py:33
+#: mcomix/strings.py:34
 msgid "Brazilian Portuguese translation"
 msgstr "巴西葡萄牙文翻譯"
 
-#: mcomix/strings.py:34
+#: mcomix/strings.py:35
 msgid "German translation and Nautilus thumbnailer"
 msgstr "德文翻譯與 Nautilus 預覽縮圖功能作者"
 
-#: mcomix/strings.py:35
+#: mcomix/strings.py:36
 msgid "German translation"
 msgstr "德文翻譯"
 
-#: mcomix/strings.py:36 mcomix/strings.py:37 mcomix/strings.py:38
+#: mcomix/strings.py:37 mcomix/strings.py:38 mcomix/strings.py:39
 msgid "Italian translation"
 msgstr "義大利文翻譯"
 
-#: mcomix/strings.py:39
+#: mcomix/strings.py:40
 msgid "Dutch translation"
 msgstr "荷蘭文翻譯"
 
-#: mcomix/strings.py:40 mcomix/strings.py:41 mcomix/strings.py:42
-#: mcomix/strings.py:43
+#: mcomix/strings.py:41 mcomix/strings.py:42 mcomix/strings.py:43
+#: mcomix/strings.py:44
 msgid "French translation"
 msgstr "法文翻譯"
 
-#: mcomix/strings.py:44
+#: mcomix/strings.py:45
 msgid "Polish translatin"
 msgstr "波蘭文翻譯"
 
-#: mcomix/strings.py:45
+#: mcomix/strings.py:46
 msgid "Polish translation"
 msgstr "波蘭文翻譯"
 
-#: mcomix/strings.py:46
+#: mcomix/strings.py:47
 msgid "Greek translation"
 msgstr "希臘文翻譯"
 
-#: mcomix/strings.py:47
+#: mcomix/strings.py:48
 msgid "Catalan translation"
 msgstr "加泰羅尼亞文翻譯"
 
-#: mcomix/strings.py:48 mcomix/strings.py:49
+#: mcomix/strings.py:49 mcomix/strings.py:50
 msgid "Traditional Chinese translation"
 msgstr "正體中文翻譯"
 
-#: mcomix/strings.py:50 mcomix/strings.py:51 mcomix/strings.py:52
+#: mcomix/strings.py:51 mcomix/strings.py:52 mcomix/strings.py:53
 msgid "Japanese translation"
 msgstr "日文翻譯"
 
-#: mcomix/strings.py:53
+#: mcomix/strings.py:54
 msgid "Hungarian translation"
 msgstr "匈牙利文翻譯"
 
-#: mcomix/strings.py:54 mcomix/strings.py:55
+#: mcomix/strings.py:55 mcomix/strings.py:56
 msgid "Russian translation"
 msgstr "俄文翻譯"
 
-#: mcomix/strings.py:56
+#: mcomix/strings.py:57
 msgid "Croatian translation"
 msgstr "克羅埃西亞文翻譯"
 
-#: mcomix/strings.py:57
+#: mcomix/strings.py:58 mcomix/strings.py:59
 msgid "Korean translation"
 msgstr "韓文翻譯"
 
-#: mcomix/strings.py:58
+#: mcomix/strings.py:60
 msgid "Persian translation"
 msgstr "波斯文翻譯"
 
-#: mcomix/strings.py:59
+#: mcomix/strings.py:61
 msgid "Indonesian translation"
 msgstr "印尼文翻譯"
 
-#: mcomix/strings.py:60
+#: mcomix/strings.py:62
 msgid "Czech translation"
 msgstr "捷克文翻譯"
 
-#: mcomix/strings.py:61
+#: mcomix/strings.py:63
 msgid "Ukrainian translation"
 msgstr "烏克蘭文翻譯"
 
-#: mcomix/strings.py:62
+#: mcomix/strings.py:64
 msgid "Galician translation"
 msgstr "加里西亞文翻譯"
 
-#: mcomix/strings.py:63
+#: mcomix/strings.py:65
 msgid "Swedish translation"
 msgstr "瑞典文翻譯"
 
-#: mcomix/strings.py:64
+#: mcomix/strings.py:66
 msgid "Hebrew translation"
 msgstr "希伯來文翻譯"
 
-#: mcomix/strings.py:67
+#: mcomix/strings.py:69
 msgid "Icon design"
 msgstr "圖示設計"
 
