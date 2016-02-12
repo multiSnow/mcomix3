@@ -141,7 +141,7 @@ def run():
         log.debug('starting fontconfig cache update')
         try:
             from mcomix.win32 import fc_cache
-            from mcomix.process import find_executable
+            from mcomix import process
             fc_cache.update()
             log.debug('fontconfig cache updated')
         except Exception as e:
@@ -151,18 +151,24 @@ def run():
         exe = sys.argv[0]
         if sys.platform == 'win32' and exe.endswith('.py'):
             # Find the interpreter.
+            exe = process.find_executable(('pythonw.exe', 'python.exe'))
             args = [exe, sys.argv[0]]
-            exe = find_executable(('pythonw.exe', 'python.exe'))
         else:
             args = [exe]
         if sys.platform == 'win32':
             args.append('--no-update-fontconfig-cache')
-        args.extend(sys.argv[1:])
+        args.extend(argv)
         if '--update-fontconfig-cache' in args:
             args.remove('--update-fontconfig-cache')
         log.debug('restarting MComix from fresh: os.execv(%s, %s)', repr(exe), args)
         try:
-            os.execv(exe, args)
+            if sys.platform == 'win32':
+                # Of course we can't use os.execv on Windows because it will
+                # mangle arguments containing spaces or non-ascii characters...
+                process.Win32Popen(args)
+                sys.exit(0)
+            else:
+                os.execv(exe, args)
         except Exception as e:
             log.error('os.execv(%s, %s) failed', exe, str(args), exc_info=e)
         wait_and_exit()
