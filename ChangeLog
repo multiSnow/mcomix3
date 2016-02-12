@@ -1,3 +1,13 @@
+MComix 1.2.1
+Release date: 2016-02-12
+
+    ENVIRONMENT/LOCALE/TRANSLATIONS:
+
+    - Fixed a bug that made it impossible to open a book with MComix directly if
+      the path contains spaces (Windows only)
+
+    - Updated libraries for the Windows distribution: UnRAR DLL
+
 MComix 1.2
 Release date: 30.01.2016
 

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: comix.HEAD\n"
 "Report-Msgid-Bugs-To: https://sourceforge.net/projects/mcomix/\n"
-"POT-Creation-Date: 2016-01-30 20:00+0100\n"
+"POT-Creation-Date: 2016-02-12 20:39+0100\n"
 "PO-Revision-Date: 2012-09-06 18:00+0100\n"
 "Last-Translator: Carlos Feliu <carlos.feliu.holguera@gmail.com>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
@@ -1867,59 +1867,59 @@ msgstr "Opciones de depuración"
 msgid "Sets the desired output log level."
 msgstr "Establece el nivel de log de salida deseado."
 
-#: mcomix/run.py:183
+#: mcomix/run.py:189
 msgid "You do not have the required versions of GTK+ and PyGTK installed."
 msgstr "No tiene instaladas las versiones requeridas de GTK+ y PyGTK."
 
-#: mcomix/run.py:184
+#: mcomix/run.py:190
 #, python-format
 msgid "Installed GTK+ version is: %s"
 msgstr "La versión de GTK+ instalada es: %s"
 
-#: mcomix/run.py:186
+#: mcomix/run.py:192
 #, fuzzy
 msgid "Required GTK+ version is: 2.12.0 or higher"
 msgstr "La versión requerida de GTK+ es: 2.12.0 o más reciente\n"
 
-#: mcomix/run.py:187
+#: mcomix/run.py:193
 #, python-format
 msgid "Installed PyGTK version is: %s"
 msgstr "La versión de PyGTK instalada es: %s"
 
-#: mcomix/run.py:189 mcomix/run.py:193
+#: mcomix/run.py:195 mcomix/run.py:199
 msgid "Required PyGTK version is: 2.12.0 or higher"
 msgstr "La versión requerida de GTK+ es: 2.12.0 o más reciente"
 
-#: mcomix/run.py:194
+#: mcomix/run.py:200
 msgid "No version of PyGTK was found on your system."
 msgstr "No se encontró ninguna versión de PyGTK en su sistema."
 
-#: mcomix/run.py:195
+#: mcomix/run.py:201
 msgid "This error might be caused by missing GTK+ libraries."
 msgstr "Este error puede ser causado por la falta de librerías GTK+."
 
-#: mcomix/run.py:203
+#: mcomix/run.py:209
 msgid "You don't have the required version of the Python Imaging"
 msgstr "No tiene la versión requerida de Python Imaging"
 
-#: mcomix/run.py:204
+#: mcomix/run.py:210
 msgid "Library (PIL) installed."
 msgstr "Librería (PIL) instalada."
 
-#: mcomix/run.py:205
+#: mcomix/run.py:211
 #, python-format
 msgid "Installed PIL version is: %s"
 msgstr "La versión de PIL instalada es: %s"
 
-#: mcomix/run.py:206
+#: mcomix/run.py:212
 msgid "Required PIL version is: 1.1.5 or higher"
 msgstr "La versión de PIL requerida es: 1.1.5 o más reciente"
 
-#: mcomix/run.py:210
+#: mcomix/run.py:216
 msgid "Python Imaging Library (PIL) 1.1.5 or higher is required."
 msgstr "Se requiere Python Imaging Library (PIL) 1.1.5 o más reciente."
 
-#: mcomix/run.py:211
+#: mcomix/run.py:217
 msgid "No version of the Python Imaging Library was found on your system."
 msgstr ""
 "No se encontró ninguna versión de Python Imaging Library en su sistema."

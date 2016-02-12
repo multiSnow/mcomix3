@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Comix 4.0.1\n"
 "Report-Msgid-Bugs-To: https://sourceforge.net/projects/mcomix/\n"
-"POT-Creation-Date: 2016-01-30 20:00+0100\n"
+"POT-Creation-Date: 2016-02-12 20:39+0100\n"
 "PO-Revision-Date: 2009-01-28 13:36+0800\n"
 "Last-Translator: Xie Yanbo <xieyanbo@gmail.com>\n"
 "Language-Team: Xie Yanbo <xieyanbo@gmail.com>\n"
@@ -1844,59 +1844,59 @@ msgstr "调试选项"
 msgid "Sets the desired output log level."
 msgstr "设置输出日志等级。"
 
-#: mcomix/run.py:183
+#: mcomix/run.py:189
 msgid "You do not have the required versions of GTK+ and PyGTK installed."
 msgstr "您没有安装所需要的 GTK+ 和 PyGTK 版本。"
 
-#: mcomix/run.py:184
+#: mcomix/run.py:190
 #, python-format
 msgid "Installed GTK+ version is: %s"
 msgstr "安装的 GTK+ 版本为：%s"
 
-#: mcomix/run.py:186
+#: mcomix/run.py:192
 #, fuzzy
 msgid "Required GTK+ version is: 2.12.0 or higher"
 msgstr "所需 GTK+ 版本为：2.12.0 或更新版\n"
 
-#: mcomix/run.py:187
+#: mcomix/run.py:193
 #, python-format
 msgid "Installed PyGTK version is: %s"
 msgstr "安装的 PyGTK 版本为：%s"
 
-#: mcomix/run.py:189 mcomix/run.py:193
+#: mcomix/run.py:195 mcomix/run.py:199
 msgid "Required PyGTK version is: 2.12.0 or higher"
 msgstr "所需 PyGTK 版本为：2.12.0 或更新版"
 
-#: mcomix/run.py:194
+#: mcomix/run.py:200
 msgid "No version of PyGTK was found on your system."
 msgstr "在您的系统上找不到任何版本的 PyGTK。"
 
-#: mcomix/run.py:195
+#: mcomix/run.py:201
 msgid "This error might be caused by missing GTK+ libraries."
 msgstr "该错误可能由缺失 GTK+ 库引起。"
 
-#: mcomix/run.py:203
+#: mcomix/run.py:209
 msgid "You don't have the required version of the Python Imaging"
 msgstr "您没有安装所需的 Python Imaging 版本"
 
-#: mcomix/run.py:204
+#: mcomix/run.py:210
 msgid "Library (PIL) installed."
 msgstr "已安装 PIL 库。"
 
-#: mcomix/run.py:205
+#: mcomix/run.py:211
 #, python-format
 msgid "Installed PIL version is: %s"
 msgstr "安装的 PIL 版本为：%s"
 
-#: mcomix/run.py:206
+#: mcomix/run.py:212
 msgid "Required PIL version is: 1.1.5 or higher"
 msgstr "所需的 PIL 版本为：1.1.5 或更新版"
 
-#: mcomix/run.py:210
+#: mcomix/run.py:216
 msgid "Python Imaging Library (PIL) 1.1.5 or higher is required."
 msgstr "需要 Python Imaging Library (PIL) 1.1.5 版或更新版。"
 
-#: mcomix/run.py:211
+#: mcomix/run.py:217
 msgid "No version of the Python Imaging Library was found on your system."
 msgstr "在您的系统上找不到任何版本的 Python Imaging Library。"
 
