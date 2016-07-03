@@ -13,7 +13,7 @@ def mcomix_icons():
     sizes = ('16x16', '32x32', '48x48')
     pixbufs = [
         image_tools.load_pixbuf_data(
-            resource_string('mcomix.images', size + '/mcomix.png')
+            resource_string('mcomix', 'images/%s/mcomix.png' % size)
         ) for size in sizes
     ]
 
@@ -50,7 +50,7 @@ def load_icons():
     factory = Gtk.IconFactory()
     for filename, stockid in _icons:
         try:
-            icon_data = resource_string('mcomix.images', filename)
+            icon_data = resource_string('mcomix', 'images/%s' % filename)
             pixbuf = image_tools.load_pixbuf_data(icon_data)
             iconset = Gtk.IconSet(pixbuf)
             factory.add(stockid, iconset)

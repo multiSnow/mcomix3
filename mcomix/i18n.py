@@ -82,15 +82,19 @@ def install_gettext():
     os.environ['LANGUAGE'] = lang
 
     domain = constants.APPNAME.lower()
-    translation = gettext.NullTranslations()
 
     # Search for .mo files manually, since gettext doesn't support setuptools/pkg_resources.
     for lang in lang_identifiers:
-        resource = os.path.join(lang, 'LC_MESSAGES', '%s.mo' % domain)
-        if pkg_resources.resource_exists('mcomix.messages', resource):
-            translation = gettext.GNUTranslations(
-                    pkg_resources.resource_stream('mcomix.messages', resource))
+        resource = os.path.join('messages', lang, 'LC_MESSAGES', '%s.mo' % domain)
+        try:
+            fp = pkg_resources.resource_stream('mcomix', resource)
+        except IOError:
+            pass
+        else:
+            translation = gettext.GNUTranslations(fp)
             break
+    else:
+        translation = gettext.NullTranslations()
 
     translation.install(unicode=True)
 

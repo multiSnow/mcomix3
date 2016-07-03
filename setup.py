@@ -17,6 +17,7 @@ import setuptools
 
 from mcomix import constants
 
+
 def get_data_patterns(directory, *patterns):
     """ Build a list of patterns for all subdirectories of <directory>
     to be passed into package_data. """
@@ -44,11 +45,10 @@ images.extend([ os.path.basename(img)
 setuptools.setup(
     name = constants.APPNAME.lower(),
     version = constants.VERSION,
-    packages = ['mcomix', 'mcomix.archive', 'mcomix.library',
-        'mcomix.messages', 'mcomix.images', 'mcomix.win32'],
+    packages = ['mcomix', 'mcomix.archive', 'mcomix.library', 'mcomix.win32'],
     package_data = {
-        'mcomix.messages' : get_data_patterns('mcomix/messages', '*.mo'),
-        'mcomix.images' : images },
+        'mcomix' : get_data_patterns('mcomix/messages', '*.mo') + images,
+    },
     entry_points = {
         'console_scripts' : [ 'mcomix = mcomix.run:run' ],
         'setuptools.installation': [ 'eggsecutable=mcomix.run:run' ],
