@@ -258,7 +258,8 @@ def run():
                 pass
         signal.signal(signal.SIGCHLD, on_sigchld)
 
-    signal.signal(signal.SIGTERM, lambda: GObject.idle_add(window.terminate_program))
+    for sig in (signal.SIGINT, signal.SIGTERM):
+        signal.signal(sig, lambda signum, stack: GObject.idle_add(window.terminate_program))
     try:
         Gtk.main()
     except KeyboardInterrupt: # Will not always work because of threading.
