@@ -64,10 +64,10 @@ class MagnifyingLens(object):
         rectangle = self._calculate_lens_rect(x, y, prefs['lens size'], prefs['lens size'])
         pixbuf = self._get_lens_pixbuf(x, y)
 
-        draw_region = Cairo.RectangleInt()
+        draw_region = Gdk.Rectangle()
         draw_region.x, draw_region.y, draw_region.width, draw_region.height = rectangle
         if self._last_lens_rect:
-            last_region = Cairo.RectangleInt()
+            last_region = Gdk.Rectangle()
             last_region.x, last_region.y, last_region.width, last_region.height = self._last_lens_rect
             draw_region = Gdk.rectangle_union(draw_region, last_region)
 
@@ -109,7 +109,7 @@ class MagnifyingLens(object):
             return
 
         window = self._window._main_layout.get_bin_window()
-        crect = Cairo.RectangleInt()
+        crect = Gdk.Rectangle()
         crect.x, crect.y, crect.width, crect.height = self._last_lens_rect
         window.invalidate_rect(crect, True)
         window.process_updates(True)
