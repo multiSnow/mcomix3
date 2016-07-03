@@ -405,15 +405,15 @@ class EventHandler(object):
         code = keymap.translate_keyboard_state(
                 event.hardware_keycode, event.get_state(), event.group)
 
-        if code is not None:
-            consumed, keyval = code[0:2]
+        if code[0]:
+            keyval = code[1]
+            consumed = code[4]
 
             # If the resulting key is upper case (i.e. SHIFT + key),
             # convert it to lower case and remove SHIFT from the consumed flags
             # to match how keys are registered (<Shift> + lowercase)
-            if (Gdk.keyval_is_upper(keyval) and
-                not Gdk.keyval_is_lower(keyval) and
-                event.get_state() & Gdk.ModifierType.SHIFT_MASK):
+            if (event.get_state() & Gdk.ModifierType.SHIFT_MASK and
+                keyval != Gdk.keyval_to_lower(keyval)):
                 keyval = Gdk.keyval_to_lower(keyval)
                 consumed &= ~Gdk.ModifierType.SHIFT_MASK
 
