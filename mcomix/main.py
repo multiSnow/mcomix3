@@ -75,8 +75,10 @@ class MainWindow(Gtk.Window):
         self._event_handler = event.EventHandler(self)
         self._vadjust = self._main_layout.get_vadjustment()
         self._hadjust = self._main_layout.get_hadjustment()
-        self._scroll = (Gtk.HScrollbar(self._hadjust),
-            Gtk.VScrollbar(self._vadjust))
+        self._scroll = (
+            Gtk.Scrollbar.new(Gtk.Orientation.HORIZONTAL, self._hadjust),
+            Gtk.Scrollbar.new(Gtk.Orientation.VERTICAL, self._vadjust),
+        )
 
         self.filehandler = file_handler.FileHandler(self)
         self.filehandler.file_closed += self._on_file_closed
@@ -899,6 +901,8 @@ class MainWindow(Gtk.Window):
 
         self._vadjust.set_value(new_vadjust)
         self._hadjust.set_value(new_hadjust)
+        self._scroll[0].queue_resize_no_redraw()
+        self._scroll[1].queue_resize_no_redraw()
 
         return old_vadjust != new_vadjust or old_hadjust != new_hadjust
 
@@ -910,6 +914,8 @@ class MainWindow(Gtk.Window):
         viewport_position = self.layout.get_viewport_box().get_position()
         self._hadjust.set_value(viewport_position[0]) # 2D only
         self._vadjust.set_value(viewport_position[1]) # 2D only
+        self._scroll[0].queue_resize_no_redraw()
+        self._scroll[1].queue_resize_no_redraw()
 
     def update_layout_position(self):
         self.layout.set_viewport_position(
