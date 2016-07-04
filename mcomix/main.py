@@ -1,8 +1,11 @@
 """main.py - Main window."""
 
+import math
+import operator
 import os
 import shutil
 import threading
+
 from gi.repository import GObject, Gdk, Gtk
 
 from mcomix import constants
@@ -33,8 +36,6 @@ from mcomix.library import backend, main_dialog
 from mcomix import tools
 from mcomix import layout
 from mcomix import log
-import math
-import operator
 
 
 class MainWindow(Gtk.Window):
@@ -67,6 +68,10 @@ class MainWindow(Gtk.Window):
 
         self._image_box = Gtk.HBox(False, 2) # XXX transitional(kept for osd.py)
         self._main_layout = Gtk.Layout()
+        # Wrap main layout into an event box so
+        # we  can change its background color.
+        self._event_box = Gtk.EventBox()
+        self._event_box.add(self._main_layout)
         self._event_handler = event.EventHandler(self)
         self._vadjust = self._main_layout.get_vadjustment()
         self._hadjust = self._main_layout.get_hadjustment()
@@ -126,7 +131,7 @@ class MainWindow(Gtk.Window):
         table.attach(self.thumbnailsidebar, 0, 1, 2, 5, Gtk.AttachOptions.FILL,
             Gtk.AttachOptions.FILL|Gtk.AttachOptions.EXPAND, 0, 0)
 
-        table.attach(self._main_layout, 1, 2, 2, 3, Gtk.AttachOptions.FILL|Gtk.AttachOptions.EXPAND,
+        table.attach(self._event_box, 1, 2, 2, 3, Gtk.AttachOptions.FILL|Gtk.AttachOptions.EXPAND,
             Gtk.AttachOptions.FILL|Gtk.AttachOptions.EXPAND, 0, 0)
         table.attach(self._scroll[constants.HEIGHT_AXIS], 2, 3, 2, 3, Gtk.AttachOptions.FILL|Gtk.AttachOptions.SHRINK,
             Gtk.AttachOptions.FILL|Gtk.AttachOptions.SHRINK, 0, 0)
@@ -219,7 +224,7 @@ class MainWindow(Gtk.Window):
 
         self.add(table)
         table.show()
-        self._main_layout.show()
+        self._event_box.show_all()
 
         self._main_layout.set_events(Gdk.EventMask.BUTTON1_MOTION_MASK |
                                      Gdk.EventMask.BUTTON2_MOTION_MASK |
@@ -991,11 +996,7 @@ class MainWindow(Gtk.Window):
         """Set the background colour to <colour>. Colour is a sequence in the
         format (r, g, b). Values are 16-bit.
         """
-        self._main_layout.modify_bg(Gtk.StateType.NORMAL,
-                                    Gdk.Color(colour[0],
-                                                  colour[1],
-                                                  colour[2]))
-
+        self._event_box.modify_bg(Gtk.StateType.NORMAL, Gdk.Color(*colour))
         if prefs['thumbnail bg uses main colour']:
             self.thumbnailsidebar.change_thumbnail_background_color(prefs['bg colour'])
         self._bg_colour = colour

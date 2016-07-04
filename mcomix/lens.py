@@ -1,8 +1,8 @@
 """lens.py - Magnifying lens."""
 
 import math
+
 from gi.repository import Gdk, GdkPixbuf, Gtk
-from gi.repository import cairo as Cairo
 
 from mcomix.preferences import prefs
 from mcomix import image_tools

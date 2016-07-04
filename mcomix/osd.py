@@ -1,12 +1,13 @@
 """ osd.py - Onscreen display showing currently opened file. """
 # -*- coding: utf-8 -*-
 
-from gi.repository import Gdk, Gtk, GObject
-from gi.repository import Pango, PangoCairo
-from gi.repository import cairo as Cairo
 import textwrap
 
+from gi.repository import Gdk, Gtk, GObject
+from gi.repository import Pango, PangoCairo
+
 from mcomix import image_tools
+
 
 class OnScreenDisplay(object):
 
@@ -110,10 +111,10 @@ class OnScreenDisplay(object):
     def _draw_osd(self, layout, rect):
         """ Draws the text specified in C{layout} into a box at C{rect}. """
 
-        draw_region = Cairo.RectangleInt()
+        draw_region = Gdk.Rectangle()
         draw_region.x, draw_region.y, draw_region.width, draw_region.height = rect
         if self._last_osd_rect:
-            last_region = Cairo.RectangleInt()
+            last_region = Gdk.Rectangle()
             last_region.x, last_region.y, last_region.width, last_region.height = self._last_osd_rect
             draw_region = Gdk.rectangle_union(draw_region, last_region)
 
