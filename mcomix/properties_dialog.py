@@ -23,7 +23,7 @@ class _PropertiesDialog(Gtk.Dialog):
             (Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
 
         self._window = window
-        self.resize(400, 400)
+        self.resize(500, 430)
         self.set_resizable(True)
         self.set_default_response(Gtk.ResponseType.CLOSE)
         notebook = Gtk.Notebook()
