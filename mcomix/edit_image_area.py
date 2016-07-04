@@ -120,8 +120,8 @@ class _ImageArea(Gtk.ScrolledWindow):
                 iconview.unselect_all()
                 iconview.select_path(path)
 
-            self._ui_manager.get_widget('/Popup').popup(None, None, None,
-                event.button, event.time)
+            self._ui_manager.get_widget('/Popup').popup(None, None, None, None,
+                                                        event.button, event.time)
 
     def _key_press(self, iconview, event):
         """Handle key presses on the thumbnail area."""

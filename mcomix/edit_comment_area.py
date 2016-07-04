@@ -1,7 +1,7 @@
 """edit_comment_area.py - The area in the editing window that displays comments."""
 
 import os
-from gi.repository import Gtk
+from gi.repository import Gdk, Gtk
 
 class _CommentArea(Gtk.VBox):
 
@@ -94,8 +94,8 @@ class _CommentArea(Gtk.VBox):
         path = path[0]
 
         if event.button == 3:
-            self._ui_manager.get_widget('/Popup').popup(None, None, None,
-                event.button, event.time)
+            self._ui_manager.get_widget('/Popup').popup(None, None, None, None,
+                                                        event.button, event.time)
 
     def _key_press(self, iconview, event):
         """Handle key presses on the area."""

@@ -185,8 +185,8 @@ class Statusbar(Gtk.EventBox):
         """ Triggered when a mouse button is released to open the context
         menu. """
         if event.button == 3:
-            self.ui_manager.get_widget('/Statusbar').popup(None, None, None,
-                event.button, event.time)
+            self.ui_manager.get_widget('/Statusbar').popup(None, None, None, None,
+                                                           event.button, event.time)
 
     def _update_sensitivity(self):
         """ Updates the action menu's sensitivity based on user preferences. """
