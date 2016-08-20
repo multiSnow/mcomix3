@@ -4,6 +4,7 @@ import gtk
 import histogram
 
 from mcomix.preferences import prefs
+from mcomix import image_tools
 
 _dialog = None
 
@@ -114,6 +115,7 @@ class _EnhanceImageDialog(gtk.Dialog):
 
     def draw_histogram(self, pixbuf):
         """Draw a histogram representing <pixbuf> in the dialog."""
+        pixbuf = image_tools.static_image(pixbuf)
         histogram_pixbuf = histogram.draw_histogram(pixbuf, text=False)
         self._hist_image.set_from_pixbuf(histogram_pixbuf)
 

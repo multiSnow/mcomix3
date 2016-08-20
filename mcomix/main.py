@@ -438,10 +438,14 @@ class MainWindow(gtk.Window):
                     viewport_size = () # start anew
 
             for i in range(pixbuf_count):
+                if image_tools.is_animation(pixbuf_list[i]):
+                    continue
                 pixbuf_list[i] = image_tools.fit_pixbuf_to_rectangle(
                     pixbuf_list[i], scaled_sizes[i], rotation_list[i])
 
             for i in range(pixbuf_count):
+                if image_tools.is_animation(pixbuf_list[i]):
+                    continue
                 if prefs['horizontal flip']:
                     pixbuf_list[i] = pixbuf_list[i].flip(horizontal=True)
                 if prefs['vertical flip']:
@@ -449,7 +453,7 @@ class MainWindow(gtk.Window):
                 pixbuf_list[i] = self.enhancer.enhance(pixbuf_list[i])
 
             for i in range(pixbuf_count):
-                self.images[i].set_from_pixbuf(pixbuf_list[i])
+                image_tools.set_from_pixbuf(self.images[i], pixbuf_list[i])
 
             scales = tuple(map(lambda x, y: math.sqrt(tools.div(
                 tools.volume(x), tools.volume(y))), scaled_sizes, size_list))
