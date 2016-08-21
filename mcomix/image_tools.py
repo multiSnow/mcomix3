@@ -339,11 +339,12 @@ def set_from_pixbuf(image, pixbuf):
 
 def load_pixbuf(path):
     """ Loads a pixbuf from a given image file. """
-    if True: # TODO replace with animation pref
-        res = gtk.gdk.PixbufAnimation(path)
-        if res.is_static_image(): # TODO continue instead of early return, merge with other branches, performance?
-            res = res.get_static_image()
-        return res
+    if prefs['animation mode'] != constants.ANIMATION_DISABLED:
+        # Note that this branch ignores USE_PIL
+        pixbuf = gtk.gdk.PixbufAnimation(path)
+        if pixbuf.is_static_image():
+            pixbuf = pixbuf.get_static_image()
+        return pixbuf
     if USE_PIL:
         im = Image.open(path)
         pixbuf = pil_to_pixbuf(im, keep_orientation=True)
