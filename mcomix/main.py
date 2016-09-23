@@ -425,7 +425,7 @@ class MainWindow(gtk.Window):
                     dasize = 1
                 zoom_dummy_size[distribution_axis] = dasize
                 scaled_sizes = self.zoom.get_zoomed_size(size_list, zoom_dummy_size,
-                    distribution_axis)
+                    distribution_axis, do_not_transform)
                 self.layout = layout.FiniteLayout(scaled_sizes,
                                                   viewport_size,
                                                   orientation,
