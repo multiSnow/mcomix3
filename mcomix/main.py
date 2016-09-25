@@ -824,37 +824,12 @@ class MainWindow(gtk.Window):
             else:
                 self._scroll[i].hide()
 
-    def is_scrollable_horizontally(self):
-        """ Returns True when the displayed image does not fit into the display
-        port horizontally and must be scrolled to be viewed completely. """
-
-        screen_width, _ = self.get_visible_area_size()
-        left_width = self.images[0].get_pixbuf() and \
-                self.images[0].get_pixbuf().get_width() or 0 # XXX transitional(double page limitation)
-        right_width = self.images[1].get_pixbuf() and \
-                self.images[1].get_pixbuf().get_width() or 0 # XXX transitional(double page limitation)
-        image_width = max(left_width, right_width)
-
-        return image_width > screen_width
-
-    def is_scrollable_vertically(self):
-        """ Returns True when the displayed image does not fit into the display
-        port vertically and must be scrolled to be viewed completely. """
-
-        _, screen_height = self.get_visible_area_size()
-        left_height = self.images[0].get_pixbuf() and \
-                self.images[0].get_pixbuf().get_height() or 0 # XXX transitional(double page limitation)
-        right_height = self.images[1].get_pixbuf() and \
-                self.images[1].get_pixbuf().get_height() or 0 # XXX transitional(double page limitation)
-        image_height = max(left_height, right_height)
-
-        return image_height > screen_height
-
     def is_scrollable(self):
-        """ Returns True when either is_scrollable_horizontally or
-        is_scrollable_vertically return True. """
-        return self.is_scrollable_horizontally() or \
-               self.is_scrollable_vertically()
+        """ Returns True if the current images do not fit into the viewport. """
+        if self.layout is None:
+            return False
+        return not all(tools.smaller_or_equal(self.layout.get_union_box().get_size(),
+            self.get_visible_area_size())) 
 
     def scroll_with_flipping(self, x, y):
         """Returns true if able to scroll without flipping to
