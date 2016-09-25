@@ -123,7 +123,7 @@ def volume(t):
     return reduce(operator.mul, t, 1)
 
 def relerr(approx, ideal):
-    return abs((approx - ideal) / ideal)
+    return abs(div(approx - ideal, ideal))
 
 def smaller(a, b):
     """ Returns a list with the i-th element set to True if and only the i-th
