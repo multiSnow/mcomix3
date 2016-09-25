@@ -57,7 +57,8 @@ class MagnifyingLens(object):
         with it; <x> and <y> are the positions of the cursor within the
         main window layout area.
         """
-        if not self._window.filehandler.file_loaded or not self._window.images[0].get_pixbuf(): # XXX transitional(double page limitation)
+        if self._window.images[0].get_storage_type() not in [gtk.IMAGE_PIXBUF,
+            gtk.IMAGE_ANIMATION]:
             return
 
         rectangle = self._calculate_lens_rect(x, y, prefs['lens size'], prefs['lens size'])
@@ -146,6 +147,11 @@ class MagnifyingLens(object):
         # Prevent division by zero exceptions further down
         if not image_size[0]:
             return
+
+        # FIXME This merely prevents Errors being raised if source_pixbuf is an
+        # animation. The result might be broken, though, since animation,
+        # rotation etc. might not match or will be ignored:
+        source_pixbuf = image_tools.static_image(source_pixbuf)
 
         rotation = prefs['rotation']
         if prefs['auto rotate from exif']:
