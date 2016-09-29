@@ -615,7 +615,7 @@ class _PreferencesDialog(gtk.Dialog):
         """ Creates combo box for animation mode """
         items = (
                 (_('Never'), constants.ANIMATION_DISABLED),
-                (_('Normal'), constants.ANIMATION_DEFAULT))
+                (_('Normal'), constants.ANIMATION_NORMAL))
 
         selection = prefs['animation mode']
 
