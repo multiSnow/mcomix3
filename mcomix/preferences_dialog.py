@@ -297,6 +297,11 @@ class _PreferencesDialog(gtk.Dialog):
         page.add_row(gtk.Label(_('Comment extensions:')),
             self._create_extensions_entry())
 
+        page.new_section(_('Animated images'))
+
+        page.add_row(gtk.Label(_('Animation mode:')),
+            self._create_animation_mode_combobox())
+
         return page
 
     def _init_shortcuts_tab(self):
@@ -605,6 +610,31 @@ class _PreferencesDialog(gtk.Dialog):
 
             if value != last_value:
                 self._window.draw_image()
+
+    def _create_animation_mode_combobox(self):
+        """ Creates combo box for animation mode """
+        items = (
+                (_('Never'), constants.ANIMATION_DISABLED),
+                (_('Normal'), constants.ANIMATION_DEFAULT))
+
+        selection = prefs['animation mode']
+
+        box = self._create_combobox(items, selection, self._animation_mode_changed_cb)
+        box.set_tooltip_text(
+            _('Controls how animated images should be displayed.'))
+
+        return box
+
+    def _animation_mode_changed_cb(self, combobox, *args):
+        """ Called whenever animation mode has been changed. """
+        iter = combobox.get_active_iter()
+        if combobox.get_model().iter_is_valid(iter):
+            value = combobox.get_model().get_value(iter, 1)
+            last_value = prefs['animation mode']
+            prefs['animation mode'] = value
+
+            if value != last_value:
+                self._window.filehandler.refresh_file()
 
     def _create_combobox(self, options, selected_value, change_callback):
         """ Creates a new dropdown combobox and populates it with the items
