@@ -63,7 +63,8 @@ TRANSLATORS = (
             ('Олександр Заяц', _('Ukrainian translation')),
             ('Roxerio Roxo Carrillo', _('Galician translation')),
             ('Martin Karlsson', _('Swedish translation')),
-            ('Isratine Citizen', _('Hebrew translation'))
+            ('Isratine Citizen', _('Hebrew translation')),
+            ('Zygi Mantus', _('Lithuanian translation')),
           )
 ARTISTS = (
             ('Victor Castillejo', _('Icon design')),
