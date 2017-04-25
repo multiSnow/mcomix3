@@ -993,6 +993,7 @@ class MainWindow(gtk.Window):
         save_dialog = gtk.FileChooserDialog(_('Save page as'), self,
             gtk.FILE_CHOOSER_ACTION_SAVE, (gtk.STOCK_OK, gtk.RESPONSE_ACCEPT,
             gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT))
+        save_dialog.set_do_overwrite_confirmation(True)
         save_dialog.set_current_name(suggested_name.encode('utf-8'))
 
         if save_dialog.run() == gtk.RESPONSE_ACCEPT and save_dialog.get_filename():
