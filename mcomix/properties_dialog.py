@@ -14,6 +14,7 @@ except ImportError:
 from mcomix import i18n
 from mcomix import strings
 from mcomix import properties_page
+from mcomix import tools
 
 class _PropertiesDialog(gtk.Dialog):
 
@@ -120,12 +121,8 @@ class _PropertiesDialog(gtk.Dialog):
             uid = pwd.getpwuid(stats.st_uid)[0]
         else:
             uid = str(stats.st_uid)
-        if stats.st_size > 1048576.0:
-            size = '%.1f MiB' % (stats.st_size / 1048576.0)
-        else:
-            size = '%.1f KiB' % (stats.st_size / 1024.0)
         secondary_info.extend((
-            (_('Size'), size),
+            (_('Size'), tools.format_byte_size(stats.st_size)),
             (_('Accessed'), time.strftime('%Y-%m-%d, %H:%M:%S',
             time.localtime(stats.st_atime))),
             (_('Modified'), time.strftime('%Y-%m-%d, %H:%M:%S',
