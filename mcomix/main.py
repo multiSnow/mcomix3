@@ -530,17 +530,22 @@ class MainWindow(gtk.Window):
         if self.displayed_double():
             number_of_pages = 2
             left_filename, right_filename = self.imagehandler.get_page_filename(double=True)
+            left_filesize, right_filesize = self.imagehandler.get_page_filesize(double=True)
             if self.is_manga_mode:
                 left_filename, right_filename = right_filename, left_filename
+                left_filesize, right_filesize = right_filesize, left_filesize
             filename = left_filename + ', ' + right_filename
+            filesize = left_filesize + ', ' + right_filesize
         else:
             number_of_pages = 1
             filename = self.imagehandler.get_page_filename()
+            filesize = self.imagehandler.get_page_filesize()
         self.statusbar.set_page_number(page_number,
                                        self.imagehandler.get_number_of_pages(),
                                        number_of_pages)
         self.statusbar.set_filename(filename)
         self.statusbar.set_root(self.filehandler.get_base_filename())
+        self.statusbar.set_filesize(filesize)
         self.statusbar.update()
         self.update_title()
 

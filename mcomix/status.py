@@ -15,7 +15,7 @@ class Statusbar(gtk.EventBox):
 
         self._loading = True
 
-        # Status text, page number, file number, resolution, path, filename
+        # Status text, page number, file number, resolution, path, filename, filesize
         self.status = gtk.Statusbar()
         self.add(self.status)
 
@@ -30,6 +30,7 @@ class Statusbar(gtk.EventBox):
                 <menuitem action="resolution" />
                 <menuitem action="rootpath" />
                 <menuitem action="filename" />
+                <menuitem action="filesize" />
             </popup>
         </ui>
         """
@@ -46,6 +47,8 @@ class Statusbar(gtk.EventBox):
             ('rootpath', None, _('Show path'), None, None,
                 self.toggle_status_visibility),
             ('filename', None, _('Show filename'), None, None,
+                self.toggle_status_visibility),
+            ('filesize', None, _('Show filesize'), None, None,
                 self.toggle_status_visibility)])
         self.ui_manager.insert_action_group(actiongroup, 0)
 
@@ -59,6 +62,7 @@ class Statusbar(gtk.EventBox):
         self._resolution = ''
         self._root = ''
         self._filename = ''
+        self._filesize = ''
         self._update_sensitivity()
         self.show_all()
 
@@ -119,6 +123,12 @@ class Statusbar(gtk.EventBox):
         """Update the filename."""
         self._filename = i18n.to_unicode(filename)
 
+    def set_filesize(self, size):
+        """Update the filesize."""
+        if size is None:
+            size = ""
+        self._filesize = size
+
     def update(self):
         """Set the statusbar to display the current state."""
 
@@ -151,6 +161,8 @@ class Statusbar(gtk.EventBox):
             fields.append(self._root)
         if prefs['statusbar fields'] & constants.STATUS_FILENAME:
             fields.append(self._filename)
+        if prefs['statusbar fields'] & constants.STATUS_FILESIZE:
+            fields.append(self._filesize)
 
         return fields
 
@@ -172,6 +184,8 @@ class Statusbar(gtk.EventBox):
             bit = constants.STATUS_FILENAME
         elif actionname == 'filenumber':
             bit = constants.STATUS_FILENUMBER
+        elif actionname == 'filesize':
+            bit = constants.STATUS_FILESIZE
 
         if action.get_active():
             prefs['statusbar fields'] |= bit
@@ -196,12 +210,14 @@ class Statusbar(gtk.EventBox):
         resolution_visible = prefs['statusbar fields'] & constants.STATUS_RESOLUTION
         path_visible = prefs['statusbar fields'] & constants.STATUS_PATH
         filename_visible = prefs['statusbar fields'] & constants.STATUS_FILENAME
+        filesize_visible = prefs['statusbar fields'] & constants.STATUS_FILESIZE
 
         for name, visible in (('pagenumber', page_visible),
                 ('filenumber', fileno_visible),
                 ('resolution', resolution_visible),
                 ('rootpath', path_visible),
-                ('filename', filename_visible)):
+                ('filename', filename_visible),
+                ('filesize', filesize_visible)):
             action = self.ui_manager.get_action('/Statusbar/' + name)
             action.set_active(visible)
 
