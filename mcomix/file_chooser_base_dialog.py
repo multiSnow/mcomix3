@@ -235,7 +235,7 @@ class _BaseFileChooserDialog(Gtk.Dialog):
                 response = overwrite_dialog.run()
 
                 if response != Gtk.ResponseType.OK:
-                    self.emit_stop_by_name('response')
+                    self.stop_emission_by_name('response')
                     return
 
             # Do not store path if the user chose not to keep a file history

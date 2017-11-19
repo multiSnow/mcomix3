@@ -256,7 +256,7 @@ class _KeybindingManager(object):
         if keybinding in self._binding_to_action:
             action = self._binding_to_action[keybinding]
             func, args, kwargs = self._action_to_callback[action]
-            self._window.emit_stop_by_name('key_press_event')
+            self._window.stop_emission_by_name('key_press_event')
             return func(*args, **kwargs)
 
         # Some keys enable additional modifiers (NumLock enables GDK_MOD2_MASK),
@@ -267,7 +267,7 @@ class _KeybindingManager(object):
             stored_keycode, stored_flags = stored_binding
             if stored_keycode == keybinding[0] and stored_flags & keybinding[1]:
                 func, args, kwargs = self._action_to_callback[action]
-                self._window.emit_stop_by_name('key_press_event')
+                self._window.stop_emission_by_name('key_press_event')
                 return func(*args, **kwargs)
 
     def save(self):

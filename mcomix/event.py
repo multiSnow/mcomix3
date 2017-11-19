@@ -438,7 +438,7 @@ class EventHandler(object):
           (event.keyval == Gdk.KEY_Return and not
           'GDK_MOD1_MASK' in event.get_state().value_names)):
 
-            self._window.emit_stop_by_name('key_press_event')
+            self._window.stop_emission_by_name('key_press_event')
             return True
 
     def key_release_event(self, widget, event, *args):
