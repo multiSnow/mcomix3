@@ -6,7 +6,7 @@ import os
 import shutil
 import threading
 
-from gi.repository import GLib, GObject, Gdk, Gtk
+from gi.repository import GLib, Gdk, Gtk
 
 from mcomix import constants
 from mcomix import cursor_handler
@@ -311,7 +311,7 @@ class MainWindow(Gtk.Window):
         if not self._waiting_for_redraw:  # Don't stack up redraws.
             self._waiting_for_redraw = True
             GLib.idle_add(self._draw_image, scroll_to,
-                             priority=GObject.PRIORITY_HIGH_IDLE)
+                             priority=GLib.PRIORITY_HIGH_IDLE)
 
     def _update_toggle_preference(self, preference, toggleaction):
         ''' Update "toggle" widget corresponding <preference>.
