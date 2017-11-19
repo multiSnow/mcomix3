@@ -52,7 +52,7 @@ def load_icons():
         try:
             icon_data = resource_string('mcomix', 'images/%s' % filename)
             pixbuf = image_tools.load_pixbuf_data(icon_data)
-            iconset = Gtk.IconSet(pixbuf)
+            iconset = Gtk.IconSet.new_from_pixbuf(pixbuf)
             factory.add(stockid, iconset)
         except Exception:
             log.warning(_('! Could not load icon "%s"'), filename)
