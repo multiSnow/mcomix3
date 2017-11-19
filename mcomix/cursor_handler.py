@@ -1,6 +1,6 @@
 """cursor_handler.py - Cursor handler."""
 
-from gi.repository import Gdk, GObject
+from gi.repository import Gdk, GLib, GObject
 
 from mcomix import constants
 
