@@ -6,7 +6,7 @@ import os
 import shutil
 import threading
 
-from gi.repository import GObject, Gdk, Gtk
+from gi.repository import GLib, GObject, Gdk, Gtk
 
 from mcomix import constants
 from mcomix import cursor_handler
@@ -310,7 +310,7 @@ class MainWindow(Gtk.Window):
         # FIXME: what if scroll_to is different?
         if not self._waiting_for_redraw:  # Don't stack up redraws.
             self._waiting_for_redraw = True
-            GObject.idle_add(self._draw_image, scroll_to,
+            GLib.idle_add(self._draw_image, scroll_to,
                              priority=GObject.PRIORITY_HIGH_IDLE)
 
     def _update_toggle_preference(self, preference, toggleaction):

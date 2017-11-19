@@ -181,10 +181,11 @@ def run():
         require_version('Gtk', '3.0')
         require_version('Gdk', '3.0')
 
-        from gi.repository import Gdk, Gtk, GObject
+        from gi.repository import Gdk, Gtk, GLib
         from gi import version_info as gi_version_info
 
         if gi_version_info < (3,11,0):
+            from gi.repository import GObject
             GObject.threads_init()
 
     except AssertionError:
@@ -261,7 +262,7 @@ def run():
         signal.signal(signal.SIGCHLD, on_sigchld)
 
     for sig in (signal.SIGINT, signal.SIGTERM):
-        signal.signal(sig, lambda signum, stack: GObject.idle_add(window.terminate_program))
+        signal.signal(sig, lambda signum, stack: GLib.idle_add(window.terminate_program))
     try:
         Gtk.main()
     except KeyboardInterrupt: # Will not always work because of threading.

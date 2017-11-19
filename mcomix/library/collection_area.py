@@ -1,7 +1,7 @@
 """library_collection_area.py - Comic book library window that displays the collections."""
 
 from xml.sax.saxutils import escape as xmlescape
-from gi.repository import Gdk, GdkPixbuf, Gtk, GObject
+from gi.repository import Gdk, GdkPixbuf, Gtk, GLib
 
 from mcomix.preferences import prefs
 from mcomix import constants
@@ -193,7 +193,7 @@ class _CollectionArea(Gtk.ScrolledWindow):
 
         if removed > 0:
             collection = self._library.collection_area.get_current_collection()
-            GObject.idle_add(self._library.book_area.display_covers, collection)
+            GLib.idle_add(self._library.book_area.display_covers, collection)
 
     def _get_collection_at_path(self, path):
         """Return the collection ID of the collection at the (TreeView)
@@ -211,7 +211,7 @@ class _CollectionArea(Gtk.ScrolledWindow):
           collection == prefs['last library collection']):
             return
         prefs['last library collection'] = collection
-        GObject.idle_add(self._library.book_area.display_covers, collection)
+        GLib.idle_add(self._library.book_area.display_covers, collection)
 
     def _clean_collection(self, *args):
         """ Menu item hook to clean a collection. """

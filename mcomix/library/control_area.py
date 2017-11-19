@@ -3,7 +3,7 @@ and displays info."""
 
 import os
 from gi.repository import Gtk
-from gi.repository import GObject
+from gi.repository import GLib
 from gi.repository import Pango
 
 from mcomix import i18n
@@ -166,6 +166,6 @@ class _ControlArea(Gtk.HBox):
         if not self._library.filter_string:
             self._library.filter_string = None
         collection = self._library.collection_area.get_current_collection()
-        GObject.idle_add(self._library.book_area.display_covers, collection)
+        GLib.idle_add(self._library.book_area.display_covers, collection)
 
 # vim: expandtab:sw=4:ts=4

@@ -2,7 +2,7 @@
 
 import os
 import tempfile
-from gi.repository import Gdk, Gtk, GObject
+from gi.repository import Gdk, Gtk, GLib
 import re
 
 from mcomix.preferences import prefs
@@ -57,7 +57,7 @@ class _EditArchiveDialog(Gtk.Dialog):
 
         self.show_all()
 
-        GObject.idle_add(self._load_original_files)
+        GLib.idle_add(self._load_original_files)
 
     def _load_original_files(self):
         """Load the original files from the archive or directory into

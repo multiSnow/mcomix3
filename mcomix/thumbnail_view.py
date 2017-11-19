@@ -2,7 +2,7 @@
 
 import Queue
 from gi.repository import Gtk
-from gi.repository import GObject
+from gi.repository import GLib
 
 from mcomix.preferences import prefs
 from mcomix.worker_thread import WorkerThread
@@ -88,7 +88,7 @@ class ThumbnailViewBase(object):
         uid, iter = order
         pixbuf = self.generate_thumbnail(uid)
         if pixbuf is not None:
-            GObject.idle_add(self._pixbuf_finished, iter, pixbuf)
+            GLib.idle_add(self._pixbuf_finished, iter, pixbuf)
 
     def _pixbuf_finished(self, iter, pixbuf):
         """ Executed when a pixbuf was created, to actually insert the pixbuf
