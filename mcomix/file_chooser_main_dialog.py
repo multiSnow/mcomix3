@@ -44,9 +44,9 @@ class _MainFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog):
             # If more than one file is selected, restrict opening
             # further files to the selection.
             if len(paths) > 1:
-                files = [ path.decode('utf-8') for path in paths ]
+                files = [ path for path in paths ]
             else:
-                files = paths[0].decode('utf-8')
+                files = paths[0]
 
             self._window.filehandler.open_file(files)
         else:
