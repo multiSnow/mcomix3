@@ -307,6 +307,44 @@ class ImageHandler(object):
 
         return os.path.basename(first_path)
 
+    def get_page_filesize(self, page=None, double=False):
+        """Return the filesize of the <page>, or the filesize of the
+        currently viewed page if <page> is None. If <double> is True, return
+        a tuple (s, s') where s is the filesize of <page> (or the current
+        page) and s' is the filesize of the page after.
+        """
+        if not self.page_is_available():
+            return
+
+        if page is None:
+            page = self.get_current_page()
+
+        first_path = self.get_path_to_page(page)
+        if first_path is None:
+            return
+
+        if double:
+            second_path = self.get_path_to_page(page + 1)
+            if second_path != None:
+                try:
+                    first = tools.format_byte_size(os.stat(first_path).st_size)
+                except OSError:
+                    first = ''
+                try:
+                    second = tools.format_byte_size(os.stat(second_path).st_size)
+                except OSError:
+                    second = ''
+            else:
+                return
+            return first, second
+
+        try:
+            size = tools.format_byte_size(os.stat(first_path).st_size)
+        except OSError:
+            size = ''
+
+        return size
+
     def get_pretty_current_filename(self):
         """Return a string with the name of the currently viewed file that is
         suitable for printing.
