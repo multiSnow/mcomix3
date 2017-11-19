@@ -11,6 +11,7 @@ from functools import reduce
 
 
 NUMERIC_REGEXP = re.compile(r"\d+|\D+")  # Split into numerics and characters
+PREFIXED_BYTE_UNITS = ('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB')
 
 def cmp(x,y):
     if x>y:return 1
@@ -116,6 +117,16 @@ def number_of_digits(n):
         return 1
     return int(math.log10(abs(n))) + 1
 
+def format_byte_size(n):
+    s=0
+    while n>=1024:
+        s+=1
+        n/=1024.0
+    try:
+        e=PREFIXED_BYTE_UNITS[s]
+    except IndexError:
+        e='C{}i'.format(s)
+    return '{} {}'.format(n,e)
 
 def garbage_collect():
     """ Runs the garbage collector. """

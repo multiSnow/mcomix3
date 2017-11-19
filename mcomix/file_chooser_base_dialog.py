@@ -14,6 +14,7 @@ from mcomix import log
 from mcomix import thumbnail_tools
 from mcomix import message_dialog
 from mcomix import file_provider
+from mcomix import tools
 
 mimetypes.init()
 
@@ -285,8 +286,7 @@ class _BaseFileChooserDialog(Gtk.Dialog):
                 pixbuf = image_tools.add_border(pixbuf, 1)
                 self._preview_image.set_from_pixbuf(pixbuf)
                 self._namelabel.set_text(os.path.basename(filepath))
-                self._sizelabel.set_text(
-                    '%.1f KiB' % (os.stat(filepath).st_size / 1024.0))
+                self._sizelabel.set_text(tools.format_byte_size(os.stat(filepath).st_size))
 
     def _current_file(self):
         # XXX: This method defers the import of main to avoid cyclic imports

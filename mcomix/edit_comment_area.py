@@ -3,6 +3,8 @@
 import os
 from gi.repository import Gdk, Gtk
 
+from mcomix import tools
+
 class _CommentArea(Gtk.VBox):
 
     """The area used for displaying and handling non-image files."""
@@ -60,12 +62,12 @@ class _CommentArea(Gtk.VBox):
           self._edit_dialog.file_handler.get_number_of_comments() + 1):
 
             path = self._edit_dialog.file_handler.get_comment_name(num)
-            size = '%.1f KiB' % (os.stat(path).st_size / 1024.0)
+            size = tools.format_byte_size(os.stat(path).st_size)
             self._liststore.append([os.path.basename(path), size, path])
 
     def add_extra_file(self, path):
         """Add an extra imported file (at <path>) to the list."""
-        size = '%.1f KiB' % (os.stat(path).st_size / 1024.0)
+        size = tools.format_byte_size(os.stat(path).st_size)
         self._liststore.append([os.path.basename(path), size, path])
 
     def get_file_listing(self):
