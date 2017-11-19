@@ -239,6 +239,7 @@ def get_most_common_edge_colour(pixbufs, edge=2):
     def get_edge_pixbuf(pixbuf, side, edge):
         """ Returns a pixbuf corresponding to the side passed in <side>.
         Valid sides are 'left', 'right', 'top', 'bottom'. """
+        pixbuf = static_image(pixbuf)
         width = pixbuf.get_width()
         height = pixbuf.get_height()
         edge = min(edge, width, height)
@@ -320,13 +321,56 @@ def pixbuf_to_pil(pixbuf):
     im = Image.frombuffer(mode, dimensions, pixels, 'raw', mode, stride, 1)
     return im
 
+def is_animation(pixbuf):
+    return isinstance(pixbuf, GdkPixbuf.PixbufAnimation)
+
+def static_image(pixbuf):
+    """ Returns a non-animated version of the specified pixbuf. """
+    if is_animation(pixbuf):
+        return pixbuf.get_static_image()
+    return pixbuf
+
+def unwrap_image(image):
+    """ Returns an object that contains the image data based on
+    gtk.Image.get_storage_type or None if image is None or image.get_storage_type
+    returns Gtk.ImageType.EMPTY. """
+    if image is None:
+        return None
+    t = image.get_storage_type()
+    if t == Gtk.ImageType.EMPTY:
+        return None
+    if t == Gtk.ImageType.PIXBUF:
+        return image.get_pixbuf()
+    if t == Gtk.ImageType.ANIMATION:
+        return image.get_animation()
+    if t == Gtk.ImageType.PIXMAP:
+        return image.get_pixmap()
+    if t == Gtk.ImageType.IMAGE:
+        return image.get_image()
+    if t == Gtk.ImageType.STOCK:
+        return image.get_stock()
+    if t == Gtk.ImageType.ICON_SET:
+        return image.get_icon_set()
+    raise ValueError()
+
+def set_from_pixbuf(image, pixbuf):
+    if is_animation(pixbuf):
+        return image.set_from_animation(pixbuf)
+    else:
+        return image.set_from_pixbuf(pixbuf)
+
 def load_pixbuf(path):
     """ Loads a pixbuf from a given image file. """
+    disable_animation = prefs['animation mode'] == constants.ANIMATION_DISABLED
     if USE_PIL:
-        im = Image.open(path)
-        pixbuf = pil_to_pixbuf(im, keep_orientation=True)
-    else:
-        pixbuf = GdkPixbuf.Pixbuf.new_from_file(path)
+        with Image.open(path) as im:
+            if 'duration' not in im.info:
+                return pil_to_pixbuf(im, keep_orientation=True)
+    if disable_animation:
+        return GdkPixbuf.Pixbuf.new_from_file(path)
+    pixbuf = GdkPixbuf.PixbufAnimation.new_from_file(path)
+    if pixbuf.is_static_image():
+        return pixbuf.get_static_image()
     return pixbuf
 
 def load_pixbuf_size(path, width, height):
@@ -425,6 +469,7 @@ def get_implied_rotation(pixbuf):
     by a camera that is held sideways might store this fact in its Exif data,
     and the pixbuf loader will set the orientation option correspondingly.
     """
+    pixbuf = static_image(pixbuf)
     orientation = getattr(pixbuf, 'orientation', None)
     if orientation is None:
         orientation = pixbuf.get_option('orientation')

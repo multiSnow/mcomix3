@@ -296,6 +296,11 @@ class _PreferencesDialog(Gtk.Dialog):
         page.add_row(Gtk.Label(label=_('Comment extensions:')),
             self._create_extensions_entry())
 
+        page.new_section(_('Animated images'))
+
+        page.add_row(Gtk.Label(label=_('Animation mode:')),
+		     self._create_animation_mode_combobox())
+
         return page
 
     def _init_shortcuts_tab(self):
@@ -605,6 +610,31 @@ class _PreferencesDialog(Gtk.Dialog):
             if value != last_value:
                 self._window.draw_image()
 
+    def _create_animation_mode_combobox(self):
+        """ Creates combo box for animation mode """
+        items = (
+                (_('Never'), constants.ANIMATION_DISABLED),
+                (_('Normal'), constants.ANIMATION_NORMAL))
+
+        selection = prefs['animation mode']
+
+        box = self._create_combobox(items, selection, self._animation_mode_changed_cb)
+        box.set_tooltip_text(
+            _('Controls how animated images should be displayed.'))
+
+        return box
+
+    def _animation_mode_changed_cb(self, combobox, *args):
+        """ Called whenever animation mode has been changed. """
+        iter = combobox.get_active_iter()
+        if combobox.get_model().iter_is_valid(iter):
+            value = combobox.get_model().get_value(iter, 1)
+            last_value = prefs['animation mode']
+            prefs['animation mode'] = value
+
+            if value != last_value:
+                self._window.filehandler.refresh_file()
+
     def _create_combobox(self, options, selected_value, change_callback):
         """ Creates a new dropdown combobox and populates it with the items
         passed in C{options}.
@@ -720,7 +750,8 @@ class _PreferencesDialog(Gtk.Dialog):
                 prefs['color box thumb bg'] = False
                 prefs['thumbnail bg uses main colour'] = False
 
-                pixbuf = self._window.images[0].get_pixbuf() # XXX transitional(double page limitation)
+                pixbuf = image_tools.static_image(image_tools.unwrap_image(
+		    self._window.images[0])) # XXX transitional(double page limitation)
                 if pixbuf:
                     bg_color = image_tools.get_most_common_edge_colour(pixbuf)
                     self._window.thumbnailsidebar.change_thumbnail_background_color(bg_color)

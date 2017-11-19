@@ -132,12 +132,17 @@ def volume(t):
     return reduce(operator.mul, t, 1)
 
 def relerr(approx, ideal):
-    return abs((approx - ideal) / ideal)
+    return abs(div(approx - ideal, ideal))
 
 def smaller(a, b):
     """ Returns a list with the i-th element set to True if and only the i-th
     element in a is less than the i-th element in b. """
     return map(operator.lt, a, b)
+
+def smaller_or_equal(a, b):
+    """ Returns a list with the i-th element set to True if and only the i-th
+    element in a is less than or equal to the i-th element in b. """
+    return list(map(operator.le, a, b))
 
 def scale(t, factor):
     return [x * factor for x in t]

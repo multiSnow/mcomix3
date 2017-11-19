@@ -371,6 +371,7 @@ class MainWindow(Gtk.Window):
             alignment_axis = constants.ALIGNMENT_AXIS
             pixbuf_count = 2 if self.displayed_double() else 1 # XXX limited to at most 2 pages
             pixbuf_list = list(self.imagehandler.get_pixbufs(pixbuf_count))
+            do_not_transform = [image_tools.is_animation(x) for x in pixbuf_list]
             size_list = [[pixbuf.get_width(), pixbuf.get_height()]
                          for pixbuf in pixbuf_list]
 
@@ -403,6 +404,8 @@ class MainWindow(Gtk.Window):
                 orientation = list(orientation)
                 orientation.reverse()
                 for i in range(pixbuf_count):
+                    if do_not_transform[i]:
+                        continue
                     size_list[i].reverse()
             if rotation in (180, 270):
                 orientation = tools.vector_opposite(orientation)
@@ -430,7 +433,7 @@ class MainWindow(Gtk.Window):
                     dasize = 1
                 zoom_dummy_size[distribution_axis] = dasize
                 scaled_sizes = self.zoom.get_zoomed_size(size_list, zoom_dummy_size,
-                    distribution_axis)
+                    distribution_axis, do_not_transform)
                 self.layout = layout.FiniteLayout(scaled_sizes,
                                                   viewport_size,
                                                   orientation,
@@ -446,10 +449,14 @@ class MainWindow(Gtk.Window):
                     viewport_size = () # start anew
 
             for i in range(pixbuf_count):
+                if do_not_transform[i]:
+                    continue
                 pixbuf_list[i] = image_tools.fit_pixbuf_to_rectangle(
                     pixbuf_list[i], scaled_sizes[i], rotation_list[i])
 
             for i in range(pixbuf_count):
+                if do_not_transform[i]:
+                    continue
                 if prefs['horizontal flip']:
                     pixbuf_list[i] = pixbuf_list[i].flip(horizontal=True)
                 if prefs['vertical flip']:
@@ -457,7 +464,7 @@ class MainWindow(Gtk.Window):
                 pixbuf_list[i] = self.enhancer.enhance(pixbuf_list[i])
 
             for i in range(pixbuf_count):
-                self.images[i].set_from_pixbuf(pixbuf_list[i])
+                image_tools.set_from_pixbuf(self.images[i], pixbuf_list[i])
 
             scales = tuple(map(lambda x, y: math.sqrt(tools.div(
                 tools.volume(x), tools.volume(y))), scaled_sizes, size_list))
@@ -825,37 +832,12 @@ class MainWindow(Gtk.Window):
             else:
                 self._scroll[i].hide()
 
-    def is_scrollable_horizontally(self):
-        """ Returns True when the displayed image does not fit into the display
-        port horizontally and must be scrolled to be viewed completely. """
-
-        screen_width, _ = self.get_visible_area_size()
-        left_width = self.images[0].get_pixbuf() and \
-                self.images[0].get_pixbuf().get_width() or 0 # XXX transitional(double page limitation)
-        right_width = self.images[1].get_pixbuf() and \
-                self.images[1].get_pixbuf().get_width() or 0 # XXX transitional(double page limitation)
-        image_width = max(left_width, right_width)
-
-        return image_width > screen_width
-
-    def is_scrollable_vertically(self):
-        """ Returns True when the displayed image does not fit into the display
-        port vertically and must be scrolled to be viewed completely. """
-
-        _, screen_height = self.get_visible_area_size()
-        left_height = self.images[0].get_pixbuf() and \
-                self.images[0].get_pixbuf().get_height() or 0 # XXX transitional(double page limitation)
-        right_height = self.images[1].get_pixbuf() and \
-                self.images[1].get_pixbuf().get_height() or 0 # XXX transitional(double page limitation)
-        image_height = max(left_height, right_height)
-
-        return image_height > screen_height
-
     def is_scrollable(self):
-        """ Returns True when either is_scrollable_horizontally or
-        is_scrollable_vertically return True. """
-        return self.is_scrollable_horizontally() or \
-               self.is_scrollable_vertically()
+        """ Returns True if the current images do not fit into the viewport. """
+        if self.layout is None:
+            return False
+        return not all(tools.smaller_or_equal(self.layout.get_union_box().get_size(),
+                                              self.get_visible_area_size()))
 
     def scroll_with_flipping(self, x, y):
         """Returns true if able to scroll without flipping to
