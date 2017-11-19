@@ -61,7 +61,7 @@ class _Page(Gtk.ScrolledWindow):
         label.set_alignment(0, 0.5)
         label.set_selectable(True)
         self._mainbox.pack_start(label, False, False, 0)
-        self._mainbox.pack_start(Gtk.VBox(True, True, 0), True, True, 0) # Just to add space (better way?)
+        self._mainbox.pack_start(Gtk.VBox(homogeneous=True, spacing=0), True, True, 0) # Just to add space (better way?)
 
     def set_main_info(self, info):
         """Set the information in the main info box (below the filename) to
