@@ -3,7 +3,7 @@
 
 import textwrap
 
-from gi.repository import Gdk, Gtk, GLib, GObject
+from gi.repository import Gdk, Gtk, GLib
 from gi.repository import Pango, PangoCairo
 
 from mcomix import image_tools
@@ -57,16 +57,16 @@ class OnScreenDisplay(object):
 
         self._last_osd_rect = rect
         if self._timeout_event:
-            GObject.source_remove(self._timeout_event)
+            GLib.source_remove(self._timeout_event)
         self._timeout_event = GLib.timeout_add_seconds(OnScreenDisplay.TIMEOUT, self.clear)
 
     def clear(self):
         """ Removes the OSD. """
         if self._timeout_event:
-            GObject.source_remove(self._timeout_event)
+            GLib.source_remove(self._timeout_event)
         self._timeout_event = None
         self._clear_osd()
-        return 0 # To unregister gobject timer event
+        return 0 # To unregister timer event
 
     def _wrap_text(self, text, width=70):
         """ Wraps the text to be C{width} characters at most. """

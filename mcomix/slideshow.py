@@ -1,7 +1,7 @@
 """slideshow.py - Slideshow handler."""
 
 from gi.repository import Gtk
-from gi.repository import GLib, GObject
+from gi.repository import GLib
 
 from mcomix.preferences import prefs
 
@@ -22,7 +22,7 @@ class Slideshow(object):
 
     def _stop(self):
         if self._running:
-            GObject.source_remove(self._id)
+            GLib.source_remove(self._id)
             self._running = False
             self._window.update_title()
 

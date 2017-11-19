@@ -1,6 +1,6 @@
 """cursor_handler.py - Cursor handler."""
 
-from gi.repository import Gdk, GLib, GObject
+from gi.repository import Gdk, GLib
 
 from mcomix import constants
 
@@ -75,7 +75,7 @@ class CursorHandler(object):
 
     def _kill_timer(self):
         if self._timer_id is not None:
-            GObject.source_remove(self._timer_id)
+            GLib.source_remove(self._timer_id)
             self._timer_id = None
 
     def _get_hidden_cursor(self):
