@@ -182,8 +182,10 @@ def run():
         require_version('Gdk', '3.0')
 
         from gi.repository import Gdk, Gtk, GObject
+        from gi import version_info as gi_version_info
 
-        GObject.threads_init()
+        if gi_version_info < (3,11,0):
+            GObject.threads_init()
 
     except AssertionError:
         log.error( _("You do not have the required versions of GTK+ 3.0 and PyGObject installed.") )
