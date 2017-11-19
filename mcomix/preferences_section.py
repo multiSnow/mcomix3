@@ -16,13 +16,13 @@ class _PreferenceSection(Gtk.VBox):
         <header>, and the width request of the (possible) right columns
         set to that of <right_column_width>.
         """
-        super(_PreferenceSection, self).__init__(False, 0)
+        super(_PreferenceSection, self).__init__(homogeneous=False, spacing=0)
         self._right_column_width = right_column_width
-        self.contentbox = Gtk.VBox(False, 6)
+        self.contentbox = Gtk.VBox(homogeneous=False, spacing=6)
         label = labels.BoldLabel(header)
         label.set_alignment(0, 0.5)
-        hbox = Gtk.HBox(False, 0)
-        hbox.pack_start(Gtk.HBox(True, True, 0), False, False, 6)
+        hbox = Gtk.HBox(homogeneous=False, spacing=0)
+        hbox.pack_start(Gtk.HBox(homogeneous=True, spacing=0), False, False, 6)
         hbox.pack_start(self.contentbox, True, True, 0)
         self.pack_start(label, False, False, 0)
         self.pack_start(hbox, False, False, 6)
@@ -34,13 +34,13 @@ class _PreferenceSection(Gtk.VBox):
         in order to make it easy for  all "right column items" in a page to
         line up nicely.
         """
-        left_box = Gtk.VBox(False, 6)
-        right_box = Gtk.VBox(False, 6)
+        left_box = Gtk.VBox(homogeneous=False, spacing=6)
+        right_box = Gtk.VBox(homogeneous=False, spacing=6)
 
         if self._right_column_width != None:
             right_box.set_size_request(self._right_column_width, -1)
 
-        hbox = Gtk.HBox(False, 12)
+        hbox = Gtk.HBox(homogeneous=False, spacing=12)
         hbox.pack_start(left_box, True, True, 0)
         hbox.pack_start(right_box, False, False, 0)
         self.contentbox.pack_start(hbox, True, True, 0)

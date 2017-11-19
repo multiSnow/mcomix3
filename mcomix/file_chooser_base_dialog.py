@@ -60,7 +60,7 @@ class _BaseFileChooserDialog(Gtk.Dialog):
         self.filechooser.connect('file_activated', self._response,
             Gtk.ResponseType.OK)
 
-        preview_box = Gtk.VBox(False, 10)
+        preview_box = Gtk.VBox(homogeneous=False, spacing=10)
         preview_box.set_size_request(130, 0)
         self._preview_image = Gtk.Image()
         self._preview_image.set_size_request(130, 130)

@@ -133,7 +133,7 @@ class _BookArea(Gtk.ScrolledWindow):
         """
 
         self._ui_manager.add_ui_from_string(ui_description)
-        actiongroup = Gtk.ActionGroup('mcomix-library-book-area')
+        actiongroup = Gtk.ActionGroup(name='mcomix-library-book-area')
         # General book actions
         actiongroup.add_actions([
             ('_title', None, _('Library books'), None, None,
@@ -398,8 +398,8 @@ class _BookArea(Gtk.ScrolledWindow):
             dialog.set_text(_('Set library cover size'))
 
             # Add adjustment scale
-            adjustment = Gtk.Adjustment(prefs['library cover size'], 20,
-                    constants.MAX_LIBRARY_COVER_SIZE, 10, 25, 0)
+            adjustment = Gtk.Adjustment(value=prefs['library cover size'], lower=20,
+                    upper=constants.MAX_LIBRARY_COVER_SIZE, step_increment=10, page_increment=25)
             cover_size_scale = Gtk.HScale(adjustment)
             cover_size_scale.set_size_request(200, -1)
             cover_size_scale.set_digits(0)

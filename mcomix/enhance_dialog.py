@@ -33,7 +33,7 @@ class _EnhanceImageDialog(Gtk.Dialog):
         self._enhancer = window.enhancer
         self._block = False
 
-        vbox = Gtk.VBox(False, 10)
+        vbox = Gtk.VBox(homogeneous=False, spacing=10)
         self.set_border_width(4)
         vbox.set_border_width(6)
         self.vbox.add(vbox)
@@ -43,10 +43,10 @@ class _EnhanceImageDialog(Gtk.Dialog):
         vbox.pack_start(self._hist_image, True, True, 0)
         vbox.pack_start(Gtk.Separator.new(Gtk.Orientation.HORIZONTAL), True, True, 0)
 
-        hbox = Gtk.HBox(False, 4)
+        hbox = Gtk.HBox(homogeneous=False, spacing=4)
         vbox.pack_start(hbox, False, False, 2)
-        vbox_left = Gtk.VBox(False, 4)
-        vbox_right = Gtk.VBox(False, 4)
+        vbox_left = Gtk.VBox(homogeneous=False, spacing=4)
+        vbox_right = Gtk.VBox(homogeneous=False, spacing=4)
         hbox.pack_start(vbox_left, False, False, 2)
         hbox.pack_start(vbox_right, True, True, 2)
 
@@ -55,7 +55,7 @@ class _EnhanceImageDialog(Gtk.Dialog):
             label.set_alignment(1, 0.5)
             label.set_use_underline(True)
             vbox_left.pack_start(label, True, False, 2)
-            adj = Gtk.Adjustment(0.0, -1.0, 1.0, 0.01, 0.1)
+            adj = Gtk.Adjustment(value=0.0, lower=-1.0, upper=1.0, step_increment=0.01, page_increment=0.1)
             scale = Gtk.HScale.new(adj)
             scale.set_digits(2)
             scale.set_value_pos(Gtk.PositionType.RIGHT)

@@ -35,7 +35,7 @@ class Statusbar(Gtk.EventBox):
         """
         self.ui_manager.add_ui_from_string(ui_description)
 
-        actiongroup = Gtk.ActionGroup('mcomix-statusbar')
+        actiongroup = Gtk.ActionGroup(name='mcomix-statusbar')
         actiongroup.add_toggle_actions([
             ('pagenumber', None, _('Show page numbers'), None, None,
                 self.toggle_status_visibility),

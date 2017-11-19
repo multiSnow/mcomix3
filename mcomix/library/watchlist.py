@@ -35,7 +35,7 @@ class WatchListDialog(Gtk.Dialog):
         self.set_default_response(Gtk.ResponseType.CLOSE)
 
         # Initialize treeview control showing existing watch directories
-        self._treeview = Gtk.TreeView(self._create_model())
+        self._treeview = Gtk.TreeView(model=self._create_model())
         self._treeview.set_headers_visible(True)
         self._treeview.get_selection().connect('changed', self._item_selected_cb)
 
@@ -84,7 +84,7 @@ class WatchListDialog(Gtk.Dialog):
         self.vbox.pack_start(main_box, True, True, 0)
 
         auto_checkbox = Gtk.CheckButton(
-            _('Automatically scan for new books when library is _opened'), use_underline=True)
+            label=_('Automatically scan for new books when library is _opened'), use_underline=True)
         auto_checkbox.set_active(prefs['scan for new books on library startup'])
         auto_checkbox.connect('toggled', self._auto_scan_toggled_cb)
         self.vbox.pack_end(auto_checkbox, False, False, 5)

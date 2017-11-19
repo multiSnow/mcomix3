@@ -17,7 +17,7 @@ class OpenWithMenu(Gtk.Menu):
         self._window = window
         self._openwith_manager = _openwith_manager
 
-        actiongroup = Gtk.ActionGroup('mcomix-openwith')
+        actiongroup = Gtk.ActionGroup(name='mcomix-openwith')
         actiongroup.add_actions([
             ('edit_commands', Gtk.STOCK_EDIT, _('_Edit commands'),
              None, None, self._edit_commands)])

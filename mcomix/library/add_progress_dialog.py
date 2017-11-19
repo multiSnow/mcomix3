@@ -29,13 +29,13 @@ class _AddLibraryProgressDialog(Gtk.Dialog):
         self.connect('response', self._response)
         self.set_default_response(Gtk.ResponseType.CLOSE)
 
-        main_box = Gtk.VBox(False, 5)
+        main_box = Gtk.VBox(homogeneous=False, spacing=5)
         main_box.set_border_width(6)
         self.vbox.pack_start(main_box, False, False, 0)
-        hbox = Gtk.HBox(False, 10)
+        hbox = Gtk.HBox(homogeneous=False, spacing=10)
         main_box.pack_start(hbox, False, False, 5)
-        left_box = Gtk.VBox(True, 5)
-        right_box = Gtk.VBox(True, 5)
+        left_box = Gtk.VBox(homogeneous=True, spacing=5)
+        right_box = Gtk.VBox(homogeneous=True, spacing=5)
         hbox.pack_start(left_box, False, False, 0)
         hbox.pack_start(right_box, False, False, 0)
 

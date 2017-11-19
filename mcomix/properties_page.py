@@ -15,11 +15,11 @@ class _Page(Gtk.ScrolledWindow):
     def __init__(self):
         super(_Page, self).__init__()
         self.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
-        self._vbox = Gtk.VBox(False, 12)
+        self._vbox = Gtk.VBox(homogeneous=False, spacing=12)
         self.add_with_viewport(self._vbox)
 
         self.set_border_width(12)
-        topbox = Gtk.HBox(False, 12)
+        topbox = Gtk.HBox(homogeneous=False, spacing=12)
         self._vbox.pack_start(topbox, True, True, 0)
         self._thumb = Gtk.Image()
         self._thumb.set_size_request(128, 128)
@@ -41,12 +41,12 @@ class _Page(Gtk.ScrolledWindow):
         self._thumb.clear()
         if self._mainbox is not None:
             self._mainbox.destroy()
-        self._mainbox = Gtk.VBox(False, 5)
+        self._mainbox = Gtk.VBox(homogeneous=False, spacing=5)
         self._mainbox.set_border_width(10)
         self._insidebox.add(self._mainbox)
         if self._extrabox is not None:
             self._extrabox.destroy()
-        self._extrabox = Gtk.HBox(False, 10)
+        self._extrabox = Gtk.HBox(homogeneous=False, spacing=10)
         self._vbox.pack_start(self._extrabox, False, False, 0)
 
     def set_thumbnail(self, pixbuf):
@@ -77,8 +77,8 @@ class _Page(Gtk.ScrolledWindow):
         """Set the information below the main info box to the values in the
         sequence <info>. Each entry in info should be a tuple (desc, value).
         """
-        left_box = Gtk.VBox(True, 8)
-        right_box = Gtk.VBox(True, 8)
+        left_box = Gtk.VBox(homogeneous=True, spacing=8)
+        right_box = Gtk.VBox(homogeneous=True, spacing=8)
         self._extrabox.pack_start(left_box, False, False, 0)
         self._extrabox.pack_start(right_box, False, False, 0)
         for desc, value in info:

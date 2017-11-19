@@ -35,7 +35,7 @@ class _ControlArea(Gtk.HBox):
         insidebox.set_border_width(1)
         insidebox.set_state(Gtk.StateType.ACTIVE)
 
-        infobox = Gtk.VBox(False, 5)
+        infobox = Gtk.VBox(homogeneous=False, spacing=5)
         infobox.set_border_width(10)
         self.pack_start(borderbox, True, True, 0)
         borderbox.add(insidebox)
@@ -58,12 +58,12 @@ class _ControlArea(Gtk.HBox):
         self._dirlabel.set_selectable(True)
         infobox.pack_start(self._dirlabel, False, False, 0)
 
-        vbox = Gtk.VBox(False, 10)
+        vbox = Gtk.VBox(homogeneous=False, spacing=10)
         vbox.set_size_request(350, -1)
         self.pack_start(vbox, False, False, 0)
 
         # First line of controls, containing the search box
-        hbox = Gtk.HBox(False)
+        hbox = Gtk.HBox(homogeneous=False)
         vbox.pack_start(hbox, True, True, 0)
 
         label = Gtk.Label(label=_('_Search:'))
@@ -78,7 +78,7 @@ class _ControlArea(Gtk.HBox):
         label.set_mnemonic_widget(search_entry)
 
         # Last line of controls, containing buttons like 'Open'
-        hbox = Gtk.HBox(False, 10)
+        hbox = Gtk.HBox(homogeneous=False, spacing=10)
         vbox.pack_end(hbox, True, True, 0)
 
         watchlist_button = Gtk.Button(label=_("_Watch list"), use_underline=True)

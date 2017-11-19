@@ -19,7 +19,7 @@ class BookmarksMenu(Gtk.Menu):
         self._bookmarks_store = bookmark_backend.BookmarksStore
         self._bookmarks_store.initialize(window)
 
-        self._actiongroup = Gtk.ActionGroup('mcomix-bookmarks')
+        self._actiongroup = Gtk.ActionGroup(name='mcomix-bookmarks')
         self._actiongroup.add_actions([
             ('add_bookmark', 'mcomix-add-bookmark', _('Add _Bookmark'),
                 '<Control>D', None, self._add_current_to_bookmarks),

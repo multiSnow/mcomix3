@@ -30,7 +30,7 @@ class KeybindingEditorWindow(Gtk.ScrolledWindow):
         treestore = self.treestore = Gtk.TreeStore(*model)
         self.refresh_model()
 
-        treeview = Gtk.TreeView(treestore)
+        treeview = Gtk.TreeView(model=treestore)
 
         tvcol1 = Gtk.TreeViewColumn(_("Name"))
         treeview.append_column(tvcol1)

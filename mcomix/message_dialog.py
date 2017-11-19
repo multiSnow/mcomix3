@@ -29,7 +29,7 @@ class MessageDialog(Gtk.MessageDialog):
         #: Automatically destroy dialog after run?
         self.auto_destroy = True
 
-        self.remember_checkbox = Gtk.CheckButton(_('Do not ask again.'))
+        self.remember_checkbox = Gtk.CheckButton(label=_('Do not ask again.'))
         self.remember_checkbox.set_no_show_all(True)
         self.remember_checkbox.set_can_focus(False)
         self.get_message_area().pack_end(self.remember_checkbox, True, True, 6)

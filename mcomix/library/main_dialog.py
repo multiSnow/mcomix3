@@ -27,7 +27,7 @@ class _LibraryDialog(Gtk.Window):
     """
 
     def __init__(self, window, file_handler):
-        super(_LibraryDialog, self).__init__(Gtk.WindowType.TOPLEVEL)
+        super(_LibraryDialog, self).__init__(type=Gtk.WindowType.TOPLEVEL)
 
         self._window = window
 
@@ -46,7 +46,7 @@ class _LibraryDialog(Gtk.Window):
 
         self.backend.watchlist.new_files_found += self._new_files_found
 
-        table = Gtk.Table(2, 2, False)
+        table = Gtk.Table(n_rows=2, n_columns=2, homogeneous=False)
         table.attach(self.collection_area, 0, 1, 0, 1, Gtk.AttachOptions.FILL,
             Gtk.AttachOptions.EXPAND|Gtk.AttachOptions.FILL)
         table.attach(self.book_area, 1, 2, 0, 1, Gtk.AttachOptions.EXPAND|Gtk.AttachOptions.FILL,

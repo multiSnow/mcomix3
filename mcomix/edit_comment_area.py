@@ -22,7 +22,7 @@ class _CommentArea(Gtk.VBox):
 
         # The ListStore layout is (basename, size, full path).
         self._liststore = Gtk.ListStore(str, str, str)
-        self._treeview = Gtk.TreeView(self._liststore)
+        self._treeview = Gtk.TreeView(model=self._liststore)
         self._treeview.set_rules_hint(True)
         self._treeview.connect('button_press_event', self._button_press)
         self._treeview.connect('key_press_event', self._key_press)
@@ -47,7 +47,7 @@ class _CommentArea(Gtk.VBox):
         """
 
         self._ui_manager.add_ui_from_string(ui_description)
-        actiongroup = Gtk.ActionGroup('mcomix-edit-archive-comment-area')
+        actiongroup = Gtk.ActionGroup(name='mcomix-edit-archive-comment-area')
         actiongroup.add_actions([
             ('remove', Gtk.STOCK_REMOVE, _('Remove from archive'), None, None,
                 self._remove_file)])

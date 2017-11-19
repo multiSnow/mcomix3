@@ -63,7 +63,7 @@ class _ImageArea(Gtk.ScrolledWindow):
 
         self._ui_manager.add_ui_from_string(ui_description)
 
-        actiongroup = Gtk.ActionGroup('mcomix-edit-archive-image-area')
+        actiongroup = Gtk.ActionGroup(name='mcomix-edit-archive-image-area')
         actiongroup.add_actions([
             ('remove', Gtk.STOCK_REMOVE, _('Remove from archive'), None, None,
                 self._remove_pages)])

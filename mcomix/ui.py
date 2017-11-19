@@ -30,7 +30,7 @@ class MainUI(Gtk.UIManager):
         # ----------------------------------------------------------------
         # Create actions for the menus.
         # ----------------------------------------------------------------
-        self._actiongroup = Gtk.ActionGroup('mcomix-main')
+        self._actiongroup = Gtk.ActionGroup(name='mcomix-main')
         self._actiongroup.add_actions([
             ('copy_page', Gtk.STOCK_COPY, _('_Copy'),
                 None, _('Copies the current page to clipboard.'),

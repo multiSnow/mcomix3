@@ -656,7 +656,7 @@ class _PreferencesDialog(Gtk.Dialog):
 
 
     def _create_pref_check_button(self, label, prefkey, tooltip_text):
-        button = Gtk.CheckButton(label)
+        button = Gtk.CheckButton(label=label)
         button.set_active(prefs[prefkey])
         button.connect('toggled', self._check_button_cb, prefkey)
         if tooltip_text:
@@ -760,7 +760,7 @@ class _PreferencesDialog(Gtk.Dialog):
     def _create_pref_spinner(self, prefkey, scale, lower, upper, step_incr,
         page_incr, digits, tooltip_text):
         value = prefs[prefkey] / scale
-        adjustment = Gtk.Adjustment(value, lower, upper, step_incr, page_incr)
+        adjustment = Gtk.Adjustment(value=value, lower=lower, upper=upper, step_increment=step_incr, page_increment=page_incr)
         spinner = Gtk.SpinButton.new(adjustment, 0.0, digits)
         spinner.set_size_request(80, -1)
         spinner.connect('value_changed', self._spinner_cb, prefkey)

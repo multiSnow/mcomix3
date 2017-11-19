@@ -28,7 +28,7 @@ class _CollectionArea(Gtk.ScrolledWindow):
         self.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
 
         self._treestore = Gtk.TreeStore(str, int) # (Name, ID) of collections.
-        self._treeview = Gtk.TreeView(self._treestore)
+        self._treeview = Gtk.TreeView(model=self._treestore)
         self._treeview.connect('cursor_changed', self._collection_selected)
         self._treeview.connect('drag_data_received', self._drag_data_received)
         self._treeview.connect('drag_motion', self._drag_motion)
@@ -69,7 +69,7 @@ class _CollectionArea(Gtk.ScrolledWindow):
         </ui>
         """
         self._ui_manager.add_ui_from_string(ui_description)
-        actiongroup = Gtk.ActionGroup('mcomix-library-collection-area')
+        actiongroup = Gtk.ActionGroup(name='mcomix-library-collection-area')
         actiongroup.add_actions([
             ('_title', None, _("Library collections"), None, None,
                 lambda *args: False),

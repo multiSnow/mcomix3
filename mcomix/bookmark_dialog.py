@@ -32,7 +32,7 @@ class _BookmarksDialog(Gtk.Dialog):
         self._liststore = Gtk.ListStore(GdkPixbuf.Pixbuf, GObject.TYPE_STRING,
             GObject.TYPE_STRING, GObject.TYPE_STRING, GObject.TYPE_STRING, bookmark_menu_item._Bookmark)
 
-        self._treeview = Gtk.TreeView(self._liststore)
+        self._treeview = Gtk.TreeView(model=self._liststore)
         self._treeview.set_rules_hint(True)
         self._treeview.set_reorderable(True)
         # search by typing first few letters of name

@@ -47,7 +47,7 @@ class MainWindow(Gtk.Window):
     def __init__(self, fullscreen=False, is_slideshow=slideshow,
             show_library=False, manga_mode=False, double_page=False,
             zoom_mode=None, open_path=None, open_page=1):
-        super(MainWindow, self).__init__(Gtk.WindowType.TOPLEVEL)
+        super(MainWindow, self).__init__(type=Gtk.WindowType.TOPLEVEL)
 
         # ----------------------------------------------------------------
         # Attributes
@@ -66,7 +66,7 @@ class MainWindow(Gtk.Window):
         self._spacing = 2
         self._waiting_for_redraw = False
 
-        self._image_box = Gtk.HBox(False, 2) # XXX transitional(kept for osd.py)
+        self._image_box = Gtk.HBox(homogeneous=False, spacing=2) # XXX transitional(kept for osd.py)
         self._main_layout = Gtk.Layout()
         # Wrap main layout into an event box so
         # we  can change its background color.
@@ -129,7 +129,7 @@ class MainWindow(Gtk.Window):
         self._hadjust.step_increment = 15
         self._hadjust.page_increment = 1
 
-        table = Gtk.Table(2, 2, False)
+        table = Gtk.Table(n_rows=2, n_columns=2, homogeneous=False)
         table.attach(self.thumbnailsidebar, 0, 1, 2, 5, Gtk.AttachOptions.FILL,
             Gtk.AttachOptions.FILL|Gtk.AttachOptions.EXPAND, 0, 0)
 
