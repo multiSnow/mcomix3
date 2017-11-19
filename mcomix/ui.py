@@ -212,6 +212,7 @@ class MainUI(Gtk.UIManager):
                 <toolitem action="last_page" />
                 <toolitem action="next_archive" />
                 <separator />
+                <toolitem action="fullscreen" />
                 <toolitem action="slideshow" />
                 <toolitem action="expander" />
                 <toolitem action="best_fit_mode" />
