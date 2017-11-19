@@ -24,16 +24,7 @@ from mcomix import constants
 from mcomix import log
 
 
-if sys.platform == 'win32':
-    # Works around GTK's slowness on Win32 by using PIL
-    # for loading instead and converting it afterwards.
-    # NOTE: Using False here should work fine for Windows, too.
-    USE_PIL = False
-else:
-    USE_PIL = True
-
-log.info('Using %s for loading images (versions: %s [%s], GDK [%s])',
-         'PIL' if USE_PIL else 'GDK',
+log.info('Using %s for loading images (versions: PIL [%s], GDK [%s])',
          PIL_VERSION[0], PIL_VERSION[1],
          GdkPixbuf.PIXBUF_VERSION)
 
@@ -362,10 +353,12 @@ def set_from_pixbuf(image, pixbuf):
 def load_pixbuf(path):
     """ Loads a pixbuf from a given image file. """
     disable_animation = prefs['animation mode'] == constants.ANIMATION_DISABLED
-    if USE_PIL:
+    try:
         with Image.open(path) as im:
             if 'duration' not in im.info:
                 return pil_to_pixbuf(im, keep_orientation=True)
+    except:
+        pass
     if disable_animation:
         return GdkPixbuf.Pixbuf.new_from_file(path)
     pixbuf = GdkPixbuf.PixbufAnimation.new_from_file(path)
@@ -376,11 +369,11 @@ def load_pixbuf(path):
 def load_pixbuf_size(path, width, height):
     """ Loads a pixbuf from a given image file and scale it to fit
     inside (width, height). """
-    if USE_PIL:
-        im = Image.open(path)
-        im.draft(None, (width, height))
-        pixbuf = pil_to_pixbuf(im, keep_orientation=True)
-    else:
+    try:
+        with Image.open(path) as im:
+            im.draft(None, (width, height))
+            pixbuf = pil_to_pixbuf(im, keep_orientation=True)
+    except:
         image_format, image_width, image_height = get_image_info(path)
         # If we could not get the image info, still try to load
         # the image to let GdkPixbuf raise the appropriate exception.
@@ -398,14 +391,15 @@ def load_pixbuf_size(path, width, height):
 
 def load_pixbuf_data(imgdata):
     """ Loads a pixbuf from the data passed in <imgdata>. """
-    if USE_PIL:
-        pixbuf = pil_to_pixbuf(Image.open(BytesIO(imgdata)), keep_orientation=True)
-    else:
-        loader = GdkPixbuf.PixbufLoader()
-        loader.write(imgdata)
-        loader.close()
-        pixbuf = loader.get_pixbuf()
-    return pixbuf
+    try:
+        with Image.open(BytesIO(imgdata)) as im:
+            return pil_to_pixbuf(im, keep_orientation=True)
+    except:
+        pass
+    loader = GdkPixbuf.PixbufLoader()
+    loader.write(imgdata)
+    loader.close()
+    return loader.get_pixbuf()
 
 def enhance(pixbuf, brightness=1.0, contrast=1.0, saturation=1.0,
   sharpness=1.0, autocontrast=False):
@@ -548,15 +542,10 @@ def get_image_info(path):
         (format, width, height)
     """
     info = None
-    if USE_PIL:
-        try:
-            im = Image.open(path)
-            info = (im.format,) + im.size
-        except IOError:
-            # If the file cannot be found, or the image
-            # cannot be opened and identified.
-            im = None
-    else:
+    try:
+        with Image.open(path) as im:
+            return (im.format,) + im.size
+    except:
         info = GdkPixbuf.Pixbuf.get_file_info(path)
         if info[0] is None:
             info = None
@@ -567,7 +556,7 @@ def get_image_info(path):
     return info
 
 def get_supported_formats():
-    if USE_PIL:
+    if True:
         # Make sure all supported formats are registered.
         Image.init()
         # Not all PIL formats register a mime type,
