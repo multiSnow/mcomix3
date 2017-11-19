@@ -1,7 +1,7 @@
 """slideshow.py - Slideshow handler."""
 
 from gi.repository import Gtk
-from gi.repository import GObject
+from gi.repository import GLib, GObject
 
 from mcomix.preferences import prefs
 
@@ -16,7 +16,7 @@ class Slideshow(object):
 
     def _start(self):
         if not self._running:
-            self._id = GObject.timeout_add(prefs['slideshow delay'], self._next)
+            self._id = GLib.timeout_add(prefs['slideshow delay'], self._next)
             self._running = True
             self._window.update_title()
 

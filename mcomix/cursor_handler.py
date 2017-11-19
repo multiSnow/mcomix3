@@ -71,7 +71,7 @@ class CursorHandler(object):
 
     def _set_hide_timer(self):
         self._kill_timer()
-        self._timer_id = GObject.timeout_add(2000, self._on_timeout)
+        self._timer_id = GLib.timeout_add(2000, self._on_timeout)
 
     def _kill_timer(self):
         if self._timer_id is not None:
