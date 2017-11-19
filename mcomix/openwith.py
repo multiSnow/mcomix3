@@ -91,7 +91,7 @@ class OpenWithCommand(object):
                 proc = process.popen(args, stdout=process.NULL)
             del proc
 
-        except Exception, e:
+        except Exception as e:
             text = _("Could not run command %(cmdlabel)s: %(exception)s") % \
                 {'cmdlabel': self.get_label(), 'exception': unicode(e)}
             window.osd.show(text)
@@ -373,7 +373,7 @@ class OpenWithEditor(Gtk.Dialog):
                     _('"%s" does not appear to have a valid executable.') % command.get_label())
             else:
                 self._set_exec_text('')
-        except OpenWithException, e:
+        except OpenWithException as e:
             self._test_field.set_text(unicode(e))
             self._set_exec_text('')
 

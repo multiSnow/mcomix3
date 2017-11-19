@@ -76,7 +76,7 @@ class RecentFilesMenu(Gtk.RecentChooserMenu):
         """ Removes all entries to recently opened files. """
         try:
             self._manager.purge_items()
-        except GObject.GError, error:
+        except GObject.GError as error:
             log.debug(error)
 
 

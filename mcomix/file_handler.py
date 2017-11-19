@@ -6,7 +6,7 @@ import shutil
 import tempfile
 import threading
 import re
-import cPickle
+import pickle
 from gi.repository import Gtk
 
 from mcomix.preferences import prefs
@@ -97,7 +97,7 @@ class FileHandler(object):
 
         try:
             path = self._initialize_fileprovider(path, keep_fileprovider)
-        except ValueError, ex:
+        except ValueError as ex:
             self._window.statusbar.set_message(unicode(ex))
             self._window.osd.show(unicode(ex))
             return False
@@ -122,7 +122,7 @@ class FileHandler(object):
         if self.archive_type is not None:
             try:
                 self._open_archive(self._current_file)
-            except Exception, ex:
+            except Exception as ex:
                 self._window.statusbar.set_message(unicode(ex))
                 self._window.osd.show(unicode(ex))
                 self.file_opened()
@@ -304,7 +304,7 @@ class FileHandler(object):
         image_files = [ os.path.join(self._tmp_dir, f)
                         for f in archive_images ]
 
-        comment_files = filter(self._comment_re.search, files)
+        comment_files = list(filter(self._comment_re.search, files))
         tools.alphanumeric_sort(comment_files)
         self._comment_files = [ os.path.join(self._tmp_dir, f)
                                 for f in comment_files ]
@@ -601,7 +601,7 @@ class FileHandler(object):
             with self._condition:
                 while not self._extractor.is_ready(name) and not self._stop_waiting:
                     self._condition.wait()
-        except Exception, ex:
+        except Exception as ex:
             log.error(u'Waiting on extraction of "%s" failed: %s', path, ex)
             return
 
@@ -639,7 +639,7 @@ class FileHandler(object):
             page_index = self._window.imagehandler.get_current_page() - 1
             current_file_info = [ path, page_index ]
 
-            cPickle.dump(current_file_info, config, cPickle.HIGHEST_PROTOCOL)
+            pickle.dump(current_file_info, config, pickle.HIGHEST_PROTOCOL)
             config.close()
 
     def read_fileinfo_file(self):
@@ -652,11 +652,11 @@ class FileHandler(object):
             try:
                 config = open(constants.FILEINFO_PICKLE_PATH, 'rb')
 
-                fileinfo = cPickle.load(config)
+                fileinfo = pickle.load(config)
 
                 config.close()
 
-            except Exception, ex:
+            except Exception as ex:
                 log.error(_('! Corrupt preferences file "%s", deleting...'),
                         constants.FILEINFO_PICKLE_PATH )
                 log.info(u'Error was: %s', ex)

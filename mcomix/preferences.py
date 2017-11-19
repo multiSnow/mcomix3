@@ -2,7 +2,7 @@
 write them.  """
 
 import os
-import cPickle
+import pickle
 import json
 
 from mcomix import constants
@@ -131,8 +131,8 @@ def read_preferences_file():
     elif os.path.isfile(constants.PREFERENCE_PICKLE_PATH):
         try:
             config_file = open(constants.PREFERENCE_PICKLE_PATH, 'rb')
-            version = cPickle.load(config_file)
-            saved_prefs = cPickle.load(config_file)
+            version = pickle.load(config_file)
+            saved_prefs = pickle.load(config_file)
             config_file.close()
 
             # Remove legacy format preferences file

@@ -69,7 +69,7 @@ class WorkerThread(object):
                     order_uid = self._order_uid(order)
             try:
                 self._process_order(order)
-            except Exception, e:
+            except Exception as e:
                 log.error(_('! Worker thread processing %(function)r failed: %(error)s'),
                           { 'function' : self._process_order, 'error' : e })
                 log.debug('Traceback:\n%s', traceback.format_exc())

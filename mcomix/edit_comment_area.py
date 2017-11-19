@@ -56,7 +56,7 @@ class _CommentArea(Gtk.VBox):
     def fetch_comments(self):
         """Load all comments in the archive."""
 
-        for num in xrange(1,
+        for num in range(1,
           self._edit_dialog.file_handler.get_number_of_comments() + 1):
 
             path = self._edit_dialog.file_handler.get_comment_name(num)

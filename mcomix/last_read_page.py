@@ -205,7 +205,7 @@ class LastReadPage(object):
 
             try:
                 os.unlink(constants.LASTPAGE_DATABASE_PATH)
-            except IOError, e:
+            except IOError as e:
                 log.error(_('! Could not remove file "%s"'),
                           constants.LASTPAGE_DATABASE_PATH)
 

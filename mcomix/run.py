@@ -5,8 +5,8 @@ import optparse
 import signal
 
 if __name__ == '__main__':
-    print >> sys.stderr, 'PROGRAM TERMINATED'
-    print >> sys.stderr, 'Please do not run this script directly! Use mcomixstarter.py instead.'
+    print('PROGRAM TERMINATED',file=sys.stderr)
+    print('Please do not run this script directly! Use mcomixstarter.py instead.',file=sys.stderr)
     sys.exit(1)
 
 # These modules must not depend on GTK, pkg_resources, PIL,
@@ -29,7 +29,7 @@ def wait_and_exit():
 
 def print_version(opt, value, parser, *args, **kwargs):
     """Print the version number and exit."""
-    print constants.APPNAME + ' ' + constants.VERSION
+    print(constants.APPNAME + ' ' + constants.VERSION)
     sys.exit(0)
 
 def parse_arguments(argv):
@@ -214,10 +214,10 @@ def run():
         wait_and_exit()
 
     if not os.path.exists(constants.DATA_DIR):
-        os.makedirs(constants.DATA_DIR, 0700)
+        os.makedirs(constants.DATA_DIR, 0o700)
 
     if not os.path.exists(constants.CONFIG_DIR):
-        os.makedirs(constants.CONFIG_DIR, 0700)
+        os.makedirs(constants.CONFIG_DIR, 0o700)
 
     from mcomix import icons
     icons.load_icons()

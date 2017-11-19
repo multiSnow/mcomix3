@@ -82,7 +82,7 @@ class CallbackList(object):
             if callback:
                 try:
                     callback(*args, **kwargs)
-                except Exception, e:
+                except Exception as e:
                     log.error(_('! Callback %(function)r failed: %(error)s'),
                               { 'function' : callback, 'error' : e })
                     log.debug('Traceback:\n%s', traceback.format_exc())

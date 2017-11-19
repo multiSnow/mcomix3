@@ -65,7 +65,7 @@ class ImageHandler(object):
                 pixbuf = image_tools.load_pixbuf(self._image_files[index])
                 self._raw_pixbufs[index] = pixbuf
                 tools.garbage_collect()
-            except Exception, e:
+            except Exception as e:
                 self._raw_pixbufs[index] = image_tools.MISSING_IMAGE_ICON
                 log.error('Could not load pixbuf for page %u: %r', index + 1, e)
         else:
@@ -417,7 +417,7 @@ class ImageHandler(object):
         else:
             num_pages = self._cache_pages
 
-        page_list = [page - 1 - page_width + n for n in xrange(num_pages)]
+        page_list = [page - 1 - page_width + n for n in range(num_pages)]
 
         # Current and next page first, followed by previous page.
         previous_page = page_list[0:page_width]

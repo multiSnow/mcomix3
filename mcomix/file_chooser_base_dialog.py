@@ -102,7 +102,7 @@ class _BaseFileChooserDialog(Gtk.Dialog):
                     self.filechooser.set_current_folder(
                         constants.HOME_DIR)
 
-        except Exception, ex: # E.g. broken prefs values.
+        except Exception as ex: # E.g. broken prefs values.
             log.debug(ex)
 
         self.show_all()
@@ -179,7 +179,7 @@ class _BaseFileChooserDialog(Gtk.Dialog):
                 mimetype = mimetypes.guess_type(full_path)[0] or 'application/octet-stream'
                 filter_info = Gtk.FileFilterInfo()
                 filter_info.contains = Gtk.FileFilterFlags.FILENAME | Gtk.FileFilterFlags.MIME_TYPE
-                filter_info.filename = full_path.encode('utf-8')
+                filter_info.filename = full_path
                 filter_info.mime_type = mimetype
 
                 if (filter == self._all_files_filter or filter.filter(filter_info)):
@@ -209,7 +209,6 @@ class _BaseFileChooserDialog(Gtk.Dialog):
             filter = self.filechooser.get_filter()
             paths = [ ]
             for path in self.filechooser.get_filenames():
-                path = path.decode('utf-8')
 
                 if os.path.isdir(path):
                     subdir_files = list(self.collect_files_from_subdir(path, filter,
@@ -221,7 +220,7 @@ class _BaseFileChooserDialog(Gtk.Dialog):
 
             # FileChooser.set_do_overwrite_confirmation() doesn't seem to
             # work on our custom dialog, so we use a simple alternative.
-            first_path = self.filechooser.get_filenames()[0].decode('utf-8')
+            first_path = self.filechooser.get_filenames()[0]
             if (self._action == Gtk.FileChooserAction.SAVE and
                 not os.path.isdir(first_path) and
                 os.path.exists(first_path)):
@@ -255,10 +254,7 @@ class _BaseFileChooserDialog(Gtk.Dialog):
         self._destroyed = True
 
     def _update_preview(self, *args):
-        if self.filechooser.get_preview_filename():
-            path = self.filechooser.get_preview_filename().decode('utf-8')
-        else:
-            path = None
+        path = self.filechooser.get_preview_filename()
 
         if path and os.path.isfile(path):
             thumbnailer = thumbnail_tools.Thumbnailer(size=(128, 128),

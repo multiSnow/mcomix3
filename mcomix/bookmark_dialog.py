@@ -4,6 +4,7 @@ from gi.repository import Gdk, GdkPixbuf, Gtk, GObject
 
 from mcomix import constants
 from mcomix import bookmark_menu_item
+from mcomix.tools import cmp
 
 class _BookmarksDialog(Gtk.Dialog):
 

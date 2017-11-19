@@ -1,5 +1,7 @@
 """ Handles zoom and fit of images in the main display area. """
 
+from functools import reduce
+
 from mcomix import constants
 from mcomix.preferences import prefs
 from mcomix import tools
@@ -52,8 +54,8 @@ class ZoomModel(object):
             scale_up)
         preferred_scales = (ZoomModel._preferred_scale(union_size, limits,
             distribution_axis),) * len(image_sizes)
-        prescaled = map(lambda size, scale: tuple(_scale_image_size(size, scale)),
-            image_sizes, preferred_scales)
+        prescaled = tuple(map(lambda size, scale: tuple(_scale_image_size(size, scale)),
+                              image_sizes, preferred_scales))
         prescaled_union_size = _union_size(prescaled, distribution_axis)
         def _other_preferences(limits, distribution_axis):
             for i in range(len(limits)):
@@ -230,8 +232,8 @@ def _union_size(image_sizes, distribution_axis):
     if len(image_sizes) == 0:
         return []
     n = len(image_sizes[0])
-    union_size = map(lambda i: reduce(max, map(lambda x: x[i], image_sizes)), range(n))
-    union_size[distribution_axis] = sum(map(lambda x: x[distribution_axis], image_sizes))
+    union_size = list(map(lambda i: reduce(max, map(lambda x: x[i], image_sizes)), range(n)))
+    union_size[distribution_axis] = sum(tuple(map(lambda x: x[distribution_axis], image_sizes)))
     return union_size
 
 # vim: expandtab:sw=4:ts=4

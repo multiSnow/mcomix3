@@ -23,7 +23,7 @@ def to_unicode(string):
     """Convert <string> to unicode. First try the default filesystem
     encoding, and then fall back on some common encodings.
     """
-    if isinstance(string, unicode):
+    if isinstance(string, str):
         return string
 
     # Try chardet heuristic
@@ -40,7 +40,7 @@ def to_unicode(string):
         'latin-1'):
 
         try:
-            ustring = unicode(string, encoding)
+            ustring = str(string, encoding)
             return ustring
 
         except (UnicodeError, LookupError):
@@ -53,7 +53,7 @@ def to_utf8(string):
     strings. Non-unicode strings are assumed to be already encoded
     and returned as-is. """
 
-    if isinstance(string, unicode):
+    if isinstance(string, str):
         return string.encode('utf-8')
     else:
         return string
@@ -96,7 +96,7 @@ def install_gettext():
     else:
         translation = gettext.NullTranslations()
 
-    translation.install(unicode=True)
+    translation.install()
 
     global _translation
     _translation = translation

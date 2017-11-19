@@ -101,7 +101,7 @@ class BaseArchive(object):
             return
         try:
             os.makedirs(directory)
-        except OSError, e:
+        except OSError as e:
             # Can happen with concurrent calls.
             if e.errno != errno.EEXIST:
                 raise e

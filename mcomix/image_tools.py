@@ -16,7 +16,8 @@ try:
 except ImportError:
     from PIL import VERSION as PIL_VERSION
     PIL_VERSION = ('PIL', PIL_VERSION)
-from cStringIO import StringIO
+from io import BytesIO
+from functools import reduce
 
 from mcomix.preferences import prefs
 from mcomix import constants
@@ -29,7 +30,7 @@ if sys.platform == 'win32':
     # NOTE: Using False here should work fine for Windows, too.
     USE_PIL = False
 else:
-    USE_PIL = False
+    USE_PIL = True
 
 log.info('Using %s for loading images (versions: %s [%s], GDK [%s])',
          'PIL' if USE_PIL else 'GDK',
@@ -354,7 +355,7 @@ def load_pixbuf_size(path, width, height):
 def load_pixbuf_data(imgdata):
     """ Loads a pixbuf from the data passed in <imgdata>. """
     if USE_PIL:
-        pixbuf = pil_to_pixbuf(Image.open(StringIO(imgdata)), keep_orientation=True)
+        pixbuf = pil_to_pixbuf(Image.open(BytesIO(imgdata)), keep_orientation=True)
     else:
         loader = GdkPixbuf.PixbufLoader()
         loader.write(imgdata)
@@ -541,7 +542,7 @@ def get_supported_formats():
             mime_types, extensions = supported_formats.get(name, ([], []))
             supported_formats[name] = mime_types, extensions + [ext[1:]]
         # Remove formats with no mime type or extension.
-        for name in supported_formats.keys():
+        for name in list(supported_formats.keys()):
             mime_types, extensions = supported_formats[name]
             if not mime_types or not extensions:
                 del supported_formats[name]
@@ -567,7 +568,7 @@ def get_supported_formats():
 SUPPORTED_IMAGE_REGEX = re.compile(r'\.(%s)$' %
                                    '|'.join(sorted(reduce(
                                        operator.add,
-                                       [map(re.escape, fmt[1]) for fmt
+                                       [tuple(map(re.escape, fmt[1])) for fmt
                                         in get_supported_formats().values()]
                                    ))), re.I)
 

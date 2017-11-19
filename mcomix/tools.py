@@ -7,10 +7,15 @@ import gc
 import bisect
 import operator
 import math
+from functools import reduce
 
 
 NUMERIC_REGEXP = re.compile(r"\d+|\D+")  # Split into numerics and characters
 
+def cmp(x,y):
+    if x>y:return 1
+    if x<y:return -1
+    return 0
 
 def alphanumeric_sort(filenames):
     """Do an in-place alphanumeric sort of the strings in <filenames>,
@@ -19,11 +24,11 @@ def alphanumeric_sort(filenames):
     """
     def _format_substring(s):
         if s.isdigit():
-            return int(s)
+            return 0,int(s)
 
-        return s.lower()
+        return 1,s.lower()
 
-    filenames.sort(key=lambda s: map(_format_substring, NUMERIC_REGEXP.findall(s)))
+    filenames.sort(key=lambda s: list(map(_format_substring, NUMERIC_REGEXP.findall(s))))
 
 def alphanumeric_compare(s1, s2):
     """ Compares two strings by their natural order (i.e. 1 before 10)
@@ -38,10 +43,14 @@ def alphanumeric_compare(s1, s2):
     stringparts2 = NUMERIC_REGEXP.findall(s2.lower())
     for i, part in enumerate(stringparts1):
         if part.isdigit():
-            stringparts1[i] = int(part)
+            stringparts1[i] = 0,int(part)
+        else:
+            stringparts1[i] = 1,part
     for i, part in enumerate(stringparts2):
         if part.isdigit():
             stringparts2[i] = int(part)
+        else:
+            stringparts2[i] = 1,part
 
     return cmp(stringparts1, stringparts2)
 

@@ -1,7 +1,7 @@
 """bookmark_backend.py - Bookmarks handler."""
 
 import os
-import cPickle
+import pickle
 from gi.repository import Gtk
 import operator
 import datetime
@@ -125,15 +125,15 @@ class __BookmarksStore(object):
 
         path = constants.BOOKMARK_PICKLE_PATH
         bookmarks = []
-        mtime = 0L
+        mtime = 0
 
         if os.path.isfile(path):
             fd = None
             try:
-                mtime = long(os.stat(path).st_mtime)
+                mtime = os.stat(path).st_mtime
                 fd = open(path, 'rb')
-                version = cPickle.load(fd)
-                packs = cPickle.load(fd)
+                version = pickle.load(fd)
+                packs = pickle.load(fd)
 
                 for pack in packs:
                     # Handle old bookmarks without date_added attribute
@@ -161,9 +161,9 @@ class __BookmarksStore(object):
         path = constants.BOOKMARK_PICKLE_PATH
         if os.path.isfile(path):
             try:
-                mtime = long(os.stat(path).st_mtime)
+                mtime = os.stat(path).st_mtime
             except IOError:
-                mtime = 0L
+                mtime = 0
 
             if mtime > self._bookmarks_mtime:
                 return True
@@ -181,13 +181,13 @@ class __BookmarksStore(object):
             self._bookmarks = list(set(self._bookmarks + new_bookmarks))
 
         fd = open(constants.BOOKMARK_PICKLE_PATH, 'wb')
-        cPickle.dump(constants.VERSION, fd, cPickle.HIGHEST_PROTOCOL)
+        pickle.dump(constants.VERSION, fd, pickle.HIGHEST_PROTOCOL)
 
         packs = [bookmark.pack() for bookmark in self._bookmarks]
-        cPickle.dump(packs, fd, cPickle.HIGHEST_PROTOCOL)
+        pickle.dump(packs, fd, pickle.HIGHEST_PROTOCOL)
         fd.close()
 
-        self._bookmarks_mtime = long(time.time())
+        self._bookmarks_mtime = time.time()
 
 
     def show_replace_bookmark_dialog(self, old_bookmarks, new_page):

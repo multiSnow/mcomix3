@@ -71,7 +71,7 @@ class _ImageArea(Gtk.ScrolledWindow):
 
     def fetch_images(self):
         """Load all the images in the archive or directory."""
-        for page in xrange(1, self._window.imagehandler.get_number_of_pages() + 1):
+        for page in range(1, self._window.imagehandler.get_number_of_pages() + 1):
             path = self._window.imagehandler.get_path_to_page(page)
             encoded_path = i18n.to_unicode(os.path.basename(path))
             encoded_path = encoded_path.replace('&', '&amp;')

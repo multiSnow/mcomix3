@@ -51,7 +51,7 @@ class FileProvider(object):
         pass
 
     def get_directory(self):
-        return os.path.abspath(os.getcwdu())
+        return os.path.abspath(os.getcwd())
 
     def list_files(self, mode=IMAGES):
         return []

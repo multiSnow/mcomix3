@@ -180,7 +180,7 @@ class Extractor(object):
                     return
                 self._extraction_finished(f)
 
-        except Exception, ex:
+        except Exception as ex:
             # Better to ignore any failed extractions (e.g. from a corrupt
             # archive) than to crash here and leave the main thread in a
             # possible infinite block. Damaged or missing files *should* be
@@ -198,7 +198,7 @@ class Extractor(object):
             log.debug(u'Extracting from "%s" to "%s": "%s"', self._src, self._dst, name)
             self._archive.extract(name, self._dst)
 
-        except Exception, ex:
+        except Exception as ex:
             # Better to ignore any failed extractions (e.g. from a corrupt
             # archive) than to crash here and leave the main thread in a
             # possible infinite block. Damaged or missing files *should* be

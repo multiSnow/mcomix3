@@ -57,7 +57,7 @@ class _CommentsDialog(Gtk.Dialog):
         self._notebook = notebook
         self._comments = {}
 
-        for num in xrange(1, self._window.filehandler.get_number_of_comments() + 1):
+        for num in range(1, self._window.filehandler.get_number_of_comments() + 1):
             path = self._window.filehandler.get_comment_name(num)
             if self._window.filehandler.file_is_available(path):
                 self._add_comment(path, num)

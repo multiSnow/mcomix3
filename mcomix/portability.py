@@ -3,7 +3,6 @@
 import sys
 import locale
 import ctypes
-import cStringIO
 
 def uri_prefix():
     """ The prefix used for creating file URIs. This is 'file://' on
@@ -61,12 +60,12 @@ def get_commandline_args():
             # Fall back to sys.argv
             return [arg.decode(locale.getpreferredencoding(), 'replace') for arg in sys.argv[1:]]
     else:
-        return [arg.decode(locale.getpreferredencoding(), 'replace') for arg in sys.argv[1:]]
+        return [arg for arg in sys.argv[1:]]
 
 def invalid_filesystem_chars():
     """ List of characters that cannot be used in filenames on the target platform. """
     if sys.platform == 'win32':
-        return ur':*?"<>|' + u"".join([unichr(i) for i in range(0, 32)])
+        return u':*?"<>|' + u"".join([unichr(i) for i in range(0, 32)])
     else:
         return u''
 
@@ -79,7 +78,7 @@ def get_default_locale():
     else:
         lang, _ = locale.getdefaultlocale(['LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG'])
         if lang:
-            return unicode(lang)
+            return lang
         else:
             return u"C"
 

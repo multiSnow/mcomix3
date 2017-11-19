@@ -11,12 +11,9 @@ import threading
 import itertools
 import traceback
 import PIL.Image as Image
-from urllib import pathname2url
+from urllib.request import pathname2url
 
-try:  # The md5 module is deprecated as of Python 2.5, replaced by hashlib.
-    from hashlib import md5
-except ImportError:
-    from md5 import new as md5
+from hashlib import md5
 
 from mcomix.preferences import prefs
 from mcomix import archive_extractor
@@ -113,7 +110,7 @@ class Thumbnailer(object):
         if os.path.isfile(thumbpath):
             try:
                 os.remove(thumbpath)
-            except IOError, error:
+            except IOError as error:
                 log.error(_("! Could not remove file \"%s\""), thumbpath)
                 log.error(error)
 
@@ -151,7 +148,7 @@ class Thumbnailer(object):
                 if self.store_on_disk:
                     tEXt_data = self._get_text_data(image_path)
                     # Use the archive's mTime instead of the extracted file's mtime
-                    tEXt_data['tEXt::Thumb::MTime'] = str(long(os.stat(filepath).st_mtime))
+                    tEXt_data['tEXt::Thumb::MTime'] = str(os.stat(filepath).st_mtime)
                 else:
                     tEXt_data = None
 
@@ -190,7 +187,7 @@ class Thumbnailer(object):
         uri = portability.uri_prefix() + pathname2url(i18n.to_utf8(os.path.normpath(filepath)))
         stat = os.stat(filepath)
         # MTime could be floating point number, so convert to long first to have a fixed point number
-        mtime = str(long(stat.st_mtime))
+        mtime = str(stat.st_mtime)
         size = str(stat.st_size)
         format, width, height = image_tools.get_image_info(filepath)
         return {
@@ -210,7 +207,7 @@ class Thumbnailer(object):
         try:
             directory = os.path.dirname(thumbpath)
             if not os.path.isdir(directory):
-                os.makedirs(directory, 0700)
+                os.makedirs(directory, 0o700)
             if os.path.isfile(thumbpath):
                 os.remove(thumbpath)
 
@@ -220,9 +217,9 @@ class Thumbnailer(object):
                 option_keys.append(key)
                 option_values.append(value)
             pixbuf.savev(thumbpath, 'png', option_keys, option_values)
-            os.chmod(thumbpath, 0600)
+            os.chmod(thumbpath, 0o600)
 
-        except Exception, ex:
+        except Exception as ex:
             log.warning( _('! Could not save thumbnail "%(thumbpath)s": %(error)s'),
                 { 'thumbpath' : thumbpath, 'error' : ex } )
 
@@ -244,9 +241,9 @@ class Thumbnailer(object):
                     return False
 
                 info = img.info
-                stored_mtime = long(info['Thumb::MTime'])
+                stored_mtime = info['Thumb::MTime']
                 # The source file might no longer exist
-                file_mtime = os.path.isfile(filepath) and long(os.stat(filepath).st_mtime) or stored_mtime
+                file_mtime = os.path.isfile(filepath) and os.stat(filepath).st_mtime or stored_mtime
                 return stored_mtime == file_mtime and \
                     max(*img.size) == max(self.width, self.height)
             else:
@@ -262,7 +259,7 @@ class Thumbnailer(object):
     def _uri_to_thumbpath(self, uri):
         """ Return the full path to the thumbnail for <uri> with <dst_dir>
         being the base thumbnail directory. """
-        md5hash = md5(uri).hexdigest()
+        md5hash = md5(uri.encode()).hexdigest()
         thumbpath = os.path.join(self.dst_dir, md5hash + '.png')
         return thumbpath
 

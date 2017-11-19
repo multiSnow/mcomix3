@@ -1,8 +1,8 @@
 """enhance_dialog.py - Image enhancement dialog."""
 
 from gi.repository import Gtk
-import histogram
 
+from mcomix import histogram
 from mcomix.preferences import prefs
 
 _dialog = None

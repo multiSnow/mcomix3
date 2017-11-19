@@ -41,7 +41,7 @@ def print_(*args, **options):
             else:
                 encoding = locale.getpreferredencoding() or sys.getfilesystemencoding()
 
-            sys.stdout.write(text.encode(encoding, 'replace'))
+            sys.stdout.write(text)
 
     def print_win32(text):
         if not text: return

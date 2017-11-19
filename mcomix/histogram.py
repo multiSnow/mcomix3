@@ -21,19 +21,19 @@ def draw_histogram(pixbuf, height=170, fill=170, text=True):
     hist_data = image_tools.pixbuf_to_pil(pixbuf).histogram()
     maximum = max(hist_data[:768] + [1])
     y_scale = float(height - 6) / maximum
-    r = [int(hist_data[n] * y_scale) for n in xrange(256)]
-    g = [int(hist_data[n] * y_scale) for n in xrange(256, 512)]
-    b = [int(hist_data[n] * y_scale) for n in xrange(512, 768)]
+    r = [int(hist_data[n] * y_scale) for n in range(256)]
+    g = [int(hist_data[n] * y_scale) for n in range(256, 512)]
+    b = [int(hist_data[n] * y_scale) for n in range(512, 768)]
     im_data = im.getdata()
     # Draw the filling colours
-    for x in xrange(256):
-        for y in xrange(1, max(r[x], g[x], b[x]) + 1):
+    for x in range(256):
+        for y in range(1, max(r[x], g[x], b[x]) + 1):
             r_px = y <= r[x] and fill or 0
             g_px = y <= g[x] and fill or 0
             b_px = y <= b[x] and fill or 0
             im_data.putpixel((x + 1, height - 5 - y), (r_px, g_px, b_px))
     # Draw the outlines
-    for x in xrange(1, 256):
+    for x in range(1, 256):
         for y in range(r[x-1] + 1, r[x] + 1) + [r[x]] * (r[x] != 0):
             r_px, g_px, b_px = im_data.getpixel((x + 1, height - 5 - y))
             im_data.putpixel((x + 1, height - 5 - y), (255, g_px, b_px))

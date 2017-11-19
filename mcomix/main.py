@@ -441,7 +441,7 @@ class MainWindow(Gtk.Window):
                 union_scaled_size = self.layout.get_union_box().get_size()
                 scrollbar_requests = map(operator.or_, scrollbar_requests,
                     tools.smaller(viewport_size, union_scaled_size))
-                if len(filter(None, scrollbar_requests)) > 1 and not expand_area:
+                if len(tuple(filter(None, scrollbar_requests))) > 1 and not expand_area:
                     expand_area = True
                     viewport_size = () # start anew
 

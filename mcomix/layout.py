@@ -147,7 +147,7 @@ class FiniteLayout(object): # 2D only
         # reverse order if necessary
         if orientation[distribution_axis] == -1:
             content_sizes = tuple(reversed(content_sizes))
-        temp_cb_list = map(box.Box, content_sizes)
+        temp_cb_list = tuple(map(box.Box, content_sizes))
         # align to center
         temp_cb_list = box.Box.align_center(temp_cb_list, alignment_axis, 0,
             orientation[alignment_axis])

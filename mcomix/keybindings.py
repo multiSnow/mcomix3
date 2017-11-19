@@ -263,7 +263,7 @@ class _KeybindingManager(object):
         # which prevent direct lookup simply by being pressed.
         # XXX: Looking up by key/modifier probably isn't the best implementation,
         # so limit possible states to begin with?
-        for stored_binding, action in self._binding_to_action.iteritems():
+        for stored_binding, action in self._binding_to_action.items():
             stored_keycode, stored_flags = stored_binding
             if stored_keycode == keybinding[0] and stored_flags & keybinding[1]:
                 func, args, kwargs = self._action_to_callback[action]
@@ -274,7 +274,7 @@ class _KeybindingManager(object):
         """ Stores the keybindings that have been set to disk. """
         # Collect keybindings for all registered actions
         action_to_keys = {}
-        for action, bindings in self._action_to_bindings.iteritems():
+        for action, bindings in self._action_to_bindings.items():
             if bindings is not None:
                 action_to_keys[action] = [
                     Gtk.accelerator_name(keyval, modifiers) for
@@ -290,11 +290,11 @@ class _KeybindingManager(object):
             fp = open(constants.KEYBINDINGS_CONF_PATH, "r")
             stored_action_bindings = json.load(fp)
             fp.close()
-        except Exception, e:
+        except Exception as e:
             log.error(_("Couldn't load keybindings: %s"), e)
             stored_action_bindings = {}
 
-        for action in BINDING_INFO.iterkeys():
+        for action in BINDING_INFO.keys():
             if action in stored_action_bindings:
                 bindings = [
                     Gtk.accelerator_parse(keyname)

@@ -7,6 +7,7 @@ import zipfile
 import tarfile
 import tempfile
 import operator
+from functools import reduce
 
 from mcomix import image_tools
 from mcomix import constants
@@ -107,7 +108,7 @@ def get_supported_formats():
 SUPPORTED_ARCHIVE_REGEX = re.compile(r'\.(%s)$' %
                                      '|'.join(sorted(reduce(
                                          operator.add,
-                                         [map(re.escape, fmt[1]) for fmt
+                                         [tuple(map(re.escape, fmt[1])) for fmt
                                           in get_supported_formats().values()]
                                      ))), re.I)
 

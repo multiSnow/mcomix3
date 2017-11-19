@@ -4,7 +4,7 @@
 
 import os
 import tarfile
-import archive_base
+from mcomix.archive import archive_base
 
 class TarArchive(archive_base.NonUnicodeArchive):
     def __init__(self, archive):
