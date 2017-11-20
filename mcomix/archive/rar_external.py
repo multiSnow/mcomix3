@@ -98,21 +98,17 @@ class RarArchive(archive_base.ExternalExecutableArchive):
             self._state = self.STATE_HEADER
             #: Current path while listing contents.
             self._path = None
-            proc = process.popen(self._get_list_arguments(), stderr=process.STDOUT, universal_newlines=True)
-            try:
-                for line in proc.stdout:
-                    filename = self._parse_list_output_line(line.rstrip(os.linesep))
-                    if filename is not None:
-                        yield self._unicode_filename(filename)
-            except self.EncryptedHeader:
-                # The header is encrypted, try again
-                # if it was our first attempt.
-                if 0 == retry_count:
-                    continue
-            finally:
-                proc.stdout.close()
-                proc.wait()
-            # Last and/or successful attempt.
+            with process.popen(self._get_list_arguments(), stderr=process.STDOUT, universal_newlines=True) as proc:
+                try:
+                    for line in proc.stdout:
+                        filename = self._parse_list_output_line(line.rstrip(os.linesep))
+                        if filename is not None:
+                            yield self._unicode_filename(filename)
+                except self.EncryptedHeader:
+                    # The header is encrypted, try again
+                    # if it was our first attempt.
+                    if 0 == retry_count:
+                        continue
             break
 
         self.filenames_initialized = True
@@ -130,11 +126,8 @@ class RarArchive(archive_base.ExternalExecutableArchive):
 
         desired_filename = self._original_filename(filename)
         cmd = self._get_extract_arguments() + [desired_filename]
-        output = self._create_file(os.path.join(destination_dir, filename))
-        try:
+        with self._create_file(os.path.join(destination_dir, filename)) as output:
             process.call(cmd, stdout=output)
-        finally:
-            output.close()
 
     def iter_extract(self, entries, destination_dir):
 
@@ -144,8 +137,7 @@ class RarArchive(archive_base.ExternalExecutableArchive):
         if not self.filenames_initialized:
             self.list_contents()
 
-        proc = process.popen(self._get_extract_arguments())
-        try:
+        with process.popen(self._get_extract_arguments()) as proc:
             wanted = dict([(self._original_filename(unicode_name), unicode_name)
                            for unicode_name in entries])
 
@@ -156,17 +148,12 @@ class RarArchive(archive_base.ExternalExecutableArchive):
                 unicode_name = wanted.get(filename, None)
                 if unicode_name is None:
                     continue
-                new = self._create_file(os.path.join(destination_dir, unicode_name))
-                new.write(data)
-                new.close()
+                with self._create_file(os.path.join(destination_dir, unicode_name)) as new:
+                    new.write(data)
                 yield unicode_name
                 del wanted[filename]
                 if 0 == len(wanted):
                     break
-
-        finally:
-            proc.stdout.close()
-            proc.wait()
 
     @staticmethod
     def _find_unrar_executable():

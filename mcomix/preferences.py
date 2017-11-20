@@ -110,9 +110,8 @@ def read_preferences_file():
 
     if os.path.isfile(constants.PREFERENCE_PATH):
         try:
-            config_file = open(constants.PREFERENCE_PATH, 'r')
-            saved_prefs = json.load(config_file)
-            config_file.close()
+            with open(constants.PREFERENCE_PATH, 'r') as config_file:
+                saved_prefs = json.load(config_file)
         except:
             # Gettext might not be installed yet at this point.
             corrupt_name = "%s.broken" % constants.PREFERENCE_PATH
@@ -121,20 +120,13 @@ def read_preferences_file():
             if os.path.isfile(corrupt_name):
                 os.unlink(corrupt_name)
 
-            try:
-                # File cannot be moved without closing it first
-                config_file.close()
-            except:
-                pass
-
             os.rename(constants.PREFERENCE_PATH, corrupt_name)
 
     elif os.path.isfile(constants.PREFERENCE_PICKLE_PATH):
         try:
-            config_file = open(constants.PREFERENCE_PICKLE_PATH, 'rb')
-            version = pickle.load(config_file)
-            saved_prefs = pickle.load(config_file)
-            config_file.close()
+            with open(constants.PREFERENCE_PICKLE_PATH, 'rb') as config_file:
+                version = pickle.load(config_file)
+                saved_prefs = pickle.load(config_file)
 
             # Remove legacy format preferences file
             os.unlink(constants.PREFERENCE_PICKLE_PATH)
@@ -153,11 +145,10 @@ def write_preferences_file():
     # TODO: it might be better to save only those options that were (ever)
     # explicitly changed by the used, leaving everything else as default
     # and available (if really needed) to change of defaults on upgrade.
-    config_file = open(constants.PREFERENCE_PATH, 'w')
-    # XXX: constants.VERSION? It's *preferable* to not complicate the YAML
-    # file by adding a `{'version': constants.VERSION, 'prefs': config}`
-    # dict or a list.  Adding an extra init line sounds bad too.
-    json.dump(prefs, config_file, indent=2)
-    config_file.close()
+    with open(constants.PREFERENCE_PATH, 'w') as config_file:
+        # XXX: constants.VERSION? It's *preferable* to not complicate the YAML
+        # file by adding a `{'version': constants.VERSION, 'prefs': config}`
+        # dict or a list.  Adding an extra init line sounds bad too.
+        json.dump(prefs, config_file, indent=2)
 
 # vim: expandtab:sw=4:ts=4

@@ -44,10 +44,9 @@ class ZipArchive(archive_base.NonUnicodeArchive):
             yield self._unicode_filename(filename)
 
     def extract(self, filename, destination_dir):
-        new = self._create_file(os.path.join(destination_dir, filename))
-        content = self.zip.read(self._original_filename(filename))
-        new.write(content)
-        new.close()
+        with self._create_file(os.path.join(destination_dir, filename)) as new:
+            content = self.zip.read(self._original_filename(filename))
+            new.write(content)
 
         zipinfo = self.zip.getinfo(self._original_filename(filename))
         if len(content) != zipinfo.file_size:

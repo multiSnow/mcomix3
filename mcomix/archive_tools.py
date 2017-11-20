@@ -174,25 +174,17 @@ def get_archive_info(path):
     """Return a tuple (mime, num_pages, size) with info about the archive
     at <path>, or None if <path> doesn't point to a supported
     """
-    cleanup = []
-    try:
-        tmpdir = tempfile.mkdtemp(prefix=u'mcomix_archive_info.')
-        cleanup.append(lambda: shutil.rmtree(tmpdir, True))
-
+    with tempfile.TemporaryDirectory(prefix='mcomix_archive_info.') as tmpdir:
         mime = archive_mime_type(path)
         archive = get_recursive_archive_handler(path, tmpdir, type=mime)
         if archive is None:
             return None
-        cleanup.append(archive.close)
 
         files = archive.list_contents()
-        num_pages = len(filter(image_tools.SUPPORTED_IMAGE_REGEX.search, files))
+        num_pages = len(list(filter(image_tools.SUPPORTED_IMAGE_REGEX.search, files)))
         size = os.stat(path).st_size
 
         return (mime, num_pages, size)
-    finally:
-        for fn in reversed(cleanup):
-            fn()
 
 def get_archive_handler(path, type=None):
     """ Returns a fitting extractor handler for the archive passed

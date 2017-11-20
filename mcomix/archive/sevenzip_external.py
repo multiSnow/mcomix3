@@ -110,21 +110,17 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
             self._state = self.STATE_HEADER
             #: Current path while listing contents.
             self._path = None
-            proc = process.popen(self._get_list_arguments(), stderr=process.STDOUT, universal_newlines=True)
-            try:
-                for line in proc.stdout:
-                    filename = self._parse_list_output_line(line.rstrip(os.linesep))
-                    if filename is not None:
-                        yield self._unicode_filename(filename)
-            except self.EncryptedHeader:
-                # The header is encrypted, try again
-                # if it was our first attempt.
-                if 0 == retry_count:
-                    continue
-            finally:
-                proc.stdout.close()
-                proc.wait()
-            # Last and/or successful attempt.
+            with process.popen(self._get_list_arguments(), stderr=process.STDOUT, universal_newlines=True) as proc:
+                try:
+                    for line in proc.stdout:
+                        filename = self._parse_list_output_line(line.rstrip(os.linesep))
+                        if filename is not None:
+                            yield self._unicode_filename(filename)
+                except self.EncryptedHeader:
+                    # The header is encrypted, try again
+                    # if it was our first attempt.
+                    if 0 == retry_count:
+                        continue
             break
 
         self.filenames_initialized = True
@@ -140,21 +136,13 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         if not self.filenames_initialized:
             self.list_contents()
 
-        tmplistfile = tempfile.NamedTemporaryFile(mode='wt', prefix='mcomix.7z.', delete=False)
-        try:
+        with tempfile.NamedTemporaryFile(mode='wt', prefix='mcomix.7z.') as tmplistfile:
             desired_filename = self._original_filename(filename)
-
             tmplistfile.write(desired_filename + os.linesep)
-            tmplistfile.close()
-
-            output = self._create_file(os.path.join(destination_dir, filename))
-            try:
+            tmplistfile.flush()
+            with self._create_file(os.path.join(destination_dir, filename)) as output:
                 process.call(self._get_extract_arguments(list_file=tmplistfile.name),
                              stdout=output)
-            finally:
-                output.close()
-        finally:
-            os.unlink(tmplistfile.name)
 
     def iter_extract(self, entries, destination_dir):
 
@@ -164,8 +152,7 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         if not self.filenames_initialized:
             self.list_contents()
 
-        proc = process.popen(self._get_extract_arguments())
-        try:
+        with process.popen(self._get_extract_arguments()) as proc:
             wanted = dict([(self._original_filename(unicode_name), unicode_name)
                            for unicode_name in entries])
 
@@ -176,17 +163,12 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
                 unicode_name = wanted.get(filename, None)
                 if unicode_name is None:
                     continue
-                new = self._create_file(os.path.join(destination_dir, unicode_name))
-                new.write(data)
-                new.close()
+                with self._create_file(os.path.join(destination_dir, unicode_name)) as new:
+                    new.write(data)
                 yield unicode_name
                 del wanted[filename]
                 if 0 == len(wanted):
                     break
-
-        finally:
-            proc.stdout.close()
-            proc.wait()
 
     @staticmethod
     def _find_7z_executable():
@@ -227,13 +209,9 @@ class TarArchive(SevenZipArchive):
         # We make up a name that's guaranteed to be
         # recognized as an archive by MComix.
         self._path = 'archive.tar'
-        proc = process.popen(self._get_list_arguments(), stderr=process.STDOUT)
-        try:
+        with process.popen(self._get_list_arguments(), stderr=process.STDOUT) as proc:
             for line in proc.stdout:
                 self._parse_list_output_line(line.rstrip(os.linesep))
-        finally:
-            proc.stdout.close()
-            proc.wait()
         if self._contents:
             # The archive should not contain more than 1 member.
             assert 1 == len(self._contents)

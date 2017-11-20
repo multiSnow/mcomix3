@@ -32,14 +32,10 @@ class PdfArchive(archive_base.BaseArchive):
         super(PdfArchive, self).__init__(archive)
 
     def iter_contents(self):
-        proc = process.popen(_mutool_exec + ['show', '--', self.archive, 'pages'])
-        try:
+        with process.popen(_mutool_exec + ['show', '--', self.archive, 'pages']) as proc:
             for line in proc.stdout:
                 if line.startswith('page '):
                     yield line.split()[1] + '.png'
-        finally:
-            proc.stdout.close()
-            proc.wait()
 
     def extract(self, filename, destination_dir):
         self._create_directory(destination_dir)
@@ -48,8 +44,7 @@ class PdfArchive(archive_base.BaseArchive):
         # Try to find optimal DPI.
         cmd = _mudraw_exec + _mudraw_trace_args + ['--', self.archive, str(page_num)]
         log.debug('finding optimal DPI for %s: %s', filename, ' '.join(cmd))
-        proc = process.popen(cmd)
-        try:
+        with process.popen(cmd) as proc:
             max_size = 0
             max_dpi = PDF_RENDER_DPI_DEF
             for line in proc.stdout:
@@ -69,9 +64,6 @@ class PdfArchive(archive_base.BaseArchive):
                         dpi = PDF_RENDER_DPI_MAX
                     max_size = size
                     max_dpi = dpi
-        finally:
-            proc.stdout.close()
-            proc.wait()
         # Render...
         cmd = _mudraw_exec + ['-r', str(max_dpi), '-o', destination_path, '--', self.archive, str(page_num)]
         log.debug('rendering %s: %s', filename, ' '.join(cmd))
@@ -93,16 +85,12 @@ class PdfArchive(archive_base.BaseArchive):
             # Find MuPDF version; assume 1.6 version since
             # the '-v' switch is only supported from 1.7 onward...
             version = '1.6'
-            proc = process.popen([mutool, '-v'],
-                                 stdout=process.NULL,
-                                 stderr=process.PIPE)
-            try:
+            with process.popen([mutool, '-v'],
+                               stdout=process.NULL,
+                               stderr=process.PIPE) as proc:
                 output = proc.stderr.read()
                 if output.startswith('mutool version '):
                     version = output[15:].rstrip()
-            finally:
-                proc.stderr.close()
-                proc.wait()
             version = LooseVersion(version)
             if version >= LooseVersion('1.8'):
                 # Mutool executable with draw support.

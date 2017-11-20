@@ -128,30 +128,23 @@ class __BookmarksStore(object):
         mtime = 0
 
         if os.path.isfile(path):
-            fd = None
             try:
                 mtime = os.stat(path).st_mtime
-                fd = open(path, 'rb')
-                version = pickle.load(fd)
-                packs = pickle.load(fd)
+                with open(path, 'rb') as fd:
+                    version = pickle.load(fd)
+                    packs = pickle.load(fd)
 
-                for pack in packs:
-                    # Handle old bookmarks without date_added attribute
-                    if len(pack) == 5:
-                        pack = pack + (datetime.datetime.now(),)
+                    for pack in packs:
+                        # Handle old bookmarks without date_added attribute
+                        if len(pack) == 5:
+                            pack = pack + (datetime.datetime.now(),)
 
-                    bookmark = bookmark_menu_item._Bookmark(self._window,
-                            self._file_handler, *pack)
-                    bookmarks.append(bookmark)
+                        bookmark = bookmark_menu_item._Bookmark(self._window,
+                                                                self._file_handler, *pack)
+                        bookmarks.append(bookmark)
 
             except Exception:
                 log.error(_('! Could not parse bookmarks file %s'), path)
-            finally:
-                try:
-                    if fd:
-                        fd.close()
-                except IOError:
-                    pass
 
         return bookmarks, mtime
 
@@ -180,12 +173,11 @@ class __BookmarksStore(object):
             new_bookmarks, _ = self.load_bookmarks()
             self._bookmarks = list(set(self._bookmarks + new_bookmarks))
 
-        fd = open(constants.BOOKMARK_PICKLE_PATH, 'wb')
-        pickle.dump(constants.VERSION, fd, pickle.HIGHEST_PROTOCOL)
+        with open(constants.BOOKMARK_PICKLE_PATH, 'wb') as fd:
+            pickle.dump(constants.VERSION, fd, pickle.HIGHEST_PROTOCOL)
 
-        packs = [bookmark.pack() for bookmark in self._bookmarks]
-        pickle.dump(packs, fd, pickle.HIGHEST_PROTOCOL)
-        fd.close()
+            packs = [bookmark.pack() for bookmark in self._bookmarks]
+            pickle.dump(packs, fd, pickle.HIGHEST_PROTOCOL)
 
         self._bookmarks_mtime = time.time()
 

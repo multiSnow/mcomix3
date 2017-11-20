@@ -83,13 +83,14 @@ class OpenWithCommand(object):
                 os.chdir(workdir)
 
             # Redirect process output to null here?
-            # FIXME: Close process when finished to avoid zombie process
             args = self.parse(window)
             if sys.platform == 'win32':
+                # FIXME: What is Win32Popen?
                 proc = process.Win32Popen(args)
+                del proc
             else:
-                proc = process.popen(args, stdout=process.NULL)
-            del proc
+                with process.popen(args, stdout=process.NULL) as proc:
+                    pass
 
         except Exception as e:
             text = _("Could not run command %(cmdlabel)s: %(exception)s") % \

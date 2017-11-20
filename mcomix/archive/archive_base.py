@@ -207,17 +207,13 @@ class ExternalExecutableArchive(NonUnicodeArchive):
         if not self._get_executable():
             return
 
-        proc = process.popen([self._get_executable()] +
-                             self._get_list_arguments() +
-                             [self.archive])
-        try:
+        with process.popen([self._get_executable()] +
+                           self._get_list_arguments() +
+                           [self.archive]) as proc:
             for line in proc.stdout:
                 filename = self._parse_list_output_line(line.rstrip(os.linesep))
                 if filename is not None:
                     yield self._unicode_filename(filename)
-        finally:
-            proc.stdout.close()
-            proc.wait()
 
         self.filenames_initialized = True
 
@@ -232,13 +228,10 @@ class ExternalExecutableArchive(NonUnicodeArchive):
         if not self.filenames_initialized:
             self.list_contents()
 
-        output = self._create_file(os.path.join(destination_dir, filename))
-        try:
+        with self._create_file(os.path.join(destination_dir, filename)) as output:
             process.call([self._get_executable()] +
                          self._get_extract_arguments() +
                          [self.archive, self._original_filename(filename)],
                          stdout=output)
-        finally:
-            output.close()
 
 # vim: expandtab:sw=4:ts=4

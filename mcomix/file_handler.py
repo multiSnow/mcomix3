@@ -48,6 +48,7 @@ class FileHandler(object):
         self._base_path = None
         #: Temporary directory used for extracting archives.
         self._tmp_dir = None
+        self._tmp_dir_ctx = None
         #: If C{True}, no longer wait for files to get extracted.
         self._stop_waiting = False
         #: List of comment files inside of the currently opened archive.
@@ -221,7 +222,7 @@ class FileHandler(object):
             Gtk.main_iteration_do(False)
         tools.garbage_collect()
         if self._tmp_dir is not None:
-            self.thread_delete(self._tmp_dir)
+            self._tmp_dir_ctx.cleanup()
             self._tmp_dir = None
 
     def _initialize_fileprovider(self, path, keep_fileprovider):
@@ -278,7 +279,8 @@ class FileHandler(object):
 
         @return: A tuple containing C{(image_files, image_index)}. """
 
-        self._tmp_dir = tempfile.mkdtemp(prefix=u'mcomix.', suffix=os.sep)
+        self._tmp_dir_ctx = tempfile.TemporaryDirectory(prefix='mcomix.')
+        self._tmp_dir = self._tmp_dir_ctx.name
         self._base_path = path
         try:
             self._condition = self._extractor.setup(self._base_path,
@@ -409,12 +411,9 @@ class FileHandler(object):
         readable.
         """
         self._wait_on_comment(num)
-        try:
-            fd = open(self._comment_files[num - 1], 'r')
+        text = None
+        with open(self._comment_files[num - 1], 'r') as fd:
             text = fd.read()
-            fd.close()
-        except Exception:
-            text = None
         return text
 
     def get_comment_name(self, num):
@@ -633,14 +632,13 @@ class FileHandler(object):
         """Write current open file information."""
 
         if self.file_loaded:
-            config = open(constants.FILEINFO_PICKLE_PATH, 'wb')
+            with open(constants.FILEINFO_PICKLE_PATH, 'wb') as config:
 
-            path = self._window.imagehandler.get_real_path()
-            page_index = self._window.imagehandler.get_current_page() - 1
-            current_file_info = [ path, page_index ]
+                path = self._window.imagehandler.get_real_path()
+                page_index = self._window.imagehandler.get_current_page() - 1
+                current_file_info = [ path, page_index ]
 
-            pickle.dump(current_file_info, config, pickle.HIGHEST_PROTOCOL)
-            config.close()
+                pickle.dump(current_file_info, config, pickle.HIGHEST_PROTOCOL)
 
     def read_fileinfo_file(self):
         """Read last loaded file info from disk."""
@@ -648,20 +646,13 @@ class FileHandler(object):
         fileinfo = None
 
         if os.path.isfile(constants.FILEINFO_PICKLE_PATH):
-            config = None
             try:
-                config = open(constants.FILEINFO_PICKLE_PATH, 'rb')
-
-                fileinfo = pickle.load(config)
-
-                config.close()
-
+                with open(constants.FILEINFO_PICKLE_PATH, 'rb') as config:
+                    fileinfo = pickle.load(config)
             except Exception as ex:
                 log.error(_('! Corrupt preferences file "%s", deleting...'),
                         constants.FILEINFO_PICKLE_PATH )
                 log.info(u'Error was: %s', ex)
-                if config is not None:
-                    config.close()
                 os.remove(constants.FILEINFO_PICKLE_PATH)
 
         return fileinfo

@@ -44,7 +44,6 @@ if __name__ == '__main__':
                                               store_on_disk=False,
                                               size=(size, size))
     thumb = thumbnailer.thumbnail(in_path)
-    print(dir(thumb))
     thumb.savev(out_path, 'png', [], [])
 
     sys.exit(0)

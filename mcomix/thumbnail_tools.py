@@ -122,16 +122,12 @@ class Thumbnailer(object):
         else:
             mime = None
         if mime is not None:
-            cleanup = []
-            try:
-                tmpdir = tempfile.mkdtemp(prefix=u'mcomix_archive_thumb.')
-                cleanup.append(lambda: shutil.rmtree(tmpdir, True))
+            with tempfile.TemporaryDirectory(prefix='mcomix_archive_thumb.') as tmpdir:
                 archive = archive_tools.get_recursive_archive_handler(filepath,
                                                                       tmpdir,
                                                                       type=mime)
                 if archive is None:
                     return None, None
-                cleanup.append(archive.close)
                 files = archive.list_contents()
                 wanted = self._guess_cover(files)
                 if wanted is None:
@@ -152,9 +148,6 @@ class Thumbnailer(object):
                     tEXt_data = None
 
                 return pixbuf, tEXt_data
-            finally:
-                for fn in reversed(cleanup):
-                    fn()
 
         elif image_tools.is_image_file(filepath):
             pixbuf = image_tools.load_pixbuf_size(filepath, self.width, self.height)

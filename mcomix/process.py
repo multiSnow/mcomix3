@@ -38,7 +38,7 @@ def _get_creationflags():
 # and stderr are redirected to a pipe/devnull as well.
 def call(args, stdin=NULL, stdout=NULL, stderr=NULL, universal_newlines=False):
     return 0 == subprocess.call(_fix_args(args), stdin=stdin,
-                                stdout=stdout, stderr=stderr,
+                                stdout=stdout,
                                 universal_newlines=universal_newlines,
                                 creationflags=_get_creationflags())
 
