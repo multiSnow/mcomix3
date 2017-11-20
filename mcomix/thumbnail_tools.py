@@ -8,7 +8,6 @@ import shutil
 import tempfile
 import mimetypes
 import threading
-import itertools
 import traceback
 import PIL.Image as Image
 from urllib.request import pathname2url
@@ -268,14 +267,14 @@ class Thumbnailer(object):
         cover of an archive using some simple heuristics.
         """
         # Ignore MacOSX meta files.
-        files = itertools.ifilter(lambda filename:
+        files = filter(lambda filename:
                 u'__MACOSX' not in os.path.normpath(filename).split(os.sep),
                 files)
         # Ignore credit files if possible.
-        files = itertools.ifilter(lambda filename:
+        files = filter(lambda filename:
                 u'credit' not in os.path.split(filename)[1].lower(), files)
 
-        images = list(itertools.ifilter(image_tools.SUPPORTED_IMAGE_REGEX.search, files))
+        images = list(filter(image_tools.SUPPORTED_IMAGE_REGEX.search, files))
 
         tools.alphanumeric_sort(images)
 
