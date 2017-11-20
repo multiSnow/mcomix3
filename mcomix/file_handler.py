@@ -158,6 +158,7 @@ class FileHandler(object):
                 else:
                     current_image_index = 0
             else:
+                self._extractor.extract()
                 last_image_index = self._get_index_for_page(self._start_page,
                                                             len(image_files),
                                                             self._current_file)
@@ -175,7 +176,6 @@ class FileHandler(object):
             self._window.set_page(current_image_index + 1)
 
             if self.archive_type is not None:
-                self._extractor.extract()
                 if last_image_index != current_image_index and \
                    self._ask_goto_last_read_page(self._current_file, last_image_index + 1):
                     self._window.set_page(last_image_index + 1)
