@@ -292,7 +292,7 @@ class ImageHandler(object):
 
         first_path = self.get_path_to_page(page)
         if first_path == None:
-            return None
+            return '','' if double else ''
 
         if double:
             second_path = self.get_path_to_page(page + 1)
@@ -301,7 +301,7 @@ class ImageHandler(object):
                 first = os.path.basename(first_path)
                 second = os.path.basename(second_path)
             else:
-                return None
+                return '','' if double else ''
 
             return first, second
 
@@ -314,14 +314,14 @@ class ImageHandler(object):
         page) and s' is the filesize of the page after.
         """
         if not self.page_is_available():
-            return
+            return '-1','-1' if double else '-1'
 
         if page is None:
             page = self.get_current_page()
 
         first_path = self.get_path_to_page(page)
         if first_path is None:
-            return
+            return '-1','-1' if double else '-1'
 
         if double:
             second_path = self.get_path_to_page(page + 1)
@@ -335,7 +335,7 @@ class ImageHandler(object):
                 except OSError:
                     second = ''
             else:
-                return
+                return '-1','-1' if double else '-1'
             return first, second
 
         try:
