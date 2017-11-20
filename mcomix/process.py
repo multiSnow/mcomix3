@@ -11,7 +11,7 @@ from mcomix import i18n
 
 
 
-NULL = open(os.devnull, 'r+b')
+NULL = subprocess.DEVNULL
 PIPE = subprocess.PIPE
 STDOUT = subprocess.STDOUT
 
