@@ -3,17 +3,12 @@
 """ Unicode-aware wrapper for zipfile.ZipFile. """
 
 import os
+import zipfile
 from contextlib import closing
 
 from mcomix import log
 from mcomix.archive import archive_base
 
-# Try to use czipfile if available as it's much faster at decryption.
-try:
-    import czipfile as zipfile
-except ImportError:
-    log.warning('czipfile not available! using zipfile')
-    import zipfile
 
 
 def is_py_supported_zipfile(path):
