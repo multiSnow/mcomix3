@@ -93,7 +93,7 @@ class OpenWithCommand(object):
 
         except Exception as e:
             text = _("Could not run command %(cmdlabel)s: %(exception)s") % \
-                {'cmdlabel': self.get_label(), 'exception': unicode(e)}
+                {'cmdlabel': self.get_label(), 'exception': str(e)}
             window.osd.show(text)
         finally:
             os.chdir(current_dir)
@@ -374,7 +374,7 @@ class OpenWithEditor(Gtk.Dialog):
             else:
                 self._set_exec_text('')
         except OpenWithException as e:
-            self._test_field.set_text(unicode(e))
+            self._test_field.set_text(str(e))
             self._set_exec_text('')
 
     def _add_command(self, button):

@@ -110,7 +110,7 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
             self._state = self.STATE_HEADER
             #: Current path while listing contents.
             self._path = None
-            proc = process.popen(self._get_list_arguments(), stderr=process.STDOUT)
+            proc = process.popen(self._get_list_arguments(), stderr=process.STDOUT, universal_newlines=True)
             try:
                 for line in proc.stdout:
                     filename = self._parse_list_output_line(line.rstrip(os.linesep))
@@ -131,8 +131,8 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
 
     def extract(self, filename, destination_dir):
         """ Extract <filename> from the archive to <destination_dir>. """
-        assert isinstance(filename, unicode) and \
-                isinstance(destination_dir, unicode)
+        assert isinstance(filename, str) and \
+                isinstance(destination_dir, str)
 
         if not self._get_executable():
             return
@@ -140,11 +140,9 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         if not self.filenames_initialized:
             self.list_contents()
 
-        tmplistfile = tempfile.NamedTemporaryFile(prefix='mcomix.7z.', delete=False)
+        tmplistfile = tempfile.NamedTemporaryFile(mode='wt', prefix='mcomix.7z.', delete=False)
         try:
             desired_filename = self._original_filename(filename)
-            if isinstance(desired_filename, unicode):
-                desired_filename = desired_filename.encode('utf-8')
 
             tmplistfile.write(desired_filename + os.linesep)
             tmplistfile.close()

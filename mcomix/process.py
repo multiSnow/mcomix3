@@ -21,7 +21,7 @@ STDOUT = subprocess.STDOUT
 def _fix_args(args):
     fixed_args = []
     for arg in args:
-        if isinstance(arg, unicode):
+        if isinstance(arg, str):
             fixed_args.append(arg.encode(sys.getfilesystemencoding()))
         else:
             fixed_args.append(arg)
@@ -36,14 +36,16 @@ def _get_creationflags():
 
 # Cannot spawn processes with PythonW/Win32 unless stdin
 # and stderr are redirected to a pipe/devnull as well.
-def call(args, stdin=NULL, stdout=NULL, stderr=NULL):
+def call(args, stdin=NULL, stdout=NULL, stderr=NULL, universal_newlines=False):
     return 0 == subprocess.call(_fix_args(args), stdin=stdin,
                                 stdout=stdout, stderr=stderr,
+                                universal_newlines=universal_newlines,
                                 creationflags=_get_creationflags())
 
-def popen(args, stdin=NULL, stdout=PIPE, stderr=NULL):
+def popen(args, stdin=NULL, stdout=PIPE, stderr=NULL, universal_newlines=False):
     return subprocess.Popen(_fix_args(args), stdin=stdin,
                             stdout=stdout, stderr=stderr,
+                            universal_newlines=universal_newlines,
                             creationflags=_get_creationflags())
 
 

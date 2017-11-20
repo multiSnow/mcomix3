@@ -378,7 +378,7 @@ def load_pixbuf_size(path, width, height):
         # If we could not get the image info, still try to load
         # the image to let GdkPixbuf raise the appropriate exception.
         if (0, 0) == (image_width, image_height):
-            pixbuf = gtk.gdk.pixbuf_new_from_file(path)
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file(path)
         # Work around GdkPixbuf bug: https://bugzilla.gnome.org/show_bug.cgi?id=735422
         elif 'GIF' == image_format:
             pixbuf = GdkPixbuf.Pixbuf.new_from_file(path)

@@ -98,7 +98,7 @@ class RarArchive(archive_base.ExternalExecutableArchive):
             self._state = self.STATE_HEADER
             #: Current path while listing contents.
             self._path = None
-            proc = process.popen(self._get_list_arguments(), stderr=process.STDOUT)
+            proc = process.popen(self._get_list_arguments(), stderr=process.STDOUT, universal_newlines=True)
             try:
                 for line in proc.stdout:
                     filename = self._parse_list_output_line(line.rstrip(os.linesep))
@@ -119,8 +119,8 @@ class RarArchive(archive_base.ExternalExecutableArchive):
 
     def extract(self, filename, destination_dir):
         """ Extract <filename> from the archive to <destination_dir>. """
-        assert isinstance(filename, unicode) and \
-                isinstance(destination_dir, unicode)
+        assert isinstance(filename, str) and \
+                isinstance(destination_dir, str)
 
         if not self._get_executable():
             return

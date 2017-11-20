@@ -98,8 +98,8 @@ class FileHandler(object):
         try:
             path = self._initialize_fileprovider(path, keep_fileprovider)
         except ValueError as ex:
-            self._window.statusbar.set_message(unicode(ex))
-            self._window.osd.show(unicode(ex))
+            self._window.statusbar.set_message(str(ex))
+            self._window.osd.show(str(ex))
             return False
 
         error_message = self._check_access(path)
@@ -123,8 +123,8 @@ class FileHandler(object):
             try:
                 self._open_archive(self._current_file)
             except Exception as ex:
-                self._window.statusbar.set_message(unicode(ex))
-                self._window.osd.show(unicode(ex))
+                self._window.statusbar.set_message(str(ex))
+                self._window.osd.show(str(ex))
                 self.file_opened()
                 return False
             self.file_loading = True

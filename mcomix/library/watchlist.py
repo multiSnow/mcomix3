@@ -100,7 +100,7 @@ class WatchListDialog(Gtk.Dialog):
 
         model, iter = selection.get_selected()
         if iter is not None:
-            path = unicode(model.get_value(iter, COL_DIRECTORY))
+            path = str(model.get_value(iter, COL_DIRECTORY))
             return self.library.backend.watchlist.get_watchlist_entry(path)
         else:
             return None
@@ -109,7 +109,7 @@ class WatchListDialog(Gtk.Dialog):
         """ Converts a tree path to WatchlistEntry object. """
         model = self._treeview.get_model()
         iter = model.get_iter(treepath)
-        dirpath = unicode(model.get_value(iter, COL_DIRECTORY))
+        dirpath = str(model.get_value(iter, COL_DIRECTORY))
         return self.library.backend.watchlist.get_watchlist_entry(dirpath)
 
     def _create_model(self):
