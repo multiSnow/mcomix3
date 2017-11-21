@@ -7,6 +7,7 @@ import gc
 import bisect
 import operator
 import math
+import io
 from functools import reduce
 
 
@@ -135,6 +136,12 @@ def garbage_collect():
     else:
         gc.collect()
 
+def pkg_path(*args):
+    return os.path.join('mcomix', *args)
+
+def read_binary(*args):
+    with open(pkg_path(*args), mode='rb') as f:
+        return f.read()
 
 def div(a, b):
     return float(a) / float(b)

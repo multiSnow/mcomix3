@@ -1,10 +1,10 @@
 """icons.py - Load MComix specific icons."""
 
 from gi.repository import Gtk
-from pkg_resources import resource_string
 
 from mcomix import image_tools
 from mcomix import log
+from mcomix import tools
 
 def mcomix_icons():
     """ Returns a list of differently sized pixbufs for the
@@ -13,7 +13,7 @@ def mcomix_icons():
     sizes = ('16x16', '32x32', '48x48')
     pixbufs = [
         image_tools.load_pixbuf_data(
-            resource_string('mcomix', 'images/%s/mcomix.png' % size)
+            tools.read_binary('images', size, 'mcomix.png')
         ) for size in sizes
     ]
 
@@ -50,7 +50,7 @@ def load_icons():
     factory = Gtk.IconFactory()
     for filename, stockid in _icons:
         try:
-            icon_data = resource_string('mcomix', 'images/%s' % filename)
+            icon_data = tools.read_binary('images', filename)
             pixbuf = image_tools.load_pixbuf_data(icon_data)
             iconset = Gtk.IconSet.new_from_pixbuf(pixbuf)
             factory.add(stockid, iconset)

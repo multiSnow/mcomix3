@@ -9,7 +9,7 @@ if __name__ == '__main__':
     print('Please do not run this script directly! Use mcomixstarter.py instead.',file=sys.stderr)
     sys.exit(1)
 
-# These modules must not depend on GTK, pkg_resources, PIL,
+# These modules must not depend on GTK, PIL,
 # or any other optional libraries.
 from mcomix import (
     constants,
@@ -109,17 +109,6 @@ def parse_arguments(argv):
 
 def run():
     """Run the program."""
-
-    try:
-        import pkg_resources
-
-    except ImportError:
-        # gettext isn't initialized yet, since pkg_resources is required to find translation files.
-        # Thus, localizing these messages is pointless.
-        log._print("The package 'pkg_resources' could not be found.")
-        log._print("You need to install the 'setuptools' package, which also includes pkg_resources.")
-        log._print("Note: On most distributions, 'distribute' supersedes 'setuptools'.")
-        wait_and_exit()
 
     # Load configuration and setup localisation.
     preferences.read_preferences_file()

@@ -4,7 +4,6 @@ import sys
 import os
 import locale
 import gettext
-import pkg_resources
 
 try:
     import chardet
@@ -14,6 +13,7 @@ except ImportError:
 from mcomix import preferences
 from mcomix import portability
 from mcomix import constants
+from mcomix import tools
 
 # Translation instance to enable other modules to use
 # functions other than the global _() if necessary
@@ -83,16 +83,15 @@ def install_gettext():
 
     domain = constants.APPNAME.lower()
 
-    # Search for .mo files manually, since gettext doesn't support setuptools/pkg_resources.
     for lang in lang_identifiers:
-        resource = os.path.join('messages', lang, 'LC_MESSAGES', '%s.mo' % domain)
+        resource_path = tools.pkg_path('messages', lang,
+                                       'LC_MESSAGES', '%s.mo' % domain)
         try:
-            fp = pkg_resources.resource_stream('mcomix', resource)
+            with open(resource_path, mode = 'rb') as fp:
+                translation = gettext.GNUTranslations(fp)
+            break
         except IOError:
             pass
-        else:
-            translation = gettext.GNUTranslations(fp)
-            break
     else:
         translation = gettext.NullTranslations()
 
