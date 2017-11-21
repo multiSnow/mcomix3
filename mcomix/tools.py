@@ -137,7 +137,7 @@ def garbage_collect():
         gc.collect()
 
 def pkg_path(*args):
-    return os.path.join('mcomix', *args)
+    return os.path.join(sys.path[0], 'mcomix', *args)
 
 def read_binary(*args):
     with open(pkg_path(*args), mode='rb') as f:
