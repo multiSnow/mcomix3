@@ -1,0 +1,32 @@
+.TH comicthumb 1
+
+.SH NAME
+\fBcomicthumb\fP - Thumbnailer for cbz, cbr and cbt archives.
+
+.SH SYNOPSIS
+.nf
+\fBcomicthumb\fP \fIFILE\fP \fITHUMBNAIL\fP [\fISIZE\fP]
+.fi
+
+.SH DESCRIPTION
+\fBcomicthumb\fP creates thumbnails for x-cbz, x-cbr and x-cbt files.
+It is usually registered in gconf (if available) and is then used automatically 
+by some file managers (e.g. Nautilus or Thunar).
+
+.SH ARGUMENTS
+.TP
+.I FILE
+An archive file (ZIP, RAR, tar, tar.gz or tar.bz2) that contain
+at least one image file.
+.TP
+.I THUMBNAIL
+The thumbnail to be created. It is saved as a PNG image.
+.TP
+.I SIZE
+The maximum size of the thumbnail in pixels. It defaults to 128.
+
+.SH AUTHOR
+Christoph Wolk <spikespiegel@gmx.de>
+.TP 
+Pontus Ekberg <herrekberg@users.sourceforge.net>
+
