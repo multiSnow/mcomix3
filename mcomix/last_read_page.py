@@ -10,11 +10,8 @@ from mcomix import constants
 try:
     from sqlite3 import dbapi2
 except ImportError:
-    try:
-        from pysqlite2 import dbapi2
-    except ImportError:
-        log.warning( _('! Could neither find pysqlite2 nor sqlite3.') )
-        dbapi2 = None
+    log.warning( _('! Could neither find sqlite3.') )
+    dbapi2 = None
 
 
 class LastReadPage(object):
