@@ -84,13 +84,8 @@ class OpenWithCommand(object):
 
             # Redirect process output to null here?
             args = self.parse(window)
-            if sys.platform == 'win32':
-                # FIXME: What is Win32Popen?
-                proc = process.Win32Popen(args)
-                del proc
-            else:
-                with process.popen(args, stdout=process.NULL) as proc:
-                    pass
+            with process.popen(args, stdout=process.NULL) as proc:
+                pass
 
         except Exception as e:
             text = _("Could not run command %(cmdlabel)s: %(exception)s") % \
@@ -571,38 +566,13 @@ class OpenWithEditor(Gtk.Dialog):
         """ Quotes a command line argument if necessary. """
         if arg == u"":
             return u'""'
-        if sys.platform == 'win32':
-            # based on http://msdn.microsoft.com/en-us/library/17w5ykft%28v=vs.85%29.aspx
-            backslash_counter = 0
-            needs_quoting = False
-            result = u""
-            for c in arg:
-                if c == u'\\':
-                    backslash_counter += 1
-                else:
-                    if c == u'\"':
-                        result += u'\\' * (2 * backslash_counter + 1)
-                    else:
-                        result += u'\\' * backslash_counter
-                    backslash_counter = 0
-                    result += c
-                if c == u' ':
-                    needs_quoting = True
-
-            if needs_quoting:
-                result += u'\\' * (2 * backslash_counter)
-                result = u'"' + result + u'"'
-            else:
-                result += u'\\' * backslash_counter
-            return result
-        else:
-            # simplified version of
-            # http://www.gnu.org/software/bash/manual/bashref.html#Double-Quotes
-            arg = arg.replace(u'\\', u'\\\\')
-            arg = arg.replace(u'"', u'\\"')
-            if u" " in arg:
-                return u'"' + arg + u'"'
-            return arg
+        # simplified version of
+        # http://www.gnu.org/software/bash/manual/bashref.html#Double-Quotes
+        arg = arg.replace(u'\\', u'\\\\')
+        arg = arg.replace(u'"', u'\\"')
+        if u" " in arg:
+            return u'"' + arg + u'"'
+        return arg
 
 
 # vim: expandtab:sw=4:ts=4

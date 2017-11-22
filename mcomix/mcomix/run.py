@@ -24,7 +24,7 @@ def wait_and_exit():
     Python window will not close down immediately after the error. """
     if sys.platform == 'win32' and not sys.stdin.closed and not sys.stdout.closed:
         print
-        raw_input("Press ENTER to continue...")
+        input("Press ENTER to continue...")
     sys.exit(1)
 
 def print_version(opt, value, parser, *args, **kwargs):
@@ -49,16 +49,6 @@ def parse_arguments(argv):
             help=_('Show the library on startup.'))
     parser.add_option('-v', '--version', action='callback', callback=print_version,
             help=_('Show the version number and exit.'))
-    if sys.platform == 'win32':
-        parser.add_option('--no-update-fontconfig-cache',
-                          dest='update_fontconfig_cache',
-                          default=True, action='store_false',
-                          help=_('Don\'t update fontconfig cache at startup.'))
-    else:
-        parser.add_option('--update-fontconfig-cache',
-                          dest='update_fontconfig_cache',
-                          default=False, action='store_true',
-                          help=_('Update fontconfig cache at startup.'))
 
     viewmodes = optparse.OptionGroup(parser, _('View modes'))
     viewmodes.add_option('-f', '--fullscreen', dest='fullscreen', action='store_true',
@@ -121,46 +111,6 @@ def run():
 
     # First things first: set the log level.
     log.setLevel(opts.loglevel)
-
-    # On Windows, update the fontconfig cache manually, before MComix starts
-    # using Gtk, since the process may take several minutes, during which the
-    # main window will just be frozen if the work is left to Gtk itself...
-    if opts.update_fontconfig_cache:
-        # First, update fontconfig cache.
-        log.debug('starting fontconfig cache update')
-        try:
-            from mcomix.win32 import fc_cache
-            from mcomix import process
-            fc_cache.update()
-            log.debug('fontconfig cache updated')
-        except Exception as e:
-            log.error('during fontconfig cache update', exc_info=e)
-        # And then replace current MComix process with a fresh one
-        # (that will not try to update the cache again).
-        exe = sys.argv[0]
-        if sys.platform == 'win32' and exe.endswith('.py'):
-            # Find the interpreter.
-            exe = process.find_executable(('pythonw.exe', 'python.exe'))
-            args = [exe, sys.argv[0]]
-        else:
-            args = [exe]
-        if sys.platform == 'win32':
-            args.append('--no-update-fontconfig-cache')
-        args.extend(argv)
-        if '--update-fontconfig-cache' in args:
-            args.remove('--update-fontconfig-cache')
-        log.debug('restarting MComix from fresh: os.execv(%s, %s)', repr(exe), args)
-        try:
-            if sys.platform == 'win32':
-                # Of course we can't use os.execv on Windows because it will
-                # mangle arguments containing spaces or non-ascii characters...
-                process.Win32Popen(args)
-                sys.exit(0)
-            else:
-                os.execv(exe, args)
-        except Exception as e:
-            log.error('os.execv(%s, %s) failed', exe, str(args), exc_info=e)
-        wait_and_exit()
 
     # Check for PyGTK and PIL dependencies.
     try:
