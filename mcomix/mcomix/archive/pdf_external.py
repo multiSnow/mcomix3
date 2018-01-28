@@ -32,7 +32,8 @@ class PdfArchive(archive_base.BaseArchive):
         super(PdfArchive, self).__init__(archive)
 
     def iter_contents(self):
-        with process.popen(_mutool_exec + ['show', '--', self.archive, 'pages']) as proc:
+        with process.popen(_mutool_exec + ['show', '--', self.archive, 'pages'],
+                           universal_newlines=True) as proc:
             for line in proc.stdout:
                 if line.startswith('page '):
                     yield line.split()[1] + '.png'
@@ -44,7 +45,7 @@ class PdfArchive(archive_base.BaseArchive):
         # Try to find optimal DPI.
         cmd = _mudraw_exec + _mudraw_trace_args + ['--', self.archive, str(page_num)]
         log.debug('finding optimal DPI for %s: %s', filename, ' '.join(cmd))
-        with process.popen(cmd) as proc:
+        with process.popen(cmd, universal_newlines=True) as proc:
             max_size = 0
             max_dpi = PDF_RENDER_DPI_DEF
             for line in proc.stdout:
@@ -87,7 +88,8 @@ class PdfArchive(archive_base.BaseArchive):
             version = '1.6'
             with process.popen([mutool, '-v'],
                                stdout=process.NULL,
-                               stderr=process.PIPE) as proc:
+                               stderr=process.PIPE,
+                               universal_newlines=True) as proc:
                 output = proc.stderr.read()
                 if output.startswith('mutool version '):
                     version = output[15:].rstrip()
