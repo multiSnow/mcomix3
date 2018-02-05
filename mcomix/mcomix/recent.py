@@ -46,7 +46,7 @@ class RecentFilesMenu(Gtk.RecentChooserMenu):
 
     def _load(self, *args):
         uri = self.get_current_uri()
-        path = urllib.url2pathname(uri[7:])
+        path = urllib.request.url2pathname(uri[7:])
         did_file_load = self._window.filehandler.open_file(path.decode('utf-8'))
 
         if not did_file_load:
@@ -59,13 +59,15 @@ class RecentFilesMenu(Gtk.RecentChooserMenu):
     def add(self, path):
         if not preferences.prefs['store recent file info']:
             return
-        uri = portability.uri_prefix() + urllib.pathname2url(i18n.to_utf8(path))
+        uri = portability.uri_prefix()
+            + urllib.request.pathname2url(i18n.to_utf8(path))
         self._manager.add_item(uri)
 
     def remove(self, path):
         if not preferences.prefs['store recent file info']:
             return
-        uri = portability.uri_prefix() + urllib.pathname2url(i18n.to_utf8(path))
+        uri = portability.uri_prefix()
+            + urllib.request.pathname2url(i18n.to_utf8(path))
         try:
             self._manager.remove_item(uri)
         except glib.GError:
