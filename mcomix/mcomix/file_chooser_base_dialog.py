@@ -275,7 +275,7 @@ class _BaseFileChooserDialog(Gtk.Dialog):
             return
 
         current_path = self.filechooser.get_preview_filename()
-        if current_path and current_path.decode('utf-8') == filepath:
+        if current_path and current_path == filepath:
 
             if pixbuf is None:
                 self._preview_image.clear()
