@@ -131,10 +131,7 @@ def format_byte_size(n):
 
 def garbage_collect():
     """ Runs the garbage collector. """
-    if sys.version_info[:3] >= (2, 5, 0):
         gc.collect(0)
-    else:
-        gc.collect()
 
 def pkg_path(*args):
     return os.path.join(sys.path[0], 'mcomix', *args)
