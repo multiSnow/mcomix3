@@ -57,10 +57,7 @@ class _Book(_BackendObject):
             '''SELECT page FROM recent WHERE book = ?''', (self.id,))
         row = cursor.fetchone()
         cursor.close()
-        if row:
-            return row
-        else:
-            return None
+        return row
 
     def get_last_read_date(self):
         """ Gets the datetime the book was most recently read. Returns
