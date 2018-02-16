@@ -132,7 +132,7 @@ class LastReadPage(object):
         book = self.backend.get_book_by_path(full_path)
         if book:
             page = book.get_last_read_page()
-            if page < book.pages:
+            if page is not None and page < book.pages:
                 return page
             else:
                 # If the last read page was the last in the book,
