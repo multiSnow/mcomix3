@@ -2,7 +2,7 @@
 """
 
 import urllib
-from gi.repository import Gdk, Gtk
+from gi.repository import Gdk, Gtk, GLib
 
 from mcomix.preferences import prefs
 from mcomix import constants
@@ -25,6 +25,11 @@ class EventHandler(object):
         self._extra_scroll_events = 0
         #: If True, increment _extra_scroll_events before switchting pages
         self._scroll_protection = False
+
+        self._smooth_scrolling = prefs['smooth scroll']
+        # Have to extra protect smooth scrolling to not flip to another page
+        # immediately after indeed scrolling through the page
+        self._scrolled_already = 0
 
     def resize_event(self, widget, event):
         """Handle events from resizing and moving the main window."""
@@ -619,6 +624,71 @@ class EventHandler(object):
         else:
             self._window.filehandler.open_file(paths[0])
 
+    def _smooth_scroll(self, x, y):
+        """ We divide a total pixels number to portions to make scroll smoother.
+        """
+
+        fps = 60
+        microseconds_per_millisecond = 1000
+        time_per_fps = microseconds_per_millisecond / fps
+        # Silently convert the delay from seconds to milliseconds
+        will_be_used_milliseconds = prefs['slideshow delay'] / 1000
+        max_used_fps = will_be_used_milliseconds / time_per_fps
+        # Number of pixels per one small scroll (calculated without code
+        # execution overhead)
+        pixels_offset = int(
+            prefs['number of pixels to scroll per key event'] / max_used_fps)
+
+        backwards = True if (x < 0 or y < 0) else False
+        if backwards:
+            pixels_offset *= -1
+        self._scrolled_already = 0
+
+        GLib.timeout_add(int(time_per_fps), self._actually_smoothed_scrolling,
+                         [x, y], pixels_offset, backwards)
+
+    # TODO better name?
+    def _actually_smoothed_scrolling(self, x_y, pixels_offset, backwards):
+        """ @param x_y: list of two changing ints: abscissa and ordinate.
+        @returns True for continue scrolling and False otherwise.
+        Works only with one dimension at once.
+        """
+
+        x = 0
+        y = 1
+        # pixels_offset is already negative or positive
+        if x_y[x]:
+            x_y[x] -= pixels_offset
+        else:
+            x_y[y] -= pixels_offset
+
+        # Scroll only remaining pixels
+        if backwards:
+            if x_y[x] > 0:
+                pixels_offset += x_y[x]
+            if x_y[y] > 0:
+                pixels_offset += x_y[y]
+        else:
+            if x_y[x] < 0:
+                pixels_offset += x_y[x]
+            if x_y[y] < 0:
+                pixels_offset += x_y[y]
+
+        abscissa = pixels_offset if x_y[x] else 0
+        ordinate = pixels_offset if x_y[y] else 0
+        if self._scroll_with_flipping(abscissa, ordinate) == False:
+            return False
+        # Otherwise it will scroll to reverse direction
+        if not x_y[x] and not x_y[y]:
+            return False
+        if backwards:
+            if x_y[x] > 0 or x_y[y] > 0:
+                return False
+        else:
+            if x_y[x] < 0 or x_y[y] < 0:
+                return False
+        return True
+
     def _scroll_with_flipping(self, x, y):
         """Handle scrolling with the scroll wheel or the arrow keys, for which
         the pages might be flipped depending on the preferences.  Returns True
@@ -630,7 +700,14 @@ class EventHandler(object):
 
         if self._window.scroll(x, y):
             self._extra_scroll_events = 0
+            self._scrolled_already = 1
             return True
+        # Have to extra protect smooth scrolling before flipping.
+        # See comment in __init__
+        if self._smooth_scrolling:
+            if self._scrolled_already and self._window.is_scrollable():
+                self._scrolled_already = 0
+                return False
 
         if y > 0 or (self._window.is_manga_mode and x < 0) or (
           not self._window.is_manga_mode and x > 0):
@@ -642,19 +719,33 @@ class EventHandler(object):
 
     def _scroll_down(self):
         """ Scrolls down. """
-        self._scroll_with_flipping(0, prefs['number of pixels to scroll per key event'])
+        self._smooth_scrolling = prefs['smooth scroll']
+        if self._smooth_scrolling:
+            self._smooth_scroll(0, prefs['number of pixels to scroll per key event'])
+        else:
+            self._scroll_with_flipping(0, prefs['number of pixels to scroll per key event'])
 
     def _scroll_up(self):
         """ Scrolls up. """
-        self._scroll_with_flipping(0, -prefs['number of pixels to scroll per key event'])
+        self._smooth_scrolling = prefs['smooth scroll']
+        if self._smooth_scrolling:
+            self._smooth_scroll(0, -prefs['number of pixels to scroll per key event'])
+        else:
+            self._scroll_with_flipping(0, -prefs['number of pixels to scroll per key event'])
 
     def _scroll_right(self):
         """ Scrolls right. """
-        self._scroll_with_flipping(prefs['number of pixels to scroll per key event'], 0)
+        if self._smooth_scrolling:
+            self._smooth_scroll(prefs['number of pixels to scroll per key event'], 0)
+        else:
+            self._scroll_with_flipping(prefs['number of pixels to scroll per key event'], 0)
 
     def _scroll_left(self):
         """ Scrolls left. """
-        self._scroll_with_flipping(-prefs['number of pixels to scroll per key event'], 0)
+        if self._smooth_scrolling:
+            self._smooth_scroll(-prefs['number of pixels to scroll per key event'], 0)
+        else:
+            self._scroll_with_flipping(-prefs['number of pixels to scroll per key event'], 0)
 
     def _smart_scroll_down(self, small_step=None):
         """ Smart scrolling. """
@@ -700,8 +791,10 @@ class EventHandler(object):
             self._extra_scroll_events = 0
             return False
 
+        enough_key_presses = (self._extra_scroll_events >=
+                              prefs['number of key presses before page turn'] - 1)
         if (not self._scroll_protection
-            or self._extra_scroll_events >= prefs['number of key presses before page turn'] - 1
+            or enough_key_presses
             or not self._window.is_scrollable()):
 
             self._flip_page(1)
@@ -725,8 +818,10 @@ class EventHandler(object):
             self._extra_scroll_events = 0
             return False
 
+        enough_key_presses = (self._extra_scroll_events <=
+                              -prefs['number of key presses before page turn'] + 1)
         if (not self._scroll_protection
-            or self._extra_scroll_events <= -prefs['number of key presses before page turn'] + 1
+            or enough_key_presses
             or not self._window.is_scrollable()):
 
             self._flip_page(-1)

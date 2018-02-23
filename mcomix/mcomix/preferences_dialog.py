@@ -134,6 +134,12 @@ class _PreferencesDialog(Gtk.Dialog):
               'try to follow the natural reading order of the comic book.')))
 
         page.add_row(self._create_pref_check_button(
+            _('Use smooth scrolling'),
+            'smooth scroll',
+            _('With this preference set, the arrow keys scroll smoothly '
+              'with time from slideshow delay, translated from seconds to milliseconds')))
+
+        page.add_row(self._create_pref_check_button(
             _('Flip pages when scrolling off the edges of the page'),
             'flip with wheel',
             _('Flip pages when scrolling "off the page" with the scroll wheel or with the arrow keys. It takes n consecutive "steps" with the scroll wheel or the arrow keys for the pages to be flipped.')))
