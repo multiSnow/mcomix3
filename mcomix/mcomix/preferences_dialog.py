@@ -150,7 +150,7 @@ class _PreferencesDialog(Gtk.Dialog):
 
         page.add_row(Gtk.Label(label=_('Number of pixels to scroll per arrow key press:')),
             self._create_pref_spinner('number of pixels to scroll per key event',
-            1, 1, 500, 1, 3, 0,
+            1, 1, 1000, 1, 3, 0,
             _('Set the number of pixels to scroll on a page when using the arrow keys.')))
 
         page.add_row(Gtk.Label(label=_('Number of pixels to scroll per mouse wheel turn:')),
