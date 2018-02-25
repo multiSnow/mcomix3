@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix\n"
 "Report-Msgid-Bugs-To: https://sourceforge.net/projects/mcomix/\n"
-"POT-Creation-Date: 2017-03-10 21:04+0100\n"
+"POT-Creation-Date: 2018-02-25 18:00+0100\n"
 "PO-Revision-Date: 2013-04-26 18:00+0100\n"
 "Last-Translator: Giovanni Scafora <giovanni@archlinux.org>\n"
 "Language-Team: Arch Linux Italian Team <giovanni@archlinux.org>\n"
@@ -104,17 +104,17 @@ msgstr "Modifica i segnalibri"
 msgid "Type"
 msgstr "Tipo"
 
-#: mcomix/bookmark_dialog.py:51 mcomix/edit_comment_area.py:31
+#: mcomix/bookmark_dialog.py:51 mcomix/edit_comment_area.py:33
 #: mcomix/keybindings_editor.py:35
 msgid "Name"
 msgstr "Nome"
 
-#: mcomix/bookmark_dialog.py:52 mcomix/main.py:1067
+#: mcomix/bookmark_dialog.py:52 mcomix/main.py:1073
 #: mcomix/library/control_area.py:136
 msgid "Page"
 msgstr "Pagina"
 
-#: mcomix/bookmark_dialog.py:53 mcomix/properties_dialog.py:112
+#: mcomix/bookmark_dialog.py:53 mcomix/properties_dialog.py:113
 msgid "Location"
 msgstr "Posizione"
 
@@ -145,7 +145,7 @@ msgstr "Commenti"
 msgid "Could not read %s"
 msgstr "Impossibile leggere %s"
 
-#: mcomix/edit_comment_area.py:18
+#: mcomix/edit_comment_area.py:20
 msgid ""
 "Please note that the only files that are automatically added to this list "
 "are those files in archives that MComix recognizes as comments."
@@ -153,11 +153,11 @@ msgstr ""
 "Nota che gli unici file che sono automaticamente aggiunti a questa lista "
 "sono quelli presenti negli archivi che MComix riconosce come commenti."
 
-#: mcomix/edit_comment_area.py:35 mcomix/properties_dialog.py:128
+#: mcomix/edit_comment_area.py:37 mcomix/properties_dialog.py:125
 msgid "Size"
 msgstr "Dimensione"
 
-#: mcomix/edit_comment_area.py:52 mcomix/edit_image_area.py:68
+#: mcomix/edit_comment_area.py:54 mcomix/edit_image_area.py:68
 msgid "Remove from archive"
 msgstr "Rimuovi dall'archivio"
 
@@ -229,43 +229,43 @@ msgstr ""
 "Regola automaticamente il contrasto (luminosità ed oscurità), separatamente "
 "per ciascuna banda di colore."
 
-#: mcomix/file_chooser_base_dialog.py:43 mcomix/keybindings.py:137
+#: mcomix/file_chooser_base_dialog.py:44 mcomix/keybindings.py:137
 msgid "Open"
 msgstr "Apri"
 
-#: mcomix/file_chooser_base_dialog.py:48
+#: mcomix/file_chooser_base_dialog.py:49
 msgid "Save"
 msgstr "Salva"
 
-#: mcomix/file_chooser_base_dialog.py:85
+#: mcomix/file_chooser_base_dialog.py:86
 msgid "All files"
 msgstr "Tutti i documenti"
 
-#: mcomix/file_chooser_base_dialog.py:128
+#: mcomix/file_chooser_base_dialog.py:129
 #, fuzzy
 msgid "All archives"
 msgstr "Tutti gli archivi"
 
-#: mcomix/file_chooser_base_dialog.py:134
+#: mcomix/file_chooser_base_dialog.py:135
 #, fuzzy, python-format
 msgid "%s archives"
 msgstr "Archivi %s"
 
-#: mcomix/file_chooser_base_dialog.py:144
+#: mcomix/file_chooser_base_dialog.py:145
 msgid "All images"
 msgstr "Tutte le immagini"
 
-#: mcomix/file_chooser_base_dialog.py:150
+#: mcomix/file_chooser_base_dialog.py:151
 #, fuzzy, python-format
 msgid "%s images"
 msgstr "Immagini %s"
 
-#: mcomix/file_chooser_base_dialog.py:233
+#: mcomix/file_chooser_base_dialog.py:234
 #, python-format
 msgid "A file named '%s' already exists. Do you want to replace it?"
 msgstr "Il file '%s' già esiste. Vuoi sostituirlo?"
 
-#: mcomix/file_chooser_base_dialog.py:235
+#: mcomix/file_chooser_base_dialog.py:236
 msgid "Replacing it will overwrite its contents."
 msgstr "Sostituendolo, sovrascriverai il suo contenuto."
 
@@ -692,7 +692,7 @@ msgstr "_Salva come"
 msgid "Archive comments"
 msgstr "%d commenti"
 
-#: mcomix/keybindings.py:133 mcomix/properties_dialog.py:22
+#: mcomix/keybindings.py:133 mcomix/properties_dialog.py:23
 msgid "Properties"
 msgstr "Proprietà"
 
@@ -735,20 +735,20 @@ msgstr "! Impossibile trovare pysqlite2 e sqlite3."
 msgid "! Could not remove file \"%s\""
 msgstr "! Impossibile rimuovere il file \"%s\""
 
-#: mcomix/main.py:962
+#: mcomix/main.py:967
 msgid "SLIDESHOW"
 msgstr "PRESENTAZIONE"
 
-#: mcomix/main.py:993
+#: mcomix/main.py:998
 msgid "Save page as"
 msgstr "Salva la pagina come"
 
-#: mcomix/main.py:1013
+#: mcomix/main.py:1019
 #, python-format
 msgid "Delete \"%s\"?"
 msgstr "Vuoi eliminare \"%s\"?"
 
-#: mcomix/main.py:1014
+#: mcomix/main.py:1020
 msgid "The file will be deleted from your harddisk."
 msgstr "Il file sarà cancellato dal tuo harddisk."
 
@@ -1463,37 +1463,37 @@ msgstr ""
 "Tratta tutti i file trovati con queste estensioni, all'interno degli "
 "archivi, come se fossero dei commenti."
 
-#: mcomix/properties_dialog.py:35
+#: mcomix/properties_dialog.py:36
 msgid "Archive"
 msgstr "Archivio"
 
-#: mcomix/properties_dialog.py:37
+#: mcomix/properties_dialog.py:38
 msgid "Image"
 msgstr "Immagine"
 
-#: mcomix/properties_dialog.py:76 mcomix/library/control_area.py:138
+#: mcomix/properties_dialog.py:77 mcomix/library/control_area.py:138
 #, python-format
 msgid "%d pages"
 msgstr "%d pagine"
 
-#: mcomix/properties_dialog.py:77
+#: mcomix/properties_dialog.py:78
 #, python-format
 msgid "%d comments"
 msgstr "%d commenti"
 
-#: mcomix/properties_dialog.py:129
+#: mcomix/properties_dialog.py:126
 msgid "Accessed"
 msgstr "Visitata"
 
-#: mcomix/properties_dialog.py:131
+#: mcomix/properties_dialog.py:128
 msgid "Modified"
 msgstr "Modificata"
 
-#: mcomix/properties_dialog.py:133
+#: mcomix/properties_dialog.py:130
 msgid "Permissions"
 msgstr "Permessi"
 
-#: mcomix/properties_dialog.py:134
+#: mcomix/properties_dialog.py:131
 msgid "Owner"
 msgstr "Proprietario"
 
@@ -1635,24 +1635,29 @@ msgstr ""
 msgid "Stop slideshow"
 msgstr "Ferma la presentazione"
 
-#: mcomix/status.py:40
+#: mcomix/status.py:41
 msgid "Show page numbers"
 msgstr "Mostra i numeri delle pagine"
 
-#: mcomix/status.py:42
+#: mcomix/status.py:43
 msgid "Show file numbers"
 msgstr "Mostra i numeri dei file"
 
-#: mcomix/status.py:44
+#: mcomix/status.py:45
 msgid "Show resolution"
 msgstr "Mostra la risoluzione"
 
-#: mcomix/status.py:46
+#: mcomix/status.py:47
 msgid "Show path"
 msgstr "Mostra il percorso"
 
-#: mcomix/status.py:48
+#: mcomix/status.py:49
 msgid "Show filename"
+msgstr "Mostra il nome del file"
+
+#: mcomix/status.py:51
+#, fuzzy
+msgid "Show filesize"
 msgstr "Mostra il nome del file"
 
 #: mcomix/strings.py:9 mcomix/strings.py:18

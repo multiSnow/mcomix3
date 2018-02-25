@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Comix 4.0.3\n"
 "Report-Msgid-Bugs-To: https://sourceforge.net/projects/mcomix/\n"
-"POT-Creation-Date: 2017-03-10 21:04+0100\n"
+"POT-Creation-Date: 2018-02-25 18:00+0100\n"
 "PO-Revision-Date: 2009-01-26 19:34+0100\n"
 "Last-Translator: Ernő Drabik <drerno@gmail.com>\n"
 "Language-Team: \n"
@@ -91,17 +91,17 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: mcomix/bookmark_dialog.py:51 mcomix/edit_comment_area.py:31
+#: mcomix/bookmark_dialog.py:51 mcomix/edit_comment_area.py:33
 #: mcomix/keybindings_editor.py:35
 msgid "Name"
 msgstr "Név"
 
-#: mcomix/bookmark_dialog.py:52 mcomix/main.py:1067
+#: mcomix/bookmark_dialog.py:52 mcomix/main.py:1073
 #: mcomix/library/control_area.py:136
 msgid "Page"
 msgstr "Oldal"
 
-#: mcomix/bookmark_dialog.py:53 mcomix/properties_dialog.py:112
+#: mcomix/bookmark_dialog.py:53 mcomix/properties_dialog.py:113
 msgid "Location"
 msgstr "Hely"
 
@@ -132,7 +132,7 @@ msgstr "Megjegyzések"
 msgid "Could not read %s"
 msgstr "Nem olvasható a(z) %s"
 
-#: mcomix/edit_comment_area.py:18
+#: mcomix/edit_comment_area.py:20
 #, fuzzy
 msgid ""
 "Please note that the only files that are automatically added to this list "
@@ -141,11 +141,11 @@ msgstr ""
 "Vegye figyelembe, hogy itt csak azon arhívumbeli fájlok jelennek meg "
 "automatikusan, melyeket a Comix megjegyzésfájlként ismer fel."
 
-#: mcomix/edit_comment_area.py:35 mcomix/properties_dialog.py:128
+#: mcomix/edit_comment_area.py:37 mcomix/properties_dialog.py:125
 msgid "Size"
 msgstr "Méret"
 
-#: mcomix/edit_comment_area.py:52 mcomix/edit_image_area.py:68
+#: mcomix/edit_comment_area.py:54 mcomix/edit_image_area.py:68
 msgid "Remove from archive"
 msgstr "Törlés a gyűjteményből."
 
@@ -223,43 +223,43 @@ msgstr ""
 "A kontraszt automatikus beállítása (mind a világosságot és a  sötétséget is) "
 "minden egyes színsávhoz."
 
-#: mcomix/file_chooser_base_dialog.py:43 mcomix/keybindings.py:137
+#: mcomix/file_chooser_base_dialog.py:44 mcomix/keybindings.py:137
 msgid "Open"
 msgstr "Megnyitás"
 
-#: mcomix/file_chooser_base_dialog.py:48
+#: mcomix/file_chooser_base_dialog.py:49
 msgid "Save"
 msgstr "Mentés"
 
-#: mcomix/file_chooser_base_dialog.py:85
+#: mcomix/file_chooser_base_dialog.py:86
 msgid "All files"
 msgstr "Minden fájl"
 
-#: mcomix/file_chooser_base_dialog.py:128
+#: mcomix/file_chooser_base_dialog.py:129
 #, fuzzy
 msgid "All archives"
 msgstr "Minden archívum"
 
-#: mcomix/file_chooser_base_dialog.py:134
+#: mcomix/file_chooser_base_dialog.py:135
 #, fuzzy, python-format
 msgid "%s archives"
 msgstr "%s archívumok"
 
-#: mcomix/file_chooser_base_dialog.py:144
+#: mcomix/file_chooser_base_dialog.py:145
 msgid "All images"
 msgstr "Minden kép"
 
-#: mcomix/file_chooser_base_dialog.py:150
+#: mcomix/file_chooser_base_dialog.py:151
 #, fuzzy, python-format
 msgid "%s images"
 msgstr "%s képek"
 
-#: mcomix/file_chooser_base_dialog.py:233
+#: mcomix/file_chooser_base_dialog.py:234
 #, python-format
 msgid "A file named '%s' already exists. Do you want to replace it?"
 msgstr "A megadott nevű állomány már létezik: '%s'. Akarja a cserét?"
 
-#: mcomix/file_chooser_base_dialog.py:235
+#: mcomix/file_chooser_base_dialog.py:236
 msgid "Replacing it will overwrite its contents."
 msgstr "A csere felülírja az eredeti tartalmat."
 
@@ -681,7 +681,7 @@ msgstr "Mentés"
 msgid "Archive comments"
 msgstr "Archívum"
 
-#: mcomix/keybindings.py:133 mcomix/properties_dialog.py:22
+#: mcomix/keybindings.py:133 mcomix/properties_dialog.py:23
 msgid "Properties"
 msgstr "Tulajdonságok"
 
@@ -722,20 +722,20 @@ msgstr ""
 msgid "! Could not remove file \"%s\""
 msgstr ""
 
-#: mcomix/main.py:962
+#: mcomix/main.py:967
 msgid "SLIDESHOW"
 msgstr "Diavetítés"
 
-#: mcomix/main.py:993
+#: mcomix/main.py:998
 msgid "Save page as"
 msgstr ""
 
-#: mcomix/main.py:1013
+#: mcomix/main.py:1019
 #, python-format
 msgid "Delete \"%s\"?"
 msgstr ""
 
-#: mcomix/main.py:1014
+#: mcomix/main.py:1020
 msgid "The file will be deleted from your harddisk."
 msgstr ""
 
@@ -1445,37 +1445,37 @@ msgstr ""
 "Az itt megadott kiterjesztésű állományokat az arhívumokban "
 "megjegyzésfájlként kezeli majd a program."
 
-#: mcomix/properties_dialog.py:35
+#: mcomix/properties_dialog.py:36
 msgid "Archive"
 msgstr "Archívum"
 
-#: mcomix/properties_dialog.py:37
+#: mcomix/properties_dialog.py:38
 msgid "Image"
 msgstr "Kép"
 
-#: mcomix/properties_dialog.py:76 mcomix/library/control_area.py:138
+#: mcomix/properties_dialog.py:77 mcomix/library/control_area.py:138
 #, python-format
 msgid "%d pages"
 msgstr "%d lapok"
 
-#: mcomix/properties_dialog.py:77
+#: mcomix/properties_dialog.py:78
 #, python-format
 msgid "%d comments"
 msgstr "Megjegyzések: %d"
 
-#: mcomix/properties_dialog.py:129
+#: mcomix/properties_dialog.py:126
 msgid "Accessed"
 msgstr "Utolsó elérés"
 
-#: mcomix/properties_dialog.py:131
+#: mcomix/properties_dialog.py:128
 msgid "Modified"
 msgstr "Módosítva"
 
-#: mcomix/properties_dialog.py:133
+#: mcomix/properties_dialog.py:130
 msgid "Permissions"
 msgstr "Jogosultságok"
 
-#: mcomix/properties_dialog.py:134
+#: mcomix/properties_dialog.py:131
 msgid "Owner"
 msgstr "Tulajdonos"
 
@@ -1611,24 +1611,28 @@ msgstr ""
 msgid "Stop slideshow"
 msgstr "Diavetítés"
 
-#: mcomix/status.py:40
+#: mcomix/status.py:41
 msgid "Show page numbers"
 msgstr ""
 
-#: mcomix/status.py:42
+#: mcomix/status.py:43
 msgid "Show file numbers"
 msgstr ""
 
-#: mcomix/status.py:44
+#: mcomix/status.py:45
 msgid "Show resolution"
 msgstr ""
 
-#: mcomix/status.py:46
+#: mcomix/status.py:47
 msgid "Show path"
 msgstr ""
 
-#: mcomix/status.py:48
+#: mcomix/status.py:49
 msgid "Show filename"
+msgstr ""
+
+#: mcomix/status.py:51
+msgid "Show filesize"
 msgstr ""
 
 #: mcomix/strings.py:9 mcomix/strings.py:18

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://sourceforge.net/projects/mcomix/\n"
-"POT-Creation-Date: 2017-03-10 21:04+0100\n"
+"POT-Creation-Date: 2018-02-25 18:00+0100\n"
 "PO-Revision-Date: 2009-05-04 23:52+0300\n"
 "Last-Translator: Oleksandr Zaiats <ai@eth0.net.ua>\n"
 "Language-Team: \n"
@@ -92,17 +92,17 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: mcomix/bookmark_dialog.py:51 mcomix/edit_comment_area.py:31
+#: mcomix/bookmark_dialog.py:51 mcomix/edit_comment_area.py:33
 #: mcomix/keybindings_editor.py:35
 msgid "Name"
 msgstr "Ім’я"
 
-#: mcomix/bookmark_dialog.py:52 mcomix/main.py:1067
+#: mcomix/bookmark_dialog.py:52 mcomix/main.py:1073
 #: mcomix/library/control_area.py:136
 msgid "Page"
 msgstr "Сторінка"
 
-#: mcomix/bookmark_dialog.py:53 mcomix/properties_dialog.py:112
+#: mcomix/bookmark_dialog.py:53 mcomix/properties_dialog.py:113
 msgid "Location"
 msgstr "Розташування"
 
@@ -133,7 +133,7 @@ msgstr "Коментарі"
 msgid "Could not read %s"
 msgstr "Не можу прочитати %s"
 
-#: mcomix/edit_comment_area.py:18
+#: mcomix/edit_comment_area.py:20
 #, fuzzy
 msgid ""
 "Please note that the only files that are automatically added to this list "
@@ -142,11 +142,11 @@ msgstr ""
 "Будь ласка зауважте, що до цього списку автоматично додаються лише ті файли "
 "в архівах, які Comix розпізнає як коментарі."
 
-#: mcomix/edit_comment_area.py:35 mcomix/properties_dialog.py:128
+#: mcomix/edit_comment_area.py:37 mcomix/properties_dialog.py:125
 msgid "Size"
 msgstr "Розмір"
 
-#: mcomix/edit_comment_area.py:52 mcomix/edit_image_area.py:68
+#: mcomix/edit_comment_area.py:54 mcomix/edit_image_area.py:68
 msgid "Remove from archive"
 msgstr "Видалити з архіву"
 
@@ -224,43 +224,43 @@ msgstr ""
 "Автоматично підлаштувати контраст (світлі та темні ділянки), окремо для "
 "кожної колірної смуги."
 
-#: mcomix/file_chooser_base_dialog.py:43 mcomix/keybindings.py:137
+#: mcomix/file_chooser_base_dialog.py:44 mcomix/keybindings.py:137
 msgid "Open"
 msgstr "Відкрити"
 
-#: mcomix/file_chooser_base_dialog.py:48
+#: mcomix/file_chooser_base_dialog.py:49
 msgid "Save"
 msgstr "Зберезти"
 
-#: mcomix/file_chooser_base_dialog.py:85
+#: mcomix/file_chooser_base_dialog.py:86
 msgid "All files"
 msgstr "Усі файли"
 
-#: mcomix/file_chooser_base_dialog.py:128
+#: mcomix/file_chooser_base_dialog.py:129
 #, fuzzy
 msgid "All archives"
 msgstr "Усі архіви"
 
-#: mcomix/file_chooser_base_dialog.py:134
+#: mcomix/file_chooser_base_dialog.py:135
 #, fuzzy, python-format
 msgid "%s archives"
 msgstr "%s архіви"
 
-#: mcomix/file_chooser_base_dialog.py:144
+#: mcomix/file_chooser_base_dialog.py:145
 msgid "All images"
 msgstr "Усі зображення"
 
-#: mcomix/file_chooser_base_dialog.py:150
+#: mcomix/file_chooser_base_dialog.py:151
 #, fuzzy, python-format
 msgid "%s images"
 msgstr "%s зображення"
 
-#: mcomix/file_chooser_base_dialog.py:233
+#: mcomix/file_chooser_base_dialog.py:234
 #, python-format
 msgid "A file named '%s' already exists. Do you want to replace it?"
 msgstr "Файл з ім’ям '%s' вже існує. Хочете його замінити?"
 
-#: mcomix/file_chooser_base_dialog.py:235
+#: mcomix/file_chooser_base_dialog.py:236
 msgid "Replacing it will overwrite its contents."
 msgstr "Заміна перепише його вміст."
 
@@ -682,7 +682,7 @@ msgstr "Зберезти"
 msgid "Archive comments"
 msgstr "Архів"
 
-#: mcomix/keybindings.py:133 mcomix/properties_dialog.py:22
+#: mcomix/keybindings.py:133 mcomix/properties_dialog.py:23
 msgid "Properties"
 msgstr "Властивості"
 
@@ -723,20 +723,20 @@ msgstr ""
 msgid "! Could not remove file \"%s\""
 msgstr ""
 
-#: mcomix/main.py:962
+#: mcomix/main.py:967
 msgid "SLIDESHOW"
 msgstr "СЛАЙДШОУ"
 
-#: mcomix/main.py:993
+#: mcomix/main.py:998
 msgid "Save page as"
 msgstr ""
 
-#: mcomix/main.py:1013
+#: mcomix/main.py:1019
 #, python-format
 msgid "Delete \"%s\"?"
 msgstr ""
 
-#: mcomix/main.py:1014
+#: mcomix/main.py:1020
 msgid "The file will be deleted from your harddisk."
 msgstr ""
 
@@ -1439,37 +1439,37 @@ msgstr ""
 "Вважати усі файли всередені архівів, які мають один з цих суфіксів, "
 "коментарями."
 
-#: mcomix/properties_dialog.py:35
+#: mcomix/properties_dialog.py:36
 msgid "Archive"
 msgstr "Архів"
 
-#: mcomix/properties_dialog.py:37
+#: mcomix/properties_dialog.py:38
 msgid "Image"
 msgstr "Зображення"
 
-#: mcomix/properties_dialog.py:76 mcomix/library/control_area.py:138
+#: mcomix/properties_dialog.py:77 mcomix/library/control_area.py:138
 #, python-format
 msgid "%d pages"
 msgstr "%d сторінок"
 
-#: mcomix/properties_dialog.py:77
+#: mcomix/properties_dialog.py:78
 #, python-format
 msgid "%d comments"
 msgstr "%d коментар(я, ів)"
 
-#: mcomix/properties_dialog.py:129
+#: mcomix/properties_dialog.py:126
 msgid "Accessed"
 msgstr "Доступ"
 
-#: mcomix/properties_dialog.py:131
+#: mcomix/properties_dialog.py:128
 msgid "Modified"
 msgstr "Змінений"
 
-#: mcomix/properties_dialog.py:133
+#: mcomix/properties_dialog.py:130
 msgid "Permissions"
 msgstr "Права"
 
-#: mcomix/properties_dialog.py:134
+#: mcomix/properties_dialog.py:131
 msgid "Owner"
 msgstr "Власник"
 
@@ -1605,24 +1605,28 @@ msgstr ""
 msgid "Stop slideshow"
 msgstr "Слайдшоу"
 
-#: mcomix/status.py:40
+#: mcomix/status.py:41
 msgid "Show page numbers"
 msgstr ""
 
-#: mcomix/status.py:42
+#: mcomix/status.py:43
 msgid "Show file numbers"
 msgstr ""
 
-#: mcomix/status.py:44
+#: mcomix/status.py:45
 msgid "Show resolution"
 msgstr ""
 
-#: mcomix/status.py:46
+#: mcomix/status.py:47
 msgid "Show path"
 msgstr ""
 
-#: mcomix/status.py:48
+#: mcomix/status.py:49
 msgid "Show filename"
+msgstr ""
+
+#: mcomix/status.py:51
+msgid "Show filesize"
 msgstr ""
 
 #: mcomix/strings.py:9 mcomix/strings.py:18

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.90.4\n"
 "Report-Msgid-Bugs-To: https://sourceforge.net/projects/mcomix/\n"
-"POT-Creation-Date: 2017-03-10 21:04+0100\n"
+"POT-Creation-Date: 2018-02-25 18:00+0100\n"
 "PO-Revision-Date: 2016-01-10 18:09+0200\n"
 "Last-Translator: Ulyanich Michael <ulianich_mihail@ukr.net>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -113,14 +113,14 @@ msgstr "Тип"
 #
 # File: src/bookmark.py, line: 255
 # File: src/edit.py, line: 267
-#: mcomix/bookmark_dialog.py:51 mcomix/edit_comment_area.py:31
+#: mcomix/bookmark_dialog.py:51 mcomix/edit_comment_area.py:33
 #: mcomix/keybindings_editor.py:35
 msgid "Name"
 msgstr "Имя"
 
 #
 # File: src/bookmark.py, line: 256
-#: mcomix/bookmark_dialog.py:52 mcomix/main.py:1067
+#: mcomix/bookmark_dialog.py:52 mcomix/main.py:1073
 #: mcomix/library/control_area.py:136
 msgid "Page"
 msgstr "Страница"
@@ -128,7 +128,7 @@ msgstr "Страница"
 #
 # File: src/properties.py, line: 124
 # File: src/properties.py, line: 159
-#: mcomix/bookmark_dialog.py:53 mcomix/properties_dialog.py:112
+#: mcomix/bookmark_dialog.py:53 mcomix/properties_dialog.py:113
 msgid "Location"
 msgstr "Расположение"
 
@@ -166,7 +166,7 @@ msgstr "Не удалось прочитать %s"
 
 #
 # File: src/edit.py, line: 255
-#: mcomix/edit_comment_area.py:18
+#: mcomix/edit_comment_area.py:20
 msgid ""
 "Please note that the only files that are automatically added to this list "
 "are those files in archives that MComix recognizes as comments."
@@ -176,14 +176,14 @@ msgstr ""
 
 #
 # File: src/edit.py, line: 270
-#: mcomix/edit_comment_area.py:35 mcomix/properties_dialog.py:128
+#: mcomix/edit_comment_area.py:37 mcomix/properties_dialog.py:125
 msgid "Size"
 msgstr "Размер"
 
 #
 # File: src/edit.py, line: 168
 # File: src/edit.py, line: 285
-#: mcomix/edit_comment_area.py:52 mcomix/edit_image_area.py:68
+#: mcomix/edit_comment_area.py:54 mcomix/edit_image_area.py:68
 msgid "Remove from archive"
 msgstr "Удалить из архива"
 
@@ -284,31 +284,31 @@ msgstr ""
 #
 # File: src/filechooser.py, line: 35
 # File: src/library.py, line: 489
-#: mcomix/file_chooser_base_dialog.py:43 mcomix/keybindings.py:137
+#: mcomix/file_chooser_base_dialog.py:44 mcomix/keybindings.py:137
 msgid "Open"
 msgstr "Открыть"
 
 #
 # File: src/filechooser.py, line: 39
-#: mcomix/file_chooser_base_dialog.py:48
+#: mcomix/file_chooser_base_dialog.py:49
 msgid "Save"
 msgstr "Сохранить"
 
 #
 # File: src/filechooser.py, line: 75
-#: mcomix/file_chooser_base_dialog.py:85
+#: mcomix/file_chooser_base_dialog.py:86
 msgid "All files"
 msgstr "Все файлы"
 
 #
 # File: src/filechooser.py, line: 78
-#: mcomix/file_chooser_base_dialog.py:128
+#: mcomix/file_chooser_base_dialog.py:129
 msgid "All archives"
 msgstr "Все архивы"
 
 #
 # File: src/filechooser.py, line: 82
-#: mcomix/file_chooser_base_dialog.py:134
+#: mcomix/file_chooser_base_dialog.py:135
 #, python-format
 msgid "%s archives"
 msgstr "%s архивы"
@@ -316,28 +316,28 @@ msgstr "%s архивы"
 #
 # File: src/filechooser.py, line: 171
 # File: src/filechooser.py, line: 249
-#: mcomix/file_chooser_base_dialog.py:144
+#: mcomix/file_chooser_base_dialog.py:145
 msgid "All images"
 msgstr "Все изображения"
 
 #
 # File: src/filechooser.py, line: 171
 # File: src/filechooser.py, line: 249
-#: mcomix/file_chooser_base_dialog.py:150
+#: mcomix/file_chooser_base_dialog.py:151
 #, python-format
 msgid "%s images"
 msgstr "%s изображения"
 
 #
 # File: src/filechooser.py, line: 125
-#: mcomix/file_chooser_base_dialog.py:233
+#: mcomix/file_chooser_base_dialog.py:234
 #, python-format
 msgid "A file named '%s' already exists. Do you want to replace it?"
 msgstr "Файл с именем '%s' уже существует. Вы хотите заменить его?"
 
 #
 # File: src/filechooser.py, line: 128
-#: mcomix/file_chooser_base_dialog.py:235
+#: mcomix/file_chooser_base_dialog.py:236
 msgid "Replacing it will overwrite its contents."
 msgstr "Замена перепишет его содержимое."
 
@@ -837,7 +837,7 @@ msgstr "Архив"
 
 #
 # File: src/properties.py, line: 89
-#: mcomix/keybindings.py:133 mcomix/properties_dialog.py:22
+#: mcomix/keybindings.py:133 mcomix/properties_dialog.py:23
 msgid "Properties"
 msgstr "Свойства"
 
@@ -887,23 +887,23 @@ msgstr "! Не удалось удалить файл \"%s\""
 
 #
 # File: src/main.py, line: 666
-#: mcomix/main.py:962
+#: mcomix/main.py:967
 msgid "SLIDESHOW"
 msgstr "СЛАЙДШОУ"
 
 #
 # File: src/library.py, line: 832
 # File: src/properties.py, line: 113
-#: mcomix/main.py:993
+#: mcomix/main.py:998
 msgid "Save page as"
 msgstr "Сохранить страницу как"
 
-#: mcomix/main.py:1013
+#: mcomix/main.py:1019
 #, python-format
 msgid "Delete \"%s\"?"
 msgstr "Удалить \"%s\"?"
 
-#: mcomix/main.py:1014
+#: mcomix/main.py:1020
 msgid "The file will be deleted from your harddisk."
 msgstr "Файл будет удалён с вашего жёсткого диска."
 
@@ -1728,27 +1728,27 @@ msgstr ""
 
 #
 # File: src/properties.py, line: 135
-#: mcomix/properties_dialog.py:35
+#: mcomix/properties_dialog.py:36
 msgid "Archive"
 msgstr "Архив"
 
 #
 # File: src/properties.py, line: 169
-#: mcomix/properties_dialog.py:37
+#: mcomix/properties_dialog.py:38
 msgid "Image"
 msgstr "Изображение"
 
 #
 # File: src/library.py, line: 832
 # File: src/properties.py, line: 113
-#: mcomix/properties_dialog.py:76 mcomix/library/control_area.py:138
+#: mcomix/properties_dialog.py:77 mcomix/library/control_area.py:138
 #, python-format
 msgid "%d pages"
 msgstr "%d страниц"
 
 #
 # File: src/properties.py, line: 114
-#: mcomix/properties_dialog.py:77
+#: mcomix/properties_dialog.py:78
 #, python-format
 msgid "%d comments"
 msgstr "%d комментариев"
@@ -1756,28 +1756,28 @@ msgstr "%d комментариев"
 #
 # File: src/properties.py, line: 126
 # File: src/properties.py, line: 160
-#: mcomix/properties_dialog.py:129
+#: mcomix/properties_dialog.py:126
 msgid "Accessed"
 msgstr "Доступ"
 
 #
 # File: src/properties.py, line: 128
 # File: src/properties.py, line: 162
-#: mcomix/properties_dialog.py:131
+#: mcomix/properties_dialog.py:128
 msgid "Modified"
 msgstr "Модифицирован"
 
 #
 # File: src/properties.py, line: 130
 # File: src/properties.py, line: 164
-#: mcomix/properties_dialog.py:133
+#: mcomix/properties_dialog.py:130
 msgid "Permissions"
 msgstr "Права"
 
 #
 # File: src/properties.py, line: 131
 # File: src/properties.py, line: 165
-#: mcomix/properties_dialog.py:134
+#: mcomix/properties_dialog.py:131
 msgid "Owner"
 msgstr "Владелец"
 
@@ -1915,25 +1915,30 @@ msgstr "Не найдена библиотека PIL"
 msgid "Stop slideshow"
 msgstr "Остановить слайдшоу"
 
-#: mcomix/status.py:40
+#: mcomix/status.py:41
 msgid "Show page numbers"
 msgstr ""
 
-#: mcomix/status.py:42
+#: mcomix/status.py:43
 msgid "Show file numbers"
 msgstr ""
 
-#: mcomix/status.py:44
+#: mcomix/status.py:45
 msgid "Show resolution"
 msgstr ""
 
-#: mcomix/status.py:46
+#: mcomix/status.py:47
 msgid "Show path"
 msgstr ""
 
-#: mcomix/status.py:48
+#: mcomix/status.py:49
 msgid "Show filename"
 msgstr ""
+
+#: mcomix/status.py:51
+#, fuzzy
+msgid "Show filesize"
+msgstr "Размер файла"
 
 #
 # File: src/archive.py, line: 301

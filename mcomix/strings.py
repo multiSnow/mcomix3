@@ -62,7 +62,7 @@ TRANSLATORS = (
             ('Jan Nekvasil', _('Czech translation')),
             ('Олександр Заяц', _('Ukrainian translation')),
             ('Roxerio Roxo Carrillo', _('Galician translation')),
-            ('Martin Karlsson', _('Swedish translation')),
+            ('Jonatan Nyberg, Martin Karlsson', _('Swedish translation')),
             ('Isratine Citizen', _('Hebrew translation')),
             ('Zygi Mantus', _('Lithuanian translation')),
           )

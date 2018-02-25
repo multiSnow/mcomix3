@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Comix-4.0.1\n"
 "Report-Msgid-Bugs-To: https://sourceforge.net/projects/mcomix/\n"
-"POT-Creation-Date: 2017-03-10 21:04+0100\n"
+"POT-Creation-Date: 2018-02-25 18:00+0100\n"
 "PO-Revision-Date: 2008-12-13 21:23+0700\n"
 "Last-Translator: Andhika Padmawan <andhika.padmawan@gmail.com>\n"
 "Language-Team: Indonesia <id@li.org>\n"
@@ -102,14 +102,14 @@ msgstr ""
 #
 # File: src/bookmark.py, line: 255
 # File: src/edit.py, line: 267
-#: mcomix/bookmark_dialog.py:51 mcomix/edit_comment_area.py:31
+#: mcomix/bookmark_dialog.py:51 mcomix/edit_comment_area.py:33
 #: mcomix/keybindings_editor.py:35
 msgid "Name"
 msgstr "Nama"
 
 #
 # File: src/bookmark.py, line: 256
-#: mcomix/bookmark_dialog.py:52 mcomix/main.py:1067
+#: mcomix/bookmark_dialog.py:52 mcomix/main.py:1073
 #: mcomix/library/control_area.py:136
 msgid "Page"
 msgstr "Halaman"
@@ -117,7 +117,7 @@ msgstr "Halaman"
 #
 # File: src/properties.py, line: 124
 # File: src/properties.py, line: 159
-#: mcomix/bookmark_dialog.py:53 mcomix/properties_dialog.py:112
+#: mcomix/bookmark_dialog.py:53 mcomix/properties_dialog.py:113
 msgid "Location"
 msgstr "Lokasi"
 
@@ -155,7 +155,7 @@ msgstr "Tak dapat membaca %s"
 
 #
 # File: src/edit.py, line: 255
-#: mcomix/edit_comment_area.py:18
+#: mcomix/edit_comment_area.py:20
 #, fuzzy
 msgid ""
 "Please note that the only files that are automatically added to this list "
@@ -166,14 +166,14 @@ msgstr ""
 
 #
 # File: src/edit.py, line: 270
-#: mcomix/edit_comment_area.py:35 mcomix/properties_dialog.py:128
+#: mcomix/edit_comment_area.py:37 mcomix/properties_dialog.py:125
 msgid "Size"
 msgstr "Ukuran"
 
 #
 # File: src/edit.py, line: 168
 # File: src/edit.py, line: 285
-#: mcomix/edit_comment_area.py:52 mcomix/edit_image_area.py:68
+#: mcomix/edit_comment_area.py:54 mcomix/edit_image_area.py:68
 msgid "Remove from archive"
 msgstr "Hapus dari arsip"
 
@@ -281,32 +281,32 @@ msgstr ""
 #
 # File: src/filechooser.py, line: 35
 # File: src/library.py, line: 489
-#: mcomix/file_chooser_base_dialog.py:43 mcomix/keybindings.py:137
+#: mcomix/file_chooser_base_dialog.py:44 mcomix/keybindings.py:137
 msgid "Open"
 msgstr "Buka"
 
 #
 # File: src/filechooser.py, line: 39
-#: mcomix/file_chooser_base_dialog.py:48
+#: mcomix/file_chooser_base_dialog.py:49
 msgid "Save"
 msgstr "Simpan"
 
 #
 # File: src/filechooser.py, line: 75
-#: mcomix/file_chooser_base_dialog.py:85
+#: mcomix/file_chooser_base_dialog.py:86
 msgid "All files"
 msgstr "Semua berkas"
 
 #
 # File: src/filechooser.py, line: 78
-#: mcomix/file_chooser_base_dialog.py:128
+#: mcomix/file_chooser_base_dialog.py:129
 #, fuzzy
 msgid "All archives"
 msgstr "Semua arsip"
 
 #
 # File: src/filechooser.py, line: 82
-#: mcomix/file_chooser_base_dialog.py:134
+#: mcomix/file_chooser_base_dialog.py:135
 #, fuzzy, python-format
 msgid "%s archives"
 msgstr "Arsip %s"
@@ -314,28 +314,28 @@ msgstr "Arsip %s"
 #
 # File: src/filechooser.py, line: 171
 # File: src/filechooser.py, line: 249
-#: mcomix/file_chooser_base_dialog.py:144
+#: mcomix/file_chooser_base_dialog.py:145
 msgid "All images"
 msgstr "Semua gambar"
 
 #
 # File: src/filechooser.py, line: 171
 # File: src/filechooser.py, line: 249
-#: mcomix/file_chooser_base_dialog.py:150
+#: mcomix/file_chooser_base_dialog.py:151
 #, fuzzy, python-format
 msgid "%s images"
 msgstr "Citra %s"
 
 #
 # File: src/filechooser.py, line: 125
-#: mcomix/file_chooser_base_dialog.py:233
+#: mcomix/file_chooser_base_dialog.py:234
 #, python-format
 msgid "A file named '%s' already exists. Do you want to replace it?"
 msgstr "Berkas bernama '%s' telah ada. Anda ingin menggantinya?"
 
 #
 # File: src/filechooser.py, line: 128
-#: mcomix/file_chooser_base_dialog.py:235
+#: mcomix/file_chooser_base_dialog.py:236
 msgid "Replacing it will overwrite its contents."
 msgstr "Mengganti berkas akan menimpa isinya."
 
@@ -859,7 +859,7 @@ msgstr "Arsip"
 
 #
 # File: src/properties.py, line: 89
-#: mcomix/keybindings.py:133 mcomix/properties_dialog.py:22
+#: mcomix/keybindings.py:133 mcomix/properties_dialog.py:23
 msgid "Properties"
 msgstr "Properti"
 
@@ -908,20 +908,20 @@ msgstr ""
 
 #
 # File: src/main.py, line: 666
-#: mcomix/main.py:962
+#: mcomix/main.py:967
 msgid "SLIDESHOW"
 msgstr "SALINDIA"
 
-#: mcomix/main.py:993
+#: mcomix/main.py:998
 msgid "Save page as"
 msgstr ""
 
-#: mcomix/main.py:1013
+#: mcomix/main.py:1019
 #, python-format
 msgid "Delete \"%s\"?"
 msgstr ""
 
-#: mcomix/main.py:1014
+#: mcomix/main.py:1020
 msgid "The file will be deleted from your harddisk."
 msgstr ""
 
@@ -1763,27 +1763,27 @@ msgstr ""
 
 #
 # File: src/properties.py, line: 135
-#: mcomix/properties_dialog.py:35
+#: mcomix/properties_dialog.py:36
 msgid "Archive"
 msgstr "Arsip"
 
 #
 # File: src/properties.py, line: 169
-#: mcomix/properties_dialog.py:37
+#: mcomix/properties_dialog.py:38
 msgid "Image"
 msgstr "Gambar"
 
 #
 # File: src/library.py, line: 832
 # File: src/properties.py, line: 113
-#: mcomix/properties_dialog.py:76 mcomix/library/control_area.py:138
+#: mcomix/properties_dialog.py:77 mcomix/library/control_area.py:138
 #, python-format
 msgid "%d pages"
 msgstr "%d halaman"
 
 #
 # File: src/properties.py, line: 114
-#: mcomix/properties_dialog.py:77
+#: mcomix/properties_dialog.py:78
 #, python-format
 msgid "%d comments"
 msgstr "%d komentar"
@@ -1791,28 +1791,28 @@ msgstr "%d komentar"
 #
 # File: src/properties.py, line: 126
 # File: src/properties.py, line: 160
-#: mcomix/properties_dialog.py:129
+#: mcomix/properties_dialog.py:126
 msgid "Accessed"
 msgstr "Diakses"
 
 #
 # File: src/properties.py, line: 128
 # File: src/properties.py, line: 162
-#: mcomix/properties_dialog.py:131
+#: mcomix/properties_dialog.py:128
 msgid "Modified"
 msgstr "Dimodifikasi"
 
 #
 # File: src/properties.py, line: 130
 # File: src/properties.py, line: 164
-#: mcomix/properties_dialog.py:133
+#: mcomix/properties_dialog.py:130
 msgid "Permissions"
 msgstr "Hak Akses"
 
 #
 # File: src/properties.py, line: 131
 # File: src/properties.py, line: 165
-#: mcomix/properties_dialog.py:134
+#: mcomix/properties_dialog.py:131
 msgid "Owner"
 msgstr "Pemilik"
 
@@ -1950,24 +1950,28 @@ msgstr ""
 msgid "Stop slideshow"
 msgstr "Presentasi"
 
-#: mcomix/status.py:40
+#: mcomix/status.py:41
 msgid "Show page numbers"
 msgstr ""
 
-#: mcomix/status.py:42
+#: mcomix/status.py:43
 msgid "Show file numbers"
 msgstr ""
 
-#: mcomix/status.py:44
+#: mcomix/status.py:45
 msgid "Show resolution"
 msgstr ""
 
-#: mcomix/status.py:46
+#: mcomix/status.py:47
 msgid "Show path"
 msgstr ""
 
-#: mcomix/status.py:48
+#: mcomix/status.py:49
 msgid "Show filename"
+msgstr ""
+
+#: mcomix/status.py:51
+msgid "Show filesize"
 msgstr ""
 
 #
