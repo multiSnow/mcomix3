@@ -27,9 +27,6 @@ class EventHandler(object):
         self._scroll_protection = False
 
         self._smooth_scrolling = prefs['smooth scroll']
-        # Have to extra protect smooth scrolling to not flip to another page
-        # immediately after indeed scrolling through the page
-        self._scrolled_already = 0
 
     def resize_event(self, widget, event):
         """Handle events from resizing and moving the main window."""
@@ -634,60 +631,65 @@ class EventHandler(object):
         # Silently convert the delay from seconds to milliseconds
         will_be_used_milliseconds = prefs['slideshow delay'] / 1000
         max_used_fps = will_be_used_milliseconds / time_per_fps
-        # Number of pixels per one small scroll (calculated without code
-        # execution overhead)
+        # See _actually_smoothed_scrolling() description
+        # calculated without code execution overhead
         pixels_offset = int(
             prefs['number of pixels to scroll per key event'] / max_used_fps)
+        number_of_scrolls = [int(
+            prefs['number of pixels to scroll per key event'] / pixels_offset)]
+            # = max_used_fps
+        # See _actually_smoothed_scrolling() description
+        number_of_scrolls.append(number_of_scrolls[0])
 
-        backwards = True if (x < 0 or y < 0) else False
-        if backwards:
+        if x < 0 or y < 0:
             pixels_offset *= -1
         self._scrolled_already = 0
 
         GLib.timeout_add(int(time_per_fps), self._actually_smoothed_scrolling,
-                         [x, y], pixels_offset, backwards)
+                         x, y, pixels_offset, number_of_scrolls)
 
     # TODO better name?
-    def _actually_smoothed_scrolling(self, x_y, pixels_offset, backwards):
-        """ @param x_y: list of two changing ints: abscissa and ordinate.
-        @returns True for continue scrolling and False otherwise.
+    def _actually_smoothed_scrolling(self, x, y, pixels_offset,
+                                     number_of_scrolls):
+        """ @param x: abscissa.
+        @param y: ordinate.
+        @param pixels_offset: number of pixels to scroll for one call of this
+        function.
+        @param number_of_scrolls: [0] - default value,
+        constant, [1] - changeable value.
+        @returns True to continue scrolling and False otherwise.
         Works only with one dimension at once.
         """
 
-        x = 0
-        y = 1
+        # quotient (as integer part) [of how pixels_offset is calculated]
+
         # pixels_offset is already negative or positive
-        if x_y[x]:
-            x_y[x] -= pixels_offset
-        else:
-            x_y[y] -= pixels_offset
+        abscissa = pixels_offset if x else 0
+        ordinate = pixels_offset if y else 0
+        if number_of_scrolls[1]:
+            if self._window.scroll(abscissa, ordinate):
+                number_of_scrolls[1] -= 1
+                return True
+            # if already scrolled then no flip
+            else:
+                if number_of_scrolls[0] != number_of_scrolls[1]:
+                    return False
 
-        # Scroll only remaining pixels
-        if backwards:
-            if x_y[x] > 0:
-                pixels_offset += x_y[x]
-            if x_y[y] > 0:
-                pixels_offset += x_y[y]
-        else:
-            if x_y[x] < 0:
-                pixels_offset += x_y[x]
-            if x_y[y] < 0:
-                pixels_offset += x_y[y]
-
-        abscissa = pixels_offset if x_y[x] else 0
-        ordinate = pixels_offset if x_y[y] else 0
-        if self._scroll_with_flipping(abscissa, ordinate) == False:
+        if number_of_scrolls[1]:
+            # one attempt to flip for one _smooth_scroll()
+            self._scroll_with_flipping(abscissa, ordinate)
             return False
-        # Otherwise it will scroll to reverse direction
-        if not x_y[x] and not x_y[y]:
-            return False
-        if backwards:
-            if x_y[x] > 0 or x_y[y] > 0:
-                return False
+        # remainder
         else:
-            if x_y[x] < 0 or x_y[y] < 0:
-                return False
-        return True
+            if x:
+                # Under the assumption that -6 % -4 = -2
+                pixels_offset = x % pixels_offset
+                abscissa = pixels_offset
+            else:
+                pixels_offset = y % pixels_offset
+                ordinate = pixels_offset
+            self._scroll_with_flipping(abscissa, ordinate)
+            return False
 
     def _scroll_with_flipping(self, x, y):
         """Handle scrolling with the scroll wheel or the arrow keys, for which
@@ -700,14 +702,7 @@ class EventHandler(object):
 
         if self._window.scroll(x, y):
             self._extra_scroll_events = 0
-            self._scrolled_already = 1
             return True
-        # Have to extra protect smooth scrolling before flipping.
-        # See comment in __init__
-        if self._smooth_scrolling:
-            if self._scrolled_already and self._window.is_scrollable():
-                self._scrolled_already = 0
-                return False
 
         if y > 0 or (self._window.is_manga_mode and x < 0) or (
           not self._window.is_manga_mode and x > 0):
