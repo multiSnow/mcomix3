@@ -95,6 +95,7 @@ prefs = {
     'max extract threads': 1,
     'wrap mouse scroll': False,
     'scaling quality': 2,  # GdkPixbuf.InterpType.BILINEAR
+    'trim white border': False,
     'escape quits': False,
     'fit to size mode': constants.ZOOM_MODE_HEIGHT,
     'fit to size px': 1800,

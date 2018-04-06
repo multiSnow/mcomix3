@@ -245,6 +245,15 @@ class _PreferencesDialog(Gtk.Dialog):
         page.add_row(Gtk.Label(label=_('Scaling mode')),
             self._create_scaling_quality_combobox())
 
+        page.new_section(_('Image features'))
+        page.add_row(self._create_pref_check_button(
+            _('Trim white border around image'),
+            'trim white border',
+            _('With this preference set, an attempt will be made to trim white '
+              'border around image via GraphicsMagick/ImageMagick. Will take '
+              'effect after the application restart.'
+              '')))
+
         return page
 
     def _init_advanced_tab(self):
