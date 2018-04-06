@@ -628,22 +628,21 @@ class EventHandler(object):
         fps = 60
         microseconds_per_millisecond = 1000
         time_per_fps = microseconds_per_millisecond / fps
-        # Silently convert the delay from seconds to milliseconds
+        # Silently convert the delay from seconds to milliseconds.
         will_be_used_milliseconds = prefs['slideshow delay'] / 1000
         max_used_fps = will_be_used_milliseconds / time_per_fps
-        # See _actually_smoothed_scrolling() description
-        # calculated without code execution overhead
+        # See description of _actually_smoothed_scrolling()
+        # Calculated without code execution overhead.
         pixels_offset = int(
             prefs['number of pixels to scroll per key event'] / max_used_fps)
         number_of_scrolls = [int(
             prefs['number of pixels to scroll per key event'] / pixels_offset)]
             # = max_used_fps
-        # See _actually_smoothed_scrolling() description
+        # See description of _actually_smoothed_scrolling()
         number_of_scrolls.append(number_of_scrolls[0])
 
         if x < 0 or y < 0:
             pixels_offset *= -1
-        self._scrolled_already = 0
 
         GLib.timeout_add(int(time_per_fps), self._actually_smoothed_scrolling,
                          x, y, pixels_offset, number_of_scrolls)
@@ -655,28 +654,28 @@ class EventHandler(object):
         @param y: ordinate.
         @param pixels_offset: number of pixels to scroll for one call of this
         function.
-        @param number_of_scrolls: [0] - default value,
-        constant, [1] - changeable value.
+        @param number_of_scrolls: [0] - default value, constant,
+        [1] - changeable value.
         @returns True to continue scrolling and False otherwise.
         Works only with one dimension at once.
         """
 
         # quotient (as integer part) [of how pixels_offset is calculated]
 
-        # pixels_offset is already negative or positive
+        # Pixels_offset is already negative or positive.
         abscissa = pixels_offset if x else 0
         ordinate = pixels_offset if y else 0
         if number_of_scrolls[1]:
             if self._window.scroll(abscissa, ordinate):
                 number_of_scrolls[1] -= 1
                 return True
-            # if already scrolled then no flip
+            # if already scrolled then not flipping
             else:
                 if number_of_scrolls[0] != number_of_scrolls[1]:
                     return False
 
         if number_of_scrolls[1]:
-            # one attempt to flip for one _smooth_scroll()
+            # One attempt to flip for one _smooth_scroll()
             self._scroll_with_flipping(abscissa, ordinate)
             return False
         # remainder
