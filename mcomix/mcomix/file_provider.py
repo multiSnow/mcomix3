@@ -108,8 +108,23 @@ class OrderedFileProvider(FileProvider):
     def get_directory(self):
         return self.base_dir
 
+    def _walk_through_directory(self, should_accept):
+        files = []
+        for (root, dirs, filenames) in os.walk(self.base_dir):
+            # os.walk gives out to us filenames from the directory in the first
+            # iteration and filenames from its subfolders in subsequent
+            # iterations.
+            for filename in filenames:
+                path_to_file = os.path.join(root, filename)
+                if should_accept(path_to_file):
+                    files.append(path_to_file)
+
+        if files:
+            FileProvider.sort_files(files)
+        return files
+
     def list_files(self, mode=FileProvider.IMAGES):
-        """ Lists all files in the current directory.
+        """ Lists all files in the current directory and its subfolders.
             Returns a list of absolute paths, already sorted. """
 
         if mode == FileProvider.IMAGES:
@@ -119,20 +134,8 @@ class OrderedFileProvider(FileProvider):
         else:
             should_accept = lambda file: True
 
-        try:
-            files = [ os.path.join(self.base_dir, filename) for filename in
-                      # Explicitly convert all files to Unicode, even when
-                      # os.listdir returns a mixture of byte/unicode strings.
-                      # (MComix bug #3424405)
-                      [ i18n.to_unicode(fn) for fn in os.listdir(self.base_dir) ]
-                      if should_accept(os.path.join(self.base_dir, filename)) ]
-
-            FileProvider.sort_files(files)
-
-            return files
-        except OSError:
-            log.warning(u'! ' + _('Could not open %s: Permission denied.'), self.base_dir)
-            return []
+        files = self._walk_through_directory(should_accept)
+        return files
 
     def next_directory(self):
         """ Switches to the next sibling directory. Next call to
