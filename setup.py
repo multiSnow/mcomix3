@@ -1,6 +1,9 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+exit(print('setup.py is not working. Use:\n\npython3 mcomix/mcomixstarter.py "<diretory, archive or image>"\n') or 1)
+
 """ MComix installation routines.
 
 Example usage:
