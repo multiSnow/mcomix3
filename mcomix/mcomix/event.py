@@ -625,69 +625,60 @@ class EventHandler(object):
         """ We divide a total pixels number to portions to make scroll smoother.
         """
 
+        # TODO as a setting parameter.
         fps = 60
         microseconds_per_millisecond = 1000
         time_per_fps = microseconds_per_millisecond / fps
         # Silently convert the delay from seconds to milliseconds.
         will_be_used_milliseconds = prefs['slideshow delay'] / 1000
         max_used_fps = will_be_used_milliseconds / time_per_fps
-        # See description of _actually_smoothed_scrolling()
-        # Calculated without code execution overhead.
-        pixels_offset = int(
-            prefs['number of pixels to scroll per key event'] / max_used_fps)
-        number_of_scrolls = [int(
-            prefs['number of pixels to scroll per key event'] / pixels_offset)]
-            # = max_used_fps
-        # See description of _actually_smoothed_scrolling()
-        number_of_scrolls.append(number_of_scrolls[0])
+        max_scroll_offset = prefs['number of pixels to scroll per key event']
 
+        # See description of _scrolling_piece_by_piece()
+        pixels_offset = int(max_scroll_offset / max_used_fps)
         if x < 0 or y < 0:
             pixels_offset *= -1
 
-        GLib.timeout_add(int(time_per_fps), self._actually_smoothed_scrolling,
-                         x, y, pixels_offset, number_of_scrolls)
+        number_of_steps = int(max_used_fps)
+        steps_counter = [number_of_steps]
 
-    # TODO better name?
-    def _actually_smoothed_scrolling(self, x, y, pixels_offset,
-                                     number_of_scrolls):
+        GLib.timeout_add(int(time_per_fps), self._scrolling_piece_by_piece,
+                         x, y, pixels_offset, number_of_steps,
+                         steps_counter)
+
+    def _scrolling_piece_by_piece(self, x, y, pixels_offset,
+                                  max_number_of_steps, steps_counter):
         """ @param x: abscissa.
         @param y: ordinate.
         @param pixels_offset: number of pixels to scroll for one call of this
         function.
-        @param number_of_scrolls: [0] - default value, constant,
-        [1] - changeable value.
+        @param max_number_of_steps: per one smooth scroll.
+        @param steps_counter: list to store remaining steps, from
+        max_number_of_steps to 0.
         @returns True to continue scrolling and False otherwise.
-        Works only with one dimension at once.
         """
 
-        # quotient (as integer part) [of how pixels_offset is calculated]
-
-        # Pixels_offset is already negative or positive.
+        # Quotient (as integer part) [of how pixels_offset is calculated].
+        # pixels_offset is already negative or positive.
         abscissa = pixels_offset if x else 0
         ordinate = pixels_offset if y else 0
-        if number_of_scrolls[1]:
-            if self._window.scroll(abscissa, ordinate):
-                number_of_scrolls[1] -= 1
-                return True
-            # if already scrolled then not flipping
-            else:
-                if number_of_scrolls[0] != number_of_scrolls[1]:
-                    return False
 
-        if number_of_scrolls[1]:
-            # One attempt to flip for one _smooth_scroll()
-            self._scroll_with_flipping(abscissa, ordinate)
-            return False
-        # remainder
+        # Only one attempt to flip for one _smooth_scroll()
+        if max_number_of_steps == steps_counter[0]:
+            steps_counter[0] -= 1
+            return self._scroll_with_flipping(abscissa, ordinate)
+
+        # If already scrolled then not flipping.
+        if steps_counter[0]:
+            steps_counter[0] -= 1
+            return self._window.scroll(abscissa, ordinate)
+
+        # Remainder.
         else:
-            if x:
-                # Under the assumption that -6 % -4 = -2
-                pixels_offset = x % pixels_offset
-                abscissa = pixels_offset
-            else:
-                pixels_offset = y % pixels_offset
-                ordinate = pixels_offset
-            self._scroll_with_flipping(abscissa, ordinate)
+            # Under the assumption that -6 % -4 = -2
+            abscissa = x % pixels_offset
+            ordinate = y % pixels_offset
+            self._window.scroll(abscissa, ordinate)
             return False
 
     def _scroll_with_flipping(self, x, y):
