@@ -5,14 +5,11 @@ import binascii
 import re
 import sys
 import operator
-import os.path
-import subprocess
-import shutil
-import tempfile
 from gi.repository import GLib, GdkPixbuf, Gdk, Gtk
 from PIL import Image
 from PIL import ImageEnhance
 from PIL import ImageOps
+from PIL import ImageChops
 from PIL.JpegImagePlugin import _getexif
 try:
     from PIL import PILLOW_VERSION
@@ -362,143 +359,34 @@ def set_from_pixbuf(image, pixbuf):
 # is most presented near the borders. There are may be not long sequences with
 # different color (like jpeg artifacts (even if it is not .jpeg image)), but
 # beware, it may be just letters.
-def trim_white_border(path):
-    ''' Uses GraphicsMagick or ImageMagick to trim white border around image
-    (not a perfect trim).
-    @returns a path to a temp cropped image if any, otherwise - None. The image
-    must be unlinked after usage.
-    '''
-    program = check_program_existence(["gm", "convert"])
-    if program is None:
-        return None
-    # else
-    white_color = "#FFFFFF"
-    # Check left upper corner for white color.
-    # XXX didn't check imagemagick
-    # A bit tricky. "txt:-" will be used as output file.
-    get_pixel_information = ["-crop", "1x1+0+0", "-depth", "8", "txt:-"]
-    trimmed_image = _trim_color_from_image(program, path, get_pixel_information,
-                                white_color)
-    if trimmed_image is not None:
-        return trimmed_image
-    # else
-    # Check right bottom corner for white color.
-    # Get image dimensions.
-    image_dimensions = ["-ping", "-format", "%w %h"]
-    cmd = _magick_command_prepare(program, "identify", image_dimensions, path)
-    magick = subprocess.Popen(cmd, stdout=subprocess.PIPE,
-                              universal_newlines=True)
-    if 0 != magick.wait():
-        return None
-    # else
-    image_dimensions = magick.stdout.read().split()
-    # TODO if it < 0 or not a number -> something went wrong
-    last_pixel_coordinate = '1x1+{0}+{1}'.format(int(image_dimensions[0]) - 1,
-                                               int(image_dimensions[1]) - 1)
-    # A bit tricky. "txt:-" will be used as output file.
-    get_last_pixel_information = ["-crop", last_pixel_coordinate, "-depth", "8",
-                                  "txt:-"]
-    return _trim_color_from_image(program, path, get_last_pixel_information,
-                                  white_color)
+def trim_white_border(image):
+    # XXX not sure how it works with mode = P[alette]
+    # [0] = grayscale (i guess) or [0:4] = RGBA
+    # At least it works for white color.
+    color = [255, 255, 255, 255]
+    return trim(image, color)
 
-def check_program_existence(program_names):
-    """ @param program_names: list of program names.
-    @returns None if no such program else path to a program.
-    Saves first path to a global variable and reuses it.
-    """
-    global trim_program_path
-    if trim_program_path is not "":
-        return trim_program_path
-    # else
-    for name in program_names:
-        path = shutil.which(name)
-        if path is not None:
-            trim_program_path = path
-            return trim_program_path
-    return None
-
-# just common part
-def _trim_color_from_image(program, path, get_pixel_information, color):
-    cmd = _magick_command_prepare(program, "convert",
-                                  get_pixel_information[0:-1], path,
-                                  get_pixel_information[-1])
-    # XXX may be do not only one color to check (+ fuzzy?)
-    if _get_pixel_color(cmd) == color:
-        return _trim_image_with_magick(path, program)
-    return None
-
-def _magick_command_prepare(program, utility=None, options=None, input=None,
-                            output=None):
-    ''' @param program: Path to magick program binary.
-    @param utility: String. Exactly utility for execute (like 'convert' in
-    "/usr/bin/convert" or "/usr/bin/gm convert").
-    @param options: List of options for the utility.
-    @param input: Path to an input image.
-    @param output: Path to an output.
-    @returns external command to execute. List.
-    '''
-    cmd = [program]
-    if utility is not None:
-        if program[-2:] == "gm":
-            cmd.append(utility)
-        else:
-            # Substitute default "convert" from "/usr/bin/convert" with utility.
-            pattern = re.compile(r"/[^/]+$")
-            cmd[0] = pattern.sub('/' + utility, program)
-    if options is not None:
-        cmd.extend(options)
-    if input is not None:
-        cmd.append(input)
-    if output is not None:
-        cmd.append(output)
-    return cmd
-
-def _get_pixel_color(cmd):
-    magick = subprocess.Popen(cmd, stdout=subprocess.PIPE,
-                              universal_newlines=True)
-    if 0 == magick.wait():
-        # XXX imagemagick may has a header before the information.
-        # Example of output: "0,0: (255,255,255) #FFFFFF"
-        # TODO what about #ARGB?
-        pattern = re.compile(r"#[0-9A-F]{6}$" , re.MULTILINE)
-        color = pattern.search(magick.stdout.read())
-        if color is not None:
-            return color.group(0)
-    return None
-
-def _trim_image_with_magick(path, program):
-    # For output file.
-    suffix = '_' + os.path.basename(''.join(path))
-    trimmed_image = tempfile.NamedTemporaryFile(delete=False,
-                                                suffix=suffix)
-    # Output image will probably be with other compression settings, whatever
-    trim_params = ["-trim", "-define", "jpeg:preserve-settings"];
-    cmd = _magick_command_prepare(program, "convert", trim_params, path,
-                                  trimmed_image.name)
-    if 0 != subprocess.Popen(cmd).wait():
-        trimmed_image.close()
-        os.unlink(trimmed_image.name)
-        return None
-    # Will be unlinked only after usage.
-    trimmed_image.close()
-    return trimmed_image
+def trim(image, bg_color):
+    color = tuple(bg_color[0:Image.getmodebands(image.mode)])
+    # New image filled with only bg_color.
+    empty_bg = Image.new(image.mode, image.size, color)
+    # old_image - new_image
+    bbox = ImageChops.difference(image, empty_bg).getbbox()
+    if bbox:
+        return image.crop(bbox)
+    else:
+        return image
 
 def load_pixbuf(path):
     """ Loads a pixbuf from a given image file. """
     disable_animation = prefs['animation mode'] == constants.ANIMATION_DISABLED
-    our_path = path # for may be trimmed image
-    trimmed_image = None
-    if prefs['trim white border']:
-        trimmed_image = trim_white_border(path)
-        if trimmed_image is not None:
-            our_path = trimmed_image.name
     try:
-        with Image.open(our_path) as im:
+        with Image.open(path) as im:
             if 'duration' not in im.info:
-                pil = pil_to_pixbuf(im, keep_orientation=True)
-                if trimmed_image is not None:
-                    os.unlink(trimmed_image.name)
-                return pil
+                pil = im
+                if prefs['trim white border']:
+                    pil = trim_white_border(im)
+                return pil_to_pixbuf(pil, keep_orientation=True)
     except:
         pass
     if disable_animation:

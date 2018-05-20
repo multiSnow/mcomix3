@@ -250,9 +250,7 @@ class _PreferencesDialog(Gtk.Dialog):
             _('Trim white border around image'),
             'trim white border',
             _('With this preference set, an attempt will be made to trim white '
-              'border around image via GraphicsMagick/ImageMagick. Will take '
-              'effect after the application restart.'
-              '')))
+              'border around image. Will take effect after the application restart.')))
 
         return page
 
