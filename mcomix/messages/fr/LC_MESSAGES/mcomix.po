@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.93\n"
 "Report-Msgid-Bugs-To: https://sourceforge.net/projects/mcomix/\n"
-"POT-Creation-Date: 2018-06-16 12:00+0200\n"
+"POT-Creation-Date: 2018-06-16 12:10+0200\n"
 "PO-Revision-Date: 2015-04-05 08:54+0100\n"
 "Last-Translator: Benoit Pierre <benoit.pierre@gmail.com>\n"
 "Language-Team: \n"
@@ -1767,20 +1767,20 @@ msgstr "Traduction ukrainienne"
 msgid "Galician translation"
 msgstr "Traduction galicienne"
 
-#: mcomix/strings.py:66
+#: mcomix/strings.py:66 mcomix/strings.py:67
 msgid "Swedish translation"
 msgstr "Traduction suédoise"
 
-#: mcomix/strings.py:67
+#: mcomix/strings.py:68
 msgid "Hebrew translation"
 msgstr "Traduction hébraïque"
 
-#: mcomix/strings.py:68
+#: mcomix/strings.py:69
 #, fuzzy
 msgid "Lithuanian translation"
 msgstr "Traduction italienne"
 
-#: mcomix/strings.py:71
+#: mcomix/strings.py:72
 msgid "Icon design"
 msgstr "Réalisation des icônes"
 

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix zh_TW\n"
 "Report-Msgid-Bugs-To: https://sourceforge.net/projects/mcomix/\n"
-"POT-Creation-Date: 2018-06-16 12:00+0200\n"
+"POT-Creation-Date: 2018-06-16 12:10+0200\n"
 "PO-Revision-Date: 2013-07-05 21:37+0800\n"
 "Last-Translator: Wayne Su <mstarmstar@hotmail.com>\n"
 "Language-Team: \n"
@@ -1703,20 +1703,20 @@ msgstr "烏克蘭文翻譯"
 msgid "Galician translation"
 msgstr "加里西亞文翻譯"
 
-#: mcomix/strings.py:66
+#: mcomix/strings.py:66 mcomix/strings.py:67
 msgid "Swedish translation"
 msgstr "瑞典文翻譯"
 
-#: mcomix/strings.py:67
+#: mcomix/strings.py:68
 msgid "Hebrew translation"
 msgstr "希伯來文翻譯"
 
-#: mcomix/strings.py:68
+#: mcomix/strings.py:69
 #, fuzzy
 msgid "Lithuanian translation"
 msgstr "義大利文翻譯"
 
-#: mcomix/strings.py:71
+#: mcomix/strings.py:72
 msgid "Icon design"
 msgstr "圖示設計"
 

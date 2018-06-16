@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.90.4\n"
 "Report-Msgid-Bugs-To: https://sourceforge.net/projects/mcomix/\n"
-"POT-Creation-Date: 2018-06-16 12:00+0200\n"
+"POT-Creation-Date: 2018-06-16 12:10+0200\n"
 "PO-Revision-Date: 2016-01-10 18:09+0200\n"
 "Last-Translator: Ulyanich Michael <ulianich_mihail@ukr.net>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -2135,26 +2135,26 @@ msgstr "Украинский перевод"
 msgid "Galician translation"
 msgstr "Галисийский перевод"
 
-#: mcomix/strings.py:66
+#: mcomix/strings.py:66 mcomix/strings.py:67
 msgid "Swedish translation"
 msgstr "Шведский перевод"
 
 #
 # File: src/about.py, line: 86
-#: mcomix/strings.py:67
+#: mcomix/strings.py:68
 msgid "Hebrew translation"
 msgstr "Перевод на Иврит"
 
 #
 # File: src/about.py, line: 82
-#: mcomix/strings.py:68
+#: mcomix/strings.py:69
 #, fuzzy
 msgid "Lithuanian translation"
 msgstr "Итальянский перевод"
 
 #
 # File: src/about.py, line: 97
-#: mcomix/strings.py:71
+#: mcomix/strings.py:72
 msgid "Icon design"
 msgstr "Дизайн значков"
 

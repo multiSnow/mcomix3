@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Comix 4.0.1\n"
 "Report-Msgid-Bugs-To: https://sourceforge.net/projects/mcomix/\n"
-"POT-Creation-Date: 2018-06-16 12:00+0200\n"
+"POT-Creation-Date: 2018-06-16 12:10+0200\n"
 "PO-Revision-Date: 2009-01-28 13:36+0800\n"
 "Last-Translator: Xie Yanbo <xieyanbo@gmail.com>\n"
 "Language-Team: Xie Yanbo <xieyanbo@gmail.com>\n"
@@ -2149,27 +2149,27 @@ msgstr "乌克兰语译者"
 msgid "Galician translation"
 msgstr "加利西亚语译者"
 
-#: mcomix/strings.py:66
+#: mcomix/strings.py:66 mcomix/strings.py:67
 msgid "Swedish translation"
 msgstr "瑞典语译者"
 
 #
 # File: src/about.py, line: 86
-#: mcomix/strings.py:67
+#: mcomix/strings.py:68
 #, fuzzy
 msgid "Hebrew translation"
 msgstr "希腊语译者"
 
 #
 # File: src/about.py, line: 82
-#: mcomix/strings.py:68
+#: mcomix/strings.py:69
 #, fuzzy
 msgid "Lithuanian translation"
 msgstr "意大利语译者"
 
 #
 # File: src/about.py, line: 97
-#: mcomix/strings.py:71
+#: mcomix/strings.py:72
 msgid "Icon design"
 msgstr "图标设计"
 

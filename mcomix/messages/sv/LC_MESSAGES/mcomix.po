@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MComix 0.90.4\n"
 "Report-Msgid-Bugs-To: https://sourceforge.net/projects/mcomix/\n"
-"POT-Creation-Date: 2018-06-16 12:00+0200\n"
+"POT-Creation-Date: 2018-06-16 12:10+0200\n"
 "PO-Revision-Date: 2018-02-24 08:43+0100\n"
 "Last-Translator: Jonatan Nyberg <jonatan@autistici.org>\n"
 "Language-Team: Swedish <LL@li.org>\n"
@@ -2134,25 +2134,25 @@ msgstr "Ukrainsk översättning"
 msgid "Galician translation"
 msgstr "Galicisk översättning"
 
-#: mcomix/strings.py:66
+#: mcomix/strings.py:66 mcomix/strings.py:67
 msgid "Swedish translation"
 msgstr "Svensk översättning"
 
 #
 # File: src/about.py, line: 86
-#: mcomix/strings.py:67
+#: mcomix/strings.py:68
 msgid "Hebrew translation"
 msgstr "Hebreisk översättning"
 
 #
 # File: src/about.py, line: 82
-#: mcomix/strings.py:68
+#: mcomix/strings.py:69
 msgid "Lithuanian translation"
 msgstr "Litauisk översättning"
 
 #
 # File: src/about.py, line: 97
-#: mcomix/strings.py:71
+#: mcomix/strings.py:72
 msgid "Icon design"
 msgstr "Ikondesign"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mcomix 0.99\n"
 "Report-Msgid-Bugs-To: https://sourceforge.net/projects/mcomix/\n"
-"POT-Creation-Date: 2018-06-16 12:00+0200\n"
+"POT-Creation-Date: 2018-06-16 12:10+0200\n"
 "PO-Revision-Date: 2013-01-07 22:51+0200\n"
 "Last-Translator: Isratine Citizen <genghiskhan@gmx.ca>\n"
 "Language-Team: Hebrew <eliz@gnu.org>\n"
@@ -1840,20 +1840,20 @@ msgstr "תרגום לאוקראינית"
 msgid "Galician translation"
 msgstr "תרגום לגליציאנית"
 
-#: mcomix/strings.py:66
+#: mcomix/strings.py:66 mcomix/strings.py:67
 msgid "Swedish translation"
 msgstr "תרגום לשוודית"
 
-#: mcomix/strings.py:67
+#: mcomix/strings.py:68
 msgid "Hebrew translation"
 msgstr "תרגום לעברית"
 
-#: mcomix/strings.py:68
+#: mcomix/strings.py:69
 #, fuzzy
 msgid "Lithuanian translation"
 msgstr "תרגום לאיטלקית"
 
-#: mcomix/strings.py:71
+#: mcomix/strings.py:72
 msgid "Icon design"
 msgstr "עיצוב צלמית"
 
