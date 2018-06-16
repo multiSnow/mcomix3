@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Comix 4.0.1\n"
 "Report-Msgid-Bugs-To: https://sourceforge.net/projects/mcomix/\n"
-"POT-Creation-Date: 2018-02-25 18:00+0100\n"
+"POT-Creation-Date: 2018-06-16 12:00+0200\n"
 "PO-Revision-Date: 2009-01-28 13:36+0800\n"
 "Last-Translator: Xie Yanbo <xieyanbo@gmail.com>\n"
 "Language-Team: Xie Yanbo <xieyanbo@gmail.com>\n"
@@ -2116,60 +2116,60 @@ msgstr "克罗地亚语译者"
 
 #
 # File: src/about.py, line: 93
-#: mcomix/strings.py:58 mcomix/strings.py:59
+#: mcomix/strings.py:58 mcomix/strings.py:59 mcomix/strings.py:60
 msgid "Korean translation"
 msgstr "韩语译者"
 
 #
 # File: src/about.py, line: 94
-#: mcomix/strings.py:60
+#: mcomix/strings.py:61
 msgid "Persian translation"
 msgstr "波斯语译者"
 
 #
 # File: src/about.py, line: 95
-#: mcomix/strings.py:61
+#: mcomix/strings.py:62
 msgid "Indonesian translation"
 msgstr "印尼语译者"
 
 #
 # File: src/about.py, line: 96
-#: mcomix/strings.py:62
+#: mcomix/strings.py:63
 msgid "Czech translation"
 msgstr "捷克语译者"
 
-#: mcomix/strings.py:63
+#: mcomix/strings.py:64
 msgid "Ukrainian translation"
 msgstr "乌克兰语译者"
 
 #
 # File: src/about.py, line: 82
-#: mcomix/strings.py:64
+#: mcomix/strings.py:65
 #, fuzzy
 msgid "Galician translation"
 msgstr "加利西亚语译者"
 
-#: mcomix/strings.py:65
+#: mcomix/strings.py:66
 msgid "Swedish translation"
 msgstr "瑞典语译者"
 
 #
 # File: src/about.py, line: 86
-#: mcomix/strings.py:66
+#: mcomix/strings.py:67
 #, fuzzy
 msgid "Hebrew translation"
 msgstr "希腊语译者"
 
 #
 # File: src/about.py, line: 82
-#: mcomix/strings.py:67
+#: mcomix/strings.py:68
 #, fuzzy
 msgid "Lithuanian translation"
 msgstr "意大利语译者"
 
 #
 # File: src/about.py, line: 97
-#: mcomix/strings.py:70
+#: mcomix/strings.py:71
 msgid "Icon design"
 msgstr "图标设计"
 

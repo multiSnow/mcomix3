@@ -57,6 +57,7 @@ TRANSLATORS = (
             ('Adrian C.', _('Croatian translation')),
             ('김민기', _('Korean translation')),
             ('Gyeongmin Bak', _('Korean translation')),
+            ('Minho Jeung', _('Korean translation')),
             ('Maryam Sanaat', _('Persian translation')),
             ('Andhika Padmawan', _('Indonesian translation')),
             ('Jan Nekvasil', _('Czech translation')),

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: comix.HEAD\n"
 "Report-Msgid-Bugs-To: https://sourceforge.net/projects/mcomix/\n"
-"POT-Creation-Date: 2018-02-25 18:00+0100\n"
+"POT-Creation-Date: 2018-06-16 12:00+0200\n"
 "PO-Revision-Date: 2012-09-06 18:00+0100\n"
 "Last-Translator: Carlos Feliu <carlos.feliu.holguera@gmail.com>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
@@ -2137,58 +2137,58 @@ msgstr "Traducción al croata"
 
 #
 # File: src/about.py, line: 93
-#: mcomix/strings.py:58 mcomix/strings.py:59
+#: mcomix/strings.py:58 mcomix/strings.py:59 mcomix/strings.py:60
 msgid "Korean translation"
 msgstr "Traducción al coreano"
 
 #
 # File: src/about.py, line: 94
-#: mcomix/strings.py:60
+#: mcomix/strings.py:61
 msgid "Persian translation"
 msgstr "Traducción al persa"
 
 #
 # File: src/about.py, line: 95
-#: mcomix/strings.py:61
+#: mcomix/strings.py:62
 msgid "Indonesian translation"
 msgstr "Traducción al indonés"
 
 #
 # File: src/about.py, line: 96
-#: mcomix/strings.py:62
+#: mcomix/strings.py:63
 msgid "Czech translation"
 msgstr "Traducción al checo"
 
-#: mcomix/strings.py:63
+#: mcomix/strings.py:64
 msgid "Ukrainian translation"
 msgstr "Traducción al ucraniano"
 
 #
 # File: src/about.py, line: 82
-#: mcomix/strings.py:64
+#: mcomix/strings.py:65
 msgid "Galician translation"
 msgstr "Traducción al gallego"
 
-#: mcomix/strings.py:65
+#: mcomix/strings.py:66
 msgid "Swedish translation"
 msgstr "Traducción al sueco"
 
 #
 # File: src/about.py, line: 86
-#: mcomix/strings.py:66
+#: mcomix/strings.py:67
 msgid "Hebrew translation"
 msgstr "Traducción al hebreo"
 
 #
 # File: src/about.py, line: 82
-#: mcomix/strings.py:67
+#: mcomix/strings.py:68
 #, fuzzy
 msgid "Lithuanian translation"
 msgstr "Traducción al italiano"
 
 #
 # File: src/about.py, line: 97
-#: mcomix/strings.py:70
+#: mcomix/strings.py:71
 msgid "Icon design"
 msgstr "Diseño de iconos"
 
