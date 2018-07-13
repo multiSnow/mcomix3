@@ -90,21 +90,27 @@ def pdf_available():
     return _is_available(constants.PDF)
 
 def get_supported_formats():
-    supported_formats = {}
-    for name, formats, is_available in (
-        ('ZIP', constants.ZIP_FORMATS , True            ),
-        ('Tar', constants.TAR_FORMATS , True            ),
-        ('RAR', constants.RAR_FORMATS , rar_available() ),
-        ('7z' , constants.SZIP_FORMATS, szip_available()),
-        ('LHA', constants.LHA_FORMATS , lha_available() ),
-        ('PDF', constants.PDF_FORMATS , pdf_available() ),
-    ):
-        if is_available:
-            supported_formats[name] = formats
-    return supported_formats
+    global _SUPPORTED_ARCHIVE_FORMATS
+    if _SUPPORTED_ARCHIVE_FORMATS is None:
+        supported_formats = {}
+        for name, formats, is_available in (
+            ('ZIP', constants.ZIP_FORMATS , True            ),
+            ('Tar', constants.TAR_FORMATS , True            ),
+            ('RAR', constants.RAR_FORMATS , rar_available() ),
+            ('7z' , constants.SZIP_FORMATS, szip_available()),
+            ('LHA', constants.LHA_FORMATS , lha_available() ),
+            ('PDF', constants.PDF_FORMATS , pdf_available() ),
+        ):
+            if is_available:
+                supported_formats[name] = formats
+        _SUPPORTED_ARCHIVE_FORMATS = supported_formats
+        log.debug("_SUPPORTED_ARCHIVE_FORMATS initialized")
+    return _SUPPORTED_ARCHIVE_FORMATS
 
+_SUPPORTED_ARCHIVE_FORMATS = None
 # Set supported archive extensions regexp from list of supported formats.
-SUPPORTED_ARCHIVE_REGEX = re.compile(r'\.(%s)$' %
+# Only used internally.
+_SUPPORTED_ARCHIVE_REGEX = re.compile(r'\.(%s)$' %
                                      '|'.join(sorted(reduce(
                                          operator.add,
                                          [map(re.escape, fmt[1]) for fmt
@@ -114,7 +120,7 @@ SUPPORTED_ARCHIVE_REGEX = re.compile(r'\.(%s)$' %
 def is_archive_file(path):
     """Return True if the file at <path> is a supported archive file.
     """
-    return SUPPORTED_ARCHIVE_REGEX.search(path) is not None
+    return _SUPPORTED_ARCHIVE_REGEX.search(path) is not None
 
 def archive_mime_type(path):
     """Return the archive type of <path> or None for non-archives."""
@@ -186,7 +192,7 @@ def get_archive_info(path):
         cleanup.append(archive.close)
 
         files = archive.list_contents()
-        num_pages = len(filter(image_tools.SUPPORTED_IMAGE_REGEX.search, files))
+        num_pages = len(filter(image_tools.is_image_file, files))
         size = os.stat(path).st_size
 
         return (mime, num_pages, size)

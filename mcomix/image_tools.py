@@ -528,7 +528,7 @@ def combine_pixbufs( pixbuf1, pixbuf2, are_in_manga_mode ):
 def is_image_file(path):
     """Return True if the file at <path> is an image file recognized by PyGTK.
     """
-    return SUPPORTED_IMAGE_REGEX.search(path) is not None
+    return _SUPPORTED_IMAGE_REGEX.search(path) is not None
 
 def convert_rgb16list_to_rgba8int(c):
     return 0x000000FF | (c[0] >> 8 << 24) | (c[1] >> 8 << 16) | (c[2] >> 8 << 8)
@@ -562,50 +562,56 @@ def get_image_info(path):
     return info
 
 def get_supported_formats():
-    if USE_PIL:
-        # Make sure all supported formats are registered.
-        Image.init()
-        # Not all PIL formats register a mime type,
-        # fill in the blanks ourselves.
-        supported_formats = {
-            'BMP': (['image/bmp', 'image/x-bmp', 'image/x-MS-bmp'], []),
-            'ICO': (['image/x-icon', 'image/x-ico', 'image/x-win-bitmap'], []),
-            'PCX': (['image/x-pcx'], []),
-            'PPM': (['image/x-portable-pixmap'], []),
-            'TGA': (['image/x-tga'], []),
-        }
-        for name, mime in Image.MIME.items():
-            mime_types, extensions = supported_formats.get(name, ([], []))
-            supported_formats[name] = mime_types + [mime], extensions
-        for ext, name in Image.EXTENSION.items():
-            assert '.' == ext[0]
-            mime_types, extensions = supported_formats.get(name, ([], []))
-            supported_formats[name] = mime_types, extensions + [ext[1:]]
-        # Remove formats with no mime type or extension.
-        for name in supported_formats.keys():
-            mime_types, extensions = supported_formats[name]
-            if not mime_types or not extensions:
-                del supported_formats[name]
-        # Remove archives/videos formats.
-        for name in (
-            'MPEG',
-            'PDF',
-        ):
-            if name in supported_formats:
-                del supported_formats[name]
-    else:
-        supported_formats = {}
-        for format in gtk.gdk.pixbuf_get_formats():
-            name = format['name'].upper()
-            assert name not in supported_formats
-            supported_formats[name] = (
-                format['mime_types'],
-                format['extensions'],
-            )
-    return supported_formats
+    global _SUPPORTED_IMAGE_FORMATS
+    if _SUPPORTED_IMAGE_FORMATS is None:
+        if USE_PIL:
+            # Make sure all supported formats are registered.
+            Image.init()
+            # Not all PIL formats register a mime type,
+            # fill in the blanks ourselves.
+            supported_formats = {
+                'BMP': (['image/bmp', 'image/x-bmp', 'image/x-MS-bmp'], []),
+                'ICO': (['image/x-icon', 'image/x-ico', 'image/x-win-bitmap'], []),
+                'PCX': (['image/x-pcx'], []),
+                'PPM': (['image/x-portable-pixmap'], []),
+                'TGA': (['image/x-tga'], []),
+            }
+            for name, mime in Image.MIME.items():
+                mime_types, extensions = supported_formats.get(name, ([], []))
+                supported_formats[name] = mime_types + [mime], extensions
+            for ext, name in Image.EXTENSION.items():
+                assert '.' == ext[0]
+                mime_types, extensions = supported_formats.get(name, ([], []))
+                supported_formats[name] = mime_types, extensions + [ext[1:]]
+            # Remove formats with no mime type or extension.
+            for name in supported_formats.keys():
+                mime_types, extensions = supported_formats[name]
+                if not mime_types or not extensions:
+                    del supported_formats[name]
+            # Remove archives/videos formats.
+            for name in (
+                'MPEG',
+                'PDF',
+            ):
+                if name in supported_formats:
+                    del supported_formats[name]
+        else:
+            supported_formats = {}
+            for format in gtk.gdk.pixbuf_get_formats():
+                name = format['name'].upper()
+                assert name not in supported_formats
+                supported_formats[name] = (
+                    format['mime_types'],
+                    format['extensions'],
+                )
+        _SUPPORTED_IMAGE_FORMATS = supported_formats
+        log.debug("_SUPPORTED_IMAGE_FORMATS initialized")
+    return _SUPPORTED_IMAGE_FORMATS
 
+_SUPPORTED_IMAGE_FORMATS = None
 # Set supported image extensions regexp from list of supported formats.
-SUPPORTED_IMAGE_REGEX = re.compile(r'\.(%s)$' %
+# Only used internally.
+_SUPPORTED_IMAGE_REGEX = re.compile(r'\.(%s)$' %
                                    '|'.join(sorted(reduce(
                                        operator.add,
                                        [map(re.escape, fmt[1]) for fmt

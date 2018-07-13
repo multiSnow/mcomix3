@@ -273,7 +273,7 @@ class Thumbnailer(object):
         files = itertools.ifilter(lambda filename:
                 u'credit' not in os.path.split(filename)[1].lower(), files)
 
-        images = list(itertools.ifilter(image_tools.SUPPORTED_IMAGE_REGEX.search, files))
+        images = list(itertools.ifilter(image_tools.is_image_file, files))
 
         tools.alphanumeric_sort(images)
 
