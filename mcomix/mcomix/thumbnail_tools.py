@@ -181,7 +181,7 @@ class Thumbnailer(object):
         # MTime could be floating point number, so convert to long first to have a fixed point number
         mtime = str(stat.st_mtime)
         size = str(stat.st_size)
-        format, width, height = image_tools.get_image_info(filepath)
+        format, (width, height), providers = image_tools.get_image_info(filepath)
         return {
             'tEXt::Thumb::URI':           uri,
             'tEXt::Thumb::MTime':         mtime,
@@ -267,7 +267,8 @@ class Thumbnailer(object):
         files = filter(lambda filename:
                 u'credit' not in os.path.split(filename)[1].lower(), files)
 
-        images = list(filter(image_tools.SUPPORTED_IMAGE_REGEX.search, files))
+        images = list(filter(image_tools.is_image_file, files))
+
 
         tools.alphanumeric_sort(images)
 

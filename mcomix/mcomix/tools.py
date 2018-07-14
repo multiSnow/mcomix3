@@ -174,4 +174,16 @@ def vector_opposite(a):
     """ Returns the opposite vector -a. """
     return tuple(map(operator.neg, a))
 
+def fixed_strings_regex(formats):
+
+    return r'(%s)' % '|'.join(sorted(reduce(
+                                       operator.add,
+                                       [tuple(map(re.escape, fmt[1])) for fmt
+                                        in formats.values()])))
+
+def formats_to_regex(formats):
+    """ Returns a compiled regular expression that can be used to search for
+    file extensions specified in C{formats}. """
+    return re.compile(r'\.' + fixed_strings_regex(formats) + r'$', re.I)
+
 # vim: expandtab:sw=4:ts=4

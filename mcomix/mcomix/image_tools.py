@@ -22,6 +22,7 @@ from functools import reduce
 from mcomix.preferences import prefs
 from mcomix import constants
 from mcomix import log
+from mcomix import tools
 
 
 log.info('Using %s for loading images (versions: PIL [%s], GDK [%s])',
@@ -522,7 +523,7 @@ def combine_pixbufs( pixbuf1, pixbuf2, are_in_manga_mode ):
 def is_image_file(path):
     """Return True if the file at <path> is an image file recognized by PyGTK.
     """
-    return SUPPORTED_IMAGE_REGEX.search(path) is not None
+    return _SUPPORTED_IMAGE_REGEX.search(path) is not None
 
 def convert_rgb16list_to_rgba8int(c):
     return 0x000000FF | (c[0] >> 8 << 24) | (c[1] >> 8 << 16) | (c[2] >> 8 << 8)
@@ -556,12 +557,16 @@ def get_image_info(path):
     return info
 
 def get_supported_formats():
-    if True:
+    global _SUPPORTED_IMAGE_FORMATS
+    if _SUPPORTED_IMAGE_FORMATS is None:
+
+        # Step 1: Collect PIL formats
         # Make sure all supported formats are registered.
         Image.init()
         # Not all PIL formats register a mime type,
         # fill in the blanks ourselves.
-        supported_formats = {
+        # FIXME rm when upstreamed to pillow 2018
+        supported_formats_pil = {
             'BMP': (['image/bmp', 'image/x-bmp', 'image/x-MS-bmp'], []),
             'ICO': (['image/x-icon', 'image/x-ico', 'image/x-win-bitmap'], []),
             'PCX': (['image/x-pcx'], []),
@@ -569,41 +574,60 @@ def get_supported_formats():
             'TGA': (['image/x-tga'], []),
         }
         for name, mime in Image.MIME.items():
-            mime_types, extensions = supported_formats.get(name, ([], []))
-            supported_formats[name] = mime_types + [mime], extensions
+            mime_types, extensions = supported_formats_pil.get(name, ([], []))
+            supported_formats_pil[name] = mime_types + [mime], extensions
         for ext, name in Image.EXTENSION.items():
             assert '.' == ext[0]
-            mime_types, extensions = supported_formats.get(name, ([], []))
-            supported_formats[name] = mime_types, extensions + [ext[1:]]
+            mime_types, extensions = supported_formats_pil.get(name, ([], []))
+            supported_formats_pil[name] = mime_types, extensions + [ext[1:]]
+
         # Remove formats with no mime type or extension.
-        for name in list(supported_formats.keys()):
-            mime_types, extensions = supported_formats[name]
+        supported_formats_pil2=supported_formats_pil.copy()
+        for name in supported_formats_pil2.keys():
+            mime_types, extensions = supported_formats_pil[name]
             if not mime_types or not extensions:
-                del supported_formats[name]
+                del supported_formats_pil[name]
         # Remove archives/videos formats.
         for name in (
             'MPEG',
             'PDF',
         ):
-            if name in supported_formats:
-                del supported_formats[name]
-    else:
-        supported_formats = {}
+            if name in supported_formats_pil:
+                del supported_formats_pil[name]
+
+        # Step 2: Collect GDK Pixbuf formats
+        supported_formats_gdk = {}
         for format in GdkPixbuf.Pixbuf.get_formats():
             name = format.get_name().upper()
-            assert name not in supported_formats
-            supported_formats[name] = (
+            assert name not in supported_formats_gdk
+            supported_formats_gdk[name] = (
                 format.get_mime_types(),
                 format.get_extensions(),
             )
-    return supported_formats
 
+        # Step 3: merge format collections
+        supported_formats = {}
+        for provider in (supported_formats_gdk, supported_formats_pil):
+            for name in provider.keys():
+                mime_types, extentions = provider[name]
+                new_name = name.upper()
+                new_mime_types, new_extensions = supported_formats.get( \
+                    new_name, (set(), set()))
+                new_mime_types.update([x.lower() for x in mime_types])
+                new_extensions.update([x.lower() for x in extentions])
+                supported_formats[new_name] = (new_mime_types, new_extensions)
+        # FIXME tmp fix for apng extension
+        # rm when upstreamed to pillow 2018
+        supported_formats['PNG'] = ({'image/png'}, {'png', 'apng'})
+
+        _SUPPORTED_IMAGE_FORMATS = supported_formats
+
+    return _SUPPORTED_IMAGE_FORMATS
+
+_SUPPORTED_IMAGE_FORMATS = None
 # Set supported image extensions regexp from list of supported formats.
-SUPPORTED_IMAGE_REGEX = re.compile(r'\.(%s)$' %
-                                   '|'.join(sorted(reduce(
-                                       operator.add,
-                                       [tuple(map(re.escape, fmt[1])) for fmt
-                                        in get_supported_formats().values()]
-                                   ))), re.I)
+# Only used internally.
+_SUPPORTED_IMAGE_REGEX = tools.formats_to_regex(get_supported_formats())
+log.debug("SUPPORTED_IMAGE_REGEX='%s'", _SUPPORTED_IMAGE_REGEX.pattern)
 
 # vim: expandtab:sw=4:ts=4
