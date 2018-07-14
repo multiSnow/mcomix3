@@ -6,6 +6,7 @@ import re
 import sys
 import operator
 import gtk
+import glib
 from PIL import Image
 from PIL import ImageEnhance
 from PIL import ImageOps
@@ -21,22 +22,12 @@ from cStringIO import StringIO
 from mcomix.preferences import prefs
 from mcomix import constants
 from mcomix import log
+from mcomix import tools
 
 
-if sys.platform == 'win32':
-    # Works around GTK's slowness on Win32 by using PIL
-    # for loading instead and converting it afterwards.
-    # NOTE: Using False here should work fine for Windows, too.
-    USE_PIL = False
-else:
-    USE_PIL = False
-
-log.info('Using %s for loading images (versions: %s [%s], GDK [%s])',
-         'PIL' if USE_PIL else 'GDK',
-         PIL_VERSION[0], PIL_VERSION[1],
-         # Unfortunately gdk_pixbuf_version is not exported,
-         # so show the GTK+ version instead.
-         'GTK+ ' + '.'.join(map(str, gtk.gtk_version)))
+# Unfortunately gdk_pixbuf_version is not exported, so show the GTK+ version instead.
+log.info('GDK version: %s', 'GTK+ ' + '.'.join(map(str, gtk.gtk_version)))
+log.info('PIL version: %s [%s]', PIL_VERSION[0], PIL_VERSION[1])
 
 
 # Fallback pixbuf for missing images.
@@ -362,51 +353,117 @@ def set_from_pixbuf(image, pixbuf):
 
 def load_pixbuf(path):
     """ Loads a pixbuf from a given image file. """
-    if prefs['animation mode'] != constants.ANIMATION_DISABLED:
-        # Note that this branch ignores USE_PIL
-        pixbuf = gtk.gdk.PixbufAnimation(path)
-        if pixbuf.is_static_image():
-            pixbuf = pixbuf.get_static_image()
-        return pixbuf
-    if USE_PIL:
-        im = Image.open(path)
-        pixbuf = pil_to_pixbuf(im, keep_orientation=True)
-    else:
-        pixbuf = gtk.gdk.pixbuf_new_from_file(path)
+    pixbuf = None
+    last_error = None
+    providers = get_image_info(path)[2]
+    for provider in providers:
+        try:
+            # TODO use dynamic dispatch instead of "if" chain
+            if provider == constants.IMAGEIO_GDKPIXBUF:
+                if prefs['animation mode'] != constants.ANIMATION_DISABLED:
+                    try:
+                        pixbuf = gtk.gdk.PixbufAnimation(path)
+                        if pixbuf.is_static_image():
+                            pixbuf = pixbuf.get_static_image()
+                    except glib.GError:
+                        # NOTE: Broken JPEGs sometimes result in this exception.
+                        # However, one may be able to load them using
+                        # gtk.gdk.pixbuf_new_from_file, so we need to continue.
+                        pass
+                if pixbuf is None:
+                    pixbuf = gtk.gdk.pixbuf_new_from_file(path)
+            elif provider == constants.IMAGEIO_PIL:
+                # TODO When using PIL, whether or how animations work is
+                # currently undefined.
+                im = Image.open(path)
+                pixbuf = pil_to_pixbuf(im, keep_orientation=True)
+            else:
+                raise TypeError()
+        except Exception, e:
+            # current provider could not load image
+            last_error = e
+        if pixbuf is not None:
+            # stop loop on success
+            log.debug("provider %s succeeded in loading %s", provider, path)
+            break
+        log.debug("provider %s failed to load %s", provider, path)
+    if pixbuf is None:
+        # raising necessary because caller expects pixbuf to be not None
+        raise last_error
     return pixbuf
 
 def load_pixbuf_size(path, width, height):
     """ Loads a pixbuf from a given image file and scale it to fit
     inside (width, height). """
-    if USE_PIL:
-        im = Image.open(path)
-        im.draft(None, (width, height))
-        pixbuf = pil_to_pixbuf(im, keep_orientation=True)
-    else:
-        image_format, image_width, image_height = get_image_info(path)
-        # If we could not get the image info, still try to load
-        # the image to let GdkPixbuf raise the appropriate exception.
-        if (0, 0) == (image_width, image_height):
-            pixbuf = gtk.gdk.pixbuf_new_from_file(path)
-        # Work around GdkPixbuf bug: https://bugzilla.gnome.org/show_bug.cgi?id=735422
-        elif 'GIF' == image_format:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(path)
-        else:
-            # Don't upscale if smaller than target dimensions!
-            if image_width <= width and image_height <= height:
-                width, height = image_width, image_height
-            pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(path, width, height)
+    # TODO similar to load_pixbuf, should be merged using callbacks etc.
+    pixbuf = None
+    last_error = None
+    image_format, image_dimensions, providers = get_image_info(path)
+    for provider in providers:
+        try:
+            # TODO use dynamic dispatch instead of "if" chain
+            if provider == constants.IMAGEIO_GDKPIXBUF:
+                # If we could not get the image info, still try to load
+                # the image to let GdkPixbuf raise the appropriate exception.
+                if (0, 0) == image_dimensions:
+                    pixbuf = gtk.gdk.pixbuf_new_from_file(path)
+                # Work around GdkPixbuf bug: https://bugzilla.gnome.org/show_bug.cgi?id=735422
+                # (currently https://gitlab.gnome.org/GNOME/gdk-pixbuf/issues/45)
+                elif 'GIF' == image_format:
+                    pixbuf = gtk.gdk.pixbuf_new_from_file(path)
+                else:
+                    # Don't upscale if smaller than target dimensions!
+                    image_width, image_height = image_dimensions
+                    if image_width <= width and image_height <= height:
+                        width, height = image_width, image_height
+                    pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(path, width, height)
+            elif provider == constants.IMAGEIO_PIL:
+                im = Image.open(path)
+                im.draft(None, (width, height))
+                pixbuf = pil_to_pixbuf(im, keep_orientation=True)
+            else:
+                raise TypeError()
+        except Exception, e:
+            # current provider could not load image
+            last_error = e
+        if pixbuf is not None:
+            # stop loop on success
+            log.debug("provider %s succeeded in loading %s at size %s", provider, path, (width, height))
+            break
+        log.debug("provider %s failed to load %s at size %s", provider, path, (width, height))
+    if pixbuf is None:
+        # raising necessary because caller expects pixbuf to be not None
+        raise last_error
     return fit_in_rectangle(pixbuf, width, height, scaling_quality=gtk.gdk.INTERP_BILINEAR)
 
 def load_pixbuf_data(imgdata):
     """ Loads a pixbuf from the data passed in <imgdata>. """
-    if USE_PIL:
-        pixbuf = pil_to_pixbuf(Image.open(StringIO(imgdata)), keep_orientation=True)
-    else:
-        loader = gtk.gdk.PixbufLoader()
-        loader.write(imgdata, len(imgdata))
-        loader.close()
-        pixbuf = loader.get_pixbuf()
+    # TODO similar to load_pixbuf, should be merged using callbacks etc.
+    pixbuf = None
+    last_error = None
+    for provider in (constants.IMAGEIO_GDKPIXBUF, constants.IMAGEIO_PIL):
+        try:
+            # TODO use dynamic dispatch instead of "if" chain
+            if provider == constants.IMAGEIO_GDKPIXBUF:
+                loader = gtk.gdk.PixbufLoader()
+                loader.write(imgdata, len(imgdata))
+                loader.close()
+                pixbuf = loader.get_pixbuf()
+            elif provider == constants.IMAGEIO_PIL:
+                pixbuf = pil_to_pixbuf(Image.open(StringIO(imgdata)), keep_orientation=True)
+            else:
+                raise TypeError()
+        except Exception, e:
+            # current provider could not load image
+            last_error = e
+        if pixbuf is not None:
+            # stop loop on success
+            log.debug("provider %s succeeded in decoding %s bytes", provider, len(imgdata))
+            break
+        log.debug("provider %s failed to decode %s bytes", provider, len(imgdata))
+    if pixbuf is None:
+        # raising necessary because caller expects pixbuf to be not None
+        raise last_error
     return pixbuf
 
 def enhance(pixbuf, brightness=1.0, contrast=1.0, saturation=1.0,
@@ -541,81 +598,104 @@ def text_color_for_background_color(bgcolor):
         65535.0 / 2.0 else GTK_GDK_COLOR_WHITE
 
 def get_image_info(path):
-    """Return image informations:
-        (format, width, height)
+    """Return information about and select preferred providers for loading
+    the image specified by C{path}. The result is a tuple
+    C{(format, (width, height), providers)}.
     """
-    info = None
-    if USE_PIL:
+    image_format = None
+    image_dimensions = None
+    providers = ()
+    try:
+        gdk_image_info = gtk.gdk.pixbuf_get_file_info(path)
+    except Exception:
+        gdk_image_info = None
+
+    if gdk_image_info is not None:
+        image_format = gdk_image_info[0]['name'].upper()
+        image_dimensions = gdk_image_info[1], gdk_image_info[2]
+        # Prefer loading via GDK/Pixbuf if gtk.gdk.pixbuf_get_file_info appears
+        # to be able to handle this path.
+        providers = (constants.IMAGEIO_GDKPIXBUF, constants.IMAGEIO_PIL)
+    else:
         try:
             im = Image.open(path)
-            info = (im.format,) + im.size
+            image_format = im.format
+            image_dimensions = im.size
+            providers = (constants.IMAGEIO_PIL, constants.IMAGEIO_GDKPIXBUF)
         except IOError:
             # If the file cannot be found, or the image
             # cannot be opened and identified.
-            im = None
-    else:
-        info = gtk.gdk.pixbuf_get_file_info(path)
-        if info is not None:
-            info = info[0]['name'].upper(), info[1], info[2]
-    if info is None:
-        info = (_('Unknown filetype'), 0, 0)
-    return info
+            pass
+    if image_format is None:
+        image_format = _('Unknown filetype')
+        image_dimensions = (0, 0)
+    return (image_format, image_dimensions, providers)
 
 def get_supported_formats():
     global _SUPPORTED_IMAGE_FORMATS
     if _SUPPORTED_IMAGE_FORMATS is None:
-        if USE_PIL:
-            # Make sure all supported formats are registered.
-            Image.init()
-            # Not all PIL formats register a mime type,
-            # fill in the blanks ourselves.
-            supported_formats = {
-                'BMP': (['image/bmp', 'image/x-bmp', 'image/x-MS-bmp'], []),
-                'ICO': (['image/x-icon', 'image/x-ico', 'image/x-win-bitmap'], []),
-                'PCX': (['image/x-pcx'], []),
-                'PPM': (['image/x-portable-pixmap'], []),
-                'TGA': (['image/x-tga'], []),
-            }
-            for name, mime in Image.MIME.items():
-                mime_types, extensions = supported_formats.get(name, ([], []))
-                supported_formats[name] = mime_types + [mime], extensions
-            for ext, name in Image.EXTENSION.items():
-                assert '.' == ext[0]
-                mime_types, extensions = supported_formats.get(name, ([], []))
-                supported_formats[name] = mime_types, extensions + [ext[1:]]
-            # Remove formats with no mime type or extension.
-            for name in supported_formats.keys():
-                mime_types, extensions = supported_formats[name]
-                if not mime_types or not extensions:
-                    del supported_formats[name]
-            # Remove archives/videos formats.
-            for name in (
-                'MPEG',
-                'PDF',
-            ):
-                if name in supported_formats:
-                    del supported_formats[name]
-        else:
-            supported_formats = {}
-            for format in gtk.gdk.pixbuf_get_formats():
-                name = format['name'].upper()
-                assert name not in supported_formats
-                supported_formats[name] = (
-                    format['mime_types'],
-                    format['extensions'],
-                )
+
+        # Step 1: Collect PIL formats
+        # Make sure all supported formats are registered.
+        Image.init()
+        # Not all PIL formats register a mime type,
+        # fill in the blanks ourselves.
+        supported_formats_pil = {
+            'BMP': (['image/bmp', 'image/x-bmp', 'image/x-MS-bmp'], []),
+            'ICO': (['image/x-icon', 'image/x-ico', 'image/x-win-bitmap'], []),
+            'PCX': (['image/x-pcx'], []),
+            'PPM': (['image/x-portable-pixmap'], []),
+            'TGA': (['image/x-tga'], []),
+        }
+        for name, mime in Image.MIME.items():
+            mime_types, extensions = supported_formats_pil.get(name, ([], []))
+            supported_formats_pil[name] = mime_types + [mime], extensions
+        for ext, name in Image.EXTENSION.items():
+            assert '.' == ext[0]
+            mime_types, extensions = supported_formats_pil.get(name, ([], []))
+            supported_formats_pil[name] = mime_types, extensions + [ext[1:]]
+        # Remove formats with no mime type or extension.
+        for name in supported_formats_pil.keys():
+            mime_types, extensions = supported_formats_pil[name]
+            if not mime_types or not extensions:
+                del supported_formats_pil[name]
+        # Remove archives/videos formats.
+        for name in (
+            'MPEG',
+            'PDF',
+        ):
+            if name in supported_formats_pil:
+                del supported_formats_pil[name]
+
+        # Step 2: Collect GDK Pixbuf formats
+        supported_formats_gdk = {}
+        for format in gtk.gdk.pixbuf_get_formats():
+            name = format['name'].upper()
+            assert name not in supported_formats_gdk
+            supported_formats_gdk[name] = (
+                format['mime_types'],
+                format['extensions'],
+            )
+
+        # Step 3: merge format collections
+        supported_formats = {}
+        for provider in (supported_formats_gdk, supported_formats_pil):
+            for name in provider.keys():
+                mime_types, extentions = provider[name]
+                new_name = name.upper()
+                new_mime_types, new_extensions = supported_formats.get( \
+                    new_name, (set(), set()))
+                new_mime_types.update([x.lower() for x in mime_types])
+                new_extensions.update([x.lower() for x in extentions])
+                supported_formats[new_name] = (new_mime_types, new_extensions)
+
         _SUPPORTED_IMAGE_FORMATS = supported_formats
-        log.debug("_SUPPORTED_IMAGE_FORMATS initialized")
     return _SUPPORTED_IMAGE_FORMATS
 
 _SUPPORTED_IMAGE_FORMATS = None
 # Set supported image extensions regexp from list of supported formats.
 # Only used internally.
-_SUPPORTED_IMAGE_REGEX = re.compile(r'\.(%s)$' %
-                                   '|'.join(sorted(reduce(
-                                       operator.add,
-                                       [map(re.escape, fmt[1]) for fmt
-                                        in get_supported_formats().values()]
-                                   ))), re.I)
+_SUPPORTED_IMAGE_REGEX = tools.formats_to_regex(get_supported_formats())
+log.debug("_SUPPORTED_IMAGE_REGEX='%s'", _SUPPORTED_IMAGE_REGEX.pattern)
 
 # vim: expandtab:sw=4:ts=4

@@ -21,6 +21,7 @@ from mcomix.archive import (
     zip,
     zip_external,
 )
+from mcomix import tools
 
 # Handlers for each archive type.
 _HANDLERS = {
@@ -102,20 +103,15 @@ def get_supported_formats():
             ('PDF', constants.PDF_FORMATS , pdf_available() ),
         ):
             if is_available:
-                supported_formats[name] = formats
+                supported_formats[name] = (set(formats[0]), set(formats[1]))
         _SUPPORTED_ARCHIVE_FORMATS = supported_formats
-        log.debug("_SUPPORTED_ARCHIVE_FORMATS initialized")
     return _SUPPORTED_ARCHIVE_FORMATS
 
 _SUPPORTED_ARCHIVE_FORMATS = None
 # Set supported archive extensions regexp from list of supported formats.
 # Only used internally.
-_SUPPORTED_ARCHIVE_REGEX = re.compile(r'\.(%s)$' %
-                                     '|'.join(sorted(reduce(
-                                         operator.add,
-                                         [map(re.escape, fmt[1]) for fmt
-                                          in get_supported_formats().values()]
-                                     ))), re.I)
+_SUPPORTED_ARCHIVE_REGEX = tools.formats_to_regex(get_supported_formats())
+log.debug("_SUPPORTED_ARCHIVE_REGEX='%s'", _SUPPORTED_ARCHIVE_REGEX.pattern)
 
 def is_archive_file(path):
     """Return True if the file at <path> is a supported archive file.
