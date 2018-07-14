@@ -23,6 +23,7 @@ from mcomix.preferences import prefs
 from mcomix import constants
 from mcomix import log
 
+from mcomix import tools
 
 log.info('Using %s for loading images (versions: PIL [%s], GDK [%s])',
          PIL_VERSION[0], PIL_VERSION[1],
@@ -352,54 +353,118 @@ def set_from_pixbuf(image, pixbuf):
 
 def load_pixbuf(path):
     """ Loads a pixbuf from a given image file. """
-    disable_animation = prefs['animation mode'] == constants.ANIMATION_DISABLED
-    try:
-        with Image.open(path) as im:
-            if 'duration' not in im.info:
-                return pil_to_pixbuf(im, keep_orientation=True)
-    except:
-        pass
-    if disable_animation:
-        return GdkPixbuf.Pixbuf.new_from_file(path)
-    pixbuf = GdkPixbuf.PixbufAnimation.new_from_file(path)
-    if pixbuf.is_static_image():
-        return pixbuf.get_static_image()
+    pixbuf = None
+    last_error = None
+    providers = get_image_info(path)[2]
+    for provider in providers:
+        try:
+            # TODO use dynamic dispatch instead of "if" chain
+            if provider == constants.IMAGEIO_GDKPIXBUF:
+                if prefs['animation mode'] != constants.ANIMATION_DISABLED:
+                    try:
+                        pixbuf = GdkPixbuf.PixbufAnimation.new_from_file(path)
+                        if pixbuf.is_static_image():
+                            pixbuf = pixbuf.get_static_image()
+                    except GLib.GError:
+                        # NOTE: Broken JPEGs sometimes result in this exception.
+                        # However, one may be able to load them using
+                        # GdkPixbuf.Pixbuf.new_from_file, so we need to continue.
+                        pass
+                if pixbuf is None:
+                    pixbuf = GdkPixbuf.Pixbuf.new_from_file(path)
+            elif provider == constants.IMAGEIO_PIL:
+                # TODO When using PIL, whether or how animations work is
+                # currently undefined.
+                im = Image.open(path)
+                pixbuf = pil_to_pixbuf(im, keep_orientation=True)
+            else:
+                raise TypeError()
+        except Exception as e:
+            # current provider could not load image
+            last_error = e
+        if pixbuf is not None:
+            # stop loop on success
+            log.debug("provider %s succeeded in loading %s", provider, path)
+            break
+        log.debug("provider %s failed to load %s", provider, path)
+    if pixbuf is None:
+        # raising necessary because caller expects pixbuf to be not None
+        raise Exception(last_error)
     return pixbuf
 
 def load_pixbuf_size(path, width, height):
     """ Loads a pixbuf from a given image file and scale it to fit
     inside (width, height). """
-    try:
-        with Image.open(path) as im:
-            im.draft(None, (width, height))
-            pixbuf = pil_to_pixbuf(im, keep_orientation=True)
-    except:
-        image_format, image_width, image_height = get_image_info(path)
-        # If we could not get the image info, still try to load
-        # the image to let GdkPixbuf raise the appropriate exception.
-        if (0, 0) == (image_width, image_height):
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file(path)
-        # Work around GdkPixbuf bug: https://bugzilla.gnome.org/show_bug.cgi?id=735422
-        elif 'GIF' == image_format:
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file(path)
-        else:
-            # Don't upscale if smaller than target dimensions!
-            if image_width <= width and image_height <= height:
-                width, height = image_width, image_height
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(path, width, height)
+    # TODO similar to load_pixbuf, should be merged using callbacks etc.
+    pixbuf = None
+    last_error = None
+    image_format, image_dimensions, providers = get_image_info(path)
+    for provider in providers:
+        try:
+            # TODO use dynamic dispatch instead of "if" chain
+            if provider == constants.IMAGEIO_GDKPIXBUF:
+                # If we could not get the image info, still try to load
+                # the image to let GdkPixbuf raise the appropriate exception.
+                if (0, 0) == image_dimensions:
+                    pixbuf = GdkPixbuf.Pixbuf.new_from_file(path)
+                # Work around GdkPixbuf bug: https://bugzilla.gnome.org/show_bug.cgi?id=735422
+                # (currently https://gitlab.gnome.org/GNOME/gdk-pixbuf/issues/45)
+                elif 'GIF' == image_format:
+                    pixbuf = GdkPixbuf.Pixbuf.new_from_file(path)
+                else:
+                    # Don't upscale if smaller than target dimensions!
+                    image_width, image_height = image_dimensions
+                    if image_width <= width and image_height <= height:
+                        width, height = image_width, image_height
+                    pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(path, width, height)
+            elif provider == constants.IMAGEIO_PIL:
+                im = Image.open(path)
+                im.draft(None, (width, height))
+                pixbuf = pil_to_pixbuf(im, keep_orientation=True)
+            else:
+                raise TypeError()
+        except Exception as e:
+            # current provider could not load image
+            last_error = e
+        if pixbuf is not None:
+            # stop loop on success
+            log.debug("provider %s succeeded in loading %s at size %s", provider, path, (width, height))
+            break
+        log.debug("provider %s failed to load %s at size %s", provider, path, (width, height))
+    if pixbuf is None:
+        # raising necessary because caller expects pixbuf to be not None
+        raise Exception(last_error)
     return fit_in_rectangle(pixbuf, width, height, scaling_quality=GdkPixbuf.InterpType.BILINEAR)
 
 def load_pixbuf_data(imgdata):
     """ Loads a pixbuf from the data passed in <imgdata>. """
-    try:
-        with Image.open(BytesIO(imgdata)) as im:
-            return pil_to_pixbuf(im, keep_orientation=True)
-    except:
-        pass
-    loader = GdkPixbuf.PixbufLoader()
-    loader.write(imgdata)
-    loader.close()
-    return loader.get_pixbuf()
+    # TODO similar to load_pixbuf, should be merged using callbacks etc.
+    pixbuf = None
+    last_error = None
+    for provider in (constants.IMAGEIO_GDKPIXBUF, constants.IMAGEIO_PIL):
+        try:
+            # TODO use dynamic dispatch instead of "if" chain
+            if provider == constants.IMAGEIO_GDKPIXBUF:
+                loader = GdkPixbuf.PixbufLoader()
+                loader.write(imgdata)
+                loader.close()
+                pixbuf = loader.get_pixbuf()
+            elif provider == constants.IMAGEIO_PIL:
+                pixbuf = pil_to_pixbuf(Image.open(BytesIO(imgdata)), keep_orientation=True)
+            else:
+                raise TypeError()
+        except Exception as e:
+            # current provider could not load image
+            last_error = e
+        if pixbuf is not None:
+            # stop loop on success
+            log.debug("provider %s succeeded in decoding %s bytes", provider, len(imgdata))
+            break
+        log.debug("provider %s failed to decode %s bytes", provider, len(imgdata))
+    if pixbuf is None:
+        # raising necessary because caller expects pixbuf to be not None
+        raise Exception(last_error)
+    return pixbuf
 
 def enhance(pixbuf, brightness=1.0, contrast=1.0, saturation=1.0,
   sharpness=1.0, autocontrast=False):
@@ -538,22 +603,39 @@ def color_to_floats_rgba(color, alpha=1.0):
     return [c / 65535.0 for c in color] + [alpha]
 
 def get_image_info(path):
-    """Return image informations:
-        (format, width, height)
+    """Return information about and select preferred providers for loading
+    the image specified by C{path}. The result is a tuple
+    C{(format, (width, height), providers)}.
     """
-    info = None
+    image_format = None
+    image_dimensions = None
+    providers = ()
     try:
-        with Image.open(path) as im:
-            return (im.format,) + im.size
-    except:
-        info = GdkPixbuf.Pixbuf.get_file_info(path)
-        if info[0] is None:
-            info = None
-        else:
-            info = info[0].get_name().upper(), info[1], info[2]
-    if info is None:
-        info = (_('Unknown filetype'), 0, 0)
-    return info
+        gdk_image_info = GdkPixbuf.Pixbuf.get_file_info(path)
+
+    except Exception:
+        gdk_image_info = (None, -1, -1)
+
+    if gdk_image_info != (None, -1, -1):
+        image_format = gdk_image_info[0].get_name().upper()
+        image_dimensions = gdk_image_info[1], gdk_image_info[2]
+        # Prefer loading via GDK/Pixbuf if GdkPixbuf.Pixbuf.get_file_info appears
+        # to be able to handle this path.
+        providers = (constants.IMAGEIO_GDKPIXBUF, constants.IMAGEIO_PIL)
+    else:
+        try:
+            im = Image.open(path)
+            image_format = im.format
+            image_dimensions = im.size
+            providers = (constants.IMAGEIO_PIL, constants.IMAGEIO_GDKPIXBUF)
+        except IOError:
+            # If the file cannot be found, or the image
+            # cannot be opened and identified.
+            pass
+    if image_format is None:
+        image_format = _('Unknown filetype')
+        image_dimensions = (0, 0)
+    return (image_format, image_dimensions, providers)
 
 def get_supported_formats():
     if True:

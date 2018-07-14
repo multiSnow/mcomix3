@@ -88,4 +88,6 @@ PDF_FORMATS = (
         ('application/pdf',),
         ('pdf',))
 
+IMAGEIO_GDKPIXBUF, IMAGEIO_PIL = range(2)
+
 # vim: expandtab:sw=4:ts=4
