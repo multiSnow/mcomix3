@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 """about_dialog.py - About dialog."""
 
-import webbrowser
-import gtk
+from gi.repository import Gtk
 import pkg_resources
+import webbrowser
 
 from mcomix import constants
 from mcomix import strings
 from mcomix import image_tools
 
-class _AboutDialog(gtk.AboutDialog):
+class _AboutDialog(Gtk.AboutDialog):
 
     def __init__(self, window):
-        super(_AboutDialog, self).__init__()
+        super(_AboutDialog, self).__init__(parent=window)
 
         self.set_name(constants.APPNAME)
         self.set_program_name(constants.APPNAME)
@@ -20,7 +20,7 @@ class _AboutDialog(gtk.AboutDialog):
         self.set_website('https://sourceforge.net/p/mcomix/wiki/')
         self.set_copyright('Copyright © 2005-2016')
 
-        icon_data = pkg_resources.resource_string('mcomix.images', 'mcomix.png')
+        icon_data = pkg_resources.resource_string('mcomix', 'images/mcomix.png')
         pixbuf = image_tools.load_pixbuf_data(icon_data)
         self.set_logo(pixbuf)
 
@@ -47,11 +47,12 @@ class _AboutDialog(gtk.AboutDialog):
         artists = [ u'%s: %s' % (name, description) for name, description in strings.ARTISTS ]
         self.set_artists(artists)
 
+        self.connect('activate-link', self._on_activate_link)
+
         self.show_all()
 
-def open_url(dialog, url, *args):
-    webbrowser.open(url)
-
-gtk.about_dialog_set_url_hook(open_url, None)
+    def _on_activate_link(self, about_dialog, uri):
+        webbrowser.open(uri)
+        return True
 
 # vim: expandtab:sw=4:ts=4

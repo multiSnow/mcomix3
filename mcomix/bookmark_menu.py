@@ -1,13 +1,13 @@
 """bookmark_menu.py - Bookmarks menu."""
 
-import gtk
+from gi.repository import Gtk
 
 from mcomix import bookmark_backend
 from mcomix import bookmark_dialog
 
-class BookmarksMenu(gtk.Menu):
+class BookmarksMenu(Gtk.Menu):
 
-    """BookmarksMenu extends gtk.Menu with convenience methods relating to
+    """BookmarksMenu extends Gtk.Menu with convenience methods relating to
     bookmarks. It contains fixed items for adding bookmarks etc. as well
     as dynamic items corresponding to the current bookmarks.
     """
@@ -19,7 +19,7 @@ class BookmarksMenu(gtk.Menu):
         self._bookmarks_store = bookmark_backend.BookmarksStore
         self._bookmarks_store.initialize(window)
 
-        self._actiongroup = gtk.ActionGroup('mcomix-bookmarks')
+        self._actiongroup = Gtk.ActionGroup('mcomix-bookmarks')
         self._actiongroup.add_actions([
             ('add_bookmark', 'mcomix-add-bookmark', _('Add _Bookmark'),
                 '<Control>D', None, self._add_current_to_bookmarks),
@@ -53,7 +53,7 @@ class BookmarksMenu(gtk.Menu):
 
         # Add separator
         if bookmarks:
-            separator = gtk.SeparatorMenuItem()
+            separator = Gtk.SeparatorMenuItem()
             separator.show()
             self.append(separator)
 

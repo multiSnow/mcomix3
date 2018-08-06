@@ -3,8 +3,7 @@
 """preferences_dialog.py - Preferences dialog."""
 
 import operator
-import gtk
-import gobject
+from gi.repository import Gdk, GdkPixbuf, Gtk, GObject
 
 from mcomix.preferences import prefs
 from mcomix import preferences_page
@@ -16,7 +15,7 @@ from mcomix import keybindings_editor
 
 _dialog = None
 
-class _PreferencesDialog(gtk.Dialog):
+class _PreferencesDialog(Gtk.Dialog):
 
     """The preferences dialog where most (but not all) settings that are
     saved between sessions are presented to the user.
@@ -27,29 +26,29 @@ class _PreferencesDialog(gtk.Dialog):
 
         # Button text is set later depending on active tab
         self.reset_button = self.add_button('', constants.RESPONSE_REVERT_TO_DEFAULT)
-        self.add_button(gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE)
+        self.add_button(Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE)
 
         self._window = window
         self.set_resizable(True)
-        self.set_default_response(gtk.RESPONSE_CLOSE)
+        self.set_default_response(Gtk.ResponseType.CLOSE)
 
         self.connect('response', self._response)
 
-        notebook = self.notebook = gtk.Notebook()
-        self.vbox.pack_start(notebook)
+        notebook = self.notebook = Gtk.Notebook()
+        self.vbox.pack_start(notebook, True, True, 0)
         self.set_border_width(4)
         notebook.set_border_width(6)
 
         appearance = self._init_appearance_tab()
-        notebook.append_page(appearance, gtk.Label(_('Appearance')))
+        notebook.append_page(appearance, Gtk.Label(label=_('Appearance')))
         behaviour = self._init_behaviour_tab()
-        notebook.append_page(behaviour, gtk.Label(_('Behaviour')))
+        notebook.append_page(behaviour, Gtk.Label(label=_('Behaviour')))
         display = self._init_display_tab()
-        notebook.append_page(display, gtk.Label(_('Display')))
+        notebook.append_page(display, Gtk.Label(label=_('Display')))
         advanced = self._init_advanced_tab()
-        notebook.append_page(advanced, gtk.Label(_('Advanced')))
+        notebook.append_page(advanced, Gtk.Label(label=_('Advanced')))
         shortcuts = self.shortcuts = self._init_shortcuts_tab()
-        notebook.append_page(shortcuts, gtk.Label(_('Shortcuts')))
+        notebook.append_page(shortcuts, Gtk.Label(label=_('Shortcuts')))
 
         notebook.connect('switch-page', self._tab_page_changed)
         # Update the Reset button's tooltip
@@ -65,7 +64,7 @@ class _PreferencesDialog(gtk.Dialog):
 
         page.new_section(_('User interface'))
 
-        page.add_row(gtk.Label(_('Language (needs restart):')),
+        page.add_row(Gtk.Label(label=_('Language (needs restart):')),
             self._create_language_control())
 
         page.add_row(self._create_pref_check_button(
@@ -106,7 +105,7 @@ class _PreferencesDialog(gtk.Dialog):
             'archive thumbnail as icon',
             _('By enabling this setting, the first page of a book will be used as application icon instead of the standard icon.')))
 
-        page.add_row(gtk.Label(_('Thumbnail size (in pixels):')),
+        page.add_row(Gtk.Label(label=_('Thumbnail size (in pixels):')),
             self._create_pref_spinner('thumbnail size',
             1, 20, 500, 1, 10, 0, None))
 
@@ -149,24 +148,24 @@ class _PreferencesDialog(gtk.Dialog):
             'auto open next directory',
             _('Automatically open the first file in the next sibling directory when flipping past the last page of the last file in a directory, or the previous directory when flipping past the first page of the first file.')))
 
-        page.add_row(gtk.Label(_('Number of pixels to scroll per arrow key press:')),
+        page.add_row(Gtk.Label(label=_('Number of pixels to scroll per arrow key press:')),
             self._create_pref_spinner('number of pixels to scroll per key event',
             1, 1, 500, 1, 3, 0,
             _('Set the number of pixels to scroll on a page when using the arrow keys.')))
 
-        page.add_row(gtk.Label(_('Number of pixels to scroll per mouse wheel turn:')),
+        page.add_row(Gtk.Label(label=_('Number of pixels to scroll per mouse wheel turn:')),
             self._create_pref_spinner('number of pixels to scroll per mouse wheel event',
             1, 1, 500, 1, 3, 0,
             _('Set the number of pixels to scroll on a page when using a mouse wheel.')))
 
-        page.add_row(gtk.Label(_('Fraction of page to scroll '
+        page.add_row(Gtk.Label(label=_('Fraction of page to scroll '
             'per space key press (in percent):')),
             self._create_pref_spinner('smart scroll percentage',
             0.01, 1, 100, 1, 5, 0,
             _('Sets the percentage by which the page '
             'will be scrolled down or up when the space key is pressed.')))
 
-        page.add_row(gtk.Label(_('Number of "steps" to take before flipping the page:')),
+        page.add_row(Gtk.Label(label=_('Number of "steps" to take before flipping the page:')),
             self._create_pref_spinner('number of key presses before page turn',
             1, 1, 100, 1, 3, 0,
             _('Set the number of "steps" needed to flip to the next or previous page.  Less steps will allow for very fast page turning but you might find yourself accidentally turning pages.')))
@@ -178,7 +177,7 @@ class _PreferencesDialog(gtk.Dialog):
             'double step in double page mode',
             _('Flip two pages, instead of one, each time we flip pages in double page mode.')))
 
-        page.add_row(gtk.Label(_('Show only one page where appropriate:')),
+        page.add_row(Gtk.Label(label=_('Show only one page where appropriate:')),
             self._create_doublepage_as_one_control())
 
         page.new_section(_('Files'))
@@ -188,7 +187,7 @@ class _PreferencesDialog(gtk.Dialog):
             'auto load last file',
             _('Automatically open, on startup, the file that was open when MComix was last closed.')))
 
-        page.add_row(gtk.Label(_('Store information about recently opened files:')),
+        page.add_row(Gtk.Label(label=_('Store information about recently opened files:')),
             self._create_store_recent_combobox())
 
         return page
@@ -211,20 +210,20 @@ class _PreferencesDialog(gtk.Dialog):
 
         page.new_section(_('Fit to size mode'))
 
-        page.add_row(gtk.Label(_('Fit to width or height:')),
+        page.add_row(Gtk.Label(label=_('Fit to width or height:')),
             self._create_fitmode_control())
 
-        page.add_row(gtk.Label(_('Fixed size for this mode:')),
+        page.add_row(Gtk.Label(label=_('Fixed size for this mode:')),
             self._create_pref_spinner('fit to size px',
             1, 10, 10000, 10, 50, 0, None))
 
         page.new_section(_('Slideshow'))
 
-        page.add_row(gtk.Label(_('Slideshow delay (in seconds):')),
+        page.add_row(Gtk.Label(label=_('Slideshow delay (in seconds):')),
             self._create_pref_spinner('slideshow delay',
             1000.0, 0.01, 3600.0, 0.1, 1, 2, None))
 
-        page.add_row(gtk.Label(_('Slideshow step (in pixels):')),
+        page.add_row(Gtk.Label(label=_('Slideshow step (in pixels):')),
             self._create_pref_spinner('number of pixels to scroll per slideshow event',
             1, -500, 500, 1, 1, 0,
             _('Specify the number of pixels to scroll while in slideshow mode. A positive value will scroll forward, a negative value will scroll backwards, and a value of 0 will cause the slideshow to always flip to a new page.')))
@@ -243,7 +242,7 @@ class _PreferencesDialog(gtk.Dialog):
 
         page.new_section(_('Image quality'))
 
-        page.add_row(gtk.Label(_('Scaling mode')),
+        page.add_row(Gtk.Label(label=_('Scaling mode')),
             self._create_scaling_quality_combobox())
 
         return page
@@ -257,15 +256,15 @@ class _PreferencesDialog(gtk.Dialog):
 
         page.new_section(_('File order'))
 
-        page.add_row(gtk.Label(_('Sort files and directories by:')),
+        page.add_row(Gtk.Label(label=_('Sort files and directories by:')),
             self._create_sort_by_control())
 
-        page.add_row(gtk.Label(_('Sort archives by:')),
+        page.add_row(Gtk.Label(label=_('Sort archives by:')),
             self._create_archive_sort_by_control())
 
         page.new_section(_('Extraction and cache'))
 
-        page.add_row(gtk.Label(_('Maximum number of concurrent extraction threads:')),
+        page.add_row(Gtk.Label(label=_('Maximum number of concurrent extraction threads:')),
             self._create_pref_spinner('max extract threads',
             1, 1, 16, 1, 4, 0,
             _('Set the maximum number of concurrent threads for formats that support it.')))
@@ -275,26 +274,26 @@ class _PreferencesDialog(gtk.Dialog):
             'create thumbnails',
             _('Store thumbnails for opened files according to the freedesktop.org specification. These thumbnails are shared by many other applications, such as most file managers.')))
 
-        page.add_row(gtk.Label(_('Maximum number of pages to store in the cache:')),
+        page.add_row(Gtk.Label(label=_('Maximum number of pages to store in the cache:')),
             self._create_pref_spinner('max pages to cache',
             1, -1, 500, 1, 3, 0,
             _('Set the max number of pages to cache. A value of -1 will cache the entire archive.')))
 
         page.new_section(_('Magnifying Lens'))
 
-        page.add_row(gtk.Label(_('Magnifying lens size (in pixels):')),
+        page.add_row(Gtk.Label(label=_('Magnifying lens size (in pixels):')),
             self._create_pref_spinner('lens size',
             1, 50, 400, 1, 10, 0,
             _('Set the size of the magnifying lens. It is a square with a side of this many pixels.')))
 
-        page.add_row(gtk.Label(_('Magnification factor:')),
+        page.add_row(Gtk.Label(label=_('Magnification factor:')),
             self._create_pref_spinner('lens magnification',
             1, 1.1, 10.0, 0.1, 1.0, 1,
             _('Set the magnification factor of the magnifying lens.')))
 
         page.new_section(_('Comments'))
 
-        page.add_row(gtk.Label(_('Comment extensions:')),
+        page.add_row(Gtk.Label(label=_('Comment extensions:')),
             self._create_extensions_entry())
 
         page.new_section(_('Animated images'))
@@ -328,7 +327,7 @@ class _PreferencesDialog(gtk.Dialog):
             self.reset_button.set_sensitive(len(prefs['stored dialog choices']) > 0)
 
     def _response(self, dialog, response):
-        if response == gtk.RESPONSE_CLOSE:
+        if response == Gtk.ResponseType.CLOSE:
             _close_dialog()
 
         elif response == constants.RESPONSE_REVERT_TO_DEFAULT:
@@ -353,30 +352,30 @@ class _PreferencesDialog(gtk.Dialog):
         # Source: http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
         languages = [
             (_('Auto-detect (Default)'), 'auto'),
-            ('Català', 'ca'),  # Catalan
-            ('čeština', 'cs'),  # Czech
-            ('Deutsch', 'de'),  # German
-            ('ελληνικά', 'el'),  # Greek
-            ('English', 'en'),  # English
-            ('Español', 'es'),  # Spanish
-            ('فارسی', 'fa'),  # Persian
-            ('Français', 'fr'), # French
-            ('Galego', 'gl'),  # Galician
-            ('עברית', 'he'),  # Hebrew
-            ('Hrvatski jezik', 'hr'),  # Croatian
-            ('Magyar', 'hu'),  # Hungarian
-            ('Bahasa Indonesia', 'id'),  # Indonesian
-            ('Italiano', 'it'),  # Italian
-            ('日本語', 'ja'),  # Japanese
-            ('한국어', 'ko'),  # Korean
-            ('Nederlands', 'nl'),  # Dutch
-            ('Język polski', 'pl'),  # Polish
-            ('Português', 'pt_BR'),  # Portuguese
-            ('pусский язык', 'ru'),  # Russian
-            ('Svenska', 'sv'),  # Swedish
-            ('українська мова', 'uk'),  # Ukrainian
-            ('簡體中文', 'zh_CN'),  # Chinese (simplified)
-            ('正體中文', 'zh_TW')]  # Chinese (traditional)
+            (u'Català', 'ca'),  # Catalan
+            (u'čeština', 'cs'),  # Czech
+            (u'Deutsch', 'de'),  # German
+            (u'ελληνικά', 'el'),  # Greek
+            (u'English', 'en'),  # English
+            (u'Español', 'es'),  # Spanish
+            (u'فارسی', 'fa'),  # Persian
+            (u'Français', 'fr'), # French
+            (u'Galego', 'gl'),  # Galician
+            (u'עברית', 'he'),  # Hebrew
+            (u'Hrvatski jezik', 'hr'),  # Croatian
+            (u'Magyar', 'hu'),  # Hungarian
+            (u'Bahasa Indonesia', 'id'),  # Indonesian
+            (u'Italiano', 'it'),  # Italian
+            (u'日本語', 'ja'),  # Japanese
+            (u'한국어', 'ko'),  # Korean
+            (u'Nederlands', 'nl'),  # Dutch
+            (u'Język polski', 'pl'),  # Polish
+            (u'Português', 'pt_BR'),  # Portuguese
+            (u'pусский язык', 'ru'),  # Russian
+            (u'Svenska', 'sv'),  # Swedish
+            (u'українська мова', 'uk'),  # Ukrainian
+            (u'簡體中文', 'zh_CN'),  # Chinese (simplified)
+            (u'正體中文', 'zh_TW')]  # Chinese (traditional)
         languages.sort(key=operator.itemgetter(0))
 
         box = self._create_combobox(languages, prefs['language'],
@@ -459,9 +458,9 @@ class _PreferencesDialog(gtk.Dialog):
                 prefs['sort order'],
                 self._sort_order_changed_cb)
 
-        box = gtk.HBox()
-        box.pack_start(sortkey_box)
-        box.pack_start(sortorder_box)
+        box = Gtk.HBox()
+        box.pack_start(sortkey_box, True, True, 0)
+        box.pack_start(sortorder_box, True, True, 0)
 
         label = _("Files will be opened and displayed according to the sort order "
               "specified here. This option does not affect ordering within archives.")
@@ -506,9 +505,9 @@ class _PreferencesDialog(gtk.Dialog):
                 prefs['sort archive order'],
                 self._sort_archive_order_changed_cb)
 
-        box = gtk.HBox()
-        box.pack_start(sortkey_box)
-        box.pack_start(sortorder_box)
+        box = Gtk.HBox()
+        box.pack_start(sortkey_box, True, True, 0)
+        box.pack_start(sortorder_box, True, True, 0)
 
         label = _("Files within archives will be sorted according to the order specified here. "
                   "Natural order will sort numbered files based on their natural order, "
@@ -572,25 +571,25 @@ class _PreferencesDialog(gtk.Dialog):
             and (self._window.uimanager.recent.count() > 0
                  or self._window.filehandler.last_read_page.count() > 0)):
 
-            dialog = message_dialog.MessageDialog(self, gtk.DIALOG_MODAL,
-                gtk.MESSAGE_INFO, gtk.BUTTONS_YES_NO)
-            dialog.set_default_response(gtk.RESPONSE_YES)
+            dialog = message_dialog.MessageDialog(self, Gtk.DialogFlags.MODAL,
+                Gtk.MessageType.INFO, Gtk.ButtonsType.YES_NO)
+            dialog.set_default_response(Gtk.ResponseType.YES)
             dialog.set_text(
                 _('Delete information about recently opened files?'),
                 _('This will remove all entries from the "Recent" menu,'
                   ' and clear information about last read pages.'))
             response = dialog.run()
 
-            if response == gtk.RESPONSE_YES:
+            if response == Gtk.ResponseType.YES:
                 self._window.uimanager.recent.remove_all()
                 self._window.filehandler.last_read_page.clear_all()
 
     def _create_scaling_quality_combobox(self):
         """ Creates combo box for image scaling quality """
         items = (
-                (_('Normal (fast)'), int(gtk.gdk.INTERP_TILES)),
-                (_('Bilinear'), int(gtk.gdk.INTERP_BILINEAR)),
-                (_('Hyperbolic (slow)'), int(gtk.gdk.INTERP_HYPER)))
+                (_('Normal (fast)'), int(GdkPixbuf.InterpType.TILES)),
+                (_('Bilinear'), int(GdkPixbuf.InterpType.BILINEAR)),
+                (_('Hyperbolic (slow)'), int(GdkPixbuf.InterpType.HYPER)))
 
         selection = prefs['scaling quality']
 
@@ -645,18 +644,18 @@ class _PreferencesDialog(gtk.Dialog):
             be pre-selected when the control is created.
         @param change_callback: Function that will be called when the 'changed'
             event is triggered.
-        @returns gtk.ComboBox
+        @returns Gtk.ComboBox
         """
         assert options and len(options[0]) == 2, "Invalid format for options."
 
         # Use the first list item to determine typing of model fields.
         # First field is textual description, second field is value.
-        model = gtk.ListStore(gobject.TYPE_STRING, type(options[0][1]))
+        model = Gtk.ListStore(GObject.TYPE_STRING, type(options[0][1]))
         for text, value in options:
             model.append((text, value))
 
-        box = gtk.ComboBox(model)
-        renderer = gtk.CellRendererText()
+        box = Gtk.ComboBox(model=model)
+        renderer = Gtk.CellRendererText()
         box.pack_start(renderer, True)
         box.add_attribute(renderer, "text", 0)
 
@@ -676,7 +675,7 @@ class _PreferencesDialog(gtk.Dialog):
 
 
     def _create_extensions_entry(self):
-        entry = gtk.Entry()
+        entry = Gtk.Entry()
         entry.set_size_request(200, -1)
         entry.set_text(', '.join(prefs['comment extensions']))
         entry.connect('activate', self._entry_cb)
@@ -687,7 +686,7 @@ class _PreferencesDialog(gtk.Dialog):
 
 
     def _create_pref_check_button(self, label, prefkey, tooltip_text):
-        button = gtk.CheckButton(label)
+        button = Gtk.CheckButton(label)
         button.set_active(prefs[prefkey])
         button.connect('toggled', self._check_button_cb, prefkey)
         if tooltip_text:
@@ -697,11 +696,11 @@ class _PreferencesDialog(gtk.Dialog):
 
     def _create_binary_pref_radio_buttons(self, label1, prefkey1, tooltip_text1,
         label2, prefkey2, tooltip_text2):
-        button1 = gtk.RadioButton(None, label1)
+        button1 = Gtk.RadioButton(label=label1)
         button1.connect('toggled', self._check_button_cb, prefkey1)
         if tooltip_text1:
             button1.set_tooltip_text(tooltip_text1)
-        button2 = gtk.RadioButton(button1, label2)
+        button2 = Gtk.RadioButton(group=button1, label=label2)
         button2.connect('toggled', self._check_button_cb, prefkey2)
         if tooltip_text2:
             button2.set_tooltip_text(tooltip_text2)
@@ -710,7 +709,8 @@ class _PreferencesDialog(gtk.Dialog):
 
 
     def _create_color_button(self, prefkey):
-        button = gtk.ColorButton(gtk.gdk.Color(*prefs[prefkey]))
+        rgba = image_tools.color_to_floats_rgba(prefs[prefkey])
+        button = Gtk.ColorButton.new_with_rgba(Gdk.RGBA(*rgba))
         button.connect('color_set', self._color_button_cb, prefkey)
         return button
 
@@ -791,8 +791,8 @@ class _PreferencesDialog(gtk.Dialog):
     def _create_pref_spinner(self, prefkey, scale, lower, upper, step_incr,
         page_incr, digits, tooltip_text):
         value = prefs[prefkey] / scale
-        adjustment = gtk.Adjustment(value, lower, upper, step_incr, page_incr)
-        spinner = gtk.SpinButton(adjustment, digits=digits)
+        adjustment = Gtk.Adjustment(value, lower, upper, step_incr, page_incr)
+        spinner = Gtk.SpinButton.new(adjustment, 0.0, digits)
         spinner.set_size_request(80, -1)
         spinner.connect('value_changed', self._spinner_cb, prefkey)
         if tooltip_text:

@@ -1,11 +1,10 @@
 """edit_comment_area.py - The area in the editing window that displays comments."""
 
 import os
-import gtk
-
+from gi.repository import Gdk, Gtk
 from mcomix import tools
 
-class _CommentArea(gtk.VBox):
+class _CommentArea(Gtk.VBox):
 
     """The area used for displaying and handling non-image files."""
 
@@ -13,32 +12,32 @@ class _CommentArea(gtk.VBox):
         super(_CommentArea, self).__init__()
         self._edit_dialog = edit_dialog
 
-        scrolled = gtk.ScrolledWindow()
-        scrolled.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        self.pack_start(scrolled)
+        scrolled = Gtk.ScrolledWindow()
+        scrolled.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+        self.pack_start(scrolled, True, True, 0)
 
-        info = gtk.Label(_('Please note that the only files that are automatically added to this list are those files in archives that MComix recognizes as comments.'))
+        info = Gtk.Label(label=_('Please note that the only files that are automatically added to this list are those files in archives that MComix recognizes as comments.'))
         info.set_alignment(0.5, 0.5)
         info.set_line_wrap(True)
         self.pack_start(info, False, False, 10)
 
         # The ListStore layout is (basename, size, full path).
-        self._liststore = gtk.ListStore(str, str, str)
-        self._treeview = gtk.TreeView(self._liststore)
+        self._liststore = Gtk.ListStore(str, str, str)
+        self._treeview = Gtk.TreeView(self._liststore)
         self._treeview.set_rules_hint(True)
         self._treeview.connect('button_press_event', self._button_press)
         self._treeview.connect('key_press_event', self._key_press)
 
-        cellrenderer = gtk.CellRendererText()
-        column = gtk.TreeViewColumn(_('Name'), cellrenderer, text=0)
+        cellrenderer = Gtk.CellRendererText()
+        column = Gtk.TreeViewColumn(_('Name'), cellrenderer, text=0)
         column.set_expand(True)
         self._treeview.append_column(column)
 
-        column = gtk.TreeViewColumn(_('Size'), cellrenderer, text=1)
+        column = Gtk.TreeViewColumn(_('Size'), cellrenderer, text=1)
         self._treeview.append_column(column)
         scrolled.add(self._treeview)
 
-        self._ui_manager = gtk.UIManager()
+        self._ui_manager = Gtk.UIManager()
 
         ui_description = """
         <ui>
@@ -49,9 +48,9 @@ class _CommentArea(gtk.VBox):
         """
 
         self._ui_manager.add_ui_from_string(ui_description)
-        actiongroup = gtk.ActionGroup('mcomix-edit-archive-comment-area')
+        actiongroup = Gtk.ActionGroup('mcomix-edit-archive-comment-area')
         actiongroup.add_actions([
-            ('remove', gtk.STOCK_REMOVE, _('Remove from archive'), None, None,
+            ('remove', Gtk.STOCK_REMOVE, _('Remove from archive'), None, None,
                 self._remove_file)])
         self._ui_manager.insert_action_group(actiongroup, 0)
 
@@ -96,12 +95,12 @@ class _CommentArea(gtk.VBox):
         path = path[0]
 
         if event.button == 3:
-            self._ui_manager.get_widget('/Popup').popup(None, None, None,
-                event.button, event.time)
+            self._ui_manager.get_widget('/Popup').popup(None, None, None, None,
+                                                        event.button, event.time)
 
     def _key_press(self, iconview, event):
         """Handle key presses on the area."""
-        if event.keyval == gtk.keysyms.Delete:
+        if event.keyval == Gdk.KEY_Delete:
             self._remove_file()
 
 # vim: expandtab:sw=4:ts=4

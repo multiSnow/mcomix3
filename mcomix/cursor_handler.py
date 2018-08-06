@@ -1,7 +1,6 @@
 """cursor_handler.py - Cursor handler."""
 
-import gobject
-import gtk
+from gi.repository import Gdk, GObject
 
 from mcomix import constants
 
@@ -16,14 +15,14 @@ class CursorHandler(object):
     def set_cursor_type(self, cursor):
         """Set the cursor to type <cursor>. Supported cursor types are
         available as constants in this module. If <cursor> is not one of the
-        cursor constants above, it must be a gtk.gdk.Cursor.
+        cursor constants above, it must be a Gdk.Cursor.
         """
         if cursor == constants.NORMAL_CURSOR:
             mode = None
         elif cursor == constants.GRAB_CURSOR:
-            mode = gtk.gdk.Cursor(gtk.gdk.FLEUR)
+            mode = Gdk.Cursor.new(Gdk.CursorType.FLEUR)
         elif cursor == constants.WAIT_CURSOR:
-            mode = gtk.gdk.Cursor(gtk.gdk.WATCH)
+            mode = Gdk.Cursor.new(Gdk.CursorType.WATCH)
         elif cursor == constants.NO_CURSOR:
             mode = self._get_hidden_cursor()
         else:
@@ -72,17 +71,15 @@ class CursorHandler(object):
 
     def _set_hide_timer(self):
         self._kill_timer()
-        self._timer_id = gobject.timeout_add(2000, self._on_timeout)
+        self._timer_id = GObject.timeout_add(2000, self._on_timeout)
 
     def _kill_timer(self):
         if self._timer_id is not None:
-            gobject.source_remove(self._timer_id)
+            GObject.source_remove(self._timer_id)
             self._timer_id = None
 
     def _get_hidden_cursor(self):
-        pixmap = gtk.gdk.Pixmap(None, 1, 1, 1)
-        color = gtk.gdk.Color()
-        return gtk.gdk.Cursor(pixmap, pixmap, color, color, 0, 0)
+        return Gdk.Cursor.new(Gdk.CursorType.BLANK_CURSOR)
 
 
 # vim: expandtab:sw=4:ts=4

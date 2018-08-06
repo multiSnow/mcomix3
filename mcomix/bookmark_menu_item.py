@@ -1,10 +1,10 @@
 """bookmark_menu_item.py - A signle bookmark item."""
 
-import gtk
+from gi.repository import Gtk
 
-class _Bookmark(gtk.ImageMenuItem):
+class _Bookmark(Gtk.ImageMenuItem):
 
-    """_Bookmark represents one bookmark. It extends the gtk.ImageMenuItem
+    """_Bookmark represents one bookmark. It extends the Gtk.ImageMenuItem
     and is thus put directly in the bookmarks menu.
     """
 
@@ -22,10 +22,10 @@ class _Bookmark(gtk.ImageMenuItem):
         super(_Bookmark, self).__init__(str(self), False)
 
         if self._archive_type is not None:
-            im = gtk.image_new_from_stock('mcomix-archive', gtk.ICON_SIZE_MENU)
+            im = Gtk.Image.new_from_stock('mcomix-archive', Gtk.IconSize.MENU)
 
         else:
-            im = gtk.image_new_from_stock('mcomix-image', gtk.ICON_SIZE_MENU)
+            im = Gtk.Image.new_from_stock('mcomix-image', Gtk.IconSize.MENU)
 
         self.set_image(im)
         self.connect('activate', self._load)

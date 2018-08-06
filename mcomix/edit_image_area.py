@@ -1,7 +1,7 @@
 """edit_image_area.py - The area of the editing archive window that displays images."""
 
 import os
-import gtk
+from gi.repository import Gdk, GdkPixbuf, Gtk
 
 from mcomix import image_tools
 from mcomix import i18n
@@ -9,7 +9,7 @@ from mcomix import thumbnail_tools
 from mcomix import thumbnail_view
 from mcomix.preferences import prefs
 
-class _ImageArea(gtk.ScrolledWindow):
+class _ImageArea(Gtk.ScrolledWindow):
 
     """The area used for displaying and handling image files."""
 
@@ -18,11 +18,11 @@ class _ImageArea(gtk.ScrolledWindow):
 
         self._window = window
         self._edit_dialog = edit_dialog
-        self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
 
         # The ListStore layout is (thumbnail, basename, full path, thumbnail status).
         # Basename is used as image tooltip.
-        self._liststore = gtk.ListStore(gtk.gdk.Pixbuf, str, str, bool)
+        self._liststore = Gtk.ListStore(GdkPixbuf.Pixbuf, str, str, bool)
         self._iconview = thumbnail_view.ThumbnailIconView(
             self._liststore,
             2, # UID
@@ -32,7 +32,7 @@ class _ImageArea(gtk.ScrolledWindow):
         self._iconview.generate_thumbnail = self._generate_thumbnail
         self._iconview.set_tooltip_column(1)
         self._iconview.set_reorderable(True)
-        self._iconview.set_selection_mode(gtk.SELECTION_MULTIPLE)
+        self._iconview.set_selection_mode(Gtk.SelectionMode.MULTIPLE)
         self._iconview.connect('button_press_event', self._button_press)
         self._iconview.connect('key_press_event', self._key_press)
         self._iconview.connect_after('drag_begin', self._drag_begin)
@@ -43,16 +43,16 @@ class _ImageArea(gtk.ScrolledWindow):
                                                         size=(self._thumbnail_size,
                                                               self._thumbnail_size))
 
-        self._filler = gtk.gdk.Pixbuf(colorspace=gtk.gdk.COLORSPACE_RGB,
-                                      has_alpha=True, bits_per_sample=8,
-                                      width=self._thumbnail_size,
-                                      height=self._thumbnail_size)
+        self._filler = GdkPixbuf.Pixbuf.new(colorspace=GdkPixbuf.Colorspace.RGB,
+                                            has_alpha=True, bits_per_sample=8,
+                                            width=self._thumbnail_size,
+                                            height=self._thumbnail_size)
         # Make the pixbuf transparent.
         self._filler.fill(0)
 
         self._window.imagehandler.page_available += self._on_page_available
 
-        self._ui_manager = gtk.UIManager()
+        self._ui_manager = Gtk.UIManager()
         ui_description = """
         <ui>
             <popup name="Popup">
@@ -63,9 +63,9 @@ class _ImageArea(gtk.ScrolledWindow):
 
         self._ui_manager.add_ui_from_string(ui_description)
 
-        actiongroup = gtk.ActionGroup('mcomix-edit-archive-image-area')
+        actiongroup = Gtk.ActionGroup('mcomix-edit-archive-image-area')
         actiongroup.add_actions([
-            ('remove', gtk.STOCK_REMOVE, _('Remove from archive'), None, None,
+            ('remove', Gtk.STOCK_REMOVE, _('Remove from archive'), None, None,
                 self._remove_pages)])
         self._ui_manager.insert_action_group(actiongroup, 0)
 
@@ -120,12 +120,12 @@ class _ImageArea(gtk.ScrolledWindow):
                 iconview.unselect_all()
                 iconview.select_path(path)
 
-            self._ui_manager.get_widget('/Popup').popup(None, None, None,
-                event.button, event.time)
+            self._ui_manager.get_widget('/Popup').popup(None, None, None, None,
+                                                        event.button, event.time)
 
     def _key_press(self, iconview, event):
         """Handle key presses on the thumbnail area."""
-        if event.keyval == gtk.keysyms.Delete:
+        if event.keyval == Gdk.KEY_Delete:
             self._remove_pages()
 
     def _drag_begin(self, iconview, context):
@@ -134,16 +134,10 @@ class _ImageArea(gtk.ScrolledWindow):
         might actually see where we are dropping!).
         """
         path = iconview.get_cursor()[0]
-        pixmap = iconview.create_drag_icon(path)
-
-        # context.set_icon_pixmap() seems to cause crashes, so we do a
-        # quick and dirty conversion to pixbuf.
-        pointer = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8,
-            *pixmap.get_size())
-        pointer = pointer.get_from_drawable(pixmap, iconview.get_colormap(),
-            0, 0, 0, 0, *pixmap.get_size())
-
-        context.set_icon_pixbuf(pointer, -5, -5)
+        surface = treeview.create_row_drag_icon(path)
+        width, height = surface.get_width(), surface.get_height()
+        pixbuf = Gdk.pixbuf_get_from_surface(surface, 0, 0, width, height)
+        Gtk.drag_set_icon_pixbuf(context, pixbuf, -5, -5)
 
     def cleanup(self):
         self._iconview.stop_update()

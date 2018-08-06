@@ -1,6 +1,6 @@
 """icons.py - Load MComix specific icons."""
 
-import gtk
+from gi.repository import Gtk
 from pkg_resources import resource_string
 
 from mcomix import image_tools
@@ -13,7 +13,7 @@ def mcomix_icons():
     sizes = ('16x16', '32x32', '48x48')
     pixbufs = [
         image_tools.load_pixbuf_data(
-            resource_string('mcomix.images', size + '/mcomix.png')
+            resource_string('mcomix', 'images/%s/mcomix.png' % size)
         ) for size in sizes
     ]
 
@@ -45,14 +45,14 @@ def load_icons():
 
     # Load window title icons.
     pixbufs = mcomix_icons()
-    gtk.window_set_default_icon_list(*pixbufs)
+    Gtk.Window.set_default_icon_list(pixbufs)
     # Load application icons.
-    factory = gtk.IconFactory()
+    factory = Gtk.IconFactory()
     for filename, stockid in _icons:
         try:
-            icon_data = resource_string('mcomix.images', filename)
+            icon_data = resource_string('mcomix', 'images/%s' % filename)
             pixbuf = image_tools.load_pixbuf_data(icon_data)
-            iconset = gtk.IconSet(pixbuf)
+            iconset = Gtk.IconSet(pixbuf)
             factory.add(stockid, iconset)
         except Exception:
             log.warning(_('! Could not load icon "%s"'), filename)

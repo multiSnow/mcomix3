@@ -5,7 +5,7 @@ import binascii
 import re
 import sys
 import operator
-import gtk
+from gi.repository import GLib, GdkPixbuf, Gdk, Gtk
 from PIL import Image
 from PIL import ImageEnhance
 from PIL import ImageOps
@@ -34,22 +34,20 @@ else:
 log.info('Using %s for loading images (versions: %s [%s], GDK [%s])',
          'PIL' if USE_PIL else 'GDK',
          PIL_VERSION[0], PIL_VERSION[1],
-         # Unfortunately gdk_pixbuf_version is not exported,
-         # so show the GTK+ version instead.
-         'GTK+ ' + '.'.join(map(str, gtk.gtk_version)))
+         GdkPixbuf.PIXBUF_VERSION)
 
 
 # Fallback pixbuf for missing images.
 MISSING_IMAGE_ICON = None
 
-_missing_icon_dialog = gtk.Dialog()
+_missing_icon_dialog = Gtk.Dialog()
 _missing_icon_pixbuf = _missing_icon_dialog.render_icon(
-        gtk.STOCK_MISSING_IMAGE, gtk.ICON_SIZE_LARGE_TOOLBAR)
+        Gtk.STOCK_MISSING_IMAGE, Gtk.IconSize.LARGE_TOOLBAR)
 MISSING_IMAGE_ICON = _missing_icon_pixbuf
 assert MISSING_IMAGE_ICON
 
-GTK_GDK_COLOR_BLACK = gtk.gdk.color_parse('black')
-GTK_GDK_COLOR_WHITE = gtk.gdk.color_parse('white')
+GTK_GDK_COLOR_BLACK = Gdk.color_parse('black')
+GTK_GDK_COLOR_WHITE = Gdk.color_parse('white')
 
 
 def rotate_pixbuf(src, rotation):
@@ -57,11 +55,11 @@ def rotate_pixbuf(src, rotation):
     if 0 == rotation:
         return src
     if 90 == rotation:
-        return src.rotate_simple(gtk.gdk.PIXBUF_ROTATE_CLOCKWISE)
+        return src.rotate_simple(GdkPixbuf.PixbufRotation.CLOCKWISE)
     if 180 == rotation:
-        return src.rotate_simple(gtk.gdk.PIXBUF_ROTATE_UPSIDEDOWN)
+        return src.rotate_simple(GdkPixbuf.PixbufRotation.UPSIDEDOWN)
     if 270 == rotation:
-        return src.rotate_simple(gtk.gdk.PIXBUF_ROTATE_COUNTERCLOCKWISE)
+        return src.rotate_simple(GdkPixbuf.PixbufRotation.COUNTERCLOCKWISE)
     raise ValueError("unsupported rotation: %s" % rotation)
 
 def get_fitting_size(source_size, target_size,
@@ -143,9 +141,9 @@ def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False, rotati
         else:
             check_size, color1, color2 = 1024, 0xFFFFFF, 0xFFFFFF
         if width == src_width and height == src_height:
-            # Using anything other than INTERP_NEAREST will result in a
-            # modified image even if it's opaque and no resizing takes place.
-            scaling_quality = gtk.gdk.INTERP_NEAREST
+            # Using anything other than nearest interpolation will result in a
+            # modified image if no resizing takes place (even if it's opaque).
+            scaling_quality = GdkPixbuf.InterpType.NEAREST
         src = src.composite_color_simple(width, height, scaling_quality,
                                          255, check_size, color1, color2)
     elif width != src_width or height != src_height:
@@ -160,7 +158,7 @@ def add_border(pixbuf, thickness, colour=0x000000FF):
     """Return a pixbuf from <pixbuf> with a <thickness> px border of
     <colour> added.
     """
-    canvas = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8,
+    canvas = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, True, 8,
         pixbuf.get_width() + thickness * 2,
         pixbuf.get_height() + thickness * 2)
     canvas.fill(colour)
@@ -245,7 +243,7 @@ def get_most_common_edge_colour(pixbufs, edge=2):
         height = pixbuf.get_height()
         edge = min(edge, width, height)
 
-        subpix = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB,
+        subpix = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB,
                 pixbuf.get_has_alpha(), 8, edge, height)
         if side == 'left':
             pixbuf.copy_area(0, 0, edge, height, subpix, 0, 0)
@@ -293,8 +291,8 @@ def pil_to_pixbuf(im, keep_orientation=False):
     target_mode = 'RGBA' if has_alpha else 'RGB'
     if im.mode != target_mode:
         im = im.convert(target_mode)
-    pixbuf = gtk.gdk.pixbuf_new_from_data(
-        im.tobytes(), gtk.gdk.COLORSPACE_RGB,
+    pixbuf = GdkPixbuf.Pixbuf.new_from_bytes(
+        GLib.Bytes.new(im.tobytes()), GdkPixbuf.Colorspace.RGB,
         has_alpha, 8,
         im.size[0], im.size[1],
         (4 if has_alpha else 3) * im.size[0]
@@ -372,7 +370,7 @@ def load_pixbuf(path):
         im = Image.open(path)
         pixbuf = pil_to_pixbuf(im, keep_orientation=True)
     else:
-        pixbuf = gtk.gdk.pixbuf_new_from_file(path)
+        pixbuf = GdkPixbuf.Pixbuf.new_from_file(path)
     return pixbuf
 
 def load_pixbuf_size(path, width, height):
@@ -390,21 +388,21 @@ def load_pixbuf_size(path, width, height):
             pixbuf = gtk.gdk.pixbuf_new_from_file(path)
         # Work around GdkPixbuf bug: https://bugzilla.gnome.org/show_bug.cgi?id=735422
         elif 'GIF' == image_format:
-            pixbuf = gtk.gdk.pixbuf_new_from_file(path)
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file(path)
         else:
             # Don't upscale if smaller than target dimensions!
             if image_width <= width and image_height <= height:
                 width, height = image_width, image_height
-            pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(path, width, height)
-    return fit_in_rectangle(pixbuf, width, height, scaling_quality=gtk.gdk.INTERP_BILINEAR)
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(path, width, height)
+    return fit_in_rectangle(pixbuf, width, height, scaling_quality=GdkPixbuf.InterpType.BILINEAR)
 
 def load_pixbuf_data(imgdata):
     """ Loads a pixbuf from the data passed in <imgdata>. """
     if USE_PIL:
         pixbuf = pil_to_pixbuf(Image.open(StringIO(imgdata)), keep_orientation=True)
     else:
-        loader = gtk.gdk.PixbufLoader()
-        loader.write(imgdata, len(imgdata))
+        loader = GdkPixbuf.PixbufLoader()
+        loader.write(imgdata)
         loader.close()
         pixbuf = loader.get_pixbuf()
     return pixbuf
@@ -435,7 +433,7 @@ def _get_png_implied_rotation(pixbuf_or_image):
 
     Lookup for Exif data in the tEXt chunk.
     """
-    if isinstance(pixbuf_or_image, gtk.gdk.Pixbuf):
+    if isinstance(pixbuf_or_image, GdkPixbuf.Pixbuf):
         exif = pixbuf_or_image.get_option('tEXt::Raw profile type exif')
     elif isinstance(pixbuf_or_image, Image.Image):
         exif = pixbuf_or_image.info.get('Raw profile type exif')
@@ -512,8 +510,10 @@ def combine_pixbufs( pixbuf1, pixbuf2, are_in_manga_mode ):
 
     new_height = max( l_source_pixbuf_height, r_source_pixbuf_height )
 
-    new_pix_buf = gtk.gdk.Pixbuf( gtk.gdk.COLORSPACE_RGB, has_alpha,
-        bits_per_sample, new_width, new_height )
+    new_pix_buf = GdkPixbuf.Pixbuf.new(colorspace=GdkPixbuf.Colorspace.RGB,
+                                       has_alpha=has_alpha,
+                                       bits_per_sample=bits_per_sample,
+                                       width=new_width, height=new_height)
 
     l_source_pixbuf.copy_area( 0, 0, l_source_pixbuf_width,
                                      l_source_pixbuf_height,
@@ -540,6 +540,9 @@ def text_color_for_background_color(bgcolor):
     return GTK_GDK_COLOR_BLACK if rgb_to_y_601(bgcolor) >= \
         65535.0 / 2.0 else GTK_GDK_COLOR_WHITE
 
+def color_to_floats_rgba(color, alpha=1.0):
+    return [c / 65535.0 for c in color] + [alpha]
+
 def get_image_info(path):
     """Return image informations:
         (format, width, height)
@@ -554,9 +557,11 @@ def get_image_info(path):
             # cannot be opened and identified.
             im = None
     else:
-        info = gtk.gdk.pixbuf_get_file_info(path)
-        if info is not None:
-            info = info[0]['name'].upper(), info[1], info[2]
+        info = GdkPixbuf.Pixbuf.get_file_info(path)
+        if info[0] is None:
+            info = None
+        else:
+            info = info[0].get_name().upper(), info[1], info[2]
     if info is None:
         info = (_('Unknown filetype'), 0, 0)
     return info
@@ -595,12 +600,12 @@ def get_supported_formats():
                 del supported_formats[name]
     else:
         supported_formats = {}
-        for format in gtk.gdk.pixbuf_get_formats():
-            name = format['name'].upper()
+        for format in GdkPixbuf.Pixbuf.get_formats():
+            name = format.get_name().upper()
             assert name not in supported_formats
             supported_formats[name] = (
-                format['mime_types'],
-                format['extensions'],
+                format.get_mime_types(),
+                format.get_extensions(),
             )
     return supported_formats
 

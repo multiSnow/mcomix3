@@ -1,12 +1,13 @@
 """ osd.py - Onscreen display showing currently opened file. """
 # -*- coding: utf-8 -*-
 
-import gtk
-import gobject
-import pango
 import textwrap
 
+from gi.repository import Gdk, Gtk, GObject
+from gi.repository import Pango, PangoCairo
+
 from mcomix import image_tools
+
 
 class OnScreenDisplay(object):
 
@@ -35,8 +36,8 @@ class OnScreenDisplay(object):
 
         # Set up font information
         font = layout.get_context().get_font_description()
-        font.set_weight(pango.WEIGHT_BOLD)
-        layout.set_alignment(pango.ALIGN_CENTER)
+        font.set_weight(Pango.Weight.BOLD)
+        layout.set_alignment(Pango.Alignment.CENTER)
 
         # Scale font to fit within the screen size
         max_width, max_height = self._window.get_visible_area_size()
@@ -56,13 +57,13 @@ class OnScreenDisplay(object):
 
         self._last_osd_rect = rect
         if self._timeout_event:
-            gobject.source_remove(self._timeout_event)
-        self._timeout_event = gobject.timeout_add_seconds(OnScreenDisplay.TIMEOUT, self.clear)
+            GObject.source_remove(self._timeout_event)
+        self._timeout_event = GObject.timeout_add_seconds(OnScreenDisplay.TIMEOUT, self.clear)
 
     def clear(self):
         """ Removes the OSD. """
         if self._timeout_event:
-            gobject.source_remove(self._timeout_event)
+            GObject.source_remove(self._timeout_event)
         self._timeout_event = None
         self._clear_osd()
         return 0 # To unregister gobject timer event
@@ -80,18 +81,17 @@ class OnScreenDisplay(object):
 
         return "\n".join(result)
 
-    def _clear_osd(self, exclude_region=None):
-        """ Invalidates the OSD region. C{exclude_region} will not be invalidated, even
-        if it was part of a previous drawing operation. """
+    def _clear_osd(self):
+        """ Clear the last OSD region. """
 
         if not self._last_osd_rect:
             return
 
-        last_region = gtk.gdk.region_rectangle(self._last_osd_rect)
-        if exclude_region:
-            last_region.subtract(exclude_region)
-        self._window._main_layout.get_bin_window().invalidate_region(last_region, True)
-
+        window = self._window._main_layout.get_bin_window()
+        gdk_rect = Gdk.Rectangle()
+        gdk_rect.x, gdk_rect.y, gdk_rect.width, gdk_rect.height = self._last_osd_rect
+        window.invalidate_rect(gdk_rect, True)
+        window.process_updates(True)
         self._last_osd_rect = None
 
     def _scale_font(self, font, layout, max_width, max_height):
@@ -100,7 +100,7 @@ class OnScreenDisplay(object):
         SIZE_MIN, SIZE_MAX = 10, 60
         for font_size in range(SIZE_MIN, SIZE_MAX, 5):
             old_size = font.get_size()
-            font.set_size(font_size * pango.SCALE)
+            font.set_size(font_size * Pango.SCALE)
             layout.set_font_description(font)
 
             if layout.get_pixel_size()[0] > max_width:
@@ -111,21 +111,34 @@ class OnScreenDisplay(object):
     def _draw_osd(self, layout, rect):
         """ Draws the text specified in C{layout} into a box at C{rect}. """
 
-        osd_region = gtk.gdk.region_rectangle(rect)
-        draw_region = osd_region.copy()
+        draw_region = Gdk.Rectangle()
+        draw_region.x, draw_region.y, draw_region.width, draw_region.height = rect
         if self._last_osd_rect:
-            draw_region.union(gtk.gdk.region_rectangle(self._last_osd_rect))
+            last_region = Gdk.Rectangle()
+            last_region.x, last_region.y, last_region.width, last_region.height = self._last_osd_rect
+            draw_region = Gdk.rectangle_union(draw_region, last_region)
 
+        gdk_rect = Gdk.Rectangle()
+        gdk_rect.x = draw_region.x
+        gdk_rect.y = draw_region.y
+        gdk_rect.width = draw_region.width
+        gdk_rect.height = draw_region.height
         window = self._window._main_layout.get_bin_window()
-        window.begin_paint_region(draw_region)
-        self._clear_osd(osd_region)
+        window.begin_paint_rect(gdk_rect)
 
-        # Set up drawing context
-        gc = window.new_gc(foreground=image_tools.GTK_GDK_COLOR_BLACK,
-                           background=image_tools.GTK_GDK_COLOR_BLACK)
+        self._clear_osd()
 
-        window.draw_rectangle(gc, True, *rect)
-        window.draw_layout(gc, rect[0] + 10, rect[1] + 10, layout, foreground=image_tools.GTK_GDK_COLOR_WHITE)
+        cr = window.cairo_create()
+        cr.set_source_rgb(*image_tools.GTK_GDK_COLOR_BLACK.to_floats())
+        cr.rectangle(*rect)
+        cr.fill()
+        extents = layout.get_extents()[0]
+        cr.set_source_rgb(*image_tools.GTK_GDK_COLOR_WHITE.to_floats())
+        cr.translate(rect[0] + extents.x / Pango.SCALE,
+                     rect[1] + extents.y / Pango.SCALE)
+        PangoCairo.update_layout(cr, layout)
+        PangoCairo.show_layout(cr, layout)
+
         window.end_paint()
 
 # vim: expandtab:sw=4:ts=4

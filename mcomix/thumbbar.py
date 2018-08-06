@@ -1,8 +1,8 @@
 """thumbbar.py - Thumbnail sidebar for main window."""
 
 import urllib
-import gtk
-import gobject
+from gi.repository import GObject, Gdk, GdkPixbuf, Gtk
+import cairo
 
 from mcomix.preferences import prefs
 from mcomix import image_tools
@@ -11,7 +11,7 @@ from mcomix import constants
 from mcomix import thumbnail_view
 
 
-class ThumbnailSidebar(gtk.ScrolledWindow):
+class ThumbnailSidebar(Gtk.ScrolledWindow):
 
     """A thumbnail sidebar including scrollbar for the main window."""
 
@@ -27,12 +27,15 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         #: Selected row in treeview
         self._currently_selected_row = 0
 
-        self.set_policy(gtk.POLICY_NEVER, gtk.POLICY_ALWAYS)
+        self.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.ALWAYS)
         self.get_vadjustment().step_increment = 15
         self.get_vadjustment().page_increment = 1
+        # Disable stupid overlay scrollbars...
+        if hasattr(self.props, 'overlay_scrolling'):
+            self.props.overlay_scrolling = False
 
         # models - contains data
-        self._thumbnail_liststore = gtk.ListStore(int, gtk.gdk.Pixbuf, bool)
+        self._thumbnail_liststore = Gtk.ListStore(int, GdkPixbuf.Pixbuf, bool)
 
         # view - responsible for laying out the columns
         self._treeview = thumbnail_view.ThumbnailTreeView(
@@ -41,38 +44,37 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
             1, # pixbuf
             2, # status
         )
-        # Whether or not unset_flags(gtk.DOUBLE_BUFFERED) reduces flickering on
-        # update seems to depend on various circumstances, including the OS this
-        # code is running on, and probably scheduling/threading issues.
-        #self._treeview.unset_flags(gtk.DOUBLE_BUFFERED)
         self._treeview.set_headers_visible(False)
         self._treeview.generate_thumbnail = self._generate_thumbnail
+        self._treeview.set_activate_on_single_click(True)
 
         self._treeview.connect_after('drag_begin', self._drag_begin)
         self._treeview.connect('drag_data_get', self._drag_data_get)
-        self._treeview.connect('cursor-changed', self._cursor_changed_event)
+        self._treeview.connect('row-activated', self._row_activated_event)
+        self._treeview.connect('button_press_event', self._mouse_press_event)
+
 
         # enable drag and dropping of images from thumbnail bar to some file
         # manager
-        self._treeview.enable_model_drag_source(gtk.gdk.BUTTON1_MASK,
-            [('text/uri-list', 0, 0)], gtk.gdk.ACTION_COPY)
+        self._treeview.enable_model_drag_source(Gdk.ModifierType.BUTTON1_MASK,
+            [('text/uri-list', 0, 0)], Gdk.DragAction.COPY)
 
         # Page column
-        self._thumbnail_page_treeviewcolumn = gtk.TreeViewColumn(None)
+        self._thumbnail_page_treeviewcolumn = Gtk.TreeViewColumn(None)
         self._treeview.append_column(self._thumbnail_page_treeviewcolumn)
-        self._text_cellrenderer = gtk.CellRendererText()
+        self._text_cellrenderer = Gtk.CellRendererText()
         # Right align page numbers.
         self._text_cellrenderer.set_property('xalign', 1.0)
-        self._thumbnail_page_treeviewcolumn.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
+        self._thumbnail_page_treeviewcolumn.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
         self._thumbnail_page_treeviewcolumn.pack_start(self._text_cellrenderer, False)
         self._thumbnail_page_treeviewcolumn.add_attribute(self._text_cellrenderer, 'text', 0)
         self._thumbnail_page_treeviewcolumn.set_visible(False)
 
         # Pixbuf column
-        self._thumbnail_image_treeviewcolumn = gtk.TreeViewColumn(None)
+        self._thumbnail_image_treeviewcolumn = Gtk.TreeViewColumn(None)
         self._treeview.append_column(self._thumbnail_image_treeviewcolumn)
-        self._pixbuf_cellrenderer = gtk.CellRendererPixbuf()
-        self._thumbnail_image_treeviewcolumn.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
+        self._pixbuf_cellrenderer = Gtk.CellRendererPixbuf()
+        self._thumbnail_image_treeviewcolumn.set_sizing(Gtk.TreeViewColumnSizing.FIXED)
         self._thumbnail_image_treeviewcolumn.set_fixed_width(self._pixbuf_size)
         self._thumbnail_image_treeviewcolumn.pack_start(self._pixbuf_cellrenderer, True)
         self._thumbnail_image_treeviewcolumn.add_attribute(self._pixbuf_cellrenderer, 'pixbuf', 1)
@@ -95,13 +97,13 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
             number_of_pages = self._window.imagehandler.get_number_of_pages()
             number_of_digits = tools.number_of_digits(number_of_pages)
             self._text_cellrenderer.set_property('width-chars', number_of_digits + 1)
-            x, y, w, h = self._text_cellrenderer.get_size(self._treeview, None)
+            w = self._text_cellrenderer.get_preferred_size(self._treeview)[1].width
             self._thumbnail_page_treeviewcolumn.set_fixed_width(w)
         self._thumbnail_page_treeviewcolumn.set_visible(visible)
 
     def get_width(self):
         """Return the width in pixels of the ThumbnailSidebar."""
-        return self.size_request()[0]
+        return self.size_request().width
 
     def show(self, *args):
         """Show the ThumbnailSidebar."""
@@ -134,17 +136,16 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
 
         self.set_thumbnail_background(colour)
         # Force a redraw of the widget.
-        self.queue_draw()
+        self._treeview.queue_draw()
 
-    def set_thumbnail_background(self, colour):
+    def set_thumbnail_background(self, color):
 
-        color = gtk.gdk.Color(colour[0], colour[1], colour[2])
-        self._pixbuf_cellrenderer.set_property('cell-background-gdk',
-                color)
-        self._text_cellrenderer.set_property('background-gdk',
-                color)
-        self._text_cellrenderer.set_property('foreground-gdk',
-                image_tools.text_color_for_background_color(colour))
+        rgba = Gdk.RGBA(*image_tools.color_to_floats_rgba(color))
+        self._pixbuf_cellrenderer.set_property('cell-background-rgba', rgba)
+        self._text_cellrenderer.set_property('background-rgba', rgba)
+        fg_color = image_tools.text_color_for_background_color(color)
+        fg_rgba = Gdk.RGBA(*(fg_color.to_floats() + (1.0,)))
+        self._text_cellrenderer.set_property('foreground-rgba', fg_rgba)
 
     @property
     def _pixbuf_size(self):
@@ -207,23 +208,20 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         except IndexError:
             return 0
 
-    def _cursor_changed_event(self, treeview, *args):
+    def _row_activated_event(self, treeview, path, column):
         """Handle events due to changed thumbnail selection."""
+        selected_row = self._get_selected_row()
+        self._set_selected_row(selected_row, scroll=False)
+        self._window.set_page(selected_row + 1)
 
-        if not self._loaded or not self._treeview.get_realized():
-            # Skip event processing before widget is actually ready
-            return
-
-        if not self._window.was_out_of_focus:
-            selected_row = self._get_selected_row()
-            self._set_selected_row(selected_row, scroll=False)
-            self._window.set_page(selected_row + 1)
-        else:
+    def _mouse_press_event(self, widget, event):
+        if self._window.was_out_of_focus:
             # if the window was out of focus and the user clicks on
             # the thumbbar then do not select that page because they
             # more than likely have many pages open and are simply trying
             # to give mcomix focus again
-            self._set_selected_row(self._currently_selected_row, scroll=False)
+            return True
+        return False
 
     def _drag_data_get(self, treeview, context, selection, *args):
         """Put the URI of the selected file into the SelectionData, so that
@@ -241,19 +239,18 @@ class ThumbnailSidebar(gtk.ScrolledWindow):
         might actually see where we are dropping!).
         """
         path = treeview.get_cursor()[0]
-        pixmap = treeview.create_row_drag_icon(path)
-
-        # context.set_icon_pixmap() seems to cause crashes, so we do a
-        # quick and dirty conversion to pixbuf.
-        pointer = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, True, 8,
-            *pixmap.get_size())
-        pointer = pointer.get_from_drawable(pixmap, treeview.get_colormap(),
-            0, 0, 0, 0, *pixmap.get_size())
-        context.set_icon_pixbuf(pointer, -5, -5)
+        surface = treeview.create_row_drag_icon(path)
+        # Because of course a cairo.Win32Surface does not have
+        # get_width/get_height, that would be to easy...
+        cr = cairo.Context(surface)
+        x1, y1, x2, y2 = cr.clip_extents()
+        width, height = x2 - x1, y2 - y1
+        pixbuf = Gdk.pixbuf_get_from_surface(surface, 0, 0, width, height)
+        Gtk.drag_set_icon_pixbuf(context, pixbuf, -5, -5)
 
     def _get_empty_thumbnail(self):
         """ Create an empty filler pixmap. """
-        pixbuf = gtk.gdk.Pixbuf(colorspace=gtk.gdk.COLORSPACE_RGB,
+        pixbuf = GdkPixbuf.Pixbuf.new(colorspace=GdkPixbuf.Colorspace.RGB,
                                 has_alpha=True,
                                 bits_per_sample=8,
                                 width=self._pixbuf_size,

@@ -19,13 +19,14 @@ ARCHIVE_DESCRIPTIONS = {
                        }
 
 AUTHORS = (
-            ('Pontus Ekberg', _('Original vision/developer of Comix')),
-            ('Louis Casillas', _('MComix developer')),
-            ('Moritz Brunner', _('MComix developer')),
-            ('Ark', _('MComix developer')),
-            ('Benoit Pierre', _('MComix developer')),
+            (u'Pontus Ekberg', _('Original vision/developer of Comix')),
+            (u'Louis Casillas', _('MComix developer')),
+            (u'Moritz Brunner', _('MComix developer')),
+            (u'Ark', _('MComix developer')),
+            (u'Benoit Pierre', _('MComix developer')),
           )
 TRANSLATORS = (
+<<<<<<< HEAD
             ('Emfox Zhou', _('Simplified Chinese translation')),
             ('Xie Yanbo', _('Simplified Chinese translation')),
             ('Zach Cheung', _('Simplified Chinese translation')),
@@ -67,9 +68,49 @@ TRANSLATORS = (
             ('Jonatan Nyberg', _('Swedish translation')),
             ('Isratine Citizen', _('Hebrew translation')),
             ('Zygi Mantus', _('Lithuanian translation')),
+=======
+            (u'Emfox Zhou', _('Simplified Chinese translation')),
+            (u'Xie Yanbo', _('Simplified Chinese translation')),
+            (u'Zach Cheung', _('Simplified Chinese translation')),
+            (u'Manuel Quiñones', _('Spanish translation')),
+            (u'Carlos Feliu', _('Spanish translation')),
+            (u'Marcelo Góes', _('Brazilian Portuguese translation')),
+            (u'Christoph Wolk', _('German translation and Nautilus thumbnailer')),
+            (u'Chris Leick', _('German translation')),
+            (u'Raimondo Giammanco', _('Italian translation')),
+            (u'Giovanni Scafora', _('Italian translation')),
+            (u'GhePeU', _('Italian translation')),
+            (u'Arthur Nieuwland', _('Dutch translation')),
+            (u'Achraf Cherti', _('French translation')),
+            (u'Benoît H.', _('French translation')),
+            (u'Joseph M. Sleiman', _('French translation')),
+            (u'Frédéric Chateaux', _('French translation')),
+            (u'Kamil Leduchowski', _('Polish translatin')),
+            (u'Darek Jakoniuk', _('Polish translation')),
+            (u'Paul Chatzidimitriou', _('Greek translation')),
+            (u'Carles Escrig Royo', _('Catalan translation')),
+            (u'Hsin-Lin Cheng', _('Traditional Chinese translation')),
+            (u'Wayne Su', _('Traditional Chinese translation')),
+            (u'Mamoru Tasaka', _('Japanese translation')),
+            (u'Keita Haga', _('Japanese translation')),
+            (u'Toshiharu Kudoh', _('Japanese translation')),
+            (u'Ernő Drabik', _('Hungarian translation')),
+            (u'Artyom Smirnov', _('Russian translation')),
+            (u'Евгений Лежнин', _('Russian translation')),
+            (u'Adrian C.', _('Croatian translation')),
+            (u'김민기', _('Korean translation')),
+            (u'Gyeongmin Bak', _('Korean translation')),
+            (u'Maryam Sanaat', _('Persian translation')),
+            (u'Andhika Padmawan', _('Indonesian translation')),
+            (u'Jan Nekvasil', _('Czech translation')),
+            (u'Олександр Заяц', _('Ukrainian translation')),
+            (u'Roxerio Roxo Carrillo', _('Galician translation')),
+            (u'Martin Karlsson', _('Swedish translation')),
+            (u'Isratine Citizen', _('Hebrew translation'))
+>>>>>>> origin/gtk3
           )
 ARTISTS = (
-            ('Victor Castillejo', _('Icon design')),
+            (u'Victor Castillejo', _('Icon design')),
           )
 
 # vim: expandtab:sw=4:ts=4

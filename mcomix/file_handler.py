@@ -7,7 +7,7 @@ import tempfile
 import threading
 import re
 import cPickle
-import gtk
+from gi.repository import Gtk
 
 from mcomix.preferences import prefs
 from mcomix import archive_extractor
@@ -217,8 +217,8 @@ class FileHandler(object):
             self._name_table.clear()
             self.file_closed()
         # Catch up on UI events, so we don't leave idle callbacks.
-        while gtk.events_pending():
-            gtk.main_iteration_do(False)
+        while Gtk.events_pending():
+            Gtk.main_iteration_do(False)
         tools.garbage_collect()
         if self._tmp_dir is not None:
             self.thread_delete(self._tmp_dir)
@@ -356,11 +356,11 @@ class FileHandler(object):
 
         read_date = self.last_read_page.get_date(path)
 
-        dialog = message_dialog.MessageDialog(self._window, gtk.DIALOG_MODAL, gtk.MESSAGE_INFO,
-            gtk.BUTTONS_YES_NO)
-        dialog.set_default_response(gtk.RESPONSE_YES)
+        dialog = message_dialog.MessageDialog(self._window, Gtk.DialogFlags.MODAL, Gtk.MessageType.INFO,
+            Gtk.ButtonsType.YES_NO)
+        dialog.set_default_response(Gtk.ResponseType.YES)
         dialog.set_should_remember_choice('resume-from-last-read-page',
-            (gtk.RESPONSE_YES, gtk.RESPONSE_NO))
+            (Gtk.ResponseType.YES, Gtk.ResponseType.NO))
         dialog.set_text(
             (_('Continue reading from page %d?') % last_read_page),
             _('You stopped reading here on %(date)s, %(time)s. '
@@ -369,7 +369,7 @@ class FileHandler(object):
                 'time': read_date.time().strftime("%X"), 'page': last_read_page})
         result = dialog.run()
 
-        return result == gtk.RESPONSE_YES
+        return result == Gtk.ResponseType.YES
 
     def _open_image_files(self, filelist, image_path):
         """ Opens all files passed in C{filelist}.

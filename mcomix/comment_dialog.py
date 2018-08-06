@@ -1,29 +1,29 @@
 """comment.py - Comments dialog."""
 
 import os
-import gtk
+from gi.repository import Gtk
 
 from mcomix import i18n
 
-class _CommentsDialog(gtk.Dialog):
+class _CommentsDialog(Gtk.Dialog):
 
     def __init__(self, window):
         super(_CommentsDialog, self).__init__(_('Comments'), window, 0,
-            (gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE))
+            (Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
 
         self.set_resizable(True)
-        self.set_default_response(gtk.RESPONSE_CLOSE)
+        self.set_default_response(Gtk.ResponseType.CLOSE)
         self.set_default_size(600, 550)
         self.set_border_width(4)
 
-        tag = gtk.TextTag()
+        tag = Gtk.TextTag()
         tag.set_property('editable', False)
         tag.set_property('editable-set', True)
         tag.set_property('family', 'Monospace')
         tag.set_property('family-set', True)
         tag.set_property('scale', 0.9)
         tag.set_property('scale-set', True)
-        tag_table = gtk.TextTagTable()
+        tag_table = Gtk.TextTagTable()
         tag_table.add(tag)
 
         self._tag = tag
@@ -50,10 +50,10 @@ class _CommentsDialog(gtk.Dialog):
             self._notebook.destroy()
             self._notebook = None
 
-        notebook = gtk.Notebook()
+        notebook = Gtk.Notebook()
         notebook.set_scrollable(True)
         notebook.set_border_width(6)
-        self.vbox.pack_start(notebook)
+        self.vbox.pack_start(notebook, True, True, 0)
         self._notebook = notebook
         self._comments = {}
 
@@ -73,17 +73,17 @@ class _CommentsDialog(gtk.Dialog):
 
         name = os.path.basename(path)
 
-        page = gtk.VBox(False)
+        page = Gtk.VBox(False)
         page.set_border_width(8)
 
-        scrolled = gtk.ScrolledWindow()
-        scrolled.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        page.pack_start(scrolled)
+        scrolled = Gtk.ScrolledWindow()
+        scrolled.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+        page.pack_start(scrolled, True, True, 0)
 
-        outbox = gtk.EventBox()
+        outbox = Gtk.EventBox()
         scrolled.add_with_viewport(outbox)
 
-        inbox = gtk.EventBox()
+        inbox = Gtk.EventBox()
         inbox.set_border_width(6)
         outbox.add(inbox)
 
@@ -91,16 +91,16 @@ class _CommentsDialog(gtk.Dialog):
         if text is None:
             text = _('Could not read %s') % name
 
-        text_buffer = gtk.TextBuffer(self._tag_table)
+        text_buffer = Gtk.TextBuffer(tag_table=self._tag_table)
         text_buffer.set_text(i18n.to_unicode(text))
         text_buffer.apply_tag(self._tag, *text_buffer.get_bounds())
-        text_view = gtk.TextView(text_buffer)
+        text_view = Gtk.TextView(buffer=text_buffer)
         inbox.add(text_view)
 
-        bg_color = text_view.get_default_attributes().bg_color
-        outbox.modify_bg(gtk.STATE_NORMAL, bg_color)
-        tab_label = gtk.Label(i18n.to_unicode(name))
-        self._notebook.insert_page(page, tab_label)
+        bg_color = text_view.get_default_attributes().pg_bg_color
+        outbox.modify_bg(Gtk.StateType.NORMAL, bg_color)
+        tab_label = Gtk.Label(label=i18n.to_unicode(name))
+        self._notebook.insert_page(page, tab_label, -1)
 
 
 # vim: expandtab:sw=4:ts=4

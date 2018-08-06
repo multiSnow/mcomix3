@@ -2,18 +2,18 @@
 
 """ Configuration tree view for the preferences dialog to edit keybindings. """
 
-import gtk
+from gi.repository import Gtk
 
 from mcomix import keybindings
 
 
-class KeybindingEditorWindow(gtk.ScrolledWindow):
+class KeybindingEditorWindow(Gtk.ScrolledWindow):
 
     def __init__(self, keymanager):
         """ @param keymanager: KeybindingManager instance. """
         super(KeybindingEditorWindow, self).__init__()
         self.set_border_width(5)
-        self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
+        self.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.ALWAYS)
 
         self.keymanager = keymanager
 
@@ -27,21 +27,21 @@ class KeybindingEditorWindow(gtk.ScrolledWindow):
         model = [str, str, 'gboolean']
         model.extend( [str, ] * accel_column_num)
 
-        treestore = self.treestore = gtk.TreeStore(*model)
+        treestore = self.treestore = Gtk.TreeStore(*model)
         self.refresh_model()
 
-        treeview = gtk.TreeView(treestore)
+        treeview = Gtk.TreeView(treestore)
 
-        tvcol1 = gtk.TreeViewColumn(_("Name"))
+        tvcol1 = Gtk.TreeViewColumn(_("Name"))
         treeview.append_column(tvcol1)
-        cell1 = gtk.CellRendererText()
+        cell1 = Gtk.CellRendererText()
         tvcol1.pack_start(cell1, True)
         tvcol1.set_attributes(cell1, text=0, editable=2)
 
         for idx in range(0, self.accel_column_num):
-            tvc = gtk.TreeViewColumn(_("Key %d") % (idx +1))
+            tvc = Gtk.TreeViewColumn(_("Key %d") % (idx +1))
             treeview.append_column(tvc)
-            accel_cell = gtk.CellRendererAccel()
+            accel_cell = Gtk.CellRendererAccel()
             accel_cell.connect("accel-edited", self.get_on_accel_edited(idx))
             accel_cell.connect("accel-cleared", self.get_on_accel_cleared(idx))
             tvc.pack_start(accel_cell, True)
@@ -79,7 +79,7 @@ class KeybindingEditorWindow(gtk.ScrolledWindow):
             acc_list =  ["", ] * self.accel_column_num
             for idx in range(0, self.accel_column_num):
                 if len(old_bindings) > idx:
-                    acc_list[idx] = gtk.accelerator_name(*old_bindings[idx])
+                    acc_list[idx] = Gtk.accelerator_name(*old_bindings[idx])
 
             row = [title, action_name, True]
             row.extend(acc_list)
@@ -94,7 +94,7 @@ class KeybindingEditorWindow(gtk.ScrolledWindow):
             iter = self.treestore.get_iter(path)
             col = column + 3  # accel cells start from 3 position
             old_accel = self.treestore.get(iter, col)[0]
-            new_accel = gtk.accelerator_name(accel_key, accel_mods)
+            new_accel = Gtk.accelerator_name(accel_key, accel_mods)
             self.treestore.set_value(iter, col, new_accel)
             action_name = self.treestore.get_value(iter, 1)
             affected_action = self.keymanager.edit_accel(action_name, new_accel, old_accel)
@@ -112,7 +112,7 @@ class KeybindingEditorWindow(gtk.ScrolledWindow):
 
             # updating gtk accelerator for label in menu
             if self.keymanager.get_bindings_for_action(action_name)[0] == (accel_key, accel_mods):
-                gtk.accel_map_change_entry('<Actions>/mcomix-main/%s' % action_name,
+                Gtk.AccelMap.change_entry('<Actions>/mcomix-main/%s' % action_name,
                         accel_key, accel_mods, True)
 
         return on_accel_edited
@@ -128,10 +128,10 @@ class KeybindingEditorWindow(gtk.ScrolledWindow):
 
                 # updating gtk accelerator for label in menu
                 if len(self.keymanager.get_bindings_for_action(action_name)) == 0:
-                    gtk.accel_map_change_entry('<Actions>/mcomix-main/%s' % action_name, 0, 0, True)
+                    Gtk.AccelMap.change_entry('<Actions>/mcomix-main/%s' % action_name, 0, 0, True)
                 else:
                     key, mods  = self.keymanager.get_bindings_for_action(action_name)[0]
-                    gtk.accel_map_change_entry('<Actions>/mcomix-main/%s' % action_name, key, mods, True)
+                    Gtk.AccelMap.change_entry('<Actions>/mcomix-main/%s' % action_name, key, mods, True)
 
             self.treestore.set_value(iter, col, "")
         return on_accel_cleared
