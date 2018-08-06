@@ -5,7 +5,8 @@ import binascii
 import re
 import sys
 import operator
-from gi.repository import GLib, GdkPixbuf, Gdk, Gtk
+from gi.repository import Gtk, GLib, GdkPixbuf, Gdk
+from gi.repository.GdkPixbuf import Pixbuf, InterpType
 import glib
 from PIL import Image
 from PIL import ImageEnhance
@@ -312,7 +313,7 @@ def pixbuf_to_pil(pixbuf):
     return im
 
 def is_animation(pixbuf):
-    return isinstance(pixbuf, Gdk.PixbufAnimation)
+    return isinstance(pixbuf, GdkPixbuf.PixbufAnimation)
 
 def static_image(pixbuf):
     """ Returns a non-animated version of the specified pixbuf. """
@@ -432,7 +433,7 @@ def load_pixbuf_size(path, width, height):
     if pixbuf is None:
         # raising necessary because caller expects pixbuf to be not None
         raise last_error
-    return fit_in_rectangle(pixbuf, width, height, scaling_quality=Gdk.INTERP_BILINEAR)
+    return fit_in_rectangle(pixbuf, width, height, scaling_quality=2)
 
 def load_pixbuf_data(imgdata):
     """ Loads a pixbuf from the data passed in <imgdata>. """
