@@ -25,6 +25,7 @@ AUTHORS = (
             (u'Moritz Brunner', _('MComix developer')),
             (u'Pontus Ekberg', _('Original vision/developer of Comix'))
           )
+          
 TRANSLATORS = (
             (u'Achraf Cherti', _('French translation')),
             (u'Adrian C.', _('Croatian translation')),
@@ -68,8 +69,9 @@ TRANSLATORS = (
             (u'Евгений Лежнин', _('Russian translation')),
             (u'Олександр Заяц', _('Ukrainian translation'))
           )
+          
 ARTISTS = (
-            (u'Victor Castillejo', _('Icon design'))
+            (u'Victor Castillejo', _('Icon design')),
           )
 
 # vim: expandtab:sw=4:ts=4
