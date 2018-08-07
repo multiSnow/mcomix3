@@ -298,7 +298,7 @@ class _PreferencesDialog(Gtk.Dialog):
 
         page.new_section(_('Animated images'))
 
-        page.add_row(gtk.Label(_('Animation mode:')),
+        page.add_row(Gtk.Label(_('Animation mode:')),
             self._create_animation_mode_combobox())
 
         return page

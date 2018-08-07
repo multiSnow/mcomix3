@@ -58,8 +58,8 @@ class MagnifyingLens(object):
         with it; <x> and <y> are the positions of the cursor within the
         main window layout area.
         """
-        if self._window.images[0].get_storage_type() not in (gtk.IMAGE_PIXBUF,
-            gtk.IMAGE_ANIMATION):
+        if self._window.images[0].get_storage_type() not in (Gtk.IMAGE_PIXBUF,
+            Gtk.IMAGE_ANIMATION):
             return
 
         rectangle = self._calculate_lens_rect(x, y, prefs['lens size'], prefs['lens size'])
