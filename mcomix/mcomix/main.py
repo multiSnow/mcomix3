@@ -1017,7 +1017,7 @@ class MainWindow(Gtk.Window):
 
         if save_dialog.run() == Gtk.ResponseType.ACCEPT and save_dialog.get_filename():
             shutil.copy(self.imagehandler.get_path_to_page(),
-                save_dialog.get_filename().decode('utf-8'))
+                save_dialog.get_filename())
 
         save_dialog.destroy()
 
