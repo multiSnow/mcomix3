@@ -4,6 +4,7 @@ import sys
 import os
 import locale
 import gettext
+from mcomix import log
 
 try:
     import chardet
@@ -94,7 +95,8 @@ def install_gettext():
             pass
     else:
         translation = gettext.NullTranslations()
-
+        if ( lang != "en" ) :
+            log.error('locale file: %s not found, falling back to English.', resource_path)
     translation.install()
 
     global _translation
