@@ -512,7 +512,7 @@ class _BookArea(Gtk.ScrolledWindow):
         self._library.backend.end_transaction()
 
         coll_name = self._library.backend.get_collection_name(collection)
-        message = i18n.get_translation().ungettext(
+        message = i18n.get_translation().ngettext(
                 "Removed %(num)d book from '%(collection)s'.",
                 "Removed %(num)d books from '%(collection)s'.",
                 len(selected))
@@ -534,7 +534,7 @@ class _BookArea(Gtk.ScrolledWindow):
 
         self._library.backend.end_transaction()
 
-        msg = i18n.get_translation().ungettext(
+        msg = i18n.get_translation().ngettext(
             'Removed %d book from the library.',
             'Removed %d books from the library.',
             len(selected))
