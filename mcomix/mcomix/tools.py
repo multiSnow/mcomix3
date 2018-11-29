@@ -50,7 +50,7 @@ def alphanumeric_compare(s1, s2):
             stringparts1[i] = 1,part
     for i, part in enumerate(stringparts2):
         if part.isdigit():
-            stringparts2[i] = int(part)
+            stringparts2[i] = 0,int(part)
         else:
             stringparts2[i] = 1,part
 
