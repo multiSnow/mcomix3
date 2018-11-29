@@ -42,15 +42,8 @@ class OpenWithManager(object):
 class OpenWithCommand(object):
     def __init__(self, label, command, cwd, disabled_for_archives):
         self.label = label
-        if isinstance(command, str):
-            self.command = command.decode('utf-8').strip()
-        else:
-            self.command = command.strip()
-        if isinstance(cwd, str):
-            self.cwd = cwd.decode('utf-8').strip()
-        else:
-            self.cwd = cwd.strip()
-
+        self.command = command.strip()
+        self.cwd = cwd.strip()
         self.disabled_for_archives = bool(disabled_for_archives)
 
     def get_label(self):
