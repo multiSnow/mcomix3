@@ -52,7 +52,7 @@ class _LibraryFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog)
 
     def files_chosen(self, paths):
         if paths:
-            paths = [ path.decode('utf-8') for path in paths ]
+            paths = [ path for path in paths ]
             try: # For some reason this fails sometimes (GTK+ bug?)
                 filter_index = self.filechooser.list_filters().index(
                     self.filechooser.get_filter())

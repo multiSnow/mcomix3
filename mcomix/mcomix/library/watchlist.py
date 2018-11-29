@@ -181,7 +181,7 @@ class WatchListDialog(Gtk.Dialog):
                      Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT))
         result = filechooser.run()
         if filechooser.get_filename() is not None:
-            directory = filechooser.get_filename().decode('utf-8')
+            directory = filechooser.get_filename()
         else:
             directory = u""
         filechooser.destroy()
