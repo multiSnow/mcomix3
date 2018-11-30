@@ -34,22 +34,22 @@ def draw_histogram(pixbuf, height=170, fill=170, text=True):
             im_data.putpixel((x + 1, height - 5 - y), (r_px, g_px, b_px))
     # Draw the outlines
     for x in range(1, 256):
-        for y in range(r[x-1] + 1, r[x] + 1) + [r[x]] * (r[x] != 0):
+        for y in list(range(r[x-1] + 1, r[x] + 1)) + [r[x]] * (r[x] != 0):
             r_px, g_px, b_px = im_data.getpixel((x + 1, height - 5 - y))
             im_data.putpixel((x + 1, height - 5 - y), (255, g_px, b_px))
         for y in range(r[x] + 1, r[x-1] + 1):
             r_px, g_px, b_px = im_data.getpixel((x, height - 5 - y))
             im_data.putpixel((x, height - 5 - y), (255, g_px, b_px))
-        for y in range(g[x-1] + 1, g[x] + 1) + [g[x]] * (g[x] != 0):
+        for y in list(range(g[x-1] + 1, g[x] + 1)) + [g[x]] * (g[x] != 0):
             r_px, g_px, b_px = im_data.getpixel((x + 1, height - 5 - y))
             im_data.putpixel((x + 1, height - 5 - y), (r_px, 255, b_px))
         for y in range(g[x] + 1, g[x-1] + 1):
             r_px, g_px, b_px = im_data.getpixel((x, height - 5 - y))
             im_data.putpixel((x, height - 5 - y), (r_px, 255, b_px))
-        for y in range(b[x-1] + 1, b[x] + 1) + [b[x]] * (b[x] != 0):
+        for y in list(range(b[x-1] + 1, b[x] + 1)) + [b[x]] * (b[x] != 0):
             r_px, g_px, b_px = im_data.getpixel((x + 1, height - 5 - y))
             im_data.putpixel((x + 1, height - 5 - y), (r_px, g_px, 255))
-        for y in range(b[x] + 1, b[x-1] + 1):
+        for y in list(range(b[x] + 1, b[x-1] + 1)):
             r_px, g_px, b_px = im_data.getpixel((x, height - 5 - y))
             im_data.putpixel((x, height - 5 - y), (r_px, g_px, 255))
     if text:
