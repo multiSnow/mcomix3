@@ -24,7 +24,7 @@ class WatchListDialog(Gtk.Dialog):
         """
         super(WatchListDialog, self).__init__(_("Library watch list"),
             library, Gtk.DialogFlags.DESTROY_WITH_PARENT | Gtk.DialogFlags.MODAL,
-            (_('_Scan now').encode('utf-8'), WatchListDialog.RESPONSE_SCANNOW,
+            (_('_Scan now'), WatchListDialog.RESPONSE_SCANNOW,
              Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
 
         #: Stores a reference to the library
@@ -181,7 +181,7 @@ class WatchListDialog(Gtk.Dialog):
                      Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT))
         result = filechooser.run()
         if filechooser.get_filename() is not None:
-            directory = filechooser.get_filename().decode('utf-8')
+            directory = filechooser.get_filename()
         else:
             directory = u""
         filechooser.destroy()

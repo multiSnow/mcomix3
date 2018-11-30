@@ -120,7 +120,7 @@ class _Collection(_BackendObject):
     def __eq__(self, other):
         if isinstance(other, _Collection):
             return self.id == other.id
-        elif isinstance(other, (int, long)):
+        elif isinstance(other, (int, int)):
             return self.id == other
         else:
             return False
