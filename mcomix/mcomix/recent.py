@@ -47,7 +47,7 @@ class RecentFilesMenu(Gtk.RecentChooserMenu):
     def _load(self, *args):
         uri = self.get_current_uri()
         path = urllib.request.url2pathname(uri[7:])
-        did_file_load = self._window.filehandler.open_file(path.decode('utf-8'))
+        did_file_load = self._window.filehandler.open_file(path)
 
         if not did_file_load:
             self.remove(path)
