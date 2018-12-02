@@ -108,7 +108,8 @@ class _BookArea(Gtk.ScrolledWindow):
                 <menuitem action="remove from library" />
                 <menuitem action="completely remove" />
                 <separator />
-                <menuitem action="copy to clipboard" />
+                <menuitem action="copy path to clipboard" />
+                <menuitem action="copy cover to clipboard" />
                 <separator />
                 <menu action="sort">
                     <menuitem action="by name" />
@@ -160,10 +161,14 @@ class _BookArea(Gtk.ScrolledWindow):
                 _('_Remove and delete from disk'), None,
                 _('Deletes the selected books from disk.'),
                 self._completely_remove_book),
-            ('copy to clipboard', Gtk.STOCK_COPY,
+            ('copy path to clipboard', Gtk.STOCK_COPY,
                 _('_Copy'), None,
                 _('Copies the selected book\'s path to clipboard.'),
-                self._copy_selected),
+                self._copy_selected_path),
+            ('copy cover to clipboard', '',
+                _('_Copy'), None,
+                _('Copies the selected book\'s cover to clipboard.'),
+                self._copy_selected_cover),
             ('sort', None, _('_Sort'), None,
                 _('Changes the sort order of the library.'), None),
             ('cover size', None, _('Cover si_ze'), None,
@@ -580,16 +585,25 @@ class _BookArea(Gtk.ScrolledWindow):
                 except Exception:
                     log.error(_('! Could not remove file "%s"'), book_path)
 
-    def _copy_selected(self, *args):
+    def _copy_selected_cover(self, *args):
+        """ Copies the currently selected item's path to clipboard. """
+        paths = self._iconview.get_selected_items()
+        if len(paths) == 1:
+            model = self._iconview.get_model()
+            iter = model.get_iter(paths[0])
+            pixbuf = model.get_value(iter, 0)
+
+            self._library._window.clipboard.copy_image(pixbuf)
+
+    def _copy_selected_path(self, *args):
         """ Copies the currently selected item to clipboard. """
         paths = self._iconview.get_selected_items()
         if len(paths) == 1:
             model = self._iconview.get_model()
             iter = model.get_iter(paths[0])
-            path = model.get_value(iter, 2).decode('utf-8')
-            pixbuf = model.get_value(iter, 0)
+            path = model.get_value(iter, 2)
 
-            self._library._window.clipboard.copy(path, pixbuf)
+            self._library._window.clipboard.copy_path(path)
 
     def _button_press(self, iconview, event):
         """Handle mouse button presses on the _BookArea."""
@@ -616,7 +630,8 @@ class _BookArea(Gtk.ScrolledWindow):
         self._set_sensitive('_title', False)
         self._set_sensitive('add', collection is not None)
         self._set_sensitive('remove from collection', books_selected and not is_collection_all)
-        self._set_sensitive('copy to clipboard', len(selected) == 1)
+        self._set_sensitive('copy path to clipboard', len(selected) == 1)
+        self._set_sensitive('copy cover to clipboard', len(selected) == 1)
 
         menu = self._ui_manager.get_widget('/library books')
         menu.popup(None, None, None, None, 3, Gtk.get_current_event_time())

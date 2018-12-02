@@ -32,9 +32,12 @@ class MainUI(Gtk.UIManager):
         # ----------------------------------------------------------------
         self._actiongroup = Gtk.ActionGroup(name='mcomix-main')
         self._actiongroup.add_actions([
-            ('copy_page', Gtk.STOCK_COPY, _('_Copy'),
+            ('copy_path', Gtk.STOCK_COPY, _('_Copy'),
                 None, _('Copies the current page to clipboard.'),
-                window.clipboard.copy_page),
+                window.clipboard.copy_path),
+            ('copy_image', '', _('Copy _Image'),
+                None, _('Copies the current image to clipboard.'),
+                window.clipboard.copy_image),
             ('delete', Gtk.STOCK_DELETE, _('_Delete'),
                 None, _('Deletes the current file or archive from disk.'),
                 window.delete),
@@ -247,7 +250,8 @@ class MainUI(Gtk.UIManager):
                     <menuitem action="quit" />
                 </menu>
                 <menu action="menu_edit">
-                    <menuitem action="copy_page" />
+                    <menuitem action="copy_path" />
+                    <menuitem action="copy_image" />
                     <separator />
                     <menuitem action="edit_archive" />
                     <menuitem action="comments" />
@@ -438,7 +442,8 @@ class MainUI(Gtk.UIManager):
                    'save_and_quit',
                    'close',
                    'delete',
-                   'copy_page',
+                   'copy_path',
+                   'copy_image',
                    'slideshow',
                    'rotate_90',
                    'rotate_180',
