@@ -127,7 +127,7 @@ class _PropertiesDialog(Gtk.Dialog):
             time.localtime(stats.st_atime))),
             (_('Modified'), time.strftime('%Y-%m-%d, %H:%M:%S',
             time.localtime(stats.st_mtime))),
-            (_('Permissions'), oct(stat.S_IMODE(stats.st_mode))),
+            (_('Permissions'), stat.filemode(stats.st_mode)),
             (_('Owner'), uid)
         ))
         page.set_secondary_info(secondary_info)
