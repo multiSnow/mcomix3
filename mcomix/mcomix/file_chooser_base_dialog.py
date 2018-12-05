@@ -261,7 +261,7 @@ class _BaseFileChooserDialog(Gtk.Dialog):
             thumbnailer = thumbnail_tools.Thumbnailer(size=(128, 128),
                                                       archive_support=True)
             thumbnailer.thumbnail_finished += self._preview_thumbnail_finished
-            thumbnailer.thumbnail(path, async=True)
+            thumbnailer.thumbnail(path, mt=True)
         else:
             self._preview_image.clear()
             self._namelabel.set_text('')

@@ -66,7 +66,7 @@ class Thumbnailer(object):
         self.force_recreation = force_recreation
         self.archive_support = archive_support
 
-    def thumbnail(self, filepath, async=False):
+    def thumbnail(self, filepath, mt=False):
         """ Returns a thumbnail pixbuf for <filepath>, transparently handling
         both normal image files and archives. If a thumbnail file already exists,
         it is re-used. Otherwise, a new thumbnail is created from <filepath>.
@@ -86,7 +86,7 @@ class Thumbnailer(object):
             return pixbuf
 
         else:
-            if async:
+            if mt:
                 thread = threading.Thread(target=self._create_thumbnail, args=(filepath,))
                 thread.name += '-thumbnailer'
                 thread.setDaemon(True)
