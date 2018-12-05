@@ -162,7 +162,7 @@ class _CollectionArea(Gtk.ScrolledWindow):
         box.show_all()
 
         response = add_dialog.run()
-        name = entry.get_text().decode('utf-8')
+        name = entry.get_text()
         add_dialog.destroy()
         if response == Gtk.ResponseType.OK and name:
             if self._library.backend.add_collection(name):

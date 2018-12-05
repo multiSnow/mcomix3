@@ -162,7 +162,7 @@ class _ControlArea(Gtk.HBox):
         contain the string in the Gtk.Entry. The string is not
         case-sensitive.
         """
-        self._library.filter_string = entry.get_text().decode('utf-8')
+        self._library.filter_string = entry.get_text()
         if not self._library.filter_string:
             self._library.filter_string = None
         collection = self._library.collection_area.get_current_collection()
