@@ -77,8 +77,7 @@ class OpenWithCommand(object):
 
             # Redirect process output to null here?
             args = self.parse(window)
-            with process.popen(args, stdout=process.NULL) as proc:
-                pass
+            process.popen(args, stdout=process.NULL)
 
         except Exception as e:
             text = _("Could not run command %(cmdlabel)s: %(exception)s") % \
