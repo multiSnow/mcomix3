@@ -2,7 +2,7 @@
 and displays info."""
 
 import os
-from gi.repository import Gtk
+from gi.repository import Gtk, Gdk
 from gi.repository import GLib
 from gi.repository import Pango
 
@@ -27,13 +27,20 @@ class _ControlArea(Gtk.HBox):
         self._library = library
         self.set_border_width(10)
 
+        self.insidebox_color = Gdk.RGBA()
+        self.insidebox_color.parse('rgba(0,0,0,0.1)')
+        self.borderbox_color = Gdk.RGBA()
+        self.borderbox_color.parse('rgba(255,255,255,0.1)')
+
         borderbox = Gtk.Frame()
         borderbox.set_shadow_type(Gtk.ShadowType.ETCHED_IN)
         borderbox.set_size_request(350, -1)
+        borderbox.override_background_color(Gtk.StateType.NORMAL, self.borderbox_color)
 
         insidebox = Gtk.EventBox()
         insidebox.set_border_width(1)
         insidebox.set_state(Gtk.StateType.ACTIVE)
+        insidebox.override_background_color(Gtk.StateType.NORMAL, self.insidebox_color)
 
         infobox = Gtk.VBox(homogeneous=False, spacing=5)
         infobox.set_border_width(10)
