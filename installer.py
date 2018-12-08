@@ -43,6 +43,7 @@ def msgfmt(srcdir,filename,dstdir,pool):
 install_methods={'.1':copy,
                  '.py':copy,
                  '.png':copy,
+                 '.css':copy,
                  '.po':msgfmt}
 
 def install(srcdir,filename,target,pool):

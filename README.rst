@@ -38,3 +38,11 @@ then:
 
 .. _mcomix: https://sourceforge.net/projects/mcomix/
 __ mcomix_
+
+
+Theming:
+--------
+
+mcomix can be themed.
+
+Just put a valid gtk3 theme named "mcomix.css" in the config directory.

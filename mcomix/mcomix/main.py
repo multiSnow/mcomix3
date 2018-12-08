@@ -293,6 +293,8 @@ class MainWindow(Gtk.Window):
             Gtk.main_do_event(event)
         Gdk.event_handler_set(_on_event)
 
+        self.load_styles()
+
     def gained_focus(self, *args):
         self.was_out_of_focus = False
 
@@ -1165,6 +1167,33 @@ class MainWindow(Gtk.Window):
             if thread is not threading.currentThread():
                 log.debug('Waiting for thread %s to finish before exit', thread)
                 thread.join()
+
+    def load_styles(self):
+
+       try:
+          style_provider_app = Gtk.CssProvider()
+          style_provider_app.load_from_path(tools.pkg_path("css", 'mcomix.css'))
+          Gtk.StyleContext.add_provider_for_screen(
+              Gdk.Screen.get_default(),
+              style_provider_app,
+              Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+          )
+
+       except:
+             log.warning("Default styles not found or corrupt")
+
+       try:
+          style_provider_user = Gtk.CssProvider()
+          style_provider_user.load_from_path(os.path.join(constants.CONFIG_DIR, 'mcomix.css'))
+          Gtk.StyleContext.add_provider_for_screen(
+              Gdk.Screen.get_default(),
+              style_provider_user,
+              Gtk.STYLE_PROVIDER_PRIORITY_USER
+          )
+
+       except:
+          log.info("user styles not found or corrupt")
+
 
 #: Main window instance
 __main_window = None
