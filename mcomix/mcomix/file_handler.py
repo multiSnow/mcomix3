@@ -7,6 +7,7 @@ import tempfile
 import threading
 import re
 import pickle
+import shutil
 from gi.repository import Gtk
 
 from mcomix.preferences import prefs
@@ -222,8 +223,12 @@ class FileHandler(object):
             Gtk.main_iteration_do(False)
         tools.garbage_collect()
         if self._tmp_dir is not None:
-            self._tmp_dir_ctx.cleanup()
-            self._tmp_dir = None
+           if prefs['other tmpfolder'] == '':
+              self._tmp_dir_ctx.cleanup()
+              self._tmp_dir = None
+           else:
+              shutil.rmtree(self._tmp_dir, ignore_errors=True)
+              self._tmp_dir = None
 
     def _initialize_fileprovider(self, path, keep_fileprovider):
         """ Creates the L{file_provider.FileProvider} for C{path}.
@@ -279,8 +284,12 @@ class FileHandler(object):
 
         @return: A tuple containing C{(image_files, image_index)}. """
 
-        self._tmp_dir_ctx = tempfile.TemporaryDirectory(prefix='mcomix.')
-        self._tmp_dir = self._tmp_dir_ctx.name
+        if prefs['other tmpfolder'] == '':
+           self._tmp_dir_ctx = tempfile.TemporaryDirectory(prefix='mcomix.')
+           self._tmp_dir = self._tmp_dir_ctx.name
+        else:
+           self._tmp_dir = os.path.join(prefs['other tmpfolder'], "mcomix.tmp")
+
         self._base_path = path
         try:
             self._condition = self._extractor.setup(self._base_path,
