@@ -49,6 +49,11 @@ class FileHandler(object):
         #: Temporary directory used for extracting archives.
         self._tmp_dir = None
         self._tmp_dir_ctx = None
+
+        self._other_tmp_dir = prefs['other tmpfolder']
+        if self._other_tmp_dir == '':
+           self._other_tmp_dir = None
+
         #: If C{True}, no longer wait for files to get extracted.
         self._stop_waiting = False
         #: List of comment files inside of the currently opened archive.
@@ -279,7 +284,7 @@ class FileHandler(object):
 
         @return: A tuple containing C{(image_files, image_index)}. """
 
-        self._tmp_dir_ctx = tempfile.TemporaryDirectory(prefix='mcomix.')
+        self._tmp_dir_ctx = tempfile.TemporaryDirectory(prefix='mcomix.', dir=self._other_tmp_dir)
         self._tmp_dir = self._tmp_dir_ctx.name
         self._base_path = path
         try:
