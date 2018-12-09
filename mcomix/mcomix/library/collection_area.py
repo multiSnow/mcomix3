@@ -360,7 +360,13 @@ class _CollectionArea(Gtk.ScrolledWindow):
                 src_collection, dest_collection)
             self.display_collections()
         elif drag_id == constants.LIBRARY_DRAG_BOOK_ID:
-            for path_str in selection.get_text().split(','): # IconView path
+
+            #FIXME
+            #tmp workaround for GTK bug, 2018
+            #see also _drag_data_get in book_area
+            #receaving as bytearray instead of text
+            for path_str in selection.get_data().decode().split(','): # IconView path
+            #for path_str in selection.get_text().split(','): # IconView path
                 book = self._library.book_area.get_book_at_path(int(path_str))
                 self._library.backend.add_book_to_collection(book,
                     dest_collection)
