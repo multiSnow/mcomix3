@@ -6,9 +6,12 @@ import os
 import operator
 
 from mcomix import tools
+from mcomix import make_me_portable
 
 APPNAME = 'MComix'
 VERSION = '1.3.0.dev0'
+
+PORTABLE_APP = make_me_portable.make_me_portable
 
 HOME_DIR = tools.get_home_directory()
 CONFIG_DIR = tools.get_config_directory()

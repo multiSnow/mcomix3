@@ -101,7 +101,7 @@ class WatchListDialog(Gtk.Dialog):
         model, iter = selection.get_selected()
         if iter is not None:
             path = str(model.get_value(iter, COL_DIRECTORY))
-            return self.library.backend.watchlist.get_watchlist_entry(path)
+            return self.library.backend.watchlist.get_watchlist_entry(os.path.abspath(path)) #abspath for PORTABLE_APP
         else:
             return None
 

@@ -92,6 +92,8 @@ class _LibraryBackend(object):
         L{backend_types._Book} instance is returned. """
 
         path = os.path.abspath(path)
+        if constants.PORTABLE_APP:
+           path = os.path.relpath(path)
 
         cur = self.execute('''select id, name, path, pages, format,
                                      size, added
@@ -100,6 +102,11 @@ class _LibraryBackend(object):
         cur.close()
 
         if book:
+            if constants.PORTABLE_APP:
+               tmp=list(book)
+               tmp[2]=os.path.abspath(tmp[2])
+               book=tuple(tmp)
+
             return backend_types._Book(*book)
         else:
             return None
@@ -114,6 +121,11 @@ class _LibraryBackend(object):
                               from book where id = ?''', (id,))
         book = cur.fetchone()
         cur.close()
+
+        if constants.PORTABLE_APP:
+          tmp=list(book)
+          tmp[2]=os.path.abspath(tmp[2])
+          book=tuple(tmp)
 
         if book:
             return backend_types._Book(*book)
@@ -144,7 +156,7 @@ class _LibraryBackend(object):
             log.error( _('! Non-existant book #%i'), book )
             return None
 
-        return path
+        return os.path.abspath(path) #abspath for PORTABLE_APP
 
     def get_book_thumbnail(self, path):
         """ Returns a pixbuf with a thumbnail of the cover of the book at <path>,
@@ -313,17 +325,21 @@ class _LibraryBackend(object):
         old = self._con.execute('''select id from Book
             where path = ?''', (path,)).fetchone()
         try:
+            if constants.PORTABLE_APP:
+               _path = os.path.relpath(path)
+            else:
+               _path = path
             cursor = self._con.cursor()
             if old is not None:
                 cursor.execute('''update Book set
                     name = ?, pages = ?, format = ?, size = ?
-                    where path = ?''', (name, pages, format, size, path))
+                    where path = ?''', (name, pages, format, size, _path))
                 book_id = old
             else:
                 cursor.execute('''insert into Book
                     (name, path, pages, format, size)
                     values (?, ?, ?, ?, ?)''',
-                    (name, path, pages, format, size))
+                    (name, _path, pages, format, size))
                 book_id = cursor.lastrowid
 
                 book = backend_types._Book(book_id, name, path, pages,

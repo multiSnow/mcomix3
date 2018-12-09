@@ -20,6 +20,7 @@ from mcomix import callback
 from mcomix import log
 from mcomix import last_read_page
 from mcomix import message_dialog
+from mcomix import constants
 from mcomix.library import backend
 
 
@@ -637,6 +638,8 @@ class FileHandler(object):
                 path = self._window.imagehandler.get_real_path()
                 page_index = self._window.imagehandler.get_current_page() - 1
                 current_file_info = [ path, page_index ]
+                if constants.PORTABLE_APP:
+                   current_file_info = [ os.path.relpath(path), page_index ]
 
                 pickle.dump(current_file_info, config, pickle.HIGHEST_PROTOCOL)
 
@@ -654,6 +657,8 @@ class FileHandler(object):
                         constants.FILEINFO_PICKLE_PATH )
                 log.info(u'Error was: %s', ex)
                 os.remove(constants.FILEINFO_PICKLE_PATH)
+        if constants.PORTABLE_APP:
+           fileinfo[0] = os.path.abspath(fileinfo[0])
 
         return fileinfo
 

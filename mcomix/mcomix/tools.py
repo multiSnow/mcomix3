@@ -9,7 +9,7 @@ import operator
 import math
 import io
 from functools import reduce
-
+from mcomix import constants
 
 NUMERIC_REGEXP = re.compile(r"\d+|\D+")  # Split into numerics and characters
 PREFIXED_BYTE_UNITS = ('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB')
@@ -75,7 +75,9 @@ def get_home_directory():
     directory, e.g. /home/username. On Windows, it will return an MComix
     sub-directory of <Documents and Settings/Username>.
     """
-    if sys.platform == 'win32':
+    if constants.PORTABLE_APP:
+        return os.path.split(pkg_path())[0]
+    elif sys.platform == 'win32':
         return os.path.join(os.path.expanduser('~'), 'MComix')
     else:
         return os.path.expanduser('~')
@@ -89,7 +91,9 @@ def get_config_directory():
     See http://standards.freedesktop.org/basedir-spec/latest/ for more
     information on the $XDG_CONFIG_HOME environmental variable.
     """
-    if sys.platform == 'win32':
+    if constants.PORTABLE_APP:
+        return pkg_path('var','config')
+    elif sys.platform == 'win32':
         return get_home_directory()
     else:
         base_path = os.getenv('XDG_CONFIG_HOME',
@@ -105,7 +109,9 @@ def get_data_directory():
     See http://standards.freedesktop.org/basedir-spec/latest/ for more
     information on the $XDG_DATA_HOME environmental variable.
     """
-    if sys.platform == 'win32':
+    if constants.PORTABLE_APP:
+        return pkg_path('var','data')
+    elif sys.platform == 'win32':
         return get_home_directory()
     else:
         base_path = os.getenv('XDG_DATA_HOME',

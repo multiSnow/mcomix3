@@ -6,7 +6,7 @@ import datetime
 
 from mcomix import callback
 from mcomix import archive_tools
-
+from mcomix import constants
 
 class _BackendObject(object):
 
@@ -254,6 +254,8 @@ class _WatchList(object):
         """ Adds a new watched directory. """
 
         directory = os.path.abspath(path)
+        if constants.PORTABLE_APP:
+           directory = os.path.relpath(path)
         sql = """INSERT OR IGNORE INTO watchlist (path, collection, recursive)
                  VALUES (?, ?, ?)"""
         cursor = self.backend.execute(sql, [directory, collection.id, recursive])
@@ -286,6 +288,8 @@ class _WatchList(object):
                  LEFT JOIN collection ON watchlist.collection = collection.id
                  WHERE watchlist.path = ?"""
 
+        if constants.PORTABLE_APP:
+           path=os.path.relpath(path)
         cursor = self.backend.execute(sql, (path, ))
         result = cursor.fetchone()
         cursor.close()

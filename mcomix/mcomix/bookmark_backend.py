@@ -141,6 +141,13 @@ class __BookmarksStore(object):
 
                         bookmark = bookmark_menu_item._Bookmark(self._window,
                                                                 self._file_handler, *pack)
+                        if constants.PORTABLE_APP:
+                           tmp=list(pack)
+                           tmp[1]=os.path.abspath(tmp[1])
+                           pack2=tuple(tmp)
+                           bookmark = bookmark_menu_item._Bookmark(self._window,
+                                    self._file_handler, *pack2)
+
                         bookmarks.append(bookmark)
 
             except Exception:
@@ -177,6 +184,13 @@ class __BookmarksStore(object):
             pickle.dump(constants.VERSION, fd, pickle.HIGHEST_PROTOCOL)
 
             packs = [bookmark.pack() for bookmark in self._bookmarks]
+            if constants.PORTABLE_APP:
+               packs = []
+               for bookmark in self._bookmarks:
+                  tmp=list(bookmark.pack())
+                  tmp[1]=os.path.relpath(tmp[1])
+                  packs+=[tuple(tmp)]
+
             pickle.dump(packs, fd, pickle.HIGHEST_PROTOCOL)
 
         self._bookmarks_mtime = time.time()

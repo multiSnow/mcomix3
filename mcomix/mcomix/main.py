@@ -284,6 +284,9 @@ class MainWindow(Gtk.Window):
         if show_library:
             self.actiongroup.get_action('library').activate()
 
+        if constants.PORTABLE_APP:
+           os.chdir(tools.get_home_directory())
+
         self.cursor_handler.auto_hide_on()
         # Make sure we receive *all* mouse motion events,
         # even if a modal dialog is being shown.
