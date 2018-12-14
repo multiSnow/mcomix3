@@ -87,7 +87,7 @@ class ImageHandler(object):
         return result
 
     def get_pixbuf_auto_background(self, number_of_bufs): # XXX limited to at most 2 pages
-        """ Returns an automatically calculated background color
+        """ Returns an automatically calculated rgb background color
         for the current page(s). """
 
         pixbufs = self.get_pixbufs(number_of_bufs)
@@ -103,7 +103,7 @@ class ImageHandler(object):
         else:
             assert False, 'Unexpected pixbuf count'
 
-        return auto_bg
+        return auto_bg[:3]
 
     def do_cacheing(self):
         """Make sure that the correct pixbufs are stored in cache. These
