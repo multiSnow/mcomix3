@@ -535,7 +535,7 @@ def text_color_for_background_color(bgcolor):
         65535.0 / 2.0 else GTK_GDK_COLOR_WHITE
 
 def color_to_floats_rgba(color, alpha=1.0):
-    return [c / 65535.0 for c in color] + [alpha]
+    return [c / 65535.0 for c in color]
 
 def get_image_info(path):
     """Return image informations:
