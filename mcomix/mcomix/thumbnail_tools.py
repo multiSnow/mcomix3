@@ -164,10 +164,17 @@ class Thumbnailer(object):
         """ Creates the thumbnail pixbuf for <filepath>, and saves the pixbuf
         to disk if necessary. Returns the created pixbuf, or None, if creation failed. """
 
-        pixbuf, tEXt_data = self._create_thumbnail_pixbuf(filepath)
-        self.thumbnail_finished(filepath, pixbuf)
+        store_on_disk = self.store_on_disk
 
-        if pixbuf and self.store_on_disk:
+        try:
+           pixbuf, tEXt_data = self._create_thumbnail_pixbuf(filepath)
+           self.thumbnail_finished(filepath, pixbuf)
+        except:
+           pixbuf=image_tools.MISSING_IMAGE_ICON
+           store_on_disk = False
+           log.warning('Failed to create thumbnail for:' + filepath)
+
+        if pixbuf and store_on_disk:
             thumbpath = self._path_to_thumbpath(filepath)
             self._save_thumbnail(pixbuf, thumbpath, tEXt_data)
 
