@@ -101,6 +101,7 @@ prefs = {
     'scan for new books on library startup': True,
     'openwith commands': [],  # (label, command) pairs
     'animation mode': constants.ANIMATION_DISABLED,
+    'ask for password': True,
 }
 
 def read_preferences_file():

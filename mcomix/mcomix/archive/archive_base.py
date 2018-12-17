@@ -12,6 +12,7 @@ from mcomix import i18n
 from mcomix import process
 from mcomix import callback
 from mcomix import archive
+from mcomix import preferences
 
 class BaseArchive(object):
     """ Base archive interface. All filenames passed from and into archives
@@ -119,6 +120,11 @@ class BaseArchive(object):
         If <self._password> is None, no password has been requested yet.
         If an empty string is set, assume that the user did not provide
         a password. """
+
+        if not preferences.prefs['ask for password']:
+          self._password = ""
+          self._event.set()
+          return
 
         password = archive.ask_for_password(self.archive)
         if password is None:
