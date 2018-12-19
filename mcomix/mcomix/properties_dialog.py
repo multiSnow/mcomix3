@@ -62,8 +62,25 @@ class _PropertiesDialog(Gtk.Dialog):
         page = self._archive_page
         page.reset()
         window = self._window
+
         if window.filehandler.archive_type is None:
-            return
+          self._update_page_image(page, 1)
+          path=window.filehandler.get_path_to_base()
+          name = os.path.basename(path)
+          #filename = window.filehandler.get_pretty_current_filename()
+          page.set_filename(name)
+
+          main_info = (
+            _('%d pages') % window.imagehandler.get_number_of_pages(),
+            _('%d comments') %
+                window.filehandler.get_number_of_comments(),
+            'Directory'
+          )
+          page.set_main_info(main_info)
+          self._update_page_secondary_info(page, path)
+          page.show_all()
+          return
+
         # In case it's not ready yet, bump the cover extraction
         # in front of the queue.
         path = window.imagehandler.get_path_to_page(1)
