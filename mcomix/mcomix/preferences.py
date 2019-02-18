@@ -101,6 +101,7 @@ prefs = {
     'scan for new books on library startup': True,
     'openwith commands': [],  # (label, command) pairs
     'animation mode': constants.ANIMATION_DISABLED,
+    'temporary directory': None, # TODO: add to preferences dialog, but which tab?
 }
 
 def read_preferences_file():
