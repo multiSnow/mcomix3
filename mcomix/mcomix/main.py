@@ -675,10 +675,6 @@ class MainWindow(Gtk.Window):
     def flip_page(self, step, single_step=False):
 
         if not self.filehandler.file_loaded:
-            if -1 == step:
-                self.previous_book()
-            elif 1 == step:
-                self.next_book()
             return
 
         current_page = self.imagehandler.get_current_page()
