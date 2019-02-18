@@ -279,7 +279,7 @@ class FileHandler(object):
 
         @return: A tuple containing C{(image_files, image_index)}. """
 
-        self._tmp_dir_ctx = tempfile.TemporaryDirectory(dir=prefs['temporary directory'],prefix='mcomix.')
+        self._tmp_dir_ctx = tempfile.TemporaryDirectory(prefix='mcomix.',dir=prefs['temporary directory'])
         self._tmp_dir = self._tmp_dir_ctx.name
         self._base_path = path
         try:
