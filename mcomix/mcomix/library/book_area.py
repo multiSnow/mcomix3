@@ -400,7 +400,7 @@ class _BookArea(Gtk.ScrolledWindow):
             # Add adjustment scale
             adjustment = Gtk.Adjustment(value=prefs['library cover size'], lower=20,
                     upper=constants.MAX_LIBRARY_COVER_SIZE, step_increment=10, page_increment=25)
-            cover_size_scale = Gtk.HScale(adjustment)
+            cover_size_scale = Gtk.HScale(adjustment=adjustment)
             cover_size_scale.set_size_request(200, -1)
             cover_size_scale.set_digits(0)
             cover_size_scale.set_draw_value(True)
