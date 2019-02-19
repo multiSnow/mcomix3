@@ -57,13 +57,16 @@ TRANSLATORS = (
             (u'Adrian C.', _('Croatian translation')),
             (u'김민기', _('Korean translation')),
             (u'Gyeongmin Bak', _('Korean translation')),
+            (u'Minho Jeung', _('Korean translation')),
             (u'Maryam Sanaat', _('Persian translation')),
             (u'Andhika Padmawan', _('Indonesian translation')),
             (u'Jan Nekvasil', _('Czech translation')),
             (u'Олександр Заяц', _('Ukrainian translation')),
             (u'Roxerio Roxo Carrillo', _('Galician translation')),
             (u'Martin Karlsson', _('Swedish translation')),
-            (u'Isratine Citizen', _('Hebrew translation'))
+            (u'Jonatan Nyberg', _('Swedish translation')),
+            (u'Isratine Citizen', _('Hebrew translation')),
+            (u'Zygi Mantus', _('Lithuanian translation')),
           )
 ARTISTS = (
             (u'Victor Castillejo', _('Icon design')),
