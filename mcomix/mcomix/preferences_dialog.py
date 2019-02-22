@@ -274,6 +274,10 @@ class _PreferencesDialog(Gtk.Dialog):
             'create thumbnails',
             _('Store thumbnails for opened files according to the freedesktop.org specification. These thumbnails are shared by many other applications, such as most file managers.')))
 
+        page.add_row(Gtk.Label(label=_('Temporary directory (restart required)')),
+                     self._create_pref_folder_chooser('temporary directory', default=None)
+        )
+
         page.add_row(Gtk.Label(label=_('Maximum number of pages to store in the cache:')),
             self._create_pref_spinner('max pages to cache',
             1, -1, 500, 1, 3, 0,
@@ -853,6 +857,47 @@ class _PreferencesDialog(Gtk.Dialog):
         extensions = [e.strip() for e in text.split(',')]
         prefs['comment extensions'] = [e for e in extensions if e]
         self._window.filehandler.update_comment_extensions()
+
+
+    def _create_pref_folder_chooser(self, preference, default=None):
+        ''' Select folder as preference value '''
+        box = Gtk.Box()
+
+        chooser = Gtk.Button()
+        chooser.set_label(prefs[preference] or default or _('(default)'))
+        chooser.connect('clicked', self._chooser_folder_cb, chooser, preference, default, False)
+        reset = Gtk.Button(label=_('reset'))
+        reset.connect('clicked', self._chooser_folder_cb, chooser, preference, default, True)
+        box.add(chooser)
+        box.add(reset)
+
+        return box
+
+
+    def _chooser_folder_cb(self, widget, chooser, preference, default, is_reset):
+        ''' Callback for folder chooser '''
+        if is_reset:
+            prefs[preference]=default
+            chooser.set_label(prefs[preference] or _('(default)'))
+            return
+        dialog = Gtk.FileChooserDialog(
+            title=_('Please choose a folder'),
+            action=Gtk.FileChooserAction.SELECT_FOLDER
+        )
+        dialog.set_transient_for(self)
+        dialog.add_buttons(
+            Gtk.STOCK_CANCEL,
+            Gtk.ResponseType.CANCEL,
+            _('Select'),
+            Gtk.ResponseType.OK
+        )
+
+        response = dialog.run()
+        if response == Gtk.ResponseType.OK:
+            prefs[preference]=dialog.get_filename()
+            chooser.set_label(prefs[preference])
+        dialog.destroy()
+
 
 def open_dialog(action, window):
     """Create and display the preference dialog."""
