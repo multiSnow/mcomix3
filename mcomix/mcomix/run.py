@@ -1,7 +1,7 @@
 
 import os
 import sys
-import optparse
+import argparse
 import signal
 
 if __name__ == '__main__':
@@ -27,7 +27,7 @@ def wait_and_exit():
         input("Press ENTER to continue...")
     sys.exit(1)
 
-def print_version(opt, value, parser, *args, **kwargs):
+def print_version():
     """Print the version number and exit."""
     print(constants.APPNAME + ' ' + constants.VERSION)
     sys.exit(0)
@@ -37,65 +37,67 @@ def parse_arguments(argv):
     (options, arguments). Errors parsing the command line are handled in
     this function. """
 
-    parser = optparse.OptionParser(
-            usage="%%prog %s" % _('[OPTION...] [PATH]'),
+    parser = argparse.ArgumentParser(
+            usage="%%(prog)s %s" % _('[OPTION...] [PATH]'),
             description=_('View images and comic book archives.'),
-            add_help_option=False)
-    parser.add_option('--help', action='help',
+            add_help=False)
+    parser.add_argument('--help', action='help',
             help=_('Show this help and exit.'))
-    parser.add_option('-s', '--slideshow', dest='slideshow', action='store_true',
+    parser.add_argument("path", type=str, action='store', nargs='*', default='',
+            help=argparse.SUPPRESS)
+
+    parser.add_argument('-s', '--slideshow', dest='slideshow', action='store_true',
             help=_('Start the application in slideshow mode.'))
-    parser.add_option('-l', '--library', dest='library', action='store_true',
+    parser.add_argument('-l', '--library', dest='library', action='store_true',
             help=_('Show the library on startup.'))
-    parser.add_option('-v', '--version', action='callback', callback=print_version,
+    parser.add_argument('-v', '--version', dest='version', action='store_true',
             help=_('Show the version number and exit.'))
 
-    viewmodes = optparse.OptionGroup(parser, _('View modes'))
-    viewmodes.add_option('-f', '--fullscreen', dest='fullscreen', action='store_true',
+    viewmodes = parser.add_argument_group('View modes')
+    viewmodes.add_argument('-f', '--fullscreen', dest='fullscreen', action='store_true',
             help=_('Start the application in fullscreen mode.'))
-    viewmodes.add_option('-m', '--manga', dest='manga', action='store_true',
+    viewmodes.add_argument('-m', '--manga', dest='manga', action='store_true',
             help=_('Start the application in manga mode.'))
-    viewmodes.add_option('-d', '--double-page', dest='doublepage', action='store_true',
+    viewmodes.add_argument('-d', '--double-page', dest='doublepage', action='store_true',
             help=_('Start the application in double page mode.'))
-    parser.add_option_group(viewmodes)
 
-    fitmodes = optparse.OptionGroup(parser, _('Zoom modes'))
-    fitmodes.add_option('-b', '--zoom-best', dest='zoommode', action='store_const',
+
+    fitmodes = parser.add_argument_group('Zoom modes')
+    fitmodes.add_argument('-b', '--zoom-best', dest='zoommode', action='store_const',
             const=constants.ZOOM_MODE_BEST,
             help=_('Start the application with zoom set to best fit mode.'))
-    fitmodes.add_option('-w', '--zoom-width', dest='zoommode', action='store_const',
+    fitmodes.add_argument('-w', '--zoom-width', dest='zoommode', action='store_const',
             const=constants.ZOOM_MODE_WIDTH,
             help=_('Start the application with zoom set to fit width.'))
-    fitmodes.add_option('-h', '--zoom-height', dest='zoommode', action='store_const',
+    fitmodes.add_argument('-h', '--zoom-height', dest='zoommode', action='store_const',
             const=constants.ZOOM_MODE_HEIGHT,
             help=_('Start the application with zoom set to fit height.'))
-    parser.add_option_group(fitmodes)
 
-    debugopts = optparse.OptionGroup(parser, _('Debug options'))
-    debugopts.add_option('-W', dest='loglevel', action='store',
+    debugopts = parser.add_argument_group('Debug options')
+    debugopts.add_argument('-W', dest='loglevel', action='store',
             choices=('all', 'debug', 'info', 'warn', 'error'), default='warn',
             metavar='[ all | debug | info | warn | error ]',
             help=_('Sets the desired output log level.'))
     # This supresses an error when MComix is used with cProfile
-    debugopts.add_option('-o', dest='output', action='store',
-            default='', help=optparse.SUPPRESS_HELP)
-    parser.add_option_group(debugopts)
+    debugopts.add_argument('-o', dest='output', action='store',
+            default='', help=argparse.SUPPRESS)
 
-    opts, args = parser.parse_args(argv)
+
+    args = parser.parse_args(argv)
 
     # Fix up log level to use constants from log.
-    if opts.loglevel == 'all':
-        opts.loglevel = log.DEBUG
-    if opts.loglevel == 'debug':
-        opts.loglevel = log.DEBUG
-    if opts.loglevel == 'info':
-        opts.loglevel = log.INFO
-    elif opts.loglevel == 'warn':
-        opts.loglevel = log.WARNING
-    elif opts.loglevel == 'error':
-        opts.loglevel = log.ERROR
+    if args.loglevel == 'all':
+        args.loglevel = log.DEBUG
+    if args.loglevel == 'debug':
+        args.loglevel = log.DEBUG
+    if args.loglevel == 'info':
+        args.loglevel = log.INFO
+    elif args.loglevel == 'warn':
+        args.loglevel = log.WARNING
+    elif args.loglevel == 'error':
+        args.loglevel = log.ERROR
 
-    return opts, args
+    return args
 
 def run():
     """Run the program."""
@@ -107,10 +109,13 @@ def run():
 
     # Retrieve and parse command line arguments.
     argv = portability.get_commandline_args()
-    opts, args = parse_arguments(argv)
+    args = parse_arguments(argv)
+
+    if args.version:
+      print_version()
 
     # First things first: set the log level.
-    log.setLevel(opts.loglevel)
+    log.setLevel(args.loglevel)
 
     # Check for PyGTK and PIL dependencies.
     try:
@@ -161,14 +166,10 @@ def run():
     from mcomix import icons
     icons.load_icons()
 
-    open_path = None
+    open_path = args.path
     open_page = 1
-    if len(args) == 1:
-        open_path = args[0]
-    elif len(args) > 1:
-        open_path = args
 
-    elif preferences.prefs['auto load last file'] \
+    if open_path == '' and preferences.prefs['auto load last file'] \
         and preferences.prefs['path to last file'] \
         and os.path.isfile(preferences.prefs['path to last file']):
         open_path = preferences.prefs['path to last file']
@@ -185,9 +186,9 @@ def run():
     settings.props.gtk_menu_images = True
 
     from mcomix import main
-    window = main.MainWindow(fullscreen = opts.fullscreen, is_slideshow = opts.slideshow,
-            show_library = opts.library, manga_mode = opts.manga,
-            double_page = opts.doublepage, zoom_mode = opts.zoommode,
+    window = main.MainWindow(fullscreen = args.fullscreen, is_slideshow = args.slideshow,
+            show_library = args.library, manga_mode = args.manga,
+            double_page = args.doublepage, zoom_mode = args.zoommode,
             open_path = open_path, open_page = open_page)
     main.set_main_window(window)
 
