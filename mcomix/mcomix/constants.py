@@ -10,6 +10,8 @@ from mcomix import tools
 APPNAME = 'MComix'
 VERSION = '1.3.0.dev0'
 
+REQUIRED_PIL_VERSION = '5.2.0'
+
 HOME_DIR = tools.get_home_directory()
 CONFIG_DIR = tools.get_config_directory()
 DATA_DIR = tools.get_data_directory()

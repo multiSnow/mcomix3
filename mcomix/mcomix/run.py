@@ -140,18 +140,23 @@ def run():
 
     try:
         import PIL.Image
-        assert PIL.Image.VERSION >= '1.1.5'
+        assert PIL.Image.__version__ >= constants.REQUIRED_PIL_VERSION
 
     except AssertionError:
-        log.error( _("You don't have the required version of the Python Imaging"), end=' ')
-        log.error( _('Library (PIL) installed.') )
-        log.error( _('Installed PIL version is: %s') % Image.VERSION )
-        log.error( _('Required PIL version is: 1.1.5 or higher') )
+        log.error( _("You don't have the required version of the Pillow installed."))
+        log.error( _('Installed PIL version is: %s') % PIL.Image.__version__ )
+        log.error( _('Required Pillow version is: %s or higher') % constants.REQUIRED_PIL_VERSION )
+        wait_and_exit()
+
+    except AttributeError:
+        log.error( _("You don't have the required version of the Pillow installed."))
+        log.error( _('Installed PIL version is: %s') % PIL.Image.__version__ )
+        log.error( _('Required PIL version is: %s or higher') % constants.REQUIRED_PIL_VERSION )
         wait_and_exit()
 
     except ImportError:
-        log.error( _('Python Imaging Library (PIL) 1.1.5 or higher is required.') )
-        log.error( _('No version of the Python Imaging Library was found on your system.') )
+        log.error( _('Pillow %s or higher is required.') % constants.REQUIRED_PIL_VERSION )
+        log.error( _('No version of the Pillow was found on your system.') )
         wait_and_exit()
 
     if not os.path.exists(constants.DATA_DIR):
