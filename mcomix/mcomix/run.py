@@ -32,7 +32,7 @@ def print_version():
     print(constants.APPNAME + ' ' + constants.VERSION)
     sys.exit(0)
 
-def parse_arguments(argv):
+def parse_arguments():
     """ Parse the command line passed in <argv>. Returns a tuple containing
     (options, arguments). Errors parsing the command line are handled in
     this function. """
@@ -81,7 +81,7 @@ def parse_arguments(argv):
     debugopts.add_argument('-o', dest='output', action='store',
                            default='', help=argparse.SUPPRESS)
 
-    args = parser.parse_args(argv)
+    args = parser.parse_args()
 
     # Fix up log level to use constants from log.
     if args.loglevel == 'all':
@@ -106,8 +106,7 @@ def run():
     i18n.install_gettext()
 
     # Retrieve and parse command line arguments.
-    argv = portability.get_commandline_args()
-    args = parse_arguments(argv)
+    args = parse_arguments()
 
     if args.version:
         print_version()

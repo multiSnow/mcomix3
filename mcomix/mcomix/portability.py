@@ -21,11 +21,6 @@ def normalize_uri(uri):
     else:
         return uri
 
-def get_commandline_args():
-    """ Simply returns sys.argv, converted to Unicode objects on UNIX. """
-
-    return [arg for arg in sys.argv[1:]]
-
 def invalid_filesystem_chars():
     """ List of characters that cannot be used in filenames on the target platform. """
     if sys.platform == 'win32':

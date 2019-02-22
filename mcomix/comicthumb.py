@@ -24,7 +24,7 @@ import sys
 from urllib.parse import unquote
 
 if __name__ == '__main__':
-    argv = portability.get_commandline_args()
+    argv = sys.argv[1:]
     try:
         in_path = argv[0]
         out_path = argv[1]
