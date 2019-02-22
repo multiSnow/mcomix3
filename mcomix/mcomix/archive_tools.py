@@ -90,8 +90,10 @@ def lha_available():
 def pdf_available():
     return _is_available(constants.PDF)
 
-def get_supported_formats():
-    supported_formats = {}
+SUPPORTED_ARCHIVE_EXTS=[]
+SUPPORTED_ARCHIVE_FORMATS={}
+
+def init_supported_formats():
     for name, formats, is_available in (
         ('ZIP', constants.ZIP_FORMATS , True            ),
         ('Tar', constants.TAR_FORMATS , True            ),
@@ -100,22 +102,29 @@ def get_supported_formats():
         ('LHA', constants.LHA_FORMATS , lha_available() ),
         ('PDF', constants.PDF_FORMATS , pdf_available() ),
     ):
-        if is_available:
-            supported_formats[name] = formats
-    return supported_formats
+        if not is_available:
+            continue
+        SUPPORTED_ARCHIVE_FORMATS[name]=([],[])
+        SUPPORTED_ARCHIVE_FORMATS[name][0].extend(
+            map(lambda s:s.lower(),formats[0])
+        )
+        # archive extensions has no '.'
+        SUPPORTED_ARCHIVE_FORMATS[name][1].extend(
+            map(lambda s:'.'+s.lower(),formats[1])
+        )
+    # cache a supported extensions list
+    for mimes,exts in SUPPORTED_ARCHIVE_FORMATS.values():
+        SUPPORTED_ARCHIVE_EXTS.extend(exts)
 
-# Set supported archive extensions regexp from list of supported formats.
-SUPPORTED_ARCHIVE_REGEX = re.compile(r'\.(%s)$' %
-                                     '|'.join(sorted(reduce(
-                                         operator.add,
-                                         [tuple(map(re.escape, fmt[1])) for fmt
-                                          in get_supported_formats().values()]
-                                     ))), re.I)
+def get_supported_formats():
+    if not SUPPORTED_ARCHIVE_FORMATS:
+        init_supported_formats()
+    return SUPPORTED_ARCHIVE_FORMATS
 
 def is_archive_file(path):
-    """Return True if the file at <path> is a supported archive file.
-    """
-    return SUPPORTED_ARCHIVE_REGEX.search(path) is not None
+    if not SUPPORTED_ARCHIVE_FORMATS:
+        init_supported_formats()
+    return os.path.splitext(path)[1].lower() in SUPPORTED_ARCHIVE_EXTS
 
 def archive_mime_type(path):
     """Return the archive type of <path> or None for non-archives."""
