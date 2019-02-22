@@ -38,50 +38,48 @@ def parse_arguments(argv):
     this function. """
 
     parser = argparse.ArgumentParser(
-            usage="%%(prog)s %s" % _('[OPTION...] [PATH]'),
-            description=_('View images and comic book archives.'),
-            add_help=False)
+        usage="%%(prog)s %s" % _('[OPTION...] [PATH]'),
+        description=_('View images and comic book archives.'),
+        add_help=False)
     parser.add_argument('--help', action='help',
-            help=_('Show this help and exit.'))
+                        help=_('Show this help and exit.'))
     parser.add_argument("path", type=str, action='store', nargs='*', default='',
-            help=argparse.SUPPRESS)
+                        help=argparse.SUPPRESS)
 
     parser.add_argument('-s', '--slideshow', dest='slideshow', action='store_true',
-            help=_('Start the application in slideshow mode.'))
+                        help=_('Start the application in slideshow mode.'))
     parser.add_argument('-l', '--library', dest='library', action='store_true',
-            help=_('Show the library on startup.'))
+                        help=_('Show the library on startup.'))
     parser.add_argument('-v', '--version', dest='version', action='store_true',
-            help=_('Show the version number and exit.'))
+                        help=_('Show the version number and exit.'))
 
     viewmodes = parser.add_argument_group('View modes')
     viewmodes.add_argument('-f', '--fullscreen', dest='fullscreen', action='store_true',
-            help=_('Start the application in fullscreen mode.'))
+                           help=_('Start the application in fullscreen mode.'))
     viewmodes.add_argument('-m', '--manga', dest='manga', action='store_true',
-            help=_('Start the application in manga mode.'))
+                           help=_('Start the application in manga mode.'))
     viewmodes.add_argument('-d', '--double-page', dest='doublepage', action='store_true',
-            help=_('Start the application in double page mode.'))
-
+                           help=_('Start the application in double page mode.'))
 
     fitmodes = parser.add_argument_group('Zoom modes')
     fitmodes.add_argument('-b', '--zoom-best', dest='zoommode', action='store_const',
-            const=constants.ZOOM_MODE_BEST,
-            help=_('Start the application with zoom set to best fit mode.'))
+                          const=constants.ZOOM_MODE_BEST,
+                          help=_('Start the application with zoom set to best fit mode.'))
     fitmodes.add_argument('-w', '--zoom-width', dest='zoommode', action='store_const',
-            const=constants.ZOOM_MODE_WIDTH,
-            help=_('Start the application with zoom set to fit width.'))
+                          const=constants.ZOOM_MODE_WIDTH,
+                          help=_('Start the application with zoom set to fit width.'))
     fitmodes.add_argument('-h', '--zoom-height', dest='zoommode', action='store_const',
-            const=constants.ZOOM_MODE_HEIGHT,
-            help=_('Start the application with zoom set to fit height.'))
+                          const=constants.ZOOM_MODE_HEIGHT,
+                          help=_('Start the application with zoom set to fit height.'))
 
     debugopts = parser.add_argument_group('Debug options')
     debugopts.add_argument('-W', dest='loglevel', action='store',
-            choices=('all', 'debug', 'info', 'warn', 'error'), default='warn',
-            metavar='[ all | debug | info | warn | error ]',
-            help=_('Sets the desired output log level.'))
+                           choices=('all', 'debug', 'info', 'warn', 'error'), default='warn',
+                           metavar='[ all | debug | info | warn | error ]',
+                           help=_('Sets the desired output log level.'))
     # This supresses an error when MComix is used with cProfile
     debugopts.add_argument('-o', dest='output', action='store',
-            default='', help=argparse.SUPPRESS)
-
+                           default='', help=argparse.SUPPRESS)
 
     args = parser.parse_args(argv)
 
@@ -112,7 +110,7 @@ def run():
     args = parse_arguments(argv)
 
     if args.version:
-      print_version()
+        print_version()
 
     # First things first: set the log level.
     log.setLevel(args.loglevel)
@@ -170,8 +168,8 @@ def run():
     open_page = 1
 
     if open_path == '' and preferences.prefs['auto load last file'] \
-        and preferences.prefs['path to last file'] \
-        and os.path.isfile(preferences.prefs['path to last file']):
+       and preferences.prefs['path to last file'] \
+       and os.path.isfile(preferences.prefs['path to last file']):
         open_path = preferences.prefs['path to last file']
         open_page = preferences.prefs['page of last file']
 
