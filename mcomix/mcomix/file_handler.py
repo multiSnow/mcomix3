@@ -65,8 +65,6 @@ class FileHandler(object):
         self._file_provider = None
         #: Keeps track of the last read page in archives
         self.last_read_page = last_read_page.LastReadPage(backend.LibraryBackend())
-        #: Regexp used for determining which archive files are images.
-        self._image_re = image_tools.SUPPORTED_IMAGE_REGEX
         #: Regexp used for determining which archive files are comment files.
         self._comment_re = None
         self.update_comment_extensions()
@@ -298,7 +296,7 @@ class FileHandler(object):
 
         files = self._extractor.get_files()
         archive_images = [image for image in files
-            if self._image_re.search(image)
+            if image_tools.is_image_file(image)
             # Remove MacOS meta files from image list
             and not u'__MACOSX' in os.path.normpath(image).split(os.sep)]
 

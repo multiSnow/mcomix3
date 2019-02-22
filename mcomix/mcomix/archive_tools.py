@@ -181,7 +181,7 @@ def get_archive_info(path):
             return None
 
         files = archive.list_contents()
-        num_pages = len(list(filter(image_tools.SUPPORTED_IMAGE_REGEX.search, files)))
+        num_pages = sum([image_tools.is_image_file(f) for f in files])
         size = os.stat(path).st_size
 
         return (mime, num_pages, size)

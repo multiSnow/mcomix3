@@ -2,6 +2,7 @@
 
 from collections import namedtuple
 import binascii
+import os
 import re
 import sys
 import operator
@@ -519,11 +520,6 @@ def combine_pixbufs( pixbuf1, pixbuf2, are_in_manga_mode ):
 
     return new_pix_buf
 
-def is_image_file(path):
-    """Return True if the file at <path> is an image file recognized by PyGTK.
-    """
-    return SUPPORTED_IMAGE_REGEX.search(path) is not None
-
 def convert_rgb16list_to_rgba8int(c):
     return 0x000000FF | (c[0] >> 8 << 24) | (c[1] >> 8 << 16) | (c[2] >> 8 << 8)
 
@@ -555,55 +551,45 @@ def get_image_info(path):
         info = (_('Unknown filetype'), 0, 0)
     return info
 
-def get_supported_formats():
-    if True:
-        # Make sure all supported formats are registered.
-        Image.init()
-        # Not all PIL formats register a mime type,
-        # fill in the blanks ourselves.
-        supported_formats = {
-            'BMP': (['image/bmp', 'image/x-bmp', 'image/x-MS-bmp'], []),
-            'ICO': (['image/x-icon', 'image/x-ico', 'image/x-win-bitmap'], []),
-            'PCX': (['image/x-pcx'], []),
-            'PPM': (['image/x-portable-pixmap'], []),
-            'TGA': (['image/x-tga'], []),
-        }
-        for name, mime in Image.MIME.items():
-            mime_types, extensions = supported_formats.get(name, ([], []))
-            supported_formats[name] = mime_types + [mime], extensions
-        for ext, name in Image.EXTENSION.items():
-            assert '.' == ext[0]
-            mime_types, extensions = supported_formats.get(name, ([], []))
-            supported_formats[name] = mime_types, extensions + [ext[1:]]
-        # Remove formats with no mime type or extension.
-        for name in list(supported_formats.keys()):
-            mime_types, extensions = supported_formats[name]
-            if not mime_types or not extensions:
-                del supported_formats[name]
-        # Remove archives/videos formats.
-        for name in (
-            'MPEG',
-            'PDF',
-        ):
-            if name in supported_formats:
-                del supported_formats[name]
-    else:
-        supported_formats = {}
-        for format in GdkPixbuf.Pixbuf.get_formats():
-            name = format.get_name().upper()
-            assert name not in supported_formats
-            supported_formats[name] = (
-                format.get_mime_types(),
-                format.get_extensions(),
-            )
-    return supported_formats
+SUPPORTED_IMAGE_EXTS=[]
+SUPPORTED_IMAGE_FORMATS={}
 
-# Set supported image extensions regexp from list of supported formats.
-SUPPORTED_IMAGE_REGEX = re.compile(r'\.(%s)$' %
-                                   '|'.join(sorted(reduce(
-                                       operator.add,
-                                       [tuple(map(re.escape, fmt[1])) for fmt
-                                        in get_supported_formats().values()]
-                                   ))), re.I)
+def init_supported_formats():
+    # formats supported by PIL
+    # Make sure all supported formats are registered.
+    Image.init()
+    for ext,name in Image.EXTENSION.items():
+        fmt=SUPPORTED_IMAGE_FORMATS.setdefault(name,([],[]))
+        fmt[1].append(ext.lower())
+        if name not in Image.MIME:
+            continue
+        mime=Image.MIME[name].lower()
+        if mime not in fmt[0]:
+            fmt[0].append(mime)
+
+    # formats supported by gdk-pixbuf
+    for gdkfmt in GdkPixbuf.Pixbuf.get_formats():
+        fmt=SUPPORTED_IMAGE_FORMATS.setdefault(gdkfmt.get_name().upper(),([],[]))
+        for m in map(lambda s:s.lower(),gdkfmt.get_mime_types()):
+            if m not in fmt[0]:
+                fmt[0].append(m)
+        # get_extensions() return extensions without '.'
+        for e in map(lambda s:'.'+s.lower(),gdkfmt.get_extensions()):
+            if e not in fmt[1]:
+                fmt[1].append(e)
+
+    # cache a supported extensions list
+    for mimes,exts in SUPPORTED_IMAGE_FORMATS.values():
+        SUPPORTED_IMAGE_EXTS.extend(exts)
+
+def get_supported_formats():
+    if not SUPPORTED_IMAGE_FORMATS:
+        init_supported_formats()
+    return SUPPORTED_IMAGE_FORMATS
+
+def is_image_file(path):
+    if not SUPPORTED_IMAGE_FORMATS:
+        init_supported_formats()
+    return os.path.splitext(path)[1] in SUPPORTED_IMAGE_EXTS
 
 # vim: expandtab:sw=4:ts=4
