@@ -698,7 +698,14 @@ class _BookArea(Gtk.ScrolledWindow):
         """
         paths = iconview.get_selected_items()
         text = ','.join([str(path[0]) for path in paths])
-        selection.set('text/plain', 8, text)
+
+        #FIXME
+        #tmp workaround for GTK bug, 2018
+        #sending as bytearray instead of text
+        #see also _drag_data_received in collection_area
+
+        selection.set(selection.get_target(), -1, text.encode())
+        #selection.set_text(text, -1)
 
     def _drag_data_received(self, widget, context, x, y, data, *args):
         """Handle drag-n-drop events ending on the book area (i.e. from
