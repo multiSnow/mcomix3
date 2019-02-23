@@ -11,6 +11,7 @@ import io
 from functools import reduce
 
 
+_PORTABLE_MODE=[]
 NUMERIC_REGEXP = re.compile(r"\d+|\D+")  # Split into numerics and characters
 PREFIXED_BYTE_UNITS = ('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB')
 
@@ -132,6 +133,18 @@ def format_byte_size(n):
 def garbage_collect():
     """ Runs the garbage collector. """
     gc.collect(0)
+
+def rootdir():
+    # return path contains mcomixstarter.py
+    return sys.path[0]
+
+def is_portable_mode():
+    # check if running in portable mode
+    if not _PORTABLE_MODE:
+        print('check portable mode')
+        portable_file=os.path.join(rootdir(),'portable.txt')
+        _PORTABLE_MODE.append(os.path.exists(portable_file))
+    return _PORTABLE_MODE[0]
 
 def pkg_path(*args):
     return os.path.join(sys.path[0], 'mcomix', *args)
