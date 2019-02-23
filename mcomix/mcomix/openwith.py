@@ -75,10 +75,8 @@ class OpenWithCommand(object):
                 workdir = self.parse(window, text=self.get_cwd())[0]
                 os.chdir(workdir)
 
-            # Redirect process output to null here?
             args = self.parse(window)
-            with process.popen(args, stdout=process.NULL) as proc:
-                pass
+            process.call_thread(args)
 
         except Exception as e:
             text = _("Could not run command %(cmdlabel)s: %(exception)s") % \
