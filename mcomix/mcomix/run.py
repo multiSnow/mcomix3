@@ -139,19 +139,26 @@ def run():
         wait_and_exit()
 
     try:
+        # check Pillow version carefully here.
+        # from 5.1.0 to 5.4.1, PILLOW_VERSION is used,
+        # but since 6.0.0, only __version__ should be used.
+        # clean up these code once python 3.6 goes EOL (maybe 2021)
+        # (https://pillow.readthedocs.io/en/stable/releasenotes/5.2.0.html#support-added-for-python-3-7)
         import PIL.Image
-        assert PIL.Image.__version__ >= constants.REQUIRED_PIL_VERSION
+        pilver=getattr(PIL.Image,'__version__',None)
+        if not pilver:
+            pilver=getattr(PIL.Image,'PILLOW_VERSION',None)
+        assert pilver >= constants.REQUIRED_PIL_VERSION
 
     except AssertionError:
         log.error( _("You don't have the required version of the Pillow installed."))
-        log.error( _('Installed PIL version is: %s') % PIL.Image.__version__ )
+        log.error( _('Installed PIL version is: %s') % pilver )
         log.error( _('Required Pillow version is: %s or higher') % constants.REQUIRED_PIL_VERSION )
         wait_and_exit()
 
     except AttributeError:
         log.error( _("You don't have the required version of the Pillow installed."))
-        log.error( _('Installed PIL version is: %s') % PIL.Image.__version__ )
-        log.error( _('Required PIL version is: %s or higher') % constants.REQUIRED_PIL_VERSION )
+        log.error( _('Required Pillow version is: %s or higher') % constants.REQUIRED_PIL_VERSION )
         wait_and_exit()
 
     except ImportError:

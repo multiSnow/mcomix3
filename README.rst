@@ -12,7 +12,7 @@ Required:
 ---------
 - **Python3** 3.4 or later.
 - **PyGObject** 3.24 or later, with **GTK+ 3 gir bindings** 3.22 or later.
-- **Pillow** (a fork of PIL) 5.2.0 or later (the original **PIL** is no longer supported).
+- **Pillow** (a fork of PIL) 5.1.0 or later (the original **PIL** is no longer supported).
 
 Recommended:
 ------------

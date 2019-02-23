@@ -11,12 +11,6 @@ from PIL import Image
 from PIL import ImageEnhance
 from PIL import ImageOps
 from PIL.JpegImagePlugin import _getexif
-try:
-    from PIL import PILLOW_VERSION
-    PIL_VERSION = ('Pillow', PILLOW_VERSION)
-except ImportError:
-    from PIL import VERSION as PIL_VERSION
-    PIL_VERSION = ('PIL', PIL_VERSION)
 from io import BytesIO
 from functools import reduce
 
@@ -24,10 +18,13 @@ from mcomix.preferences import prefs
 from mcomix import constants
 from mcomix import log
 
+# see comments in run.py (Pillow version)
+pilver=getattr(Image,'__version__',None)
+if not pilver:
+    pilver=getattr(Image,'PILLOW_VERSION',None)
 
-log.info('Using %s for loading images (versions: PIL [%s], GDK [%s])',
-         PIL_VERSION[0], PIL_VERSION[1],
-         GdkPixbuf.PIXBUF_VERSION)
+log.info('Image loaders: Pillow [%s], GDK [%s])',
+         pilver,GdkPixbuf.PIXBUF_VERSION)
 
 
 # Fallback pixbuf for missing images.
