@@ -152,6 +152,9 @@ def is_portable_mode():
     if not _PORTABLE_MODE:
         portable_file=os.path.join(rootdir(),'portable.txt')
         _PORTABLE_MODE.append(os.path.exists(portable_file))
+        if _PORTABLE_MODE[0]:
+            # chdir to rootdir early
+            os.chdir(rootdir())
     return _PORTABLE_MODE[0]
 
 def pkg_path(*args):
