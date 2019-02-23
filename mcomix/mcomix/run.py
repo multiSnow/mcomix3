@@ -147,7 +147,7 @@ def run():
         import PIL.Image
         pilver=getattr(PIL.Image,'__version__',None)
         if not pilver:
-            pilver=getattr(PIL.Image,'PILLOW_VERSION',None)
+            pilver=getattr(PIL.Image,'PILLOW_VERSION')
         assert pilver >= constants.REQUIRED_PIL_VERSION
 
     except AssertionError:
