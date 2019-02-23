@@ -150,7 +150,6 @@ def rootdir():
 def is_portable_mode():
     # check if running in portable mode
     if not _PORTABLE_MODE:
-        print('check portable mode')
         portable_file=os.path.join(rootdir(),'portable.txt')
         _PORTABLE_MODE.append(os.path.exists(portable_file))
     return _PORTABLE_MODE[0]
