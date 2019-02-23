@@ -5,6 +5,7 @@ import sys
 import os
 import subprocess
 from distutils import spawn
+from threading import Thread
 
 from mcomix import log
 from mcomix import i18n
@@ -48,6 +49,15 @@ def popen(args, stdin=NULL, stdout=PIPE, stderr=NULL, universal_newlines=False):
                             universal_newlines=universal_newlines,
                             creationflags=_get_creationflags())
 
+def call_thread(args):
+    # call command in thread, so drop std* and set no buffer
+    params=dict(
+        stdin=NULL,stdout=NULL,stderr=NULL,
+        bufsize=0,creationflags=_get_creationflags()
+    )
+    thread=Thread(target=subprocess.call,
+                  args=(args,),kwargs=params,daemon=True)
+    thread.start()
 
 if 'win32' == sys.platform:
     _exe_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
