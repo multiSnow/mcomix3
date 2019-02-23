@@ -76,6 +76,9 @@ def get_home_directory():
     directory, e.g. /home/username. On Windows, it will return an MComix
     sub-directory of <Documents and Settings/Username>.
     """
+    if is_portable_mode():
+        # multiple profiles, maybe :)
+        return os.path.join(rootdir(),'profile')
     if sys.platform == 'win32':
         return os.path.join(os.path.expanduser('~'), 'MComix')
     else:
@@ -90,6 +93,9 @@ def get_config_directory():
     See http://standards.freedesktop.org/basedir-spec/latest/ for more
     information on the $XDG_CONFIG_HOME environmental variable.
     """
+    if is_portable_mode():
+        # always using get_home_directory() even if in unix
+        return os.path.join(get_home_directory(),'config')
     if sys.platform == 'win32':
         return get_home_directory()
     else:
@@ -106,6 +112,9 @@ def get_data_directory():
     See http://standards.freedesktop.org/basedir-spec/latest/ for more
     information on the $XDG_DATA_HOME environmental variable.
     """
+    if is_portable_mode():
+        # always using get_home_directory() even if in unix
+        return os.path.join(get_home_directory(),'data')
     if sys.platform == 'win32':
         return get_home_directory()
     else:
