@@ -157,6 +157,23 @@ def is_portable_mode():
             os.chdir(rootdir())
     return _PORTABLE_MODE[0]
 
+def relpath2root(path):
+    # return relative path to rootdir in portable mode
+    # return None if path is not under the same mount point where rootdir placed
+    # but, always return absolue path if not in portable mode
+    if not is_portable_mode():
+        return os.path.abspath(path)
+
+    pathmp=os.path.dirname(path)
+    while not os.path.ismount(pathmp):
+        pathmp=os.path.dirname(pathmp)
+
+    rootmp=rootdir()
+    while not os.path.ismount(rootmp):
+        rootmp=os.path.dirname(rootmp)
+
+    return os.path.relpath(path) if pathmp==rootmp else None
+
 def pkg_path(*args):
     return os.path.join(sys.path[0], 'mcomix', *args)
 
