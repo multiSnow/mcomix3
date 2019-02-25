@@ -74,7 +74,7 @@ class __BookmarksStore(object):
         path = tools.relpath2root(path)
         if not path:
             # path is None, means running in portable mode
-            # and currect current image is out of same mount point
+            # and currect image is out of same mount point
             # so do not create bookmarks
             return
 
