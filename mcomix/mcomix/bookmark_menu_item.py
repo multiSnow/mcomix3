@@ -19,7 +19,7 @@ class _Bookmark(Gtk.ImageMenuItem):
         self._file_handler = file_handler
         self._date_added = date_added
 
-        super(_Bookmark, self).__init__(str(self), False)
+        super(_Bookmark, self).__init__(label=str(self), use_underline=False)
 
         if self._archive_type is not None:
             im = Gtk.Image.new_from_stock('mcomix-archive', Gtk.IconSize.MENU)
