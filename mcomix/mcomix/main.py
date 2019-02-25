@@ -1139,8 +1139,18 @@ class MainWindow(Gtk.Window):
             Gtk.main_quit()
 
         if prefs['auto load last file'] and self.filehandler.file_loaded:
-            prefs['path to last file'] = self.imagehandler.get_real_path()
-            prefs['page of last file'] = self.imagehandler.get_current_page()
+            path = self.imagehandler.get_real_path()
+            path = tools.relpath2root(path)
+
+            if not path:
+                # path is None, means running in portable mode
+                # and currect image is out of same mount point
+                # so do not save as last file
+                prefs['path to last file'] = ''
+                prefs['page of last file'] = 1
+            else:
+                prefs['path to last file'] = self.imagehandler.get_real_path()
+                prefs['page of last file'] = self.imagehandler.get_current_page()
 
         else:
             prefs['path to last file'] = ''
