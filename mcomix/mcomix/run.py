@@ -175,10 +175,10 @@ def run():
     from mcomix import icons
     icons.load_icons()
 
-    open_path = args.path
+    open_path = args.path or None
     open_page = 1
 
-    if open_path == '' and preferences.prefs['auto load last file'] \
+    if not open_path and preferences.prefs['auto load last file'] \
        and preferences.prefs['path to last file'] \
        and os.path.isfile(preferences.prefs['path to last file']):
         open_path = preferences.prefs['path to last file']
