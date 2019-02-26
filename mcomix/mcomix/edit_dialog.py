@@ -142,7 +142,7 @@ class _EditArchiveDialog(Gtk.Dialog):
         if response == constants.RESPONSE_SAVE_AS:
 
             dialog = file_chooser_simple_dialog.SimpleFileChooserDialog(
-                Gtk.FileChooserAction.SAVE)
+                self, Gtk.FileChooserAction.SAVE)
 
             src_path = self.file_handler.get_path_to_base()
 
@@ -162,7 +162,7 @@ class _EditArchiveDialog(Gtk.Dialog):
 
         elif response == constants.RESPONSE_IMPORT:
 
-            dialog = file_chooser_simple_dialog.SimpleFileChooserDialog()
+            dialog = file_chooser_simple_dialog.SimpleFileChooserDialog(self)
             dialog.add_image_filters()
             dialog.run()
             paths = dialog.get_paths()

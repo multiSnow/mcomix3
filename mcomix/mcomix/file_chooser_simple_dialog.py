@@ -12,8 +12,9 @@ class SimpleFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog):
     use multiple selection by default.
     """
 
-    def __init__(self, action=Gtk.FileChooserAction.OPEN):
+    def __init__(self, parent, action=Gtk.FileChooserAction.OPEN):
         super(SimpleFileChooserDialog, self).__init__(action)
+        self.set_transient_for(parent)
         if action == Gtk.FileChooserAction.OPEN:
             self.filechooser.set_select_multiple(True)
         self._paths = None
