@@ -12,7 +12,8 @@ from mcomix import tools
 class _AboutDialog(Gtk.AboutDialog):
 
     def __init__(self, window):
-        super(_AboutDialog, self).__init__(parent=window)
+        super(_AboutDialog, self).__init__()
+        self.set_transient_for(window)
 
         self.set_name(constants.APPNAME)
         self.set_program_name(constants.APPNAME)
