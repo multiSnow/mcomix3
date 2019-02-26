@@ -259,7 +259,8 @@ class OpenWithEditor(Gtk.Dialog):
     the external model (i.e. preferences) only when properly closed. """
 
     def __init__(self, window, openwithmanager):
-        super(OpenWithEditor, self).__init__(_('Edit external commands'), parent=window)
+        super(OpenWithEditor, self).__init__(title=_('Edit external commands'))
+        self.set_transient_for(window)
         self.set_destroy_with_parent(True)
         self._window = window
         self._openwith = openwithmanager
@@ -267,17 +268,17 @@ class OpenWithEditor(Gtk.Dialog):
 
         self._command_tree = Gtk.TreeView()
         self._command_tree.get_selection().connect('changed', self._item_selected)
-        self._add_button = Gtk.Button(stock=Gtk.STOCK_ADD)
+        self._add_button = Gtk.Button.new_from_stock(Gtk.STOCK_ADD)
         self._add_button.connect('clicked', self._add_command)
         self._add_sep_button = Gtk.Button.new_with_mnemonic(_('Add _separator'))
         self._add_sep_button.connect('clicked', self._add_sep_command)
-        self._remove_button = Gtk.Button(stock=Gtk.STOCK_REMOVE)
+        self._remove_button = Gtk.Button.new_from_stock(Gtk.STOCK_REMOVE)
         self._remove_button.connect('clicked', self._remove_command)
         self._remove_button.set_sensitive(False)
-        self._up_button = Gtk.Button(stock=Gtk.STOCK_GO_UP)
+        self._up_button = Gtk.Button.new_from_stock(Gtk.STOCK_GO_UP)
         self._up_button.connect('clicked', self._up_command)
         self._up_button.set_sensitive(False)
-        self._down_button = Gtk.Button(stock=Gtk.STOCK_GO_DOWN)
+        self._down_button = Gtk.Button.new_from_stock(Gtk.STOCK_GO_DOWN)
         self._down_button.connect('clicked', self._down_command)
         self._down_button.set_sensitive(False)
         self._run_button = Gtk.Button.new_with_mnemonic(_('Run _command'))
@@ -459,7 +460,7 @@ class OpenWithEditor(Gtk.Dialog):
         content.pack_start(buttonbox, False, False, 0)
 
         preview_box = Gtk.HBox()
-        preview_box.pack_start(Gtk.Label(_('Preview:')), False, False, 0)
+        preview_box.pack_start(Gtk.Label(label=_('Preview:')), False, False, 0)
         preview_box.pack_start(self._test_field, True, True, 4)
         preview_box.pack_start(self._run_button, False, False, 0)
         content.pack_start(preview_box, False, False, 0)
