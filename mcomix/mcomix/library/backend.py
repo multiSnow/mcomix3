@@ -8,6 +8,7 @@ from mcomix import constants
 from mcomix import thumbnail_tools
 from mcomix import log
 from mcomix import callback
+from mcomix import tools
 from mcomix.library import backend_types
 # Only for importing legacy data from last-read module
 from mcomix import last_read_page
@@ -91,7 +92,12 @@ class _LibraryBackend(object):
         If the book doesn't exist, None is returned. Otherwise, a
         L{backend_types._Book} instance is returned. """
 
-        path = os.path.abspath(path)
+        path = tools.relpath2root(path)
+        if not path:
+            # path is None, means running in portable mode
+            # and currect path is out of same mount point
+            # so book should not exist in library
+            return
 
         cur = self.execute('''select id, name, path, pages, format,
                                      size, added
@@ -301,7 +307,12 @@ class _LibraryBackend(object):
         Return True if the book was successfully added (or was already
         added).
         """
-        path = os.path.abspath(path)
+        path = tools.relpath2root(path)
+        if not path:
+            # path is None, means running in portable mode
+            # and currect path is out of same mount point
+            # so do not add book to library
+            return
         name = os.path.basename(path)
         info = archive_tools.get_archive_info(path)
         if info is None:
