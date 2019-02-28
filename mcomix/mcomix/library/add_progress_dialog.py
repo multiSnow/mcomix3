@@ -18,8 +18,10 @@ class _AddLibraryProgressDialog(Gtk.Dialog):
         """Adds the books at <paths> to the library, and also to the
         <collection>, unless it is None.
         """
-        super(_AddLibraryProgressDialog, self).__init__(_('Adding books'), library,
-            Gtk.DialogFlags.MODAL, (Gtk.STOCK_STOP, Gtk.ResponseType.CLOSE))
+        super(_AddLibraryProgressDialog, self).__init__(title=_('Adding books'),
+                                                        modal=True)
+        self.set_transient_for(library)
+        self.add_buttons(Gtk.STOCK_STOP, Gtk.ResponseType.CLOSE)
 
         self._window = window
         self._destroy = False

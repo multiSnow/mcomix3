@@ -23,10 +23,14 @@ class WatchListDialog(Gtk.Dialog):
         """ Dialog constructor.
         @param library: Dialog parent window, should be library window.
         """
-        super(WatchListDialog, self).__init__(_("Library watch list"),
-            library, Gtk.DialogFlags.DESTROY_WITH_PARENT | Gtk.DialogFlags.MODAL,
-            (_('_Scan now'), WatchListDialog.RESPONSE_SCANNOW,
-             Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
+        super(WatchListDialog, self).__init__(
+            title=_("Library watch list"), modal=True, destroy_with_parent=True
+        )
+
+        self.add_buttons(
+            _('_Scan now'), WatchListDialog.RESPONSE_SCANNOW,
+            Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE
+        )
 
         #: Stores a reference to the library
         self.library = library
@@ -66,11 +70,12 @@ class WatchListDialog(Gtk.Dialog):
         recursive_column.add_attribute(recursive_renderer, 'active', COL_RECURSIVE)
         self._treeview.append_column(recursive_column)
 
-        add_button = Gtk.Button(_("_Add"), Gtk.STOCK_ADD, use_underline=True)
+        add_button = Gtk.Button.new_from_stock(Gtk.STOCK_ADD)
         add_button.connect('clicked', self._add_cb)
-        self._remove_button = remove_button = Gtk.Button(_("_Remove"), Gtk.STOCK_REMOVE, use_underline=True)
+        remove_button = Gtk.Button.new_from_stock(Gtk.STOCK_REMOVE)
         remove_button.set_sensitive(False)
         remove_button.connect('clicked', self._remove_cb)
+        self._remove_button = remove_button
 
         button_box = Gtk.VBox()
         button_box.pack_start(add_button, False, True, 0)
@@ -176,10 +181,14 @@ class WatchListDialog(Gtk.Dialog):
 
     def _add_cb(self, button, *args):
         """ Called when a new watch list entry should be added. """
-        filechooser = Gtk.FileChooserDialog(parent=self,
-            action=Gtk.FileChooserAction.SELECT_FOLDER,
-            buttons=(Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
-                     Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT))
+        filechooser = Gtk.FileChooserDialog(
+            action=Gtk.FileChooserAction.SELECT_FOLDER
+        )
+        filechooser.set_transient_for(self)
+        filechooser.add_buttons(
+            Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
+            Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT
+        )
         result = filechooser.run()
         if filechooser.get_filename() is not None:
             directory = filechooser.get_filename()

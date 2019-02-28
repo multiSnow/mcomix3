@@ -24,8 +24,9 @@ class _EditArchiveDialog(Gtk.Dialog):
     """
 
     def __init__(self, window):
-        super(_EditArchiveDialog, self).__init__(_('Edit archive'), window, Gtk.DialogFlags.MODAL,
-            (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL))
+        super(_EditArchiveDialog, self).__init__(title=_('Edit archive'), modal=True)
+        self.set_transient_for(window)
+        self.add_buttons(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
 
         self._accept_changes_button = self.add_button(Gtk.STOCK_APPLY, Gtk.ResponseType.APPLY)
 
@@ -141,7 +142,7 @@ class _EditArchiveDialog(Gtk.Dialog):
         if response == constants.RESPONSE_SAVE_AS:
 
             dialog = file_chooser_simple_dialog.SimpleFileChooserDialog(
-                Gtk.FileChooserAction.SAVE)
+                self, Gtk.FileChooserAction.SAVE)
 
             src_path = self.file_handler.get_path_to_base()
 
@@ -161,7 +162,7 @@ class _EditArchiveDialog(Gtk.Dialog):
 
         elif response == constants.RESPONSE_IMPORT:
 
-            dialog = file_chooser_simple_dialog.SimpleFileChooserDialog()
+            dialog = file_chooser_simple_dialog.SimpleFileChooserDialog(self)
             dialog.add_image_filters()
             dialog.run()
             paths = dialog.get_paths()

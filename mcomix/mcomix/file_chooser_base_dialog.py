@@ -42,14 +42,15 @@ class _BaseFileChooserDialog(Gtk.Dialog):
         if action == Gtk.FileChooserAction.OPEN:
             title = _('Open')
             buttons = (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-                Gtk.STOCK_OPEN, Gtk.ResponseType.OK)
+                       Gtk.STOCK_OPEN, Gtk.ResponseType.OK)
 
         else:
             title = _('Save')
             buttons = (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-                Gtk.STOCK_SAVE, Gtk.ResponseType.OK)
+                       Gtk.STOCK_SAVE, Gtk.ResponseType.OK)
 
-        super(_BaseFileChooserDialog, self).__init__(title, None, 0, buttons)
+        super(_BaseFileChooserDialog, self).__init__(title=title)
+        self.add_buttons(*buttons)
         self.set_default_response(Gtk.ResponseType.OK)
 
         self.filechooser = Gtk.FileChooserWidget(action=action)
