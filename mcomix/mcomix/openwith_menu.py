@@ -50,7 +50,7 @@ class OpenWithMenu(Gtk.Menu):
 
         for command in reversed(commandlist):
             if not command.is_separator():
-                menuitem = Gtk.MenuItem(command.get_label())
+                menuitem = Gtk.MenuItem(label=command.get_label())
                 menuitem.connect('activate', self._commandmenu_clicked,
                         command.get_command(), command.get_label(),
                         command.get_cwd(), command.is_disabled_for_archives())
