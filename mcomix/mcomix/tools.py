@@ -161,8 +161,9 @@ def relpath2root(path):
     # return relative path to rootdir in portable mode
     # return None if path is not under the same mount point where rootdir placed
     # but, always return absolue path if not in portable mode
+    path=os.path.abspath(path)
     if not is_portable_mode():
-        return os.path.abspath(path)
+        return path
 
     pathmp=os.path.dirname(path)
     while not os.path.ismount(pathmp):
