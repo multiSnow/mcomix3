@@ -233,7 +233,7 @@ class Thumbnailer(object):
                     return False
 
                 info = img.info
-                stored_mtime = info['Thumb::MTime']
+                stored_mtime = float(info['Thumb::MTime'])
                 # The source file might no longer exist
                 file_mtime = os.path.isfile(filepath) and os.stat(filepath).st_mtime or stored_mtime
                 return stored_mtime == file_mtime and \
