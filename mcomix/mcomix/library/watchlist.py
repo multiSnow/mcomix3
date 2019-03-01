@@ -195,7 +195,7 @@ class WatchListDialog(Gtk.Dialog):
         else:
             directory = u""
         filechooser.destroy()
-        directory = tools.relpath2root(directory)
+        directory = tools.relpath2root(directory,abs_fallback=prefs['portable allow abspath'])
         if not directory:
             # directory is None, means running in portable mode
             # and currect path is out of same mount point

@@ -631,7 +631,7 @@ class FileHandler(object):
 
         if self.file_loaded:
             path = self._window.imagehandler.get_real_path()
-            path = tools.relpath2root(path)
+            path = tools.relpath2root(path,abs_fallback=prefs['portable allow abspath'])
 
             if not path:
                 # path is None, means running in portable mode

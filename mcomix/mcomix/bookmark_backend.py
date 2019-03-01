@@ -14,6 +14,7 @@ from mcomix import callback
 from mcomix import i18n
 from mcomix import message_dialog
 from mcomix import tools
+from mcomix.preferences import prefs
 
 class __BookmarksStore(object):
 
@@ -71,7 +72,7 @@ class __BookmarksStore(object):
         name = self._image_handler.get_pretty_current_filename()
         path = self._image_handler.get_real_path()
 
-        path = tools.relpath2root(path)
+        path = tools.relpath2root(path,abs_fallback=prefs['portable allow abspath'])
         if not path:
             # path is None, means running in portable mode
             # and currect image is out of same mount point

@@ -1140,7 +1140,7 @@ class MainWindow(Gtk.Window):
 
         if prefs['auto load last file'] and self.filehandler.file_loaded:
             path = self.imagehandler.get_real_path()
-            path = tools.relpath2root(path)
+            path = tools.relpath2root(path,abs_fallback=prefs['portable allow abspath'])
 
             if not path:
                 # path is None, means running in portable mode

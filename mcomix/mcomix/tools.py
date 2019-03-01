@@ -157,10 +157,17 @@ def is_portable_mode():
             os.chdir(rootdir())
     return _PORTABLE_MODE[0]
 
-def relpath2root(path):
+def relpath2root(path,abs_fallback=False):
     # return relative path to rootdir in portable mode
-    # return None if path is not under the same mount point where rootdir placed
+    # if path is not under the same mount point where rootdir placed
+    # return abspath of path if abs_fallback is True, else None
     # but, always return absolue path if not in portable mode
+
+    # ATTENTION:
+    # avoid using os.path.relpath without checking mount point in win32
+    # it will raise ValueError if path has a different driver letter
+    # (see source code of ntpath.relpath)
+
     path=os.path.abspath(path)
     if not is_portable_mode():
         return path
@@ -173,7 +180,9 @@ def relpath2root(path):
     while not os.path.ismount(rootmp):
         rootmp=os.path.dirname(rootmp)
 
-    return os.path.relpath(path) if pathmp==rootmp else None
+    if pathmp==rootmp:
+        return os.path.relpath(path)
+    return path if abs_fallback else None
 
 def pkg_path(*args):
     return os.path.join(sys.path[0], 'mcomix', *args)
