@@ -139,11 +139,12 @@ def run():
         wait_and_exit()
 
     try:
+        #FIXME
         # check Pillow version carefully here.
         # from 5.1.0 to 5.4.1, PILLOW_VERSION is used,
         # but since 6.0.0, only __version__ should be used.
         # clean up these code once python 3.6 goes EOL (maybe 2021)
-        # (https://pillow.readthedocs.io/en/stable/releasenotes/5.2.0.html#support-added-for-python-3-7)
+        # (https://pillow.readthedocs.io/en/stable/releasenotes/5.2.0.html)
         import PIL.Image
         pilver=getattr(PIL.Image,'__version__',None)
         if not pilver:
