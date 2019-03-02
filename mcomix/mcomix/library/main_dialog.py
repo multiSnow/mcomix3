@@ -164,8 +164,8 @@ def open_dialog(action, window):
 
     if _dialog is None:
 
-        if library_backend.dbapi2 is None:
-            text = _('! You need an sqlite wrapper to use the library.')
+        if library_backend.sqlite3 is None:
+            text = _('! python need sqlite support to use the library.')
             window.osd.show(text)
             log.error(text)
             return False

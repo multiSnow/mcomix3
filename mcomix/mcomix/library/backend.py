@@ -15,10 +15,11 @@ from mcomix.library import backend_types
 from mcomix import last_read_page
 
 try:
-    from sqlite3 import dbapi2
+    import sqlite3
+    log.debug('SQLite: {0.sqlite_version} sqlite3 version: {0.version}'.format(sqlite3))
 except ImportError:
-    log.warning( _('! Could neither find sqlite3.') )
-    dbapi2 = None
+    log.warning( _('! Could find sqlite3.') )
+    sqlite3 = None
 
 
 #: Identifies the 'Recent' collection that stores recently read books.
@@ -45,8 +46,8 @@ class _LibraryBackend(object):
                 return row[0]
             return row
 
-        if dbapi2 is not None:
-            self._con = dbapi2.connect(constants.LIBRARY_DATABASE_PATH,
+        if sqlite3 is not None:
+            self._con = sqlite3.connect(constants.LIBRARY_DATABASE_PATH,
                 check_same_thread=False, isolation_level=None)
             self._con.row_factory = row_factory
             self.enabled = True
@@ -348,7 +349,7 @@ class _LibraryBackend(object):
                 self.add_book_to_collection(book_id, collection)
 
             return True
-        except dbapi2.Error:
+        except sqlite3.Error:
             log.error( _('! Could not add book "%s" to the library'), path )
             return False
 
@@ -387,7 +388,7 @@ class _LibraryBackend(object):
                 self._con.execute('''insert into Collection
                     (name) values (?)''', (name,))
             return True
-        except dbapi2.Error:
+        except sqlite3.Error:
             log.error( _('! Could not add collection "%s"'), name )
         return False
 
@@ -398,9 +399,9 @@ class _LibraryBackend(object):
                 (collection, book) values (?, ?)''', (collection, book))
             self.book_added_to_collection(self.get_book_by_id(book),
                 collection)
-        except dbapi2.DatabaseError: # E.g. book already in collection.
+        except sqlite3.DatabaseError: # E.g. book already in collection.
             pass
-        except dbapi2.Error:
+        except sqlite3.Error:
             log.error( _('! Could not add book %(book)s to collection %(collection)s'),
                 {"book" : book, "collection" : collection} )
 
@@ -425,9 +426,9 @@ class _LibraryBackend(object):
             self._con.execute('''update Collection set name = ?
                 where id = ?''', (name, collection))
             return True
-        except dbapi2.DatabaseError: # E.g. name taken.
+        except sqlite3.DatabaseError: # E.g. name taken.
             pass
-        except dbapi2.Error:
+        except sqlite3.Error:
             log.error( _('! Could not rename collection to "%s"'), name )
         return False
 

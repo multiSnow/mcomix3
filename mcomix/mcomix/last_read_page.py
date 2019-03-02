@@ -8,10 +8,11 @@ from mcomix import constants
 # This import is only used for legacy data that is imported
 # into the library at upgrade.
 try:
-    from sqlite3 import dbapi2
+    import sqlite3
+    log.debug('SQLite: {0.sqlite_version} sqlite3 version: {0.version}'.format(sqlite3))
 except ImportError:
-    log.warning( _('! Could neither find sqlite3.') )
-    dbapi2 = None
+    log.warning( _('! Could find sqlite3.') )
+    sqlite3 = None
 
 
 class LastReadPage(object):
@@ -213,10 +214,10 @@ class LastReadPage(object):
         @param dbfile: Database file name. This file needn't exist.
         @return: Open SQLite database connection.
         """
-        if not dbapi2:
+        if not sqlite3:
             return None
 
-        db = dbapi2.connect(dbfile, isolation_level=None)
+        db = sqlite3.connect(dbfile, isolation_level=None)
         sql = """CREATE TABLE IF NOT EXISTS lastread (
             path TEXT PRIMARY KEY,
             page INTEGER,
