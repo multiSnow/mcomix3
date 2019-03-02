@@ -630,12 +630,19 @@ class FileHandler(object):
         """Write current open file information."""
 
         if self.file_loaded:
+            path = self._window.imagehandler.get_real_path()
+            path = tools.relpath2root(path,abs_fallback=prefs['portable allow abspath'])
+
+            if not path:
+                # path is None, means running in portable mode
+                # and currect image is out of same mount point
+                # so do not create bookmarks
+                return
+
+            page_index = self._window.imagehandler.get_current_page() - 1
+            current_file_info = [ path, page_index ]
+
             with open(constants.FILEINFO_PICKLE_PATH, 'wb') as config:
-
-                path = self._window.imagehandler.get_real_path()
-                page_index = self._window.imagehandler.get_current_page() - 1
-                current_file_info = [ path, page_index ]
-
                 pickle.dump(current_file_info, config, pickle.HIGHEST_PROTOCOL)
 
     def read_fileinfo_file(self):

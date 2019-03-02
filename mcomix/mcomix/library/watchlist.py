@@ -4,6 +4,7 @@ import os
 from gi.repository import Gtk
 from gi.repository import GLib, GObject
 
+from mcomix import tools
 from mcomix.library import backend_types
 from mcomix.preferences import prefs
 
@@ -194,6 +195,12 @@ class WatchListDialog(Gtk.Dialog):
         else:
             directory = u""
         filechooser.destroy()
+        directory = tools.relpath2root(directory,abs_fallback=prefs['portable allow abspath'])
+        if not directory:
+            # directory is None, means running in portable mode
+            # and currect path is out of same mount point
+            # so do not add directory to watchlist
+            return
 
         if result == Gtk.ResponseType.ACCEPT \
             and os.path.isdir(directory):

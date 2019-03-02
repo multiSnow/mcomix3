@@ -191,6 +191,12 @@ class _PreferencesDialog(Gtk.Dialog):
         page.add_row(Gtk.Label(label=_('Store information about recently opened files:')),
             self._create_store_recent_combobox())
 
+        if constants.PORTABLE_MODE:
+            page.add_row(self._create_pref_check_button(
+                _('Accept file(s) from anywhere'),
+                'portable allow abspath',
+                _('Accept file(s) from anywhere to be seved in bookmark and library. If not, only files(s) in the same disk with mcomix will be accepted.')))
+
         return page
 
     def _init_display_tab(self):

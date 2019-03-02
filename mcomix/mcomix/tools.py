@@ -11,6 +11,7 @@ import io
 from functools import reduce
 
 
+_PORTABLE_MODE=[]
 NUMERIC_REGEXP = re.compile(r"\d+|\D+")  # Split into numerics and characters
 PREFIXED_BYTE_UNITS = ('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB')
 
@@ -75,6 +76,9 @@ def get_home_directory():
     directory, e.g. /home/username. On Windows, it will return an MComix
     sub-directory of <Documents and Settings/Username>.
     """
+    if is_portable_mode():
+        # multiple profiles, maybe :)
+        return os.path.join(rootdir(),'profile')
     if sys.platform == 'win32':
         return os.path.join(os.path.expanduser('~'), 'MComix')
     else:
@@ -89,6 +93,9 @@ def get_config_directory():
     See http://standards.freedesktop.org/basedir-spec/latest/ for more
     information on the $XDG_CONFIG_HOME environmental variable.
     """
+    if is_portable_mode():
+        # always using get_home_directory() even if in unix
+        return os.path.join(get_home_directory(),'config')
     if sys.platform == 'win32':
         return get_home_directory()
     else:
@@ -105,6 +112,9 @@ def get_data_directory():
     See http://standards.freedesktop.org/basedir-spec/latest/ for more
     information on the $XDG_DATA_HOME environmental variable.
     """
+    if is_portable_mode():
+        # always using get_home_directory() even if in unix
+        return os.path.join(get_home_directory(),'data')
     if sys.platform == 'win32':
         return get_home_directory()
     else:
@@ -132,6 +142,47 @@ def format_byte_size(n):
 def garbage_collect():
     """ Runs the garbage collector. """
     gc.collect(0)
+
+def rootdir():
+    # return path contains mcomixstarter.py
+    return sys.path[0]
+
+def is_portable_mode():
+    # check if running in portable mode
+    if not _PORTABLE_MODE:
+        portable_file=os.path.join(rootdir(),'portable.txt')
+        _PORTABLE_MODE.append(os.path.exists(portable_file))
+        if _PORTABLE_MODE[0]:
+            # chdir to rootdir early
+            os.chdir(rootdir())
+    return _PORTABLE_MODE[0]
+
+def relpath2root(path,abs_fallback=False):
+    # return relative path to rootdir in portable mode
+    # if path is not under the same mount point where rootdir placed
+    # return abspath of path if abs_fallback is True, else None
+    # but, always return absolue path if not in portable mode
+
+    # ATTENTION:
+    # avoid using os.path.relpath without checking mount point in win32
+    # it will raise ValueError if path has a different driver letter
+    # (see source code of ntpath.relpath)
+
+    path=os.path.abspath(path)
+    if not is_portable_mode():
+        return path
+
+    pathmp=os.path.dirname(path)
+    while not os.path.ismount(pathmp):
+        pathmp=os.path.dirname(pathmp)
+
+    rootmp=rootdir()
+    while not os.path.ismount(rootmp):
+        rootmp=os.path.dirname(rootmp)
+
+    if pathmp==rootmp:
+        return os.path.relpath(path)
+    return path if abs_fallback else None
 
 def pkg_path(*args):
     return os.path.join(sys.path[0], 'mcomix', *args)

@@ -102,6 +102,7 @@ prefs = {
     'openwith commands': [],  # (label, command) pairs
     'animation mode': constants.ANIMATION_DISABLED,
     'temporary directory': None,
+    'portable allow abspath': False,
 }
 
 def read_preferences_file():

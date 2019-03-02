@@ -13,6 +13,8 @@ from mcomix import bookmark_menu_item
 from mcomix import callback
 from mcomix import i18n
 from mcomix import message_dialog
+from mcomix import tools
+from mcomix.preferences import prefs
 
 class __BookmarksStore(object):
 
@@ -69,6 +71,14 @@ class __BookmarksStore(object):
         """Add the currently viewed page to the list."""
         name = self._image_handler.get_pretty_current_filename()
         path = self._image_handler.get_real_path()
+
+        path = tools.relpath2root(path,abs_fallback=prefs['portable allow abspath'])
+        if not path:
+            # path is None, means running in portable mode
+            # and currect image is out of same mount point
+            # so do not create bookmarks
+            return
+
         page = self._image_handler.get_current_page()
         numpages = self._image_handler.get_number_of_pages()
         archive_type = self._file_handler.archive_type
