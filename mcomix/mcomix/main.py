@@ -1005,9 +1005,11 @@ class MainWindow(Gtk.Window):
         else:
             suggested_name = os.path.split(self.imagehandler.get_path_to_page())[-1]
 
-        save_dialog = Gtk.FileChooserDialog(_('Save page as'), self,
-            Gtk.FileChooserAction.SAVE, (Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT,
-            Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT))
+        save_dialog = Gtk.FileChooserDialog(title=_('Save page as'),
+                                            action=Gtk.FileChooserAction.SAVE)
+        save_dialog.add_buttons(Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT,
+                                Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT)
+        save_dialog.set_transient_for(self)
         save_dialog.set_do_overwrite_confirmation(True)
         save_dialog.set_current_name(suggested_name.encode('utf-8'))
 

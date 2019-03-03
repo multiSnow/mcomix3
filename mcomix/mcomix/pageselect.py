@@ -14,8 +14,10 @@ class Pageselector(Gtk.Dialog):
 
     def __init__(self, window):
         self._window = window
-        super(Pageselector, self).__init__("Go to page...", window,
-                                     Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT)
+        super(Pageselector, self).__init__(title=_('Go to page...'),
+                                           modal=True,
+                                           destroy_with_parent=True)
+        self.set_transient_for(window)
         self.add_buttons(_('_Go'), Gtk.ResponseType.OK,
                          _('_Cancel'), Gtk.ResponseType.CANCEL,)
         self.set_default_response(Gtk.ResponseType.OK)
@@ -24,9 +26,10 @@ class Pageselector(Gtk.Dialog):
 
         self._number_of_pages = self._window.imagehandler.get_number_of_pages()
 
-        self._selector_adjustment = Gtk.Adjustment(value=self._window.imagehandler.get_current_page(),
-                              lower=1,upper=self._number_of_pages,
-                              step_incr=1, page_incr=1 )
+        self._selector_adjustment = Gtk.Adjustment(
+            value=self._window.imagehandler.get_current_page(),
+            lower=1, upper=self._number_of_pages,
+            step_increment=1, page_increment=1)
 
         self._page_selector = Gtk.VScale.new(self._selector_adjustment)
         self._page_selector.set_draw_value(False)

@@ -8,9 +8,9 @@ from mcomix import i18n
 class _CommentsDialog(Gtk.Dialog):
 
     def __init__(self, window):
-        super(_CommentsDialog, self).__init__(_('Comments'), window, 0,
-            (Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
-
+        super(_CommentsDialog, self).__init__(title=_('Comments'))
+        self.set_transient_for(window)
+        self.add_buttons(Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE)
         self.set_resizable(True)
         self.set_default_response(Gtk.ResponseType.CLOSE)
         self.set_default_size(600, 550)
