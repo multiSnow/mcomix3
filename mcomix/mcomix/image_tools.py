@@ -348,21 +348,24 @@ def set_from_pixbuf(image, pixbuf):
     else:
         return image.set_from_pixbuf(pixbuf)
 
+def load_animation(im):
+    # WIP
+    return pil_to_pixbuf(im, keep_orientation=True)
+
 def load_pixbuf(path):
     """ Loads a pixbuf from a given image file. """
-    disable_animation = prefs['animation mode'] == constants.ANIMATION_DISABLED
+    enable_anime = prefs['animation mode'] != constants.ANIMATION_DISABLED
     try:
         with Image.open(path) as im:
-            if 'duration' not in im.info:
-                return pil_to_pixbuf(im, keep_orientation=True)
+            # make sure n_frames loaded
+            im.load()
+            # 'duration' is required for fps
+            if enable_anime and getattr(im,'is_animated',False) and 'duration' in im.info:
+                return load_animation(im)
+            return pil_to_pixbuf(im, keep_orientation=True)
     except:
         pass
-    if disable_animation:
-        return GdkPixbuf.Pixbuf.new_from_file(path)
-    pixbuf = GdkPixbuf.PixbufAnimation.new_from_file(path)
-    if pixbuf.is_static_image():
-        return pixbuf.get_static_image()
-    return pixbuf
+    return GdkPixbuf.Pixbuf.new_from_file(path)
 
 def load_pixbuf_size(path, width, height):
     """ Loads a pixbuf from a given image file and scale it to fit
