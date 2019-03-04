@@ -17,6 +17,7 @@ from functools import reduce
 from mcomix.preferences import prefs
 from mcomix import constants
 from mcomix import log
+from mcomix import anime_tools
 
 # see comments in run.py (Pillow version)
 pilver=getattr(Image,'__version__',None)
@@ -349,8 +350,13 @@ def set_from_pixbuf(image, pixbuf):
         return image.set_from_pixbuf(pixbuf)
 
 def load_animation(im):
-    # WIP
-    return pil_to_pixbuf(im, keep_orientation=True)
+    w,h=im.size
+    anime=anime_tools.AnimeFrameBuffer(w,h,im.n_frames,loop=im.info['loop'])
+    for n in range(im.n_frames):
+        im.seek(n)
+        # TODO: correctly deal with im.info['transparency']
+        anime.add_frame(n,pil_to_pixbuf(im),im.info['duration'])
+    return anime.create_animation()
 
 def load_pixbuf(path):
     """ Loads a pixbuf from a given image file. """
