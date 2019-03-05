@@ -10,6 +10,7 @@ from gi.repository import GLib, GdkPixbuf, Gdk, Gtk
 from PIL import Image
 from PIL import ImageEnhance
 from PIL import ImageOps
+from PIL import ImageSequence
 from PIL.JpegImagePlugin import _getexif
 from io import BytesIO
 from functools import reduce
@@ -352,10 +353,11 @@ def set_from_pixbuf(image, pixbuf):
 def load_animation(im):
     w,h=im.size
     anime=anime_tools.AnimeFrameBuffer(w,h,im.n_frames,loop=im.info['loop'])
-    for n in range(im.n_frames):
-        im.seek(n)
+    frameiter=ImageSequence.Iterator(im)
+    for n,frame in enumerate(frameiter):
+        # TODO: correctly deal with im.info['background']
         # TODO: correctly deal with im.info['transparency']
-        anime.add_frame(n,pil_to_pixbuf(im),im.info['duration'])
+        anime.add_frame(n,pil_to_pixbuf(frame),frame.info.get('duration',0))
     return anime.create_animation()
 
 def load_pixbuf(path):
@@ -365,8 +367,7 @@ def load_pixbuf(path):
         with Image.open(path) as im:
             # make sure n_frames loaded
             im.load()
-            # 'duration' is required for fps
-            if enable_anime and getattr(im,'is_animated',False) and 'duration' in im.info:
+            if enable_anime and getattr(im,'is_animated',False):
                 return load_animation(im)
             return pil_to_pixbuf(im, keep_orientation=True)
     except:
