@@ -351,12 +351,16 @@ def set_from_pixbuf(image, pixbuf):
         return image.set_from_pixbuf(pixbuf)
 
 def load_animation(im):
+    if im.format=='GIF' and im.mode=='P':
+        # TODO: Pillow has bug with gif animation
+        # https://github.com/python-pillow/Pillow/labels/GIF
+        raise NotImplementedError('Pillow has bug with gif animation, '
+                                  'fallback to GdkPixbuf')
     w,h=im.size
     anime=anime_tools.AnimeFrameBuffer(w,h,im.n_frames,loop=im.info['loop'])
     frameiter=ImageSequence.Iterator(im)
     for n,frame in enumerate(frameiter):
         # TODO: correctly deal with im.info['background']
-        # TODO: correctly deal with im.info['transparency']
         anime.add_frame(n,pil_to_pixbuf(frame),frame.info.get('duration',0))
     return anime.create_animation()
 
@@ -372,6 +376,11 @@ def load_pixbuf(path):
             return pil_to_pixbuf(im, keep_orientation=True)
     except:
         pass
+    if enable_anime:
+        pixbuf = GdkPixbuf.PixbufAnimation.new_from_file(path)
+        if pixbuf.is_static_image():
+            return pixbuf.get_static_image()
+        return pixbuf
     return GdkPixbuf.Pixbuf.new_from_file(path)
 
 def load_pixbuf_size(path, width, height):
