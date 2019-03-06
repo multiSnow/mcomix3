@@ -7,7 +7,7 @@ class AnimeFrameBuffer:
         self.n_frames=n_frames
         self.width=width
         self.height=height
-        self.loop=0 if loop>10 else loop # loop over 10 is indefinitely
+        self.loop=0 if loop>10 else loop # loop over 10 is infinitely
 
         self.framelist=[None]*n_frames
         self.duration=0
