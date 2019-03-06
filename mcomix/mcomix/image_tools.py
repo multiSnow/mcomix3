@@ -358,9 +358,16 @@ def load_animation(im):
                                   'fallback to GdkPixbuf')
     w,h=im.size
     anime=anime_tools.AnimeFrameBuffer(w,h,im.n_frames,loop=im.info['loop'])
+    bg=im.info.get('background',None)
+    if isinstance(bg,int):
+        anime.bg=bg
+    elif isinstance(bg,tuple):
+        color=0
+        for n,c in enumerate(bg):
+            color|=c<<n*8
+        anime.bg=color
     frameiter=ImageSequence.Iterator(im)
     for n,frame in enumerate(frameiter):
-        # TODO: correctly deal with im.info['background']
         anime.add_frame(n,pil_to_pixbuf(frame),frame.info.get('duration',0))
     return anime.create_animation()
 
