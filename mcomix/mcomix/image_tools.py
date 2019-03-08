@@ -356,8 +356,7 @@ def load_animation(im):
         # https://github.com/python-pillow/Pillow/labels/GIF
         raise NotImplementedError('Pillow has bug with gif animation, '
                                   'fallback to GdkPixbuf')
-    w,h=im.size
-    anime=anime_tools.AnimeFrameBuffer(w,h,im.n_frames,loop=im.info['loop'])
+    anime=anime_tools.AnimeFrameBuffer(im.n_frames,loop=im.info['loop'])
     bg=im.info.get('background',None)
     if isinstance(bg,int):
         anime.bg=bg
