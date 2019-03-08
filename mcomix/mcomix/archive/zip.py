@@ -26,10 +26,11 @@ class ZipArchive(archive_base.NonUnicodeArchive):
         super(ZipArchive, self).__init__(archive)
         self.zip = zipfile.ZipFile(archive, 'r')
 
+        self.is_encrypted = self._has_encryption()
         self._password = None
 
     def iter_contents(self):
-        if self._has_encryption():
+        if self.is_encrypted:
             self._get_password()
             self.zip.setpassword(self._password)
 
