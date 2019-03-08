@@ -95,7 +95,6 @@ def trans_animation(animepixbuf,*args,**kwargs):
         return animepixbuf
     # call trans_pixbuf on every frame
     anime=anime_tools.AnimeFrameBuffer(framebuffer.n_frames,loop=framebuffer.loop)
-    anime.bg=framebuffer.bg
     for n,frame in enumerate(framebuffer.framelist):
         pixbuf,duration=frame
         anime.add_frame(n,trans_pixbuf(pixbuf,*args,**kwargs),duration)
@@ -116,7 +115,6 @@ def fit_animation_to_rectangle(animepixbuf,*args,**kwargs):
         return animepixbuf
     # call fit_pixbuf_to_rectangle on every frame
     anime=anime_tools.AnimeFrameBuffer(framebuffer.n_frames,loop=framebuffer.loop)
-    anime.bg=framebuffer.bg
     for n,frame in enumerate(framebuffer.framelist):
         pixbuf,duration=frame
         anime.add_frame(n,fit_pixbuf_to_rectangle(pixbuf,*args,**kwargs),duration)
@@ -393,17 +391,17 @@ def load_animation(im):
         raise NotImplementedError('Pillow has bug with gif animation, '
                                   'fallback to GdkPixbuf')
     anime=anime_tools.AnimeFrameBuffer(im.n_frames,loop=im.info['loop'])
-    bg=im.info.get('background',None)
-    if isinstance(bg,int):
-        anime.bg=bg
-    elif isinstance(bg,tuple):
+    background=im.info.get('background',None)
+    if isinstance(background,tuple):
         color=0
-        for n,c in enumerate(bg):
+        for n,c in enumerate(background):
             color|=c<<n*8
-        anime.bg=color
+        background=color
     frameiter=ImageSequence.Iterator(im)
     for n,frame in enumerate(frameiter):
-        anime.add_frame(n,pil_to_pixbuf(frame),frame.info.get('duration',0))
+        anime.add_frame(n,pil_to_pixbuf(frame),
+                        frame.info.get('duration',0),
+                        background=background)
     return anime.create_animation()
 
 def load_pixbuf(path):

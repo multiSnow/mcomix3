@@ -12,9 +12,8 @@ class AnimeFrameBuffer:
         self.framelist=[None]*n_frames
         self.duration=0
         self.fps=0
-        self.bg=None
 
-    def add_frame(self,index,pixbuf,duration):
+    def add_frame(self,index,pixbuf,duration,background=None):
         if self.n_frames<=index:
             raise EOFError('index over')
         width=pixbuf.get_width()
@@ -25,12 +24,16 @@ class AnimeFrameBuffer:
         else:
             self.width=width
             self.height=height
+        if background:
+            pixbuf=pixbuf.composite_color_simple(
+                width,height,GdkPixbuf.InterpType.NEAREST,
+                255,1024,background,background
+            )
         self.framelist[index]=(pixbuf,duration)
         self.duration=math.gcd(duration,self.duration)
 
     def copy(self):
         newbuffer=AnimeFrameBuffer(self.n_frames,loop=self.loop)
-        newbuffer.bg=self.bg
         for n,frame in enumerate(self.framelist):
             pixbuf,duration=frame
             newbuffer.add_frame(n,pixbuf,duration)
@@ -55,15 +58,7 @@ class AnimeFrameBuffer:
             for n,frame in enumerate(self.framelist):
                 if not frame:
                     raise OSError('animation corrupted')
-                _pixbuf,duration=frame
-                if self.bg:
-                    pixbuf=_pixbuf.composite_color_simple(
-                        self.width,self.height,
-                        GdkPixbuf.InterpType.NEAREST,
-                        255,1024,self.bg,self.bg
-                    )
-                else:
-                    pixbuf=_pixbuf.copy()
+                pixbuf,duration=frame
                 if not (duration and self.duration):
                     loop=1
                 else:
