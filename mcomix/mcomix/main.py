@@ -452,12 +452,13 @@ class MainWindow(Gtk.Window):
                     pixbuf_list[i], scaled_sizes[i], rotation_list[i])
 
             for i in range(pixbuf_count):
+                pixbuf_list[i] = image_tools.trans_pixbuf(
+                    pixbuf_list[i],
+                    flip=prefs['vertical flip'],
+                    flop=prefs['horizontal flip']
+                )
                 if do_not_transform[i]:
                     continue
-                if prefs['horizontal flip']:
-                    pixbuf_list[i] = pixbuf_list[i].flip(horizontal=True)
-                if prefs['vertical flip']:
-                    pixbuf_list[i] = pixbuf_list[i].flip(horizontal=False)
                 pixbuf_list[i] = self.enhancer.enhance(pixbuf_list[i])
 
             for i in range(pixbuf_count):

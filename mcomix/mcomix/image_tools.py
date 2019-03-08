@@ -79,6 +79,28 @@ def get_fitting_size(source_size, target_size,
                 width = int(max(src_width * height / src_height, 1))
     return (width, height)
 
+def trans_pixbuf(src,flip=False,flop=False):
+    if is_animation(src):
+        return trans_animation(src,flip=flip,flop=flop)
+    if flip:
+        src = src.flip(horizontal=False)
+    if flop:
+        src = src.flip(horizontal=True)
+    return src
+
+def trans_animation(animepixbuf,*args,**kwargs):
+    framebuffer=getattr(animepixbuf,'_framebuffer',None)
+    if not framebuffer:
+        # animation does not have AnimeFrameBuffer, do nothing
+        return animepixbuf
+    # call trans_pixbuf on every frame
+    anime=anime_tools.AnimeFrameBuffer(framebuffer.n_frames,loop=framebuffer.loop)
+    anime.bg=framebuffer.bg
+    for n,frame in enumerate(framebuffer.framelist):
+        pixbuf,duration=frame
+        anime.add_frame(n,trans_pixbuf(pixbuf,*args,**kwargs),duration)
+    return anime.create_animation()
+
 def fit_pixbuf_to_rectangle(src, rect, rotation):
     if is_animation(src):
         return fit_animation_to_rectangle(src, rect, rotation)
