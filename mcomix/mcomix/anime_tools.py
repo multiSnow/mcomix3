@@ -28,6 +28,14 @@ class AnimeFrameBuffer:
         self.framelist[index]=(pixbuf,duration)
         self.duration=math.gcd(duration,self.duration)
 
+    def copy(self):
+        newbuffer=AnimeFrameBuffer(self.n_frames,loop=self.loop)
+        newbuffer.bg=self.bg
+        for n,frame in enumerate(self.framelist):
+            pixbuf,duration=frame
+            newbuffer.add_frame(n,pixbuf,duration)
+        return newbuffer
+
     def create_animation(self):
         if not self.fps:
             if self.duration:
