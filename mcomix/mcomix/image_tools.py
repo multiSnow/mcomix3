@@ -80,10 +80,25 @@ def get_fitting_size(source_size, target_size,
     return (width, height)
 
 def fit_pixbuf_to_rectangle(src, rect, rotation):
+    if is_animation(src):
+        return fit_animation_to_rectangle(src, rect, rotation)
     return fit_in_rectangle(src, rect[0], rect[1],
                             rotation=rotation,
                             keep_ratio=False,
                             scale_up=True)
+
+def fit_animation_to_rectangle(animepixbuf,*args,**kwargs):
+    framebuffer=getattr(animepixbuf,'_framebuffer',None)
+    if not framebuffer:
+        # animation does not have AnimeFrameBuffer, do nothing
+        return animepixbuf
+    # call fit_pixbuf_to_rectangle on every frame
+    anime=anime_tools.AnimeFrameBuffer(framebuffer.n_frames,loop=framebuffer.loop)
+    anime.bg=framebuffer.bg
+    for n,frame in enumerate(framebuffer.framelist):
+        pixbuf,duration=frame
+        anime.add_frame(n,fit_pixbuf_to_rectangle(pixbuf,*args,**kwargs),duration)
+    return anime.create_animation()
 
 def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False, rotation=0, scaling_quality=None):
     """Scale (and return) a pixbuf so that it fits in a rectangle with
@@ -144,7 +159,6 @@ def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False, rotati
     src = rotate_pixbuf(src, rotation)
 
     return src
-
 
 def add_border(pixbuf, thickness, colour=0x000000FF):
     """Return a pixbuf from <pixbuf> with a <thickness> px border of

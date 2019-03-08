@@ -433,7 +433,7 @@ class MainWindow(Gtk.Window):
                     dasize = 1
                 zoom_dummy_size[distribution_axis] = dasize
                 scaled_sizes = self.zoom.get_zoomed_size(size_list, zoom_dummy_size,
-                    distribution_axis, do_not_transform)
+                    distribution_axis, [False]*len(do_not_transform))
                 self.layout = layout.FiniteLayout(scaled_sizes,
                                                   viewport_size,
                                                   orientation,
@@ -450,8 +450,6 @@ class MainWindow(Gtk.Window):
                     viewport_size = () # start anew
 
             for i in range(pixbuf_count):
-                if do_not_transform[i]:
-                    continue
                 pixbuf_list[i] = image_tools.fit_pixbuf_to_rectangle(
                     pixbuf_list[i], scaled_sizes[i], rotation_list[i])
 
