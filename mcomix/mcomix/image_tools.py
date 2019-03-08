@@ -468,6 +468,11 @@ def enhance(pixbuf, brightness=1.0, contrast=1.0, saturation=1.0,
     but only if the image mode is supported by ImageOps.autocontrast (i.e.
     it is L or RGB.)
     """
+    if is_animation(pixbuf):
+        return enhance_animation(
+            pixbuf, brightness=brightness, contrast=contrast,
+            saturation=saturation, sharpness=1.0, autocontrast=False
+        )
     im = pixbuf_to_pil(pixbuf)
     if brightness != 1.0:
         im = ImageEnhance.Brightness(im).enhance(brightness)
@@ -480,6 +485,19 @@ def enhance(pixbuf, brightness=1.0, contrast=1.0, saturation=1.0,
     if sharpness != 1.0:
         im = ImageEnhance.Sharpness(im).enhance(sharpness)
     return pil_to_pixbuf(im)
+
+def enhance_animation(animepixbuf,*args,**kwargs):
+    framebuffer=getattr(animepixbuf,'_framebuffer',None)
+    if not framebuffer:
+        # animation does not have AnimeFrameBuffer, do nothing
+        return animepixbuf
+    # call enhance on every frame
+    anime=anime_tools.AnimeFrameBuffer(framebuffer.n_frames,loop=framebuffer.loop)
+    anime.bg=framebuffer.bg
+    for n,frame in enumerate(framebuffer.framelist):
+        pixbuf,duration=frame
+        anime.add_frame(n,enhance(pixbuf,*args,**kwargs),duration)
+    return anime.create_animation()
 
 def _get_png_implied_rotation(pixbuf_or_image):
     """Same as <get_implied_rotation> for PNG files.
