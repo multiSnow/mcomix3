@@ -4,7 +4,6 @@
 
 import os
 import zipfile
-from contextlib import closing
 
 from mcomix import log
 from mcomix.archive import archive_base
@@ -14,8 +13,7 @@ from mcomix.archive import archive_base
 def is_py_supported_zipfile(path):
     """Check if a given zipfile has all internal files stored with Python supported compression
     """
-    # Use contextlib's closing for 2.5 compatibility
-    with closing(zipfile.ZipFile(path, 'r')) as zip_file:
+    with zipfile.ZipFile(path, mode='r') as zip_file:
         for file_info in zip_file.infolist():
             if file_info.compress_type not in (zipfile.ZIP_STORED, zipfile.ZIP_DEFLATED):
                 return False
