@@ -404,8 +404,6 @@ class MainWindow(Gtk.Window):
                 orientation = list(orientation)
                 orientation.reverse()
                 for i in range(pixbuf_count):
-                    if do_not_transform[i]:
-                        continue
                     size_list[i].reverse()
             if rotation in (180, 270):
                 orientation = tools.vector_opposite(orientation)
