@@ -81,44 +81,22 @@ def get_fitting_size(source_size, target_size,
 
 def trans_pixbuf(src,flip=False,flop=False):
     if is_animation(src):
-        return trans_animation(src,flip=flip,flop=flop)
+        return anime_tools.frame_executor(src, trans_pixbuf,
+                                          kwargs=dict(flip=flip, flop=flop))
     if flip:
         src = src.flip(horizontal=False)
     if flop:
         src = src.flip(horizontal=True)
     return src
 
-def trans_animation(animepixbuf,*args,**kwargs):
-    framebuffer=getattr(animepixbuf,'_framebuffer',None)
-    if not framebuffer:
-        # animation does not have AnimeFrameBuffer, do nothing
-        return animepixbuf
-    # call trans_pixbuf on every frame
-    anime=anime_tools.AnimeFrameBuffer(framebuffer.n_frames,loop=framebuffer.loop)
-    for n,frame in enumerate(framebuffer.framelist):
-        pixbuf,duration=frame
-        anime.add_frame(n,trans_pixbuf(pixbuf,*args,**kwargs),duration)
-    return anime.create_animation()
-
 def fit_pixbuf_to_rectangle(src, rect, rotation):
     if is_animation(src):
-        return fit_animation_to_rectangle(src, rect, rotation)
+        return anime_tools.frame_executor(src, fit_pixbuf_to_rectangle,
+                                          args=(rect, rotation))
     return fit_in_rectangle(src, rect[0], rect[1],
                             rotation=rotation,
                             keep_ratio=False,
                             scale_up=True)
-
-def fit_animation_to_rectangle(animepixbuf,*args,**kwargs):
-    framebuffer=getattr(animepixbuf,'_framebuffer',None)
-    if not framebuffer:
-        # animation does not have AnimeFrameBuffer, do nothing
-        return animepixbuf
-    # call fit_pixbuf_to_rectangle on every frame
-    anime=anime_tools.AnimeFrameBuffer(framebuffer.n_frames,loop=framebuffer.loop)
-    for n,frame in enumerate(framebuffer.framelist):
-        pixbuf,duration=frame
-        anime.add_frame(n,fit_pixbuf_to_rectangle(pixbuf,*args,**kwargs),duration)
-    return anime.create_animation()
 
 def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False, rotation=0, scaling_quality=None):
     """Scale (and return) a pixbuf so that it fits in a rectangle with
@@ -467,9 +445,11 @@ def enhance(pixbuf, brightness=1.0, contrast=1.0, saturation=1.0,
     it is L or RGB.)
     """
     if is_animation(pixbuf):
-        return enhance_animation(
-            pixbuf, brightness=brightness, contrast=contrast,
-            saturation=saturation, sharpness=1.0, autocontrast=False
+        return anime_tools.frame_executor(
+            pixbuf, enhance,
+            kwargs=dict(brightness=brightness, contrast=contrast,
+                        saturation=saturation, sharpness=1.0,
+                        autocontrast=False)
         )
     im = pixbuf_to_pil(pixbuf)
     if brightness != 1.0:
@@ -483,19 +463,6 @@ def enhance(pixbuf, brightness=1.0, contrast=1.0, saturation=1.0,
     if sharpness != 1.0:
         im = ImageEnhance.Sharpness(im).enhance(sharpness)
     return pil_to_pixbuf(im)
-
-def enhance_animation(animepixbuf,*args,**kwargs):
-    framebuffer=getattr(animepixbuf,'_framebuffer',None)
-    if not framebuffer:
-        # animation does not have AnimeFrameBuffer, do nothing
-        return animepixbuf
-    # call enhance on every frame
-    anime=anime_tools.AnimeFrameBuffer(framebuffer.n_frames,loop=framebuffer.loop)
-    anime.bg=framebuffer.bg
-    for n,frame in enumerate(framebuffer.framelist):
-        pixbuf,duration=frame
-        anime.add_frame(n,enhance(pixbuf,*args,**kwargs),duration)
-    return anime.create_animation()
 
 def _get_png_implied_rotation(pixbuf_or_image):
     """Same as <get_implied_rotation> for PNG files.
