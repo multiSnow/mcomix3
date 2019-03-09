@@ -40,6 +40,8 @@ class AnimeFrameBuffer:
         return newbuffer
 
     def create_animation(self):
+        if not self.width*self.height:
+            raise ValueError('no frames')
         if not self.fps:
             if self.duration:
                 self.fps=1000/self.duration
@@ -47,8 +49,6 @@ class AnimeFrameBuffer:
                 # all duration is 0, set fps to 60
                 # TODO: correctly deal with 0 duration
                 self.fps=60
-        if not self.width*self.height:
-            raise ValueError('no frames')
         anime=GdkPixbuf.PixbufSimpleAnim.new(self.width,self.height,self.fps)
         if self.loop:
             anime.set_loop(False)
