@@ -46,6 +46,8 @@ class _PreferencesDialog(Gtk.Dialog):
         notebook.append_page(behaviour, Gtk.Label(label=_('Behaviour')))
         display = self._init_display_tab()
         notebook.append_page(display, Gtk.Label(label=_('Display')))
+        animation = self._init_animation_tab()
+        notebook.append_page(animation, Gtk.Label(label=_('Animation')))
         advanced = self._init_advanced_tab()
         notebook.append_page(advanced, Gtk.Label(label=_('Advanced')))
         shortcuts = self.shortcuts = self._init_shortcuts_tab()
@@ -254,6 +256,19 @@ class _PreferencesDialog(Gtk.Dialog):
 
         return page
 
+    def _init_animation_tab(self):
+        # ----------------------------------------------------------------
+        # The "Animation" tab.
+        # ----------------------------------------------------------------
+        page = preferences_page._PreferencePage(None)
+
+        page.new_section(_('Animated images'))
+
+        page.add_row(Gtk.Label(label=_('Animation mode')),
+                     self._create_animation_mode_combobox())
+
+        return page
+
     def _init_advanced_tab(self):
         # ----------------------------------------------------------------
         # The "Advanced" tab.
@@ -306,11 +321,6 @@ class _PreferencesDialog(Gtk.Dialog):
 
         page.add_row(Gtk.Label(label=_('Comment extensions:')),
             self._create_extensions_entry())
-
-        page.new_section(_('Animated images'))
-
-        page.add_row(Gtk.Label(label=_('Animation mode:')),
-		     self._create_animation_mode_combobox())
 
         return page
 
