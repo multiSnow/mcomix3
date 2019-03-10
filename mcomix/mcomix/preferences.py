@@ -101,7 +101,7 @@ prefs = {
     'scan for new books on library startup': True,
     'openwith commands': [],  # (label, command) pairs
     'animation mode': constants.ANIMATION_DISABLED,
-    'animation background': True,
+    'animation background': False,
     'animation transform': False,
     'temporary directory': None,
     'portable allow abspath': False,
