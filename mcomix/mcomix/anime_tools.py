@@ -32,7 +32,7 @@ class AnimeFrameBuffer:
         else:
             self.width=width
             self.height=height
-        if background:
+        if prefs['animation background'] and background:
             pixbuf=pixbuf.composite_color_simple(
                 width,height,GdkPixbuf.InterpType.NEAREST,
                 255,1024,background,background

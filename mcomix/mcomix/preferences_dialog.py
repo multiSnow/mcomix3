@@ -267,6 +267,12 @@ class _PreferencesDialog(Gtk.Dialog):
         page.add_row(Gtk.Label(label=_('Animation mode')),
                      self._create_animation_mode_combobox())
 
+        page.add_row(self._create_pref_check_button(
+            _('Using background from the animation'),
+            'animation background',
+            _('Using background from the animation,\n'
+              'or follow the setting of Appearance -> Background')))
+
         return page
 
     def _init_advanced_tab(self):
@@ -775,7 +781,7 @@ class _PreferencesDialog(Gtk.Dialog):
                 prefs['thumbnail bg uses main colour'] = False
 
                 pixbuf = image_tools.static_image(image_tools.unwrap_image(
-		    self._window.images[0])) # XXX transitional(double page limitation)
+                    self._window.images[0])) # XXX transitional(double page limitation)
                 if pixbuf:
                     bg_color = image_tools.get_most_common_edge_colour(pixbuf)
                     self._window.thumbnailsidebar.change_thumbnail_background_color(bg_color)
@@ -792,6 +798,10 @@ class _PreferencesDialog(Gtk.Dialog):
 
         elif preference == 'show page numbers on thumbnails':
             self._window.thumbnailsidebar.toggle_page_numbers_visible()
+
+        elif preference == 'animation background':
+            self._window.filehandler.refresh_file()
+
 
     def _color_button_cb(self, colorbutton, preference):
         """Callback for the background colour selection button."""
