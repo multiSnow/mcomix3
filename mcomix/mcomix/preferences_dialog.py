@@ -273,6 +273,11 @@ class _PreferencesDialog(Gtk.Dialog):
             _('Using background from the animation,\n'
               'or follow the setting of Appearance -> Background')))
 
+        page.add_row(self._create_pref_check_button(
+            _('Enable transform on animation'),
+            'animation transform',
+            _('Enable scale, rotate, flip and enhance operation on animation')))
+
         return page
 
     def _init_advanced_tab(self):
@@ -799,7 +804,7 @@ class _PreferencesDialog(Gtk.Dialog):
         elif preference == 'show page numbers on thumbnails':
             self._window.thumbnailsidebar.toggle_page_numbers_visible()
 
-        elif preference == 'animation background':
+        elif preference in ('animation background', 'animation transform'):
             self._window.filehandler.refresh_file()
 
 

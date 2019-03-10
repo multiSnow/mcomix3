@@ -79,6 +79,9 @@ class AnimeFrameBuffer:
         return anime
 
 def frame_executor(animation,function,args=(),kwargs={}):
+    if not prefs['animation transform']:
+        # transform disabled, do nothing
+        return animation
     if not callable(function):
         # function is not a function, do nothing
         return animation

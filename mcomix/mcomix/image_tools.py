@@ -331,6 +331,14 @@ def pixbuf_to_pil(pixbuf):
 def is_animation(pixbuf):
     return isinstance(pixbuf, GdkPixbuf.PixbufAnimation)
 
+def disable_transform(pixbuf):
+    if is_animation(pixbuf):
+        if not hasattr(pixbuf,'_framebuffer'):
+            return True
+        if not prefs['animation transform']:
+            return True
+    return False
+
 def static_image(pixbuf):
     """ Returns a non-animated version of the specified pixbuf. """
     if is_animation(pixbuf):

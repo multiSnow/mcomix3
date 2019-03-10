@@ -102,6 +102,7 @@ prefs = {
     'openwith commands': [],  # (label, command) pairs
     'animation mode': constants.ANIMATION_DISABLED,
     'animation background': True,
+    'animation transform': False,
     'temporary directory': None,
     'portable allow abspath': False,
 }
