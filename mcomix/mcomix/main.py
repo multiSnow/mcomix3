@@ -371,7 +371,7 @@ class MainWindow(Gtk.Window):
             alignment_axis = constants.ALIGNMENT_AXIS
             pixbuf_count = 2 if self.displayed_double() else 1 # XXX limited to at most 2 pages
             pixbuf_list = list(self.imagehandler.get_pixbufs(pixbuf_count))
-            do_not_transform = [image_tools.is_animation(x) for x in pixbuf_list]
+            do_not_transform = [(image_tools.is_animation(x) and not hasattr(x,'_framebuffer')) for x in pixbuf_list]
             size_list = [[pixbuf.get_width(), pixbuf.get_height()]
                          for pixbuf in pixbuf_list]
 
@@ -404,8 +404,6 @@ class MainWindow(Gtk.Window):
                 orientation = list(orientation)
                 orientation.reverse()
                 for i in range(pixbuf_count):
-                    if do_not_transform[i]:
-                        continue
                     size_list[i].reverse()
             if rotation in (180, 270):
                 orientation = tools.vector_opposite(orientation)
@@ -450,18 +448,15 @@ class MainWindow(Gtk.Window):
                     viewport_size = () # start anew
 
             for i in range(pixbuf_count):
-                if do_not_transform[i]:
-                    continue
                 pixbuf_list[i] = image_tools.fit_pixbuf_to_rectangle(
                     pixbuf_list[i], scaled_sizes[i], rotation_list[i])
 
             for i in range(pixbuf_count):
-                if do_not_transform[i]:
-                    continue
-                if prefs['horizontal flip']:
-                    pixbuf_list[i] = pixbuf_list[i].flip(horizontal=True)
-                if prefs['vertical flip']:
-                    pixbuf_list[i] = pixbuf_list[i].flip(horizontal=False)
+                pixbuf_list[i] = image_tools.trans_pixbuf(
+                    pixbuf_list[i],
+                    flip=prefs['vertical flip'],
+                    flop=prefs['horizontal flip']
+                )
                 pixbuf_list[i] = self.enhancer.enhance(pixbuf_list[i])
 
             for i in range(pixbuf_count):

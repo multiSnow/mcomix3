@@ -10,6 +10,7 @@ from gi.repository import GLib, GdkPixbuf, Gdk, Gtk
 from PIL import Image
 from PIL import ImageEnhance
 from PIL import ImageOps
+from PIL import ImageSequence
 from PIL.JpegImagePlugin import _getexif
 from io import BytesIO
 from functools import reduce
@@ -17,6 +18,7 @@ from functools import reduce
 from mcomix.preferences import prefs
 from mcomix import constants
 from mcomix import log
+from mcomix import anime_tools
 
 # see comments in run.py (Pillow version)
 pilver=getattr(Image,'__version__',None)
@@ -32,7 +34,8 @@ MISSING_IMAGE_ICON = None
 
 _missing_icon_dialog = Gtk.Dialog()
 _missing_icon_pixbuf = _missing_icon_dialog.render_icon(
-        Gtk.STOCK_MISSING_IMAGE, Gtk.IconSize.LARGE_TOOLBAR)
+    Gtk.STOCK_MISSING_IMAGE, Gtk.IconSize.LARGE_TOOLBAR
+)
 MISSING_IMAGE_ICON = _missing_icon_pixbuf
 assert MISSING_IMAGE_ICON
 
@@ -77,13 +80,29 @@ def get_fitting_size(source_size, target_size,
                 width = int(max(src_width * height / src_height, 1))
     return (width, height)
 
+def trans_pixbuf(src,flip=False,flop=False):
+    if is_animation(src):
+        return anime_tools.frame_executor(
+            src, trans_pixbuf,
+            kwargs=dict(flip=flip, flop=flop)
+        )
+    if flip: src = src.flip(horizontal=False)
+    if flop: src = src.flip(horizontal=True)
+    return src
+
 def fit_pixbuf_to_rectangle(src, rect, rotation):
+    if is_animation(src):
+        return anime_tools.frame_executor(
+            src, fit_pixbuf_to_rectangle,
+            args=(rect, rotation)
+        )
     return fit_in_rectangle(src, rect[0], rect[1],
                             rotation=rotation,
                             keep_ratio=False,
                             scale_up=True)
 
-def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False, rotation=0, scaling_quality=None):
+def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False,
+                     rotation=0, scaling_quality=None):
     """Scale (and return) a pixbuf so that it fits in a rectangle with
     dimensions <width> x <height>. A negative <width> or <height>
     means an unbounded dimension - both cannot be negative.
@@ -143,14 +162,13 @@ def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False, rotati
 
     return src
 
-
 def add_border(pixbuf, thickness, colour=0x000000FF):
     """Return a pixbuf from <pixbuf> with a <thickness> px border of
     <colour> added.
     """
     canvas = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, True, 8,
-        pixbuf.get_width() + thickness * 2,
-        pixbuf.get_height() + thickness * 2)
+                                  pixbuf.get_width() + thickness * 2,
+                                  pixbuf.get_height() + thickness * 2)
     canvas.fill(colour)
     pixbuf.copy_area(0, 0, pixbuf.get_width(), pixbuf.get_height(),
         canvas, thickness, thickness)
@@ -234,7 +252,7 @@ def get_most_common_edge_colour(pixbufs, edge=2):
         edge = min(edge, width, height)
 
         subpix = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB,
-                pixbuf.get_has_alpha(), 8, edge, height)
+                                      pixbuf.get_has_alpha(), 8, edge, height)
         if side == 'left':
             pixbuf.copy_area(0, 0, edge, height, subpix, 0, 0)
         elif side == 'right':
@@ -348,21 +366,44 @@ def set_from_pixbuf(image, pixbuf):
     else:
         return image.set_from_pixbuf(pixbuf)
 
+def load_animation(im):
+    if im.format=='GIF' and im.mode=='P':
+        # TODO: Pillow has bug with gif animation
+        # https://github.com/python-pillow/Pillow/labels/GIF
+        raise NotImplementedError('Pillow has bug with gif animation, '
+                                  'fallback to GdkPixbuf')
+    anime=anime_tools.AnimeFrameBuffer(im.n_frames,loop=im.info['loop'])
+    background=im.info.get('background',None)
+    if isinstance(background,tuple):
+        color=0
+        for n,c in enumerate(background):
+            color|=c<<n*8
+        background=color
+    frameiter=ImageSequence.Iterator(im)
+    for n,frame in enumerate(frameiter):
+        anime.add_frame(n,pil_to_pixbuf(frame),
+                        frame.info.get('duration',0),
+                        background=background)
+    return anime.create_animation()
+
 def load_pixbuf(path):
     """ Loads a pixbuf from a given image file. """
-    disable_animation = prefs['animation mode'] == constants.ANIMATION_DISABLED
+    enable_anime = prefs['animation mode'] != constants.ANIMATION_DISABLED
     try:
         with Image.open(path) as im:
-            if 'duration' not in im.info:
-                return pil_to_pixbuf(im, keep_orientation=True)
+            # make sure n_frames loaded
+            im.load()
+            if enable_anime and getattr(im,'is_animated',False):
+                return load_animation(im)
+            return pil_to_pixbuf(im, keep_orientation=True)
     except:
         pass
-    if disable_animation:
-        return GdkPixbuf.Pixbuf.new_from_file(path)
-    pixbuf = GdkPixbuf.PixbufAnimation.new_from_file(path)
-    if pixbuf.is_static_image():
-        return pixbuf.get_static_image()
-    return pixbuf
+    if enable_anime:
+        pixbuf = GdkPixbuf.PixbufAnimation.new_from_file(path)
+        if pixbuf.is_static_image():
+            return pixbuf.get_static_image()
+        return pixbuf
+    return GdkPixbuf.Pixbuf.new_from_file(path)
 
 def load_pixbuf_size(path, width, height):
     """ Loads a pixbuf from a given image file and scale it to fit
@@ -377,7 +418,8 @@ def load_pixbuf_size(path, width, height):
         # the image to let GdkPixbuf raise the appropriate exception.
         if (0, 0) == (image_width, image_height):
             pixbuf = GdkPixbuf.Pixbuf.new_from_file(path)
-        # Work around GdkPixbuf bug: https://bugzilla.gnome.org/show_bug.cgi?id=735422
+        # Work around GdkPixbuf bug
+        # https://bugzilla.gnome.org/show_bug.cgi?id=735422
         elif 'GIF' == image_format:
             pixbuf = GdkPixbuf.Pixbuf.new_from_file(path)
         else:
@@ -385,7 +427,8 @@ def load_pixbuf_size(path, width, height):
             if image_width <= width and image_height <= height:
                 width, height = image_width, image_height
             pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(path, width, height)
-    return fit_in_rectangle(pixbuf, width, height, scaling_quality=GdkPixbuf.InterpType.BILINEAR)
+    return fit_in_rectangle(pixbuf, width, height,
+                            scaling_quality=GdkPixbuf.InterpType.BILINEAR)
 
 def load_pixbuf_data(imgdata):
     """ Loads a pixbuf from the data passed in <imgdata>. """
@@ -400,13 +443,22 @@ def load_pixbuf_data(imgdata):
     return loader.get_pixbuf()
 
 def enhance(pixbuf, brightness=1.0, contrast=1.0, saturation=1.0,
-  sharpness=1.0, autocontrast=False):
+            sharpness=1.0, autocontrast=False):
     """Return a modified pixbuf from <pixbuf> where the enhancement operations
     corresponding to each argument has been performed. A value of 1.0 means
     no change. If <autocontrast> is True it overrides the <contrast> value,
     but only if the image mode is supported by ImageOps.autocontrast (i.e.
     it is L or RGB.)
     """
+    if is_animation(pixbuf):
+        return anime_tools.frame_executor(
+            pixbuf, enhance,
+            kwargs=dict(
+                brightness=brightness, contrast=contrast,
+                saturation=saturation, sharpness=1.0,
+                autocontrast=False
+            )
+        )
     im = pixbuf_to_pil(pixbuf)
     if brightness != 1.0:
         im = ImageEnhance.Brightness(im).enhance(brightness)
@@ -486,34 +538,34 @@ def combine_pixbufs( pixbuf1, pixbuf2, are_in_manga_mode ):
 
     has_alpha = False
 
-    if l_source_pixbuf.get_property( 'has-alpha' ) or \
-       r_source_pixbuf.get_property( 'has-alpha' ):
+    if l_source_pixbuf.get_property('has-alpha') or \
+       r_source_pixbuf.get_property('has-alpha'):
         has_alpha = True
 
     bits_per_sample = 8
 
-    l_source_pixbuf_width = l_source_pixbuf.get_property( 'width' )
-    r_source_pixbuf_width = r_source_pixbuf.get_property( 'width' )
+    l_source_pixbuf_width = l_source_pixbuf.get_property('width')
+    r_source_pixbuf_width = r_source_pixbuf.get_property('width')
 
-    l_source_pixbuf_height = l_source_pixbuf.get_property( 'height' )
-    r_source_pixbuf_height = r_source_pixbuf.get_property( 'height' )
+    l_source_pixbuf_height = l_source_pixbuf.get_property('height')
+    r_source_pixbuf_height = r_source_pixbuf.get_property('height')
 
     new_width = l_source_pixbuf_width + r_source_pixbuf_width
 
-    new_height = max( l_source_pixbuf_height, r_source_pixbuf_height )
+    new_height = max(l_source_pixbuf_height, r_source_pixbuf_height)
 
     new_pix_buf = GdkPixbuf.Pixbuf.new(colorspace=GdkPixbuf.Colorspace.RGB,
                                        has_alpha=has_alpha,
                                        bits_per_sample=bits_per_sample,
                                        width=new_width, height=new_height)
 
-    l_source_pixbuf.copy_area( 0, 0, l_source_pixbuf_width,
-                                     l_source_pixbuf_height,
-                                     new_pix_buf, 0, 0 )
+    l_source_pixbuf.copy_area(0, 0, l_source_pixbuf_width,
+                               l_source_pixbuf_height,
+                               new_pix_buf, 0, 0)
 
-    r_source_pixbuf.copy_area( 0, 0, r_source_pixbuf_width,
-                                     r_source_pixbuf_height,
-                                     new_pix_buf, l_source_pixbuf_width, 0 )
+    r_source_pixbuf.copy_area(0, 0, r_source_pixbuf_width,
+                              r_source_pixbuf_height,
+                              new_pix_buf, l_source_pixbuf_width, 0)
 
     return new_pix_buf
 
