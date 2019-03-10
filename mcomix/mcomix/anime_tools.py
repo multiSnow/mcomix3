@@ -1,13 +1,21 @@
-import math
 
+import math
 from gi.repository import GdkPixbuf
+
+from mcomix import constants
+from mcomix.preferences import prefs
 
 class AnimeFrameBuffer:
     def __init__(self,n_frames,loop=1):
         self.n_frames=n_frames
         self.width=0
         self.height=0
-        self.loop=0 if loop>10 else loop # loop over 10 is infinitely
+        if prefs['animation mode'] == constants.ANIMATION_INF:
+            self.loop=0
+        elif prefs['animation mode'] == constants.ANIMATION_ONCE:
+            self.loop=1
+        else:
+            self.loop=0 if loop>10 else loop # loop over 10 is infinitely
 
         self.framelist=[None]*n_frames
         self.duration=0

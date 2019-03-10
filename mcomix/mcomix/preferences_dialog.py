@@ -634,8 +634,11 @@ class _PreferencesDialog(Gtk.Dialog):
     def _create_animation_mode_combobox(self):
         """ Creates combo box for animation mode """
         items = (
-                (_('Never'), constants.ANIMATION_DISABLED),
-                (_('Normal'), constants.ANIMATION_NORMAL))
+            (_('Never'), constants.ANIMATION_DISABLED),
+            (_('Normal'), constants.ANIMATION_NORMAL),
+            (_('Once'), constants.ANIMATION_ONCE),
+            (_('Infinity'), constants.ANIMATION_INF),
+        )
 
         selection = prefs['animation mode']
 
