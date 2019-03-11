@@ -95,7 +95,6 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         return None
 
     def _has_encryption(self):
-        enc = False
         with process.popen(self._get_list_arguments(),
                            stderr=process.STDOUT,
                            universal_newlines=True) as proc:
