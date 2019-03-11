@@ -13,6 +13,7 @@ class RecursiveArchive(archive_base.BaseArchive):
     def __init__(self, archive, destination_dir):
         super(RecursiveArchive, self).__init__(archive.archive)
         self._main_archive = archive
+        self._is_encrypted = self._main_archive.is_encrypted
         self._destination_dir = destination_dir
         self._archive_list = []
         # Map entry name to its archive+name.
