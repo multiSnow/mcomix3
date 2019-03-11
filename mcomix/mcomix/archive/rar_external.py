@@ -23,14 +23,16 @@ class RarArchive(archive_base.ExternalExecutableArchive):
     def __init__(self, archive):
         super(RarArchive, self).__init__(archive)
         self._is_solid = False
-        self._is_encrypted =  False
         self._contents = []
+
+        self.is_encrypted =  False
+        self.is_encrypted = self._has_encryption()
 
     def _get_executable(self):
         return self._find_unrar_executable()
 
     def _get_password_argument(self):
-        if not self._is_encrypted:
+        if not self.is_encrypted:
             # Add a dummy password anyway, to prevent deadlock on reading for
             # input if we did not correctly detect the archive is encrypted.
             return u'-p-'
@@ -58,12 +60,6 @@ class RarArchive(archive_base.ExternalExecutableArchive):
                 flags = line[9:].split(', ')
                 if 'solid' in flags:
                     self._is_solid = True
-                if 'encrypted headers' in flags:
-                    if not self._is_encrypted:
-                        # Trigger a restart of the enclosing
-                        # iter_contents loop with a password.
-                        self._is_encrypted = True
-                        raise self.EncryptedHeader()
                 self._state = self.STATE_LISTING
                 return None
         if self._state == self.STATE_LISTING:
@@ -79,12 +75,22 @@ class RarArchive(archive_base.ExternalExecutableArchive):
                 flags = line[7:].split()
                 if 'solid' in flags:
                     self._is_solid = True
-                if 'encrypted' in flags:
-                    self._is_encrypted = True
         return None
 
     def is_solid(self):
         return self._is_solid
+
+    def _has_encryption(self):
+        with process.popen(self._get_list_arguments(),
+                           stderr=process.STDOUT,
+                           universal_newlines=True) as proc:
+            for line in proc.stdout:
+                line=line.strip()
+                if line.startswith('Details: ') and 'encrypted headers' in line:
+                    return True
+                if line.startswith('Flags: ') and 'encrypted' in line:
+                    return True
+        return False
 
     def iter_contents(self):
         if not self._get_executable():
