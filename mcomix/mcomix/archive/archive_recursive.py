@@ -24,7 +24,9 @@ class RecursiveArchive(archive_base.BaseArchive):
         # Assume concurrent extractions are not supported.
         self.support_concurrent_extractions = False
 
-    def _iter_contents(self, archive, root=None):
+    def _iter_contents(self, archive, root=None, decrypt=True):
+        if archive.is_encrypted and not decrypt:
+            return
         self._archive_list.append(archive)
         self._archive_root[archive] = root
         sub_archive_list = []
@@ -74,23 +76,23 @@ class RecursiveArchive(archive_base.BaseArchive):
                 break
         self.support_concurrent_extractions = supported
 
-    def iter_contents(self):
+    def iter_contents(self, decrypt=True):
         if self._contents_listed:
             for f in self._contents:
                 yield f
             return
         self._contents = []
-        for f in self._iter_contents(self._main_archive):
+        for f in self._iter_contents(self._main_archive, decrypt=decrypt):
             self._contents.append(f)
             yield f
         self._contents_listed = True
         # We can now check if concurrent extractions are really supported.
         self._check_concurrent_extraction_support()
 
-    def list_contents(self):
+    def list_contents(self, decrypt=True):
         if self._contents_listed:
             return self._contents
-        return [f for f in self.iter_contents()]
+        return [f for f in self.iter_contents(decrypt=decrypt)]
 
     def extract(self, filename, destination_dir):
         if not self._contents_listed:
