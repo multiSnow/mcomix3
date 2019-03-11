@@ -278,7 +278,7 @@ class RarArchive(archive_base.BaseArchive):
             if len(self._password) == 0:
                 # Abort extraction
                 return -1
-            password = ctypes.create_string_buffer(self._password).encode('utf8')
+            password = ctypes.create_unicode_buffer(self._password).value.encode('utf8')
             copy_size = min(buffer_size, len(password))
             ctypes.memmove(buffer_address, password, copy_size)
             return 0
