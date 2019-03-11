@@ -103,6 +103,7 @@ class RarArchive(archive_base.BaseArchive):
         self._handle = None
         self._callback_function = None
         self._is_solid = False
+        self.is_encrypted = False
         # Information about the current file will be stored in this structure
         self._headerdata = RarArchive._RARHeaderDataEx()
         self._current_filename = None
@@ -123,6 +124,8 @@ class RarArchive(archive_base.BaseArchive):
             [ctypes.c_void_p, ctypes.c_int, ctypes.c_wchar_p, ctypes.c_wchar_p]
         self._unrar.RARSetCallback.argtypes = \
             [ctypes.c_void_p, UNRARCALLBACK, ctypes.c_long]
+
+        self._has_encryption()
 
     def is_solid(self):
         return self._is_solid
@@ -199,6 +202,29 @@ class RarArchive(archive_base.BaseArchive):
             raise UnrarException("Couldn't open archive: %s" % errormessage)
         self._unrar.RARSetCallback(handle, self._callback_function, 0)
         self._handle = handle
+
+    def _has_encryption(self):
+        """ Checks archive encryption. """
+        archivedata = RarArchive._RAROpenArchiveDataEx(
+            ArcNameW=self.archive,
+            OpenMode=RarArchive._OpenMode.RAR_OM_LIST,
+            UserData=0
+        )
+
+        handle = self._unrar.RAROpenArchiveEx(ctypes.byref(archivedata))
+        if not handle:
+            errormessage = UnrarException.get_error_message(archivedata.OpenResult)
+            raise UnrarException("Couldn't open archive: %s" % errormessage)
+        self._handle = handle
+        # 0x0080 Block headers are encrypted
+        if archivedata.Flags & 0x0080:
+            self.is_encrypted = True
+        else:
+            self._read_header()
+            # 0x04 File encrypted with password
+            if 0x04 & self._headerdata.Flags:
+                self.is_encrypted = True
+        self._close()
 
     def _check_errorcode(self, errorcode):
         if 0 == errorcode:
