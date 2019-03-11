@@ -26,6 +26,7 @@ class BaseArchive(object):
 
         self.archive = archive
         self._password = None
+        self.is_encrypted = False
         self._event = threading.Event()
         if self.support_concurrent_extractions:
             # When multiple concurrent extractions are supported,
