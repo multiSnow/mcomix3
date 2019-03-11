@@ -12,10 +12,12 @@ from mcomix import log
 
 if sys.platform == 'win32':
     UNRARCALLBACK = ctypes.WINFUNCTYPE(ctypes.c_int, ctypes.c_uint,
-        ctypes.c_long, ctypes.c_long, ctypes.c_long)
+                                       ctypes.c_long, ctypes.c_long,
+                                       ctypes.c_long)
 else:
     UNRARCALLBACK = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_uint,
-        ctypes.c_long, ctypes.c_long, ctypes.c_long)
+                                     ctypes.c_long, ctypes.c_long,
+                                     ctypes.c_long)
 
 class RarArchive(archive_base.BaseArchive):
     """ Wrapper class for libunrar. All string values passed to this class must be unicode objects.
@@ -53,42 +55,46 @@ class RarArchive(archive_base.BaseArchive):
     class _RAROpenArchiveDataEx(ctypes.Structure):
         """ Archive header structure. Used by DLL calls. """
         _pack_ = 1
-        _fields_ = [("ArcName", ctypes.c_char_p),
-                      ("ArcNameW", ctypes.c_wchar_p),
-                      ("OpenMode", ctypes.c_uint),
-                      ("OpenResult", ctypes.c_uint),
-                      ("CmtBuf", ctypes.c_char_p),
-                      ("CmtBufSize", ctypes.c_uint),
-                      ("CmtSize", ctypes.c_uint),
-                      ("CmtState", ctypes.c_uint),
-                      ("Flags", ctypes.c_uint),
-                      ("Callback", UNRARCALLBACK),
-                      ("UserData", ctypes.c_long),
-                      ("Reserved", ctypes.c_uint * 28)]
+        _fields_ = [
+            ('ArcName', ctypes.c_char_p),
+            ('ArcNameW', ctypes.c_wchar_p),
+            ('OpenMode', ctypes.c_uint),
+            ('OpenResult', ctypes.c_uint),
+            ('CmtBuf', ctypes.c_char_p),
+            ('CmtBufSize', ctypes.c_uint),
+            ('CmtSize', ctypes.c_uint),
+            ('CmtState', ctypes.c_uint),
+            ('Flags', ctypes.c_uint),
+            ('Callback', UNRARCALLBACK),
+            ('UserData', ctypes.c_long),
+            ('Reserved', ctypes.c_uint * 28),
+        ]
 
     class _RARHeaderDataEx(ctypes.Structure):
         """ Archive file structure. Used by DLL calls. """
         _pack_ = 1
-        _fields_ = [("ArcName", ctypes.c_char * 1024),
-                      ("ArcNameW", ctypes.c_wchar * 1024),
-                      ("FileName", ctypes.c_char * 1024),
-                      ("FileNameW", ctypes.c_wchar * 1024),
-                      ("Flags", ctypes.c_uint),
-                      ("PackSize", ctypes.c_uint),
-                      ("PackSizeHigh", ctypes.c_uint),
-                      ("UnpSize", ctypes.c_uint),
-                      ("UnpSizeHigh", ctypes.c_uint),
-                      ("HostOS", ctypes.c_uint),
-                      ("FileCRC", ctypes.c_uint),
-                      ("FileTime", ctypes.c_uint),
-                      ("UnpVer", ctypes.c_uint),
-                      ("Method", ctypes.c_uint),
-                      ("FileAttr", ctypes.c_uint),
-                      ("CmtBuf", ctypes.c_char_p),
-                      ("CmtBufSize", ctypes.c_uint),
-                      ("CmtSize", ctypes.c_uint),
-                      ("CmtState", ctypes.c_uint),
-                      ("Reserved", ctypes.c_uint * 1024)]
+        _fields_ = [
+            ('ArcName', ctypes.c_char * 1024),
+            ('ArcNameW', ctypes.c_wchar * 1024),
+            ('FileName', ctypes.c_char * 1024),
+            ('FileNameW', ctypes.c_wchar * 1024),
+            ('Flags', ctypes.c_uint),
+            ('PackSize', ctypes.c_uint),
+            ('PackSizeHigh', ctypes.c_uint),
+            ('UnpSize', ctypes.c_uint),
+            ('UnpSizeHigh', ctypes.c_uint),
+            ('HostOS', ctypes.c_uint),
+            ('FileCRC', ctypes.c_uint),
+            ('FileTime', ctypes.c_uint),
+            ('UnpVer', ctypes.c_uint),
+            ('Method', ctypes.c_uint),
+            ('FileAttr', ctypes.c_uint),
+            ('CmtBuf', ctypes.c_char_p),
+            ('CmtBufSize', ctypes.c_uint),
+            ('CmtSize', ctypes.c_uint),
+            ('CmtState', ctypes.c_uint),
+            ('Reserved', ctypes.c_uint * 1024),
+        ]
 
 
     @staticmethod
@@ -284,19 +290,19 @@ class UnrarException(Exception):
     """ Exception class for RarArchive. """
 
     _exceptions = {
-        RarArchive._ErrorCode.ERAR_END_ARCHIVE: "End of archive",
-        RarArchive._ErrorCode.ERAR_NO_MEMORY:" Not enough memory to initialize data structures",
-        RarArchive._ErrorCode.ERAR_BAD_DATA: "Bad data, CRC mismatch",
-        RarArchive._ErrorCode.ERAR_BAD_ARCHIVE: "Volume is not valid RAR archive",
-        RarArchive._ErrorCode.ERAR_UNKNOWN_FORMAT: "Unknown archive format",
-        RarArchive._ErrorCode.ERAR_EOPEN: "Volume open error",
-        RarArchive._ErrorCode.ERAR_ECREATE: "File create error",
-        RarArchive._ErrorCode.ERAR_ECLOSE: "File close error",
-        RarArchive._ErrorCode.ERAR_EREAD: "Read error",
-        RarArchive._ErrorCode.ERAR_EWRITE: "Write error",
-        RarArchive._ErrorCode.ERAR_SMALL_BUF: "Buffer too small",
-        RarArchive._ErrorCode.ERAR_UNKNOWN: "Unknown error",
-        RarArchive._ErrorCode.ERAR_MISSING_PASSWORD: "Password missing"
+        RarArchive._ErrorCode.ERAR_END_ARCHIVE: 'End of archive',
+        RarArchive._ErrorCode.ERAR_NO_MEMORY: 'Not enough memory to initialize data structures',
+        RarArchive._ErrorCode.ERAR_BAD_DATA: 'Bad data, CRC mismatch',
+        RarArchive._ErrorCode.ERAR_BAD_ARCHIVE: 'Volume is not valid RAR archive',
+        RarArchive._ErrorCode.ERAR_UNKNOWN_FORMAT: 'Unknown archive format',
+        RarArchive._ErrorCode.ERAR_EOPEN: 'Volume open error',
+        RarArchive._ErrorCode.ERAR_ECREATE: 'File create error',
+        RarArchive._ErrorCode.ERAR_ECLOSE: 'File close error',
+        RarArchive._ErrorCode.ERAR_EREAD: 'Read error',
+        RarArchive._ErrorCode.ERAR_EWRITE: 'Write error',
+        RarArchive._ErrorCode.ERAR_SMALL_BUF: 'Buffer too small',
+        RarArchive._ErrorCode.ERAR_UNKNOWN: 'Unknown error',
+        RarArchive._ErrorCode.ERAR_MISSING_PASSWORD: 'Password missing',
     }
 
     @staticmethod
