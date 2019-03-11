@@ -128,7 +128,10 @@ class Thumbnailer(object):
                                                                       type=mime)
                 if archive is None:
                     return None, None
-                files = archive.list_contents()
+                if archive.is_encrypted:
+                    # TODO: a special image as thumbnail of encrypted archive
+                    return None, None
+                files = archive.list_contents(decrypt=False)
                 wanted = self._guess_cover(files)
                 if wanted is None:
                     return None, None

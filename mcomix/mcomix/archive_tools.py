@@ -189,7 +189,7 @@ def get_archive_info(path):
         if archive is None:
             return None
 
-        files = archive.list_contents()
+        files = archive.list_contents(decrypt=False)
         num_pages = sum([image_tools.is_image_file(f) for f in files])
         size = os.stat(path).st_size
 
