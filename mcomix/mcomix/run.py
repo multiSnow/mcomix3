@@ -180,9 +180,18 @@ def run():
     open_page = 1
 
     if isinstance(open_path, list):
-        for n, p in enumerate(open_path):
-            p = os.path.join(constants.STARTDIR, p)
-            open_path[n] = os.path.normpath(p)
+        n = 0
+        while n<len(open_path):
+            p = os.path.join(constants.STARTDIR, open_path[n])
+            p = os.path.normpath(p)
+            if not os.path.exists(p):
+                log.error(_('{} not exists.'.format(p)))
+                open_path.pop(n)
+                continue
+            open_path[n] = p
+            n += 1
+        if not open_path:
+            open_path = None
 
     if not open_path and preferences.prefs['auto load last file'] \
        and preferences.prefs['path to last file'] \
