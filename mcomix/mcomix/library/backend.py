@@ -565,7 +565,7 @@ class _LibraryBackend(object):
         is -1, the database structure will simply be re-created at the
         current version. """
 
-        if from_version == -1:
+        if from_version < 5:
             self._create_tables()
             return
 
@@ -573,35 +573,6 @@ class _LibraryBackend(object):
             upgrades = range(from_version, to_version)
             log.info(_("Upgrading library database version from %(from)d to %(to)d."),
                 { "from" : from_version, "to" : to_version })
-
-            if 0 in upgrades:
-                # Upgrade from Comix database structure to DB version 1
-                # (Added table 'info')
-                self._create_table_info()
-
-            if 1 in upgrades:
-                # Upgrade to database structure version 2.
-                # (Added table 'watchlist' for storing auto-add directories)
-                self._create_table_watchlist()
-
-            if 2 in upgrades:
-                # Changed 'added' field in 'book' from date to datetime.
-                self._con.execute('''alter table book rename to book_old''')
-                self._create_table_book()
-                self._con.execute('''insert into book
-                    (id, name, path, pages, format, size, added)
-                    select id, name, path, pages, format, size, datetime(added)
-                    from book_old''')
-                self._con.execute('''drop table book_old''')
-
-            if 3 in upgrades:
-                # Added field 'recursive' to table 'watchlist'
-                self._con.execute('''alter table watchlist rename to watchlist_old''')
-                self._create_table_watchlist()
-                self._con.execute('''insert into watchlist
-                    (path, collection, recursive)
-                    select path, collection, 0 from watchlist_old''')
-                self._con.execute('''drop table watchlist_old''')
 
             if 5 in upgrades:
                 # Changed all 'string' columns into 'text' columns
