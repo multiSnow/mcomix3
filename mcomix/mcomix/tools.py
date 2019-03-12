@@ -10,7 +10,7 @@ import math
 import io
 from functools import reduce
 
-
+ROOTPATH=os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 _PORTABLE_MODE=[]
 NUMERIC_REGEXP = re.compile(r"\d+|\D+")  # Split into numerics and characters
 PREFIXED_BYTE_UNITS = ('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB')
@@ -145,7 +145,7 @@ def garbage_collect():
 
 def rootdir():
     # return path contains mcomixstarter.py
-    return sys.path[0]
+    return ROOTPATH
 
 def is_portable_mode():
     # check if running in portable mode
@@ -185,7 +185,7 @@ def relpath2root(path,abs_fallback=False):
     return path if abs_fallback else None
 
 def pkg_path(*args):
-    return os.path.join(sys.path[0], 'mcomix', *args)
+    return os.path.join(rootdir(), 'mcomix', *args)
 
 def read_binary(*args):
     with open(pkg_path(*args), mode='rb') as f:

@@ -19,7 +19,7 @@ HOME_DIR = tools.get_home_directory()
 CONFIG_DIR = tools.get_config_directory()
 DATA_DIR = tools.get_data_directory()
 
-BASE_PATH = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+BASE_PATH = tools.rootdir()
 THUMBNAIL_PATH = os.path.join(HOME_DIR, '.thumbnails/normal')
 LIBRARY_DATABASE_PATH = os.path.join(DATA_DIR, 'library.db')
 LASTPAGE_DATABASE_PATH = os.path.join(DATA_DIR, 'lastreadpage.db')
