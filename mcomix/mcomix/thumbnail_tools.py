@@ -129,18 +129,18 @@ class Thumbnailer(object):
                 if archive is None:
                     return None, None
                 if archive.is_encrypted:
-                    # TODO: a special image as thumbnail of encrypted archive
-                    return None, None
-                files = archive.list_contents(decrypt=False)
-                wanted = self._guess_cover(files)
-                if wanted is None:
-                    return None, None
+                    image_path=tools.pkg_path('images','encrypted-book.png')
+                else:
+                    files = archive.list_contents(decrypt=False)
+                    wanted = self._guess_cover(files)
+                    if wanted is None:
+                        return None, None
 
-                archive.extract(wanted, tmpdir)
+                    archive.extract(wanted, tmpdir)
 
-                image_path = os.path.join(tmpdir, wanted)
-                if not os.path.isfile(image_path):
-                    return None, None
+                    image_path = os.path.join(tmpdir, wanted)
+                    if not os.path.isfile(image_path):
+                        return None, None
 
                 pixbuf = image_tools.load_pixbuf_size(image_path, self.width, self.height)
                 if self.store_on_disk:
