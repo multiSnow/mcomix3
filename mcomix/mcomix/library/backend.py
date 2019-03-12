@@ -603,13 +603,6 @@ class _LibraryBackend(object):
                     select path, collection, 0 from watchlist_old''')
                 self._con.execute('''drop table watchlist_old''')
 
-            if 4 in upgrades:
-                # Added table 'recent' to store recently viewed book information and
-                # create a collection (-2, Recent)
-                self._create_table_recent()
-                lastread = last_read_page.LastReadPage(self)
-                lastread.migrate_database_to_library(COLLECTION_RECENT)
-
             if 5 in upgrades:
                 # Changed all 'string' columns into 'text' columns
                 self._con.execute('''alter table book rename to book_old''')

@@ -158,55 +158,6 @@ class LastReadPage(object):
         else:
             return None
 
-    def migrate_database_to_library(self, recent_collection):
-        """ Moves all information saved in the legacy database
-        constants.LASTPAGE_DATABASE_PATH into the library,
-        and deleting the old database. """
-
-        if not self.backend.enabled:
-            return
-
-        database = self._init_database(constants.LASTPAGE_DATABASE_PATH)
-
-        if database:
-            cursor = database.execute('''SELECT path, page, time_set
-                                         FROM lastread''')
-            rows = cursor.fetchall()
-            cursor.close()
-            database.close()
-
-            for path, page, time_set in rows:
-                book = self.backend.get_book_by_path(path)
-
-                if not book:
-                    # The path doesn't exist in the library yet
-                    if not os.path.exists(path):
-                        # File might no longer be available
-                        continue
-
-                    self.backend.add_book(path, recent_collection)
-                    book = self.backend.get_book_by_path(path)
-
-                    if not book:
-                        # The book could not be added
-                        continue
-                else:
-                    # The book exists, move into recent collection
-                    self.backend.add_book_to_collection(book.id, recent_collection)
-
-                # Set recent info on retrieved book
-                # XXX: If the book calls get_backend during migrate_database,
-                # the library isn't constructed yet and breaks in an
-                # endless recursion.
-                book.get_backend = lambda: self.backend
-                book.set_last_read_page(page, time_set)
-
-            try:
-                os.unlink(constants.LASTPAGE_DATABASE_PATH)
-            except IOError as e:
-                log.error(_('! Could not remove file "%s"'),
-                          constants.LASTPAGE_DATABASE_PATH)
-
     def _init_database(self, dbfile):
         """ Creates or opens new SQLite database at C{dbfile}, and initalizes
         the required table(s).
