@@ -126,19 +126,6 @@ def read_preferences_file():
 
             os.rename(constants.PREFERENCE_PATH, corrupt_name)
 
-    elif os.path.isfile(constants.PREFERENCE_PICKLE_PATH):
-        try:
-            with open(constants.PREFERENCE_PICKLE_PATH, 'rb') as config_file:
-                version = pickle.load(config_file)
-                saved_prefs = pickle.load(config_file)
-
-            # Remove legacy format preferences file
-            os.unlink(constants.PREFERENCE_PICKLE_PATH)
-        except Exception:
-            # Gettext might not be installed yet at this point.
-            print ('! Corrupt legacy preferences file "%s", ignoring...' %
-                   constants.PREFERENCE_PICKLE_PATH)
-
     if saved_prefs:
         for key in saved_prefs:
             if key in prefs:
