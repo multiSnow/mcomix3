@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-""" Logging module for MComix. Provides a logger 'mcomix' with a few
+''' Logging module for MComix. Provides a logger 'mcomix' with a few
 pre-configured settings. Functions in this module are redirected to
-this default logger. """
+this default logger. '''
 
 import logging
 import sys
@@ -15,7 +15,7 @@ __all__ = ['debug', 'info', 'warning', 'error', 'setLevel',
            'DEBUG', 'INFO', 'WARNING', 'ERROR']
 
 def print_(*args, **options):
-    """ This function is supposed to replace the standard print statement.
+    ''' This function is supposed to replace the standard print statement.
     Its prototype follows that of the print() function introduced in Python 2.6:
     Prints <args>, with each argument separeted by sep=' ' and ending with
     end='\n'.
@@ -23,14 +23,14 @@ def print_(*args, **options):
     It converts any text to the encoding used by STDOUT, and replaces problematic
     characters with underscore. Prevents UnicodeEncodeErrors and similar when
     using print on non-ASCII strings, on systems not using UTF-8 as default encoding.
-    """
+    '''
 
-    args = [ i18n.to_unicode(val) for val in args ]
+    args = [i18n.to_unicode(val) for val in args]
 
     if 'sep' in options: sep = options['sep']
-    else: sep = u' '
+    else: sep = ' '
     if 'end' in options: end = options['end']
-    else: end = u'\n'
+    else: end = '\n'
 
     def print_generic(text):
         if text:
@@ -67,7 +67,7 @@ def print_(*args, **options):
     print_function(end)
 
 class PrintHandler(logging.Handler):
-    """ Handler using L{print_} to output messages. """
+    ''' Handler using L{print_} to output messages. '''
 
     def __init__(self):
         super(PrintHandler, self).__init__()
@@ -83,7 +83,7 @@ if not __logger.handlers:
     __handler.setFormatter(logging.Formatter(
         '%(asctime)s [%(threadName)s] %(levelname)s: %(message)s',
         '%H:%M:%S'))
-    __logger.handlers = [ __handler ]
+    __logger.handlers = [__handler]
 
 # The following functions direct all input to __logger.
 

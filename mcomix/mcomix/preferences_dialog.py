@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""preferences_dialog.py - Preferences dialog."""
+'''preferences_dialog.py - Preferences dialog.'''
 
 import operator
 from gi.repository import Gdk, GdkPixbuf, Gtk, GObject
@@ -17,9 +17,9 @@ _dialog = None
 
 class _PreferencesDialog(Gtk.Dialog):
 
-    """The preferences dialog where most (but not all) settings that are
+    '''The preferences dialog where most (but not all) settings that are
     saved between sessions are presented to the user.
-    """
+    '''
 
     def __init__(self, window):
         super(_PreferencesDialog, self).__init__(title=_('Preferences'))
@@ -344,13 +344,13 @@ class _PreferencesDialog(Gtk.Dialog):
         return page
 
     def _tab_page_changed(self, notebook, page_ptr, page_num):
-        """ Dynamically switches the "Reset" button's text and tooltip
-        depending on the currently selected tab page. """
+        ''' Dynamically switches the "Reset" button's text and tooltip
+        depending on the currently selected tab page. '''
         new_page = notebook.get_nth_page(page_num)
         if new_page == self.shortcuts:
-            self.reset_button.set_label(_("_Reset keys"))
+            self.reset_button.set_label(_('_Reset keys'))
             self.reset_button.set_tooltip_text(
-                _("Resets all keyboard shortcuts to their default values."))
+                _('Resets all keyboard shortcuts to their default values.'))
             self.reset_button.set_sensitive(True)
         else:
             self.reset_button.set_label(_('Clear _dialog choices'))
@@ -380,43 +380,43 @@ class _PreferencesDialog(Gtk.Dialog):
             _close_dialog()
 
     def _create_language_control(self):
-        """ Creates and returns the combobox for language selection. """
+        ''' Creates and returns the combobox for language selection. '''
         # Source: http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
         languages = [
             (_('Auto-detect (Default)'), 'auto'),
-            (u'Català', 'ca'),  # Catalan
-            (u'čeština', 'cs'),  # Czech
-            (u'Deutsch', 'de'),  # German
-            (u'ελληνικά', 'el'),  # Greek
-            (u'English', 'en'),  # English
-            (u'Español', 'es'),  # Spanish
-            (u'فارسی', 'fa'),  # Persian
-            (u'Français', 'fr'), # French
-            (u'Galego', 'gl'),  # Galician
-            (u'עברית', 'he'),  # Hebrew
-            (u'Hrvatski jezik', 'hr'),  # Croatian
-            (u'Magyar', 'hu'),  # Hungarian
-            (u'Bahasa Indonesia', 'id'),  # Indonesian
-            (u'Italiano', 'it'),  # Italian
-            (u'日本語', 'ja'),  # Japanese
-            (u'한국어', 'ko'),  # Korean
-            (u'Nederlands', 'nl'),  # Dutch
-            (u'Język polski', 'pl'),  # Polish
-            (u'Português', 'pt_BR'),  # Portuguese
-            (u'pусский язык', 'ru'),  # Russian
-            (u'Svenska', 'sv'),  # Swedish
-            (u'українська мова', 'uk'),  # Ukrainian
-            (u'簡體中文', 'zh_CN'),  # Chinese (simplified)
-            (u'正體中文', 'zh_TW')]  # Chinese (traditional)
+            ('Català', 'ca'),  # Catalan
+            ('čeština', 'cs'),  # Czech
+            ('Deutsch', 'de'),  # German
+            ('ελληνικά', 'el'),  # Greek
+            ('English', 'en'),  # English
+            ('Español', 'es'),  # Spanish
+            ('فارسی', 'fa'),  # Persian
+            ('Français', 'fr'), # French
+            ('Galego', 'gl'),  # Galician
+            ('עברית', 'he'),  # Hebrew
+            ('Hrvatski jezik', 'hr'),  # Croatian
+            ('Magyar', 'hu'),  # Hungarian
+            ('Bahasa Indonesia', 'id'),  # Indonesian
+            ('Italiano', 'it'),  # Italian
+            ('日本語', 'ja'),  # Japanese
+            ('한국어', 'ko'),  # Korean
+            ('Nederlands', 'nl'),  # Dutch
+            ('Język polski', 'pl'),  # Polish
+            ('Português', 'pt_BR'),  # Portuguese
+            ('pусский язык', 'ru'),  # Russian
+            ('Svenska', 'sv'),  # Swedish
+            ('українська мова', 'uk'),  # Ukrainian
+            ('簡體中文', 'zh_CN'),  # Chinese (simplified)
+            ('正體中文', 'zh_TW')]  # Chinese (traditional)
         languages.sort(key=operator.itemgetter(0))
 
         box = self._create_combobox(languages, prefs['language'],
-                self._language_changed_cb)
+                                    self._language_changed_cb)
 
         return box
 
     def _language_changed_cb(self, combobox, *args):
-        """ Called whenever the language was changed. """
+        ''' Called whenever the language was changed. '''
         model_index = combobox.get_active()
         if model_index > -1:
             iter = combobox.get_model().iter_nth_child(None, model_index)
@@ -424,7 +424,7 @@ class _PreferencesDialog(Gtk.Dialog):
             prefs['language'] = lang_code
 
     def _create_doublepage_as_one_control(self):
-        """ Creates the ComboBox control for selecting virtual double page options. """
+        ''' Creates the ComboBox control for selecting virtual double page options. '''
         items = (
                 (_('Never'), 0),
                 (_('Only for title pages'), constants.SHOW_DOUBLE_AS_ONE_TITLE),
@@ -436,13 +436,13 @@ class _PreferencesDialog(Gtk.Dialog):
                 self._double_page_changed_cb)
 
         box.set_tooltip_text(
-            _("When showing the first page of an archive, or an image's width "
-              "exceeds its height, only a single page will be displayed."))
+            _('When showing the first page of an archive, or an image\'s width '
+              'exceeds its height, only a single page will be displayed.'))
 
         return box
 
     def _double_page_changed_cb(self, combobox, *args):
-        """ Called when a new option was selected for the virtual double page option. """
+        ''' Called when a new option was selected for the virtual double page option. '''
         iter = combobox.get_active_iter()
         if combobox.get_model().iter_is_valid(iter):
             value = combobox.get_model().get_value(iter, 1)
@@ -450,7 +450,7 @@ class _PreferencesDialog(Gtk.Dialog):
             self._window.draw_image()
 
     def _create_fitmode_control(self):
-        """ Combobox for fit to size mode """
+        ''' Combobox for fit to size mode '''
         items = (
                 (_('Fit to width'), constants.ZOOM_MODE_WIDTH),
                 (_('Fit to height'), constants.ZOOM_MODE_HEIGHT))
@@ -462,7 +462,7 @@ class _PreferencesDialog(Gtk.Dialog):
         return box
 
     def _fit_to_size_changed_cb(self, combobox, *args):
-        """ Change to 'Fit to size' pixels """
+        ''' Change to 'Fit to size' pixels '''
         iter = combobox.get_active_iter()
         if combobox.get_model().iter_is_valid(iter):
             value = combobox.get_model().get_value(iter, 1)
@@ -472,7 +472,7 @@ class _PreferencesDialog(Gtk.Dialog):
                 self._window.change_zoom_mode()
 
     def _create_sort_by_control(self):
-        """ Creates the ComboBox control for selecting file sort by options. """
+        ''' Creates the ComboBox control for selecting file sort by options. '''
         sortkey_items = (
                 (_('No sorting'), 0),
                 (_('File name'), constants.SORT_NAME),
@@ -494,15 +494,15 @@ class _PreferencesDialog(Gtk.Dialog):
         box.pack_start(sortkey_box, True, True, 0)
         box.pack_start(sortorder_box, True, True, 0)
 
-        label = _("Files will be opened and displayed according to the sort order "
-              "specified here. This option does not affect ordering within archives.")
+        label = _('Files will be opened and displayed according to the sort order '
+                  'specified here. This option does not affect ordering within archives.')
         sortkey_box.set_tooltip_text(label)
         sortorder_box.set_tooltip_text(label)
 
         return box
 
     def _sort_by_changed_cb(self, combobox, *args):
-        """ Called when a new option was selected for the virtual double page option. """
+        ''' Called when a new option was selected for the virtual double page option. '''
         iter = combobox.get_active_iter()
         if combobox.get_model().iter_is_valid(iter):
             value = combobox.get_model().get_value(iter, 1)
@@ -511,7 +511,7 @@ class _PreferencesDialog(Gtk.Dialog):
             self._window.filehandler.refresh_file()
 
     def _sort_order_changed_cb(self, combobox, *args):
-        """ Called when sort order changes (ascending or descending) """
+        ''' Called when sort order changes (ascending or descending) '''
         iter = combobox.get_active_iter()
         if combobox.get_model().iter_is_valid(iter):
             value = combobox.get_model().get_value(iter, 1)
@@ -520,7 +520,7 @@ class _PreferencesDialog(Gtk.Dialog):
             self._window.filehandler.refresh_file()
 
     def _create_archive_sort_by_control(self):
-        """ Creates the ComboBox control for selecting archive sort by options. """
+        ''' Creates the ComboBox control for selecting archive sort by options. '''
         sortkey_items = (
                 (_('No sorting'), 0),
                 (_('Natural order'), constants.SORT_NAME),
@@ -541,17 +541,17 @@ class _PreferencesDialog(Gtk.Dialog):
         box.pack_start(sortkey_box, True, True, 0)
         box.pack_start(sortorder_box, True, True, 0)
 
-        label = _("Files within archives will be sorted according to the order specified here. "
-                  "Natural order will sort numbered files based on their natural order, "
-                  "i.e. 1, 2, ..., 10, while literal order uses standard C sorting, "
-                  "i.e. 1, 2, 34, 5.")
+        label = _('Files within archives will be sorted according to the order specified here. '
+                  'Natural order will sort numbered files based on their natural order, '
+                  'i.e. 1, 2, ..., 10, while literal order uses standard C sorting, '
+                  'i.e. 1, 2, 34, 5.')
         sortkey_box.set_tooltip_text(label)
         sortorder_box.set_tooltip_text(label)
 
         return box
 
     def _sort_archive_by_changed_cb(self, combobox, *args):
-        """ Called when a new option was selected for the virtual double page option. """
+        ''' Called when a new option was selected for the virtual double page option. '''
         iter = combobox.get_active_iter()
         if combobox.get_model().iter_is_valid(iter):
             value = combobox.get_model().get_value(iter, 1)
@@ -560,7 +560,7 @@ class _PreferencesDialog(Gtk.Dialog):
             self._window.filehandler.refresh_file()
 
     def _sort_archive_order_changed_cb(self, combobox, *args):
-        """ Called when sort order changes (ascending or descending) """
+        ''' Called when sort order changes (ascending or descending) '''
         iter = combobox.get_active_iter()
         if combobox.get_model().iter_is_valid(iter):
             value = combobox.get_model().get_value(iter, 1)
@@ -569,7 +569,7 @@ class _PreferencesDialog(Gtk.Dialog):
             self._window.filehandler.refresh_file()
 
     def _create_store_recent_combobox(self):
-        """ Creates the combobox for "Store recently opened files". """
+        ''' Creates the combobox for "Store recently opened files". '''
         items = (
                 (_('Never'), False),
                 (_('Always'), True))
@@ -588,7 +588,7 @@ class _PreferencesDialog(Gtk.Dialog):
         return box
 
     def _store_recent_changed_cb(self, combobox, *args):
-        """ Called when option "Store recently opened files" was changed. """
+        ''' Called when option "Store recently opened files" was changed. '''
         iter = combobox.get_active_iter()
         if not combobox.get_model().iter_is_valid(iter):
             return
@@ -617,7 +617,7 @@ class _PreferencesDialog(Gtk.Dialog):
                 self._window.filehandler.last_read_page.clear_all()
 
     def _create_scaling_quality_combobox(self):
-        """ Creates combo box for image scaling quality """
+        ''' Creates combo box for image scaling quality '''
         items = (
                 (_('Normal (fast)'), int(GdkPixbuf.InterpType.TILES)),
                 (_('Bilinear'), int(GdkPixbuf.InterpType.BILINEAR)),
@@ -632,7 +632,7 @@ class _PreferencesDialog(Gtk.Dialog):
         return box
 
     def _scaling_quality_changed_cb(self, combobox, *args):
-        """ Called whan image scaling quality changes. """
+        ''' Called whan image scaling quality changes. '''
         iter = combobox.get_active_iter()
         if combobox.get_model().iter_is_valid(iter):
             value = combobox.get_model().get_value(iter, 1)
@@ -643,7 +643,7 @@ class _PreferencesDialog(Gtk.Dialog):
                 self._window.draw_image()
 
     def _create_animation_mode_combobox(self):
-        """ Creates combo box for animation mode """
+        ''' Creates combo box for animation mode '''
         items = (
             (_('Never'), constants.ANIMATION_DISABLED),
             (_('Normal'), constants.ANIMATION_NORMAL),
@@ -660,7 +660,7 @@ class _PreferencesDialog(Gtk.Dialog):
         return box
 
     def _animation_mode_changed_cb(self, combobox, *args):
-        """ Called whenever animation mode has been changed. """
+        ''' Called whenever animation mode has been changed. '''
         iter = combobox.get_active_iter()
         if combobox.get_model().iter_is_valid(iter):
             value = combobox.get_model().get_value(iter, 1)
@@ -671,7 +671,7 @@ class _PreferencesDialog(Gtk.Dialog):
                 self._window.filehandler.refresh_file()
 
     def _create_combobox(self, options, selected_value, change_callback):
-        """ Creates a new dropdown combobox and populates it with the items
+        ''' Creates a new dropdown combobox and populates it with the items
         passed in C{options}.
 
         @param options: List of tuples: (Option display text, option value)
@@ -680,8 +680,8 @@ class _PreferencesDialog(Gtk.Dialog):
         @param change_callback: Function that will be called when the 'changed'
             event is triggered.
         @returns Gtk.ComboBox
-        """
-        assert options and len(options[0]) == 2, "Invalid format for options."
+        '''
+        assert options and len(options[0]) == 2, 'Invalid format for options.'
 
         # Use the first list item to determine typing of model fields.
         # First field is textual description, second field is value.
@@ -692,7 +692,7 @@ class _PreferencesDialog(Gtk.Dialog):
         box = Gtk.ComboBox(model=model)
         renderer = Gtk.CellRendererText()
         box.pack_start(renderer, True)
-        box.add_attribute(renderer, "text", 0)
+        box.add_attribute(renderer, 'text', 0)
 
         # Set active box option
         iter = model.get_iter_first()
@@ -751,7 +751,7 @@ class _PreferencesDialog(Gtk.Dialog):
 
 
     def _check_button_cb(self, button, preference):
-        """Callback for all checkbutton-type preferences."""
+        '''Callback for all checkbutton-type preferences.'''
 
         prefs[preference] = button.get_active()
 
@@ -809,7 +809,7 @@ class _PreferencesDialog(Gtk.Dialog):
 
 
     def _color_button_cb(self, colorbutton, preference):
-        """Callback for the background colour selection button."""
+        '''Callback for the background colour selection button.'''
 
         colour = colorbutton.get_color()
 
@@ -840,7 +840,7 @@ class _PreferencesDialog(Gtk.Dialog):
 
 
     def _spinner_cb(self, spinbutton, preference):
-        """Callback for spinner-type preferences."""
+        '''Callback for spinner-type preferences.'''
         value = spinbutton.get_value()
 
         if preference == 'lens size':
@@ -887,7 +887,7 @@ class _PreferencesDialog(Gtk.Dialog):
 
 
     def _entry_cb(self, entry, event=None):
-        """Callback for entry-type preferences."""
+        '''Callback for entry-type preferences.'''
         text = entry.get_text()
         extensions = [e.strip() for e in text.split(',')]
         prefs['comment extensions'] = [e for e in extensions if e]
@@ -935,7 +935,7 @@ class _PreferencesDialog(Gtk.Dialog):
 
 
 def open_dialog(action, window):
-    """Create and display the preference dialog."""
+    '''Create and display the preference dialog.'''
 
     global _dialog
 

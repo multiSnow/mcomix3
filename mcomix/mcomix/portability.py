@@ -1,16 +1,16 @@
-"""Portability functions for MComix."""
+'''Portability functions for MComix.'''
 
 import sys
 import locale
 import ctypes
 
 def uri_prefix():
-    """ The prefix used for creating file URIs. """
+    ''' The prefix used for creating file URIs. '''
     return 'file://'
 
 def normalize_uri(uri):
-    """ Normalize URIs passed into the program by different applications,
-    normally via drag-and-drop. """
+    ''' Normalize URIs passed into the program by different applications,
+    normally via drag-and-drop. '''
 
     if uri.startswith('file://localhost/'):  # Correctly formatted.
         return uri[16:]
@@ -22,14 +22,14 @@ def normalize_uri(uri):
         return uri
 
 def invalid_filesystem_chars():
-    """ List of characters that cannot be used in filenames on the target platform. """
+    ''' List of characters that cannot be used in filenames on the target platform. '''
     if sys.platform == 'win32':
-        return u':*?"<>|' + u"".join([unichr(i) for i in range(0, 32)])
+        return ':*?"<>|' + ''.join([unichr(i) for i in range(0, 32)])
     else:
-        return u''
+        return ''
 
 def get_default_locale():
-    """ Gets the user's default locale. """
+    ''' Gets the user's default locale. '''
     if sys.platform == 'win32':
         windll = ctypes.windll.kernel32
         code = windll.GetUserDefaultUILanguage()
@@ -39,6 +39,6 @@ def get_default_locale():
         if lang:
             return lang
         else:
-            return u"C"
+            return 'C'
 
 # vim: expandtab:sw=4:ts=4

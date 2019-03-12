@@ -19,31 +19,31 @@ from mcomix import (
 )
 
 def wait_and_exit():
-    """ Wait for the user pressing ENTER before closing. This should help
+    ''' Wait for the user pressing ENTER before closing. This should help
     the user find possibly missing dependencies when starting, since the
-    Python window will not close down immediately after the error. """
+    Python window will not close down immediately after the error. '''
     if sys.platform == 'win32' and not sys.stdin.closed and not sys.stdout.closed:
         print
-        input("Press ENTER to continue...")
+        input('Press ENTER to continue...')
     sys.exit(1)
 
 def print_version():
-    """Print the version number and exit."""
+    '''Print the version number and exit.'''
     print(constants.APPNAME + ' ' + constants.VERSION)
     sys.exit(0)
 
 def parse_arguments():
-    """ Parse the command line passed in <argv>. Returns a tuple containing
+    ''' Parse the command line passed in <argv>. Returns a tuple containing
     (options, arguments). Errors parsing the command line are handled in
-    this function. """
+    this function. '''
 
     parser = argparse.ArgumentParser(
-        usage="%%(prog)s %s" % _('[OPTION...] [PATH]'),
+        usage='%%(prog)s %s' % _('[OPTION...] [PATH]'),
         description=_('View images and comic book archives.'),
         add_help=False)
     parser.add_argument('--help', action='help',
                         help=_('Show this help and exit.'))
-    parser.add_argument("path", type=str, action='store', nargs='*', default='',
+    parser.add_argument('path', type=str, action='store', nargs='*', default='',
                         help=argparse.SUPPRESS)
 
     parser.add_argument('-s', '--slideshow', dest='slideshow', action='store_true',
@@ -98,7 +98,7 @@ def parse_arguments():
     return args
 
 def run():
-    """Run the program."""
+    '''Run the program.'''
 
     # Load configuration and setup localisation.
     preferences.read_preferences_file()
@@ -130,7 +130,7 @@ def run():
             GObject.threads_init()
 
     except AssertionError:
-        log.error( _("You do not have the required versions of GTK+ 3.0 and PyGObject installed.") )
+        log.error( _('You do not have the required versions of GTK+ 3.0 and PyGObject installed.') )
         wait_and_exit()
 
     except ImportError:
@@ -152,13 +152,13 @@ def run():
         assert pilver >= constants.REQUIRED_PIL_VERSION
 
     except AssertionError:
-        log.error( _("You don't have the required version of the Pillow installed."))
+        log.error( _('You don\'t have the required version of the Pillow installed.'))
         log.error( _('Installed PIL version is: %s') % pilver )
         log.error( _('Required Pillow version is: %s or higher') % constants.REQUIRED_PIL_VERSION )
         wait_and_exit()
 
     except AttributeError:
-        log.error( _("You don't have the required version of the Pillow installed."))
+        log.error( _('You don\'t have the required version of the Pillow installed.'))
         log.error( _('Required Pillow version is: %s or higher') % constants.REQUIRED_PIL_VERSION )
         wait_and_exit()
 

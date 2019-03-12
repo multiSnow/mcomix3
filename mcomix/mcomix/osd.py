@@ -1,5 +1,5 @@
-""" osd.py - Onscreen display showing currently opened file. """
 # -*- coding: utf-8 -*-
+''' osd.py - Onscreen display showing currently opened file. '''
 
 import textwrap
 
@@ -11,11 +11,11 @@ from mcomix import image_tools
 
 class OnScreenDisplay(object):
 
-    """ The OSD shows information such as currently opened file, archive and
+    ''' The OSD shows information such as currently opened file, archive and
     page in a black box drawn on the bottom end of the screen.
 
     The OSD will automatically be erased after TIMEOUT seconds.
-    """
+    '''
 
     TIMEOUT = 3
 
@@ -28,7 +28,7 @@ class OnScreenDisplay(object):
         self._timeout_event = None
 
     def show(self, text):
-        """ Shows the OSD on the lower portion of the image window. """
+        ''' Shows the OSD on the lower portion of the image window. '''
 
         # Determine text to draw
         text = self._wrap_text(text)
@@ -61,7 +61,7 @@ class OnScreenDisplay(object):
         self._timeout_event = GLib.timeout_add_seconds(OnScreenDisplay.TIMEOUT, self.clear)
 
     def clear(self):
-        """ Removes the OSD. """
+        ''' Removes the OSD. '''
         if self._timeout_event:
             GLib.source_remove(self._timeout_event)
         self._timeout_event = None
@@ -69,7 +69,7 @@ class OnScreenDisplay(object):
         return 0 # To unregister timer event
 
     def _wrap_text(self, text, width=70):
-        """ Wraps the text to be C{width} characters at most. """
+        ''' Wraps the text to be C{width} characters at most. '''
         parts = text.split('\n')
         result = []
 
@@ -79,10 +79,10 @@ class OnScreenDisplay(object):
             else:
                 result.append(part)
 
-        return "\n".join(result)
+        return '\n'.join(result)
 
     def _clear_osd(self):
-        """ Clear the last OSD region. """
+        ''' Clear the last OSD region. '''
 
         if not self._last_osd_rect:
             return
@@ -95,7 +95,7 @@ class OnScreenDisplay(object):
         self._last_osd_rect = None
 
     def _scale_font(self, font, layout, max_width, max_height):
-        """ Scales the font used by C{layout} until max_width/max_height is reached. """
+        ''' Scales the font used by C{layout} until max_width/max_height is reached. '''
 
         SIZE_MIN, SIZE_MAX = 10, 60
         for font_size in range(SIZE_MIN, SIZE_MAX, 5):
@@ -109,7 +109,7 @@ class OnScreenDisplay(object):
                 break
 
     def _draw_osd(self, layout, rect):
-        """ Draws the text specified in C{layout} into a box at C{rect}. """
+        ''' Draws the text specified in C{layout} into a box at C{rect}. '''
 
         draw_region = Gdk.Rectangle()
         draw_region.x, draw_region.y, draw_region.width, draw_region.height = rect

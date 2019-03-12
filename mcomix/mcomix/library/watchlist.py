@@ -1,4 +1,4 @@
-""" Library watch list dialog and backend classes. """
+''' Library watch list dialog and backend classes. '''
 
 import os
 from gi.repository import Gtk
@@ -15,16 +15,16 @@ COL_COLLECTION_ID = 1
 COL_RECURSIVE = 2
 
 class WatchListDialog(Gtk.Dialog):
-    """ Dialog for managing watched directories. """
+    ''' Dialog for managing watched directories. '''
 
     RESPONSE_SCANNOW = 1000
 
     def __init__(self, library):
-        """ Dialog constructor.
+        ''' Dialog constructor.
         @param library: Dialog parent window, should be library window.
-        """
+        '''
         super(WatchListDialog, self).__init__(
-            title=_("Library watch list"), modal=True, destroy_with_parent=True
+            title=_('Library watch list'), modal=True, destroy_with_parent=True
         )
 
         self.add_buttons(
@@ -45,7 +45,7 @@ class WatchListDialog(Gtk.Dialog):
         self._treeview.get_selection().connect('changed', self._item_selected_cb)
 
         dir_renderer = Gtk.CellRendererText()
-        dir_column = Gtk.TreeViewColumn(_("Directory"), dir_renderer)
+        dir_column = Gtk.TreeViewColumn(_('Directory'), dir_renderer)
         dir_column.set_attributes(dir_renderer, text=COL_DIRECTORY)
         dir_column.set_expand(True)
         self._treeview.append_column(dir_column)
@@ -57,7 +57,7 @@ class WatchListDialog(Gtk.Dialog):
         collection_renderer.set_property('editable', True)
         collection_renderer.set_property('has-entry', False)
         collection_renderer.connect('changed', self._collection_changed_cb, collection_model)
-        collection_column = Gtk.TreeViewColumn(_("Collection"), collection_renderer)
+        collection_column = Gtk.TreeViewColumn(_('Collection'), collection_renderer)
         collection_column.set_cell_data_func(collection_renderer,
                 self._treeview_collection_id_to_name)
         self._treeview.append_column(collection_column)
@@ -65,7 +65,7 @@ class WatchListDialog(Gtk.Dialog):
         recursive_renderer = Gtk.CellRendererToggle()
         recursive_renderer.set_activatable(True)
         recursive_renderer.connect('toggled', self._recursive_changed_cb)
-        recursive_column = Gtk.TreeViewColumn(_("With subdirectories"),
+        recursive_column = Gtk.TreeViewColumn(_('With subdirectories'),
                 recursive_renderer)
         recursive_column.add_attribute(recursive_renderer, 'active', COL_RECURSIVE)
         self._treeview.append_column(recursive_column)
@@ -100,8 +100,8 @@ class WatchListDialog(Gtk.Dialog):
         self.show_all()
 
     def get_selected_watchlist_entry(self):
-        """ Returns the selected watchlist entry, or C{None} if no
-        item is selected. """
+        ''' Returns the selected watchlist entry, or C{None} if no
+        item is selected. '''
         selection = self._treeview.get_selection()
 
         model, iter = selection.get_selected()
@@ -112,21 +112,21 @@ class WatchListDialog(Gtk.Dialog):
             return None
 
     def get_watchlist_entry_for_treepath(self, treepath):
-        """ Converts a tree path to WatchlistEntry object. """
+        ''' Converts a tree path to WatchlistEntry object. '''
         model = self._treeview.get_model()
         iter = model.get_iter(treepath)
         dirpath = str(model.get_value(iter, COL_DIRECTORY))
         return self.library.backend.watchlist.get_watchlist_entry(dirpath)
 
     def _create_model(self):
-        """ Creates a model containing all watched directories. """
+        ''' Creates a model containing all watched directories. '''
         # Watched directory, associated library collection ID
         model = Gtk.ListStore(GObject.TYPE_STRING, GObject.TYPE_INT, GObject.TYPE_BOOLEAN)
         self._fill_model(model)
         return model
 
     def _fill_model(self, model):
-        """ Empties the model's data and updates it from the database. """
+        ''' Empties the model's data and updates it from the database. '''
         model.clear()
         for entry in self.library.backend.watchlist.get_watchlist():
             if entry.collection.id is None:
@@ -137,7 +137,7 @@ class WatchListDialog(Gtk.Dialog):
             model.append((entry.directory, id, entry.recursive))
 
     def _create_collection_model(self):
-        """ Creates a model containing all available collections. """
+        ''' Creates a model containing all available collections. '''
         # Collection ID, collection name
         model = Gtk.ListStore(GObject.TYPE_STRING, GObject.TYPE_INT)
 
@@ -150,7 +150,7 @@ class WatchListDialog(Gtk.Dialog):
 
     def _collection_changed_cb(self, column, path,
                                collection_iter, collection_model, *args):
-        """ A new collection was set for a watched directory. """
+        ''' A new collection was set for a watched directory. '''
         # Get new collection ID from collection model
         new_id = collection_model.get_value(collection_iter, COL_COLLECTION_ID)
         collection = self.library.backend.get_collection_by_id(new_id)
@@ -168,7 +168,7 @@ class WatchListDialog(Gtk.Dialog):
         self._changed = True
 
     def _recursive_changed_cb(self, toggle_renderer, path, *args):
-        """ Recursive reading was enabled or disabled. """
+        ''' Recursive reading was enabled or disabled. '''
         status = not toggle_renderer.get_active()
         self.get_watchlist_entry_for_treepath(path).set_recursive(status)
 
@@ -180,7 +180,7 @@ class WatchListDialog(Gtk.Dialog):
         self._changed = True
 
     def _add_cb(self, button, *args):
-        """ Called when a new watch list entry should be added. """
+        ''' Called when a new watch list entry should be added. '''
         filechooser = Gtk.FileChooserDialog(
             action=Gtk.FileChooserAction.SELECT_FOLDER
         )
@@ -193,7 +193,7 @@ class WatchListDialog(Gtk.Dialog):
         if filechooser.get_filename() is not None:
             directory = filechooser.get_filename()
         else:
-            directory = u""
+            directory = u''
         filechooser.destroy()
         directory = tools.relpath2root(directory,abs_fallback=prefs['portable allow abspath'])
         if not directory:
@@ -211,7 +211,7 @@ class WatchListDialog(Gtk.Dialog):
             self._changed = True
 
     def _remove_cb(self, button, *args):
-        """ Called when a watch list entry should be removed. """
+        ''' Called when a watch list entry should be removed. '''
         entry = self.get_selected_watchlist_entry()
         if entry:
             entry.remove()
@@ -222,26 +222,26 @@ class WatchListDialog(Gtk.Dialog):
             model.remove(iter)
 
     def _item_selected_cb(self, selection, *args):
-        """ Called when an item is selected. Enables or disables the "Remove"
-        button. """
+        ''' Called when an item is selected. Enables or disables the 'Remove'
+        button. '''
         self._remove_button.set_sensitive(selection.count_selected_rows() > 0)
 
     def _auto_scan_toggled_cb(self, checkbox, *args):
-        """ Toggles automatic library book scanning. """
+        ''' Toggles automatic library book scanning. '''
         prefs['scan for new books on library startup'] = checkbox.get_active()
 
     def _treeview_collection_id_to_name(self, column, cell, model, iter, *args):
-        """ Maps a collection ID to the corresponding collection name. """
+        ''' Maps a collection ID to the corresponding collection name. '''
         id = model.get_value(iter, COL_COLLECTION_ID)
         if id != -1:
             text = self.library.backend.get_collection_name(id)
         else:
             text = backend_types.DefaultCollection.name
 
-        cell.set_property("text", text)
+        cell.set_property('text', text)
 
     def _close_cb(self, dialog, response, *args):
-        """ Trigger scan for new files after watch dialog closes. """
+        ''' Trigger scan for new files after watch dialog closes. '''
         self.destroy()
         if response == Gtk.ResponseType.CLOSE and self._changed:
             self.library.scan_for_new_files()

@@ -1,4 +1,4 @@
-"""library_main_dialog.py - The library dialog window."""
+'''library_main_dialog.py - The library dialog window.'''
 
 import os
 from gi.repository import Gdk, Gtk
@@ -22,9 +22,9 @@ _COLLECTION_ALL = -1
 
 class _LibraryDialog(Gtk.Window):
 
-    """The library window. Automatically creates and uses a new
+    '''The library window. Automatically creates and uses a new
     library_backend.LibraryBackend when opened.
-    """
+    '''
 
     def __init__(self, window, file_handler):
         super(_LibraryDialog, self).__init__(type=Gtk.WindowType.TOPLEVEL)
@@ -62,7 +62,7 @@ class _LibraryDialog(Gtk.Window):
         self.present()
 
     def open_book(self, books, keep_library_open=False):
-        """Open the book with ID <book>."""
+        '''Open the book with ID <book>.'''
 
         paths = [ self.backend.get_book_path(book) for book in books ]
 
@@ -77,14 +77,14 @@ class _LibraryDialog(Gtk.Window):
             self._file_handler.open_file(paths[0])
 
     def scan_for_new_files(self):
-        """ Start scanning for new files from the watch list. """
+        ''' Start scanning for new files from the watch list. '''
 
         if len(self.backend.watchlist.get_watchlist()) > 0:
-            self.set_status_message(_("Scanning for new books..."))
+            self.set_status_message(_('Scanning for new books...'))
             self.backend.watchlist.scan_for_new_files()
 
     def _new_files_found(self, filelist, watchentry):
-        """ Called after the scan for new files finished. """
+        ''' Called after the scan for new files finished. '''
 
         if len(filelist) > 0:
             if watchentry.collection.id is not None:
@@ -95,32 +95,36 @@ class _LibraryDialog(Gtk.Window):
             self.add_books(filelist, collection_name)
 
             if len(filelist) == 1:
-                message = _("Added new book '%(bookname)s' "
-                    "from directory '%(directory)s'.")
+                message = _('Added new book "%(bookname)s" '
+                            'from directory "%(directory)s".')
             else:
-                message = _("Added %(count)d new books "
-                    "from directory '%(directory)s'.")
+                message = _('Added %(count)d new books '
+                            'from directory "%(directory)s".')
 
-            self.set_status_message(message % {'directory': watchentry.directory,
-                'count': len(filelist), 'bookname': os.path.basename(filelist[0])})
+            self.set_status_message(message % {
+                'directory': watchentry.directory,
+                'count': len(filelist),
+                'bookname': os.path.basename(filelist[0]),
+            })
         else:
             self.set_status_message(
-                _("No new books found in directory '%s'.") % watchentry.directory)
+                _('No new books found in directory "%s".') % watchentry.directory)
 
     def get_status_bar(self):
-        """ Returns the window's status bar. """
+        ''' Returns the window's status bar. '''
         return self._statusbar
 
     def set_status_message(self, message):
-        """Set a specific message on the statusbar, replacing whatever was
+        '''Set a specific message on the statusbar, replacing whatever was
         there earlier.
-        """
+        '''
         self._statusbar.pop(0)
-        self._statusbar.push(0,
+        self._statusbar.push(
+            0,
             ' ' * status.Statusbar.SPACING + '%s' % i18n.to_unicode(message))
 
     def close(self, *args):
-        """Close the library and do required cleanup tasks."""
+        '''Close the library and do required cleanup tasks.'''
         prefs['lib window width'], prefs['lib window height'] = self.get_size()
         self.backend.watchlist.new_files_found -= self._new_files_found
         self.book_area.stop_update()
@@ -129,10 +133,10 @@ class _LibraryDialog(Gtk.Window):
         _close_dialog()
 
     def add_books(self, paths, collection_name=None):
-        """Add the books at <paths> to the library. If <collection_name>
+        '''Add the books at <paths> to the library. If <collection_name>
         is not None, it is the name of a (new or existing) collection the
         books should be put in.
-        """
+        '''
         if collection_name is None:
             collection_id = self.collection_area.get_current_collection()
         else:
@@ -151,15 +155,15 @@ class _LibraryDialog(Gtk.Window):
             prefs['last library collection'] = collection_id
 
     def _key_press_event(self, widget, event, *args):
-        """ Handle key press events for closing the library on Escape press. """
+        ''' Handle key press events for closing the library on Escape press. '''
 
         if event.keyval == Gdk.KEY_Escape:
             self.hide()
 
 
 def open_dialog(action, window):
-    """ Shows the library window. If sqlite is not available, this method
-    does nothing and returns False. Otherwise, True is returned. """
+    ''' Shows the library window. If sqlite is not available, this method
+    does nothing and returns False. Otherwise, True is returned. '''
     global _dialog
 
     if _dialog is None:

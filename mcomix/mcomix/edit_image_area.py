@@ -1,4 +1,4 @@
-"""edit_image_area.py - The area of the editing archive window that displays images."""
+'''edit_image_area.py - The area of the editing archive window that displays images.'''
 
 import os
 from gi.repository import Gdk, GdkPixbuf, Gtk
@@ -11,7 +11,7 @@ from mcomix.preferences import prefs
 
 class _ImageArea(Gtk.ScrolledWindow):
 
-    """The area used for displaying and handling image files."""
+    '''The area used for displaying and handling image files.'''
 
     def __init__(self, edit_dialog, window):
         super(_ImageArea, self).__init__()
@@ -53,13 +53,13 @@ class _ImageArea(Gtk.ScrolledWindow):
         self._window.imagehandler.page_available += self._on_page_available
 
         self._ui_manager = Gtk.UIManager()
-        ui_description = """
+        ui_description = '''
         <ui>
             <popup name="Popup">
                 <menuitem action="remove" />
             </popup>
         </ui>
-        """
+        '''
 
         self._ui_manager.add_ui_from_string(ui_description)
 
@@ -70,7 +70,7 @@ class _ImageArea(Gtk.ScrolledWindow):
         self._ui_manager.insert_action_group(actiongroup, 0)
 
     def fetch_images(self):
-        """Load all the images in the archive or directory."""
+        '''Load all the images in the archive or directory.'''
         for page in range(1, self._window.imagehandler.get_number_of_pages() + 1):
             path = self._window.imagehandler.get_path_to_page(page)
             encoded_path = i18n.to_unicode(os.path.basename(path))
@@ -92,15 +92,15 @@ class _ImageArea(Gtk.ScrolledWindow):
         return pixbuf
 
     def add_extra_image(self, path):
-        """Add an imported image (at <path>) to the end of the image list."""
+        '''Add an imported image (at <path>) to the end of the image list.'''
         self._liststore.append([self._filler, os.path.basename(path), path, False])
 
     def get_file_listing(self):
-        """Return a list with the full paths to all the images, in order."""
+        '''Return a list with the full paths to all the images, in order.'''
         return [row[2] for row in self._liststore]
 
     def _remove_pages(self, *args):
-        """Remove the currently selected pages from the list."""
+        '''Remove the currently selected pages from the list.'''
         paths = self._iconview.get_selected_items()
 
         for path in paths:
@@ -108,7 +108,7 @@ class _ImageArea(Gtk.ScrolledWindow):
             self._liststore.remove(iterator)
 
     def _button_press(self, iconview, event):
-        """Handle mouse button presses on the thumbnail area."""
+        '''Handle mouse button presses on the thumbnail area.'''
         path = iconview.get_path_at_pos(int(event.x), int(event.y))
 
         if path is None:
@@ -124,15 +124,15 @@ class _ImageArea(Gtk.ScrolledWindow):
                                                         event.button, event.time)
 
     def _key_press(self, iconview, event):
-        """Handle key presses on the thumbnail area."""
+        '''Handle key presses on the thumbnail area.'''
         if event.keyval == Gdk.KEY_Delete:
             self._remove_pages()
 
     def _drag_begin(self, iconview, context):
-        """We hook up on drag_begin events so that we can set the hotspot
+        '''We hook up on drag_begin events so that we can set the hotspot
         for the cursor at the top left corner of the thumbnail (so that we
         might actually see where we are dropping!).
-        """
+        '''
         path = iconview.get_cursor()[0]
         surface = treeview.create_row_drag_icon(path)
         width, height = surface.get_width(), surface.get_height()
@@ -143,7 +143,7 @@ class _ImageArea(Gtk.ScrolledWindow):
         self._iconview.stop_update()
 
     def _on_page_available(self, page):
-        """ Called whenever a new page is ready for display. """
+        ''' Called whenever a new page is ready for display. '''
         self._iconview.draw_thumbnails_on_screen()
 
 # vim: expandtab:sw=4:ts=4

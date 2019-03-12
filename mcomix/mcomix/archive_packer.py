@@ -1,4 +1,4 @@
-"""archive_packer.py - Archive creation class."""
+'''archive_packer.py - Archive creation class.'''
 
 import os
 import zipfile
@@ -8,15 +8,15 @@ from mcomix import log
 
 class Packer(object):
 
-    """Packer is a threaded class for packing files into ZIP archives.
+    '''Packer is a threaded class for packing files into ZIP archives.
 
     It would be straight-forward to add support for more archive types,
     but basically all other types are less well fitted for this particular
     task than ZIP archives are (yes, really).
-    """
+    '''
 
     def __init__(self, image_files, other_files, archive_path, base_name):
-        """Setup a Packer object to create a ZIP archive at <archive_path>.
+        '''Setup a Packer object to create a ZIP archive at <archive_path>.
         All files pointed to by paths in the sequences <image_files> and
         <other_files> will be included in the archive when packed.
 
@@ -27,7 +27,7 @@ class Packer(object):
         The files in <other_files> will be included as they are,
         assuming their filenames does not clash with other filenames in
         the archive. All files are placed in the archive root.
-        """
+        '''
         self._image_files = image_files
         self._other_files = other_files
         self._archive_path = archive_path
@@ -36,16 +36,16 @@ class Packer(object):
         self._packing_successful = False
 
     def pack(self):
-        """Pack all the files in the file lists into the archive."""
+        '''Pack all the files in the file lists into the archive.'''
         self._pack_thread = threading.Thread(target=self._thread_pack)
         self._pack_thread.name += '-pack'
         self._pack_thread.setDaemon(False)
         self._pack_thread.start()
 
     def wait(self):
-        """Block until the packer thread has finished. Return True if the
+        '''Block until the packer thread has finished. Return True if the
         packer finished its work successfully.
-        """
+        '''
         if self._pack_thread != None:
             self._pack_thread.join()
 
@@ -71,8 +71,8 @@ class Packer(object):
             except Exception:
                 log.error(_('! Could not add file %(sourcefile)s '
                             'to archive %(archivefile)s, aborting...'),
-                          { "sourcefile" : path,
-                            "archivefile" : self._archive_path})
+                          {'sourcefile': path,
+                           'archivefile': self._archive_path})
 
                 zfile.close()
 
@@ -96,8 +96,8 @@ class Packer(object):
             except Exception:
                 log.error(_('! Could not add file %(sourcefile)s '
                             'to archive %(archivefile)s, aborting...'),
-                          { "sourcefile" : path,
-                            "archivefile" : self._archive_path})
+                          {'sourcefile': path,
+                           'archivefile': self._archive_path})
 
                 zfile.close()
 

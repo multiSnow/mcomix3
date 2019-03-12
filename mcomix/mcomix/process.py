@@ -1,4 +1,4 @@
-"""process.py - Process spawning module."""
+'''process.py - Process spawning module.'''
 
 import gc
 import sys
@@ -63,7 +63,7 @@ if 'win32' == sys.platform:
     _exe_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
 
 def find_executable(candidates, workdir=None, is_valid_candidate=None):
-    """ Find executable in path.
+    ''' Find executable in path.
 
     Return an absolute path to a valid executable or None.
 
@@ -89,7 +89,7 @@ def find_executable(candidates, workdir=None, is_valid_candidate=None):
 
     - a valid candidate must have execution right
 
-    """
+    '''
     if workdir is None:
         workdir = os.getcwd()
     workdir = os.path.abspath(workdir)
@@ -141,9 +141,9 @@ def find_executable(candidates, workdir=None, is_valid_candidate=None):
 
 
 def Win32Popen(cmd):
-    """ Spawns a new process on Win32. cmd is a list of parameters. 
+    ''' Spawns a new process on Win32. cmd is a list of parameters. 
     This method's sole purpose is calling CreateProcessW, not
-    CreateProcessA as it is done by subprocess.Popen. """
+    CreateProcessA as it is done by subprocess.Popen. '''
     import ctypes
 
     # Declare common data types
@@ -154,29 +154,29 @@ def Win32Popen(cmd):
     HANDLE = ctypes.c_void_p
 
     class StartupInfo(ctypes.Structure):
-        _fields_ = [("cb", DWORD),
-            ("lpReserved", LPTSTR),
-            ("lpDesktop", LPTSTR),
-            ("lpTitle", LPTSTR),
-            ("dwX", DWORD),
-            ("dwY", DWORD),
-            ("dwXSize", DWORD),
-            ("dwYSize", DWORD),
-            ("dwXCountChars", DWORD),
-            ("dwYCountChars", DWORD),
-            ("dwFillAttribute", DWORD),
-            ("dwFlags", DWORD),
-            ("wShowWindow", WORD),
-            ("cbReserved2", WORD),
-            ("lpReserved2", LPBYTE),
-            ("hStdInput", HANDLE),
-            ("hStdOutput", HANDLE),
-            ("hStdError", HANDLE)]
+        _fields_ = [('cb', DWORD),
+                    ('lpReserved', LPTSTR),
+                    ('lpDesktop', LPTSTR),
+                    ('lpTitle', LPTSTR),
+                    ('dwX', DWORD),
+                    ('dwY', DWORD),
+                    ('dwXSize', DWORD),
+                    ('dwYSize', DWORD),
+                    ('dwXCountChars', DWORD),
+                    ('dwYCountChars', DWORD),
+                    ('dwFillAttribute', DWORD),
+                    ('dwFlags', DWORD),
+                    ('wShowWindow', WORD),
+                    ('cbReserved2', WORD),
+                    ('lpReserved2', LPBYTE),
+                    ('hStdInput', HANDLE),
+                    ('hStdOutput', HANDLE),
+                    ('hStdError', HANDLE)]
     class ProcessInformation(ctypes.Structure):
-        _fields_ = [("hProcess", HANDLE),
-            ("hThread", HANDLE),
-            ("dwProcessId", DWORD),
-            ("dwThreadId", DWORD)]
+        _fields_ = [('hProcess', HANDLE),
+                    ('hThread', HANDLE),
+                    ('dwProcessId', DWORD),
+                    ('dwThreadId', DWORD)]
 
     LPSTRARTUPINFO = ctypes.POINTER(StartupInfo)
     LPROCESS_INFORMATION = ctypes.POINTER(ProcessInformation)

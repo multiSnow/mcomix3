@@ -1,4 +1,4 @@
-"""recent.py - Recent files handler."""
+'''recent.py - Recent files handler.'''
 
 import urllib
 import itertools
@@ -53,7 +53,7 @@ class RecentFilesMenu(Gtk.RecentChooserMenu):
             self.remove(path)
 
     def count(self):
-        """ Returns the amount of stored entries. """
+        ''' Returns the amount of stored entries. '''
         return len(self._manager.get_items())
 
     def add(self, path):
@@ -75,7 +75,7 @@ class RecentFilesMenu(Gtk.RecentChooserMenu):
             pass
 
     def remove_all(self):
-        """ Removes all entries to recently opened files. """
+        ''' Removes all entries to recently opened files. '''
         try:
             self._manager.purge_items()
         except GObject.GError as error:

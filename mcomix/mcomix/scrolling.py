@@ -1,4 +1,4 @@
-""" Smart scrolling. """
+''' Smart scrolling. '''
 
 from mcomix import tools
 from mcomix import constants
@@ -13,8 +13,8 @@ class Scrolling(object):
 
 
     def scroll_smartly(self, content_box, viewport_box, orientation, max_scroll,
-        axis_map=None):
-        """ Returns a new viewport position when reading forwards using
+                       axis_map=None):
+        ''' Returns a new viewport position when reading forwards using
         the given orientation. If there is no space left to go, the empty
         list is returned. Note that all params are lists of ints (except
         max_scroll which might also contain floats) where each index
@@ -32,7 +32,7 @@ class Scrolling(object):
         (Floats allowed.)
         @param axis_map: The index of the dimension to modify.
         @return: A new viewport_position if you can read further or the
-        empty list if there is nothing left to read. """
+        empty list if there is nothing left to read. '''
         # Translate content and viewport so that content position equals origin
         offset = content_box.get_position()
         content_size = content_box.get_size()
@@ -143,7 +143,7 @@ class Scrolling(object):
 
     def scroll_to_predefined(self, content_box, viewport_box, orientation,
         destination):
-        """ Returns a new viewport position when scrolling towards a
+        ''' Returns a new viewport position when scrolling towards a
         predefined destination. Note that all params are lists of integers
         where each index corresponds to one dimension.
         @param content_box: The Box of the content to display.
@@ -158,7 +158,7 @@ class Scrolling(object):
         dimension), SCROLL_TO_START (scroll to where the content starts in this
         dimension) or SCROLL_TO_END (scroll to where the content ends in this
         dimension).
-        @return: A new viewport position as specified above. """
+        @return: A new viewport position as specified above. '''
         content_position = content_box.get_position()
         content_size = content_box.get_size()
         viewport_size = viewport_box.get_size()
@@ -169,7 +169,7 @@ class Scrolling(object):
             if d == 0:
                 continue
             if d < constants.SCROLL_TO_END or d > 1:
-                raise ValueError("invalid destination " + d + " at index "+ i)
+                raise ValueError('invalid destination ' + d + ' at index '+ i)
             if d == constants.SCROLL_TO_END:
                 d = o
             if d == constants.SCROLL_TO_START:
@@ -185,10 +185,10 @@ class Scrolling(object):
 
 
     def _cached_bs(self, num, denom, half_up):
-        """ A simple (and ugly) caching mechanism used to avoid
+        ''' A simple (and ugly) caching mechanism used to avoid
         recomputations. The current implementation offers a cache with
         only two entries so it's only useful for the two "fastest"
-        dimensions. """
+        dimensions. '''
         if (self._cache0[0] != num or
             self._cache0[1] != denom or
             self._cache0[2] != half_up):
@@ -202,21 +202,21 @@ class Scrolling(object):
 
 
     def clear_cache(self):
-        """ Clears all caches that are used internally. """
+        ''' Clears all caches that are used internally. '''
         self._cache0 = (0, 0, False, [])
         self._cache1 = (0, 0, False, [])
 
 
     @staticmethod
     def _bresenham_sums(num, denom, half_up):
-        """ This algorithm is derived from Bresenham's line algorithm in
+        ''' This algorithm is derived from Bresenham's line algorithm in
         order to distribute the remainder of num/denom equally. See
         https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm for details.
-        """
+        '''
         if num < 0:
-            raise ValueError("num < 0")
+            raise ValueError('num < 0')
         if denom < 1:
-            raise ValueError("denom < 1")
+            raise ValueError('denom < 1')
         quotient = num // denom
         remainder = num % denom
         needs_up = half_up and (remainder != 0) and ((denom & 1) == 0)

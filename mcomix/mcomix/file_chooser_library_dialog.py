@@ -1,4 +1,4 @@
-"""file_chooser_library_dialog.py - Custom FileChooserDialog implementations."""
+'''file_chooser_library_dialog.py - Custom FileChooserDialog implementations.'''
 
 from gi.repository import Gtk
 
@@ -9,7 +9,7 @@ _library_filechooser_dialog = None
 
 class _LibraryFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog):
 
-    """The filechooser dialog used when adding books to the library."""
+    '''The filechooser dialog used when adding books to the library.'''
 
     def __init__(self, library):
         super(_LibraryFileChooserDialog, self).__init__()
@@ -67,7 +67,7 @@ class _LibraryFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog)
             close_library_filechooser_dialog()
 
 def open_library_filechooser_dialog(library):
-    """Open the library filechooser dialog."""
+    '''Open the library filechooser dialog.'''
     global _library_filechooser_dialog
 
     if _library_filechooser_dialog is None:
@@ -76,7 +76,7 @@ def open_library_filechooser_dialog(library):
         _library_filechooser_dialog.present()
 
 def close_library_filechooser_dialog(*args):
-    """Close the library filechooser dialog."""
+    '''Close the library filechooser dialog.'''
     global _library_filechooser_dialog
 
     if _library_filechooser_dialog is not None:

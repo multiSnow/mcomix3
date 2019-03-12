@@ -1,4 +1,4 @@
-"""lens.py - Magnifying lens."""
+'''lens.py - Magnifying lens.'''
 
 import math
 
@@ -11,7 +11,7 @@ from mcomix import constants
 
 class MagnifyingLens(object):
 
-    """The MagnifyingLens creates cursors from the raw pixbufs containing
+    '''The MagnifyingLens creates cursors from the raw pixbufs containing
     the unscaled data for the currently displayed images. It does this by
     looking at the cursor position and calculating what image data to put
     in the "lens" cursor.
@@ -19,7 +19,7 @@ class MagnifyingLens(object):
     Note: The mapping is highly dependent on the exact layout of the main
     window images, thus this module isn't really independent from the main
     module as it uses implementation details not in the interface.
-    """
+    '''
 
     def __init__(self, window):
         self._window = window
@@ -54,10 +54,10 @@ class MagnifyingLens(object):
     enabled = property(get_enabled, set_enabled)
 
     def _draw_lens(self, x, y):
-        """Calculate what image data to put in the lens and update the cursor
+        '''Calculate what image data to put in the lens and update the cursor
         with it; <x> and <y> are the positions of the cursor within the
         main window layout area.
-        """
+        '''
         if self._window.images[0].get_storage_type() not in (Gtk.ImageType.PIXBUF, Gtk.ImageType.ANIMATION):
             return
 
@@ -86,9 +86,9 @@ class MagnifyingLens(object):
         self._last_lens_rect = rectangle
 
     def _calculate_lens_rect(self, x, y, width, height):
-        """ Calculates the area where the lens will be drawn on screen. This method takes
+        ''' Calculates the area where the lens will be drawn on screen. This method takes
         screen space into calculation and moves the rectangle accordingly when the the rectangle
-        would otherwise flow over the allocated area. """
+        would otherwise flow over the allocated area. '''
 
         lens_x = max(x - width // 2, 0)
         lens_y = max(y - height // 2, 0)
@@ -103,7 +103,7 @@ class MagnifyingLens(object):
         return lens_x, lens_y, width + 2, height + 2
 
     def _clear_lens(self, current_lens_region=None):
-        """ Invalidates the area that was damaged by the last call to draw_lens. """
+        ''' Invalidates the area that was damaged by the last call to draw_lens. '''
 
         if not self._last_lens_rect:
             return
@@ -116,19 +116,19 @@ class MagnifyingLens(object):
         self._last_lens_rect = None
 
     def toggle(self, action):
-        """Toggle on or off the lens depending on the state of <action>."""
+        '''Toggle on or off the lens depending on the state of <action>.'''
         self.enabled = action.get_active()
 
     def _motion_event(self, widget, event):
-        """ Called whenever the mouse moves over the image area. """
+        ''' Called whenever the mouse moves over the image area. '''
         self._point = (int(event.x), int(event.y))
         if self.enabled:
             self._draw_lens(*self._point)
 
     def _get_lens_pixbuf(self, x, y):
-        """Get a pixbuf containing the appropiate image data for the lens
+        '''Get a pixbuf containing the appropiate image data for the lens
         where <x> and <y> are the positions of the cursor.
-        """
+        '''
         canvas = GdkPixbuf.Pixbuf.new(colorspace=GdkPixbuf.Colorspace.RGB,
                                       has_alpha=True, bits_per_sample=8,
                                       width=prefs['lens size'],
@@ -146,13 +146,13 @@ class MagnifyingLens(object):
         return image_tools.add_border(canvas, 1)
 
     def _add_subpixbuf(self, canvas, x, y, image_size, source_pixbuf):
-        """Copy a subpixbuf from <source_pixbuf> to <canvas> as it should
+        '''Copy a subpixbuf from <source_pixbuf> to <canvas> as it should
         be in the lens if the coordinates <x>, <y> are the mouse pointer
         position on the main window layout area.
 
         The displayed image (scaled from the <source_pixbuf>) must have
         size <image_size>.
-        """
+        '''
         # Prevent division by zero exceptions further down
         if not image_size[0]:
             return

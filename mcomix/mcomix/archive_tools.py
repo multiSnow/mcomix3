@@ -1,4 +1,4 @@
-"""archive_tools.py - Archive tool functions."""
+'''archive_tools.py - Archive tool functions.'''
 
 import os
 import re
@@ -66,7 +66,7 @@ _HANDLERS = {
 }
 
 def _get_handler(archive_type):
-    """ Return best archive class for format <archive_type> """
+    ''' Return best archive class for format <archive_type> '''
 
     for handler in _HANDLERS[archive_type]:
         if not hasattr(handler, 'is_available'):
@@ -75,7 +75,7 @@ def _get_handler(archive_type):
             return handler
 
 def _is_available(archive_type):
-    """ Return True if a handler supporting the <archive_type> format is available """
+    ''' Return True if a handler supporting the <archive_type> format is available '''
     return _get_handler(archive_type) is not None
 
 def szip_available():
@@ -127,7 +127,7 @@ def is_archive_file(path):
     return os.path.splitext(path)[1].lower() in SUPPORTED_ARCHIVE_EXTS
 
 def archive_mime_type(path):
-    """Return the archive type of <path> or None for non-archives."""
+    '''Return the archive type of <path> or None for non-archives.'''
     try:
 
         if os.path.isfile(path):
@@ -180,9 +180,9 @@ def archive_mime_type(path):
     return None
 
 def get_archive_info(path):
-    """Return a tuple (mime, num_pages, size) with info about the archive
+    '''Return a tuple (mime, num_pages, size) with info about the archive
     at <path>, or None if <path> doesn't point to a supported
-    """
+    '''
     with tempfile.TemporaryDirectory(prefix='mcomix_archive_info.') as tmpdir:
         mime = archive_mime_type(path)
         archive = get_recursive_archive_handler(path, tmpdir, type=mime)
@@ -196,10 +196,10 @@ def get_archive_info(path):
         return (mime, num_pages, size)
 
 def get_archive_handler(path, type=None):
-    """ Returns a fitting extractor handler for the archive passed
+    ''' Returns a fitting extractor handler for the archive passed
     in <path> (with optional mime type <type>. Returns None if no matching
     extractor was found.
-    """
+    '''
     if type is None:
         type = archive_mime_type(path)
         if type is None:
@@ -212,9 +212,9 @@ def get_archive_handler(path, type=None):
     return handler(path)
 
 def get_recursive_archive_handler(path, destination_dir, type=None):
-    """ Same as <get_archive_handler> but the handler will transparently handle
+    ''' Same as <get_archive_handler> but the handler will transparently handle
     archives within archives.
-    """
+    '''
     archive = get_archive_handler(path, type=type)
     if archive is None:
         return None

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-""" Unicode-aware wrapper for tarfile.TarFile. """
+''' Unicode-aware wrapper for tarfile.TarFile. '''
 
 import os
 import tarfile

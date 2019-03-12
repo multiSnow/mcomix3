@@ -1,4 +1,4 @@
-"""properties_dialog.py - Properties dialog that displays information about the archive/file."""
+'''properties_dialog.py - Properties dialog that displays information about the archive/file.'''
 
 from gi.repository import Gtk
 import os

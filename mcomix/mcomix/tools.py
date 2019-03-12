@@ -1,4 +1,4 @@
-"""tools.py - Contains various helper functions."""
+'''tools.py - Contains various helper functions.'''
 
 import os
 import sys
@@ -12,7 +12,7 @@ from functools import reduce
 
 ROOTPATH=os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 _PORTABLE_MODE=[]
-NUMERIC_REGEXP = re.compile(r"\d+|\D+")  # Split into numerics and characters
+NUMERIC_REGEXP = re.compile(r'\d+|\D+')  # Split into numerics and characters
 PREFIXED_BYTE_UNITS = ('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB')
 
 def cmp(x,y):
@@ -21,10 +21,10 @@ def cmp(x,y):
     return 0
 
 def alphanumeric_sort(filenames):
-    """Do an in-place alphanumeric sort of the strings in <filenames>,
+    '''Do an in-place alphanumeric sort of the strings in <filenames>,
     such that for an example "1.jpg", "2.jpg", "10.jpg" is a sorted
     ordering.
-    """
+    '''
     def _format_substring(s):
         if s.isdigit():
             return 0,int(s)
@@ -34,9 +34,9 @@ def alphanumeric_sort(filenames):
     filenames.sort(key=lambda s: list(map(_format_substring, NUMERIC_REGEXP.findall(s))))
 
 def alphanumeric_compare(s1, s2):
-    """ Compares two strings by their natural order (i.e. 1 before 10)
+    ''' Compares two strings by their natural order (i.e. 1 before 10)
     and returns a result comparable to the cmp function.
-    @return: 0 if identical, -1 if s1 < s2, +1 if s1 > s2. """
+    @return: 0 if identical, -1 if s1 < s2, +1 if s1 > s2. '''
     if s1 is None:
         return 1
     elif s2 is None:
@@ -58,11 +58,11 @@ def alphanumeric_compare(s1, s2):
     return cmp(stringparts1, stringparts2)
 
 def bin_search(lst, value):
-    """ Binary search for sorted list C{lst}, looking for C{value}.
+    ''' Binary search for sorted list C{lst}, looking for C{value}.
     @return: List index on success. On failure, it returns the 1's
     complement of the index where C{value} would be inserted.
     This implies that the return value is non-negative if and only if
-    C{value} is contained in C{lst}. """
+    C{value} is contained in C{lst}. '''
 
     index = bisect.bisect_left(lst, value)
     if index != len(lst) and lst[index] == value:
@@ -72,10 +72,10 @@ def bin_search(lst, value):
 
 
 def get_home_directory():
-    """On UNIX-like systems, this method will return the path of the home
+    '''On UNIX-like systems, this method will return the path of the home
     directory, e.g. /home/username. On Windows, it will return an MComix
     sub-directory of <Documents and Settings/Username>.
-    """
+    '''
     if is_portable_mode():
         # multiple profiles, maybe :)
         return os.path.join(rootdir(),'profile')
@@ -86,13 +86,13 @@ def get_home_directory():
 
 
 def get_config_directory():
-    """Return the path to the MComix config directory. On UNIX, this will
+    '''Return the path to the MComix config directory. On UNIX, this will
     be $XDG_CONFIG_HOME/mcomix, on Windows it will be the same directory as
     get_home_directory().
 
     See http://standards.freedesktop.org/basedir-spec/latest/ for more
     information on the $XDG_CONFIG_HOME environmental variable.
-    """
+    '''
     if is_portable_mode():
         # always using get_home_directory() even if in unix
         return os.path.join(get_home_directory(),'config')
@@ -105,13 +105,13 @@ def get_config_directory():
 
 
 def get_data_directory():
-    """Return the path to the MComix data directory. On UNIX, this will
+    '''Return the path to the MComix data directory. On UNIX, this will
     be $XDG_DATA_HOME/mcomix, on Windows it will be the same directory as
     get_home_directory().
 
     See http://standards.freedesktop.org/basedir-spec/latest/ for more
     information on the $XDG_DATA_HOME environmental variable.
-    """
+    '''
     if is_portable_mode():
         # always using get_home_directory() even if in unix
         return os.path.join(get_home_directory(),'data')
@@ -140,7 +140,7 @@ def format_byte_size(n):
     return '{} {}'.format(round(n,3),e)
 
 def garbage_collect():
-    """ Runs the garbage collector. """
+    ''' Runs the garbage collector. '''
     gc.collect(0)
 
 def rootdir():
@@ -201,28 +201,28 @@ def relerr(approx, ideal):
     return abs(div(approx - ideal, ideal))
 
 def smaller(a, b):
-    """ Returns a list with the i-th element set to True if and only the i-th
-    element in a is less than the i-th element in b. """
+    ''' Returns a list with the i-th element set to True if and only the i-th
+    element in a is less than the i-th element in b. '''
     return map(operator.lt, a, b)
 
 def smaller_or_equal(a, b):
-    """ Returns a list with the i-th element set to True if and only the i-th
-    element in a is less than or equal to the i-th element in b. """
+    ''' Returns a list with the i-th element set to True if and only the i-th
+    element in a is less than or equal to the i-th element in b. '''
     return list(map(operator.le, a, b))
 
 def scale(t, factor):
     return [x * factor for x in t]
 
 def vector_sub(a, b):
-    """ Subtracts vector b from vector a. """
+    ''' Subtracts vector b from vector a. '''
     return tuple(map(operator.sub, a, b))
 
 def vector_add(a, b):
-    """ Adds vector a to vector b. """
+    ''' Adds vector a to vector b. '''
     return tuple(map(operator.add, a, b))
 
 def vector_opposite(a):
-    """ Returns the opposite vector -a. """
+    ''' Returns the opposite vector -a. '''
     return tuple(map(operator.neg, a))
 
 # vim: expandtab:sw=4:ts=4

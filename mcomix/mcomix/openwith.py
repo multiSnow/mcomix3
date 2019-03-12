@@ -1,4 +1,4 @@
-""" openwith.py - Logic and storage for Open with... commands. """
+''' openwith.py - Logic and storage for Open with... commands. '''
 import sys
 import os
 import re
@@ -19,7 +19,7 @@ class OpenWithException(Exception): pass
 
 class OpenWithManager(object):
     def __init__(self):
-        """ Constructor. """
+        ''' Constructor. '''
         pass
 
     @callback.Callback
@@ -35,7 +35,7 @@ class OpenWithManager(object):
                     in prefs['openwith commands']]
         except ValueError:
             # Backwards compatibility for early versions with only two parameters
-            return [OpenWithCommand(label, command, u'', False)
+            return [OpenWithCommand(label, command, '', False)
                     for label, command in prefs['openwith commands']]
 
 
@@ -62,11 +62,11 @@ class OpenWithCommand(object):
         return bool(re.match(r'^-+$', self.get_label().strip()))
 
     def execute(self, window):
-        """ Spawns a new process with the given executable
-        and arguments. """
+        ''' Spawns a new process with the given executable
+        and arguments. '''
         if (self.is_disabled_for_archives() and
             window.filehandler.archive_type is not None):
-            window.osd.show(_("'%s' is disabled for archives.") % self.get_label())
+            window.osd.show(_('"%s" is disabled for archives.') % self.get_label())
             return
 
         current_dir = os.getcwd()
@@ -79,16 +79,16 @@ class OpenWithCommand(object):
             process.call_thread(args)
 
         except Exception as e:
-            text = _("Could not run command %(cmdlabel)s: %(exception)s") % \
+            text = _('Could not run command %(cmdlabel)s: %(exception)s') % \
                 {'cmdlabel': self.get_label(), 'exception': str(e)}
             window.osd.show(text)
         finally:
             os.chdir(current_dir)
 
     def is_executable(self, window):
-        """ Check if a name is executable. This name can be either
+        ''' Check if a name is executable. This name can be either
         a relative path, when the executable is in PATH, or an
-        absolute path. """
+        absolute path. '''
         args = self.parse(window)
         if len(args) == 0:
             return False
@@ -103,7 +103,7 @@ class OpenWithCommand(object):
         return exe is not None
 
     def is_valid_workdir(self, window, allow_empty=False):
-        """ Check if the working directory is valid. """
+        ''' Check if the working directory is valid. '''
         cwd = self.get_cwd().strip()
         if not cwd:
             return allow_empty
@@ -119,11 +119,11 @@ class OpenWithCommand(object):
         return False
 
     def parse(self, window, text='', check_restrictions=True):
-        """ Parses the command string and replaces special characters
+        ''' Parses the command string and replaces special characters
         with their respective variable contents. Returns a list of
         arguments.
         If check_restrictions is False, no checking will be done
-        if one of the variables isn't valid in the current file context. """
+        if one of the variables isn't valid in the current file context. '''
         if not text:
             text = self.get_command()
         if not text.strip():
@@ -137,32 +137,32 @@ class OpenWithCommand(object):
         return args
 
     def _commandline_to_arguments(self, line, window, context_type):
-        """ Parse a command line string into a list containing
+        ''' Parse a command line string into a list containing
         the parts to pass to Popen. The following two functions have
-        been contributed by Ark <aaku@users.sf.net>. """
+        been contributed by Ark <aaku@users.sf.net>. '''
         result = []
-        buf = u""
+        buf = ''
         quote = False
         escape = False
         inarg = False
         for c in line:
             if escape:
-                if c == u'%' or c == u'"':
+                if c == '%' or c == '"':
                     buf += c
                 else:
                     buf += self._expand_variable(c, window, context_type)
                 escape = False
-            elif c == u' ' or c == u'\t':
+            elif c == ' ' or c == '\t':
                 if quote:
                     buf += c
                 elif inarg:
                     result.append(buf)
-                    buf = u""
+                    buf = ''
                     inarg = False
             else:
-                if c == u'"':
+                if c == '"':
                     quote = not quote
-                elif c == u'%':
+                elif c == '%':
                     escape = True
                 else:
                     buf += c
@@ -170,73 +170,73 @@ class OpenWithCommand(object):
 
         if escape:
             raise OpenWithException(
-                _("Incomplete escape sequence. "
-                  "For a literal '%', use '%%'."))
+                _('Incomplete escape sequence. '
+                  'For a literal "%", use "%%".'))
         if quote:
             raise OpenWithException(
-                _("Incomplete quote sequence. "
-                  "For a literal '\"', use '%\"'."))
+                _('Incomplete quote sequence. '
+                  'For a literal "\'", use "%\'".'))
 
         if inarg:
             result.append(buf)
         return result
 
     def _expand_variable(self, identifier, window, context_type):
-        """ Replaces variables with their respective file
-        or archive path. """
+        ''' Replaces variables with their respective file
+        or archive path. '''
 
         if context_type == DEBUGGING_CONTEXT:
             return '%' + identifier
 
-        if not (context_type & IMAGE_FILE_CONTEXT) and identifier in (u'f', u'd', u'b', u's', u'F', u'D', u'B', u'S'):
+        if not (context_type & IMAGE_FILE_CONTEXT) and identifier in ('f', 'd', 'b', 's', 'F', 'D', 'B', 'S'):
             raise OpenWithException(
-                _("File-related variables can only be used for files."))
+                _('File-related variables can only be used for files.'))
 
-        if not (context_type & ARCHIVE_CONTEXT) and identifier in (u'a', u'c', u'A', u'C'):
+        if not (context_type & ARCHIVE_CONTEXT) and identifier in ('a', 'c', 'A', 'C'):
             raise OpenWithException(
-                _("Archive-related variables can only be used for archives."))
+                _('Archive-related variables can only be used for archives.'))
 
-        if identifier == u'/':
+        if identifier == '/':
             return os.path.sep
-        elif identifier == u'a':
+        elif identifier == 'a':
             return window.filehandler.get_base_filename()
-        elif identifier == u'd':
+        elif identifier == 'd':
             return os.path.basename(os.path.dirname(window.imagehandler.get_path_to_page()))
-        elif identifier == u'f':
+        elif identifier == 'f':
             return window.imagehandler.get_page_filename()
-        elif identifier == u'c':
+        elif identifier == 'c':
             return os.path.basename(os.path.dirname(window.filehandler.get_path_to_base()))
-        elif identifier == u'b':
+        elif identifier == 'b':
             if (context_type & ARCHIVE_CONTEXT):
                 return window.filehandler.get_base_filename() # same as %a
             else:
                 return os.path.basename(os.path.dirname(window.imagehandler.get_path_to_page())) # same as %d
-        elif identifier == u's':
+        elif identifier == 's':
             if (context_type & ARCHIVE_CONTEXT):
                 return os.path.basename(os.path.dirname(window.filehandler.get_path_to_base())) # same as %c
             else:
                 return os.path.basename(os.path.dirname(os.path.dirname(window.imagehandler.get_path_to_page())))
-        elif identifier == u'A':
+        elif identifier == 'A':
             return window.filehandler.get_path_to_base()
-        elif identifier == u'D':
+        elif identifier == 'D':
             return os.path.normpath(os.path.dirname(window.imagehandler.get_path_to_page()))
-        elif identifier == u'F':
+        elif identifier == 'F':
             return os.path.normpath(window.imagehandler.get_path_to_page())
-        elif identifier == u'C':
+        elif identifier == 'C':
             return os.path.dirname(window.filehandler.get_path_to_base())
-        elif identifier == u'B':
+        elif identifier == 'B':
             if (context_type & ARCHIVE_CONTEXT):
                 return window.filehandler.get_path_to_base() # same as %A
             else:
                 return os.path.normpath(os.path.dirname(window.imagehandler.get_path_to_page())) # same as %D
-        elif identifier == u'S':
+        elif identifier == 'S':
             if (context_type & ARCHIVE_CONTEXT):
                 return os.path.dirname(window.filehandler.get_path_to_base()) # same as %C
             else:
                 return os.path.dirname(os.path.dirname(window.imagehandler.get_path_to_page()))
         else:
             raise OpenWithException(
-                _("Invalid escape sequence: %%%s") % identifier)
+                _('Invalid escape sequence: %%%s') % identifier)
 
     def _get_context_type(self, window, check_restrictions=True):
         if not check_restrictions:
@@ -254,9 +254,9 @@ class OpenWithCommand(object):
 
 
 class OpenWithEditor(Gtk.Dialog):
-    """ The editor for changing and creating external commands. This window
+    ''' The editor for changing and creating external commands. This window
     keeps its own internal model once initialized, and will overwrite
-    the external model (i.e. preferences) only when properly closed. """
+    the external model (i.e. preferences) only when properly closed. '''
 
     def __init__(self, window, openwithmanager):
         super(OpenWithEditor, self).__init__(title=_('Edit external commands'))
@@ -303,15 +303,15 @@ class OpenWithEditor(Gtk.Dialog):
         self.resize(600, 400)
 
     def save(self):
-        """ Serializes the tree model into a list of OpenWithCommands
-        and passes these back to the Manager object for persistance. """
+        ''' Serializes the tree model into a list of OpenWithCommands
+        and passes these back to the Manager object for persistance. '''
         commands = self.get_commands()
         self._openwith.set_commands(commands)
         self._changed = False
 
     def get_commands(self):
-        """ Retrieves a list of OpenWithCommand instances from
-        the list model. """
+        ''' Retrieves a list of OpenWithCommand instances from
+        the list model. '''
         model = self._command_tree.get_model()
         iter = model.get_iter_first()
         commands = []
@@ -322,7 +322,7 @@ class OpenWithEditor(Gtk.Dialog):
         return commands
 
     def get_command(self):
-        """ Retrieves the selected command object. """
+        ''' Retrieves the selected command object. '''
         selection = self._command_tree.get_selection()
         if not selection:
             return None
@@ -335,8 +335,8 @@ class OpenWithEditor(Gtk.Dialog):
             return None
 
     def test_command(self):
-        """ Parses the currently selected command and displays the output in the
-        text box next to the button. """
+        ''' Parses the currently selected command and displays the output in the
+        text box next to the button. '''
         command = self.get_command()
         self._run_button.set_sensitive(False)
         if not command:
@@ -350,7 +350,7 @@ class OpenWithEditor(Gtk.Dialog):
 
         try:
             args = map(self._quote_if_necessary, command.parse(self._window))
-            self._test_field.set_text(" ".join(args))
+            self._test_field.set_text(' '.join(args))
             self._run_button.set_sensitive(True)
 
             if not command.is_valid_workdir(self._window, allow_empty=True):
@@ -366,7 +366,7 @@ class OpenWithEditor(Gtk.Dialog):
             self._set_exec_text('')
 
     def _add_command(self, button):
-        """ Add a new empty label-command line to the list. """
+        ''' Add a new empty label-command line to the list. '''
         row = (_('Command label'), '', '', False, True)
         selection = self._command_tree.get_selection()
         if selection and selection.get_selected()[1]:
@@ -377,7 +377,7 @@ class OpenWithEditor(Gtk.Dialog):
         self._changed = True
 
     def _add_sep_command(self, button):
-        """ Adds a new separator line. """
+        ''' Adds a new separator line. '''
         row = ('-', '', '', False, False)
         selection = self._command_tree.get_selection()
         if selection and selection.get_selected()[1]:
@@ -388,14 +388,14 @@ class OpenWithEditor(Gtk.Dialog):
         self._changed = True
 
     def _remove_command(self, button):
-        """ Removes the currently selected command from the list. """
+        ''' Removes the currently selected command from the list. '''
         model, iter = self._command_tree.get_selection().get_selected()
         if (iter and model.iter_is_valid(iter)):
             model.remove(iter)
             self._changed = True
 
     def _up_command(self, button):
-        """ Moves the selected command up by one. """
+        ''' Moves the selected command up by one. '''
         model, iter = self._command_tree.get_selection().get_selected()
         if (iter and model.iter_is_valid(iter)):
             path = model.get_path(iter)[0]
@@ -406,7 +406,7 @@ class OpenWithEditor(Gtk.Dialog):
             self._changed = True
 
     def _down_command(self, button):
-        """ Moves the selected command down by one. """
+        ''' Moves the selected command down by one. '''
         model, iter = self._command_tree.get_selection().get_selected()
         if (iter and model.iter_is_valid(iter)):
             path = model.get_path(iter)[0]
@@ -417,13 +417,13 @@ class OpenWithEditor(Gtk.Dialog):
             self._changed = True
 
     def _run_command(self, button):
-        """ Executes the selected command in the current context. """
+        ''' Executes the selected command in the current context. '''
         command = self.get_command()
         if command and not command.is_separator():
             command.execute(self._window)
 
     def _item_selected(self, selection):
-        """ Enable or disable buttons that depend on an item being selected. """
+        ''' Enable or disable buttons that depend on an item being selected. '''
         for button in (self._remove_button, self._up_button,
                 self._down_button):
             button.set_sensitive(selection.count_selected_rows() > 0)
@@ -437,7 +437,7 @@ class OpenWithEditor(Gtk.Dialog):
         self._exec_label.set_text(text)
 
     def _layout(self):
-        """ Create and lay out UI components. """
+        ''' Create and lay out UI components. '''
         # All these boxes basically are just for adding a 4px border
         vbox = self.get_content_area()
         hbox = Gtk.HBox()
@@ -475,7 +475,7 @@ class OpenWithEditor(Gtk.Dialog):
         content.pack_start(linklabel, False, False, 4)
 
     def _setup_table(self):
-        """ Initializes the TreeView with settings and data. """
+        ''' Initializes the TreeView with settings and data. '''
         for i, label in enumerate((_('Label'), _('Command'), _('Working directory'))):
             renderer = Gtk.CellRendererText()
             renderer.connect('edited', self._text_changed, i)
@@ -507,7 +507,7 @@ class OpenWithEditor(Gtk.Dialog):
         self._command_tree.set_reorderable(True)
 
     def _text_changed(self, renderer, path, new_text, column):
-        """ Called when the user edits a field in the table. """
+        ''' Called when the user edits a field in the table. '''
         # Prevent changing command to separator, and completely removing label
         if column == 0 and (not new_text.strip() or re.match(r'^-+$', new_text)):
             return
@@ -524,7 +524,7 @@ class OpenWithEditor(Gtk.Dialog):
         GLib.idle_add(delayed_set_value)
 
     def _value_changed(self, renderer, path, column):
-        """ Called when a toggle field is changed """
+        ''' Called when a toggle field is changed '''
         model = self._command_tree.get_model()
         iter = model.get_iter(path)
         # Editing the model in the cellrenderercallback stops the editing
@@ -555,15 +555,15 @@ class OpenWithEditor(Gtk.Dialog):
                     self.save()
 
     def _quote_if_necessary(self, arg):
-        """ Quotes a command line argument if necessary. """
-        if arg == u"":
-            return u'""'
+        ''' Quotes a command line argument if necessary. '''
+        if arg == '':
+            return '""'
         # simplified version of
         # http://www.gnu.org/software/bash/manual/bashref.html#Double-Quotes
-        arg = arg.replace(u'\\', u'\\\\')
-        arg = arg.replace(u'"', u'\\"')
-        if u" " in arg:
-            return u'"' + arg + u'"'
+        arg = arg.replace('\\', '\\\\')
+        arg = arg.replace('"', '\\"')
+        if ' ' in arg:
+            return '"' + arg + '"'
         return arg
 
 

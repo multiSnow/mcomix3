@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-""" Class for transparently handling an archive containing sub-archives. """
+''' Class for transparently handling an archive containing sub-archives. '''
 
 from mcomix.archive import archive_base
 from mcomix import archive_tools

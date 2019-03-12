@@ -1,4 +1,4 @@
-"""library_add_progress_dialog.py - Progress bar for the library."""
+'''library_add_progress_dialog.py - Progress bar for the library.'''
 
 from gi.repository import Gtk
 from gi.repository import Pango
@@ -12,12 +12,12 @@ _COLLECTION_ALL = -1
 
 class _AddLibraryProgressDialog(Gtk.Dialog):
 
-    """Dialog with a ProgressBar that adds books to the library."""
+    '''Dialog with a ProgressBar that adds books to the library.'''
 
     def __init__(self, library, window, paths, collection):
-        """Adds the books at <paths> to the library, and also to the
+        '''Adds the books at <paths> to the library, and also to the
         <collection>, unless it is None.
-        """
+        '''
         super(_AddLibraryProgressDialog, self).__init__(title=_('Adding books'),
                                                         modal=True)
         self.set_transient_for(library)
@@ -70,7 +70,7 @@ class _AddLibraryProgressDialog(Gtk.Dialog):
 
                 number_label.set_text('%d / %d' % (total_added, total_paths_int))
 
-            added_label.set_text(_("Adding '%s'...") % path)
+            added_label.set_text(_('Adding "%s"...') % path)
             bar.set_fraction(total_added / total_paths_float)
 
             while Gtk.events_pending():

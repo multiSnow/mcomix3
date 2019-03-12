@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""constants.py - Miscellaneous constants."""
+'''constants.py - Miscellaneous constants.'''
 
 import re
 import os

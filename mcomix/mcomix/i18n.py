@@ -1,4 +1,4 @@
-""" i18n.py - Encoding and translation handler."""
+''' i18n.py - Encoding and translation handler.'''
 
 import sys
 import os
@@ -20,9 +20,9 @@ from mcomix import tools
 _translation = None
 
 def to_unicode(string):
-    """Convert <string> to unicode. First try the default filesystem
+    '''Convert <string> to unicode. First try the default filesystem
     encoding, and then fall back on some common encodings.
-    """
+    '''
     if isinstance(string, str):
         return string
 
@@ -49,9 +49,9 @@ def to_unicode(string):
     return string.decode('utf-8', 'replace')
 
 def to_utf8(string):
-    """ Helper function that converts unicode objects to UTF-8 encoded
+    ''' Helper function that converts unicode objects to UTF-8 encoded
     strings. Non-unicode strings are assumed to be already encoded
-    and returned as-is. """
+    and returned as-is. '''
 
     if isinstance(string, str):
         return string.encode('utf-8')
@@ -59,9 +59,9 @@ def to_utf8(string):
         return string
 
 def install_gettext():
-    """ Initialize gettext with the correct directory that contains
+    ''' Initialize gettext with the correct directory that contains
     MComix translations. This has to be done before any calls to gettext.gettext
-    have been made to ensure all strings are actually translated. """
+    have been made to ensure all strings are actually translated. '''
 
     # Add the sources' base directory to PATH to allow development without
     # explicitly installing the package.
@@ -101,8 +101,8 @@ def install_gettext():
     _translation = translation
 
 def get_translation():
-    """ Returns the gettext.Translation instance that has been initialized with
-    install_gettext(). """
+    ''' Returns the gettext.Translation instance that has been initialized with
+    install_gettext(). '''
 
     return _translation or gettext.NullTranslations()
 

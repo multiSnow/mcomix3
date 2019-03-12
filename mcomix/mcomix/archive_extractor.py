@@ -1,4 +1,4 @@
-"""archive_extractor.py - Archive extraction class."""
+'''archive_extractor.py - Archive extraction class.'''
 from __future__ import with_statement
 
 import os
@@ -13,7 +13,7 @@ from mcomix.worker_thread import WorkerThread
 
 class Extractor(object):
 
-    """Extractor is a threaded class for extracting different archive formats.
+    '''Extractor is a threaded class for extracting different archive formats.
 
     The Extractor can be loaded with paths to archives and a path to a
     destination directory. Once an archive has been set and its contents
@@ -25,16 +25,16 @@ class Extractor(object):
 
     Note: Support for gzip/bzip2 compressed tar archives is limited, see
     set_files() for more info.
-    """
+    '''
 
     def __init__(self):
         self._setupped = False
 
     def setup(self, src, dst, type=None):
-        """Setup the extractor with archive <src> and destination dir <dst>.
+        '''Setup the extractor with archive <src> and destination dir <dst>.
         Return a threading.Condition related to the is_ready() method, or
         None if the format of <src> isn't supported.
-        """
+        '''
         self._src = src
         self._dst = dst
         self._files = []
@@ -55,22 +55,22 @@ class Extractor(object):
         return self._condition
 
     def get_files(self):
-        """Return a list of names of all the files the extractor is currently
+        '''Return a list of names of all the files the extractor is currently
         set for extracting. After a call to setup() this is by default all
         files found in the archive. The paths in the list are relative to
         the archive root and are not absolute for the files once extracted.
-        """
+        '''
         with self._condition:
             if not self._contents_listed:
                 return
             return self._files[:]
 
     def get_directory(self):
-        """Returns the root extraction directory of this extractor."""
+        '''Returns the root extraction directory of this extractor.'''
         return self._dst
 
     def set_files(self, files):
-        """Set the files that the extractor should extract from the archive in
+        '''Set the files that the extractor should extract from the archive in
         the order of extraction. Normally one would get the list of all files
         in the archive using get_files(), then filter and/or permute this
         list before sending it back using set_files().
@@ -80,7 +80,7 @@ class Extractor(object):
         compability. They are fine formats for some purposes, but should
         not be used for scanned comic books. So, we cheat and ignore the
         ordering applied with this method on such archives.
-        """
+        '''
         with self._condition:
             if not self._contents_listed:
                 return
@@ -92,16 +92,16 @@ class Extractor(object):
                 self.extract()
 
     def is_ready(self, name):
-        """Return True if the file <name> in the extractor's file list
+        '''Return True if the file <name> in the extractor's file list
         (as set by set_files()) is fully extracted.
-        """
+        '''
         with self._condition:
             return name in self._extracted
 
     def stop(self):
-        """Signal the extractor to stop extracting and kill the extracting
+        '''Signal the extractor to stop extracting and kill the extracting
         thread. Blocks until the extracting thread has terminated.
-        """
+        '''
         if self._setupped:
             self._list_thread.stop()
             if self._extract_started:
@@ -110,10 +110,10 @@ class Extractor(object):
             self.setupped = False
 
     def extract(self):
-        """Start extracting the files in the file list one by one using a
+        '''Start extracting the files in the file list one by one using a
         new thread. Every time a new file is extracted a notify() will be
         signalled on the Condition that was returned by setup().
-        """
+        '''
         with self._condition:
             if not self._contents_listed:
                 return
@@ -142,18 +142,18 @@ class Extractor(object):
 
     @callback.Callback
     def contents_listed(self, extractor, files):
-        """ Called after the contents of the archive has been listed. """
+        ''' Called after the contents of the archive has been listed. '''
         pass
 
     @callback.Callback
     def file_extracted(self, extractor, filename):
-        """ Called whenever a new file is extracted and ready. """
+        ''' Called whenever a new file is extracted and ready. '''
         pass
 
     def close(self):
-        """Close any open file objects, need only be called manually if the
+        '''Close any open file objects, need only be called manually if the
         extract() method isn't called.
-        """
+        '''
         self.stop()
         if self._archive:
             self._archive.close()
@@ -174,7 +174,7 @@ class Extractor(object):
             files.sort()
 
         try:
-            log.debug(u'Extracting from "%s" to "%s": "%s"', self._src, self._dst, '", "'.join(files))
+            log.debug('Extracting from "%s" to "%s": "%s"', self._src, self._dst, '", "'.join(files))
             for f in self._archive.iter_extract(files, self._dst):
                 if self._extract_thread.must_stop():
                     return
@@ -189,13 +189,13 @@ class Extractor(object):
             log.debug('Traceback:\n%s', traceback.format_exc())
 
     def _extract_file(self, name):
-        """Extract the file named <name> to the destination directory,
+        '''Extract the file named <name> to the destination directory,
         mark the file as "ready", then signal a notify() on the Condition
         returned by setup().
-        """
+        '''
 
         try:
-            log.debug(u'Extracting from "%s" to "%s": "%s"', self._src, self._dst, name)
+            log.debug('Extracting from "%s" to "%s": "%s"', self._src, self._dst, name)
             self._archive.extract(name, self._dst)
 
         except Exception as ex:
@@ -222,7 +222,7 @@ class Extractor(object):
         self.contents_listed(self, files)
 
 class ArchiveException(Exception):
-    """ Indicate error during extraction operations. """
+    ''' Indicate error during extraction operations. '''
     pass
 
 # vim: expandtab:sw=4:ts=4

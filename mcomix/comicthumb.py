@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""comicthumb - Thumbnailer for comic book archives, bundled with MComix.
+'''comicthumb - Thumbnailer for comic book archives, bundled with MComix.
 
 comicthumb is dependent on the Python Imaging Library (PIL).
 
@@ -10,7 +10,7 @@ re-written from scratch for Comix 4 by Pontus Ekberg.
 Supported formats: ZIP, RAR and tar (.cbz, .cbr, .cbt)
 
 Usage: comicthumb INFILE OUTFILE [SIZE]
-"""
+'''
 from gi import require_version
 
 require_version('GdkPixbuf', '2.0')

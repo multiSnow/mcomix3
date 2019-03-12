@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-""" Dynamic hotkey management
+''' Dynamic hotkey management
 
 This module handles global hotkeys that were previously hardcoded in events.py.
 All menu accelerators are handled using GTK's built-in accelerator map. The map
@@ -22,7 +22,7 @@ action-name: string => [keycodes: list]
 
 
 Each action_name can have multiple keybindings.
-"""
+'''
 
 import os
 import shutil
@@ -160,7 +160,7 @@ class _KeybindingManager(object):
         self._initialize()
 
     def register(self, name, bindings, callback, args=[], kwargs={}):
-        """ Registers an action for a predefined keybinding name.
+        ''' Registers an action for a predefined keybinding name.
         @param name: Action name, defined in L{BINDING_INFO}.
         @param bindings: List of keybinding strings, as understood
                          by L{Gtk.accelerator_parse}. Only used if no
@@ -168,8 +168,8 @@ class _KeybindingManager(object):
         @param callback: Function callback
         @param args: List of arguments to pass to the callback
         @param kwargs: List of keyword arguments to pass to the callback.
-        """
-        assert name in BINDING_INFO, "'%s' isn't a valid keyboard action." % name
+        '''
+        assert name in BINDING_INFO, '"%s" isn\'t a valid keyboard action.' % name
 
         # Load stored keybindings, or fall back to passed arguments
         keycodes = self._action_to_bindings[name]
@@ -180,7 +180,7 @@ class _KeybindingManager(object):
             if keycode in self._binding_to_action.keys():
                 if self._binding_to_action[keycode] != name:
                     log.warning(_('Keybinding for "%(action)s" overrides hotkey for another action.'),
-                            {"action": name})
+                                {'action': name})
                     log.warning('Binding %s overrides %r', keycode, self._binding_to_action[keycode])
             else:
                 self._binding_to_action[keycode] = name
@@ -195,15 +195,15 @@ class _KeybindingManager(object):
 
 
     def edit_accel(self, name, new_binding, old_binding):
-        """ Changes binding for an action
+        ''' Changes binding for an action
         @param name: Action name
         @param new_binding: Binding to be assigned to action
         @param old_binding: Binding to be removed from action [ can be empty: "" ]
 
         @return None: new_binding wasn't in any action
                 action name: where new_binding was before
-        """
-        assert name in BINDING_INFO, "'%s' isn't a valid keyboard action." % name
+        '''
+        assert name in BINDING_INFO, '"%s" isn\'t a valid keyboard action.' % name
 
         nb = Gtk.accelerator_parse(new_binding)
         old_action_with_nb = self._binding_to_action.get(nb)
@@ -233,8 +233,8 @@ class _KeybindingManager(object):
         return old_action_with_nb
 
     def clear_accel(self, name, binding):
-        """ Remove binding for an action """
-        assert name in BINDING_INFO, "'%s' isn't a valid keyboard action." % name
+        ''' Remove binding for an action '''
+        assert name in BINDING_INFO, '"%s" isn\'t a valid keyboard action.' % name
 
         ob = Gtk.accelerator_parse(binding)
         self._action_to_bindings[name].remove(ob)
@@ -243,16 +243,16 @@ class _KeybindingManager(object):
         self.save()
 
     def clear_all(self):
-        """ Removes all keybindings. The changes are only persisted if
-        save() is called afterwards. """
+        ''' Removes all keybindings. The changes are only persisted if
+        save() is called afterwards. '''
         self._action_to_callback = {}
         self._action_to_bindings = defaultdict(list)
         self._binding_to_action = {}
 
     def execute(self, keybinding):
-        """ Executes an action that has been registered for the
+        ''' Executes an action that has been registered for the
         passed keyboard event. If no action is bound to the passed key, this
-        method is a no-op. """
+        method is a no-op. '''
         if keybinding in self._binding_to_action:
             action = self._binding_to_action[keybinding]
             func, args, kwargs = self._action_to_callback[action]
@@ -271,7 +271,7 @@ class _KeybindingManager(object):
                 return func(*args, **kwargs)
 
     def save(self):
-        """ Stores the keybindings that have been set to disk. """
+        ''' Stores the keybindings that have been set to disk. '''
         # Collect keybindings for all registered actions
         action_to_keys = {}
         for action, bindings in self._action_to_bindings.items():
@@ -280,16 +280,16 @@ class _KeybindingManager(object):
                     Gtk.accelerator_name(keyval, modifiers) for
                     (keyval, modifiers) in bindings
                 ]
-        with open(constants.KEYBINDINGS_CONF_PATH, "w") as fp:
+        with open(constants.KEYBINDINGS_CONF_PATH, 'w') as fp:
             json.dump(action_to_keys, fp, indent=2)
 
     def _initialize(self):
-        """ Restore keybindings from disk. """
+        ''' Restore keybindings from disk. '''
         try:
-            with open(constants.KEYBINDINGS_CONF_PATH, "r") as fp:
+            with open(constants.KEYBINDINGS_CONF_PATH, 'r') as fp:
                 stored_action_bindings = json.load(fp)
         except Exception as e:
-            log.error(_("Couldn't load keybindings: %s"), e)
+            log.error(_('Couldn\'t load keybindings: %s'), e)
             stored_action_bindings = {}
 
         for action in BINDING_INFO.keys():
@@ -304,13 +304,13 @@ class _KeybindingManager(object):
                 self._action_to_bindings[action] = []
 
     def get_bindings_for_action(self, name):
-        """ Returns a list of (keycode, modifier) for the action C{name}. """
+        ''' Returns a list of (keycode, modifier) for the action C{name}. '''
         return self._action_to_bindings[name]
 
     def _migrate_from_old_bindings(self):
-        """ This method deals with upgrading from MComix 1.0 and older to
+        ''' This method deals with upgrading from MComix 1.0 and older to
         MComix 1.01, which integrated all UI hotkeys into this class. Simply
-        remove old files and start from default values. """
+        remove old files and start from default values. '''
         gtkrc = os.path.join(constants.CONFIG_DIR, 'keybindings-Gtk.rc')
         if os.path.isfile(gtkrc):
             # In case the user has made modifications to his files,
@@ -327,7 +327,7 @@ _manager = None
 
 
 def keybinding_manager(window):
-    """ Returns a singleton instance of the keybinding manager. """
+    ''' Returns a singleton instance of the keybinding manager. '''
     global _manager
     if _manager:
         return _manager

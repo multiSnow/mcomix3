@@ -1,4 +1,4 @@
-"""edit_dialog.py - The dialog for the archive editing window."""
+'''edit_dialog.py - The dialog for the archive editing window.'''
 
 import os
 import tempfile
@@ -18,10 +18,10 @@ _dialog = None
 
 class _EditArchiveDialog(Gtk.Dialog):
 
-    """The _EditArchiveDialog lets users edit archives (or directories) by
+    '''The _EditArchiveDialog lets users edit archives (or directories) by
     reordering images and removing and adding images or comment files. The
     result can be saved as a ZIP archive.
-    """
+    '''
 
     def __init__(self, window):
         super(_EditArchiveDialog, self).__init__(title=_('Edit archive'), modal=True)
@@ -61,9 +61,9 @@ class _EditArchiveDialog(Gtk.Dialog):
         GLib.idle_add(self._load_original_files)
 
     def _load_original_files(self):
-        """Load the original files from the archive or directory into
+        '''Load the original files from the archive or directory into
         the edit dialog.
-        """
+        '''
         self._save_button.set_sensitive(False)
         self._import_button.set_sensitive(False)
         self._window.set_cursor(Gdk.Cursor.new(Gdk.CursorType.WATCH))
@@ -80,7 +80,7 @@ class _EditArchiveDialog(Gtk.Dialog):
         return False
 
     def _pack_archive(self, archive_path):
-        """Create a new archive with the chosen files."""
+        '''Create a new archive with the chosen files.'''
         self.set_sensitive(False)
         self._window.set_cursor(Gdk.Cursor.new(Gdk.CursorType.WATCH))
 
@@ -131,8 +131,8 @@ class _EditArchiveDialog(Gtk.Dialog):
             dialog = message_dialog.MessageDialog(self._window, 0, Gtk.MessageType.ERROR,
                 Gtk.ButtonsType.CLOSE)
             dialog.set_text(
-                _("The new archive could not be saved!"),
-                _("The original files have not been removed."))
+                _('The new archive could not be saved!'),
+                _('The original files have not been removed.'))
             dialog.run()
 
             self.set_sensitive(True)

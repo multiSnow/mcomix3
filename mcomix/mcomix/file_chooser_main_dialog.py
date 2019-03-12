@@ -1,4 +1,4 @@
-"""file_chooser_main_dialog.py - Custom FileChooserDialog implementations."""
+'''file_chooser_main_dialog.py - Custom FileChooserDialog implementations.'''
 
 from gi.repository import Gtk
 
@@ -9,7 +9,7 @@ _main_filechooser_dialog = None
 
 class _MainFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog):
 
-    """The normal filechooser dialog used with the "Open" menu item."""
+    '''The normal filechooser dialog used with the "Open" menu item.'''
 
     def __init__(self, window):
         super(_MainFileChooserDialog, self).__init__()
@@ -53,7 +53,7 @@ class _MainFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog):
             _close_main_filechooser_dialog()
 
 def open_main_filechooser_dialog(action, window):
-    """Open the main filechooser dialog."""
+    '''Open the main filechooser dialog.'''
     global _main_filechooser_dialog
     if _main_filechooser_dialog is None:
         _main_filechooser_dialog = _MainFileChooserDialog(window)
@@ -62,7 +62,7 @@ def open_main_filechooser_dialog(action, window):
 
 
 def _close_main_filechooser_dialog(*args):
-    """Close the main filechooser dialog."""
+    '''Close the main filechooser dialog.'''
     global _main_filechooser_dialog
     if _main_filechooser_dialog is not None:
         _main_filechooser_dialog.destroy()

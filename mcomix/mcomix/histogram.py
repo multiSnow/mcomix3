@@ -1,4 +1,4 @@
-"""histogram.py - Draw histograms (RGB) from pixbufs."""
+'''histogram.py - Draw histograms (RGB) from pixbufs.'''
 
 import PIL.Image as Image
 import PIL.ImageDraw as ImageDraw
@@ -7,7 +7,7 @@ import PIL.ImageOps as ImageOps
 from mcomix import image_tools
 
 def draw_histogram(pixbuf, height=170, fill=170, text=True):
-    """Draw a histogram from <pixbuf> and return it as another pixbuf.
+    '''Draw a histogram from <pixbuf> and return it as another pixbuf.
 
     The returned prixbuf will be 262x<height> px.
 
@@ -16,7 +16,7 @@ def draw_histogram(pixbuf, height=170, fill=170, text=True):
 
     If <text> is True a label with the maximum pixel value will be added to
     one corner.
-    """
+    '''
     im = Image.new('RGB', (258, height - 4), (30, 30, 30))
     hist_data = image_tools.pixbuf_to_pil(pixbuf).histogram()
     maximum = max(hist_data[:768] + [1])

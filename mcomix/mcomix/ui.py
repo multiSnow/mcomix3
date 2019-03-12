@@ -1,5 +1,5 @@
-"""ui.py - UI definitions for main window.
-"""
+'''ui.py - UI definitions for main window.
+'''
 
 from gi.repository import Gtk
 
@@ -204,7 +204,7 @@ class MainUI(Gtk.UIManager):
         # fix some gtk magic: removing unreqired accelerators
         Gtk.AccelMap.change_entry('<Actions>/mcomix-main/%s' % 'close', 0, 0, True)
 
-        ui_description = """
+        ui_description = '''
         <ui>
             <toolbar name="Tool">
                 <toolitem action="previous_archive" />
@@ -400,7 +400,7 @@ class MainUI(Gtk.UIManager):
                 <menuitem action="quit" />
             </popup>
         </ui>
-        """
+        '''
 
         self.add_ui_from_string(ui_description)
         self.insert_action_group(self._actiongroup, 0)
@@ -435,7 +435,7 @@ class MainUI(Gtk.UIManager):
         self.get_widget('/Tool/expander').set_sensitive(False)
 
     def set_sensitivities(self):
-        """Sets the main UI's widget's sensitivities appropriately."""
+        '''Sets the main UI's widget's sensitivities appropriately.'''
         general = ('properties',
                    'edit_archive',
                    'extract_page',

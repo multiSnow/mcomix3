@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-""" 7z archive extractor. """
+''' 7z archive extractor. '''
 
 import os
 import sys
@@ -13,7 +13,7 @@ from mcomix.archive import archive_base
 _7z_executable = -1
 
 class SevenZipArchive(archive_base.ExternalExecutableArchive):
-    """ 7z file extractor using the 7z executable. """
+    ''' 7z file extractor using the 7z executable. '''
 
     STATE_HEADER, STATE_LISTING, STATE_FOOTER = 1, 2, 3
 
@@ -34,33 +34,33 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
     def _get_password_argument(self):
         if self.is_encrypted:
             self._get_password()
-            return u'-p' + self._password
+            return '-p' + self._password
         else:
             # Add an empty password anyway, to prevent deadlock on reading for
             # input if we did not correctly detect the archive is encrypted.
-            return u'-p'
+            return '-p'
 
     def _get_list_arguments(self):
-        args = [self._get_executable(), u'l', u'-slt']
+        args = [self._get_executable(), 'l', '-slt']
         if sys.platform == 'win32':
             # This switch is only supported on Win32.
-            args.append(u'-sccUTF-8')
+            args.append('-sccUTF-8')
         args.append(self._get_password_argument())
-        args.extend((u'--', self.archive))
+        args.extend(('--', self.archive))
         return args
 
     def _get_extract_arguments(self, list_file=None):
-        args = [self._get_executable(), u'x', u'-so']
+        args = [self._get_executable(), 'x', '-so']
         if list_file is not None:
-            args.append(u'-i@' + list_file)
+            args.append('-i@' + list_file)
         args.append(self._get_password_argument())
-        args.extend((u'--', self.archive))
+        args.extend(('--', self.archive))
         return args
 
     def _parse_list_output_line(self, line):
-        """ Start parsing after the first delimiter (bunch of - characters),
+        ''' Start parsing after the first delimiter (bunch of - characters),
         and end when delimiters appear again. Format:
-        Date <space> Time <space> Attr <space> Size <space> Compressed <space> Name"""
+        Date <space> Time <space> Attr <space> Size <space> Compressed <space> Name'''
 
         # Encoding is only guaranteed on win32 due to the -scc switch.
         if sys.platform == 'win32':
@@ -136,7 +136,7 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         self.filenames_initialized = True
 
     def extract(self, filename, destination_dir):
-        """ Extract <filename> from the archive to <destination_dir>. """
+        ''' Extract <filename> from the archive to <destination_dir>. '''
         assert isinstance(filename, str) and \
                 isinstance(destination_dir, str)
 
@@ -182,11 +182,11 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
 
     @staticmethod
     def _find_7z_executable():
-        """ Tries to start 7z, and returns either '7z' if
-        it was started successfully or None otherwise. """
+        ''' Tries to start 7z, and returns either '7z' if
+        it was started successfully or None otherwise. '''
         global _7z_executable
         if _7z_executable == -1:
-            _7z_executable = process.find_executable((u'7z',))
+            _7z_executable = process.find_executable(('7z',))
         return _7z_executable
 
     @staticmethod

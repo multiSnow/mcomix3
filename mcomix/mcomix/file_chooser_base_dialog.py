@@ -1,4 +1,4 @@
-"""filechooser_chooser_base_dialog.py - Custom FileChooserDialog implementations."""
+'''filechooser_chooser_base_dialog.py - Custom FileChooserDialog implementations.'''
 
 import os
 import mimetypes
@@ -20,7 +20,7 @@ mimetypes.init()
 
 class _BaseFileChooserDialog(Gtk.Dialog):
 
-    """We roll our own FileChooserDialog because the one in GTK seems
+    '''We roll our own FileChooserDialog because the one in GTK seems
     buggy with the preview widget. The <action> argument dictates what type
     of filechooser dialog we want (i.e. it is Gtk.FileChooserAction.OPEN
     or Gtk.FileChooserAction.SAVE).
@@ -31,7 +31,7 @@ class _BaseFileChooserDialog(Gtk.Dialog):
     Subclasses should implement a method files_chosen(paths) that will be
     called once the filechooser has done its job and selected some files.
     If the dialog was closed or Cancel was pressed, <paths> is the empty list.
-    """
+    '''
 
     _last_activated_file = None
 
@@ -110,9 +110,9 @@ class _BaseFileChooserDialog(Gtk.Dialog):
         self.show_all()
 
     def add_filter(self, name, mimes, patterns=[]):
-        """Add a filter, called <name>, for each mime type in <mimes> and
+        '''Add a filter, called <name>, for each mime type in <mimes> and
         each pattern in <patterns> to the filechooser.
-        """
+        '''
         ffilter = Gtk.FileFilter()
         ffilter.add_custom(
                 Gtk.FileFilterFlags.FILENAME | Gtk.FileFilterFlags.MIME_TYPE,
@@ -123,8 +123,8 @@ class _BaseFileChooserDialog(Gtk.Dialog):
         return ffilter
 
     def add_archive_filters(self):
-        """Add archive filters to the filechooser.
-        """
+        '''Add archive filters to the filechooser.
+        '''
         ffilter = Gtk.FileFilter()
         ffilter.set_name(_('All archives'))
         self.filechooser.add_filter(ffilter)
@@ -139,8 +139,8 @@ class _BaseFileChooserDialog(Gtk.Dialog):
                 ffilter.add_pattern(pat)
 
     def add_image_filters(self):
-        """Add images filters to the filechooser.
-        """
+        '''Add images filters to the filechooser.
+        '''
         ffilter = Gtk.FileFilter()
         ffilter.set_name(_('All images'))
         self.filechooser.add_filter(ffilter)
@@ -155,10 +155,10 @@ class _BaseFileChooserDialog(Gtk.Dialog):
                 ffilter.add_pattern(pat)
 
     def _filter(self, filter_info, data):
-        """ Callback function used to determine if a file
+        ''' Callback function used to determine if a file
         should be filtered or not. C{data} is a tuple containing
         (patterns, mimes) that should pass the test. Returns True
-        if the file passed in C{filter_info} should be displayed. """
+        if the file passed in C{filter_info} should be displayed. '''
 
         match_patterns, match_mimes = data
 
@@ -172,8 +172,8 @@ class _BaseFileChooserDialog(Gtk.Dialog):
         return matches_mime or matches_pattern
 
     def collect_files_from_subdir(self, path, filter, recursive=False):
-        """ Finds archives within C{path} that match the
-        L{Gtk.FileFilter} passed in C{filter}. """
+        ''' Finds archives within C{path} that match the
+        L{Gtk.FileFilter} passed in C{filter}. '''
 
         for root, dirs, files in os.walk(path):
             for file in files:
@@ -200,9 +200,9 @@ class _BaseFileChooserDialog(Gtk.Dialog):
         return False
 
     def _response(self, widget, response):
-        """Return a list of the paths of the chosen files, or None if the
+        '''Return a list of the paths of the chosen files, or None if the
         event only changed the current directory.
-        """
+        '''
         if response == Gtk.ResponseType.OK:
             if not self.filechooser.get_filenames():
                 return
@@ -230,8 +230,8 @@ class _BaseFileChooserDialog(Gtk.Dialog):
                 overwrite_dialog = message_dialog.MessageDialog(None, 0,
                     Gtk.MessageType.QUESTION, Gtk.ButtonsType.OK_CANCEL)
                 overwrite_dialog.set_text(
-                    _("A file named '%s' already exists. Do you want to replace it?") %
-                        os.path.basename(first_path),
+                    _('A file named "%s" already exists. Do you want to replace it?') %
+                    os.path.basename(first_path),
                     _('Replacing it will overwrite its contents.'))
                 response = overwrite_dialog.run()
 
@@ -269,8 +269,8 @@ class _BaseFileChooserDialog(Gtk.Dialog):
             self._sizelabel.set_text('')
 
     def _preview_thumbnail_finished(self, filepath, pixbuf):
-        """ Called when the thumbnailer has finished creating
-        the thumbnail for <filepath>. """
+        ''' Called when the thumbnailer has finished creating
+        the thumbnail for <filepath>. '''
 
         if self._destroyed:
             return

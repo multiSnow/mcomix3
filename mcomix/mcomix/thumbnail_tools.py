@@ -1,6 +1,6 @@
-"""thumbnail.py - Thumbnail module for MComix implementing (most of) the
+'''thumbnail.py - Thumbnail module for MComix implementing (most of) the
 freedesktop.org "standard" at http://jens.triq.net/thumbnail-spec/
-"""
+'''
 
 import os
 import re
@@ -27,14 +27,14 @@ from mcomix import log
 
 
 class Thumbnailer(object):
-    """ The Thumbnailer class is responsible for managing MComix
+    ''' The Thumbnailer class is responsible for managing MComix
     internal thumbnail creation. Depending on its settings,
     it either stores thumbnails on disk and retrieves them later,
-    or simply creates new thumbnails each time it is called. """
+    or simply creates new thumbnails each time it is called. '''
 
     def __init__(self, dst_dir=constants.THUMBNAIL_PATH, store_on_disk=None,
                  size=None, force_recreation=False, archive_support=False):
-        """
+        '''
         <dst_dir> set the thumbnailer's storage directory.
 
         If <store_on_disk> on disk is True, it changes the thumbnailer's
@@ -51,7 +51,7 @@ class Thumbnailer(object):
         If <archive_support> is True, support for archive thumbnail creation
         (based on cover detection) is enabled. Otherwise, only image files are
         supported.
-        """
+        '''
         self.dst_dir = dst_dir
         if store_on_disk is None:
             self.store_on_disk = prefs['create thumbnails']
@@ -67,12 +67,12 @@ class Thumbnailer(object):
         self.archive_support = archive_support
 
     def thumbnail(self, filepath, mt=False):
-        """ Returns a thumbnail pixbuf for <filepath>, transparently handling
+        ''' Returns a thumbnail pixbuf for <filepath>, transparently handling
         both normal image files and archives. If a thumbnail file already exists,
         it is re-used. Otherwise, a new thumbnail is created from <filepath>.
 
         Returns None if thumbnail creation failed, or if the thumbnail creation
-        is run asynchrounosly. """
+        is run asynchrounosly. '''
 
         # Update width and height from preferences if they haven't been set explicitly
         if self.default_sizes:
@@ -97,25 +97,25 @@ class Thumbnailer(object):
 
     @callback.Callback
     def thumbnail_finished(self, filepath, pixbuf):
-        """ Called every time a thumbnail has been completed.
+        ''' Called every time a thumbnail has been completed.
         <filepath> is the file that was used as source, <pixbuf> is the
-        resulting thumbnail. """
+        resulting thumbnail. '''
 
         pass
 
     def delete(self, filepath):
-        """ Deletes the thumbnail for <filepath> (if it exists) """
+        ''' Deletes the thumbnail for <filepath> (if it exists) '''
         thumbpath = self._path_to_thumbpath(filepath)
         if os.path.isfile(thumbpath):
             try:
                 os.remove(thumbpath)
             except IOError as error:
-                log.error(_("! Could not remove file \"%s\""), thumbpath)
+                log.error(_('! Could not remove file "%s"'), thumbpath)
                 log.error(error)
 
     def _create_thumbnail_pixbuf(self, filepath):
-        """ Creates a thumbnail pixbuf from <filepath>, and returns it as a
-        tuple along with a file metadata dictionary: (pixbuf, tEXt_data) """
+        ''' Creates a thumbnail pixbuf from <filepath>, and returns it as a
+        tuple along with a file metadata dictionary: (pixbuf, tEXt_data) '''
 
         if self.archive_support:
             mime = archive_tools.archive_mime_type(filepath)
@@ -164,8 +164,8 @@ class Thumbnailer(object):
             return None, None
 
     def _create_thumbnail(self, filepath):
-        """ Creates the thumbnail pixbuf for <filepath>, and saves the pixbuf
-        to disk if necessary. Returns the created pixbuf, or None, if creation failed. """
+        ''' Creates the thumbnail pixbuf for <filepath>, and saves the pixbuf
+        to disk if necessary. Returns the created pixbuf, or None, if creation failed. '''
 
         pixbuf, tEXt_data = self._create_thumbnail_pixbuf(filepath)
         self.thumbnail_finished(filepath, pixbuf)
@@ -177,8 +177,8 @@ class Thumbnailer(object):
         return pixbuf
 
     def _get_text_data(self, filepath):
-        """ Creates a tEXt dictionary for <filepath>. """
-        mime = mimetypes.guess_type(filepath)[0] or "unknown/mime"
+        ''' Creates a tEXt dictionary for <filepath>. '''
+        mime = mimetypes.guess_type(filepath)[0] or 'unknown/mime'
         uri = portability.uri_prefix() + pathname2url(i18n.to_utf8(os.path.normpath(filepath)))
         stat = os.stat(filepath)
         # MTime could be floating point number, so convert to long first to have a fixed point number
@@ -196,8 +196,8 @@ class Thumbnailer(object):
         }
 
     def _save_thumbnail(self, pixbuf, thumbpath, tEXt_data):
-        """ Saves <pixbuf> as <thumbpath>, with additional metadata
-        from <tEXt_data>. If <thumbpath> already exists, it is overwritten. """
+        ''' Saves <pixbuf> as <thumbpath>, with additional metadata
+        from <tEXt_data>. If <thumbpath> already exists, it is overwritten. '''
 
         try:
             directory = os.path.dirname(thumbpath)
@@ -219,11 +219,11 @@ class Thumbnailer(object):
                 { 'thumbpath' : thumbpath, 'error' : ex } )
 
     def _thumbnail_exists(self, filepath):
-        """ Checks if the thumbnail for <filepath> already exists.
+        ''' Checks if the thumbnail for <filepath> already exists.
         This function will return False if the thumbnail exists
         and it's mTime doesn't match the mTime of <filepath>,
         it's size is different from the one specified in the thumbnailer,
-        or if <force_recreation> is True. """
+        or if <force_recreation> is True. '''
 
         if not self.force_recreation:
             thumbpath = self._path_to_thumbpath(filepath)
@@ -247,28 +247,28 @@ class Thumbnailer(object):
             return False
 
     def _path_to_thumbpath(self, filepath):
-        """ Converts <path> to an URI for the thumbnail in <dst_dir>. """
+        ''' Converts <path> to an URI for the thumbnail in <dst_dir>. '''
         uri = portability.uri_prefix() + pathname2url(i18n.to_utf8(os.path.normpath(filepath)))
         return self._uri_to_thumbpath(uri)
 
     def _uri_to_thumbpath(self, uri):
-        """ Return the full path to the thumbnail for <uri> with <dst_dir>
-        being the base thumbnail directory. """
+        ''' Return the full path to the thumbnail for <uri> with <dst_dir>
+        being the base thumbnail directory. '''
         md5hash = md5(uri.encode()).hexdigest()
         thumbpath = os.path.join(self.dst_dir, md5hash + '.png')
         return thumbpath
 
     def _guess_cover(self, files):
-        """Return the filename within <files> that is the most likely to be the
+        '''Return the filename within <files> that is the most likely to be the
         cover of an archive using some simple heuristics.
-        """
+        '''
         # Ignore MacOSX meta files.
         files = filter(lambda filename:
-                u'__MACOSX' not in os.path.normpath(filename).split(os.sep),
-                files)
+                       '__MACOSX' not in os.path.normpath(filename).split(os.sep),
+                       files)
         # Ignore credit files if possible.
         files = filter(lambda filename:
-                u'credit' not in os.path.split(filename)[1].lower(), files)
+                       'credit' not in os.path.split(filename)[1].lower(), files)
 
         images = [f for f in files if image_tools.is_image_file(f)]
 

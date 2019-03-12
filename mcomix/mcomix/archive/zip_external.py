@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-""" ZIP archive extractor via executable."""
+''' ZIP archive extractor via executable.'''
 
 from mcomix import i18n
 from mcomix import process
@@ -10,24 +10,24 @@ from mcomix.archive import archive_base
 _zip_executable = -1
 
 class ZipArchive(archive_base.ExternalExecutableArchive):
-    """ ZIP file extractor using unzip executable. """
+    ''' ZIP file extractor using unzip executable. '''
 
     def _get_executable(self):
         return ZipArchive._find_unzip_executable()
 
     def _get_list_arguments(self):
-        return [u'-Z1']
+        return ['-Z1']
 
     def _get_extract_arguments(self):
-        return [u'-p', u'-P', u'']
+        return ['-p', '-P', '']
 
     @staticmethod
     def _find_unzip_executable():
-        """ Tries to run unzip, and returns 'unzip' on success.
-        Returns None on failure. """
+        ''' Tries to run unzip, and returns 'unzip' on success.
+        Returns None on failure. '''
         global _zip_executable
         if -1 == _zip_executable:
-            _zip_executable = process.find_executable((u'unzip',))
+            _zip_executable = process.find_executable(('unzip',))
         return _zip_executable
 
     @staticmethod

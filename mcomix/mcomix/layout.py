@@ -1,4 +1,4 @@
-""" Layout. """
+''' Layout. '''
 
 from mcomix import constants
 from mcomix import scrolling
@@ -10,7 +10,7 @@ class FiniteLayout(object): # 2D only
 
     def __init__(self, content_sizes, viewport_size, orientation, spacing,
         wrap_individually, distribution_axis, alignment_axis):
-        """ Lays out a finite number of Boxes along the first axis.
+        ''' Lays out a finite number of Boxes along the first axis.
         @param content_sizes: The sizes of the Boxes to lay out.
         @param viewport_size: The size of the viewport.
         @param orientation: The orientation to use.
@@ -19,7 +19,7 @@ class FiniteLayout(object): # 2D only
         wrapper box, False if the only wrapper box should be the union of all
         content boxes.
         @param distribution_axis: the axis along which the Boxes are distributed.
-        @param alignment_axis: the axis to center. """
+        @param alignment_axis: the axis to center. '''
         self.scroller = scrolling.Scrolling()
         self.current_index = -1
         self.wrap_individually = wrap_individually
@@ -28,14 +28,14 @@ class FiniteLayout(object): # 2D only
 
 
     def set_viewport_position(self, viewport_position):
-        """ Moves the viewport to the specified position.
-        @param viewport_position: The new viewport position. """
+        ''' Moves the viewport to the specified position.
+        @param viewport_position: The new viewport position. '''
         self.viewport_box = self.viewport_box.set_position(viewport_position)
         self.dirty_current_index = True
 
 
     def scroll_smartly(self, max_scroll, backwards, axis_map, index=None):
-        """ Applies a "smart scrolling" step to the current viewport position.
+        ''' Applies a "smart scrolling" step to the current viewport position.
         If there are not enough Boxes to scroll to, the viewport is not moved
         and an appropriate value is returned.
         @param max_scroll: The maximum numbers of pixels to scroll in one step.
@@ -45,7 +45,7 @@ class FiniteLayout(object): # 2D only
         or None to use the index of the current Box.
         @return: The index of the current Box after scrolling, or -1 if there
         were not enough Boxes to scroll backwards, or the number of Boxes if
-        there were not enough Boxes to scroll forwards. """
+        there were not enough Boxes to scroll forwards. '''
         # TODO reconsider interface
         if (index == None) or (not self.wrap_individually):
             index = self.get_current_index()
@@ -72,7 +72,7 @@ class FiniteLayout(object): # 2D only
 
 
     def scroll_to_predefined(self, destination, index=None):
-        """ Scrolls the viewport to a predefined destination.
+        ''' Scrolls the viewport to a predefined destination.
         @param destination: An integer representing a predefined destination.
         Either 1 (towards the greatest possible values in this dimension),
         -1 (towards the smallest value in this dimension), 0 (keep position),
@@ -83,7 +83,7 @@ class FiniteLayout(object): # 2D only
         @param index: The index of the Box the scrolling is related to, None to
         use the index of the current Box, or UNION_INDEX to use the union box
         instead. Note that the current implementation always uses the union box
-        if self.wrap_individually is False. """
+        if self.wrap_individually is False. '''
         if index == None:
             index = self.get_current_index()
         if not self.wrap_individually:
@@ -99,26 +99,26 @@ class FiniteLayout(object): # 2D only
 
 
     def get_content_boxes(self):
-        """ Returns the Boxes as they are arranged in this layout. 
-        @return: The Boxes as they are arranged in this layout. """
+        ''' Returns the Boxes as they are arranged in this layout. 
+        @return: The Boxes as they are arranged in this layout. '''
         return self.content_boxes
 
 
     def get_wrapper_boxes(self):
-        """ Returns the wrapper Boxes as they are arranged in this layout.
-        @return: The wrapper Boxes as they are arranged in this layout. """
+        ''' Returns the wrapper Boxes as they are arranged in this layout.
+        @return: The wrapper Boxes as they are arranged in this layout. '''
         return self.wrapper_boxes
 
 
     def get_union_box(self):
-        """ Returns the union Box for this layout.
-        @return: The union Box for this layout. """
+        ''' Returns the union Box for this layout.
+        @return: The union Box for this layout. '''
         return self.union_box
 
 
     def get_current_index(self):
-        """ Returns the index of the Box that is said to be the current Box.
-        @return: The index of the Box that is said to be the current Box. """
+        ''' Returns the index of the Box that is said to be the current Box.
+        @return: The index of the Box that is said to be the current Box. '''
         if self.dirty_current_index:
             self.current_index = self.viewport_box.current_box_index(
                 self.orientation, self.content_boxes)
@@ -127,14 +127,14 @@ class FiniteLayout(object): # 2D only
 
 
     def get_viewport_box(self):
-        """ Returns the current viewport Box.
-        @return: The current viewport Box. """
+        ''' Returns the current viewport Box.
+        @return: The current viewport Box. '''
         return self.viewport_box
 
 
     def get_orientation(self):
-        """ Returns the orientation for this layout.
-        @return: The orientation for this layout. """
+        ''' Returns the orientation for this layout.
+        @return: The orientation for this layout. '''
         return self.orientation
 
 

@@ -1,5 +1,5 @@
-"""library_control_area.py - The window in the library that contains buttons
-and displays info."""
+'''library_control_area.py - The window in the library that contains buttons
+and displays info.'''
 
 import os
 from gi.repository import Gtk
@@ -17,9 +17,9 @@ _COLLECTION_ALL = -1
 
 class _ControlArea(Gtk.HBox):
 
-    """The _ControlArea is the bottom area of the library window where
+    '''The _ControlArea is the bottom area of the library window where
     information is displayed and controls such as buttons reside.
-    """
+    '''
 
     def __init__(self, library):
         super(_ControlArea, self).__init__(homogeneous=False, spacing=12)
@@ -81,30 +81,30 @@ class _ControlArea(Gtk.HBox):
         hbox = Gtk.HBox(homogeneous=False, spacing=10)
         vbox.pack_end(hbox, True, True, 0)
 
-        watchlist_button = Gtk.Button(label=_("_Watch list"), use_underline=True)
+        watchlist_button = Gtk.Button(label=_('_Watch list'), use_underline=True)
         watchlist_button.set_always_show_image(True)
         watchlist_button.set_image(Gtk.Image.new_from_stock(Gtk.STOCK_FIND, Gtk.IconSize.BUTTON))
         watchlist_button.set_image_position(Gtk.PositionType.LEFT)
         watchlist_button.connect('clicked',
-            lambda *args: WatchListDialog(self._library))
+                                 lambda *args: WatchListDialog(self._library))
         watchlist_button.set_tooltip_text(
             _('Open the watchlist management dialog.'))
         hbox.pack_start(watchlist_button, True, True, 0)
 
-        self._open_button = Gtk.Button(label=_("_Open list"), use_underline=True)
+        self._open_button = Gtk.Button(label=_('_Open list'), use_underline=True)
         self._open_button.set_always_show_image(True)
         self._open_button.set_image(Gtk.Image.new_from_stock(Gtk.STOCK_OPEN, Gtk.IconSize.BUTTON))
         self._open_button.set_image_position(Gtk.PositionType.LEFT)
         self._open_button.connect('clicked',
-            self._library.book_area.open_selected_book)
+                                  self._library.book_area.open_selected_book)
         self._open_button.set_tooltip_text(_('Open the selected book.'))
         self._open_button.set_sensitive(False)
         hbox.pack_end(self._open_button, True, True, 0)
 
     def update_info(self, selected):
-        """Update the info box using the currently <selected> books from
+        '''Update the info box using the currently <selected> books from
         the _BookArea.
-        """
+        '''
 
         if selected:
             book_id = self._library.book_area.get_book_at_path(selected[0])
@@ -148,7 +148,8 @@ class _ControlArea(Gtk.HBox):
             last_date is not None and last_page == pages):
             infotext.append(_('Finished reading on %(date)s, %(time)s') % {
                 'date': last_date.strftime('%x'),
-                'time': last_date.strftime('%X') })
+                'time': last_date.strftime('%X'),
+            })
 
         self._filelabel.set_text(', '.join(infotext))
 
@@ -158,10 +159,10 @@ class _ControlArea(Gtk.HBox):
             self._dirlabel.set_text('')
 
     def _filter_books(self, entry, *args):
-        """Display only the books in the current collection whose paths
+        '''Display only the books in the current collection whose paths
         contain the string in the Gtk.Entry. The string is not
         case-sensitive.
-        """
+        '''
         self._library.filter_string = entry.get_text()
         if not self._library.filter_string:
             self._library.filter_string = None

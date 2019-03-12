@@ -1,4 +1,4 @@
-"""image_tools.py - Various image manipulations."""
+'''image_tools.py - Various image manipulations.'''
 
 from collections import namedtuple
 import binascii
@@ -53,11 +53,11 @@ def rotate_pixbuf(src, rotation):
         return src.rotate_simple(GdkPixbuf.PixbufRotation.UPSIDEDOWN)
     if 270 == rotation:
         return src.rotate_simple(GdkPixbuf.PixbufRotation.COUNTERCLOCKWISE)
-    raise ValueError("unsupported rotation: %s" % rotation)
+    raise ValueError('unsupported rotation: %s' % rotation)
 
 def get_fitting_size(source_size, target_size,
                      keep_ratio=True, scale_up=False):
-    """ Return a scaled version of <source_size>
+    ''' Return a scaled version of <source_size>
     small enough to fit in <target_size>.
 
     Both <source_size> and <target_size>
@@ -67,7 +67,7 @@ def get_fitting_size(source_size, target_size,
 
     If <scale_up> is True, <source_size> is scaled up
     when smaller than <target_size>.
-    """
+    '''
     width, height = target_size
     src_width, src_height = source_size
     if not scale_up and src_width <= width and src_height <= height:
@@ -103,7 +103,7 @@ def fit_pixbuf_to_rectangle(src, rect, rotation):
 
 def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False,
                      rotation=0, scaling_quality=None):
-    """Scale (and return) a pixbuf so that it fits in a rectangle with
+    '''Scale (and return) a pixbuf so that it fits in a rectangle with
     dimensions <width> x <height>. A negative <width> or <height>
     means an unbounded dimension - both cannot be negative.
 
@@ -117,7 +117,7 @@ def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False,
     dimensions may be smaller than the target dimensions.
 
     If <src> has an alpha channel it gets a checkboard background.
-    """
+    '''
     # "Unbounded" really means "bounded to 10000 px" - for simplicity.
     # MComix would probably choke on larger images anyway.
     if width < 0:
@@ -129,7 +129,7 @@ def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False,
 
     rotation %= 360
     if rotation not in (0, 90, 180, 270):
-        raise ValueError("unsupported rotation: %s" % rotation)
+        raise ValueError('unsupported rotation: %s' % rotation)
     if rotation in (90, 270):
         width, height = height, width
 
@@ -163,9 +163,9 @@ def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False,
     return src
 
 def add_border(pixbuf, thickness, colour=0x000000FF):
-    """Return a pixbuf from <pixbuf> with a <thickness> px border of
+    '''Return a pixbuf from <pixbuf> with a <thickness> px border of
     <colour> added.
-    """
+    '''
     canvas = GdkPixbuf.Pixbuf.new(GdkPixbuf.Colorspace.RGB, True, 8,
                                   pixbuf.get_width() + thickness * 2,
                                   pixbuf.get_height() + thickness * 2)
@@ -176,21 +176,21 @@ def add_border(pixbuf, thickness, colour=0x000000FF):
 
 
 def get_most_common_edge_colour(pixbufs, edge=2):
-    """Return the most commonly occurring pixel value along the four edges
+    '''Return the most commonly occurring pixel value along the four edges
     of <pixbuf>. The return value is a sequence, (r, g, b), with 16 bit
     values. If <pixbuf> is a tuple, the edges will be computed from
     both the left and the right image.
 
     Note: This could be done more cleanly with subpixbuf(), but that
     doesn't work as expected together with get_pixels().
-    """
+    '''
 
     def group_colors(colors, steps=10):
-        """ This rounds a list of colors in C{colors} to the next nearest value,
+        ''' This rounds a list of colors in C{colors} to the next nearest value,
         i.e. 128, 83, 10 becomes 130, 85, 10 with C{steps}=5. This compensates for
         dirty colors where no clear dominating color can be made out.
 
-        @return: The color that appears most often in the prominent group."""
+        @return: The color that appears most often in the prominent group.'''
 
         # Start group
         group = (0, 0, 0)
@@ -244,8 +244,8 @@ def get_most_common_edge_colour(pixbufs, edge=2):
         return colors_in_prominent_group[0][1]
 
     def get_edge_pixbuf(pixbuf, side, edge):
-        """ Returns a pixbuf corresponding to the side passed in <side>.
-        Valid sides are 'left', 'right', 'top', 'bottom'. """
+        ''' Returns a pixbuf corresponding to the side passed in <side>.
+        Valid sides are 'left', 'right', 'top', 'bottom'. '''
         pixbuf = static_image(pixbuf)
         width = pixbuf.get_width()
         height = pixbuf.get_height()
@@ -289,7 +289,7 @@ def get_most_common_edge_colour(pixbufs, edge=2):
     return [color * 257 for color in most_used]
 
 def pil_to_pixbuf(im, keep_orientation=False):
-    """Return a pixbuf created from the PIL <im>."""
+    '''Return a pixbuf created from the PIL <im>.'''
     if im.mode.startswith('RGB'):
         has_alpha = im.mode == 'RGBA'
     elif im.mode in ('LA', 'P'):
@@ -320,7 +320,7 @@ def pil_to_pixbuf(im, keep_orientation=False):
     return pixbuf
 
 def pixbuf_to_pil(pixbuf):
-    """Return a PIL image created from <pixbuf>."""
+    '''Return a PIL image created from <pixbuf>.'''
     dimensions = pixbuf.get_width(), pixbuf.get_height()
     stride = pixbuf.get_rowstride()
     pixels = pixbuf.get_pixels()
@@ -340,15 +340,15 @@ def disable_transform(pixbuf):
     return False
 
 def static_image(pixbuf):
-    """ Returns a non-animated version of the specified pixbuf. """
+    ''' Returns a non-animated version of the specified pixbuf. '''
     if is_animation(pixbuf):
         return pixbuf.get_static_image()
     return pixbuf
 
 def unwrap_image(image):
-    """ Returns an object that contains the image data based on
+    ''' Returns an object that contains the image data based on
     gtk.Image.get_storage_type or None if image is None or image.get_storage_type
-    returns Gtk.ImageType.EMPTY. """
+    returns Gtk.ImageType.EMPTY. '''
     if image is None:
         return None
     t = image.get_storage_type()
@@ -395,7 +395,7 @@ def load_animation(im):
     return anime.create_animation()
 
 def load_pixbuf(path):
-    """ Loads a pixbuf from a given image file. """
+    ''' Loads a pixbuf from a given image file. '''
     enable_anime = prefs['animation mode'] != constants.ANIMATION_DISABLED
     try:
         with Image.open(path) as im:
@@ -414,8 +414,8 @@ def load_pixbuf(path):
     return GdkPixbuf.Pixbuf.new_from_file(path)
 
 def load_pixbuf_size(path, width, height):
-    """ Loads a pixbuf from a given image file and scale it to fit
-    inside (width, height). """
+    ''' Loads a pixbuf from a given image file and scale it to fit
+    inside (width, height). '''
     try:
         with Image.open(path) as im:
             im.draft(None, (width, height))
@@ -439,7 +439,7 @@ def load_pixbuf_size(path, width, height):
                             scaling_quality=GdkPixbuf.InterpType.BILINEAR)
 
 def load_pixbuf_data(imgdata):
-    """ Loads a pixbuf from the data passed in <imgdata>. """
+    ''' Loads a pixbuf from the data passed in <imgdata>. '''
     try:
         with Image.open(BytesIO(imgdata)) as im:
             return pil_to_pixbuf(im, keep_orientation=True)
@@ -452,12 +452,12 @@ def load_pixbuf_data(imgdata):
 
 def enhance(pixbuf, brightness=1.0, contrast=1.0, saturation=1.0,
             sharpness=1.0, autocontrast=False):
-    """Return a modified pixbuf from <pixbuf> where the enhancement operations
+    '''Return a modified pixbuf from <pixbuf> where the enhancement operations
     corresponding to each argument has been performed. A value of 1.0 means
     no change. If <autocontrast> is True it overrides the <contrast> value,
     but only if the image mode is supported by ImageOps.autocontrast (i.e.
     it is L or RGB.)
-    """
+    '''
     if is_animation(pixbuf):
         return anime_tools.frame_executor(
             pixbuf, enhance,
@@ -481,10 +481,10 @@ def enhance(pixbuf, brightness=1.0, contrast=1.0, saturation=1.0,
     return pil_to_pixbuf(im)
 
 def _get_png_implied_rotation(pixbuf_or_image):
-    """Same as <get_implied_rotation> for PNG files.
+    '''Same as <get_implied_rotation> for PNG files.
 
     Lookup for Exif data in the tEXt chunk.
-    """
+    '''
     if isinstance(pixbuf_or_image, GdkPixbuf.Pixbuf):
         exif = pixbuf_or_image.get_option('tEXt::Raw profile type exif')
     elif isinstance(pixbuf_or_image, Image.Image):
@@ -514,13 +514,13 @@ def _get_png_implied_rotation(pixbuf_or_image):
     return orientation
 
 def get_implied_rotation(pixbuf):
-    """Return the implied rotation in degrees: 0, 90, 180, or 270.
+    '''Return the implied rotation in degrees: 0, 90, 180, or 270.
 
     The implied rotation is the angle (in degrees) that the raw pixbuf should
     be rotated in order to be displayed "correctly". E.g. a photograph taken
     by a camera that is held sideways might store this fact in its Exif data,
     and the pixbuf loader will set the orientation option correspondingly.
-    """
+    '''
     pixbuf = static_image(pixbuf)
     orientation = getattr(pixbuf, 'orientation', None)
     if orientation is None:
@@ -591,9 +591,9 @@ def color_to_floats_rgba(color, alpha=1.0):
     return [c / 65535.0 for c in color] + [alpha]
 
 def get_image_info(path):
-    """Return image informations:
+    '''Return image informations:
         (format, width, height)
-    """
+    '''
     info = None
     try:
         with Image.open(path) as im:

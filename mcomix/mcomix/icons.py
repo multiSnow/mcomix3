@@ -1,4 +1,4 @@
-"""icons.py - Load MComix specific icons."""
+'''icons.py - Load MComix specific icons.'''
 
 from gi.repository import Gtk
 
@@ -7,8 +7,8 @@ from mcomix import log
 from mcomix import tools
 
 def mcomix_icons():
-    """ Returns a list of differently sized pixbufs for the
-    application icon. """
+    ''' Returns a list of differently sized pixbufs for the
+    application icon. '''
 
     sizes = ('16x16', '32x32', '48x48')
     pixbufs = [

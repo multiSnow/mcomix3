@@ -1,4 +1,4 @@
-"""comment.py - Comments dialog."""
+'''comment.py - Comments dialog.'''
 
 import os
 from gi.repository import Gtk

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-""" Configuration tree view for the preferences dialog to edit keybindings. """
+''' Configuration tree view for the preferences dialog to edit keybindings. '''
 
 from gi.repository import Gtk
 
@@ -10,7 +10,7 @@ from mcomix import keybindings
 class KeybindingEditorWindow(Gtk.ScrolledWindow):
 
     def __init__(self, keymanager):
-        """ @param keymanager: KeybindingManager instance. """
+        ''' @param keymanager: KeybindingManager instance. '''
         super(KeybindingEditorWindow, self).__init__()
         self.set_border_width(5)
         self.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.ALWAYS)
@@ -32,21 +32,21 @@ class KeybindingEditorWindow(Gtk.ScrolledWindow):
 
         treeview = Gtk.TreeView(model=treestore)
 
-        tvcol1 = Gtk.TreeViewColumn(_("Name"))
+        tvcol1 = Gtk.TreeViewColumn(_('Name'))
         treeview.append_column(tvcol1)
         cell1 = Gtk.CellRendererText()
         tvcol1.pack_start(cell1, True)
         tvcol1.set_attributes(cell1, text=0, editable=2)
 
         for idx in range(0, self.accel_column_num):
-            tvc = Gtk.TreeViewColumn(_("Key %d") % (idx +1))
+            tvc = Gtk.TreeViewColumn(_('Key %d') % (idx +1))
             treeview.append_column(tvc)
             accel_cell = Gtk.CellRendererAccel()
-            accel_cell.connect("accel-edited", self.get_on_accel_edited(idx))
-            accel_cell.connect("accel-cleared", self.get_on_accel_cleared(idx))
+            accel_cell.connect('accel-edited', self.get_on_accel_edited(idx))
+            accel_cell.connect('accel-cleared', self.get_on_accel_cleared(idx))
             tvc.pack_start(accel_cell, True)
-            tvc.add_attribute(accel_cell, "text", 3 + idx)
-            tvc.add_attribute(accel_cell, "editable", 2)
+            tvc.add_attribute(accel_cell, 'text', 3 + idx)
+            tvc.add_attribute(accel_cell, 'editable', 2)
 
         # Allow sorting on the column
         tvcol1.set_sort_column_id(0)
@@ -54,8 +54,8 @@ class KeybindingEditorWindow(Gtk.ScrolledWindow):
         self.add_with_viewport(treeview)
 
     def refresh_model(self):
-        """ Initializes the model from data provided by the keybinding
-        manager. """
+        ''' Initializes the model from data provided by the keybinding
+        manager. '''
         self.treestore.clear()
         section_order = list(set(d['group']
              for d in keybindings.BINDING_INFO.values()))
@@ -76,7 +76,7 @@ class KeybindingEditorWindow(Gtk.ScrolledWindow):
             title = action_data['title']
             group_name = action_data['group']
             old_bindings = self.keymanager.get_bindings_for_action(action_name)
-            acc_list =  ["", ] * self.accel_column_num
+            acc_list =  ['', ] * self.accel_column_num
             for idx in range(0, self.accel_column_num):
                 if len(old_bindings) > idx:
                     acc_list[idx] = Gtk.accelerator_name(*old_bindings[idx])
@@ -103,12 +103,12 @@ class KeybindingEditorWindow(Gtk.ScrolledWindow):
             if affected_action == action_name:
                 for idx in range(0, self.accel_column_num):
                     if idx != column and self.treestore.get(iter, idx + 3)[0] == new_accel:
-                        self.treestore.set_value(iter, idx + 3, "")
+                        self.treestore.set_value(iter, idx + 3, '')
             elif affected_action is not None:
                 titer = self.action_treeiter_map[affected_action]
                 for idx in range(0, self.accel_column_num):
                     if self.treestore.get(titer, idx + 3)[0] == new_accel:
-                        self.treestore.set_value(titer, idx + 3, "")
+                        self.treestore.set_value(titer, idx + 3, '')
 
             # updating gtk accelerator for label in menu
             if self.keymanager.get_bindings_for_action(action_name)[0] == (accel_key, accel_mods):
@@ -123,7 +123,7 @@ class KeybindingEditorWindow(Gtk.ScrolledWindow):
             col = column + 3
             accel = self.treestore.get(iter, col)[0]
             action_name = self.treestore.get_value(iter, 1)
-            if accel != "":
+            if accel != '':
                 self.keymanager.clear_accel(action_name, accel)
 
                 # updating gtk accelerator for label in menu
@@ -133,7 +133,7 @@ class KeybindingEditorWindow(Gtk.ScrolledWindow):
                     key, mods  = self.keymanager.get_bindings_for_action(action_name)[0]
                     Gtk.AccelMap.change_entry('<Actions>/mcomix-main/%s' % action_name, key, mods, True)
 
-            self.treestore.set_value(iter, col, "")
+            self.treestore.set_value(iter, col, '')
         return on_accel_cleared
 
 

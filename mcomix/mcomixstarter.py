@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
-"""MComix - GTK Comic Book Viewer
-"""
+'''MComix - GTK Comic Book Viewer
+'''
 
 # -------------------------------------------------------------------------
 # This program is free software; you can redistribute it and/or modify

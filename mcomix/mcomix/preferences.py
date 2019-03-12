@@ -1,5 +1,5 @@
-""" preferences.py - Contains the preferences and the functions to read and
-write them.  """
+''' preferences.py - Contains the preferences and the functions to read and
+write them.  '''
 
 import os
 import pickle
@@ -108,7 +108,7 @@ prefs = {
 }
 
 def read_preferences_file():
-    """Read preferences data from disk."""
+    '''Read preferences data from disk.'''
 
     saved_prefs = None
 
@@ -118,7 +118,7 @@ def read_preferences_file():
                 saved_prefs = json.load(config_file)
         except:
             # Gettext might not be installed yet at this point.
-            corrupt_name = "%s.broken" % constants.PREFERENCE_PATH
+            corrupt_name = '%s.broken' % constants.PREFERENCE_PATH
             print ('! Corrupt preferences file, moving to "%s".' %
                    corrupt_name)
             if os.path.isfile(corrupt_name):
@@ -132,7 +132,7 @@ def read_preferences_file():
                 prefs[key] = saved_prefs[key]
 
 def write_preferences_file():
-    """Write preference data to disk."""
+    '''Write preference data to disk.'''
     # TODO: it might be better to save only those options that were (ever)
     # explicitly changed by the used, leaving everything else as default
     # and available (if really needed) to change of defaults on upgrade.

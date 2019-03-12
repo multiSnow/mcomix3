@@ -1,4 +1,4 @@
-"""enhance_dialog.py - Image enhancement dialog."""
+'''enhance_dialog.py - Image enhancement dialog.'''
 
 from gi.repository import Gtk
 
@@ -10,9 +10,9 @@ _dialog = None
 
 class _EnhanceImageDialog(Gtk.Dialog):
 
-    """A Gtk.Dialog which allows modification of the values belonging to
+    '''A Gtk.Dialog which allows modification of the values belonging to
     an ImageEnhancer.
-    """
+    '''
 
     def __init__(self, window):
         super(_EnhanceImageDialog, self).__init__(title=_('Enhance image'))
@@ -115,13 +115,13 @@ class _EnhanceImageDialog(Gtk.Dialog):
             self._on_page_change()
 
     def draw_histogram(self, pixbuf):
-        """Draw a histogram representing <pixbuf> in the dialog."""
+        '''Draw a histogram representing <pixbuf> in the dialog.'''
         pixbuf = image_tools.static_image(pixbuf)
         histogram_pixbuf = histogram.draw_histogram(pixbuf, text=False)
         self._hist_image.set_from_pixbuf(histogram_pixbuf)
 
     def clear_histogram(self):
-        """Clear the histogram in the dialog."""
+        '''Clear the histogram in the dialog.'''
         self._hist_image.clear()
 
     def _change_values(self, *args):
@@ -162,7 +162,7 @@ class _EnhanceImageDialog(Gtk.Dialog):
 
 
 def open_dialog(action, window):
-    """Create and display the (singleton) image enhancement dialog."""
+    '''Create and display the (singleton) image enhancement dialog.'''
     global _dialog
 
     if _dialog is None:
@@ -171,7 +171,7 @@ def open_dialog(action, window):
         _dialog.present()
 
 def _close_dialog(*args):
-    """Destroy the image enhancement dialog."""
+    '''Destroy the image enhancement dialog.'''
     global _dialog
 
     if _dialog is not None:

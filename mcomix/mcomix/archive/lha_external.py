@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-""" LHA archive extractor. """
+''' LHA archive extractor. '''
 
 import re
 
@@ -11,16 +11,16 @@ from mcomix.archive import archive_base
 _lha_executable = -1
 
 class LhaArchive(archive_base.ExternalExecutableArchive):
-    """ LHA file extractor using the lha executable. """
+    ''' LHA file extractor using the lha executable. '''
 
     def _get_executable(self):
         return LhaArchive._find_lha_executable()
 
     def _get_list_arguments(self):
-        return [u'l', u'-g', u'-q2']
+        return ['l', '-g', '-q2']
 
     def _get_extract_arguments(self):
-        return [u'p', u'-q2']
+        return ['p', '-q2']
 
     def _parse_list_output_line(self, line):
         match = re.search(r'\[generic\]\s+\d+\s+\S+?\s+\w+\s+\d+\s+\d+\s+(.+)$', line)
@@ -31,11 +31,11 @@ class LhaArchive(archive_base.ExternalExecutableArchive):
 
     @staticmethod
     def _find_lha_executable():
-        """ Tries to start lha, and returns either 'lha' if
-        it was started successfully or None otherwise. """
+        ''' Tries to start lha, and returns either 'lha' if
+        it was started successfully or None otherwise. '''
         global _lha_executable
         if _lha_executable == -1:
-            _lha_executable = process.find_executable((u'lha',))
+            _lha_executable = process.find_executable(('lha',))
         return _lha_executable
 
     @staticmethod

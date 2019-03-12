@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-""" Glue around libunrar.so/unrar.dll to extract RAR files without having to
-resort to calling rar/unrar manually. """
+''' Glue around libunrar.so/unrar.dll to extract RAR files without having to
+resort to calling rar/unrar manually. '''
 
 import sys, os
 import ctypes, ctypes.util
@@ -20,24 +20,24 @@ else:
                                      ctypes.c_long)
 
 class RarArchive(archive_base.BaseArchive):
-    """ Wrapper class for libunrar. All string values passed to this class must be unicode objects.
-    In turn, all values returned are also unicode. """
+    ''' Wrapper class for libunrar. All string values passed to this class must be unicode objects.
+    In turn, all values returned are also unicode. '''
 
     # Nope! Not a good idea...
     support_concurrent_extractions = False
 
     class _OpenMode(object):
-        """ Rar open mode """
+        ''' Rar open mode '''
         RAR_OM_LIST    = 0
         RAR_OM_EXTRACT = 1
 
     class _ProcessingMode(object):
-        """ Rar file processing mode """
+        ''' Rar file processing mode '''
         RAR_SKIP       = 0
         RAR_EXTRACT    = 2
 
     class _ErrorCode(object):
-        """ Rar error codes """
+        ''' Rar error codes '''
         ERAR_END_ARCHIVE = 10
         ERAR_NO_MEMORY = 11
         ERAR_BAD_DATA = 12
@@ -53,7 +53,7 @@ class RarArchive(archive_base.BaseArchive):
         ERAR_MISSING_PASSWORD = 22
 
     class _RAROpenArchiveDataEx(ctypes.Structure):
-        """ Archive header structure. Used by DLL calls. """
+        ''' Archive header structure. Used by DLL calls. '''
         _pack_ = 1
         _fields_ = [
             ('ArcName', ctypes.c_char_p),
@@ -71,7 +71,7 @@ class RarArchive(archive_base.BaseArchive):
         ]
 
     class _RARHeaderDataEx(ctypes.Structure):
-        """ Archive file structure. Used by DLL calls. """
+        ''' Archive file structure. Used by DLL calls. '''
         _pack_ = 1
         _fields_ = [
             ('ArcName', ctypes.c_char * 1024),
@@ -99,11 +99,11 @@ class RarArchive(archive_base.BaseArchive):
 
     @staticmethod
     def is_available():
-        """ Returns True if unrar.dll can be found, False otherwise. """
+        ''' Returns True if unrar.dll can be found, False otherwise. '''
         return bool(_get_unrar_dll())
 
     def __init__(self, archive):
-        """ Initialize Unrar.dll. """
+        ''' Initialize Unrar.dll. '''
         super(RarArchive, self).__init__(archive)
         self._unrar = _get_unrar_dll()
         self._handle = None
@@ -137,7 +137,7 @@ class RarArchive(archive_base.BaseArchive):
         return self._is_solid
 
     def iter_contents(self):
-        """ List archive contents. """
+        ''' List archive contents. '''
         self._close()
         self._open()
         try:
@@ -160,7 +160,7 @@ class RarArchive(archive_base.BaseArchive):
             self._close()
 
     def extract(self, filename, destination_dir):
-        """ Extract <filename> from the archive to <destination_dir>. """
+        ''' Extract <filename> from the archive to <destination_dir>. '''
         if not self._handle:
             self._open()
         looped = False
@@ -191,11 +191,11 @@ class RarArchive(archive_base.BaseArchive):
         # After all files have been extracted, close() should be called to free the handler resources.
 
     def close(self):
-        """ Close the archive handle """
+        ''' Close the archive handle '''
         self._close()
 
     def _open(self):
-        """ Open rar handle for extraction. """
+        ''' Open rar handle for extraction. '''
         self._callback_function = UNRARCALLBACK(self._password_callback)
         archivedata = RarArchive._RAROpenArchiveDataEx(ArcNameW=self.archive,
                                                        OpenMode=RarArchive._OpenMode.RAR_OM_EXTRACT,
@@ -205,12 +205,12 @@ class RarArchive(archive_base.BaseArchive):
         handle = self._unrar.RAROpenArchiveEx(ctypes.byref(archivedata))
         if not handle:
             errormessage = UnrarException.get_error_message(archivedata.OpenResult)
-            raise UnrarException("Couldn't open archive: %s" % errormessage)
+            raise UnrarException('Couldn\'t open archive: %s' % errormessage)
         self._unrar.RARSetCallback(handle, self._callback_function, 0)
         self._handle = handle
 
     def _has_encryption(self):
-        """ Checks archive encryption. """
+        ''' Checks archive encryption. '''
         archivedata = RarArchive._RAROpenArchiveDataEx(
             ArcNameW=self.archive,
             OpenMode=RarArchive._OpenMode.RAR_OM_LIST,
@@ -220,7 +220,7 @@ class RarArchive(archive_base.BaseArchive):
         handle = self._unrar.RAROpenArchiveEx(ctypes.byref(archivedata))
         if not handle:
             errormessage = UnrarException.get_error_message(archivedata.OpenResult)
-            raise UnrarException("Couldn't open archive: %s" % errormessage)
+            raise UnrarException('Couldn\'t open archive: %s' % errormessage)
         self._handle = handle
         # 0x0080 Block headers are encrypted
         if archivedata.Flags & 0x0080:
@@ -252,7 +252,7 @@ class RarArchive(archive_base.BaseArchive):
         self._current_filename = self._headerdata.FileNameW
 
     def _process(self, dest=None):
-        """ Process current entry: extract or skip it. """
+        ''' Process current entry: extract or skip it. '''
         if dest is None:
             mode = RarArchive._ProcessingMode.RAR_SKIP
         else:
@@ -262,17 +262,17 @@ class RarArchive(archive_base.BaseArchive):
         self._check_errorcode(errorcode)
 
     def _close(self):
-        """ Close the rar handle previously obtained by open. """
+        ''' Close the rar handle previously obtained by open. '''
         if self._handle is None:
             return
         errorcode = self._unrar.RARCloseArchive(self._handle)
         if errorcode != 0:
             errormessage = UnrarException.get_error_message(errorcode)
-            raise UnrarException("Couldn't close archive: %s" % errormessage)
+            raise UnrarException('Couldn\'t close archive: %s' % errormessage)
         self._handle = None
 
     def _password_callback(self, msg, userdata, buffer_address, buffer_size):
-        """ Called by the unrar library in case of missing password. """
+        ''' Called by the unrar library in case of missing password. '''
         if msg == 2: # UCM_NEEDPASSWORD
             self._get_password()
             if len(self._password) == 0:
@@ -287,7 +287,7 @@ class RarArchive(archive_base.BaseArchive):
             return 1
 
 class UnrarException(Exception):
-    """ Exception class for RarArchive. """
+    ''' Exception class for RarArchive. '''
 
     _exceptions = {
         RarArchive._ErrorCode.ERAR_END_ARCHIVE: 'End of archive',
@@ -310,14 +310,14 @@ class UnrarException(Exception):
         if errorcode in UnrarException._exceptions:
             return UnrarException._exceptions[errorcode]
         else:
-            return "Unkown error"
+            return 'Unkown error'
 
 # Filled on-demand by _get_unrar_dll
 _unrar_dll = -1
 
 def _get_unrar_dll():
-    """ Tries to load libunrar and will return a handle of it.
-    Returns None if an error occured or the library couldn't be found. """
+    ''' Tries to load libunrar and will return a handle of it.
+    Returns None if an error occured or the library couldn't be found. '''
     global _unrar_dll
     if _unrar_dll != -1:
         return _unrar_dll
@@ -356,7 +356,7 @@ def _get_unrar_dll():
         # find_library on UNIX uses various mechanisms to determine the path
         # of a library, so one could assume the library is not installed
         # when find_library fails
-        unrar_path = ctypes.util.find_library("unrar") or \
+        unrar_path = ctypes.util.find_library('unrar') or \
             '/usr/lib/libunrar.so'
 
         if unrar_path:
@@ -368,7 +368,7 @@ def _get_unrar_dll():
 
         # Last attempt, try the current directory
         try:
-            _unrar_dll = ctypes.cdll.LoadLibrary(os.path.join(os.getcwd(), "libunrar.so"))
+            _unrar_dll = ctypes.cdll.LoadLibrary(os.path.join(os.getcwd(), 'libunrar.so'))
         except OSError:
             _unrar_dll = None
 
