@@ -93,13 +93,13 @@ class ImageHandler(object):
         pixbufs = self.get_pixbufs(number_of_bufs)
 
         if len(pixbufs) == 1:
-            auto_bg = image_tools.get_most_common_edge_colour(pixbufs[0])
+            auto_bg = image_tools.get_most_common_edge_color(pixbufs[0])
         elif len(pixbufs) == 2:
             left, right = pixbufs
             if self._window.is_manga_mode:
                 left, right = right, left
 
-            auto_bg = image_tools.get_most_common_edge_colour((left, right))
+            auto_bg = image_tools.get_most_common_edge_color((left, right))
         else:
             assert False, 'Unexpected pixbuf count'
 

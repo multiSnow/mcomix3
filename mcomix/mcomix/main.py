@@ -122,7 +122,7 @@ class MainWindow(Gtk.Window):
 
         for img in self.images:
             self._main_layout.put(img, 0, 0)
-        self.set_bg_colour(prefs['bg colour'])
+        self.set_bg_color(prefs['bg colour'])
 
         self._vadjust.step_increment = 15
         self._vadjust.page_increment = 1
@@ -474,11 +474,11 @@ class MainWindow(Gtk.Window):
             smartbg = prefs['smart bg']
             smartthumbbg = prefs['smart thumb bg'] and prefs['show thumbnails']
             if smartbg or smartthumbbg:
-                bg_colour = self.imagehandler.get_pixbuf_auto_background(pixbuf_count)
+                bg_color = self.imagehandler.get_pixbuf_auto_background(pixbuf_count)
             if smartbg:
-                self.set_bg_colour(bg_colour)
+                self.set_bg_color(bg_color)
             if smartthumbbg:
-                self.thumbnailsidebar.change_thumbnail_background_color(bg_colour)
+                self.thumbnailsidebar.change_thumbnail_background_color(bg_color)
 
             self._main_layout.get_bin_window().freeze_updates()
 
@@ -914,7 +914,7 @@ class MainWindow(Gtk.Window):
         self._show_scrollbars([False] * len(self._scroll))
         self.layout = _dummy_layout()
         self._main_layout.set_size(*self.layout.get_union_box().get_size())
-        self.set_bg_colour(prefs['bg colour'])
+        self.set_bg_color(prefs['bg colour'])
 
     def displayed_double(self):
         '''Return True if two pages are currently displayed.'''
@@ -977,17 +977,17 @@ class MainWindow(Gtk.Window):
 
         self.set_title(title)
 
-    def set_bg_colour(self, colour):
+    def set_bg_color(self, colour):
         '''Set the background colour to <colour>. Colour is a sequence in the
         format (r, g, b). Values are 16-bit.
         '''
         self._event_box.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(*colour))
         if prefs['thumbnail bg uses main colour']:
             self.thumbnailsidebar.change_thumbnail_background_color(prefs['bg colour'])
-        self._bg_colour = colour
+        self._bg_color = colour
 
-    def get_bg_colour(self):
-        return self._bg_colour
+    def get_bg_color(self):
+        return self._bg_color
 
     def extract_page(self, *args):
         ''' Derive some sensible filename (archive name + _ + filename should do) and offer

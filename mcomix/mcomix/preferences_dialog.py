@@ -758,13 +758,13 @@ class _PreferencesDialog(Gtk.Dialog):
         if preference == 'color box bg' and button.get_active():
 
             if not prefs['smart bg'] or not self._window.filehandler.file_loaded:
-                self._window.set_bg_colour(prefs['bg colour'])
+                self._window.set_bg_color(prefs['bg colour'])
 
         elif preference == 'smart bg' and button.get_active():
 
             # if the color is no longer using the smart background then return it to the chosen color
             if not prefs[preference]:
-                self._window.set_bg_colour(prefs['bg colour'])
+                self._window.set_bg_color(prefs['bg colour'])
             else:
                 # draw_image() will set the main background to the smart background
                 self._window.draw_image()
@@ -788,7 +788,7 @@ class _PreferencesDialog(Gtk.Dialog):
                 pixbuf = image_tools.static_image(image_tools.unwrap_image(
                     self._window.images[0])) # XXX transitional(double page limitation)
                 if pixbuf:
-                    bg_color = image_tools.get_most_common_edge_colour(pixbuf)
+                    bg_color = image_tools.get_most_common_edge_color(pixbuf)
                     self._window.thumbnailsidebar.change_thumbnail_background_color(bg_color)
             else:
                 self._window.draw_image()
@@ -817,7 +817,7 @@ class _PreferencesDialog(Gtk.Dialog):
             prefs['bg colour'] = colour.red, colour.green, colour.blue, colour.alpha
 
             if not prefs['smart bg'] or not self._window.filehandler.file_loaded:
-                self._window.set_bg_colour(prefs['bg colour'])
+                self._window.set_bg_color(prefs['bg colour'])
 
         elif preference == 'thumb bg colour':
 
