@@ -327,7 +327,7 @@ class MainWindow(Gtk.Window):
     def _should_toggle_be_visible(self, preference):
         ''' Return <True> if "toggle" widget for <preference> should be visible. '''
         if self.is_fullscreen:
-            visible = not prefs['hide all in fullscreen']
+            visible = not prefs['hide all in fullscreen'] and not prefs['hide all']
         else:
             visible = not prefs['hide all']
         visible &= prefs[preference]
