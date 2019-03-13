@@ -71,13 +71,22 @@ def install_gettext():
     # Initialize default locale
     locale.setlocale(locale.LC_ALL, '')
 
+    lang_identifiers = []
     if preferences.prefs['language'] != 'auto':
         lang = preferences.prefs['language']
-        lang_identifiers = [ lang ]
+        if lang not in ('en', 'en_US'):
+            # .mo is not needed for english
+            lang_identifiers.append(lang)
     else:
         # Get the user's current locale
         lang = portability.get_default_locale()
-        lang_identifiers = gettext._expand_lang(lang)
+        for s in gettext._expand_lang(lang):
+            lang = s.split('.')[0]
+            if lang in ('en', 'en_US'):
+                # .mo is not needed for english
+                continue
+            if lang not in lang_identifiers:
+                lang_identifiers.append(lang)
 
     # Make sure GTK uses the correct language.
     os.environ['LANGUAGE'] = lang
@@ -92,11 +101,10 @@ def install_gettext():
                 translation = gettext.GNUTranslations(fp)
             break
         except IOError:
-            pass
+            log.error('locale file: %s not found.', resource_path)
     else:
         translation = gettext.NullTranslations()
-        if ( lang != "en" ) :
-            log.error('locale file: %s not found, falling back to English.', resource_path)
+
     translation.install()
 
     global _translation
