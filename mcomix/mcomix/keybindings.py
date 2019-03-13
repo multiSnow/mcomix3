@@ -288,8 +288,7 @@ class _KeybindingManager(object):
         try:
             with open(constants.KEYBINDINGS_CONF_PATH, 'r') as fp:
                 stored_action_bindings = json.load(fp)
-        except Exception as e:
-            log.error(_('Couldn\'t load keybindings: %s'), e)
+        except:
             stored_action_bindings = {}
 
         for action in BINDING_INFO.keys():
