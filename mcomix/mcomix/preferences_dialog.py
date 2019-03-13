@@ -744,7 +744,7 @@ class _PreferencesDialog(Gtk.Dialog):
 
 
     def _create_color_button(self, prefkey):
-        rgba = image_tools.color_to_floats_rgba(prefs[prefkey])
+        rgba = prefs[prefkey]
         button = Gtk.ColorButton.new_with_rgba(Gdk.RGBA(*rgba))
         button.connect('color_set', self._color_button_cb, prefkey)
         return button
@@ -811,20 +811,20 @@ class _PreferencesDialog(Gtk.Dialog):
     def _color_button_cb(self, colorbutton, preference):
         '''Callback for the background colour selection button.'''
 
-        colour = colorbutton.get_color()
+        colour = colorbutton.get_rgba()
 
         if preference == 'bg colour':
-            prefs['bg colour'] = colour.red, colour.green, colour.blue
+            prefs['bg colour'] = colour.red, colour.green, colour.blue, colour.alpha
 
             if not prefs['smart bg'] or not self._window.filehandler.file_loaded:
                 self._window.set_bg_colour(prefs['bg colour'])
 
         elif preference == 'thumb bg colour':
 
-            prefs['thumb bg colour'] = colour.red, colour.green, colour.blue
+            prefs['thumb bg colour'] = colour.red, colour.green, colour.blue, colour.alpha
 
             if not prefs['smart thumb bg'] or not self._window.filehandler.file_loaded:
-                self._window.thumbnailsidebar.change_thumbnail_background_color( prefs['thumb bg colour'] )
+                self._window.thumbnailsidebar.change_thumbnail_background_color(prefs['thumb bg colour'])
 
 
     def _create_pref_spinner(self, prefkey, scale, lower, upper, step_incr,
