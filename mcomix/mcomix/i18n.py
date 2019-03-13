@@ -4,7 +4,6 @@ import sys
 import os
 import locale
 import gettext
-from mcomix import log
 
 try:
     import chardet
@@ -15,6 +14,7 @@ from mcomix import preferences
 from mcomix import portability
 from mcomix import constants
 from mcomix import tools
+from mcomix import log
 
 # Translation instance to enable other modules to use
 # functions other than the global _() if necessary
