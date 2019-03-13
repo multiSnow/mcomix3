@@ -981,7 +981,7 @@ class MainWindow(Gtk.Window):
         '''Set the background colour to <colour>. Colour is a sequence in the
         format (r, g, b). Values are 16-bit.
         '''
-        self._event_box.modify_bg(Gtk.StateType.NORMAL, Gdk.Color(*colour))
+        self._event_box.override_background_color(Gtk.StateType.NORMAL, Gdk.RGBA(*colour))
         if prefs['thumbnail bg uses main colour']:
             self.thumbnailsidebar.change_thumbnail_background_color(prefs['bg colour'])
         self._bg_colour = colour
