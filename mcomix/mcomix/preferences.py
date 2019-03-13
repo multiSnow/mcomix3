@@ -20,8 +20,8 @@ prefs = {
     'sort order': constants.SORT_ASCENDING,
     'sort archive by': constants.SORT_NAME,  # Files in archives
     'sort archive order': constants.SORT_ASCENDING,
-    'bg colour': [0, 0, 0, 0],
-    'thumb bg colour': [0, 0, 0, 0],
+    'bg colour': [0.0, 0.0, 0.0, 1.0],
+    'thumb bg colour': [0.0, 0.0, 0.0, 1.0],
     'smart bg': False,
     'smart thumb bg': False,
     'thumbnail bg uses main colour': False,
