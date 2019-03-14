@@ -618,15 +618,6 @@ class FileHandler(object):
                     extractor_files.insert(0, name)
             self._extractor.set_files(extractor_files)
 
-    def thread_delete(self, path):
-        '''Start a threaded removal of the directory tree rooted at <path>.
-        This is to avoid long blockings when removing large temporary dirs.
-        '''
-        del_thread = threading.Thread(target=shutil.rmtree, args=(path, True))
-        del_thread.name += '-delete'
-        del_thread.setDaemon(False)
-        del_thread.start()
-
     def write_fileinfo_file(self):
         '''Write current open file information.'''
 
