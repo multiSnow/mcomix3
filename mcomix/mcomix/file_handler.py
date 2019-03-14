@@ -632,6 +632,9 @@ class FileHandler(object):
 
         if self.file_loaded:
             path = self._window.imagehandler.get_real_path()
+            if not path:
+                # no file is loaded
+                return
             path = tools.relpath2root(path,abs_fallback=prefs['portable allow abspath'])
 
             if not path:
