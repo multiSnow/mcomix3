@@ -746,6 +746,7 @@ class _PreferencesDialog(Gtk.Dialog):
     def _create_color_button(self, prefkey):
         rgba = prefs[prefkey]
         button = Gtk.ColorButton.new_with_rgba(Gdk.RGBA(*rgba))
+        button.set_use_alpha(True)
         button.connect('color_set', self._color_button_cb, prefkey)
         return button
 
