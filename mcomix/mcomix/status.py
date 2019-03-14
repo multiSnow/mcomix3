@@ -173,19 +173,16 @@ class Statusbar(Gtk.EventBox):
         if self._loading:
             return
 
-        actionname = action.get_name()
-        if actionname == 'pagenumber':
-            bit = constants.STATUS_PAGE
-        elif actionname == 'resolution':
-            bit = constants.STATUS_RESOLUTION
-        elif actionname == 'rootpath':
-            bit = constants.STATUS_PATH
-        elif actionname == 'filename':
-            bit = constants.STATUS_FILENAME
-        elif actionname == 'filenumber':
-            bit = constants.STATUS_FILENUMBER
-        elif actionname == 'filesize':
-            bit = constants.STATUS_FILESIZE
+        names = {
+            'pagenumber': constants.STATUS_PAGE,
+            'resolution': constants.STATUS_RESOLUTION,
+            'rootpath':   constants.STATUS_PATH,
+            'filename':   constants.STATUS_FILENAME,
+            'filenumber': constants.STATUS_FILENUMBER,
+            'filesize':   constants.STATUS_FILESIZE,
+        }
+
+        bit = names[action.get_name()]
 
         if action.get_active():
             prefs['statusbar fields'] |= bit
