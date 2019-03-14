@@ -138,8 +138,6 @@ class Statusbar(Gtk.EventBox):
 
     def _get_status_text(self):
         ''' Returns an array of text fields that should be displayed. '''
-        fields = []
-
         fields = [
             (constants.STATUS_PAGE,       self._page_info ),
             (constants.STATUS_FILENUMBER, self._file_info ),
