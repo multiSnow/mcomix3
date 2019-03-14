@@ -81,10 +81,10 @@ RAR_FORMATS = (
         ('rar', 'cbr'))
 TAR_FORMATS = (
         ('application/x-tar', 'application/x-gzip', 'application/x-bzip2', 'application/x-cbt'),
-        ('tar', 'gz', 'bz2', 'bzip2', 'cbt'))
+        ('tar', 'gz', 'bz2', 'bzip2', 'xz', 'lzma', 'cbt'))
 SZIP_FORMATS = (
         ('application/x-7z-compressed', 'application/x-cb7'),
-        ('7z', 'cb7', 'xz', 'lzma'))
+        ('7z', 'cb7'))
 LHA_FORMATS = (
         ('application/x-lzh', 'application/x-lha', 'application/x-lzh-compressed'),
         ('lha', 'lzh'))
