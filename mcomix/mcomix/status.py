@@ -186,21 +186,19 @@ class Statusbar(Gtk.EventBox):
     def _update_sensitivity(self):
         ''' Updates the action menu's sensitivity based on user preferences. '''
 
-        page_visible = prefs['statusbar fields'] & constants.STATUS_PAGE
-        fileno_visible = prefs['statusbar fields'] & constants.STATUS_FILENUMBER
-        resolution_visible = prefs['statusbar fields'] & constants.STATUS_RESOLUTION
-        path_visible = prefs['statusbar fields'] & constants.STATUS_PATH
-        filename_visible = prefs['statusbar fields'] & constants.STATUS_FILENAME
-        filesize_visible = prefs['statusbar fields'] & constants.STATUS_FILESIZE
+        p = prefs['statusbar fields']
+        names = {
+            'pagenumber': p & constants.STATUS_PAGE,
+            'filenumber': p & constants.STATUS_FILENUMBER,
+            'resolution': p & constants.STATUS_RESOLUTION,
+            'rootpath':   p & constants.STATUS_PATH,
+            'filename':   p & constants.STATUS_FILENAME,
+            'filesize':   p & constants.STATUS_FILESIZE,
+        }
 
-        for name, visible in (('pagenumber', page_visible),
-                              ('filenumber', fileno_visible),
-                              ('resolution', resolution_visible),
-                              ('rootpath', path_visible),
-                              ('filename', filename_visible),
-                              ('filesize', filesize_visible)):
-            action = self.ui_manager.get_action('/Statusbar/' + name)
-            action.set_active(visible)
+        for n,v in names.items():
+            action = self.ui_manager.get_action('/Statusbar/' + n)
+            action.set_active(v)
 
 
 class TooltipStatusHelper(object):
