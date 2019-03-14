@@ -77,13 +77,8 @@ class Statusbar(Gtk.EventBox):
 
     def set_page_number(self, page, total, this_screen):
         '''Update the page number.'''
-        page_info = ''
-        for i in range(this_screen):
-            page_info += '%d' % (page + i)
-            if i < this_screen - 1:
-                page_info +=','
-        page_info += ' / %d' % total
-        self._page_info = page_info
+        p = ','.join(str(page+i) for i in range(this_screen))
+        self._page_info = '{} / {}'.format(p,total)
 
     def get_page_number(self):
         '''Returns the bar's page information.'''
@@ -107,13 +102,7 @@ class Statusbar(Gtk.EventBox):
         Takes an iterable of tuples, (x, y, scale), describing the original
         resolution of an image as well as the currently displayed scale.
         '''
-        resolution = ''
-        for i in range(len(dimensions)):
-            d = dimensions[i]
-            resolution += '%dx%d (%.1f%%)' % (d[0], d[1], d[2] * 100.0)
-            if i < len(dimensions) - 1:
-                resolution += ', '
-        self._resolution = resolution
+        self._resolution = ', '.join('{}x{} ({:.1%})'.format(*d) for d in dimensions)
 
     def set_root(self, root):
         '''Set the name of the root (directory or archive).'''
@@ -132,10 +121,10 @@ class Statusbar(Gtk.EventBox):
     def update(self):
         '''Set the statusbar to display the current state.'''
 
-        space = ' ' * Statusbar.SPACING
-        text = (space + '|' + space).join(self._get_status_text())
+        s = '{0:^{1}}'.format('|',Statusbar.SPACING*2+1)
+        text = s.join(self._get_status_text())
         self.status.pop(0)
-        self.status.push(0, space + text)
+        self.status.push(0, '{1:>{2}}{0}'.format(text,'',Statusbar.SPACING))
 
     def push(self, context_id, message):
         ''' Compatibility with Gtk.Statusbar. '''
