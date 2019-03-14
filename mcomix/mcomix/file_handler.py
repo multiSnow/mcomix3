@@ -147,7 +147,6 @@ class FileHandler(object):
             msg = _('No images in "%s"') % os.path.basename(self._current_file)
             self._window.statusbar.set_message(msg)
             self._window.osd.show(msg)
-            self.file_loaded = False
 
         else:
             if self.archive_type is None:
