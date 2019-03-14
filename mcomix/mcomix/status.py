@@ -140,20 +140,17 @@ class Statusbar(Gtk.EventBox):
         ''' Returns an array of text fields that should be displayed. '''
         fields = []
 
-        if prefs['statusbar fields'] & constants.STATUS_PAGE:
-            fields.append(self._page_info)
-        if prefs['statusbar fields'] & constants.STATUS_FILENUMBER:
-            fields.append(self._file_info)
-        if prefs['statusbar fields'] & constants.STATUS_RESOLUTION:
-            fields.append(self._resolution)
-        if prefs['statusbar fields'] & constants.STATUS_PATH:
-            fields.append(self._root)
-        if prefs['statusbar fields'] & constants.STATUS_FILENAME:
-            fields.append(self._filename)
-        if prefs['statusbar fields'] & constants.STATUS_FILESIZE:
-            fields.append(self._filesize)
+        fields = [
+            (constants.STATUS_PAGE,       self._page_info ),
+            (constants.STATUS_FILENUMBER, self._file_info ),
+            (constants.STATUS_RESOLUTION, self._resolution),
+            (constants.STATUS_PATH,       self._root      ),
+            (constants.STATUS_FILENAME,   self._filename  ),
+            (constants.STATUS_FILESIZE,   self._filesize  ),
+        ]
+        p = prefs['statusbar fields']
 
-        return fields
+        return [s for c,s in filter(lambda f:f[0]&p,fields)]
 
     def toggle_status_visibility(self, action, *args):
         ''' Called when status entries visibility is to be changed. '''
