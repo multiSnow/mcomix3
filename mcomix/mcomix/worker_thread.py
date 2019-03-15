@@ -44,7 +44,7 @@ class WorkerThread(object):
             thread = threading.Thread(target=self._run)
             if self._name is not None:
                 thread.name += '-' + self._name
-            thread.setDaemon(False)
+            thread.daemon=False
             thread.start()
             self._threads.append(thread)
 
