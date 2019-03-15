@@ -81,7 +81,14 @@ RAR_FORMATS = (
         ('rar', 'cbr'))
 TAR_FORMATS = (
         ('application/x-tar', 'application/x-gzip', 'application/x-bzip2', 'application/x-cbt'),
-        ('tar', 'gz', 'bz2', 'bzip2', 'xz', 'lzma', 'cbt'))
+        ('tar', 'cbt',
+         # see https://www.gnu.org/software/tar/manual/html_section/tar_68.html#auto_002dcompress
+         # and https://git.savannah.gnu.org/cgit/tar.git/commit/?id=2c06a80918019471876956eef4ef22f05c9e0571
+         'gz', 'tgz', 'taz', # gzip
+         'bz2', 'tz2', 'tbz2', 'tbz', # bzip2
+         'lzma', 'tlz', # lzma
+         'xz', 'txz', # xz
+        ))
 SZIP_FORMATS = (
         ('application/x-7z-compressed', 'application/x-cb7'),
         ('7z', 'cb7'))
