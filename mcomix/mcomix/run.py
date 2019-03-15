@@ -104,6 +104,9 @@ def run():
 
     # Check for PyGTK and PIL dependencies.
     try:
+        from gi import version_info as gi_version_info
+        assert gi_version_info >= (3,21,0)
+
         from gi import require_version
 
         require_version('PangoCairo', '1.0')
@@ -111,11 +114,6 @@ def run():
         require_version('Gdk', '3.0')
 
         from gi.repository import Gdk, Gtk, GLib
-        from gi import version_info as gi_version_info
-
-        if gi_version_info < (3,11,0):
-            from gi.repository import GObject
-            GObject.threads_init()
 
     except AssertionError:
         log.error( _('You do not have the required versions of GTK+ 3.0 and PyGObject installed.') )
