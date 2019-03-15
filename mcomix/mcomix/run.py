@@ -116,12 +116,16 @@ def run():
         from gi.repository import Gdk, Gtk, GLib
 
     except AssertionError:
-        log.error( _('You do not have the required versions of GTK+ 3.0 and PyGObject installed.') )
+        log.error(_('You do not have the required versions of PyGObject installed.'))
+        wait_and_exit()
+
+    except ValueError:
+        log.error(_('You do not have the required versions of GTK+ 3.0 installed.'))
         wait_and_exit()
 
     except ImportError:
-        log.error( _('No version of GObject was found on your system.') )
-        log.error( _('This error might be caused by missing GTK+ libraries.') )
+        log.error(_('No version of GObject was found on your system.'))
+        log.error(_('This error might be caused by missing GTK+ libraries.'))
         wait_and_exit()
 
     try:
