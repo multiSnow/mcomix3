@@ -14,6 +14,14 @@ from mcomix import i18n
 __all__ = ['debug', 'info', 'warning', 'error', 'setLevel',
            'DEBUG', 'INFO', 'WARNING', 'ERROR']
 
+levels={
+    'all':   DEBUG,
+    'debug': DEBUG,
+    'info':  INFO,
+    'warn':  WARNING,
+    'error': ERROR,
+}
+
 def print_(*args, **options):
     ''' This function is supposed to replace the standard print statement.
     Its prototype follows that of the print() function introduced in Python 2.6:

@@ -38,7 +38,7 @@ def parse_arguments():
     this function. '''
 
     parser = argparse.ArgumentParser(
-        usage='%%(prog)s %s' % _('[OPTION...] [PATH]'),
+        usage='%%(prog)s %s' % _('[OPTION...] [PATH...]'),
         description=_('View images and comic book archives.'),
         add_help=False)
     parser.add_argument('--help', action='help',
@@ -74,26 +74,14 @@ def parse_arguments():
 
     debugopts = parser.add_argument_group('Debug options')
     debugopts.add_argument('-W', dest='loglevel', action='store',
-                           choices=('all', 'debug', 'info', 'warn', 'error'), default='warn',
-                           metavar='[ all | debug | info | warn | error ]',
+                           choices=log.levels.keys(), default='warn',
+                           metavar='[ {} ]'.format(' | '.join(log.levels.keys())),
                            help=_('Sets the desired output log level.'))
     # This supresses an error when MComix is used with cProfile
     debugopts.add_argument('-o', dest='output', action='store',
                            default='', help=argparse.SUPPRESS)
 
     args = parser.parse_args()
-
-    # Fix up log level to use constants from log.
-    if args.loglevel == 'all':
-        args.loglevel = log.DEBUG
-    if args.loglevel == 'debug':
-        args.loglevel = log.DEBUG
-    if args.loglevel == 'info':
-        args.loglevel = log.INFO
-    elif args.loglevel == 'warn':
-        args.loglevel = log.WARNING
-    elif args.loglevel == 'error':
-        args.loglevel = log.ERROR
 
     return args
 
@@ -112,7 +100,7 @@ def run():
         print_version()
 
     # First things first: set the log level.
-    log.setLevel(args.loglevel)
+    log.setLevel(log.levels[args.loglevel])
 
     # Check for PyGTK and PIL dependencies.
     try:
