@@ -142,19 +142,19 @@ def run():
         assert pilver >= constants.REQUIRED_PIL_VERSION
 
     except AssertionError:
-        log.error( _('You don\'t have the required version of the Pillow installed.'))
-        log.error( _('Installed PIL version is: %s') % pilver )
-        log.error( _('Required Pillow version is: %s or higher') % constants.REQUIRED_PIL_VERSION )
+        log.error(_('You don\'t have the required version of the Pillow installed.'))
+        log.error(_('Installed PIL version is: %s') % pilver)
+        log.error(_('Required Pillow version is: %s or higher') % constants.REQUIRED_PIL_VERSION)
         wait_and_exit()
 
     except AttributeError:
-        log.error( _('You don\'t have the required version of the Pillow installed.'))
-        log.error( _('Required Pillow version is: %s or higher') % constants.REQUIRED_PIL_VERSION )
+        log.error(_('You don\'t have the required version of the Pillow installed.'))
+        log.error(_('Required Pillow version is: %s or higher') % constants.REQUIRED_PIL_VERSION)
         wait_and_exit()
 
     except ImportError:
-        log.error( _('Pillow %s or higher is required.') % constants.REQUIRED_PIL_VERSION )
-        log.error( _('No version of the Pillow was found on your system.') )
+        log.error(_('Pillow %s or higher is required.') % constants.REQUIRED_PIL_VERSION)
+        log.error(_('No version of the Pillow was found on your system.'))
         wait_and_exit()
 
     if not os.path.exists(constants.DATA_DIR):
@@ -201,9 +201,9 @@ def run():
 
     from mcomix import main
     window = main.MainWindow(fullscreen = args.fullscreen, is_slideshow = args.slideshow,
-            show_library = args.library, manga_mode = args.manga,
-            double_page = args.doublepage, zoom_mode = args.zoommode,
-            open_path = open_path, open_page = open_page)
+                             show_library = args.library, manga_mode = args.manga,
+                             double_page = args.doublepage, zoom_mode = args.zoommode,
+                             open_path = open_path, open_page = open_page)
     main.set_main_window(window)
 
     if 'win32' != sys.platform:
