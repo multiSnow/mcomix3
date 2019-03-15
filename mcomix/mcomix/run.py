@@ -23,7 +23,7 @@ def wait_and_exit():
     the user find possibly missing dependencies when starting, since the
     Python window will not close down immediately after the error. '''
     if sys.platform == 'win32' and not sys.stdin.closed and not sys.stdout.closed:
-        print
+        print()
         input('Press ENTER to continue...')
     sys.exit(1)
 
