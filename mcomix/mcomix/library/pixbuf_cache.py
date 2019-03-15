@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 ''' pixbuf_cache.py - Caches book covers for the library display.'''
 
-from __future__ import with_statement
 import threading
 
 __all__ = ['get_pixbuf_cache']

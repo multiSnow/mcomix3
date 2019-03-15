@@ -1,5 +1,4 @@
 ''' Worker thread class. '''
-from __future__ import with_statement
 
 import threading
 import traceback
