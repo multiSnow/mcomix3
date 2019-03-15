@@ -137,7 +137,7 @@ def format_byte_size(n):
         e=PREFIXED_BYTE_UNITS[s]
     except IndexError:
         e='C{}i'.format(s)
-    return '{} {}'.format(round(n,3),e)
+    return '{:.3f} {}'.format(n,e)
 
 def garbage_collect():
     ''' Runs the garbage collector. '''
