@@ -2,9 +2,9 @@
 
 '''preferences_dialog.py - Preferences dialog.'''
 
-import operator
 from gi.repository import Gdk, GdkPixbuf, Gtk, GObject
 
+from mcomix.languages import languages
 from mcomix.preferences import prefs
 from mcomix import preferences_page
 from mcomix import image_tools
@@ -413,36 +413,8 @@ class _PreferencesDialog(Gtk.Dialog):
 
     def _create_language_control(self):
         ''' Creates and returns the combobox for language selection. '''
-        # Source: http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-        languages = [
-            (_('Auto-detect (Default)'), 'auto'),
-            ('Català', 'ca'),  # Catalan
-            ('čeština', 'cs'),  # Czech
-            ('Deutsch', 'de'),  # German
-            ('ελληνικά', 'el'),  # Greek
-            ('English', 'en'),  # English
-            ('Español', 'es'),  # Spanish
-            ('فارسی', 'fa'),  # Persian
-            ('Français', 'fr'), # French
-            ('Galego', 'gl'),  # Galician
-            ('עברית', 'he'),  # Hebrew
-            ('Hrvatski jezik', 'hr'),  # Croatian
-            ('Magyar', 'hu'),  # Hungarian
-            ('Bahasa Indonesia', 'id'),  # Indonesian
-            ('Italiano', 'it'),  # Italian
-            ('日本語', 'ja'),  # Japanese
-            ('한국어', 'ko'),  # Korean
-            ('Nederlands', 'nl'),  # Dutch
-            ('Język polski', 'pl'),  # Polish
-            ('Português', 'pt_BR'),  # Portuguese
-            ('pусский язык', 'ru'),  # Russian
-            ('Svenska', 'sv'),  # Swedish
-            ('українська мова', 'uk'),  # Ukrainian
-            ('簡體中文', 'zh_CN'),  # Chinese (simplified)
-            ('正體中文', 'zh_TW')]  # Chinese (traditional)
-        languages.sort(key=operator.itemgetter(0))
-
-        box = self._create_combobox(languages, prefs['language'],
+        autolang = [(_('Auto-detect (Default)'), 'auto')]
+        box = self._create_combobox(autolang+languages, prefs['language'],
                                     self._language_changed_cb)
 
         return box
