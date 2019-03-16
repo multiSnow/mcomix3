@@ -6,6 +6,7 @@ import pickle
 import json
 
 from mcomix import constants
+from mcomix import log
 
 # All the preferences are stored here.
 prefs = {
@@ -110,26 +111,23 @@ prefs = {
 def read_preferences_file():
     '''Read preferences data from disk.'''
 
-    saved_prefs = None
+    saved_prefs = {}
 
     if os.path.isfile(constants.PREFERENCE_PATH):
         try:
             with open(constants.PREFERENCE_PATH, 'r') as config_file:
-                saved_prefs = json.load(config_file)
+                saved_prefs.update(json.load(config_file))
         except:
             # Gettext might not be installed yet at this point.
-            corrupt_name = '%s.broken' % constants.PREFERENCE_PATH
-            print('! Corrupt preferences file, moving to "%s".' %
-                  corrupt_name)
+            corrupt_name = constants.PREFERENCE_PATH + '.broken'
+            log.warning('! Corrupt preferences file, moving to "%s".' %
+                        corrupt_name)
             if os.path.isfile(corrupt_name):
                 os.unlink(corrupt_name)
 
             os.rename(constants.PREFERENCE_PATH, corrupt_name)
 
-    if saved_prefs:
-        for key in saved_prefs:
-            if key in prefs:
-                prefs[key] = saved_prefs[key]
+    prefs.update(filter(lambda i:i[0] in prefs,saved_prefs.items()))
 
 def write_preferences_file():
     '''Write preference data to disk.'''
