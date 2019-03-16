@@ -42,6 +42,8 @@ class _PreferencesDialog(Gtk.Dialog):
 
         appearance = self._init_appearance_tab()
         notebook.append_page(appearance, Gtk.Label(label=_('Appearance')))
+        onscrdisp = self._init_onscrdisp_tab()
+        notebook.append_page(onscrdisp, Gtk.Label(label=_('OSD')))
         behaviour = self._init_behaviour_tab()
         notebook.append_page(behaviour, Gtk.Label(label=_('Behaviour')))
         display = self._init_display_tab()
@@ -112,6 +114,21 @@ class _PreferencesDialog(Gtk.Dialog):
             self._create_pref_spinner('thumbnail size',
             1, 20, 500, 1, 10, 0, None))
 
+        page.new_section(_('Transparency'))
+
+        page.add_row(self._create_pref_check_button(
+            _('Use checkered background for transparent images'),
+            'checkered bg for transparent images',
+            _('Use a grey checkered background for transparent images. If this preference is unset, the background is plain white instead.')))
+
+        return page
+
+    def _init_onscrdisp_tab(self):
+        # ----------------------------------------------------------------
+        # The "OSD" tab.
+        # ----------------------------------------------------------------
+        page = preferences_page._PreferencePage(None)
+
         page.new_section(_('Onscreen display'))
 
         page.add_row(Gtk.Label(label=_('Max font size:')),
@@ -126,13 +143,6 @@ class _PreferencesDialog(Gtk.Dialog):
 
         page.add_row(Gtk.Label(label=_('Background color:')),
                      self._create_color_button('osd bg color'))
-
-        page.new_section(_('Transparency'))
-
-        page.add_row(self._create_pref_check_button(
-            _('Use checkered background for transparent images'),
-            'checkered bg for transparent images',
-            _('Use a grey checkered background for transparent images. If this preference is unset, the background is plain white instead.')))
 
         return page
 
