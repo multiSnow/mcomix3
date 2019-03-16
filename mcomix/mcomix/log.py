@@ -22,7 +22,8 @@ levels={
     'error': ERROR,
 }
 
-def print_(*args, **options):
+def print_old(*args, **options):
+    # keep this function for reference only
     ''' This function is supposed to replace the standard print statement.
     Its prototype follows that of the print() function introduced in Python 2.6:
     Prints <args>, with each argument separeted by sep=' ' and ending with
@@ -73,6 +74,9 @@ def print_(*args, **options):
         print_function(text)
 
     print_function(end)
+
+def print_(*args,**kwargs):
+    return print(*map(i18n.to_unicode,args),**kwargs)
 
 class PrintHandler(logging.Handler):
     ''' Handler using L{print_} to output messages. '''
