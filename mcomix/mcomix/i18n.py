@@ -24,7 +24,7 @@ def to_unicode(string):
     '''Convert <string> to unicode. First try the default filesystem
     encoding, and then fall back on some common encodings.
     '''
-    if isinstance(string, str):
+    if not isinstance(string, (bytes,bytearray)):
         return string
 
     # Try chardet heuristic
