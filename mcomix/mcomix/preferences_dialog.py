@@ -827,23 +827,16 @@ class _PreferencesDialog(Gtk.Dialog):
     def _color_button_cb(self, colorbutton, preference):
         '''Callback for the background colour selection button.'''
 
-        colour = colorbutton.get_rgba()
+        color = colorbutton.get_rgba()
+        prefs[preference] = color.red, color.green, color.blue, color.alpha
 
         if preference == 'bg colour':
-            prefs['bg colour'] = colour.red, colour.green, colour.blue, colour.alpha
-
             if not prefs['smart bg'] or not self._window.filehandler.file_loaded:
                 self._window.set_bg_color(prefs['bg colour'])
 
         elif preference == 'thumb bg colour':
-
-            prefs['thumb bg colour'] = colour.red, colour.green, colour.blue, colour.alpha
-
             if not prefs['smart thumb bg'] or not self._window.filehandler.file_loaded:
                 self._window.thumbnailsidebar.change_thumbnail_background_color(prefs['thumb bg colour'])
-
-        elif preference in ('osd color', 'osd bg color'):
-            prefs[preference] = colour.red, colour.green, colour.blue, colour.alpha
 
 
     def _create_pref_spinner(self, prefkey, scale, lower, upper, step_incr,
