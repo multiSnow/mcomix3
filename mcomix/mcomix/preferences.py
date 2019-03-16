@@ -119,8 +119,8 @@ def read_preferences_file():
         except:
             # Gettext might not be installed yet at this point.
             corrupt_name = '%s.broken' % constants.PREFERENCE_PATH
-            print ('! Corrupt preferences file, moving to "%s".' %
-                   corrupt_name)
+            print('! Corrupt preferences file, moving to "%s".' %
+                  corrupt_name)
             if os.path.isfile(corrupt_name):
                 os.unlink(corrupt_name)
 
