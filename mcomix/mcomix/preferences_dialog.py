@@ -904,7 +904,7 @@ class _PreferencesDialog(Gtk.Dialog):
             self._window.imagehandler.do_cacheing()
 
         elif preference == 'number of key presses before page turn':
-            prefs['number of key presses before page turn'] = int(value)
+            prefs[preference] = int(value)
             self._window._event_handler._extra_scroll_events = 0
 
         elif preference == 'fit to size px':
