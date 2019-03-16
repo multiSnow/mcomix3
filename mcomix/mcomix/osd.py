@@ -70,16 +70,7 @@ class OnScreenDisplay(object):
 
     def _wrap_text(self, text, width=70):
         ''' Wraps the text to be C{width} characters at most. '''
-        parts = text.split('\n')
-        result = []
-
-        for part in parts:
-            if part:
-                result.extend(textwrap.wrap(part, width))
-            else:
-                result.append(part)
-
-        return '\n'.join(result)
+        return '\n'.join(textwrap.fill(s, width=width) for s in text.splitlines())
 
     def _clear_osd(self):
         ''' Clear the last OSD region. '''
