@@ -106,6 +106,9 @@ prefs = {
     'animation transform': False,
     'temporary directory': None,
     'portable allow abspath': False,
+    'osd max font size': 16, # hard limited from 8 to 60
+    'osd color': [1, 1, 1, 1],
+    'osd bg color': [0, 0, 0, 1],
 }
 
 def read_preferences_file():

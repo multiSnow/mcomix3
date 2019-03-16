@@ -112,6 +112,21 @@ class _PreferencesDialog(Gtk.Dialog):
             self._create_pref_spinner('thumbnail size',
             1, 20, 500, 1, 10, 0, None))
 
+        page.new_section(_('Onscreen display'))
+
+        page.add_row(Gtk.Label(label=_('Max font size:')),
+                     self._create_pref_spinner(
+                         'osd max font size',
+                         1, 8, 60, 1, 10, 0,
+                         _('Font size in OSD, hard limited from 8 to 60.')
+                     ))
+
+        page.add_row(Gtk.Label(label=_('Font color:')),
+                     self._create_color_button('osd color'))
+
+        page.add_row(Gtk.Label(label=_('Background color:')),
+                     self._create_color_button('osd bg color'))
+
         page.new_section(_('Transparency'))
 
         page.add_row(self._create_pref_check_button(
@@ -884,6 +899,9 @@ class _PreferencesDialog(Gtk.Dialog):
             self._window.change_zoom_mode()
 
         elif preference == 'max extract threads':
+            prefs[preference] = int(value)
+
+        elif preference == 'osd max font size':
             prefs[preference] = int(value)
 
 
