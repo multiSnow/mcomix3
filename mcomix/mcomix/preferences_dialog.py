@@ -131,6 +131,13 @@ class _PreferencesDialog(Gtk.Dialog):
 
         page.new_section(_('Onscreen display'))
 
+        page.add_row(Gtk.Label(label=_('Timeout:')),
+                     self._create_pref_spinner(
+                         'osd timeout',
+                         1.0, 0.5, 30.0, 0.5, 2.0, 1,
+                         _('Erase OSD after timeout, in seconds.')
+                     ))
+
         page.add_row(Gtk.Label(label=_('Max font size:')),
                      self._create_pref_spinner(
                          'osd max font size',
@@ -909,6 +916,9 @@ class _PreferencesDialog(Gtk.Dialog):
 
         elif preference == 'osd max font size':
             prefs[preference] = int(value)
+
+        elif preference == 'osd timeout':
+            prefs[preference] = value
 
 
     def _entry_cb(self, entry, event=None):

@@ -14,10 +14,8 @@ class OnScreenDisplay(object):
     ''' The OSD shows information such as currently opened file, archive and
     page in a black box drawn on the bottom end of the screen.
 
-    The OSD will automatically be erased after TIMEOUT seconds.
+    The OSD will automatically be erased after 'osd timeout' seconds.
     '''
-
-    TIMEOUT = 3
 
     def __init__(self, window):
         #: MainWindow
@@ -58,7 +56,7 @@ class OnScreenDisplay(object):
         self._last_osd_rect = rect
         if self._timeout_event:
             GLib.source_remove(self._timeout_event)
-        self._timeout_event = GLib.timeout_add_seconds(OnScreenDisplay.TIMEOUT, self.clear)
+        self._timeout_event = GLib.timeout_add(prefs['osd timeout']*1000, self.clear)
 
     def clear(self):
         ''' Removes the OSD. '''
