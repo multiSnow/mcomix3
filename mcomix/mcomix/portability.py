@@ -24,7 +24,7 @@ def normalize_uri(uri):
 def invalid_filesystem_chars():
     ''' List of characters that cannot be used in filenames on the target platform. '''
     if sys.platform == 'win32':
-        return ':*?"<>|' + ''.join([unichr(i) for i in range(0, 32)])
+        return ':*?"<>|' + ''.join(chr(i) for i in range(32))
     else:
         return ''
 
