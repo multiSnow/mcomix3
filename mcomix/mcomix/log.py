@@ -90,12 +90,12 @@ class PrintHandler(logging.Handler):
 # Set up default logger.
 __logger = logging.getLogger('mcomix')
 __logger.setLevel(WARNING)
-if not __logger.handlers:
+if not __logger.hasHandlers():
     __handler = PrintHandler()
     __handler.setFormatter(logging.Formatter(
         '%(asctime)s [%(threadName)s] %(levelname)s: %(message)s',
         '%H:%M:%S'))
-    __logger.handlers = [__handler]
+    __logger.addHandler(__handler)
 
 # The following functions direct all input to __logger.
 
