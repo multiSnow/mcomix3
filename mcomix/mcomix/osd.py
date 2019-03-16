@@ -6,7 +6,7 @@ import textwrap
 from gi.repository import Gdk, Gtk, GLib
 from gi.repository import Pango, PangoCairo
 
-from mcomix import image_tools
+from mcomix.preferences import prefs
 
 
 class OnScreenDisplay(object):
@@ -88,8 +88,9 @@ class OnScreenDisplay(object):
     def _scale_font(self, font, layout, max_width, max_height):
         ''' Scales the font used by C{layout} until max_width/max_height is reached. '''
 
-        SIZE_MIN, SIZE_MAX = 10, 60
-        for font_size in range(SIZE_MIN, SIZE_MAX, 5):
+        # hard limited from 8 to 60
+        SIZE_MIN, SIZE_MAX = 8, min(prefs['osd max font size'], 60)+1
+        for font_size in range(SIZE_MIN, SIZE_MAX):
             old_size = font.get_size()
             font.set_size(font_size * Pango.SCALE)
             layout.set_font_description(font)
@@ -120,11 +121,11 @@ class OnScreenDisplay(object):
         self._clear_osd()
 
         cr = window.cairo_create()
-        cr.set_source_rgb(*image_tools.GTK_GDK_COLOR_BLACK.to_floats())
+        cr.set_source_rgba(*prefs['osd bg color'])
         cr.rectangle(*rect)
         cr.fill()
         extents = layout.get_extents()[0]
-        cr.set_source_rgb(*image_tools.GTK_GDK_COLOR_WHITE.to_floats())
+        cr.set_source_rgba(*prefs['osd color'])
         cr.translate(rect[0] + extents.x / Pango.SCALE,
                      rect[1] + extents.y / Pango.SCALE)
         PangoCairo.update_layout(cr, layout)

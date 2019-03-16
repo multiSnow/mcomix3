@@ -842,6 +842,9 @@ class _PreferencesDialog(Gtk.Dialog):
             if not prefs['smart thumb bg'] or not self._window.filehandler.file_loaded:
                 self._window.thumbnailsidebar.change_thumbnail_background_color(prefs['thumb bg colour'])
 
+        elif preference in ('osd color', 'osd bg color'):
+            prefs[preference] = colour.red, colour.green, colour.blue, colour.alpha
+
 
     def _create_pref_spinner(self, prefkey, scale, lower, upper, step_incr,
         page_incr, digits, tooltip_text):
