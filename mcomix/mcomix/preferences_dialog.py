@@ -941,6 +941,8 @@ class _PreferencesDialog(Gtk.Dialog):
         if response == Gtk.ResponseType.OK:
             prefs[preference]=dialog.get_filename()
             chooser.set_label(prefs[preference])
+            if preference=='userstyle':
+                self._window.load_style()
         dialog.destroy()
 
 
@@ -948,6 +950,8 @@ class _PreferencesDialog(Gtk.Dialog):
         ''' Reset path chooser '''
         prefs[preference]=default
         chooser.set_label(prefs[preference] or _('(default)'))
+        if preference=='userstyle':
+            self._window.load_style()
 
 
 def open_dialog(action, window):
