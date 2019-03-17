@@ -167,6 +167,7 @@ DEFAULT_BINDINGS = {
     'previous_directory':['<control>P'],
 
     # Scrolling
+    # Numpad (without numlock) aligns the image depending on the key.
     'scroll_left_bottom':['KP_1'],
     'scroll_middle_bottom':['KP_2'],
     'scroll_right_bottom':['KP_3'],
@@ -179,17 +180,27 @@ DEFAULT_BINDINGS = {
     'scroll_middle_top':['KP_8'],
     'scroll_right_top':['KP_9'],
 
+    # Arrow keys scroll the image
     'scroll_down':['Down','KP_Down'],
     'scroll_up':['Up','KP_Up'],
     'scroll_right':['Right','KP_Right'],
     'scroll_left':['Left','KP_Left'],
 
+    # Space key scrolls down a percentage of the window height or the
+    # image height at a time. When at the bottom it flips to the next
+    # page.
+    #
+    # It also has a "smart scrolling mode" in which we try to follow
+    # the flow of the comic.
+    #
+    # If Shift is pressed we should backtrack instead.
     'smart_scroll_up':['<Shift>space'],
     'smart_scroll_down':['space'],
 
     # View
     'zoom_in':['plus','KP_Add','equal'],
     'zoom_out':['minus','KP_Subtract'],
+    # Zoom out is already defined as GTK menu hotkey
     'zoom_original':['<Control>0','KP_0'],
 
     'keep_transformation':['k'],
@@ -250,7 +261,7 @@ DEFAULT_BINDINGS = {
     'library':['<Control>L'],
 }
 
-# Generate 9 entries for executing command 1 to 9
+# Execute external command. Bind keys from 1 to 9 to commands 1 to 9.
 for i in range(1, 10):
     DEFAULT_BINDINGS['execute_command_%d' % i] = [str(i)]
 
