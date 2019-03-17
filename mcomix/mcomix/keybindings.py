@@ -142,10 +142,117 @@ BINDING_INFO = {
 # Generate 9 entries for executing command 1 to 9
 for i in range(1, 10):
     BINDING_INFO['execute_command_%d' %i] = { 
-            'title' : _('Execute external command') + u' (%d)' % i,
+            'title' : _('Execute external command') + ' (%d)' % i,
             'group' : _('External commands')
     }
 
+DEFAULT_BINDINGS = {
+    # Navigation between pages, archives, directories
+    'previous_page':['Page_Up','KP_Page_Up','BackSpace'],
+    'next_page':['Page_Down','KP_Page_Down'],
+    'previous_page_singlestep':['<Ctrl>Page_Up','<Ctrl>KP_Page_Up','<Ctrl>BackSpace'],
+    'next_page_singlestep':['<Ctrl>Page_Down','<Ctrl>KP_Page_Down'],
+    'previous_page_dynamic':['<Mod1>Left'],
+    'next_page_dynamic':['<Mod1>Right'],
+    'previous_page_ff':['<Shift>Page_Up','<Shift>KP_Page_Up','<Shift>BackSpace','<Shift><Mod1>Left'],
+    'next_page_ff':['<Shift>Page_Down','<Shift>KP_Page_Down','<Shift><Mod1>Right'],
+
+    'first_page':['Home','KP_Home'],
+    'last_page':['End','KP_End'],
+    'go_to':['G'],
+
+    'next_archive':['<control><shift>N'],
+    'previous_archive':['<control><shift>P'],
+    'next_directory':['<control>N'],
+    'previous_directory':['<control>P'],
+
+    # Scrolling
+    'scroll_left_bottom':['KP_1'],
+    'scroll_middle_bottom':['KP_2'],
+    'scroll_right_bottom':['KP_3'],
+
+    'scroll_left_middle':['KP_4'],
+    'scroll_middle':['KP_5'],
+    'scroll_right_middle':['KP_6'],
+
+    'scroll_left_top':['KP_7'],
+    'scroll_middle_top':['KP_8'],
+    'scroll_right_top':['KP_9'],
+
+    'scroll_down':['Down','KP_Down'],
+    'scroll_up':['Up','KP_Up'],
+    'scroll_right':['Right','KP_Right'],
+    'scroll_left':['Left','KP_Left'],
+
+    'smart_scroll_up':['<Shift>space'],
+    'smart_scroll_down':['space'],
+
+    # View
+    'zoom_in':['plus','KP_Add','equal'],
+    'zoom_out':['minus','KP_Subtract'],
+    'zoom_original':['<Control>0','KP_0'],
+
+    'keep_transformation':['k'],
+    'rotate_90':['r'],
+    'rotate_270':['<Shift>r'],
+    'rotate_180':[],
+    'flip_horiz':[],
+    'flip_vert':[],
+    'no_autorotation':[],
+
+    'rotate_90_width':[],
+    'rotate_270_width':[],
+    'rotate_90_height':[],
+    'rotate_270_height':[],
+
+    'double_page':['d'],
+    'manga_mode':['m'],
+    'invert_scroll':['x'],
+
+    'lens':['l'],
+    'stretch':['y'],
+
+    'best_fit_mode':['b'],
+    'fit_width_mode':['w'],
+    'fit_height_mode':['h'],
+    'fit_size_mode':['s'],
+    'fit_manual_mode':['a'],
+
+    # General UI
+    'exit_fullscreen':['Escape'],
+
+    'osd_panel':['Tab'],
+    'minimize':['n'],
+    'fullscreen':['f','F11'],
+    'toolbar':[],
+    'menubar':['<Control>M'],
+    'statusbar':[],
+    'scrollbar':[],
+    'thumbnails':['F9'],
+    'hide_all':['i'],
+    'slideshow':['<Control>S'],
+
+    # File operations
+    'delete':['Delete'],
+    'refresh_archive':['<control><shift>R'],
+    'close':['<Control>W'],
+    'quit':['<Control>Q'],
+    'save_and_quit':['<Control><shift>q'],
+    'extract_page':['<Control><Shift>s'],
+
+    'comments':['c'],
+    'properties':['<Alt>Return'],
+    'preferences':['F12'],
+
+    'edit_archive':[],
+    'open':['<Control>O'],
+    'enhance_image':['e'],
+    'library':['<Control>L'],
+}
+
+# Generate 9 entries for executing command 1 to 9
+for i in range(1, 10):
+    DEFAULT_BINDINGS['execute_command_%d' % i] = [str(i)]
 
 class _KeybindingManager(object):
     def __init__(self, window):
