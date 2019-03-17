@@ -77,6 +77,10 @@ class _PreferencesDialog(Gtk.Dialog):
             _('When active, the ESC key closes the program, instead of only '
               'disabling fullscreen mode.')))
 
+        page.add_row(Gtk.Label(label=_('User theme') + ' (Not Implemented)'),
+                     self._create_pref_path_chooser('userstyle', default=None)
+        )
+
         page.new_section(_('Background'))
 
         fixed_bg_button, dynamic_bg_button = self._create_binary_pref_radio_buttons(

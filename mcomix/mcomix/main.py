@@ -293,6 +293,13 @@ class MainWindow(Gtk.Window):
             Gtk.main_do_event(event)
         Gdk.event_handler_set(_on_event)
 
+        self.styleprovider = None
+        self.load_style()
+
+    def load_style(self, path=''):
+        # WIP
+        pass
+
     def gained_focus(self, *args):
         self.was_out_of_focus = False
 
