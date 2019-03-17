@@ -4,7 +4,7 @@
 
 from gi.repository import Gtk
 
-from mcomix import keybindings
+from mcomix import keybindings_map
 
 
 class KeybindingEditorWindow(Gtk.ScrolledWindow):
@@ -19,13 +19,13 @@ class KeybindingEditorWindow(Gtk.ScrolledWindow):
 
         accel_column_num = max([
             len(self.keymanager.get_bindings_for_action(action))
-            for action in keybindings.BINDING_INFO.keys()
+            for action in keybindings_map.BINDING_INFO.keys()
         ])
         accel_column_num = self.accel_column_num = max([3, accel_column_num])
 
         # Human name, action name, true value, shortcut 1, shortcut 2, ...
         model = [str, str, 'gboolean']
-        model.extend( [str, ] * accel_column_num)
+        model.extend([str, ] * accel_column_num)
 
         treestore = self.treestore = Gtk.TreeStore(*model)
         self.refresh_model()
@@ -57,26 +57,27 @@ class KeybindingEditorWindow(Gtk.ScrolledWindow):
         ''' Initializes the model from data provided by the keybinding
         manager. '''
         self.treestore.clear()
-        section_order = list(set(d['group']
-             for d in keybindings.BINDING_INFO.values()))
+        section_order = list(set(
+            d['group'] for d in keybindings_map.BINDING_INFO.values()
+        ))
         section_order.sort()
         section_parent_map = {}
         for section_name in section_order:
             row = [section_name, None, False]
-            row.extend( [None,] * self.accel_column_num)
-            section_parent_map[section_name] =  self.treestore.append(
+            row.extend([None,] * self.accel_column_num)
+            section_parent_map[section_name] = self.treestore.append(
                 None, row
             )
 
         action_treeiter_map = self.action_treeiter_map = {}
         # Sort actions by action name
-        actions = sorted(keybindings.BINDING_INFO.items(),
-                key=lambda item: item[1]['title'])
+        actions = sorted(keybindings_map.BINDING_INFO.items(),
+                         key=lambda item: item[1]['title'])
         for action_name, action_data in actions:
             title = action_data['title']
             group_name = action_data['group']
             old_bindings = self.keymanager.get_bindings_for_action(action_name)
-            acc_list =  ['', ] * self.accel_column_num
+            acc_list = [''] * self.accel_column_num
             for idx in range(0, self.accel_column_num):
                 if len(old_bindings) > idx:
                     acc_list[idx] = Gtk.accelerator_name(*old_bindings[idx])
