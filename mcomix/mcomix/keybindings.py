@@ -289,10 +289,14 @@ class _KeybindingManager(object):
         '''
         assert name in BINDING_INFO, '"%s" isn\'t a valid keyboard action.' % name
 
+        # use default bindings if not provided
+        if not bindings:
+            bindings.extend(DEFAULT_BINDINGS.get(name,[]))
+
         # Load stored keybindings, or fall back to passed arguments
         keycodes = self._action_to_bindings[name]
         if keycodes == []:
-            keycodes = [Gtk.accelerator_parse(binding) for binding in bindings ]
+            keycodes = [Gtk.accelerator_parse(binding) for binding in bindings]
 
         for keycode in keycodes:
             if keycode in self._binding_to_action.keys():
