@@ -159,7 +159,7 @@ class _KeybindingManager(object):
         self._migrate_from_old_bindings()
         self._initialize()
 
-    def register(self, name, bindings, callback, args=[], kwargs={}):
+    def register(self, name='', bindings=[], callback=None, args=[], kwargs={}):
         ''' Registers an action for a predefined keybinding name.
         @param name: Action name, defined in L{BINDING_INFO}.
         @param bindings: List of keybinding strings, as understood
