@@ -277,7 +277,7 @@ class _KeybindingManager(object):
         self._migrate_from_old_bindings()
         self._initialize()
 
-    def register(self, name='', bindings=[], callback=None, args=[], kwargs={}):
+    def register(self, name, callback, args=[], kwargs={}, bindings=[]):
         ''' Registers an action for a predefined keybinding name.
         @param name: Action name, defined in L{BINDING_INFO}.
         @param bindings: List of keybinding strings, as understood
@@ -291,7 +291,7 @@ class _KeybindingManager(object):
 
         # use default bindings if not provided
         if not bindings:
-            bindings.extend(DEFAULT_BINDINGS.get(name,[]))
+            bindings=DEFAULT_BINDINGS.get(name,[])
 
         # Load stored keybindings, or fall back to passed arguments
         keycodes = self._action_to_bindings[name]
