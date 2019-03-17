@@ -44,7 +44,6 @@ class _KeybindingManager(object):
         self._action_to_bindings = defaultdict(list) # action name => [ (key code, key modifier), ]
         self._binding_to_action = {} # (key code, key modifier) => action name
 
-        self._migrate_from_old_bindings()
         self._initialize()
 
     def register(self, name, callback, args=[], kwargs={}, bindings=[]):
@@ -197,22 +196,6 @@ class _KeybindingManager(object):
     def get_bindings_for_action(self, name):
         ''' Returns a list of (keycode, modifier) for the action C{name}. '''
         return self._action_to_bindings[name]
-
-    def _migrate_from_old_bindings(self):
-        ''' This method deals with upgrading from MComix 1.0 and older to
-        MComix 1.01, which integrated all UI hotkeys into this class. Simply
-        remove old files and start from default values. '''
-        gtkrc = os.path.join(constants.CONFIG_DIR, 'keybindings-Gtk.rc')
-        if os.path.isfile(gtkrc):
-            # In case the user has made modifications to his files,
-            # keep the old ones around for reference.
-            if not os.path.isfile(gtkrc + '.delete-me'):
-                shutil.move(gtkrc, gtkrc + '.delete-me')
-
-            if os.path.isfile(constants.KEYBINDINGS_CONF_PATH) and \
-                not os.path.isfile(constants.KEYBINDINGS_CONF_PATH + '.delete-me'):
-                shutil.move(constants.KEYBINDINGS_CONF_PATH,
-                        constants.KEYBINDINGS_CONF_PATH + '.delete-me')
 
 _manager = None
 
