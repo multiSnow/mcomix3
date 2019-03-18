@@ -77,7 +77,7 @@ class _PreferencesDialog(Gtk.Dialog):
             _('When active, the ESC key closes the program, instead of only '
               'disabling fullscreen mode.')))
 
-        page.add_row(Gtk.Label(label=_('User theme') + ' (Not Implemented)'),
+        page.add_row(Gtk.Label(label=_('User theme')),
                      self._create_pref_path_chooser('userstyle', default=None)
         )
 
@@ -942,7 +942,7 @@ class _PreferencesDialog(Gtk.Dialog):
             prefs[preference]=dialog.get_filename()
             chooser.set_label(prefs[preference])
             if preference=='userstyle':
-                self._window.load_style()
+                self._window.load_style(path=prefs[preference])
         dialog.destroy()
 
 
