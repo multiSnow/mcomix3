@@ -333,6 +333,7 @@ class MainWindow(Gtk.Window):
                 self.get_screen(),
                 self.styleprovider
             )
+            self.styleprovider=None
 
     def gained_focus(self, *args):
         self.was_out_of_focus = False
