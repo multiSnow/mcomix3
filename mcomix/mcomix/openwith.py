@@ -1,7 +1,8 @@
 ''' openwith.py - Logic and storage for Open with... commands. '''
-import sys
 import os
 import re
+import shlex
+import sys
 
 from gi.repository import Gtk
 from gi.repository import GLib, GObject
@@ -140,6 +141,48 @@ class OpenWithCommand(object):
         # as win32 will eat %% and replace it with %.
         args = [os.path.expandvars(arg) for arg in args]
         return args
+
+    def _commandline_to_arguments3(self, line, window, context_type):
+        ''' New parser for commandline using shlex and new style formatter.
+        '''
+        result = shlex.split(line)
+        variables = self._create_format_dict(window, context_type)
+        for i, arg in enumerate(result):
+            result[i]=self._format_argument(arg, variables)
+        return result
+
+    def _create_format_dict(self, window, context_type):
+        variables = {}
+        variables.update((
+            ('image', os.path.normpath(window.imagehandler.get_path_to_page())), # %F
+            ('imagebase', window.imagehandler.get_page_filename()), # %f
+        ))
+        variables['imagedir'] = os.path.dirname(variables['image']) # %D
+        variables['imagedirbase'] = os.path.basename(variables['imagedir']) # %d
+        if context_type & ARCHIVE_CONTEXT:
+            variables.update((
+                ('archive', window.filehandler.get_path_to_base()), # %A
+                ('archivebase', window.filehandler.get_base_filename()), # %a
+            ))
+            variables['archivedir'] = os.path.dirname(variables['archive']) # %C
+            variables['archivedirbase'] = os.path.basename(variables['archivedir']) # %c
+            container = 'archive' # currently opened archive
+        else:
+            container = 'imagedir' # directory containing the currently opened image file
+        variables.update((
+            ('container', variables[container]), # %B
+            ('containerbase', variables[container+'base']), # %b
+        ))
+        variables['containerdir'] = os.path.dirname(variables['container']) # %S
+        variables['containerdirbase'] = os.path.basename(variables['containerdir']) # %s
+        return variables
+
+    def _format_argument(self, string, variables):
+        try:
+            # Also add system environment here.
+            return string.format(**variables, **os.environ)
+        except KeyError as e:
+            raise OpenWithException(_('Unknown variable: {}.').format(e))
 
     def _commandline_to_arguments(self, line, window, context_type):
         ''' Parse a command line string into a list containing
