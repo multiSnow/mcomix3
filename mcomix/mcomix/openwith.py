@@ -2,6 +2,7 @@
 import sys
 import os
 import re
+
 from gi.repository import Gtk
 from gi.repository import GLib, GObject
 
@@ -24,8 +25,9 @@ class OpenWithManager(object):
 
     @callback.Callback
     def set_commands(self, cmds):
-        prefs['openwith commands'] = [(cmd.get_label(), cmd.get_command(),
-            cmd.get_cwd(), cmd.is_disabled_for_archives())
+        prefs['openwith commands'] = [
+            (cmd.get_label(), cmd.get_command(),
+             cmd.get_cwd(), cmd.is_disabled_for_archives())
             for cmd in cmds]
 
     def get_commands(self):
@@ -66,7 +68,8 @@ class OpenWithCommand(object):
         and arguments. '''
         if (self.is_disabled_for_archives() and
             window.filehandler.archive_type is not None):
-            window.osd.show(_('"%s" is disabled for archives.') % self.get_label())
+            window.osd.show(_('"%s" is disabled for archives.') % \
+                            self.get_label())
             return
 
         current_dir = os.getcwd()
@@ -129,8 +132,10 @@ class OpenWithCommand(object):
         if not text.strip():
             raise OpenWithException(_('Command line is empty.'))
 
-        args = self._commandline_to_arguments(text, window,
-            self._get_context_type(window, check_restrictions))
+        args = self._commandline_to_arguments(
+            text, window,
+            self._get_context_type(window, check_restrictions)
+        )
         # Environment variables must be expanded after MComix variables,
         # as win32 will eat %% and replace it with %.
         args = [os.path.expandvars(arg) for arg in args]
