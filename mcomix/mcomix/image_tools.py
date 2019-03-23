@@ -418,8 +418,8 @@ def load_pixbuf_size(path, width, height):
     inside (width, height). '''
     try:
         with Image.open(path) as im:
-            im.draft(None, (width, height))
-            pixbuf = pil_to_pixbuf(im, keep_orientation=True)
+            im.thumbnail((width, height), resample=Image.BOX)
+            return pil_to_pixbuf(im, keep_orientation=True)
     except:
         image_format, image_width, image_height = get_image_info(path)
         # If we could not get the image info, still try to load
