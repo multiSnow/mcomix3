@@ -14,6 +14,7 @@ from mcomix import callback
 
 
 DEBUGGING_CONTEXT, NO_FILE_CONTEXT, IMAGE_FILE_CONTEXT, ARCHIVE_CONTEXT = -1, 0, 1, 2
+prefname = 'external commands'
 
 
 class OpenWithException(Exception): pass
@@ -26,7 +27,7 @@ class OpenWithManager(object):
 
     @callback.Callback
     def set_commands(self, cmds):
-        prefs['openwith commands'] = [
+        prefs[prefname] = [
             (cmd.get_label(), cmd.get_command(),
              cmd.get_cwd(), cmd.is_disabled_for_archives())
             for cmd in cmds]
@@ -35,11 +36,9 @@ class OpenWithManager(object):
         try:
             return [OpenWithCommand(label, command, cwd, disabled_for_archives)
                     for label, command, cwd, disabled_for_archives
-                    in prefs['openwith commands']]
-        except ValueError:
-            # Backwards compatibility for early versions with only two parameters
-            return [OpenWithCommand(label, command, '', False)
-                    for label, command in prefs['openwith commands']]
+                    in prefs[prefname]]
+        except ValueError as e:
+            OpenWithException(_('external commands error: {}.').format(e))
 
 
 class OpenWithCommand(object):
@@ -137,12 +136,9 @@ class OpenWithCommand(object):
             text, window,
             self._get_context_type(window, check_restrictions)
         )
-        # Environment variables must be expanded after MComix variables,
-        # as win32 will eat %% and replace it with %.
-        args = [os.path.expandvars(arg) for arg in args]
         return args
 
-    def _commandline_to_arguments3(self, line, window, context_type):
+    def _commandline_to_arguments(self, line, window, context_type):
         ''' New parser for commandline using shlex and new style formatter.
         '''
         result = shlex.split(line)
@@ -157,7 +153,7 @@ class OpenWithCommand(object):
             # dummy variables for preview if no file opened
             variables.update((head+tail,'{{{}{}}}'.format(head, tail))
                              for head in ('image', 'archive', 'container')
-                             for tail in ('', 'dir', 'base', 'dirbane'))
+                             for tail in ('', 'dir', 'base', 'dirbase'))
             return variables
         variables.update((
             ('image', os.path.normpath(window.imagehandler.get_path_to_page())), # %F
@@ -190,7 +186,7 @@ class OpenWithCommand(object):
         except KeyError as e:
             raise OpenWithException(_('Unknown variable: {}.').format(e))
 
-    def _commandline_to_arguments(self, line, window, context_type):
+    def _commandline_to_arguments_old(self, line, window, context_type):
         ''' Parse a command line string into a list containing
         the parts to pass to Popen. The following two functions have
         been contributed by Ark <aaku@users.sf.net>. '''

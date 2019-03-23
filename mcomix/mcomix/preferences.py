@@ -100,7 +100,8 @@ prefs = {
     'fit to size mode': constants.ZOOM_MODE_HEIGHT,
     'fit to size px': 1800,
     'scan for new books on library startup': True,
-    'openwith commands': [],  # (label, command) pairs
+    'openwith commands': [],  # (label, command) pairs # keep but no longer used
+    'external commands': [],  # (label, command) pairs
     'animation mode': constants.ANIMATION_DISABLED,
     'animation background': False,
     'animation transform': False,
