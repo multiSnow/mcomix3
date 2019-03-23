@@ -427,7 +427,7 @@ def load_pixbuf_size(path, width, height):
         if (0, 0) == (image_width, image_height):
             pixbuf = GdkPixbuf.Pixbuf.new_from_file(path)
         # Work around GdkPixbuf bug
-        # https://bugzilla.gnome.org/show_bug.cgi?id=735422
+        # https://gitlab.gnome.org/GNOME/gdk-pixbuf/issues/45
         elif 'GIF' == image_format:
             pixbuf = GdkPixbuf.Pixbuf.new_from_file(path)
         else:
