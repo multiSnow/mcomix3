@@ -153,6 +153,12 @@ class OpenWithCommand(object):
 
     def _create_format_dict(self, window, context_type):
         variables = {}
+        if context_type == NO_FILE_CONTEXT:
+            # dummy variables for preview if no file opened
+            variables.update((head+tail,'{{{}{}}}'.format(head, tail))
+                             for head in ('image', 'archive', 'container')
+                             for tail in ('', 'dir', 'base', 'dirbane'))
+            return variables
         variables.update((
             ('image', os.path.normpath(window.imagehandler.get_path_to_page())), # %F
             ('imagebase', window.imagehandler.get_page_filename()), # %f
