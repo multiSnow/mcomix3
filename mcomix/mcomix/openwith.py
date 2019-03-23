@@ -397,7 +397,7 @@ class OpenWithEditor(Gtk.Dialog):
             return
 
         try:
-            args = map(self._quote_if_necessary, command.parse(self._window))
+            args = map(shlex.quote, command.parse(self._window))
             self._test_field.set_text(' '.join(args))
             self._run_button.set_sensitive(True)
 
