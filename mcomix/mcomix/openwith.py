@@ -23,7 +23,19 @@ class OpenWithException(Exception): pass
 class OpenWithManager(object):
     def __init__(self):
         ''' Constructor. '''
-        pass
+        # convert old style command if exists
+        for label, command, *params in prefs['openwith commands']:
+            if not params:
+                params.extend(('', False))
+            cmd = OpenWithCommand(label, command, *params)
+            newcmd_args = cmd._commandline_to_arguments_old(
+                cmd.get_command(), None, None)
+            new_command = ' '.join(map(shlex.quote, newcmd_args))
+            prefs[PREFNAME].append(
+                (cmd.get_label(), new_command,
+                 cmd.get_cwd(), cmd.is_disabled_for_archives())
+            )
+        prefs['openwith commands'].clear()
 
     @callback.Callback
     def set_commands(self, cmds):
