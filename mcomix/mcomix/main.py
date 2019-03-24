@@ -575,13 +575,12 @@ class MainWindow(Gtk.Window):
             return
         if self.displayed_double():
             number_of_pages = 2
-            left_filename, right_filename = self.imagehandler.get_page_filename(double=True)
-            left_filesize, right_filesize = self.imagehandler.get_page_filesize(double=True)
-            if self.is_manga_mode:
-                left_filename, right_filename = right_filename, left_filename
-                left_filesize, right_filesize = right_filesize, left_filesize
-            filename = left_filename + ', ' + right_filename
-            filesize = left_filesize + ', ' + right_filesize
+            filenames = self.imagehandler.get_page_filename(
+                double=True, manga=self.is_manga_mode)
+            filesizes = self.imagehandler.get_page_filesize(
+                double=True, manga=self.is_manga_mode)
+            filename = ', '.join(filenames)
+            filesize = ', '.join(filesizes)
         else:
             number_of_pages = 1
             filename = self.imagehandler.get_page_filename()
