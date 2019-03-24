@@ -1,7 +1,5 @@
 '''main.py - Main window.'''
 
-import math
-import operator
 import os
 import shutil
 import threading
@@ -472,19 +470,17 @@ class MainWindow(Gtk.Window):
                 if dasize <= 0:
                     dasize = 1
                 zoom_dummy_size[distribution_axis] = dasize
-                scaled_sizes = self.zoom.get_zoomed_size(size_list, zoom_dummy_size,
+                scaled_sizes = self.zoom.get_zoomed_size(
+                    size_list, zoom_dummy_size,
                     distribution_axis, do_not_transform)
-                self.layout = layout.FiniteLayout(scaled_sizes,
-                                                  viewport_size,
-                                                  orientation,
-                                                  self._spacing,
-                                                  expand_area,
-                                                  distribution_axis,
-                                                  alignment_axis)
+                self.layout = layout.FiniteLayout(
+                    scaled_sizes, viewport_size, orientation, self._spacing,
+                    expand_area, distribution_axis, alignment_axis)
                 union_scaled_size = self.layout.get_union_box().get_size()
-                scrollbar_requests = list(map(operator.or_,
-                                              scrollbar_requests,
-                                              tools.smaller(viewport_size, union_scaled_size)))
+                scrollbar_requests = [(old or new) for old, new in zip(
+                    scrollbar_requests,
+                    tools.smaller(viewport_size, union_scaled_size)
+                )]
                 if len(tuple(filter(None, scrollbar_requests))) > 1 and not expand_area:
                     expand_area = True
                     viewport_size = () # start anew
@@ -504,12 +500,11 @@ class MainWindow(Gtk.Window):
             for i in range(pixbuf_count):
                 image_tools.set_from_pixbuf(self.images[i], pixbuf_list[i])
 
-            scales = tuple(map(lambda x, y: math.sqrt(tools.div(
-                tools.volume(x), tools.volume(y))), scaled_sizes, size_list))
+            resolutions = [(*size, scaled_size[0] / size[0])
+                           for scaled_size, size in zip(scaled_sizes, size_list)]
 
-            resolutions = tuple(map(lambda x, y: x + [y,], size_list, scales))
             if self.is_manga_mode:
-                resolutions = tuple(reversed(resolutions))
+                resolutions.reverse()
             self.statusbar.set_resolution(resolutions)
             self.statusbar.update()
 
