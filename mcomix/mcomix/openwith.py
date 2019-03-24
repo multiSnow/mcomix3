@@ -27,6 +27,8 @@ class OpenWithManager(object):
         for label, command, *params in prefs['openwith commands']:
             if not params:
                 params.extend(('', False))
+            for c in ('{','}'):
+                command = command.replace(c, c*2)
             cmd = OpenWithCommand(label, command, *params)
             newcmd_args = cmd._commandline_to_arguments_old(
                 cmd.get_command(), None, None)
