@@ -53,9 +53,9 @@ class ZoomModel(object):
         union_size = _union_size(fitted_image_sizes, distribution_axis)
         limits = ZoomModel._calc_limits(union_size, screen_size, self._fitmode, scale_up)
         prefscale = ZoomModel._preferred_scale(union_size, limits, distribution_axis)
-        preferred_scales = tuple([prefscale if not dnt else IDENTITY_ZOOM for dnt in do_not_transform])
-        prescaled = tuple(map(lambda size, scale, dnt: tuple(_scale_image_size(size, scale)),
-                              fitted_image_sizes, preferred_scales, do_not_transform))
+        preferred_scales = [(IDENTITY_ZOOM if dnt else prefscale) for dnt in do_not_transform]
+        prescaled = [tuple(_scale_image_size(size, scale))
+                     for size, scale in zip(fitted_image_sizes, preferred_scales)]
         prescaled_union_size = _union_size(prescaled, distribution_axis)
         def _other_preferences(limits, distribution_axis):
             for i in range(len(limits)):
@@ -79,9 +79,9 @@ class ZoomModel(object):
         preferred_scales = list(preferred_scales)
         user_scale = 2 ** (self._user_zoom_log / USER_ZOOM_LOG_SCALE1)
         res_scales = [preferred_scales[i] * (user_scale if not do_not_transform[i] else IDENTITY_ZOOM)
-            for i in range(len(preferred_scales))]
-        return tuple(map(lambda size, scale: tuple(_scale_image_size(size, scale)),
-                         fitted_image_sizes, res_scales))
+                      for i in range(len(preferred_scales))]
+        return [tuple(_scale_image_size(size, scale))
+                for size, scale in zip(fitted_image_sizes, res_scales)]
 
     @staticmethod
     def _preferred_scale(image_size, limits, distribution_axis):
