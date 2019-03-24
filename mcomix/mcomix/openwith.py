@@ -232,6 +232,28 @@ class OpenWithCommand(object):
         return result
 
     def _expand_variable(self, identifier, window, context_type):
+        identifier_map = {
+            '/': os.path.sep,
+            'F': '{image}',
+            'f': '{imagebase}',
+            'D': '{imagedir}',
+            'd': '{imagedirbase}',
+            'A': '{archive}',
+            'a': '{archivebase}',
+            'C': '{archivedir}',
+            'c': '{archivedirbase}',
+            'B': '{container}',
+            'b': '{containerbase}',
+            'S': '{containerdir}',
+            's': '{containerdirbase}',
+        }
+        try:
+            return identifier_map[identifier]
+        except:
+            raise OpenWithException(
+                _('Invalid escape sequence: %%%s') % identifier)
+
+    def _expand_variable_old(self, identifier, window, context_type):
         ''' Replaces variables with their respective file
         or archive path. '''
 
