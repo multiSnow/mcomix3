@@ -509,13 +509,13 @@ class MainWindow(Gtk.Window):
             self.statusbar.update()
 
             smartbg = prefs['smart bg']
-            smartthumbbg = prefs['smart thumb bg'] and prefs['show thumbnails']
+            smartthumbbg = prefs['show thumbnails'] and prefs['smart thumb bg']
             if smartbg or smartthumbbg:
                 bg_color = self.imagehandler.get_pixbuf_auto_background(pixbuf_count)
-            if smartbg:
-                self.set_bg_color(bg_color)
-            if smartthumbbg:
-                self.thumbnailsidebar.change_thumbnail_background_color(bg_color)
+                if smartbg:
+                    self.set_bg_color(bg_color)
+                if smartthumbbg:
+                    self.thumbnailsidebar.change_thumbnail_background_color(bg_color)
 
             self._main_layout.get_bin_window().freeze_updates()
 
