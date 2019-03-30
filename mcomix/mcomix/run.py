@@ -105,7 +105,9 @@ def run():
     # Check for PyGTK and PIL dependencies.
     try:
         from gi import version_info as gi_version_info
-        assert gi_version_info >= (3,21,0)
+        if gi_version_info < (3,21,0):
+            log.error(_('You do not have the required versions of PyGObject installed.'))
+            wait_and_exit()
 
         from gi import require_version
 
@@ -114,10 +116,6 @@ def run():
         require_version('Gdk', '3.0')
 
         from gi.repository import Gdk, Gtk, GLib
-
-    except AssertionError:
-        log.error(_('You do not have the required versions of PyGObject installed.'))
-        wait_and_exit()
 
     except ValueError:
         log.error(_('You do not have the required versions of GTK+ 3.0 installed.'))
@@ -139,13 +137,6 @@ def run():
         pilver=getattr(PIL.Image,'__version__',None)
         if not pilver:
             pilver=getattr(PIL.Image,'PILLOW_VERSION')
-        assert pilver >= constants.REQUIRED_PIL_VERSION
-
-    except AssertionError:
-        log.error(_('You don\'t have the required version of the Pillow installed.'))
-        log.error(_('Installed PIL version is: %s') % pilver)
-        log.error(_('Required Pillow version is: %s or higher') % constants.REQUIRED_PIL_VERSION)
-        wait_and_exit()
 
     except AttributeError:
         log.error(_('You don\'t have the required version of the Pillow installed.'))
@@ -156,6 +147,13 @@ def run():
         log.error(_('Pillow %s or higher is required.') % constants.REQUIRED_PIL_VERSION)
         log.error(_('No version of the Pillow was found on your system.'))
         wait_and_exit()
+
+    else:
+        if pilver < constants.REQUIRED_PIL_VERSION:
+            log.error(_('You don\'t have the required version of the Pillow installed.'))
+            log.error(_('Installed PIL version is: %s') % pilver)
+            log.error(_('Required Pillow version is: %s or higher') % constants.REQUIRED_PIL_VERSION)
+            wait_and_exit()
 
     if not os.path.exists(constants.DATA_DIR):
         os.makedirs(constants.DATA_DIR, 0o700)
