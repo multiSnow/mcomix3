@@ -177,7 +177,7 @@ class __BookmarksStore(object):
 
     def write_bookmarks_file(self):
         '''Store relevant bookmark info in the mcomix directory.'''
-        
+
         # Merge changes in case file was modified from within other instances
         if self.file_was_modified():
             new_bookmarks, _ = self.load_bookmarks()

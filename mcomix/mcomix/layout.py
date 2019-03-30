@@ -99,7 +99,7 @@ class FiniteLayout(object): # 2D only
 
 
     def get_content_boxes(self):
-        ''' Returns the Boxes as they are arranged in this layout. 
+        ''' Returns the Boxes as they are arranged in this layout.
         @return: The Boxes as they are arranged in this layout. '''
         return self.content_boxes
 

@@ -220,5 +220,5 @@ def get_recursive_archive_handler(path, destination_dir, type=None):
     # XXX: Deferred import to avoid circular dependency
     from mcomix.archive import archive_recursive
     return archive_recursive.RecursiveArchive(archive, destination_dir)
- 
+
 # vim: expandtab:sw=4:ts=4

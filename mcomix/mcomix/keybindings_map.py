@@ -184,7 +184,7 @@ BINDING_INFO = {
 
 # Generate 9 entries for executing command 1 to 9
 for i in range(1, 10):
-    BINDING_INFO['execute_command_%d' %i] = { 
+    BINDING_INFO['execute_command_%d' %i] = {
             'title' : _('Execute external command') + ' (%d)' % i,
             'group' : _('External commands')
     }

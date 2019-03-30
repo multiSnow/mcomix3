@@ -5,7 +5,7 @@
 comicthumb use same dependency with MComix.
 
 comicthumb was originally written by Christoph Wolk, this version was
-re-written from scratch for Comix 4 by Pontus Ekberg. 
+re-written from scratch for Comix 4 by Pontus Ekberg.
 '''
 
 import argparse

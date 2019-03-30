@@ -141,7 +141,7 @@ def find_executable(candidates, workdir=None, is_valid_candidate=None):
 
 
 def Win32Popen(cmd):
-    ''' Spawns a new process on Win32. cmd is a list of parameters. 
+    ''' Spawns a new process on Win32. cmd is a list of parameters.
     This method's sole purpose is calling CreateProcessW, not
     CreateProcessA as it is done by subprocess.Popen. '''
     import ctypes

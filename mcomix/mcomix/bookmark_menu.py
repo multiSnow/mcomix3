@@ -25,7 +25,7 @@ class BookmarksMenu(Gtk.Menu):
              '<Control>D', None, self._add_current_to_bookmarks),
             ('edit_bookmarks', None, _('_Edit Bookmarks...'),
              '<Control>B', None, self._edit_bookmarks)])
-        
+
         action = self._actiongroup.get_action('add_bookmark')
         action.set_accel_group(ui.get_accel_group())
         self.add_button = action.create_menu_item()

@@ -125,7 +125,7 @@ class _EditArchiveDialog(Gtk.Dialog):
                 _close_dialog()
             else:
                 fail = True
-        
+
         self._window.set_cursor(None)
         if fail:
             dialog = message_dialog.MessageDialog(self._window, 0, Gtk.MessageType.ERROR,

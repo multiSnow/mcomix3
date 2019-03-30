@@ -279,7 +279,7 @@ class _BookArea(Gtk.ScrolledWindow):
                 return
 
             # If the current view is filtered, only draw new books that match the filter
-            if not (self._library.filter_string and 
+            if not (self._library.filter_string and
                     self._library.filter_string.lower() not in book.name.lower()):
                 self.add_books([book])
 
