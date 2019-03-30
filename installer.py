@@ -3,11 +3,12 @@
 
 from argparse import ArgumentParser,ArgumentDefaultsHelpFormatter
 from multiprocessing.dummy import Pool
-from os import chmod,makedirs,stat,utime,walk
+from os import chmod,environ,makedirs,stat,utime,walk
 from os.path import dirname,isdir,join,splitext
+import shlex
 from subprocess import run,DEVNULL
 
-msgfmt_cmd=['msgfmt',]
+msgfmt_cmd=shlex.split(environ.get('MSGFMT',default='msgfmt'))
 
 def copy(srcdir,filename,dstdir,pool):
     finame,foname=join(srcdir,filename),join(dstdir,filename)
