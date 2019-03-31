@@ -1,7 +1,9 @@
 ''' openwith.py - Logic and storage for Open with... commands. '''
-import sys
 import os
 import re
+import shlex
+import sys
+
 from gi.repository import Gtk
 from gi.repository import GLib, GObject
 
@@ -12,6 +14,7 @@ from mcomix import callback
 
 
 DEBUGGING_CONTEXT, NO_FILE_CONTEXT, IMAGE_FILE_CONTEXT, ARCHIVE_CONTEXT = -1, 0, 1, 2
+PREFNAME = 'external commands'
 
 
 class OpenWithException(Exception): pass
@@ -20,23 +23,36 @@ class OpenWithException(Exception): pass
 class OpenWithManager(object):
     def __init__(self):
         ''' Constructor. '''
-        pass
+        # convert old style command if exists
+        for label, command, *params in prefs['openwith commands']:
+            if not params:
+                params.extend(('', False))
+            for c in ('{','}'):
+                command = command.replace(c, c*2)
+            cmd = OpenWithCommand(label, command, *params)
+            newcmd_args = cmd._commandline_to_arguments_old(
+                cmd.get_command(), None, None)
+            new_command = ' '.join(map(shlex.quote, newcmd_args))
+            prefs[PREFNAME].append(
+                (cmd.get_label(), new_command,
+                 cmd.get_cwd(), cmd.is_disabled_for_archives())
+            )
+        prefs['openwith commands'].clear()
 
     @callback.Callback
     def set_commands(self, cmds):
-        prefs['openwith commands'] = [(cmd.get_label(), cmd.get_command(),
-            cmd.get_cwd(), cmd.is_disabled_for_archives())
+        prefs[PREFNAME] = [
+            (cmd.get_label(), cmd.get_command(),
+             cmd.get_cwd(), cmd.is_disabled_for_archives())
             for cmd in cmds]
 
     def get_commands(self):
         try:
             return [OpenWithCommand(label, command, cwd, disabled_for_archives)
                     for label, command, cwd, disabled_for_archives
-                    in prefs['openwith commands']]
-        except ValueError:
-            # Backwards compatibility for early versions with only two parameters
-            return [OpenWithCommand(label, command, '', False)
-                    for label, command in prefs['openwith commands']]
+                    in prefs[PREFNAME]]
+        except ValueError as e:
+            OpenWithException(_('external commands error: {}.').format(e))
 
 
 class OpenWithCommand(object):
@@ -66,7 +82,8 @@ class OpenWithCommand(object):
         and arguments. '''
         if (self.is_disabled_for_archives() and
             window.filehandler.archive_type is not None):
-            window.osd.show(_('"%s" is disabled for archives.') % self.get_label())
+            window.osd.show(_('"%s" is disabled for archives.') % \
+                            self.get_label())
             return
 
         current_dir = os.getcwd()
@@ -129,14 +146,61 @@ class OpenWithCommand(object):
         if not text.strip():
             raise OpenWithException(_('Command line is empty.'))
 
-        args = self._commandline_to_arguments(text, window,
-            self._get_context_type(window, check_restrictions))
-        # Environment variables must be expanded after MComix variables,
-        # as win32 will eat %% and replace it with %.
-        args = [os.path.expandvars(arg) for arg in args]
+        args = self._commandline_to_arguments(
+            text, window,
+            self._get_context_type(window, check_restrictions)
+        )
         return args
 
     def _commandline_to_arguments(self, line, window, context_type):
+        ''' New parser for commandline using shlex and new style formatter.
+        '''
+        result = shlex.split(line)
+        variables = self._create_format_dict(window, context_type)
+        for i, arg in enumerate(result):
+            result[i]=self._format_argument(arg, variables)
+        return result
+
+    def _create_format_dict(self, window, context_type):
+        variables = {}
+        if context_type == NO_FILE_CONTEXT:
+            # dummy variables for preview if no file opened
+            variables.update((head+tail,'{{{}{}}}'.format(head, tail))
+                             for head in ('image', 'archive', 'container')
+                             for tail in ('', 'dir', 'base', 'dirbase'))
+            return variables
+        variables.update((
+            ('image', os.path.normpath(window.imagehandler.get_path_to_page())), # %F
+            ('imagebase', window.imagehandler.get_page_filename()), # %f
+        ))
+        variables['imagedir'] = os.path.dirname(variables['image']) # %D
+        variables['imagedirbase'] = os.path.basename(variables['imagedir']) # %d
+        if context_type & ARCHIVE_CONTEXT:
+            variables.update((
+                ('archive', window.filehandler.get_path_to_base()), # %A
+                ('archivebase', window.filehandler.get_base_filename()), # %a
+            ))
+            variables['archivedir'] = os.path.dirname(variables['archive']) # %C
+            variables['archivedirbase'] = os.path.basename(variables['archivedir']) # %c
+            container = 'archive' # currently opened archive
+        else:
+            container = 'imagedir' # directory containing the currently opened image file
+        variables.update((
+            ('container', variables[container]), # %B
+            ('containerbase', variables[container+'base']), # %b
+        ))
+        variables['containerdir'] = os.path.dirname(variables['container']) # %S
+        variables['containerdirbase'] = os.path.basename(variables['containerdir']) # %s
+        return variables
+
+    def _format_argument(self, string, variables):
+        try:
+            # Also add system environment here.
+            return string.format(**variables, **os.environ)
+        except KeyError as e:
+            raise OpenWithException(_('Unknown variable: {}.').format(e))
+
+    def _commandline_to_arguments_old(self, line, window, context_type):
         ''' Parse a command line string into a list containing
         the parts to pass to Popen. The following two functions have
         been contributed by Ark <aaku@users.sf.net>. '''
@@ -182,6 +246,28 @@ class OpenWithCommand(object):
         return result
 
     def _expand_variable(self, identifier, window, context_type):
+        identifier_map = {
+            '/': os.path.sep,
+            'F': '{image}',
+            'f': '{imagebase}',
+            'D': '{imagedir}',
+            'd': '{imagedirbase}',
+            'A': '{archive}',
+            'a': '{archivebase}',
+            'C': '{archivedir}',
+            'c': '{archivedirbase}',
+            'B': '{container}',
+            'b': '{containerbase}',
+            'S': '{containerdir}',
+            's': '{containerdirbase}',
+        }
+        try:
+            return identifier_map[identifier]
+        except:
+            raise OpenWithException(
+                _('Invalid escape sequence: %%%s') % identifier)
+
+    def _expand_variable_old(self, identifier, window, context_type):
         ''' Replaces variables with their respective file
         or archive path. '''
 
@@ -349,7 +435,7 @@ class OpenWithEditor(Gtk.Dialog):
             return
 
         try:
-            args = map(self._quote_if_necessary, command.parse(self._window))
+            args = map(shlex.quote, command.parse(self._window))
             self._test_field.set_text(' '.join(args))
             self._run_button.set_sensitive(True)
 
@@ -467,6 +553,39 @@ class OpenWithEditor(Gtk.Dialog):
 
         content.pack_start(self._exec_label, False, False, 0)
 
+        hints_expander = Gtk.Expander.new(_('Hints of variables in command'))
+        content.pack_start(hints_expander, False, False, 0)
+
+        hints_grid = Gtk.Grid()
+        hints_expander.add(hints_grid)
+
+        hints_all = [(
+            ('{image}', _('Full path of the currently opened image file')),
+            ('{imagebase}', _('Base name of {}').format('"{image}"')),
+            ('{imagedir}', _('Full directory name of {}').format('"{image}"')),
+            ('{imagedirbase}', _('Base name of {}').format('"{imagedir}"')),
+            ('{container}', _('Full path of the currently opened directory or archive')),
+            ('{containerbase}', _('Base name of {}').format('"{container}"')),
+            ('{containerdir}', _('Full directory name of {}').format('"{container}"')),
+            ('{containerdirbase}', _('Base name of {}').format('"{containerdir}"')),
+        ), (
+            ('{archive}', _('Full path of the currently opened archive')),
+            ('{archivebase}', _('Base name of {}').format('"{archive}"')),
+            ('{archivedir}', _('Full directory name of {}').format('"{archive}"')),
+            ('{archivedirbase}', _('Base name of {}').format('"{archivedir}"')),
+            ('{{', '{'),
+            ('}}', '}'),
+            ('{{{}}}'.format(_('<environ name>')), _('System Environment')),
+        )]
+
+        for x, hints in enumerate(hints_all):
+            for y, (key, desc) in enumerate(hints):
+                hints_grid.attach(Gtk.Label(label=key, halign=Gtk.Align.CENTER, margin=4),
+                                  x*2, y, 1, 1)
+                hints_grid.attach(Gtk.Label(label=desc, halign=Gtk.Align.START, margin=4),
+                                  x*2+1, y, 1, 1)
+
+        return # keep infomations below for reference
         linklabel = Gtk.Label()
         linklabel.set_markup(_('Please refer to the <a href="%s">external command documentation</a> '
             'for a list of usable variables and other hints.') % \
