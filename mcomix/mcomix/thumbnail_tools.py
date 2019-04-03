@@ -6,7 +6,6 @@ import os
 import re
 import shutil
 import tempfile
-import mimetypes
 import threading
 import traceback
 import PIL.Image as Image
@@ -24,6 +23,7 @@ from mcomix import portability
 from mcomix import i18n
 from mcomix import callback
 from mcomix import log
+from mcomix import mimetypes
 
 
 class Thumbnailer(object):

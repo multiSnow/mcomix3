@@ -1,7 +1,6 @@
 '''filechooser_chooser_base_dialog.py - Custom FileChooserDialog implementations.'''
 
 import os
-import mimetypes
 import fnmatch
 from gi.repository import Gtk, Pango
 
@@ -13,10 +12,9 @@ from mcomix import constants
 from mcomix import log
 from mcomix import thumbnail_tools
 from mcomix import message_dialog
+from mcomix import mimetypes
 from mcomix import file_provider
 from mcomix import tools
-
-mimetypes.init()
 
 class _BaseFileChooserDialog(Gtk.Dialog):
 
