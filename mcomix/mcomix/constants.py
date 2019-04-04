@@ -73,30 +73,67 @@ SIZE_HUGE, SIZE_LARGE, SIZE_NORMAL, SIZE_SMALL, SIZE_TINY = MAX_LIBRARY_COVER_SI
 
 ACCEPTED_COMMENT_EXTENSIONS = ['txt', 'nfo', 'xml']
 
+# see https://www.freedesktop.org/wiki/Software/shared-mime-info/
+# for mimetypes not registed to IANA
+
 ZIP_FORMATS = (
-        ('application/x-zip', 'application/zip', 'application/x-zip-compressed', 'application/x-cbz'),
-        ('zip', 'cbz'))
+    # https://www.iana.org/assignments/media-types/application/zip
+    ('.zip', 'application/zip'),
+    # https://www.iana.org/assignments/media-types/application/vnd.comicbook+zip
+    ('.cbz', 'application/vnd.comicbook+zip'),
+)
+
 RAR_FORMATS = (
-        ('application/x-rar', 'application/x-cbr'),
-        ('rar', 'cbr'))
+    # https://www.iana.org/assignments/media-types/application/vnd.rar
+    ('.rar', 'application/vnd.rar'),
+    # https://www.iana.org/assignments/media-types/application/vnd.comicbook-rar
+    ('.cbr', 'application/vnd.comicbook-rar'),
+)
+
 TAR_FORMATS = (
-        ('application/x-tar', 'application/x-gzip', 'application/x-bzip2', 'application/x-cbt'),
-        ('tar', 'cbt',
-         # see https://www.gnu.org/software/tar/manual/html_section/tar_68.html#auto_002dcompress
-         # and https://git.savannah.gnu.org/cgit/tar.git/commit/?id=2c06a80918019471876956eef4ef22f05c9e0571
-         'gz', 'tgz', 'taz', # gzip
-         'bz2', 'tz2', 'tbz2', 'tbz', # bzip2
-         'lzma', 'tlz', # lzma
-         'xz', 'txz', # xz
-        ))
+    # not registed in IANA
+    ('.tar', 'application/x-tar'),
+    # not registed in IANA
+    ('.cbt', 'application/x-cbt'),
+
+    # see https://www.gnu.org/software/tar/manual/html_section/tar_68.html#auto_002dcompress
+    # and https://git.savannah.gnu.org/cgit/tar.git/commit/?id=2c06a80918019471876956eef4ef22f05c9e0571
+    # for compressed tar
+
+    # gzip
+    ('.tar.gz',   'application/x-compressed-tar'),
+    ('.tgz',      'application/x-compressed-tar'),
+    # bzip2
+    ('.tar.bz2',  'application/x-bzip-compressed-tar'),
+    ('.tar.bz',   'application/x-bzip-compressed-tar'),
+    ('.tbz2',     'application/x-bzip-compressed-tar'),
+    ('.tbz',      'application/x-bzip-compressed-tar'),
+    ('.tb2',      'application/x-bzip-compressed-tar'),
+    # lzma
+    ('.tar.lzma', 'application/x-lzma-compressed-tar'),
+    ('.tlz',      'application/x-lzma-compressed-tar'),
+    # xz
+    ('.tar.xz',   'application/x-xz-compressed-tar'),
+    ('.txz',      'application/x-xz-compressed-tar'),
+)
+
 SZIP_FORMATS = (
-        ('application/x-7z-compressed', 'application/x-cb7'),
-        ('7z', 'cb7'))
+    # not registed in IANA
+    ('.7z',  'application/x-7z-compressed'),
+    # not registed in IANA
+    ('.cb7', 'application/x-cb7'),
+)
+
 LHA_FORMATS = (
-        ('application/x-lzh', 'application/x-lha', 'application/x-lzh-compressed'),
-        ('lha', 'lzh'))
+    # not registed in IANA
+    ('.lha', 'application/x-lha'),
+    # not registed in IANA
+    ('.lzh', 'application/x-lha'),
+)
+
 PDF_FORMATS = (
-        ('application/pdf',),
-        ('pdf',))
+    # https://www.iana.org/assignments/media-types/application/pdf
+    ('.pdf','application/pdf'),
+)
 
 # vim: expandtab:sw=4:ts=4

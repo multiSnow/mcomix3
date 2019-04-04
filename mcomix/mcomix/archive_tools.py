@@ -64,6 +64,16 @@ _HANDLERS = {
     ),
 }
 
+def _getext(path):
+    ''' Get extension of archive '''
+    compressed_ext=('.gz','.bz2','.bz','.lzma','.xz')
+    b,e=os.path.splitext(path.lower())
+    if e in compressed_ext:
+        b,e2=os.path.splitext(b)
+        if e2=='.tar':
+            e=e2+e
+    return e
+
 def _get_handler(archive_type):
     ''' Return best archive class for format <archive_type> '''
 
@@ -89,7 +99,7 @@ def lha_available():
 def pdf_available():
     return _is_available(constants.PDF)
 
-SUPPORTED_ARCHIVE_EXTS=[]
+SUPPORTED_ARCHIVE_EXTS=set()
 SUPPORTED_ARCHIVE_FORMATS={}
 
 def init_supported_formats():
@@ -103,17 +113,12 @@ def init_supported_formats():
     ):
         if not is_available:
             continue
-        SUPPORTED_ARCHIVE_FORMATS[name]=([],[])
-        SUPPORTED_ARCHIVE_FORMATS[name][0].extend(
-            map(lambda s:s.lower(),formats[0])
-        )
-        # archive extensions has no '.'
-        SUPPORTED_ARCHIVE_FORMATS[name][1].extend(
-            map(lambda s:'.'+s.lower(),formats[1])
-        )
-    # cache a supported extensions list
-    for mimes,exts in SUPPORTED_ARCHIVE_FORMATS.values():
-        SUPPORTED_ARCHIVE_EXTS.extend(exts)
+        SUPPORTED_ARCHIVE_FORMATS[name]=(set(),set())
+        for ext, mime in formats:
+            SUPPORTED_ARCHIVE_FORMATS[name][0].add(mime.lower())
+            SUPPORTED_ARCHIVE_FORMATS[name][1].add(ext.lower())
+        # also add to supported extensions list
+        SUPPORTED_ARCHIVE_EXTS.update(SUPPORTED_ARCHIVE_FORMATS[name][1])
 
 def get_supported_formats():
     if not SUPPORTED_ARCHIVE_FORMATS:
@@ -123,7 +128,7 @@ def get_supported_formats():
 def is_archive_file(path):
     if not SUPPORTED_ARCHIVE_FORMATS:
         init_supported_formats()
-    return os.path.splitext(path)[1].lower() in SUPPORTED_ARCHIVE_EXTS
+    return _getext(path) in SUPPORTED_ARCHIVE_EXTS
 
 def archive_mime_type(path):
     '''Return the archive type of <path> or None for non-archives.'''
