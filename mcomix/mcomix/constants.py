@@ -136,4 +136,7 @@ PDF_FORMATS = (
     ('.pdf','application/pdf'),
 )
 
+ARCHIVE_FORMATS = ZIP_FORMATS + RAR_FORMATS + TAR_FORMATS
+ARCHIVE_FORMATS += SZIP_FORMATS + LHA_FORMATS + PDF_FORMATS
+
 # vim: expandtab:sw=4:ts=4

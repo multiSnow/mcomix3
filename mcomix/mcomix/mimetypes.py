@@ -1,18 +1,10 @@
 import mimetypes
 
-# not registered in mimetypes
-additional_types=(
-    ('.cb7','application/x-cb7'),
-    ('.cbr','application/x-cbr'),
-    ('.rar','application/x-rar'),
-    ('.cbt','application/x-cbt'),
-    ('.cbz','application/x-cbz'),
-)
+from mcomix import constants
 
 if not mimetypes.inited:
     mimetypes.init()
-
-    for suffix,mime in additional_types:
+    for suffix,mime in constants.ARCHIVE_FORMATS:
         if suffix not in mimetypes.types_map:
             mimetypes.add_type(mime,suffix)
 
