@@ -146,7 +146,7 @@ def archive_mime_type(path):
                     return constants.ZIP_EXTERNAL
 
             with open(path, 'rb') as fd:
-                magic = fd.read(5)
+                magic = fd.read(10)
 
             try:
                 istarfile = tarfile.is_tarfile(path)
@@ -155,24 +155,22 @@ def archive_mime_type(path):
                 istarfile = False
 
             if istarfile and os.path.getsize(path) > 0:
-                if magic.startswith(b'BZh'):
-                    return constants.BZIP2
-                elif magic.startswith(b'\037\213'):
+                if magic.startswith(b'\x1f\x8b\x08'):
                     return constants.GZIP
+                elif magic.startswith(b'BZh') and magic[4:10] == b'1AY&SY':
+                    return constants.BZIP2
+                elif magic.startswith((b'\x5d\x00\x00\x80', b'\xfd7zXZ')):
+                    return constants.XZ
                 else:
                     return constants.TAR
 
-            if magic[0:4] == b'Rar!':
+            if magic.startswith(b'Rar!\x1a\x07'):
                 return constants.RAR
 
-            if magic[0:4] == b'7z\xBC\xAF':
+            if magic[0:6] == b'7z\xbc\xaf\x27\x1c':
                 return constants.SEVENZIP
 
-            # Headers for TAR-XZ and TAR-LZMA that aren't supported by tarfile
-            if magic[0:5] == b'\xFD7zXZ' or magic[0:5] == b']\x00\x00\x80\x00':
-                return constants.XZ
-
-            if magic[2:4] == b'-l':
+            if magic[2:].startswith((b'-lh',b'-lz'):
                 return constants.LHA
 
             if magic[0:4] == b'%PDF':
