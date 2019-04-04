@@ -170,7 +170,7 @@ def archive_mime_type(path):
             if magic[0:6] == b'7z\xbc\xaf\x27\x1c':
                 return constants.SEVENZIP
 
-            if magic[2:].startswith((b'-lh',b'-lz'):
+            if magic[2:].startswith((b'-lh',b'-lz')):
                 return constants.LHA
 
             if magic[0:4] == b'%PDF':
