@@ -109,8 +109,7 @@ class RecursiveArchive(archive_base.BaseArchive):
             destination_dir = os.path.join(destination_dir, root)
         log.debug('extracting from %s to %s: %s',
                   archive.archive, destination_dir, filename)
-        archive.extract(name, destination_dir)
-        return os.path.join(destination_dir, name)
+        return archive.extract(name, destination_dir)
 
     def iter_extract(self, entries, destination_dir):
         if not self._contents_listed:

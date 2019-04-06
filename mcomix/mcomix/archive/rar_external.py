@@ -130,10 +130,12 @@ class RarArchive(archive_base.ExternalExecutableArchive):
         if not self.filenames_initialized:
             self.list_contents()
 
+        destination_path = os.path.join(destination_dir, filename)
         desired_filename = self._original_filename(filename)
         cmd = self._get_extract_arguments() + [desired_filename]
-        with self._create_file(os.path.join(destination_dir, filename)) as output:
+        with self._create_file(destination_path) as output:
             process.call(cmd, stdout=output)
+        return destination_path
 
     def iter_extract(self, entries, destination_dir):
 

@@ -41,9 +41,11 @@ class TarArchive(archive_base.NonUnicodeArchive):
     def extract(self, filename, destination_dir):
         if not self._contents_listed:
             self.list_contents()
-        with self._create_file(os.path.join(destination_dir, filename)) as new, \
+        destination_path = os.path.join(destination_dir, filename)
+        with self._create_file(destination_path) as new, \
              self.tar.extractfile(self._original_filename(filename)) as file_object:
             new.write(file_object.read())
+        return destination_path
 
     def iter_extract(self, entries, destination_dir):
         if not self._contents_listed:

@@ -146,11 +146,12 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
         if not self.filenames_initialized:
             self.list_contents()
 
+        destination_path = os.path.join(destination_dir, filename)
         with tempfile.NamedTemporaryFile(mode='wt', prefix='mcomix.7z.') as tmplistfile:
             desired_filename = self._original_filename(filename)
             tmplistfile.write(desired_filename + os.linesep)
             tmplistfile.flush()
-            with self._create_file(os.path.join(destination_dir, filename)) as output:
+            with self._create_file(destination_path) as output:
                 process.call(self._get_extract_arguments(list_file=tmplistfile.name),
                              stdout=output)
 

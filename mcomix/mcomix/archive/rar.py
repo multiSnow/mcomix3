@@ -164,12 +164,13 @@ class RarArchive(archive_base.BaseArchive):
         if not self._handle:
             self._open()
         looped = False
+        destination_path = os.path.join(destination_dir, filename)
         while True:
             # Check if the current entry matches the requested file.
             if self._current_filename is not None:
                 if (self._current_filename == filename):
                     # It's the entry we're looking for, extract it.
-                    dest = ctypes.c_wchar_p(os.path.join(destination_dir, filename))
+                    dest = ctypes.c_wchar_p(destination_path)
                     self._process(dest)
                     break
                 # Not the right entry, skip it.
@@ -189,6 +190,7 @@ class RarArchive(archive_base.BaseArchive):
         # After the method returns, the RAR handler is still open and pointing
         # to the next archive file. This will improve extraction speed for sequential file reads.
         # After all files have been extracted, close() should be called to free the handler resources.
+        return destination_path
 
     def close(self):
         ''' Close the archive handle '''

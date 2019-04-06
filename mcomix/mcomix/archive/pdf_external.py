@@ -69,6 +69,7 @@ class PdfArchive(archive_base.BaseArchive):
         cmd = _mudraw_exec + ['-r', str(max_dpi), '-o', destination_path, '--', self.archive, str(page_num)]
         log.debug('rendering %s: %s', filename, ' '.join(cmd))
         process.call(cmd)
+        return destination_path
 
     @staticmethod
     def is_available():

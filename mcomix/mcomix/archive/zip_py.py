@@ -38,7 +38,8 @@ class ZipArchive(archive_base.NonUnicodeArchive):
             yield self._unicode_filename(filename)
 
     def extract(self, filename, destination_dir):
-        with self._create_file(os.path.join(destination_dir, filename)) as new:
+        destination_path = os.path.join(destination_dir, filename)
+        with self._create_file(destination_path) as new:
             content = self._zip.read(self._original_filename(filename))
             new.write(content)
 
@@ -49,8 +50,7 @@ class ZipArchive(archive_base.NonUnicodeArchive):
                 ' The archive might be corrupt or in an unsupported format.'),
                 { 'filename' : filename, 'actual_size' : len(content),
                   'expected_size' : zipinfo.file_size })
-
-
+        return destination_path
 
     def close(self):
         self._zip.close()
