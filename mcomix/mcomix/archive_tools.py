@@ -19,14 +19,14 @@ from mcomix.archive import (
     rar_external,
     sevenzip_external,
     tar,
-    zip,
+    zip_py,
     zip_external,
 )
 
 # Handlers for each archive type.
 _HANDLERS = {
     constants.ZIP: (
-        zip.ZipArchive,
+        zip_py.ZipArchive,
     ),
     # Prefer 7z over zip executable for encryption and Unicode support.
     constants.ZIP_EXTERNAL: (
@@ -140,7 +140,7 @@ def archive_mime_type(path):
                 return None
 
             if zipfile.is_zipfile(path):
-                if zip.is_py_supported_zipfile(path):
+                if zip_py.is_py_supported_zipfile(path):
                     return constants.ZIP
                 else:
                     return constants.ZIP_EXTERNAL

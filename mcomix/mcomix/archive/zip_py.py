@@ -24,7 +24,7 @@ def is_py_supported_zipfile(path):
 class ZipArchive(archive_base.NonUnicodeArchive):
     def __init__(self, archive):
         super(ZipArchive, self).__init__(archive)
-        self.zip = zipfile.ZipFile(archive, 'r')
+        self._zip = zipfile.ZipFile(archive, 'r')
 
         self.is_encrypted = self._has_encryption()
         self._password = None
@@ -32,17 +32,17 @@ class ZipArchive(archive_base.NonUnicodeArchive):
     def iter_contents(self):
         if self.is_encrypted:
             self._get_password()
-            self.zip.setpassword(self._password)
+            self._zip.setpassword(self._password)
 
-        for filename in self.zip.namelist():
+        for filename in self._zip.namelist():
             yield self._unicode_filename(filename)
 
     def extract(self, filename, destination_dir):
         with self._create_file(os.path.join(destination_dir, filename)) as new:
-            content = self.zip.read(self._original_filename(filename))
+            content = self._zip.read(self._original_filename(filename))
             new.write(content)
 
-        zipinfo = self.zip.getinfo(self._original_filename(filename))
+        zipinfo = self._zip.getinfo(self._original_filename(filename))
         if len(content) != zipinfo.file_size:
             log.warning(_('%(filename)s\'s extracted size is %(actual_size)d bytes,'
                 ' but should be %(expected_size)d bytes.'
@@ -53,12 +53,12 @@ class ZipArchive(archive_base.NonUnicodeArchive):
 
 
     def close(self):
-        self.zip.close()
+        self._zip.close()
 
     def _has_encryption(self):
         ''' Checks all files in the archive for encryption.
         Returns True if at least one encrypted file was found. '''
-        for zipinfo in self.zip.infolist():
+        for zipinfo in self._zip.infolist():
             if zipinfo.flag_bits & 0x1: # File is encrypted
                 return True
 
