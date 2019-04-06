@@ -213,7 +213,7 @@ def get_archive_handler(path, type=None):
 
     return handler(path)
 
-def get_recursive_archive_handler(path, destination_dir, type=None):
+def get_recursive_archive_handler(path, type=None, **kwargs):
     ''' Same as <get_archive_handler> but the handler will transparently handle
     archives within archives.
     '''
@@ -222,6 +222,6 @@ def get_recursive_archive_handler(path, destination_dir, type=None):
         return None
     # XXX: Deferred import to avoid circular dependency
     from mcomix.archive import archive_recursive
-    return archive_recursive.RecursiveArchive(archive, destination_dir)
+    return archive_recursive.RecursiveArchive(archive, **kwargs)
 
 # vim: expandtab:sw=4:ts=4

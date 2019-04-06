@@ -2,19 +2,23 @@
 
 ''' Class for transparently handling an archive containing sub-archives. '''
 
+import os
+import tempfile
+
+from mcomix.preferences import prefs
 from mcomix.archive import archive_base
 from mcomix import archive_tools
 from mcomix import log
 
-import os
-
 class RecursiveArchive(archive_base.BaseArchive):
 
-    def __init__(self, archive, destination_dir):
+    def __init__(self, archive, prefix='mcomix.'):
         super(RecursiveArchive, self).__init__(archive.archive)
         self._main_archive = archive
         self.is_encrypted = self._main_archive.is_encrypted
-        self._destination_dir = destination_dir
+        self._tempdir = tempfile.TemporaryDirectory(
+            prefix=prefix, dir=prefs['temporary directory'])
+        self.destdir = self._tempdir.name
         self._archive_list = []
         # Map entry name to its archive+name.
         self._entry_mapping = {}
@@ -45,13 +49,13 @@ class RecursiveArchive(archive_base.BaseArchive):
             yield name
         for f in sub_archive_list:
             # Extract sub-archive.
-            destination_dir = self._destination_dir
+            destination_dir = self.destdir
             if root is not None:
                 destination_dir = os.path.join(destination_dir, root)
             archive.extract(f, destination_dir)
             sub_archive_ext = os.path.splitext(f)[1].lower()[1:]
             sub_archive_path = os.path.join(
-                self._destination_dir, 'sub-archives',
+                self.destdir, 'sub-archives',
                 '%04u.%s' % (len(self._archive_list), sub_archive_ext
             ))
             self._create_directory(os.path.dirname(sub_archive_path))
@@ -95,16 +99,18 @@ class RecursiveArchive(archive_base.BaseArchive):
             return self._contents
         return [f for f in self.iter_contents(decrypt=decrypt)]
 
-    def extract(self, filename, destination_dir):
+    def extract(self, filename):
         if not self._contents_listed:
             self.list_contents()
         archive, name = self._entry_mapping[filename]
         root = self._archive_root[archive]
+        destination_dir = self.destdir
         if root is not None:
             destination_dir = os.path.join(destination_dir, root)
         log.debug('extracting from %s to %s: %s',
                   archive.archive, destination_dir, filename)
         archive.extract(name, destination_dir)
+        return os.path.join(destination_dir, name)
 
     def iter_extract(self, entries, destination_dir):
         if not self._contents_listed:
@@ -144,6 +150,13 @@ class RecursiveArchive(archive_base.BaseArchive):
         return False
 
     def close(self):
+        # close all archives before cleanup temporary directory
         for archive in self._archive_list:
             archive.close()
+        self._tempdir.cleanup()
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.close()

@@ -29,21 +29,23 @@ class Extractor(object):
     def __init__(self):
         self._setupped = False
 
-    def setup(self, src, dst, type=None):
+    def setup(self, src, type=None):
         '''Setup the extractor with archive <src> and destination dir <dst>.
         Return a threading.Condition related to the is_ready() method, or
         None if the format of <src> isn't supported.
         '''
         self._src = src
-        self._dst = dst
         self._files = []
         self._extracted = set()
-        self._archive = archive_tools.get_recursive_archive_handler(src, dst, type=type)
+        self._archive = archive_tools.get_recursive_archive_handler(
+            src, type=type, prefix='mcomix.extractor.')
         if self._archive is None:
             msg = _('Non-supported archive format: %s') % os.path.basename(src)
             log.warning(msg)
             raise ArchiveException(msg)
 
+        self._dst = self._archive.destdir
+        self.destdir = self._dst
         self._contents_listed = False
         self._extract_started = False
         self._condition = threading.Condition()
@@ -195,7 +197,7 @@ class Extractor(object):
 
         try:
             log.debug('Extracting from "%s" to "%s": "%s"', self._src, self._dst, name)
-            self._archive.extract(name, self._dst)
+            self._archive.extract(name)
 
         except Exception as ex:
             # Better to ignore any failed extractions (e.g. from a corrupt
