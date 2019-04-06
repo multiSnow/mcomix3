@@ -18,6 +18,7 @@ class RecursiveArchive(archive_base.BaseArchive):
         self.is_encrypted = self._main_archive.is_encrypted
         self._tempdir = tempfile.TemporaryDirectory(
             prefix=prefix, dir=prefs['temporary directory'])
+        self._sub_tempdirs = []
         self.destdir = self._tempdir.name
         self._archive_list = []
         # Map entry name to its archive+name.
@@ -32,6 +33,8 @@ class RecursiveArchive(archive_base.BaseArchive):
     def _iter_contents(self, archive, root=None, decrypt=True):
         if archive.is_encrypted and not decrypt:
             return
+        if not root:
+            root = os.path.join(self.destdir,'main_archive')
         self._archive_list.append(archive)
         self._archive_root[archive] = root
         sub_archive_list = []
@@ -52,23 +55,18 @@ class RecursiveArchive(archive_base.BaseArchive):
             destination_dir = self.destdir
             if root is not None:
                 destination_dir = os.path.join(destination_dir, root)
-            archive.extract(f, destination_dir)
-            sub_archive_ext = os.path.splitext(f)[1].lower()[1:]
-            sub_archive_path = os.path.join(
-                self.destdir, 'sub-archives',
-                '%04u.%s' % (len(self._archive_list), sub_archive_ext
-            ))
-            self._create_directory(os.path.dirname(sub_archive_path))
-            os.rename(os.path.join(destination_dir, f), sub_archive_path)
+            sub_archive_path = archive.extract(f, destination_dir)
             # And open it and list its contents.
             sub_archive = archive_tools.get_archive_handler(sub_archive_path)
             if sub_archive is None:
                 log.warning('Non-supported archive format: %s',
                             os.path.basename(sub_archive_path))
                 continue
-            sub_root = f
-            if root is not None:
-                sub_root = os.path.join(root, sub_root)
+            sub_tempdir = tempfile.TemporaryDirectory(
+                prefix='sub_archive.{:04}.'.format(len(self._archive_list)),
+                dir=self.destdir)
+            sub_root = sub_tempdir.name
+            self._sub_tempdirs.append(sub_tempdir)
             for name in self._iter_contents(sub_archive, sub_root):
                 yield name
 
@@ -152,6 +150,8 @@ class RecursiveArchive(archive_base.BaseArchive):
         # close all archives before cleanup temporary directory
         for archive in self._archive_list:
             archive.close()
+        for tempdir in self._sub_tempdirs:
+            tempdir.cleanup()
         self._tempdir.cleanup()
 
     def __enter__(self):
