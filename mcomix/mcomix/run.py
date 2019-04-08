@@ -115,7 +115,7 @@ def run():
         require_version('Gtk', '3.0')
         require_version('Gdk', '3.0')
 
-        from gi.repository import Gdk, Gtk, GLib
+        from gi.repository import Gdk, GdkPixbuf, Gtk, GLib
 
     except ValueError:
         log.error(_('You do not have the required versions of GTK+ 3.0 installed.'))
@@ -137,6 +137,9 @@ def run():
         pilver=getattr(PIL.Image,'__version__',None)
         if not pilver:
             pilver=getattr(PIL.Image,'PILLOW_VERSION')
+            log.warning(_('Please download latest version of Pillow from {}').format(
+                'https://pypi.org/project/Pillow/'))
+            setattr(PIL.Image,'__version__',pilver)
 
     except AttributeError:
         log.error(_('You don\'t have the required version of the Pillow installed.'))
@@ -154,6 +157,9 @@ def run():
             log.error(_('Installed PIL version is: %s') % pilver)
             log.error(_('Required Pillow version is: %s or higher') % constants.REQUIRED_PIL_VERSION)
             wait_and_exit()
+
+    log.info('Image loaders: Pillow [%s], GDK [%s])',
+             PIL.Image.__version__,GdkPixbuf.PIXBUF_VERSION)
 
     if not os.path.exists(constants.DATA_DIR):
         os.makedirs(constants.DATA_DIR, 0o700)

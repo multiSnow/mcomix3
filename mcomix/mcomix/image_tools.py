@@ -1,32 +1,23 @@
 '''image_tools.py - Various image manipulations.'''
 
-from collections import namedtuple
 import binascii
+from functools import reduce
+from io import BytesIO
 import os
 import re
 import sys
 import operator
-from gi.repository import GLib, GdkPixbuf, Gdk, Gtk
+
+from gi.repository import GdkPixbuf, Gdk, GLib, Gtk
 from PIL import Image
 from PIL import ImageEnhance
 from PIL import ImageOps
 from PIL import ImageSequence
-from io import BytesIO
-from functools import reduce
 
 from mcomix.preferences import prefs
 from mcomix import constants
 from mcomix import log
 from mcomix import anime_tools
-
-# see comments in run.py (Pillow version)
-pilver=getattr(Image,'__version__',None)
-if not pilver:
-    pilver=getattr(Image,'PILLOW_VERSION',None)
-
-log.info('Image loaders: Pillow [%s], GDK [%s])',
-         pilver,GdkPixbuf.PIXBUF_VERSION)
-
 
 # Fallback pixbuf for missing images.
 MISSING_IMAGE_ICON = None
