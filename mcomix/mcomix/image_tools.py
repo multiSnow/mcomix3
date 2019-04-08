@@ -11,7 +11,6 @@ from PIL import Image
 from PIL import ImageEnhance
 from PIL import ImageOps
 from PIL import ImageSequence
-from PIL.JpegImagePlugin import _getexif
 from io import BytesIO
 from functools import reduce
 
@@ -42,6 +41,37 @@ assert MISSING_IMAGE_ICON
 GTK_GDK_COLOR_BLACK = Gdk.color_parse('black')
 GTK_GDK_COLOR_WHITE = Gdk.color_parse('white')
 
+def _getexif(im):
+    exif={}
+    try:
+        exif.update(im.getexif())
+    except AttributeError:
+        pass
+    if exif:
+        return exif
+
+    # Exif of PNG is still buggy in Pillow 6.0.0
+    try:
+        l1,l2,size,*lines=im.info.get('Raw profile type exif').splitlines()
+        if l2!='exif':
+            # Not valid Exif data.
+            return {}
+        size=int(size)
+        data=binascii.unhexlify(''.join(lines))
+        if len(data)!=size:
+            # Size not match.
+            return {}
+        im.info['exif']=data
+    except:
+        # Not valid Exif data.
+        return {}
+
+    # load Exif again
+    try:
+        exif.update(im.getexif())
+    except AttributeError:
+        pass
+    return exif
 
 def rotate_pixbuf(src, rotation):
     rotation %= 360
@@ -307,14 +337,7 @@ def pil_to_pixbuf(im, keep_orientation=False):
     )
     if keep_orientation:
         # Keep orientation metadata.
-        orientation = None
-        exif = im.info.get('exif')
-        if exif is not None:
-            exif = _getexif(im)
-            orientation = exif.get(274, None)
-        if orientation is None:
-            # Maybe it's a PNG? Try alternative method.
-            orientation = _get_png_implied_rotation(im)
+        orientation = _getexif(im).get(274, None)
         if orientation is not None:
             setattr(pixbuf, 'orientation', str(orientation))
     return pixbuf
@@ -483,39 +506,6 @@ def enhance(pixbuf, brightness=1.0, contrast=1.0, saturation=1.0,
         im = ImageEnhance.Sharpness(im).enhance(sharpness)
     return pil_to_pixbuf(im)
 
-def _get_png_implied_rotation(pixbuf_or_image):
-    '''Same as <get_implied_rotation> for PNG files.
-
-    Lookup for Exif data in the tEXt chunk.
-    '''
-    if isinstance(pixbuf_or_image, GdkPixbuf.Pixbuf):
-        exif = pixbuf_or_image.get_option('tEXt::Raw profile type exif')
-    elif isinstance(pixbuf_or_image, Image.Image):
-        exif = pixbuf_or_image.info.get('Raw profile type exif')
-    else:
-        raise ValueError()
-    if exif is None:
-        return None
-    exif = exif.split('\n')
-    if len(exif) < 4 or 'exif' != exif[1]:
-        # Not valid Exif data.
-        return None
-    size = int(exif[2])
-    try:
-        data = binascii.unhexlify(''.join(exif[3:]))
-    except TypeError:
-        # Not valid hexadecimal content.
-        return None
-    if size != len(data):
-        # Sizes should match.
-        return None
-    im = namedtuple('FakeImage', 'info')({ 'exif': data })
-    exif = _getexif(im)
-    orientation = exif.get(274, None)
-    if orientation is not None:
-        orientation = str(orientation)
-    return orientation
-
 def get_implied_rotation(pixbuf):
     '''Return the implied rotation in degrees: 0, 90, 180, or 270.
 
@@ -528,9 +518,6 @@ def get_implied_rotation(pixbuf):
     orientation = getattr(pixbuf, 'orientation', None)
     if orientation is None:
         orientation = pixbuf.get_option('orientation')
-    if orientation is None:
-        # Maybe it's a PNG? Try alternative method.
-        orientation = _get_png_implied_rotation(pixbuf)
     if orientation == '3':
         return 180
     elif orientation == '6':
