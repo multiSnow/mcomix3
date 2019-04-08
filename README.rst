@@ -1,4 +1,4 @@
-User under win32 should use `original mcomix`__.
+User under win32 should use `original mcomix`_.
 
 =======
 MComix3
@@ -10,16 +10,16 @@ Only tested under Linux.
 
 Required:
 ---------
-- **Python3** 3.4 or later.
-- **PyGObject** 3.24 or later, with **GTK+ 3 gir bindings** 3.22 or later.
-- **Pillow** (a fork of PIL) 5.1.0 or later (the original **PIL** is no longer supported).
+- **Python3** 3.5 or later. `1`_
+- **PyGObject** 3.24 or later `2`_, with **GTK+ 3 gir bindings** 3.22 or later.
+- **Pillow** 5.2.0 or later. `3`_ (`Latest version`_ is always recommended)
 
 Recommended:
 ------------
-- **unrar**, **rar** or **libunrar** to extract RAR archives.
-- **p7zip** to extract 7Z archives. Note that p7zip might be able to extract RAR archives as well, but this might require additional software (for example, **p7zip-rar** on Debian-like systems), and it might fail to open certain RAR archives, especially newer ones.
-- **lha** to extract LHA archives.
-- **mupdf** for PDF support.
+- **unrar**, **rar** or **libunrar** to extract RAR archives. `4`_
+- **7z** `5`_ (**p7zip** `6`_ for POSIX system) to extract 7Z and LHA archives. Note that 7z might be able to extract RAR archives as well, but this might require additional software (for example, **p7zip-rar** on Debian-like systems), and it might fail to open certain RAR archives, especially newer ones.
+- **lha** `7`_ to extract LHA archives.
+- **mupdf** `8`_ for PDF support.
 
 Run:
 ----
@@ -35,6 +35,13 @@ then:
 
 ``python3 <somewere>/mcomix/mcomixstarter.py <diretory, archive or image>``
 
-
-.. _mcomix: https://sourceforge.net/projects/mcomix/
-__ mcomix_
+.. _original mcomix: https://sourceforge.net/projects/mcomix/
+.. _1: https://www.python.org/downloads/
+.. _2: https://pygobject.readthedocs.io/
+.. _3: https://pillow.readthedocs.io/
+.. _Latest version: https://pypi.org/project/Pillow/
+.. _4: https://www.rarlab.com/rar_add.htm
+.. _5: https://www.7-zip.org/
+.. _6: http://p7zip.sourceforge.net/
+.. _7: https://fragglet.github.io/lhasa/
+.. _8: https://mupdf.com/
