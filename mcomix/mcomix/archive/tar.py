@@ -13,6 +13,7 @@ class TarArchive(archive_base.NonUnicodeArchive):
         # must be done before attempting to extract contents.
         self._contents_listed = False
         self._contents = []
+        self._contents_info = []
         self.tar = None
 
     def is_solid(self):
@@ -24,8 +25,10 @@ class TarArchive(archive_base.NonUnicodeArchive):
                 # Make sure we start back at the beginning of the tar.
                 self.tar = tarfile.open(self.archive, 'r:*')
             self._contents.clear()
-            self._contents.extend((self._unicode_filename(name)
-                                   for name in self.tar.getnames()))
+            self._contents_info.clear()
+            self._contents_info.extend(((self._unicode_filename(info.name), info)
+                                        for info in self.tar.getmembers()))
+            self._contents.extend((name for name, info in self._contents_info))
             self._contents_listed = True
         yield from self._contents
 
@@ -46,8 +49,15 @@ class TarArchive(archive_base.NonUnicodeArchive):
     def iter_extract(self, entries, destination_dir):
         if not self._contents_listed:
             self.list_contents()
-        for f in super(TarArchive, self).iter_extract(entries, destination_dir):
-            yield f
+        # generate members from entries, same order as getmembers
+        infos = []
+        names = []
+        for name, info in self._contents_info:
+            if name in entries:
+                infos.append(info)
+                names.append(name)
+        self.tar.extractall(path=destination_dir, members=infos)
+        yield from names
 
     def close(self):
         if self.tar is not None:
