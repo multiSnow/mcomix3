@@ -148,6 +148,18 @@ class NonUnicodeArchive(BaseArchive):
         # Maps Unicode names to regular names as expected by the original archive format
         self.unicode_mapping = {}
 
+    def _rename_in_dir(self, srcname, dstname, directory):
+        if srcname is dstname:
+            return
+        src = os.path.join(directory, srcname)
+        dst = os.path.join(directory, dstname)
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        os.rename(src, dst)
+        try:
+            os.removedirs(os.path.dirname(src))
+        except:
+            pass
+
     def _unicode_filename(self, filename, conversion_func=i18n.to_unicode):
         ''' Instead of returning archive members directly, map each filename through
         this function first to convert them to Unicode. '''
@@ -198,7 +210,6 @@ class ExternalExecutableArchive(NonUnicodeArchive):
         ''' Parses the output of the external executable's list command
         and return either a file path relative to the archive's root,
         or None if the current line doesn't contain any file references. '''
-
         return line
 
     def iter_contents(self):

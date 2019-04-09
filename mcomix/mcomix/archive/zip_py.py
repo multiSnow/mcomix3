@@ -42,6 +42,11 @@ class ZipArchive(archive_base.NonUnicodeArchive):
         self.is_encrypted = self._has_encryption()
         self._password = None
 
+    def is_solid(self):
+        # zipfile is usually not thread-safe
+        # so treat it as a solid archive to reduce seek operate
+        return True
+
     def iter_contents(self):
         if self.is_encrypted and not self._password:
             self._get_password()
@@ -61,6 +66,18 @@ class ZipArchive(archive_base.NonUnicodeArchive):
                         {'filename': filename, 'actual_size': filelen,
                          'expected_size': info.file_size})
         return destination_path
+
+    def iter_extract(self, entries, destination_dir):
+        infos = []
+        names = []
+        for name, info in self._contents_info.items():
+            if name in entries:
+                infos.append(info)
+                names.append(name)
+        self._zip.extractall(path=destination_dir, members=infos)
+        for name, info in zip(names, infos):
+            self._rename_in_dir(info.filename, name, destination_dir)
+        yield from names
 
     def close(self):
         self._zip.close()
