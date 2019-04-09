@@ -35,10 +35,12 @@ class TarArchive(archive_base.NonUnicodeArchive):
     def extract(self, filename, destination_dir):
         if not self._contents_listed:
             self.list_contents()
+        original_filename = self._original_filename(filename)
         destination_path = os.path.join(destination_dir, filename)
-        with self._create_file(destination_path) as new, \
-             self.tar.extractfile(self._original_filename(filename)) as file_object:
-            new.write(file_object.read())
+        self.tar.extract(original_filename, path=destination_dir)
+        if original_filename is not filename:
+            os.rename(os.path.join(destination_dir, original_filename),
+                      destination_path)
         return destination_path
 
     def iter_extract(self, entries, destination_dir):
