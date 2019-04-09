@@ -119,20 +119,23 @@ class OrderedFileProvider(FileProvider):
         else:
             should_accept = lambda file: True
 
+        files = []
+        fname_map = {}
         try:
-            files = [os.path.join(self.base_dir, filename) for filename in
-                     # Explicitly convert all files to Unicode, even when
-                     # os.listdir returns a mixture of byte/unicode strings.
-                     # (MComix bug #3424405)
-                     [i18n.to_unicode(fn) for fn in os.listdir(self.base_dir)]
-                     if should_accept(os.path.join(self.base_dir, filename))]
-
-            FileProvider.sort_files(files)
-
-            return files
+            # listdir() return list of bytes only if path is bytes
+            for fn in os.listdir(self.base_dir):
+                filename = i18n.to_unicode(fn)
+                fpath = os.path.join(self.base_dir, filename)
+                if should_accept(fpath):
+                    files.append(fpath)
+                    fname_map[fpath] = os.path.join(self.base_dir, fn)
         except OSError:
-            log.warning('! ' + _('Could not open %s: Permission denied.'), self.base_dir)
+            log.warning('! ' + _('Could not open %s: Permission denied.'),
+                        self.base_dir)
             return []
+
+        FileProvider.sort_files(files)
+        return [fname_map[fpath] for fpath in files]
 
     def next_directory(self):
         ''' Switches to the next sibling directory. Next call to

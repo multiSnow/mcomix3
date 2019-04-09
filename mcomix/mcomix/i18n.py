@@ -24,8 +24,9 @@ def to_unicode(string):
     '''Convert <string> to unicode. First try the default filesystem
     encoding, and then fall back on some common encodings.
     '''
+    fsencoding = sys.getfilesystemencoding()
     if not isinstance(string, (bytes, bytearray)):
-        return string
+        string = string.encode(fsencoding, 'surrogateescape')
 
     probable_encoding = None
     if chardet:
@@ -39,7 +40,7 @@ def to_unicode(string):
 
     for encoding in (
         probable_encoding,
-        sys.getfilesystemencoding(),
+        fsencoding,
         'utf-8',
         'latin-1'):
 
