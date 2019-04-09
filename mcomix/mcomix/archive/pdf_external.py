@@ -96,7 +96,7 @@ class PdfArchive(archive_base.BaseArchive):
             version = LooseVersion(version)
             if version >= LooseVersion('1.8'):
                 # Mutool executable with draw support.
-                _mudraw_exec.extend((mutool, 'draw'))
+                _mudraw_exec.extend((mutool, 'draw', '-q'))
                 _mudraw_trace_args.extend(('-F', 'trace'))
                 _pdf_possible = True
             else:
