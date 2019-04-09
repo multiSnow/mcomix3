@@ -20,11 +20,11 @@ class TarArchive(archive_base.NonUnicodeArchive):
 
     def iter_contents(self):
         if self._contents_listed:
-            for name in self._contents:
-                yield name
+            yield from self._contents
             return
-        # Make sure we start back at the beginning of the tar.
-        self.tar = tarfile.open(self.archive, 'r')
+        if not self.tar:
+            # Make sure we start back at the beginning of the tar.
+            self.tar = tarfile.open(self.archive, 'r:*')
         self._contents = []
         while True:
             info = self.tar.next()
