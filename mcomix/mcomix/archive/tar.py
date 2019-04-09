@@ -19,24 +19,18 @@ class TarArchive(archive_base.NonUnicodeArchive):
         return True
 
     def iter_contents(self):
-        if self._contents_listed:
-            yield from self._contents
-            return
-        if not self.tar:
-            # Make sure we start back at the beginning of the tar.
-            self.tar = tarfile.open(self.archive, 'r:*')
-        self._contents = []
-        while True:
-            info = self.tar.next()
-            if info is None:
-                break
-            name = self._unicode_filename(info.name)
-            self._contents.append(name)
-            yield name
-        self._contents_listed = True
+        if not self._contents_listed:
+            if not self.tar:
+                # Make sure we start back at the beginning of the tar.
+                self.tar = tarfile.open(self.archive, 'r:*')
+            self._contents.clear()
+            self._contents.extend((self._unicode_filename(name)
+                                   for name in self.tar.getnames()))
+            self._contents_listed = True
+        yield from self._contents
 
     def list_contents(self):
-        return [f for f in self.iter_contents()]
+        return [filename for filename in self.iter_contents()]
 
     def extract(self, filename, destination_dir):
         if not self._contents_listed:
