@@ -19,11 +19,14 @@ from mcomix import log
 # Translation instance to enable other modules to use
 # functions other than the global _() if necessary
 _translation = None
+_unicode_cache = {}
 
 def to_unicode(string):
     '''Convert <string> to unicode. First try the default filesystem
     encoding, and then fall back on some common encodings.
     '''
+    if string in _unicode_cache:
+        return _unicode_cache[string]
     fsencoding = sys.getfilesystemencoding()
     if not isinstance(string, (bytes, bytearray)):
         string = string.encode(fsencoding, 'surrogateescape')
@@ -38,20 +41,19 @@ def to_unicode(string):
     if not probable_encoding:
         probable_encoding = locale.getpreferredencoding()
 
-    for encoding in (
-        probable_encoding,
-        fsencoding,
-        'utf-8',
-        'latin-1'):
-
+    newstr = None
+    for encoding in (probable_encoding, fsencoding,
+                     'utf-8', 'latin-1'):
         try:
-            ustring = str(string, encoding)
-            return ustring
-
+            newstr = string.decode(encoding)
+            break
         except (UnicodeError, LookupError):
             pass
+    if newstr is None:
+        newstr = string.decode('utf-8', 'replace')
 
-    return string.decode('utf-8', 'replace')
+    _unicode_cache[string]=newstr
+    return newstr
 
 def to_utf8(string):
     ''' Helper function that converts unicode objects to UTF-8 encoded
