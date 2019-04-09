@@ -185,9 +185,9 @@ def get_archive_info(path):
     '''Return a tuple (mime, num_pages, size) with info about the archive
     at <path>, or None if <path> doesn't point to a supported
     '''
-    with tempfile.TemporaryDirectory(prefix='mcomix_archive_info.') as tmpdir:
-        mime = archive_mime_type(path)
-        archive = get_recursive_archive_handler(path, tmpdir, type=mime)
+    mime = archive_mime_type(path)
+    with get_recursive_archive_handler(path, type=mime,
+                                       prefix='mcomix_archive_info.') as archive:
         if archive is None:
             return None
 
