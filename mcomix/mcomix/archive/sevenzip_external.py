@@ -154,6 +154,7 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
             with self._create_file(destination_path) as output:
                 process.call(self._get_extract_arguments(list_file=tmplistfile.name),
                              stdout=output)
+        return destination_path
 
     def iter_extract(self, entries, destination_dir):
 
