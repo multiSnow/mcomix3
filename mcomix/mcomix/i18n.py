@@ -24,14 +24,17 @@ def to_unicode(string):
     '''Convert <string> to unicode. First try the default filesystem
     encoding, and then fall back on some common encodings.
     '''
-    if not isinstance(string, (bytes,bytearray)):
+    if not isinstance(string, (bytes, bytearray)):
         return string
 
-    # Try chardet heuristic
+    probable_encoding = None
     if chardet:
-        probable_encoding = chardet.detect(string)['encoding'] or \
-            locale.getpreferredencoding() # Fallback if chardet detection fails
-    else:
+        # Try chardet heuristic
+        result = chardet.detect(string)
+        if result['confidence'] > 0.9:
+            # only accept detection with enough confidence
+            probable_encoding = result['encoding']
+    if not probable_encoding:
         probable_encoding = locale.getpreferredencoding()
 
     for encoding in (
