@@ -35,9 +35,7 @@ class BaseArchive(object):
             self._waiting_for_password = False
 
     def iter_contents(self):
-        ''' Generator for listing the archive contents.
-        '''
-        return
+        ''' Generator for listing the archive contents.'''
         yield
 
     def list_contents(self):
@@ -45,8 +43,7 @@ class BaseArchive(object):
         These names do not necessarily exist in the actual archive since they
         need to saveable on the local filesystems, so some characters might
         need to be replaced. '''
-
-        return [f for f in self.iter_contents()]
+        return [filename for filename in self.iter_contents()]
 
     def extract(self, filename, destination_dir):
         ''' Extracts the file specified by <filename> and return the path of it.
@@ -61,17 +58,16 @@ class BaseArchive(object):
         ''' Generator to extract <entries> from archive to <destination_dir>. '''
         wanted = set(entries)
         for filename in self.iter_contents():
-            if not filename in wanted:
+            if filename not in wanted:
                 continue
             self.extract(filename, destination_dir)
             yield filename
             wanted.remove(filename)
-            if 0 == len(wanted):
+            if not wanted:
                 break
 
     def close(self):
         ''' Closes the archive and releases held resources. '''
-
         pass
 
     def is_solid(self):
