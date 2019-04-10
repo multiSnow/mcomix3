@@ -1006,7 +1006,6 @@ class MainWindow(Gtk.Window):
                 title += ','
         title += ' / %d]  %s' % (self.imagehandler.get_number_of_pages(),
             self.imagehandler.get_pretty_current_filename())
-        title = i18n.to_unicode(title)
 
         if self.slideshow.is_running():
             title = '[%s] %s' % (_('SLIDESHOW'), title)
