@@ -997,20 +997,13 @@ class MainWindow(Gtk.Window):
 
     def update_title(self):
         '''Set the title acording to current state.'''
-        this_screen = 2 if self.displayed_double() else 1 # XXX limited to at most 2 pages
-        # TODO introduce formatter to merge these string ops with the ops for status bar updates
-        title = '['
-        for i in range(this_screen):
-            title += '%d' % (self.imagehandler.get_current_page() + i)
-            if i < this_screen - 1:
-                title += ','
-        title += ' / %d]  %s' % (self.imagehandler.get_number_of_pages(),
-            self.imagehandler.get_pretty_current_filename())
+        strings = ['[{}]'.format(self.statusbar.get_page_number()),
+                   self.imagehandler.get_pretty_current_filename()]
 
         if self.slideshow.is_running():
-            title = '[%s] %s' % (_('SLIDESHOW'), title)
+            strings.insert(0,'[{}]'.format(_('SLIDESHOW')))
 
-        self.set_title(title)
+        self.set_title(' '.join(strings))
 
     def set_bg_color(self, colour):
         '''Set the background colour to <colour>. Colour is a sequence in the
