@@ -5,13 +5,16 @@
 import collections
 import os
 import tarfile
+import threading
 
+from mcomix import log
 from mcomix.archive import archive_base
 
 class TarArchive(archive_base.NonUnicodeArchive):
     def __init__(self, archive):
         super(TarArchive, self).__init__(archive)
         self._tar = tarfile.open(self.archive, 'r:*')
+        self._lock = threading.Lock()
 
         # tarfile is not thread-safe
         # so use OrderedDict to save TarInfo in order
@@ -36,22 +39,16 @@ class TarArchive(archive_base.NonUnicodeArchive):
     def extract(self, filename, destination_dir):
         destination_path = os.path.join(destination_dir, filename)
         member = self._contents_info[filename]
-        with self._create_file(destination_path) as new:
-            new.write(self._tar.extractfile(member))
+        with self._lock:
+            try:
+                with self._tar.extractfile(member) as fp:
+                    data = fp.read()
+            except AttributeError:
+                log.warning(_('Corrupted file: %(filename)s'),
+                            {'filename': filename})
+            with self._create_file(destination_path) as new:
+                new.write(data)
         return destination_path
-
-    def iter_extract(self, entries, destination_dir):
-        # generate members from entries, same order as getmembers
-        infos = []
-        names = []
-        for name, info in self._contents_info.items():
-            if name in entries:
-                infos.append(info)
-                names.append(name)
-        self._tar.extractall(path=destination_dir, members=infos)
-        for name, info in zip(names, infos):
-            self._rename_in_dir(info.name, name, destination_dir)
-        yield from names
 
     def close(self):
         self._tar.close()

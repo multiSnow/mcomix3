@@ -4,6 +4,7 @@
 
 import collections
 import os
+import threading
 import zipfile
 
 from mcomix import log
@@ -24,6 +25,7 @@ class ZipArchive(archive_base.NonUnicodeArchive):
     def __init__(self, archive):
         super(ZipArchive, self).__init__(archive)
         self._zip = zipfile.ZipFile(archive, 'r')
+        self._lock = threading.Lock()
 
         # zipfile is usually not thread-safe
         # so use OrderedDict to save ZipInfo in order
@@ -56,28 +58,19 @@ class ZipArchive(archive_base.NonUnicodeArchive):
     def extract(self, filename, destination_dir):
         destination_path = os.path.join(destination_dir, filename)
         info = self._contents_info[filename]
+        with self._lock:
+            data = self._zip.read(info)
         with self._create_file(destination_path) as new:
-            filelen = new.write(self._zip.read(info))
+            filelen = new.write(data)
 
         if filelen != info.file_size:
-            log.warning(_('%(filename)s\'s extracted size is %(actual_size)d bytes,'
-                          ' but should be %(expected_size)d bytes.'
-                          ' The archive might be corrupt or in an unsupported format.'),
-                        {'filename': filename, 'actual_size': filelen,
-                         'expected_size': info.file_size})
+            log.warning(
+                _('%(filename)s\'s extracted size is %(actual_size)d bytes,'
+                  ' but should be %(expected_size)d bytes.'
+                  ' The archive might be corrupt or in an unsupported format.'),
+                {'filename': filename, 'actual_size': filelen,
+                 'expected_size': info.file_size})
         return destination_path
-
-    def iter_extract(self, entries, destination_dir):
-        infos = []
-        names = []
-        for name, info in self._contents_info.items():
-            if name in entries:
-                infos.append(info)
-                names.append(name)
-        self._zip.extractall(path=destination_dir, members=infos)
-        for name, info in zip(names, infos):
-            self._rename_in_dir(info.filename, name, destination_dir)
-        yield from names
 
     def close(self):
         self._zip.close()
