@@ -1190,6 +1190,7 @@ class MainWindow(Gtk.Window):
         if main_dialog._dialog is not None:
             main_dialog._dialog.close()
         backend.LibraryBackend().close()
+        self.slideshow.stop()
 
         # This hack is to avoid Python issue #1856.
         for thread in threading.enumerate():

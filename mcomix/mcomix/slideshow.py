@@ -1,8 +1,8 @@
 '''slideshow.py - Slideshow handler.'''
 
 from gi.repository import Gtk
-from gi.repository import GLib
 
+from mcomix.lib import mt
 from mcomix.preferences import prefs
 
 class Slideshow(object):
@@ -11,50 +11,50 @@ class Slideshow(object):
 
     def __init__(self, window):
         self._window = window
-        self._running = False
-        self._id = None
+        self._interval = mt.Interval(
+            prefs['slideshow delay'], Slideshow._next,
+            args=(self._window,
+                  prefs['number of pixels to scroll per slideshow event']))
 
-    def _start(self):
-        if not self._running:
-            self._id = GLib.timeout_add(prefs['slideshow delay'], self._next)
-            self._running = True
-            self._window.update_title()
+    def start(self):
+        if self.is_running():
+            return
+        self._interval.start()
+        self._window.update_title()
 
-    def _stop(self):
-        if self._running:
-            GLib.source_remove(self._id)
-            self._running = False
-            self._window.update_title()
+    def stop(self):
+        if not self.is_running():
+            return
+        self._interval.stop()
+        self._window.update_title()
 
-    def _next(self):
-        if prefs['number of pixels to scroll per slideshow event'] != 0:
+    def is_running(self):
+        return self._interval.is_running()
 
-            self._window.scroll_with_flipping(0, prefs['number of pixels to scroll per slideshow event'])
+    @staticmethod
+    def _next(window, pixels):
+        if pixels:
+            window.scroll_with_flipping(0, pixels)
         else:
-            self._window.flip_page(+1)
-
-        return True
+            window.flip_page(+1)
+        return
 
     def toggle(self, action):
         '''Toggle a slideshow on or off.'''
         if action.get_active():
-            self._start()
+            self.start()
             self._window.uimanager.get_widget('/Tool/slideshow').set_stock_id( Gtk.STOCK_MEDIA_STOP )
             self._window.uimanager.get_widget('/Tool/slideshow').set_tooltip_text( _('Stop slideshow')  )
         else:
-            self._stop()
+            self.stop()
             self._window.uimanager.get_widget('/Tool/slideshow').set_stock_id( Gtk.STOCK_MEDIA_PLAY )
             self._window.uimanager.get_widget('/Tool/slideshow').set_tooltip_text( _('Start slideshow') )
 
-    def is_running(self):
-        '''Return True if a slideshow is currently running.'''
-        return self._running
-
     def update_delay(self):
         '''Update the delay time a started slideshow is using.'''
-        if self.is_running():
-            self._stop()
-            self._start()
+        if not self.is_running():
+            return
+        self._interval.reset()
 
 
 # vim: expandtab:sw=4:ts=4
