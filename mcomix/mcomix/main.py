@@ -1192,12 +1192,6 @@ class MainWindow(Gtk.Window):
         backend.LibraryBackend().close()
         self.slideshow.stop()
 
-        # This hack is to avoid Python issue #1856.
-        for thread in threading.enumerate():
-            if thread is not threading.currentThread():
-                log.debug('Waiting for thread %s to finish before exit', thread)
-                thread.join()
-
 #: Main window instance
 __main_window = None
 
