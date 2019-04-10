@@ -25,17 +25,17 @@ _lock = threading.Lock()
 
 def to_unicode(s):
     with _lock:
-        return _to_unicode(s)
+        return os.path.join(*map(_to_unicode, tools.splitpath(s)))
 
 def _to_unicode(string):
     '''Convert <string> to unicode. First try the default filesystem
     encoding, and then fall back on some common encodings.
     '''
-    if string in _unicode_cache:
-        return _unicode_cache[string]
     fsencoding = sys.getfilesystemencoding()
     if not isinstance(string, (bytes, bytearray)):
         string = string.encode(fsencoding, 'surrogateescape')
+    if string in _unicode_cache:
+        return _unicode_cache[string]
 
     probable_encoding = None
     if chardet:

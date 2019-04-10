@@ -157,6 +157,18 @@ def is_portable_mode():
             os.chdir(rootdir())
     return _PORTABLE_MODE[0]
 
+def splitpath(path):
+    # split path to a list of every level
+    # use os.path.join(*pathlist) to convert such list into path
+    pathname=os.path.normpath(path)
+    pathlist=[pathname]
+    while True:
+        dirname,basename=os.path.split(pathlist[0])
+        if not (dirname and basename):
+            break
+        pathlist[0:1]=dirname,basename
+    return pathlist
+
 def relpath2root(path,abs_fallback=False):
     # return relative path to rootdir in portable mode
     # if path is not under the same mount point where rootdir placed
