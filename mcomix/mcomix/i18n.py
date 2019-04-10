@@ -1,9 +1,10 @@
 ''' i18n.py - Encoding and translation handler.'''
 
-import sys
-import os
-import locale
 import gettext
+import locale
+import os
+import sys
+import threading
 
 try:
     import chardet
@@ -20,8 +21,13 @@ from mcomix import log
 # functions other than the global _() if necessary
 _translation = None
 _unicode_cache = {}
+_lock = threading.Lock()
 
-def to_unicode(string):
+def to_unicode(s):
+    with _lock:
+        return _to_unicode(s)
+
+def _to_unicode(string):
     '''Convert <string> to unicode. First try the default filesystem
     encoding, and then fall back on some common encodings.
     '''
