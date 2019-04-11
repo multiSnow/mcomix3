@@ -32,10 +32,20 @@ class Clipboard(object):
 
             self._clipboard.set_image(pixbuf)
 
-    def copy_path(self, *args):
+    def copy_cover(self, cover_pixbuf):
+        ''' Copies the current cover to clipboard. '''
+
+        self._clipboard.set_image(cover_pixbuf)
+
+    def copy_image_path(self, *args):
         ''' Copies the current page to clipboard. '''
 
         path = self._window.imagehandler.get_path_to_page()
         self._clipboard.set_text(path, -1)
+
+    def copy_book_path(self, book_path):
+        ''' Copies the current book path to clipboard. '''
+
+        self._clipboard.set_text(book_path, -1)
 
 # vim: expandtab:sw=4:ts=4

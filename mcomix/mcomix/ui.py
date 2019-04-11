@@ -34,7 +34,7 @@ class MainUI(Gtk.UIManager):
         self._actiongroup.add_actions([
             ('copy_path', Gtk.STOCK_COPY, _('_Copy'),
                 None, _('Copies the current page to clipboard.'),
-                window.clipboard.copy_path),
+                window.clipboard.copy_image_path),
             ('copy_image', '', _('Copy _Image'),
                 None, _('Copies the current image to clipboard.'),
                 window.clipboard.copy_image),
