@@ -56,24 +56,20 @@ class ImageHandler(object):
         '''Return the pixbuf indexed by <index> from cache.
         Pixbufs not found in cache are fetched from disk first.
         '''
-        pixbuf = image_tools.MISSING_IMAGE_ICON
+        try:
+            return self._raw_pixbufs[index]
+        except KeyError:
+            pass
 
-        if index not in self._raw_pixbufs:
-            self._wait_on_page(index + 1)
+        self._wait_on_page(index + 1)
+        try:
+            pixbuf = image_tools.load_pixbuf(self._image_files[index])
+            tools.garbage_collect()
+        except Exception as e:
+            log.error('Could not load pixbuf for page %u: %r', index + 1, e)
+            pixbuf = image_tools.MISSING_IMAGE_ICON
 
-            try:
-                pixbuf = image_tools.load_pixbuf(self._image_files[index])
-                self._raw_pixbufs[index] = pixbuf
-                tools.garbage_collect()
-            except Exception as e:
-                self._raw_pixbufs[index] = image_tools.MISSING_IMAGE_ICON
-                log.error('Could not load pixbuf for page %u: %r', index + 1, e)
-        else:
-            try:
-                pixbuf = self._raw_pixbufs[index]
-            except Exception:
-                pass
-
+        self._raw_pixbufs[index] = pixbuf
         return pixbuf
 
     def get_pixbufs(self, number_of_bufs):
