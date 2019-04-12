@@ -7,8 +7,8 @@ import traceback
 from mcomix import archive_tools
 from mcomix import callback
 from mcomix import log
+from mcomix.lib import mt
 from mcomix.preferences import prefs
-from mcomix.worker_thread import WorkerThread
 
 class Extractor(object):
 
@@ -28,6 +28,9 @@ class Extractor(object):
 
     def __init__(self):
         self._setupped = False
+        self._threadpool = mt.ThreadPool(
+            name='archive extractor',
+            processes=prefs['max extract threads'] or None)
 
     def setup(self, src, type=None):
         '''Setup the extractor with archive <src> and destination dir <dst>.
@@ -49,8 +52,9 @@ class Extractor(object):
         self._contents_listed = False
         self._extract_started = False
         self._condition = threading.Condition()
-        self._list_thread = WorkerThread(self._list_contents, name='list')
-        self._list_thread.append_order(self._archive)
+        self._threadpool.apply_async(
+            self._list_contents,callback=self._list_contents_cb,
+            error_callback=self._list_contents_errcb)
         self._setupped = True
 
         return self._condition
@@ -103,8 +107,8 @@ class Extractor(object):
         '''Signal the extractor to stop extracting and kill the extracting
         thread. Blocks until the extracting thread has terminated.
         '''
+        self._threadpool.renew()
         if self._setupped:
-            self._list_thread.stop()
             if self._extract_started:
                 self._extract_thread.stop()
                 self._extract_started = False
@@ -119,27 +123,17 @@ class Extractor(object):
             if not self._contents_listed:
                 return
             if not self._extract_started:
-                if self._archive.support_concurrent_extractions \
-                   and not self._archive.is_solid():
-                    max_threads = prefs['max extract threads']
+                mt = self._archive.support_concurrent_extractions \
+                    and not self._archive.is_solid()
+                if mt:
+                    self._threadpool.ucbmap(
+                        self._extract_file,self._files,
+                        callback=self._extraction_finished,
+                        error_callback=self._extract_files_errcb)
                 else:
-                    max_threads = 1
-                if self._archive.is_solid():
-                    fn = self._extract_all_files
-                else:
-                    fn = self._extract_file
-                self._extract_thread = WorkerThread(fn,
-                                                    name='extract',
-                                                    max_threads=max_threads,
-                                                    unique_orders=True)
-                self._extract_started = True
-            else:
-                self._extract_thread.clear_orders()
-            if self._archive.is_solid():
-                # Sort files so we don't queue the same batch multiple times.
-                self._extract_thread.append_order(sorted(self._files))
-            else:
-                self._extract_thread.extend_orders(self._files)
+                    self._threadpool.apply_async(
+                        self._extract_all_files,
+                        error_callback=self._extract_files_errcb)
 
     @callback.Callback
     def contents_listed(self, extractor, files):
@@ -160,67 +154,57 @@ class Extractor(object):
             self._archive.close()
 
     def _extraction_finished(self, name):
+        if self._threadpool.closed:
+            return
         with self._condition:
             self._files.remove(name)
             self._extracted.add(name)
             self._condition.notifyAll()
         self.file_extracted(self, name)
 
-    def _extract_all_files(self, files):
-
+    def _extract_all_files(self):
         # With multiple extractions for each pass, some of the files might have
         # already been extracted.
         with self._condition:
-            files = list(set(files) - self._extracted)
-            files.sort()
+            files = list(set(self._files) - self._extracted)
 
-        try:
-            log.debug('Extracting from "%s" to "%s": "%s"', self._src, self._dst, '", "'.join(files))
-            for f in self._archive.iter_extract(files, self._dst):
-                if self._extract_thread.must_stop():
-                    return
-                self._extraction_finished(f)
-
-        except Exception as ex:
-            # Better to ignore any failed extractions (e.g. from a corrupt
-            # archive) than to crash here and leave the main thread in a
-            # possible infinite block. Damaged or missing files *should* be
-            # handled gracefully by the main program anyway.
-            log.error(_('! Extraction error: %s'), ex)
-            log.debug('Traceback:\n%s', traceback.format_exc())
+        log.debug('Extracting from "%s" to "%s": "%s"',
+                  self._src, self._dst, '", "'.join(files))
+        for name in self._archive.iter_extract(files, self._dst):
+            self._extraction_finished(name)
 
     def _extract_file(self, name):
         '''Extract the file named <name> to the destination directory,
         mark the file as "ready", then signal a notify() on the Condition
         returned by setup().
         '''
+        log.debug('Extracting from "%s" to "%s": "%s"',
+                  self._src, self._dst, name)
+        self._archive.extract(name)
+        return name
 
-        try:
-            log.debug('Extracting from "%s" to "%s": "%s"', self._src, self._dst, name)
-            self._archive.extract(name)
+    def _extract_files_errcb(self, name, etype, value, tb):
+        # Better to ignore any failed extractions (e.g. from a corrupt
+        # archive) than to crash here and leave the main thread in a
+        # possible infinite block. Damaged or missing files *should* be
+        # handled gracefully by the main program anyway.
+        log.error(_('! Extraction error: %s'), value)
+        log.debug('Traceback:\n%s',
+                  ''.join(traceback.format_tb(tb)).strip())
 
-        except Exception as ex:
-            # Better to ignore any failed extractions (e.g. from a corrupt
-            # archive) than to crash here and leave the main thread in a
-            # possible infinite block. Damaged or missing files *should* be
-            # handled gracefully by the main program anyway.
-            log.error(_('! Extraction error: %s'), ex)
-            log.debug('Traceback:\n%s', traceback.format_exc())
+    def _list_contents(self):
+        return [filename for filename in self._archive.iter_contents()]
 
-        if self._extract_thread.must_stop():
-            return
-        self._extraction_finished(name)
-
-    def _list_contents(self, archive):
-        files = []
-        for f in archive.iter_contents():
-            if self._list_thread.must_stop():
-                return
-            files.append(f)
+    def _list_contents_cb(self, files):
         with self._condition:
-            self._files = files
+            self._files[:] = files
             self._contents_listed = True
         self.contents_listed(self, files)
+
+    def _list_contents_errcb(self, name, etype, value, tb):
+        log.error(_('! Extraction error: %s'), value)
+        log.debug('Traceback:\n%s',
+                  ''.join(traceback.format_tb(tb)).strip())
 
 class ArchiveException(Exception):
     ''' Indicate error during extraction operations. '''

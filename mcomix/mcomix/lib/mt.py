@@ -78,10 +78,29 @@ class ThreadPool:
 
         self.name=name
 
-        for attr in ('apply','map','map_async',
-                     'imap','imap_unordered',
-                     'starmap','starmap_async','join'):
-            setattr(self,attr,getattr(self._pool,attr))
+    def apply(self,*args,**kwargs):
+        return self._pool.apply(*args,**kwargs)
+
+    def map(self,*args,**kwargs):
+        return self._pool.map(*args,**kwargs)
+
+    def map_async(self,*args,**kwargs):
+        return self._pool.map_async(*args,**kwargs)
+
+    def imap(self,*args,**kwargs):
+        return self._pool.imap(*args,**kwargs)
+
+    def imap_unordered(self,*args,**kwargs):
+        return self._pool.imap_unordered(*args,**kwargs)
+
+    def starmap(self,*args,**kwargs):
+        return self._pool.starmap(*args,**kwargs)
+
+    def starmap_async(self,*args,**kwargs):
+        return self._pool.starmap_async(*args,**kwargs)
+
+    def join(self):
+        return self._pool.join()
 
     def _uiter(self,iterable):
         buf=[]
@@ -105,8 +124,8 @@ class ThreadPool:
         try:
             result=func(*args,**kwargs)
         except:
-            etype,value.tb=sys.exc_info()
-            self._trycall(error_callback,args=(self.name,etype,value.tb),
+            etype,value,tb=sys.exc_info()
+            self._trycall(error_callback,args=(self.name,etype,value,tb),
                           lock=self._errcblock)
             if exc_raise:
                 raise etype(value)
