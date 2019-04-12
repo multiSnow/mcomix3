@@ -156,6 +156,10 @@ class ImageHandler(object):
         # Clear list of image file names
         self._image_files.clear()
 
+    def clear_raw_pixbufs(self):
+        # Clear map of page > Pixbuf
+        self._raw_pixbufs.clear()
+
     def get_current_path(self):
         # Get current image path
         try:
