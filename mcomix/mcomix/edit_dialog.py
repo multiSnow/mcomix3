@@ -185,7 +185,7 @@ class _EditArchiveDialog(Gtk.Dialog):
 
         elif response == Gtk.ResponseType.APPLY:
 
-            old_image_array = self._window.imagehandler._image_files
+            old_image_array = self._window.imagehandler.get_image_files()
 
             treeiter = self._image_area._liststore.get_iter_first()
 
@@ -203,14 +203,14 @@ class _EditArchiveDialog(Gtk.Dialog):
             for image_path in old_image_array:
 
                 try:
-                    new_position = new_image_array.index( image_path )
+                    new_position = new_image_array.index(image_path)
                     new_positions.append(new_position)
                 except ValueError:
                     # the path was not found in the new array so that means it was deleted
                     new_positions.append(end_index)
                     end_index -= 1
 
-            self._window.imagehandler._image_files = new_image_array
+            self._window.imagehandler.set_image_files(new_image_array)
             self._window.imagehandler._raw_pixbufs = {}
             self._window.imagehandler.do_cacheing()
             self._window.thumbnailsidebar.clear()

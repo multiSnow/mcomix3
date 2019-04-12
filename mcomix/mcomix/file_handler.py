@@ -135,7 +135,7 @@ class FileHandler(object):
         '''
 
         self._window.imagehandler._base_path = self._base_path
-        self._window.imagehandler._image_files = image_files
+        self._window.imagehandler.set_image_files(image_files)
         self.file_opened()
 
         if not image_files:
@@ -424,12 +424,11 @@ class FileHandler(object):
         '''
         if self.archive_type is not None:
             return self._base_path
-        elif self._window.imagehandler._image_files:
-            img_index = self._window.imagehandler._current_image_index
-            filename = self._window.imagehandler._image_files[img_index]
+
+        filename = self._window.imagehandler.get_current_path()
+        if filename:
             return os.path.dirname(filename)
-        else:
-            return None
+        return None
 
     def get_base_filename(self):
         '''Return the filename of the current base (archive filename or

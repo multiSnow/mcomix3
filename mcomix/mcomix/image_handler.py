@@ -38,7 +38,7 @@ class ImageHandler(object):
         #: Archive path, if currently opened file is archive
         self._base_path = None
         #: List of image file names, either from extraction or directory
-        self._image_files = None
+        self._image_files = []
         #: Index of current page
         self._current_image_index = None
         #: Set of images reading for decoding (i.e. already extracted)
@@ -144,6 +144,25 @@ class ImageHandler(object):
         self._current_image_index = page_num - 1
         self.do_cacheing()
 
+    def set_image_files(self, files):
+        # Set list of image file names
+        self._image_files[:] = files
+
+    def get_image_files(self):
+        # Get list of image file names
+        return self._image_files.copy()
+
+    def clear_image_files(self):
+        # Clear list of image file names
+        self._image_files.clear()
+
+    def get_current_path(self):
+        # Get current image path
+        try:
+            return self._image_files[self._current_image_index]
+        except IndexError:
+            return ''
+
     def get_virtual_double_page(self, page=None):
         '''Return True if the current state warrants use of virtual
         double page mode (i.e. if double page mode is on, the corresponding
@@ -196,7 +215,7 @@ class ImageHandler(object):
 
         self._thread.stop()
         self._base_path = None
-        self._image_files = []
+        self._image_files.clear()
         self._current_image_index = None
         self._available_images.clear()
         self._raw_pixbufs.clear()
@@ -255,10 +274,7 @@ class ImageHandler(object):
 
     def get_number_of_pages(self):
         '''Return the number of pages in the current archive/directory.'''
-        if self._image_files is not None:
-            return len(self._image_files)
-        else:
-            return 0
+        return len(self._image_files)
 
     def get_current_page(self):
         '''Return the current page number (starting from 1), or 0 if no file is loaded.'''
@@ -338,16 +354,13 @@ class ImageHandler(object):
         suitable for printing.
         '''
         if self._window.filehandler.archive_type is not None:
-            name = os.path.basename(self._base_path)
-        elif self._image_files:
-            img_file = os.path.abspath(self._image_files[self._current_image_index])
-            name = os.path.join(
-                os.path.basename(os.path.dirname(img_file)),
-                os.path.basename(img_file)
-            )
-        else:
-            name = ''
+            return i18n.to_unicode(os.path.basename(self._base_path))
 
+        img_file = os.path.abspath(self.get_current_path())
+        if not img_file:
+            return ''
+
+        name = os.path.join(*tools.splitpath(img_file)[-2:])
         return i18n.to_unicode(name)
 
     def get_size(self, page=None):
