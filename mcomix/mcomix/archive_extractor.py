@@ -89,7 +89,7 @@ class Extractor(object):
         with self._condition:
             if not self._contents_listed:
                 return
-            self._files = [f for f in files if f not in self._extracted]
+            self._files[:] = [f for f in files if f not in self._extracted]
             if not self._files:
                 # Nothing to do!
                 return
