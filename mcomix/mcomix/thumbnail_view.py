@@ -54,14 +54,15 @@ class ThumbnailViewBase(object):
 
         start = visible[0][0]
         end = visible[1][0]
+
         # Read ahead/back and start caching a few more icons. Currently invisible
         # icons are always cached only after the visible icons have been completed.
-        additional = (end - start) // 2
-        required = tuple(range(start, end + additional + 1)) + \
-            tuple(range(max(0, start - additional), start))
         model = self.get_model()
+        mid_point = (start + end) // 2 + 1
+        harf_len = end - start # twice of current visible length
         # Filter invalid paths.
-        required = [path for path in required if 0 <= path < len(model)]
+        required = set(range(mid_point - harf_len, mid_point + harf_len)) & set(range(len(model)))
+
         with self._lock:
             # Flush current pixmap generation orders.
             for path in required:
