@@ -1,6 +1,5 @@
 ''' Gtk.IconView subclass for dynamically generated thumbnails. '''
 
-import queue
 from gi.repository import Gtk
 from gi.repository import GLib
 
