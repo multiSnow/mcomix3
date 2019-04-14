@@ -1,11 +1,10 @@
 ''' Gtk.IconView subclass for dynamically generated thumbnails. '''
 
-import queue
 from gi.repository import Gtk
 from gi.repository import GLib
 
+from mcomix.lib import mt
 from mcomix.preferences import prefs
-from mcomix.worker_thread import WorkerThread
 
 
 class ThumbnailViewBase(object):
@@ -29,77 +28,83 @@ class ThumbnailViewBase(object):
         #: Ignore updates when this flag is True.
         self._updates_stopped = True
         #: Worker thread
-        self._thread = WorkerThread(self._pixbuf_worker,
-                                    name='thumbview',
-                                    unique_orders=True,
-                                    max_threads=prefs['max threads'])
+        self._threadpool = mt.ThreadPool(
+            name='thumbview', processes=prefs['max threads'])
+        self._lock = mt.Lock()
+        self._done = set()
 
     def generate_thumbnail(self, uid):
         ''' This function must return the thumbnail for C{uid}. '''
         raise NotImplementedError()
 
-    def get_visible_range(self):
-        ''' See L{Gtk.IconView.get_visible_range}. '''
-        raise NotImplementedError()
-
     def stop_update(self):
         ''' Stops generation of pixbufs. '''
         self._updates_stopped = True
-        self._thread.stop()
+        self._done.clear()
 
     def draw_thumbnails_on_screen(self, *args):
         ''' Prepares valid thumbnails for currently displayed icons.
         This method is supposed to be called from the expose-event
         callback function. '''
 
-        visible = self.get_visible_range()
-        if not visible:
-            # No valid paths available
+        # 'draw' event called too frequently
+        if not self._lock.acquire(blocking=False):
             return
+        try:
+            visible = (args[0] if args else self).get_visible_range()
+            if not visible:
+                # No valid paths available
+                return
 
-        pixbufs_needed = []
-        start = visible[0][0]
-        end = visible[1][0]
-        # Read ahead/back and start caching a few more icons. Currently invisible
-        # icons are always cached only after the visible icons have been completed.
-        additional = (end - start) // 2
-        required = tuple(range(start, end + additional + 1)) + \
-            tuple(range(max(0, start - additional), start))
-        model = self.get_model()
-        # Filter invalid paths.
-        required = [path for path in required if 0 <= path < len(model)]
-        with self._thread:
-            # Flush current pixmap generation orders.
-            self._thread.clear_orders()
+            start = visible[0][0]
+            end = visible[1][0]
+
+            # Currently invisible icons are always cached
+            # only after the visible icons completed.
+            mid = (start + end) // 2 + 1
+            harf = end - start # twice of current visible length
+            required = set(range(mid - harf, mid + harf))
+
+            model = self.get_model()
+            required &= set(range(len(model))) # filter invalid paths.
             for path in required:
                 iter = model.get_iter(path)
-                uid, generated = model.get(iter,
-                                           self._uid_column,
-                                           self._status_column)
+                uid, generated = model.get(
+                    iter, self._uid_column, self._status_column)
                 # Do not queue again if thumbnail was already created.
-                if not generated:
-                    pixbufs_needed.append((uid, iter))
-            if len(pixbufs_needed) > 0:
+                if generated:
+                    continue
+                if uid in self._done:
+                    continue
                 self._updates_stopped = False
-                self._thread.extend_orders(pixbufs_needed)
+                self._done.add(uid)
+                self._threadpool.apply_async(
+                    self._pixbuf_worker, args=(uid, iter, model),
+                    callback=self._pixbuf_finished)
+        finally:
+            self._lock.release()
 
-    def _pixbuf_worker(self, order):
+    def _pixbuf_worker(self, uid, iter, model):
         ''' Run by a worker thread to generate the thumbnail for a path.'''
-        uid, iter = order
+        if self._updates_stopped:
+            raise Exception('stop update, skip callback.')
         pixbuf = self.generate_thumbnail(uid)
-        if pixbuf is not None:
-            GLib.idle_add(self._pixbuf_finished, iter, pixbuf)
+        if pixbuf is None:
+            self._done.discard(uid)
+            raise Exception('no pixbuf, skip callback.')
+        return iter, pixbuf, model
 
-    def _pixbuf_finished(self, iter, pixbuf):
+    def _pixbuf_finished(self, params):
         ''' Executed when a pixbuf was created, to actually insert the pixbuf
-        into the view store. C{pixbuf_info} is a tuple containing
-        (index, pixbuf). '''
+        into the view store. C{params} is a tuple containing
+        (index, pixbuf, model). '''
 
         if self._updates_stopped:
             return 0
 
-        model = self.get_model()
-        model.set(iter, self._status_column, True, self._pixbuf_column, pixbuf)
+        with self._lock:
+            iter, pixbuf, model = params
+            model.set(iter, self._status_column, True, self._pixbuf_column, pixbuf)
 
         # Remove this idle handler.
         return 0
@@ -114,9 +119,6 @@ class ThumbnailIconView(Gtk.IconView, ThumbnailViewBase):
         # Connect events
         self.connect('draw', self.draw_thumbnails_on_screen)
 
-    def get_visible_range(self):
-        return Gtk.IconView.get_visible_range(self)
-
 class ThumbnailTreeView(Gtk.TreeView, ThumbnailViewBase):
     def __init__(self, model, uid_column, pixbuf_column, status_column):
         assert 0 != (model.get_flags() & Gtk.TreeModelFlags.ITERS_PERSIST)
@@ -125,8 +127,5 @@ class ThumbnailTreeView(Gtk.TreeView, ThumbnailViewBase):
 
         # Connect events
         self.connect('draw', self.draw_thumbnails_on_screen)
-
-    def get_visible_range(self):
-        return Gtk.TreeView.get_visible_range(self)
 
 # vim: expandtab:sw=4:ts=4
