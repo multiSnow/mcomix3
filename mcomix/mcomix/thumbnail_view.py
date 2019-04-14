@@ -47,6 +47,7 @@ class ThumbnailViewBase(object):
         This method is supposed to be called from the expose-event
         callback function. '''
 
+        # 'draw' event called too frequently
         if not self._lock.acquire(blocking=False):
             return
         try:
