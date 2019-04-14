@@ -464,8 +464,6 @@ class ImageHandler(object):
         page_list[:] = page_list[pos:]
         page_list.extend(reversed(head))
 
-        print(len(page_list), page_list)
-
         log.debug('Ask for priority extraction around page %u: %s',
                   page + 1, ' '.join([str(n + 1) for n in page_list]))
 
