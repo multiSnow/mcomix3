@@ -92,8 +92,8 @@ class ThumbnailViewBase(object):
 
     def _pixbuf_finished(self, params):
         ''' Executed when a pixbuf was created, to actually insert the pixbuf
-        into the view store. C{pixbuf_info} is a tuple containing
-        (index, pixbuf). '''
+        into the view store. C{params} is a tuple containing
+        (index, pixbuf, model). '''
 
         if self._updates_stopped:
             return 0
