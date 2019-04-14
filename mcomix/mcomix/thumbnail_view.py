@@ -57,13 +57,13 @@ class ThumbnailViewBase(object):
 
         # Read ahead/back and start caching a few more icons. Currently invisible
         # icons are always cached only after the visible icons completed.
-        model = self.get_model()
         mid = (start + end) // 2 + 1
         harf = end - start # twice of current visible length
         required = set(range(mid - harf, mid + harf))
-        required &= set(range(len(model))) # filter invalid paths.
 
         with self._lock:
+            model = self.get_model()
+            required &= set(range(len(model))) # filter invalid paths.
             # Flush current pixmap generation orders.
             for path in required:
                 iter = model.get_iter(path)
@@ -77,10 +77,10 @@ class ThumbnailViewBase(object):
                 self._updates_stopped = False
                 self._done.add(uid)
                 self._threadpool.apply_async(
-                    self._pixbuf_worker, args=(uid, iter),
+                    self._pixbuf_worker, args=(uid, iter, model),
                     callback=self._pixbuf_finished)
 
-    def _pixbuf_worker(self, uid, iter):
+    def _pixbuf_worker(self, uid, iter, model):
         ''' Run by a worker thread to generate the thumbnail for a path.'''
         if self._updates_stopped:
             raise Exception('stop update, skip callback.')
@@ -88,7 +88,7 @@ class ThumbnailViewBase(object):
         if pixbuf is None:
             self._done.discard(uid)
             raise Exception('no pixbuf, skip callback.')
-        return iter, pixbuf
+        return iter, pixbuf, model
 
     def _pixbuf_finished(self, params):
         ''' Executed when a pixbuf was created, to actually insert the pixbuf
@@ -98,9 +98,9 @@ class ThumbnailViewBase(object):
         if self._updates_stopped:
             return 0
 
-        iter, pixbuf = params
-        model = self.get_model()
-        model.set(iter, self._status_column, True, self._pixbuf_column, pixbuf)
+        with self._lock:
+            iter, pixbuf, model = params
+            model.set(iter, self._status_column, True, self._pixbuf_column, pixbuf)
 
         # Remove this idle handler.
         return 0
