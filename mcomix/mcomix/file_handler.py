@@ -279,7 +279,7 @@ class FileHandler(object):
         except Exception:
             self._condition = None
             raise
-        self._tmp_dir = self._extractor.destdir
+        self._tmp_dir = self._extractor.get_directory()
 
     def _listed_contents(self, archive, files):
 

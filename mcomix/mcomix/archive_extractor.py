@@ -45,7 +45,6 @@ class Extractor(object):
             raise ArchiveException(msg)
 
         self._dst = self._archive.destdir
-        self.destdir = self._dst
         self._contents_listed = False
         self._extract_started = False
         self._condition = threading.Condition()
