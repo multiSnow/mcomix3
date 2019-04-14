@@ -11,7 +11,7 @@ from mcomix import thumbnail_tools
 from mcomix import constants
 from mcomix import callback
 from mcomix import log
-from mcomix.worker_thread import WorkerThread
+from mcomix.lib import mt
 
 class ImageHandler(object):
 
@@ -32,8 +32,9 @@ class ImageHandler(object):
         self._window = window
 
         #: Caching thread
-        self._thread = WorkerThread(self._cache_pixbuf, name='image',
-                                    sort_orders=True)
+        self._thread = mt.ThreadPool(name='image')
+        self._lock = mt.Lock()
+        self._buf_lock = mt.Lock()
 
         #: Archive path, if currently opened file is archive
         self._base_path = None
@@ -56,10 +57,11 @@ class ImageHandler(object):
         '''Return the pixbuf indexed by <index> from cache.
         Pixbufs not found in cache are fetched from disk first.
         '''
-        try:
-            return self._raw_pixbufs[index]
-        except KeyError:
-            pass
+        with self._buf_lock:
+            try:
+                return self._raw_pixbufs[index]
+            except KeyError:
+                pass
 
         self._wait_on_page(index + 1)
         try:
@@ -69,7 +71,8 @@ class ImageHandler(object):
             log.error('Could not load pixbuf for page %u: %r', index + 1, e)
             pixbuf = image_tools.MISSING_IMAGE_ICON
 
-        self._raw_pixbufs[index] = pixbuf
+        with self._buf_lock:
+            self._raw_pixbufs[index] = pixbuf
         return pixbuf
 
     def get_pixbufs(self, number_of_bufs):
@@ -108,28 +111,30 @@ class ImageHandler(object):
         after the current page. All other pixbufs are deleted and garbage
         collected directly in order to save memory.
         '''
-        if not self._window.filehandler.file_loaded:
+
+        if not self._lock.acquire(blocking=False):
             return
+        try:
+            if not self._window.filehandler.file_loaded:
+                return
 
-        # Flush caching orders.
-        self._thread.clear_orders()
-        # Get list of wanted pixbufs.
-        wanted_pixbufs = self._ask_for_pages(self.get_current_page())
-        if -1 != self._cache_pages:
-            # We're not caching everything, remove old pixbufs.
-            for index in set(self._raw_pixbufs) - set(wanted_pixbufs):
-                del self._raw_pixbufs[index]
-        log.debug('Caching page(s) %s', ' '.join([str(index + 1) for index in wanted_pixbufs]))
-        self._wanted_pixbufs = wanted_pixbufs
-        # Start caching available images not already in cache.
-        wanted_pixbufs = [index for index in wanted_pixbufs
-                          if index in self._available_images and not index in self._raw_pixbufs]
-        orders = [(priority, index) for priority, index in enumerate(wanted_pixbufs)]
-        if len(orders) > 0:
-            self._thread.extend_orders(orders)
+            # Get list of wanted pixbufs.
+            wanted_pixbufs = self._ask_for_pages(self.get_current_page())
+            if -1 != self._cache_pages:
+                # We're not caching everything, remove old pixbufs.
+                for index in set(self._raw_pixbufs) - set(wanted_pixbufs):
+                    del self._raw_pixbufs[index]
+            log.debug('Caching page(s) %s',
+                      ' '.join([str(index + 1) for index in wanted_pixbufs]))
+            self._wanted_pixbufs = wanted_pixbufs
+            # Start caching available images not already in cache.
+            wanted_pixbufs = [index for index in wanted_pixbufs
+                              if index in self._available_images and not index in self._raw_pixbufs]
+            self._thread.map_async(self._cache_pixbuf, wanted_pixbufs)
+        finally:
+            self._lock.release()
 
-    def _cache_pixbuf(self, wanted):
-        priority, index = wanted
+    def _cache_pixbuf(self, index):
         log.debug('Caching page %u', index + 1)
         self._get_pixbuf(index)
 
@@ -213,7 +218,7 @@ class ImageHandler(object):
         self.first_wanted = 0
         self.last_wanted = 1
 
-        self._thread.stop()
+        self._thread.renew()
         self._base_path = None
         self._image_files.clear()
         self._current_image_index = None
@@ -251,15 +256,9 @@ class ImageHandler(object):
         assert index not in self._available_images
         self._available_images.add(index)
         # Check if we need to cache it.
-        priority = None
-        if index in self._wanted_pixbufs:
-            # In the list of wanted pixbufs.
-            priority = self._wanted_pixbufs.index(index)
-        elif -1 == self._cache_pages:
-            # We're caching everything.
-            priority = self.get_number_of_pages()
-        if priority is not None:
-            self._thread.append_order((priority, index))
+        if index in self._wanted_pixbufs or -1 == self._cache_pages:
+            self._thread.apply_async(
+                self._cache_pixbuf,(index,))
 
     def _file_available(self, filepaths):
         ''' Called by the filehandler when a new file becomes available. '''
