@@ -47,21 +47,23 @@ class ThumbnailViewBase(object):
         This method is supposed to be called from the expose-event
         callback function. '''
 
-        visible = (args[0] if args else self).get_visible_range()
-        if not visible:
-            # No valid paths available
+        if not self._lock.acquire(blocking=False):
             return
+        try:
+            visible = (args[0] if args else self).get_visible_range()
+            if not visible:
+                # No valid paths available
+                return
 
-        start = visible[0][0]
-        end = visible[1][0]
+            start = visible[0][0]
+            end = visible[1][0]
 
-        # Read ahead/back and start caching a few more icons. Currently invisible
-        # icons are always cached only after the visible icons completed.
-        mid = (start + end) // 2 + 1
-        harf = end - start # twice of current visible length
-        required = set(range(mid - harf, mid + harf))
+            # Currently invisible icons are always cached
+            # only after the visible icons completed.
+            mid = (start + end) // 2 + 1
+            harf = end - start # twice of current visible length
+            required = set(range(mid - harf, mid + harf))
 
-        with self._lock:
             model = self.get_model()
             required &= set(range(len(model))) # filter invalid paths.
             for path in required:
@@ -78,6 +80,8 @@ class ThumbnailViewBase(object):
                 self._threadpool.apply_async(
                     self._pixbuf_worker, args=(uid, iter, model),
                     callback=self._pixbuf_finished)
+        finally:
+            self._lock.release()
 
     def _pixbuf_worker(self, uid, iter, model):
         ''' Run by a worker thread to generate the thumbnail for a path.'''
