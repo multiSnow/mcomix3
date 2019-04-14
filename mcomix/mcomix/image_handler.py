@@ -441,37 +441,39 @@ class ImageHandler(object):
     def _ask_for_pages(self, page):
         '''Ask for pages around <page> to be given priority extraction.
         '''
-        files = []
-        if prefs['default double page']:
-            page_width = 2
-        else:
-            page_width = 1
-        if 0 == self._cache_pages:
-            # Only ask for current page.
-            num_pages = page_width
-        elif -1 == self._cache_pages:
-            # Ask for 10 pages.
-            num_pages = min(10, self.get_number_of_pages())
-        else:
-            num_pages = self._cache_pages
+        total_pages=range(self.get_number_of_pages())
 
-        page_list = [page - 1 - page_width + n for n in range(num_pages)]
+        num_pages = self._cache_pages
+        if num_pages < 0:
+            # default to 10 pages
+            num_pages = min(10, len(total_pages))
 
-        # Current and next page first, followed by previous page.
-        previous_page = page_list[0:page_width]
-        del page_list[0:page_width]
-        page_list[2*page_width:2*page_width] = previous_page
-        page_list = [index for index in page_list
-                     if index >= 0 and index < len(self._image_files)]
+        page -= 1
+        harf = num_pages // 2 - 1
+        start = max(0, page - harf)
+        end = start + num_pages
+        page_list = list(total_pages[start:end])
+        if end > len(total_pages):
+            start = page_list[0] - (num_pages - len(page_list))
+            page_list.extend(range(max(0, start), page_list[0]))
+        page_list.sort()
+
+        # move page before now to the end
+        pos = page_list.index(page)
+        head = page_list[:pos]
+        page_list[:] = page_list[pos:]
+        page_list.extend(reversed(head))
+
+        print(len(page_list), page_list)
 
         log.debug('Ask for priority extraction around page %u: %s',
-                  page, ' '.join([str(n + 1) for n in page_list]))
+                  page + 1, ' '.join([str(n + 1) for n in page_list]))
 
-        for index in page_list:
-            if index not in self._available_images:
-                files.append(self._image_files[index])
+        files = [self._image_files[index]
+                 for index in page_list
+                 if index not in self._available_images]
 
-        if len(files) > 0:
+        if files:
             self._window.filehandler._ask_for_files(files)
 
         return page_list
