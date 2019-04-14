@@ -64,7 +64,6 @@ class ThumbnailViewBase(object):
         with self._lock:
             model = self.get_model()
             required &= set(range(len(model))) # filter invalid paths.
-            # Flush current pixmap generation orders.
             for path in required:
                 iter = model.get_iter(path)
                 uid, generated = model.get(
