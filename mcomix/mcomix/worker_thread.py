@@ -1,3 +1,4 @@
+# keep this file only for reference
 ''' Worker thread class. '''
 
 import threading
