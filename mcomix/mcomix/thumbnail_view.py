@@ -39,8 +39,9 @@ class ThumbnailViewBase(object):
 
     def stop_update(self):
         ''' Stops generation of pixbufs. '''
-        self._updates_stopped = True
-        self._done.clear()
+        with self._lock:
+            self._updates_stopped = True
+            self._done.clear()
 
     def draw_thumbnails_on_screen(self, *args):
         ''' Prepares valid thumbnails for currently displayed icons.
@@ -99,15 +100,11 @@ class ThumbnailViewBase(object):
         into the view store. C{params} is a tuple containing
         (index, pixbuf, model). '''
 
-        if self._updates_stopped:
-            return 0
-
         with self._lock:
+            if self._updates_stopped:
+                return
             iter, pixbuf, model = params
             model.set(iter, self._status_column, True, self._pixbuf_column, pixbuf)
-
-        # Remove this idle handler.
-        return 0
 
 class ThumbnailIconView(Gtk.IconView, ThumbnailViewBase):
     def __init__(self, model, uid_column, pixbuf_column, status_column):
