@@ -3,8 +3,8 @@
 import gc
 import sys
 import os
+import shutil
 import subprocess
-from distutils import spawn
 from threading import Thread
 
 from mcomix import log
@@ -75,67 +75,20 @@ def find_executable(candidates, workdir=None, is_valid_candidate=None):
 
     If a candidate has a directory component,
     it will be checked relative to <workdir>.
-
-    On Windows:
-
-    - '.exe' will be appended to each candidate if not already
-
-    - MComix executable directory is prepended to the path on Windows
-      (to support embedded tools/executables in the distribution).
-
-    - <workdir> will be inserted first in the path.
-
-    On Unix:
-
-    - a valid candidate must have execution right
-
     '''
-    if workdir is None:
-        workdir = os.getcwd()
-    workdir = os.path.abspath(workdir)
 
-    search_path = os.environ['PATH'].split(os.pathsep)
-    if 'win32' == sys.platform:
-        if workdir is not None:
-            search_path.insert(0, workdir)
-        search_path.insert(0, _exe_dir)
-
-    is_valid_exe = lambda exe: \
-            os.path.isfile(exe) and \
-            os.access(exe, os.R_OK|os.X_OK)
-
-    if is_valid_candidate is None:
-        is_valid = is_valid_exe
+    if callable(is_valid_candidate):
+        is_valid = is_valid_candidate
     else:
-        is_valid = lambda exe: \
-                is_valid_exe(exe) and \
-                is_valid_candidate(exe)
+        is_valid = lambda exe: True
 
     for name in candidates:
-
-        # On Windows, must end with '.exe'
-        if 'win32' == sys.platform:
-            if not name.endswith('.exe'):
-                name = name + '.exe'
-
-        # Absolute path?
-        if os.path.isabs(name):
-            if is_valid(name):
-                return name
-
-        # Does candidate have a directory component?
-        elif os.path.dirname(name):
-            # Yes, check relative to working directory.
-            path = os.path.normpath(os.path.join(workdir, name))
-            if is_valid(path):
-                return path
-
-        # Look in search path.
-        else:
-            for dir in search_path:
-                path = os.path.abspath(os.path.join(dir, name))
-                if is_valid(path):
-                    return path
+        path = shutil.which(name)
+        if not path:
+            continue
+        if not is_valid(path):
+            continue
+        return name
 
     return None
 
