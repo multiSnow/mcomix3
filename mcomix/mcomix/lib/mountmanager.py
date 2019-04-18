@@ -5,20 +5,40 @@ import tempfile
 import threading
 
 class MountManager:
+    '''
+    Example:
+
+    manager=MountManager('mount') # or other command
+    manager.mount('/dev/sdaX',mountpoint='/media/cdrom',
+                  options=['noatime','noexec'])
+    for name in listdir(manager.mountpoint):
+        print(name)
+    manager.umount()
+
+    Initialized MountManager is supported as context manager:
+    on exit, umount() is called.
+
+    '''
+
 
     class CommandNotFound(Exception):
+        ''' Exception if command is not found. '''
         pass
 
     class AlreadyMounted(Exception):
+        ''' Exception if MountManager is already mounted. '''
         pass
 
     class NotMounted(Exception):
+        ''' Exception if MountManager is not monted '''
         pass
 
     class NotEmptyMountPoint(Exception):
+        ''' Exception if mountpoint is not empty. '''
         pass
 
     class MountFailed(Exception):
+        ''' Exception if mount failed. '''
         pass
 
     def __init__(self,cmd):
@@ -52,6 +72,11 @@ class MountManager:
         self._mounted=False
 
     def mount(self,source,options=[],mountpoint=None):
+        '''
+        Mount <source> with <options> as option.
+        if <mountpoint> is None, use a new temporary directory as mountpoint.
+        return manager itself.
+        '''
         with self._lock:
 
             if self._mounted or self._cmdthread:
@@ -75,6 +100,7 @@ class MountManager:
                 self.mountpoint=mountpoint
 
             self._errno=0
+            # foreground mount
             cmd=[self._cmd,'-f']
             option=','.join(options)
             if option:
@@ -97,6 +123,9 @@ class MountManager:
             return self
 
     def unmount(self):
+        '''
+        Umount if manager is mounted, or raise Exception.
+        '''
         with self._lock:
             if self._errno:
                 raise self.MountFailed(self._errno)
