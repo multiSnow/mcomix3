@@ -138,6 +138,12 @@ class MountManager:
             self._cmdthread.join()
             self._cmdthread=None
 
+    def is_mounted(self):
+        '''
+        return True if manager has a mounted mountpoint
+        '''
+        return self._mounted
+
     def __call__(self,source,options=[],mountpoint=None):
         return self.mount(source,options=options,
                           mountpoint=mountpoint)
