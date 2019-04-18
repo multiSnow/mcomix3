@@ -56,7 +56,6 @@ class _BookArea(Gtk.ScrolledWindow):
         self._liststore.set_sort_func(constants.SORT_NAME, self._sort_by_name, None)
         self._liststore.set_sort_func(constants.SORT_PATH, self._sort_by_path, None)
         self.set_sort_order()
-        self._liststore.connect('row-inserted', self._icon_added)
         self._iconview = thumbnail_view.ThumbnailIconView(
             self._liststore,
             1, # UID
@@ -264,8 +263,6 @@ class _BookArea(Gtk.ScrolledWindow):
                                     book.path,
                                     book.size, book.added, False])
 
-        self._iconview.draw_thumbnails_on_screen()
-
     def _new_book_added(self, book, collection):
         ''' Callback function for L{LibraryBackend.book_added}. '''
         if collection is None:
@@ -381,14 +378,6 @@ class _BookArea(Gtk.ScrolledWindow):
         path2 = self._liststore.get_value(iter2, 2)
         return tools.alphanumeric_compare(path1, path2)
 
-    def _icon_added(self, model, path, iter, *args):
-        ''' Justifies the alignment of all cell renderers when new data is
-        added to the model. '''
-        width, height = self._pixbuf_size()
-        for cell in self._iconview.get_cells():
-            cell.set_fixed_size(width, height)
-            cell.set_alignment(0.5, 0.5)
-
     def _book_size_changed(self, old, current):
         ''' Called when library cover size changes. '''
         old_size = prefs['library cover size']
@@ -450,13 +439,27 @@ class _BookArea(Gtk.ScrolledWindow):
             pixbuf = self._cache.get(book.path)
         else:
             width, height = self._pixbuf_size(border_size=0)
-            pixbuf = self._library.backend.get_book_thumbnail(book.path) or image_tools.MISSING_IMAGE_ICON
-            pixbuf = image_tools.fit_in_rectangle(pixbuf, width, height, scale_up=True)
-            pixbuf = image_tools.add_border(pixbuf, 1, 0xFFFFFFFF)
+            # cover thumbnail of book
+            cover = self._library.backend.get_book_thumbnail(book.path)
+            if not cover:
+                cover = image_tools.MISSING_IMAGE_ICON
+            cover = image_tools.fit_in_rectangle(
+                cover, width - 2, height - 2, scale_up=True)
+            cover = image_tools.add_border(cover, 1, 0xFFFFFFFF)
+            src_width, src_height = cover.get_width(), cover.get_height()
+            # icon background of book
+            pixbuf = GdkPixbuf.Pixbuf.new(
+                GdkPixbuf.Colorspace.RGB, True, 8, width, height)
+            pixbuf.fill(0x00000000) # full transparency
+            offset_x = (width - src_width) // 2
+            offset_y = (height - src_height) // 2
+            cover.copy_area(0, 0, src_width, src_height,
+                            pixbuf, offset_x, offset_y)
             self._cache.add(book.path, pixbuf)
 
         # Display indicator of having finished reading the book.
-        # This information isn't cached in the pixbuf cache, as it changes frequently.
+        # This information isn't cached in the pixbuf cache
+        # as it changes frequently.
 
         # Anything smaller than 50px means that the status icon will not fit
         if prefs['library cover size'] < 50:
