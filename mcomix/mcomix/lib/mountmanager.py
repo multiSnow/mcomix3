@@ -26,9 +26,9 @@ class MountManager:
         self._fusermount=shutil.which('fusermount')
 
         if not self._cmd:
-            raise self.CommandNotFound('{} not found.'.format(self._cmd))
+            raise self.CommandNotFound('{} not found.'.format(cmd))
         if not self._fusermount:
-            raise self.CommandNotFound('{} not found.'.format(self._fusermount))
+            raise self.CommandNotFound('{} not found.'.format('fusermount'))
 
         self._mounted=False
         self._lock=threading.Lock()
