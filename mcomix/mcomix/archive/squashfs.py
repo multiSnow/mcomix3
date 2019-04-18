@@ -1,4 +1,5 @@
 import os
+import shutil
 import threading
 
 from mcomix.archive import archive_base
@@ -16,7 +17,11 @@ class SquashfsArchive(archive_base.BaseArchive):
     def __init__(self,archive):
         super(SquashfsArchive,self).__init__(archive)
         self._sqf=self.archive
-        self._mgr=mountmanager.MountManager('squashfuse')
+        try:
+            self._mgr=mountmanager.MountManager('squashfuse')
+        except mountmanager.MountManager.CommandNotFound:
+            self._mgr=None
+            return
         self._contents=[]
         self._lock=threading.Lock()
 
@@ -64,3 +69,7 @@ class SquashfsArchive(archive_base.BaseArchive):
     def close(self):
         if self._mgr.is_mounted():
             self._mgr.umount()
+
+    @staticmethod
+    def is_available():
+        return shutil.which('squashfuse') and shutil.which('fusermount')
