@@ -48,6 +48,7 @@ class MountManager:
             self._tmpdir.cleanup()
             self._tmpdir=None
         self.mountpoint=None
+        self.sourcepath=None
         self._mounted=False
 
     def mount(self,source,options=[],mountpoint=None):
@@ -57,6 +58,8 @@ class MountManager:
                 raise self.AlreadyMounted
             if not os.path.exists(source):
                 raise FileNotFoundError
+
+            self.sourcepath=source
 
             if mountpoint is None:
                 self._tmpdir=tempfile.TemporaryDirectory(prefix='mountpoint')
