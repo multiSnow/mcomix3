@@ -56,6 +56,7 @@ class SquashfsArchive(archive_base.BaseArchive):
 
     def iter_extract(self,names,dstdir):
         with self._lock:
+            self._create_directory(dstdir)
             if self._mgr.is_mounted():
                 if dstdir!=self._mgr.mountpoint:
                     # umount before change mountpoint

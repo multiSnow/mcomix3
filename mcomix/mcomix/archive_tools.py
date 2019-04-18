@@ -18,6 +18,7 @@ from mcomix.archive import (
     rar,
     rar_external,
     sevenzip_external,
+    squashfs,
     tar,
     zip_py,
     zip_external,
@@ -62,6 +63,9 @@ _HANDLERS = {
     constants.PDF: (
         pdf_external.PdfArchive,
     ),
+    constants.SQUASHFS: (
+        squashfs.SquashfsArchive,
+    ),
 }
 
 def _getext(path):
@@ -99,6 +103,9 @@ def lha_available():
 def pdf_available():
     return _is_available(constants.PDF)
 
+def squashfs_available():
+    return _is_available(constants.SQUASHFS)
+
 SUPPORTED_ARCHIVE_EXTS=set()
 SUPPORTED_ARCHIVE_FORMATS={}
 
@@ -110,6 +117,7 @@ def init_supported_formats():
         ('7z' , constants.SZIP_FORMATS, szip_available()),
         ('LHA', constants.LHA_FORMATS , lha_available() ),
         ('PDF', constants.PDF_FORMATS , pdf_available() ),
+        ('SquashFS', constants.SQUASHFS_FORMATS , squashfs_available() ),
     ):
         if not is_available:
             continue
@@ -175,6 +183,9 @@ def archive_mime_type(path):
 
             if magic[0:4] == b'%PDF':
                 return constants.PDF
+
+            if magic.startswith((b'sqsh',b'hsqs')):
+                return constants.SQUASHFS
 
     except Exception:
         log.warning(_('! Could not read %s'), path)

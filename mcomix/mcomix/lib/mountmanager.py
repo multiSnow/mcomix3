@@ -122,7 +122,7 @@ class MountManager:
 
             return self
 
-    def unmount(self):
+    def umount(self):
         '''
         Umount if manager is mounted, or raise Exception.
         '''
@@ -152,7 +152,7 @@ class MountManager:
         return self
 
     def __exit__(self,etype,value,tb):
-        self.unmount()
+        self.umount()
 
 if __name__=='__main__':
     exit(0)
