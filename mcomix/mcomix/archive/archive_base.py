@@ -303,8 +303,9 @@ class MountArchive(BaseArchive):
                     yield name
 
     def close(self):
-        if self._mgr.is_mounted():
-            self._mgr.umount()
+        with self._lock:
+            if self._mgr.is_mounted():
+                self._mgr.umount()
 
     @staticmethod
     def walkpath(root=None):
