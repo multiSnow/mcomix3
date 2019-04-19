@@ -1,4 +1,3 @@
-import os
 import shutil
 
 from mcomix.archive import archive_base
