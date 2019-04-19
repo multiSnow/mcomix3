@@ -13,6 +13,7 @@ from mcomix import image_tools
 from mcomix import constants
 from mcomix import log
 from mcomix.archive import (
+    archivemount,
     lha_external,
     pdf_external,
     rar,
@@ -29,12 +30,13 @@ _HANDLERS = {
     constants.ZIP: (
         zip_py.ZipArchive,
     ),
-    # Prefer 7z over zip executable for encryption and Unicode support.
     constants.ZIP_EXTERNAL: (
+        # Prefer 7z over zip executable for encryption and Unicode support.
         sevenzip_external.SevenZipArchive,
         zip_external.ZipArchive
     ),
     constants.TAR: (
+        archivemount.ArchivemountArchive,
         tar.TarArchive,
     ),
     constants.GZIP: (
@@ -52,8 +54,8 @@ _HANDLERS = {
         # Last resort: some versions of 7z support RAR.
         sevenzip_external.SevenZipArchive,
     ),
-    # Prefer 7z over lha executable for Unicode support.
     constants.LHA: (
+        # Prefer 7z over lha executable for Unicode support.
         sevenzip_external.SevenZipArchive,
         lha_external.LhaArchive,
     ),
@@ -65,6 +67,7 @@ _HANDLERS = {
     ),
     constants.SQUASHFS: (
         squashfs.SquashfsArchive,
+        sevenzip_external.SevenZipArchive,
     ),
 }
 
