@@ -41,6 +41,10 @@ class MountManager:
         ''' Exception if mount failed. '''
         pass
 
+    class UmountFailed(Exception):
+        ''' Exception if umount failed. '''
+        pass
+
     def __init__(self,cmd):
         self._cmd=shutil.which(cmd)
         self._fusermount=shutil.which('fusermount')
@@ -134,7 +138,8 @@ class MountManager:
             if not os.path.ismount(self.mountpoint):
                 raise self.NotMounted(self.mountpoint)
 
-            subprocess.run((self._fusermount,'-u',self.mountpoint)).returncode
+            if subprocess.run((self._fusermount,'-u',self.mountpoint)).returncode:
+                raise self.UmountFailed(self.mountpoint)
             self._cmdthread.join()
             self._cmdthread=None
 

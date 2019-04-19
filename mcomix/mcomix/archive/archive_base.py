@@ -304,8 +304,11 @@ class MountArchive(BaseArchive):
 
     def close(self):
         with self._lock:
-            if self._mgr.is_mounted():
-                self._mgr.umount()
+            while self._mgr.is_mounted():
+                try:
+                    self._mgr.umount()
+                except:
+                    self._lock.acquire(timeout=.5)
 
     @staticmethod
     def walkpath(root=None):
