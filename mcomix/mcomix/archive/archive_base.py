@@ -248,10 +248,11 @@ class ExternalExecutableArchive(NonUnicodeArchive):
         return destination_path
 
 class MountArchive(BaseArchive):
-    def __init__(self,archive,mounter):
+    def __init__(self,archive,mounter,options=[]):
         super(MountArchive,self).__init__(archive)
         self._src=self.archive
         self._mounter=mounter
+        self._mountoptions=options
         try:
             self._mgr=mountmanager.MountManager(self._mounter)
         except mountmanager.MountManager.CommandNotFound:
@@ -261,7 +262,7 @@ class MountArchive(BaseArchive):
         self._lock=threading.Lock()
 
         with self._lock:
-            with self._mgr(self._src) as m:
+            with self._mgr(self._src,options=self._mountoptions) as m:
                 for paths in self.walkpath(m.mountpoint):
                     self._contents.append(os.path.join(*paths))
         self._contents.sort()
@@ -282,7 +283,7 @@ class MountArchive(BaseArchive):
                 with open(os.path.join(self._mgr.mountpoint,fn),mode='rb') as src:
                     data=src.read()
             else:
-                with self._mgr(self._src) as m:
+                with self._mgr(self._src,options=self._mountoptions) as m:
                     with open(os.path.join(m.mountpoint,fn),mode='rb') as src:
                         data=src.read()
             with self._create_file(dstfile) as dst:
@@ -297,7 +298,8 @@ class MountArchive(BaseArchive):
                     # umount before change mountpoint
                     self._mgr.umount()
             if not self._mgr.is_mounted():
-                self._mgr.mount(self._src,mountpoint=dstdir)
+                self._mgr.mount(self._src,options=self._mountoptions,
+                                mountpoint=dstdir)
             for name in names:
                 if name in self._contents:
                     yield name
