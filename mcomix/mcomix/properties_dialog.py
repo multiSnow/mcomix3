@@ -1,19 +1,19 @@
 '''properties_dialog.py - Properties dialog that displays information about the archive/file.'''
 
-from gi.repository import Gtk
 import os
 import time
 import stat
 try:
     import pwd
-    _has_pwd = True
 except ImportError:
     # Running on non-Unix machine.
-    _has_pwd = False
+    pwd = None
+
+from gi.repository import Gtk
 
 from mcomix import i18n
-from mcomix import strings
 from mcomix import properties_page
+from mcomix import strings
 from mcomix import tools
 
 class _PropertiesDialog(Gtk.Dialog):
@@ -117,10 +117,7 @@ class _PropertiesDialog(Gtk.Dialog):
         except OSError as e:
             page.set_secondary_info(secondary_info)
             return
-        if _has_pwd:
-            uid = pwd.getpwuid(stats.st_uid)[0]
-        else:
-            uid = str(stats.st_uid)
+        uid = str(stats.st_uid) if pwd is None else pwd.getpwuid(stats.st_uid).pw_name
         secondary_info.extend((
             (_('Size'), tools.format_byte_size(stats.st_size)),
             (_('Accessed'), time.strftime('%Y-%m-%d, %H:%M:%S',
