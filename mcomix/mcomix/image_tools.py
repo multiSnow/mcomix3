@@ -626,6 +626,6 @@ def get_supported_formats():
 def is_image_file(path):
     if not SUPPORTED_IMAGE_FORMATS:
         init_supported_formats()
-    return os.path.splitext(path)[1].lower() in SUPPORTED_IMAGE_EXTS
+    return path.lower().endswith(tuple(SUPPORTED_IMAGE_EXTS))
 
 # vim: expandtab:sw=4:ts=4

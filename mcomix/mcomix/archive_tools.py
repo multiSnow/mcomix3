@@ -70,16 +70,6 @@ _HANDLERS = {
     ),
 }
 
-def _getext(path):
-    ''' Get extension of archive '''
-    compressed_ext=('.gz','.bz2','.bz','.lzma','.xz')
-    b,e=os.path.splitext(path.lower())
-    if e in compressed_ext:
-        b,e2=os.path.splitext(b)
-        if e2=='.tar':
-            e=e2+e
-    return e
-
 def _get_handler(archive_type):
     ''' Return best archive class for format <archive_type> '''
 
@@ -138,7 +128,7 @@ def get_supported_formats():
 def is_archive_file(path):
     if not SUPPORTED_ARCHIVE_FORMATS:
         init_supported_formats()
-    return _getext(path) in SUPPORTED_ARCHIVE_EXTS
+    return path.lower().endswith(tuple(SUPPORTED_ARCHIVE_EXTS))
 
 def archive_mime_type(path):
     '''Return the archive type of <path> or None for non-archives.'''
