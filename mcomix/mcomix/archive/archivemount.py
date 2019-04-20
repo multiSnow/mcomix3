@@ -1,5 +1,3 @@
-import shutil
-
 from mcomix.archive import archive_base
 
 class ArchivemountArchive(archive_base.MountArchive):
@@ -10,4 +8,4 @@ class ArchivemountArchive(archive_base.MountArchive):
 
     @staticmethod
     def is_available():
-        return shutil.which('archivemount') and shutil.which('fusermount')
+        return archive_base.MountArchive._is_available('archivemount')

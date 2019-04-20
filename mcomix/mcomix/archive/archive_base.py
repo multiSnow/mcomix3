@@ -5,6 +5,8 @@ extraction and adding new archive formats. '''
 
 import os
 import errno
+import shutil
+import sys
 import threading
 
 from mcomix import portability
@@ -13,6 +15,7 @@ from mcomix import process
 from mcomix import callback
 from mcomix import archive
 from mcomix.lib import mountmanager
+from mcomix.preferences import prefs
 
 class BaseArchive(object):
     ''' Base archive interface. All filenames passed from and into archives
@@ -311,6 +314,14 @@ class MountArchive(BaseArchive):
                     self._mgr.umount()
                 except:
                     self._lock.acquire(timeout=.5)
+
+    @staticmethod
+    def _is_available(mounter):
+        if sys.platform!='linux':
+            return False
+        if not prefs['mount']:
+            return False
+        return shutil.which(mounter) and shutil.which('fusermount')
 
     @staticmethod
     def walkpath(root=None):

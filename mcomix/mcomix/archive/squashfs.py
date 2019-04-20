@@ -1,5 +1,3 @@
-import shutil
-
 from mcomix.archive import archive_base
 
 class SquashfsArchive(archive_base.MountArchive):
@@ -8,4 +6,4 @@ class SquashfsArchive(archive_base.MountArchive):
 
     @staticmethod
     def is_available():
-        return shutil.which('squashfuse') and shutil.which('fusermount')
+        return archive_base.MountArchive._is_available('squashfuse')
