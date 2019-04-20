@@ -20,7 +20,7 @@ CONFIG_DIR = tools.get_config_directory()
 DATA_DIR = tools.get_data_directory()
 
 BASE_PATH = tools.rootdir()
-THUMBNAIL_PATH = os.path.join(HOME_DIR, '.thumbnails/normal')
+THUMBNAIL_PATH = tools.get_thumbnails_directory()
 LIBRARY_DATABASE_PATH = os.path.join(DATA_DIR, 'library.db')
 LIBRARY_COVERS_PATH = os.path.join(DATA_DIR, 'library_covers')
 PREFERENCE_PATH = os.path.join(CONFIG_DIR, 'preferences.conf')
