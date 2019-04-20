@@ -29,7 +29,7 @@ class Extractor(object):
     def __init__(self):
         self._setupped = False
         self._threadpool = mt.ThreadPool(
-            name='archive extractor',
+            name=self.__class__.__name__,
             processes=prefs['max extract threads'] or None)
 
     def setup(self, src, type=None):

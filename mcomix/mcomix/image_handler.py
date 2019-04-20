@@ -32,7 +32,7 @@ class ImageHandler(object):
         self._window = window
 
         #: Caching thread
-        self._thread = mt.ThreadPool(name='image')
+        self._thread = mt.ThreadPool(name=self.__class__.__name__)
         self._lock = mt.Lock()
         self._buf_lock = mt.Lock()
 
