@@ -1052,7 +1052,7 @@ class MainWindow(Gtk.Window):
         dialog.set_should_remember_choice('delete-opend-file', (Gtk.ResponseType.OK,))
         dialog.set_text(
                 _('Delete "%s"?') % os.path.basename(current_file),
-                _('The file will be deleted from your harddisk.'))
+                _('The file will be permanently deleted from your drive.'))
         dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
         dialog.add_button(Gtk.STOCK_DELETE, Gtk.ResponseType.OK)
         dialog.set_default_response(Gtk.ResponseType.OK)
