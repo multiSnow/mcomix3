@@ -195,6 +195,11 @@ class _PreferencesDialog(Gtk.Dialog):
             'auto open next directory',
             _('Automatically open the first file in the next sibling directory when flipping past the last page of the last file in a directory, or the previous directory when flipping past the first page of the first file.')))
 
+        page.add_row(self._create_pref_check_button(
+            _('Dive into subdirectories (restart required)'),
+            'dive into subdir',
+            _('Dive into subdirectories when opening directory.')))
+
         page.add_row(Gtk.Label(label=_('Number of pixels to scroll per arrow key press:')),
             self._create_pref_spinner('number of pixels to scroll per key event',
             1, 1, 500, 1, 3, 0,

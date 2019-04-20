@@ -9,9 +9,9 @@ from mcomix import image_tools
 from mcomix import archive_tools
 from mcomix import tools
 from mcomix import constants
-from mcomix import preferences
 from mcomix import i18n
 from mcomix import log
+from mcomix.preferences import prefs
 
 def get_file_provider(filelist):
     ''' Initialize a FileProvider with the files in <filelist>.
@@ -32,9 +32,9 @@ def get_file_provider(filelist):
             provider = PreDefinedFileProvider(filelist)
 
 
-    elif (preferences.prefs['auto load last file']
-        and os.path.isfile(preferences.prefs['path to last file'])):
-        provider = OrderedFileProvider(preferences.prefs['path to last file'])
+    elif (prefs['auto load last file']
+        and os.path.isfile(prefs['path to last file'])):
+        provider = OrderedFileProvider(prefs['path to last file'])
 
     else:
         provider = None
@@ -63,21 +63,28 @@ class FileProvider(object):
         return False
 
     @staticmethod
+    def listdir(root=None):
+        if prefs['dive into subdir']:
+            yield from (os.path.join(*path) for path in tools.walkpath(root=root))
+        else:
+            yield from os.listdir(root)
+
+    @staticmethod
     def sort_files(files):
         ''' Sorts a list of C{files} depending on the current preferences.
         The list is sorted in-place. '''
-        if preferences.prefs['sort by'] == constants.SORT_NAME:
+        if prefs['sort by'] == constants.SORT_NAME:
             tools.alphanumeric_sort(files)
-        elif preferences.prefs['sort by'] == constants.SORT_LAST_MODIFIED:
+        elif prefs['sort by'] == constants.SORT_LAST_MODIFIED:
             # Most recently modified file first
             files.sort(key=lambda filename: os.path.getmtime(filename)*-1)
-        elif preferences.prefs['sort by'] == constants.SORT_SIZE:
+        elif prefs['sort by'] == constants.SORT_SIZE:
             # Smallest file first
             files.sort(key=lambda filename: os.stat(filename).st_size)
         # else: don't sort at all: use OS ordering.
 
         # Default is ascending.
-        if preferences.prefs['sort order'] == constants.SORT_DESCENDING:
+        if prefs['sort order'] == constants.SORT_DESCENDING:
             files.reverse()
 
 
@@ -123,7 +130,7 @@ class OrderedFileProvider(FileProvider):
         fname_map = {}
         try:
             # listdir() return list of bytes only if path is bytes
-            for fn in os.listdir(self.base_dir):
+            for fn in self.listdir(self.base_dir):
                 filename = i18n.to_unicode(fn)
                 fpath = os.path.join(self.base_dir, filename)
                 if should_accept(fpath):

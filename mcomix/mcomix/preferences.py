@@ -17,6 +17,7 @@ prefs = {
     'number of key presses before page turn': 3,
     'auto open next archive': True,
     'auto open next directory': True,
+    'dive into subdir': False,
     'sort by': constants.SORT_NAME,  # Normal files obtained by directory listing
     'sort order': constants.SORT_ASCENDING,
     'sort archive by': constants.SORT_NAME,  # Files in archives
