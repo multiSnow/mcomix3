@@ -64,7 +64,7 @@ class ThumbnailViewBase(object):
             # Currently invisible icons are always cached
             # only after the visible icons completed.
             mid = (start + end) // 2 + 1
-            harf = end - start # twice of current visible length
+            harf = end - start + 1 # twice of current visible length
             required = set(range(mid - harf, mid + harf))
 
             taskid = self._taskid
