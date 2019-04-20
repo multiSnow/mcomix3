@@ -33,7 +33,7 @@ class _BaseFileChooserDialog(Gtk.Dialog):
 
     _last_activated_file = None
 
-    def __init__(self, action=Gtk.FileChooserAction.OPEN):
+    def __init__(self, parent, action=Gtk.FileChooserAction.OPEN):
         self._action = action
         self._destroyed = False
 
@@ -48,6 +48,7 @@ class _BaseFileChooserDialog(Gtk.Dialog):
                        Gtk.STOCK_SAVE, Gtk.ResponseType.OK)
 
         super(_BaseFileChooserDialog, self).__init__(title=title)
+        self.set_transient_for(parent)
         self.add_buttons(*buttons)
         self.set_default_response(Gtk.ResponseType.OK)
 
@@ -58,7 +59,7 @@ class _BaseFileChooserDialog(Gtk.Dialog):
         self.filechooser.set_border_width(6)
         self.connect('response', self._response)
         self.filechooser.connect('file_activated', self._response,
-            Gtk.ResponseType.OK)
+                                 Gtk.ResponseType.OK)
 
         preview_box = Gtk.VBox(homogeneous=False, spacing=10)
         preview_box.set_size_request(130, 0)

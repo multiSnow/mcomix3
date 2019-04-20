@@ -13,8 +13,7 @@ class SimpleFileChooserDialog(file_chooser_base_dialog._BaseFileChooserDialog):
     '''
 
     def __init__(self, parent, action=Gtk.FileChooserAction.OPEN):
-        super(SimpleFileChooserDialog, self).__init__(action)
-        self.set_transient_for(parent)
+        super(SimpleFileChooserDialog, self).__init__(parent, action=action)
         if action == Gtk.FileChooserAction.OPEN:
             self.filechooser.set_select_multiple(True)
         self._paths = None
