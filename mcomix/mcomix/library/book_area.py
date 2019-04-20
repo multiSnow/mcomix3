@@ -576,7 +576,7 @@ class _BookArea(Gtk.ScrolledWindow):
                 (Gtk.ResponseType.OK,))
             choice_dialog.set_text(
                 _('Delete selected books?'),
-                _('The selected book will be permanently deleted from your drive.'))
+                _('The selected books will be permanently deleted from your drive.'))
             response = choice_dialog.run()
 
         # if no request is needed or the user has told us they definitely want to delete the book

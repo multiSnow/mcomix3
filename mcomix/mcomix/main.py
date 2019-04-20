@@ -1076,7 +1076,7 @@ class MainWindow(Gtk.Window):
                     self.filehandler.close_file()
 
                 if os.path.isfile(current_file):
-                    os.unlink(current_file)
+                    self.delete_file(current_file)
             else:
                 if self.imagehandler.get_number_of_pages() > 1:
                     # Open the next/previous file
@@ -1086,13 +1086,31 @@ class MainWindow(Gtk.Window):
                         self.flip_page(+1)
                     # Unlink the desired file
                     if os.path.isfile(current_file):
-                        os.unlink(current_file)
+                        self.delete_file(current_file)
                     # Refresh the directory
                     self.filehandler.refresh_file()
                 else:
                     self.filehandler.close_file()
                     if os.path.isfile(current_file):
-                        os.unlink(current_file)
+                        self.delete_file(current_file)
+
+    def delete_file(self, file_path):
+        try:
+           os.unlink(file_path)
+
+        except Exception as e:
+           log.error(_('! Could not delete file "%s"'), file_path)
+           log.error(e)
+           warning = message_dialog.MessageDialog(
+               parent=self,
+               flags=Gtk.DialogFlags.MODAL,
+               message_type=Gtk.MessageType.WARNING,
+               buttons=Gtk.ButtonsType.OK)
+           warning.set_text(
+               _('Warning!'),
+               _('Could not delete file "%s"') % file_path)
+           warning.run()
+           warning.destroy()
 
     def show_info_panel(self):
         ''' Shows an OSD displaying information about the current page. '''
