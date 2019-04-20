@@ -563,17 +563,21 @@ class _BookArea(Gtk.ScrolledWindow):
 
         if request_response:
 
-            choice_dialog = message_dialog.MessageDialog(self._library, Gtk.DialogFlags.MODAL, Gtk.MessageType.QUESTION,
-                Gtk.ButtonsType.NONE)
-            choice_dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
-            choice_dialog.add_button(Gtk.STOCK_DELETE, Gtk.ResponseType.OK)
+            choice_dialog = message_dialog.MessageDialog(
+                parent=self._library,
+                flags=Gtk.DialogFlags.MODAL,
+                message_type=Gtk.MessageType.QUESTION,
+                buttons=Gtk.ButtonsType.NONE)
+            choice_dialog.add_buttons(
+                Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+                Gtk.STOCK_DELETE, Gtk.ResponseType.OK)
             choice_dialog.set_default_response(Gtk.ResponseType.OK)
-            choice_dialog.set_should_remember_choice('library-remove-book-from-disk',
+            choice_dialog.set_should_remember_choice(
+                'library-remove-book-from-disk',
                 (Gtk.ResponseType.OK,))
             choice_dialog.set_text(
                 _('Delete selected books?'),
-                _('The selected books will be permanently deleted from your drive.')
-            )
+                _('The selected book will be permanently deleted from your drive.'))
             response = choice_dialog.run()
 
         # if no request is needed or the user has told us they definitely want to delete the book

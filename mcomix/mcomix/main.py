@@ -1047,15 +1047,21 @@ class MainWindow(Gtk.Window):
         a confirmation dialog. '''
 
         current_file = self.imagehandler.get_real_path()
-        dialog = message_dialog.MessageDialog(self, Gtk.DialogFlags.MODAL, Gtk.MessageType.QUESTION,
-                Gtk.ButtonsType.NONE)
-        dialog.set_should_remember_choice('delete-opend-file', (Gtk.ResponseType.OK,))
+        dialog = message_dialog.MessageDialog(
+            parent=self,
+            flags=Gtk.DialogFlags.MODAL,
+            message_type=Gtk.MessageType.QUESTION,
+            buttons=Gtk.ButtonsType.NONE)
+        dialog.add_buttons(
+            Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+            Gtk.STOCK_DELETE, Gtk.ResponseType.OK)
+        dialog.set_default_response(Gtk.ResponseType.OK)
+        dialog.set_should_remember_choice(
+            'delete-opend-file',
+            (Gtk.ResponseType.OK,))
         dialog.set_text(
                 _('Delete "%s"?') % os.path.basename(current_file),
                 _('The file will be permanently deleted from your drive.'))
-        dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
-        dialog.add_button(Gtk.STOCK_DELETE, Gtk.ResponseType.OK)
-        dialog.set_default_response(Gtk.ResponseType.OK)
         result = dialog.run()
 
         if result == Gtk.ResponseType.OK:
