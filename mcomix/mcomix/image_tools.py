@@ -603,8 +603,8 @@ def init_supported_formats():
 
     # formats supported by gdk-pixbuf
     for gdkfmt in GdkPixbuf.Pixbuf.get_formats():
-        fmt=SUPPORTED_IMAGE_FORMATS.setdefault(gdkfmt.get_name().upper(),
-                                               (set(),set()))
+        fmt=SUPPORTED_IMAGE_FORMATS.setdefault(
+            gdkfmt.get_name().upper(),(set(),set()))
         for m in map(lambda s:s.lower(),gdkfmt.get_mime_types()):
             fmt[0].add(m)
         # get_extensions() return extensions without '.'
