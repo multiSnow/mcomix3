@@ -2,6 +2,7 @@
 ''' file_provider.py - Handles listing files for the current directory and
     switching to the next/previous directory. '''
 
+import functools
 import os
 import re
 
@@ -113,7 +114,8 @@ class OrderedFileProvider(FileProvider):
             Returns a list of absolute paths, already sorted. '''
 
         if mode == FileProvider.IMAGES:
-            should_accept = image_tools.is_image_file
+            should_accept = functools.partial(
+                image_tools.is_image_file, check_mimetype=True)
         elif mode == FileProvider.ARCHIVES:
             should_accept = archive_tools.is_archive_file
         else:

@@ -149,7 +149,7 @@ class Thumbnailer(object):
 
                 return pixbuf, tEXt_data
 
-        elif image_tools.is_image_file(filepath):
+        elif image_tools.is_image_file(filepath, check_mimetype=True):
             pixbuf = image_tools.load_pixbuf_size(filepath, self.width, self.height)
             if self.store_on_disk:
                 tEXt_data = self._get_text_data(filepath)

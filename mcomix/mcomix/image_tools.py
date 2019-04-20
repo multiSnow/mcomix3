@@ -631,7 +631,7 @@ def is_image_file(path, check_mimetype=False):
     # to guess if path is supported, ignoring file extension.
     if not SUPPORTED_IMAGE_FORMATS:
         init_supported_formats()
-    if check_mimetype:
+    if check_mimetype and os.path.isfile(path):
         with open(path, mode='rb') as fd:
             magic = fd.read(10)
         mime, uncertain = Gio.content_type_guess(data=magic)
