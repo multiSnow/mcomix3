@@ -333,6 +333,13 @@ class _PreferencesDialog(Gtk.Dialog):
         page.add_row(Gtk.Label(label=_('Sort archives by:')),
             self._create_archive_sort_by_control())
 
+        page.new_section(_('File detection'))
+
+        page.add_row(self._create_pref_check_button(
+            _('Detect image file(s) by mimetypes'),
+            'check image mimetype',
+            _('Detect image file(s) by mimetypes.')))
+
         page.new_section(_('Extraction and cache'))
 
         page.add_row(Gtk.Label(label=_('Maximum number of concurrent extraction threads:')),
@@ -822,6 +829,9 @@ class _PreferencesDialog(Gtk.Dialog):
             self._window.thumbnailsidebar.toggle_page_numbers_visible()
 
         elif preference in ('animation background', 'animation transform'):
+            self._window.filehandler.refresh_file()
+
+        elif preference in ('check image mimetype',):
             self._window.filehandler.refresh_file()
 
 
