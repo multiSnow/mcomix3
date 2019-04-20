@@ -123,19 +123,19 @@ def get_data_directory():
         return os.path.join(base_path, 'mcomix')
 
 def get_thumbnails_directory():
-    """Return the path to the thumbnail cache directory. On UNIX, this will
-    be $XDG_CACHE_HOME/thumbnails/normal, on Windows it will be the same directory as
-    <Documents and Settings/Username>/.thumbnails/normal.
+    '''Return the path to the thumbnail cache directory.
+    It is get_home_directory()/.cache/.thumbnails/normal if in portable mode.
+    If not in portable mode, it will be $XDG_CACHE_HOME/thumbnails/normal,
+    or get_home_directory()/.cache/.thumbnails/normal if $XDG_CACHE_HOME is empty.
 
     See http://standards.freedesktop.org/basedir-spec/latest/ for more
-    information on the $XDG_CACHE_HOME environmental variable.
-    """
-    if sys.platform == 'win32':
-        #not tested
-        return os.path.join(get_home_directory(), '.thumbnails/normal')
-    else:
-        return os.getenv('$XDG_CACHE_HOME',
-            os.path.join(get_home_directory(), '.cache/thumbnails/normal'))
+    information about the $XDG_CACHE_HOME environmental variable.
+    '''
+
+    prefix = os.path.join(get_home_directory(), '.cache')
+    if not is_portable_mode():
+        prefix = os.environ.get('XDG_CACHE_HOME', prefix)
+    return os.path.join(prefix, 'thumbnails/normal')
 
 def number_of_digits(n):
     if 0 == n:
