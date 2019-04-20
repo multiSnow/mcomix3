@@ -12,6 +12,7 @@ VERSION = '1.3.0.dev0'
 
 REQUIRED_PIL_VERSION = '5.1.0'
 
+CPU_COUNT = os.cpu_count()
 STARTDIR = os.getcwd()
 PORTABLE_MODE = tools.is_portable_mode()
 

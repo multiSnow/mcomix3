@@ -29,7 +29,8 @@ class ThumbnailViewBase(object):
 
         #: Worker thread
         self._threadpool = mt.ThreadPool(
-            name=self.__class__.__name__, processes=prefs['max threads'])
+            name=self.__class__.__name__,
+            processes=prefs['max thumbnail threads'] or None)
         self._lock = mt.Lock()
         self._done = set()
         self._taskid = 0

@@ -120,6 +120,12 @@ class _PreferencesDialog(Gtk.Dialog):
             self._create_pref_spinner('thumbnail size',
             1, 20, 500, 1, 10, 0, None))
 
+        page.add_row(
+            Gtk.Label(label=_('Maximum number of thumbnail threads:')),
+            self._create_pref_spinner(
+                'max thumbnail threads', 1, 0, constants.CPU_COUNT, 1, 4, 0,
+                _('Set the maximum number of thumbnail generation threads (0 to use all available cores).')))
+
         page.new_section(_('Transparency'))
 
         page.add_row(self._create_pref_check_button(
@@ -895,7 +901,7 @@ class _PreferencesDialog(Gtk.Dialog):
             prefs[preference] = int(value)
             self._window.change_zoom_mode()
 
-        elif preference == 'max extract threads':
+        elif preference in ('max extract threads', 'max thumbnail threads'):
             prefs[preference] = int(value)
 
         elif preference == 'osd max font size':

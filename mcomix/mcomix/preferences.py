@@ -92,7 +92,7 @@ prefs = {
     'language': 'auto',
     'statusbar fields': constants.STATUS_PAGE | constants.STATUS_RESOLUTION | \
                         constants.STATUS_PATH | constants.STATUS_FILENAME | constants.STATUS_FILESIZE,
-    'max threads': 3,
+    'max thumbnail threads': 3,
     'max extract threads': 1,
     'wrap mouse scroll': False,
     'scaling quality': 2,  # GdkPixbuf.InterpType.BILINEAR
