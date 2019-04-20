@@ -341,10 +341,11 @@ class _PreferencesDialog(Gtk.Dialog):
 
         page.new_section(_('Extraction and cache'))
 
-        page.add_row(Gtk.Label(label=_('Maximum number of concurrent extraction threads:')),
-            self._create_pref_spinner('max extract threads',
-            1, 1, 16, 1, 4, 0,
-            _('Set the maximum number of concurrent threads for formats that support it.')))
+        page.add_row(
+            Gtk.Label(label=_('Maximum number of concurrent extraction threads:')),
+            self._create_pref_spinner(
+                'max extract threads', 1, 0, constants.CPU_COUNT, 1, 4, 0,
+                _('Set the maximum number of concurrent threads for formats that support it (0 to use all available cores).')))
 
         page.add_row(self._create_pref_check_button(
             _('Store thumbnails for opened files'),
