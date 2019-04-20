@@ -7,7 +7,6 @@ import zipfile
 import tarfile
 import tempfile
 import operator
-from functools import reduce
 
 from mcomix import image_tools
 from mcomix import constants

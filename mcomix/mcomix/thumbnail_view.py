@@ -1,4 +1,6 @@
 ''' Gtk.IconView subclass for dynamically generated thumbnails. '''
+import functools
+import uuid
 
 from gi.repository import Gtk
 from gi.repository import GLib
@@ -25,13 +27,12 @@ class ThumbnailViewBase(object):
         self._pixbuf_column = pixbuf_column
         self._status_column = status_column
 
-        #: Ignore updates when this flag is True.
-        self._updates_stopped = True
         #: Worker thread
         self._threadpool = mt.ThreadPool(
             name='thumbview', processes=prefs['max threads'])
         self._lock = mt.Lock()
         self._done = set()
+        self._taskid = 0
 
     def generate_thumbnail(self, uid):
         ''' This function must return the thumbnail for C{uid}. '''
@@ -40,7 +41,7 @@ class ThumbnailViewBase(object):
     def stop_update(self):
         ''' Stops generation of pixbufs. '''
         with self._lock:
-            self._updates_stopped = True
+            self._taskid = 0
             self._done.clear()
 
     def draw_thumbnails_on_screen(self, *args):
@@ -52,7 +53,7 @@ class ThumbnailViewBase(object):
         if not self._lock.acquire(blocking=False):
             return
         try:
-            visible = (args[0] if args else self).get_visible_range()
+            visible = self.get_visible_range()
             if not visible:
                 # No valid paths available
                 return
@@ -66,6 +67,10 @@ class ThumbnailViewBase(object):
             harf = end - start # twice of current visible length
             required = set(range(mid - harf, mid + harf))
 
+            taskid = self._taskid
+            if not taskid:
+                taskid = uuid.uuid4().int
+
             model = self.get_model()
             required &= set(range(len(model))) # filter invalid paths.
             for path in required:
@@ -77,31 +82,30 @@ class ThumbnailViewBase(object):
                     continue
                 if uid in self._done:
                     continue
-                self._updates_stopped = False
+                self._taskid = taskid
                 self._done.add(uid)
                 self._threadpool.apply_async(
                     self._pixbuf_worker, args=(uid, iter, model),
-                    callback=self._pixbuf_finished)
+                    callback=functools.partial(
+                        self._pixbuf_finished, taskid=taskid))
         finally:
             self._lock.release()
 
     def _pixbuf_worker(self, uid, iter, model):
         ''' Run by a worker thread to generate the thumbnail for a path.'''
-        if self._updates_stopped:
-            raise Exception('stop update, skip callback.')
         pixbuf = self.generate_thumbnail(uid)
         if pixbuf is None:
             self._done.discard(uid)
             raise Exception('no pixbuf, skip callback.')
         return iter, pixbuf, model
 
-    def _pixbuf_finished(self, params):
+    def _pixbuf_finished(self, params, taskid=-1):
         ''' Executed when a pixbuf was created, to actually insert the pixbuf
         into the view store. C{params} is a tuple containing
         (index, pixbuf, model). '''
 
         with self._lock:
-            if self._updates_stopped:
+            if self._taskid != taskid:
                 return
             iter, pixbuf, model = params
             model.set(iter, self._status_column, True, self._pixbuf_column, pixbuf)
