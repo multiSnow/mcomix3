@@ -169,6 +169,16 @@ def splitpath(path):
         pathlist[0:1]=dirname,basename
     return pathlist
 
+def walkpath(root=None):
+    # yield tuple of splited relative path of files in root
+    # or current directory if root is None
+    for name in os.listdir(root):
+        path=os.path.join(root or '',name)
+        if os.path.isdir(path):
+            yield from map(lambda s:(name,*s),walkpath(path))
+        else:
+            yield name,
+
 def relpath2root(path,abs_fallback=False):
     # return relative path to rootdir in portable mode
     # if path is not under the same mount point where rootdir placed

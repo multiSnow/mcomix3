@@ -9,11 +9,12 @@ import shutil
 import sys
 import threading
 
-from mcomix import portability
-from mcomix import i18n
-from mcomix import process
-from mcomix import callback
 from mcomix import archive
+from mcomix import callback
+from mcomix import i18n
+from mcomix import portability
+from mcomix import process
+from mcomix import tools
 from mcomix.lib import mountmanager
 from mcomix.preferences import prefs
 
@@ -266,7 +267,7 @@ class MountArchive(BaseArchive):
 
         with self._lock:
             with self._mgr(self._src,options=self._mountoptions) as m:
-                for paths in self.walkpath(m.mountpoint):
+                for paths in tools.walkpath(m.mountpoint):
                     self._contents.append(os.path.join(*paths))
         self._contents.sort()
 
@@ -322,14 +323,5 @@ class MountArchive(BaseArchive):
         if not prefs['mount']:
             return False
         return shutil.which(mounter) and shutil.which('fusermount')
-
-    @staticmethod
-    def walkpath(root=None):
-        for name in os.listdir(root):
-            path=os.path.join(root or '',name)
-            if os.path.isdir(path):
-                yield from map(lambda s:(name,*s),MountArchive.walkpath(path))
-            else:
-                yield name,
 
 # vim: expandtab:sw=4:ts=4
