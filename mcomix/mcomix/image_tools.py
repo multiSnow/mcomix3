@@ -587,6 +587,7 @@ def get_image_info(path):
     return info
 
 SUPPORTED_IMAGE_EXTS=set()
+SUPPORTED_IMAGE_MIMES=set()
 SUPPORTED_IMAGE_FORMATS={}
 
 def init_supported_formats():
@@ -617,15 +618,24 @@ def init_supported_formats():
     # cache a supported extensions list
     for mimes,exts in SUPPORTED_IMAGE_FORMATS.values():
         SUPPORTED_IMAGE_EXTS.update(exts)
+        SUPPORTED_IMAGE_MIMES.update(mimes)
 
 def get_supported_formats():
     if not SUPPORTED_IMAGE_FORMATS:
         init_supported_formats()
     return SUPPORTED_IMAGE_FORMATS
 
-def is_image_file(path):
+def is_image_file(path, check_mimetype=False):
+    # if check_mimetype is True,
+    # read starting bytes and using Gio.content_type_guess
+    # to guess if path is supported, ignoring file extension.
     if not SUPPORTED_IMAGE_FORMATS:
         init_supported_formats()
+    if check_mimetype:
+        with open(path, mode='rb') as fd:
+            magic = fd.read(10)
+        mime, uncertain = Gio.content_type_guess(data=magic)
+        return mime.lower() in SUPPORTED_IMAGE_MIMES
     return path.lower().endswith(tuple(SUPPORTED_IMAGE_EXTS))
 
 # vim: expandtab:sw=4:ts=4
