@@ -33,7 +33,7 @@ class _BaseFileChooserDialog(Gtk.Dialog):
 
     _last_activated_file = None
 
-    def __init__(self, action=Gtk.FileChooserAction.OPEN):
+    def __init__(self, parent=None, action=Gtk.FileChooserAction.OPEN):
         self._action = action
         self._destroyed = False
 
@@ -47,7 +47,12 @@ class _BaseFileChooserDialog(Gtk.Dialog):
             buttons = (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
                        Gtk.STOCK_SAVE, Gtk.ResponseType.OK)
 
-        super(_BaseFileChooserDialog, self).__init__(title=title)
+        if parent is None:
+            # Fix "mapped without a transient parent" Gtk warning.
+            from mcomix import main
+            parent = main.main_window()
+
+        super(_BaseFileChooserDialog, self).__init__(title=title, parent=parent)
         self.add_buttons(*buttons)
         self.set_default_response(Gtk.ResponseType.OK)
 
