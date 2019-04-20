@@ -1,3 +1,4 @@
+from multiprocessing.pool import ThreadPool as mpThreadPool
 from multiprocessing.dummy import Pool
 import sys
 from threading import Event,Lock,Semaphore,Thread,Timer
@@ -65,12 +66,23 @@ class Interval:
         return self.timer is not None
 
 
+class NamedPool(mpThreadPool):
+    def __init__(self,*args,name=None,**kwargs):
+        self._name=name
+        super(NamedPool,self).__init__(*args,**kwargs)
+
+    def Process(self,*args,**kwargs):
+        if self._name:
+            kwargs.update(name=self._name)
+        return mpThreadPool.Process(*args,**kwargs)
+
+
 class ThreadPool:
     # multiprocessing.dummy.Pool with exc_info in error_callback
     def __init__(self,name=None,processes=None):
 
         self._processes=processes
-        self._pool=Pool(self._processes)
+        self._pool=NamedPool(self._processes,name=name)
         self._lock=Lock() # lock for self
         self._cblock=Lock() # lock for callback
         self._errcblock=Lock() # lock for error_callback
