@@ -27,21 +27,25 @@ class _PropertiesDialog(Gtk.Dialog):
         self.resize(500, 430)
         self.set_resizable(True)
         self.set_default_response(Gtk.ResponseType.CLOSE)
-        notebook = Gtk.Notebook()
         self.set_border_width(4)
-        notebook.set_border_width(6)
-        self.vbox.pack_start(notebook, True, True, 0)
+        self._notebook = Gtk.Notebook()
+        self._notebook.set_border_width(6)
 
         self._archive_page = properties_page._Page()
-        notebook.append_page(self._archive_page, Gtk.Label(label=_('Archive')))
         self._image_page = properties_page._Page()
-        notebook.append_page(self._image_page, Gtk.Label(label=_('Image')))
+
+        self._notebook.append_page(
+            self._archive_page, Gtk.Label(label=_('Archive')))
+        self._notebook.append_page(
+            self._image_page, Gtk.Label(label=_('Image')))
+
         self._update_archive_page()
         self._window.page_changed += self._on_page_change
         self._window.filehandler.file_opened += self._on_book_change
         self._window.filehandler.file_closed += self._on_book_change
         self._window.imagehandler.page_available += self._on_page_available
 
+        self.vbox.pack_start(self._notebook, True, True, 0)
         self.show_all()
 
     def _on_page_change(self):
@@ -63,7 +67,11 @@ class _PropertiesDialog(Gtk.Dialog):
         page.reset()
         window = self._window
         if window.filehandler.archive_type is None:
+            if self._notebook.get_n_pages() == 2:
+                self._notebook.detach_tab(page)
             return
+        if self._notebook.get_n_pages() == 1:
+            self._notebook.insert_page(page, Gtk.Label(label=_('Archive')), 0)
         # In case it's not ready yet, bump the cover extraction
         # in front of the queue.
         path = window.imagehandler.get_path_to_page(1)
