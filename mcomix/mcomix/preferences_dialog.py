@@ -2,6 +2,8 @@
 
 '''preferences_dialog.py - Preferences dialog.'''
 
+import sys
+
 from gi.repository import Gdk, GdkPixbuf, Gtk, GObject
 
 from mcomix.languages import languages
@@ -351,6 +353,12 @@ class _PreferencesDialog(Gtk.Dialog):
             self._create_pref_spinner('max pages to cache',
             1, -1, 500, 1, 3, 0,
             _('Set the max number of pages to cache. A value of -1 will cache the entire archive.')))
+
+        if sys.platform=='linux':
+            page.add_row(self._create_pref_check_button(
+                _('Mount tar and squashfs.'),
+                'mount',
+                _('Mount tar and squashfs by using archivemount or squashfuse.')))
 
         page.new_section(_('Magnifying Lens'))
 

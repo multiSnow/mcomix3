@@ -19,6 +19,7 @@ class RecursiveArchive(archive_base.BaseArchive):
         self._tempdir = tempfile.TemporaryDirectory(
             prefix=prefix, dir=prefs['temporary directory'])
         self._sub_tempdirs = []
+        self._sub_archives = set()
         self.destdir = self._tempdir.name
         self._archive_list = []
         # Map entry name to its archive+name.
@@ -44,6 +45,9 @@ class RecursiveArchive(archive_base.BaseArchive):
                 # must finish listing the containing archive contents before
                 # any extraction can be done.
                 sub_archive_list.append(f)
+                name = f if root is None else os.path.join(root, f)
+                self._entry_mapping[name] = (archive, f)
+                self._sub_archives.add(name)
                 continue
             name = f
             if root is not None:
@@ -69,6 +73,7 @@ class RecursiveArchive(archive_base.BaseArchive):
             self._sub_tempdirs.append(sub_tempdir)
             for name in self._iter_contents(sub_archive, sub_root):
                 yield name
+            os.remove(sub_archive_path)
 
     def _check_concurrent_extraction_support(self):
         supported = True
@@ -115,7 +120,7 @@ class RecursiveArchive(archive_base.BaseArchive):
         # Unfortunately we can't just rely on BaseArchive default
         # implementation if solid archives are to be correctly supported:
         # we need to call iter_extract (not extract) for each archive ourselves.
-        wanted = set(entries)
+        wanted = set(entries)|self._sub_archives
         for archive in self._archive_list:
             archive_wanted = {}
             for name in wanted:
@@ -132,7 +137,10 @@ class RecursiveArchive(archive_base.BaseArchive):
                       archive.archive, archive_destination_dir,
                       ' '.join(archive_wanted.keys()))
             for f in archive.iter_extract(archive_wanted.keys(), archive_destination_dir):
-                yield archive_wanted[f]
+                name = archive_wanted[f]
+                if name in self._sub_archives:
+                    continue
+                yield name
             wanted -= set(archive_wanted.values())
             if 0 == len(wanted):
                 break
@@ -148,7 +156,7 @@ class RecursiveArchive(archive_base.BaseArchive):
 
     def close(self):
         # close all archives before cleanup temporary directory
-        for archive in self._archive_list:
+        for archive in reversed(self._archive_list):
             archive.close()
         for tempdir in self._sub_tempdirs:
             tempdir.cleanup()

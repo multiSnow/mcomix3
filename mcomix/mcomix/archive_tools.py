@@ -12,11 +12,13 @@ from mcomix import image_tools
 from mcomix import constants
 from mcomix import log
 from mcomix.archive import (
+    archivemount,
     lha_external,
     pdf_external,
     rar,
     rar_external,
     sevenzip_external,
+    squashfs,
     tar,
     zip_py,
     zip_external,
@@ -27,12 +29,13 @@ _HANDLERS = {
     constants.ZIP: (
         zip_py.ZipArchive,
     ),
-    # Prefer 7z over zip executable for encryption and Unicode support.
     constants.ZIP_EXTERNAL: (
+        # Prefer 7z over zip executable for encryption and Unicode support.
         sevenzip_external.SevenZipArchive,
         zip_external.ZipArchive
     ),
     constants.TAR: (
+        archivemount.ArchivemountArchive,
         tar.TarArchive,
     ),
     constants.GZIP: (
@@ -50,8 +53,8 @@ _HANDLERS = {
         # Last resort: some versions of 7z support RAR.
         sevenzip_external.SevenZipArchive,
     ),
-    # Prefer 7z over lha executable for Unicode support.
     constants.LHA: (
+        # Prefer 7z over lha executable for Unicode support.
         sevenzip_external.SevenZipArchive,
         lha_external.LhaArchive,
     ),
@@ -60,6 +63,10 @@ _HANDLERS = {
     ),
     constants.PDF: (
         pdf_external.PdfArchive,
+    ),
+    constants.SQUASHFS: (
+        squashfs.SquashfsArchive,
+        sevenzip_external.SevenZipArchive,
     ),
 }
 
@@ -98,6 +105,9 @@ def lha_available():
 def pdf_available():
     return _is_available(constants.PDF)
 
+def squashfs_available():
+    return _is_available(constants.SQUASHFS)
+
 SUPPORTED_ARCHIVE_EXTS=set()
 SUPPORTED_ARCHIVE_FORMATS={}
 
@@ -109,6 +119,7 @@ def init_supported_formats():
         ('7z' , constants.SZIP_FORMATS, szip_available()),
         ('LHA', constants.LHA_FORMATS , lha_available() ),
         ('PDF', constants.PDF_FORMATS , pdf_available() ),
+        ('SquashFS', constants.SQUASHFS_FORMATS , squashfs_available() ),
     ):
         if not is_available:
             continue
@@ -174,6 +185,9 @@ def archive_mime_type(path):
 
             if magic[0:4] == b'%PDF':
                 return constants.PDF
+
+            if magic.startswith((b'sqsh',b'hsqs')):
+                return constants.SQUASHFS
 
     except Exception:
         log.warning(_('! Could not read %s'), path)

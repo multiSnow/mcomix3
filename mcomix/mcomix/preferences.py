@@ -112,6 +112,7 @@ prefs = {
     'osd bg color': [0, 0, 0, 1],
     'osd timeout': 3.0,  # in seconds, hard limited from 0.5 to 30.0
     'userstyle': None,  # None to disable userstyle
+    'mount': False,
 }
 
 def read_preferences_file():

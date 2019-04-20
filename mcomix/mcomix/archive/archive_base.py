@@ -5,6 +5,8 @@ extraction and adding new archive formats. '''
 
 import os
 import errno
+import shutil
+import sys
 import threading
 
 from mcomix import portability
@@ -12,6 +14,8 @@ from mcomix import i18n
 from mcomix import process
 from mcomix import callback
 from mcomix import archive
+from mcomix.lib import mountmanager
+from mcomix.preferences import prefs
 
 class BaseArchive(object):
     ''' Base archive interface. All filenames passed from and into archives
@@ -245,5 +249,87 @@ class ExternalExecutableArchive(NonUnicodeArchive):
                          [self.archive, self._original_filename(filename)],
                          stdout=output)
         return destination_path
+
+class MountArchive(BaseArchive):
+    def __init__(self,archive,mounter,options=[]):
+        super(MountArchive,self).__init__(archive)
+        self._src=self.archive
+        self._mounter=mounter
+        self._mountoptions=options
+        try:
+            self._mgr=mountmanager.MountManager(self._mounter)
+        except mountmanager.MountManager.CommandNotFound:
+            self._mgr=None
+            return
+        self._contents=[]
+        self._lock=threading.Lock()
+
+        with self._lock:
+            with self._mgr(self._src,options=self._mountoptions) as m:
+                for paths in self.walkpath(m.mountpoint):
+                    self._contents.append(os.path.join(*paths))
+        self._contents.sort()
+
+    def iter_contents(self):
+        yield from self._contents
+
+    def list_contents(self):
+        return self._contents.copy()
+
+    def is_solid(self):
+        return True
+
+    def extract(self,fn,dstdir):
+        with self._lock:
+            dstfile=os.path.join(dstdir,fn)
+            if self._mgr.is_mounted():
+                with open(os.path.join(self._mgr.mountpoint,fn),mode='rb') as src:
+                    data=src.read()
+            else:
+                with self._mgr(self._src,options=self._mountoptions) as m:
+                    with open(os.path.join(m.mountpoint,fn),mode='rb') as src:
+                        data=src.read()
+            with self._create_file(dstfile) as dst:
+                dst.write(data)
+        return dstfile
+
+    def iter_extract(self,names,dstdir):
+        with self._lock:
+            self._create_directory(dstdir)
+            if self._mgr.is_mounted():
+                if dstdir!=self._mgr.mountpoint:
+                    # umount before change mountpoint
+                    self._mgr.umount()
+            if not self._mgr.is_mounted():
+                self._mgr.mount(self._src,options=self._mountoptions,
+                                mountpoint=dstdir)
+            for name in names:
+                if name in self._contents:
+                    yield name
+
+    def close(self):
+        with self._lock:
+            while self._mgr.is_mounted():
+                try:
+                    self._mgr.umount()
+                except:
+                    self._lock.acquire(timeout=.5)
+
+    @staticmethod
+    def _is_available(mounter):
+        if sys.platform!='linux':
+            return False
+        if not prefs['mount']:
+            return False
+        return shutil.which(mounter) and shutil.which('fusermount')
+
+    @staticmethod
+    def walkpath(root=None):
+        for name in os.listdir(root):
+            path=os.path.join(root or '',name)
+            if os.path.isdir(path):
+                yield from map(lambda s:(name,*s),MountArchive.walkpath(path))
+            else:
+                yield name,
 
 # vim: expandtab:sw=4:ts=4
