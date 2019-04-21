@@ -234,6 +234,8 @@ class EventHandler(object):
                          self._window.minimize)
         manager.register('fullscreen',
                          self._window.actiongroup.get_action('fullscreen').activate)
+        manager.register('fullscreen_slideshow',
+                         self._fullscreen_slideshow)
         manager.register('toolbar',
                          self._window.actiongroup.get_action('toolbar').activate)
         manager.register('menubar',
@@ -627,6 +629,22 @@ class EventHandler(object):
         commands = [cmd for cmd in manager.get_commands() if not cmd.is_separator()]
         if len(commands) > cmdindex:
             commands[cmdindex].execute(self._window)
+
+    def _fullscreen_slideshow(self):
+        '''Toggle fullscreen slideshow '''
+
+        is_fullscreen = self._window.is_fullscreen
+        is_slideshow = self._window.slideshow.is_running()
+
+        if is_fullscreen :
+           if is_slideshow:
+              self._window.actiongroup.get_action('slideshow').activate()
+           self._window.actiongroup.get_action('fullscreen').activate()
+
+        else:
+           if not is_slideshow:
+              self._window.actiongroup.get_action('slideshow').activate()
+           self._window.actiongroup.get_action('fullscreen').activate()
 
 
 def _get_latest_event_of_same_type(event):
