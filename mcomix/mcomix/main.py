@@ -4,7 +4,7 @@ import os
 import shutil
 import threading
 
-from gi.repository import GLib, Gdk, Gtk
+from gi.repository import GLib, Gdk, Gtk, GObject, Gio
 
 from mcomix import constants
 from mcomix import cursor_handler
@@ -1093,6 +1093,76 @@ class MainWindow(Gtk.Window):
                     self.filehandler.close_file()
                     if os.path.isfile(current_file):
                         os.unlink(current_file)
+
+    def trash(self, *args):
+        ''' The currently opened file/archive will be moved to the trash folder
+        after showing a confirmation dialog. '''
+
+        current_file = self.imagehandler.get_real_path()
+        dialog = message_dialog.MessageDialog(
+            parent=self,
+            flags=Gtk.DialogFlags.MODAL,
+            message_type=Gtk.MessageType.QUESTION,
+            buttons=Gtk.ButtonsType.NONE)
+        dialog.add_buttons(
+            Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+            Gtk.STOCK_OK, Gtk.ResponseType.OK)
+        dialog.set_default_response(Gtk.ResponseType.OK)
+        dialog.set_should_remember_choice(
+            'trash-opend-file',
+            (Gtk.ResponseType.OK,))
+        dialog.set_text(
+                _('Move to trash "%s"?') % os.path.basename(current_file),
+                _('The file will be moved to the trash folder.'))
+        result = dialog.run()
+
+        if result == Gtk.ResponseType.OK:
+            # Go to next page/archive, and trash current file
+            if self.filehandler.archive_type is not None:
+                self.filehandler.last_read_page.clear_page(current_file)
+
+                next_opened = self.filehandler._open_next_archive()
+                if not next_opened:
+                    next_opened = self.filehandler._open_previous_archive()
+                if not next_opened:
+                    self.filehandler.close_file()
+
+                if os.path.isfile(current_file):
+                    self.send_file_to_trash(current_file)
+            else:
+                if self.imagehandler.get_number_of_pages() > 1:
+                    # Open the next/previous file
+                    if self.imagehandler.get_current_page() >= self.imagehandler.get_number_of_pages():
+                        self.flip_page(-1)
+                    else:
+                        self.flip_page(+1)
+                    # trash the desired file
+                    if os.path.isfile(current_file):
+                        self.send_file_to_trash(current_file)
+                    # Refresh the directory
+                    self.filehandler.refresh_file()
+                else:
+                    self.filehandler.close_file()
+                    if os.path.isfile(current_file):
+                        self.send_file_to_trash(current_file)
+
+    def send_file_to_trash(self, file_path):
+        try:
+            fl = Gio.File.new_for_path(file_path)
+            fl.trash(cancellable=None)
+        except GObject.GError as e:
+            log.error(_('! Could not trash file "%s"'), file_path)
+            log.error(e)
+            warning = message_dialog.MessageDialog(
+               parent=self,
+               flags=Gtk.DialogFlags.MODAL,
+               message_type=Gtk.MessageType.WARNING,
+               buttons=Gtk.ButtonsType.OK)
+            warning.set_text(
+               _('Warning!'),
+               _('Could not trash file "%s"') % file_path)
+            warning.run()
+            warning.destroy()
 
     def show_info_panel(self):
         ''' Shows an OSD displaying information about the current page. '''

@@ -41,6 +41,9 @@ class MainUI(Gtk.UIManager):
             ('delete', Gtk.STOCK_DELETE, _('_Delete'),
                 None, _('Deletes the current file or archive from disk.'),
                 window.delete),
+            ('trash','' , _('_Move to trash'),
+                None, _('Moves the current file or archive to the trash folder.'),
+                window.trash),
             ('next_page', Gtk.STOCK_GO_FORWARD, _('_Next page'),
              None, _('Next page'), _action_lambda(window.flip_page, +1)),
             ('previous_page', Gtk.STOCK_GO_BACK, _('_Previous page'),
@@ -243,6 +246,7 @@ class MainUI(Gtk.UIManager):
                     <menu action="menu_open_with"></menu>
                     <separator />
                     <menuitem action="delete" />
+                    <menuitem action="trash" />
                     <separator />
                     <menuitem action="minimize" />
                     <menuitem action="close" />
@@ -442,6 +446,7 @@ class MainUI(Gtk.UIManager):
                    'save_and_quit',
                    'close',
                    'delete',
+                   'trash',
                    'copy_image_path',
                    'copy_image',
                    'slideshow',

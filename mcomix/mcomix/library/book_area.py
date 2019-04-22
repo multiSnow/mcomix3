@@ -2,7 +2,7 @@
 
 import os
 import urllib
-from gi.repository import Gdk, GdkPixbuf, Gtk, GLib, GObject
+from gi.repository import Gdk, GdkPixbuf, Gtk, GLib, GObject, Gio
 import PIL.Image as Image
 import PIL.ImageDraw as ImageDraw
 
@@ -105,6 +105,7 @@ class _BookArea(Gtk.ScrolledWindow):
                 <menuitem action="remove from collection" />
                 <menuitem action="remove from library" />
                 <menuitem action="completely remove" />
+                <menuitem action="move to trash" />
                 <separator />
                 <menuitem action="copy path to clipboard" />
                 <menuitem action="copy cover to clipboard" />
@@ -158,6 +159,10 @@ class _BookArea(Gtk.ScrolledWindow):
              _('_Remove and delete from disk'), None,
              _('Deletes the selected books from disk.'),
              self._completely_remove_book),
+            ('move to trash', '',
+             _('_Move to trash'), None,
+             _('Moves the selected books to the trash folder.'),
+             self._move_book_to_trash),
             ('copy path to clipboard', Gtk.STOCK_COPY,
              _('_Copy'), None,
              _('Copies the selected book\'s path to clipboard.'),
@@ -576,7 +581,7 @@ class _BookArea(Gtk.ScrolledWindow):
                 (Gtk.ResponseType.OK,))
             choice_dialog.set_text(
                 _('Delete selected books?'),
-                _('The selected book will be permanently deleted from your drive.'))
+                _('The selected books will be permanently deleted from your drive.'))
             response = choice_dialog.run()
 
         # if no request is needed or the user has told us they definitely want to delete the book
@@ -599,6 +604,63 @@ class _BookArea(Gtk.ScrolledWindow):
                     os.remove(book_path)
                 except Exception:
                     log.error(_('! Could not remove file "%s"'), book_path)
+
+    def _move_book_to_trash(self, request_response=True, *args):
+        '''Remove the currently selected books from the library and move
+        them to the trash folder.
+        '''
+
+        if request_response:
+
+            choice_dialog = message_dialog.MessageDialog(
+                parent=self._library,
+                flags=Gtk.DialogFlags.MODAL,
+                message_type=Gtk.MessageType.QUESTION,
+                buttons=Gtk.ButtonsType.NONE)
+            choice_dialog.add_buttons(
+                Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+                Gtk.STOCK_OK, Gtk.ResponseType.OK)
+            choice_dialog.set_default_response(Gtk.ResponseType.OK)
+            choice_dialog.set_should_remember_choice(
+                'library-trash-book',
+                (Gtk.ResponseType.OK,))
+            choice_dialog.set_text(
+                _('Move to trash selected books?'),
+                _('The selected books will be moved to the trash folder.'))
+            response = choice_dialog.run()
+
+        # if no request is needed or the user has told us they definitely want to trash the book
+        if not request_response or (request_response and response == Gtk.ResponseType.OK):
+
+            # get the array of currently selected books in the book window
+            selected_books = self._iconview.get_selected_items()
+            book_ids = [self.get_book_at_path(book) for book in selected_books]
+            paths = [self._library.backend.get_book_path(book_id) for book_id in book_ids]
+
+            # Remove books from library
+            self._remove_books_from_library()
+
+            # move to trash
+            for book_path in paths:
+                try:
+
+                  book = Gio.File.new_for_path(book_path)
+                  book.trash(cancellable=None)
+                except GObject.GError as e:
+
+                   log.error(_('! Could not trash book "%s"'), book_path)
+                   log.error(e)
+
+                   warning = message_dialog.MessageDialog(
+                      parent=self._library,
+                      flags=Gtk.DialogFlags.MODAL,
+                      message_type=Gtk.MessageType.WARNING,
+                      buttons=Gtk.ButtonsType.OK)
+                   warning.set_text(
+                      _('Warning!'),
+                      _('Could not trash book "%s"')% book_path)
+                   warning.run()
+                   warning.destroy()
 
     def _copy_selected_cover(self, *args):
         ''' Copies the currently selected item's path to clipboard. '''
@@ -639,7 +701,7 @@ class _BookArea(Gtk.ScrolledWindow):
         collection = self._library.collection_area.get_current_collection()
         is_collection_all = collection == _COLLECTION_ALL
 
-        for action in ('open', 'open keep library', 'remove from library', 'completely remove'):
+        for action in ('open', 'open keep library', 'remove from library', 'completely remove', 'move to trash'):
             self._set_sensitive(action, books_selected)
 
         self._set_sensitive('_title', False)
