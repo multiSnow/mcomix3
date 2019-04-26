@@ -631,8 +631,11 @@ class _PreferencesDialog(Gtk.Dialog):
             and (self._window.uimanager.recent.count() > 0
                  or self._window.filehandler.last_read_page.count() > 0)):
 
-            dialog = message_dialog.MessageDialog(self, Gtk.DialogFlags.MODAL,
-                Gtk.MessageType.INFO, Gtk.ButtonsType.YES_NO)
+            dialog = message_dialog.MessageDialog(
+                self,
+                flags=Gtk.DialogFlags.MODAL,
+                message_type=Gtk.MessageType.INFO,
+                buttons=Gtk.ButtonsType.YES_NO)
             dialog.set_default_response(Gtk.ResponseType.YES)
             dialog.set_text(
                 _('Delete information about recently opened files?'),

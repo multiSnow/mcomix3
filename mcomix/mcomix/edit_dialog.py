@@ -128,8 +128,11 @@ class _EditArchiveDialog(Gtk.Dialog):
 
         self._window.set_cursor(None)
         if fail:
-            dialog = message_dialog.MessageDialog(self._window, 0, Gtk.MessageType.ERROR,
-                Gtk.ButtonsType.CLOSE)
+            dialog = message_dialog.MessageDialog(
+                self._window,
+                flags=0,
+                message_type=Gtk.MessageType.ERROR,
+                buttons=Gtk.ButtonsType.CLOSE)
             dialog.set_text(
                 _('The new archive could not be saved!'),
                 _('The original files have not been removed.'))

@@ -392,8 +392,11 @@ class _BookArea(Gtk.ScrolledWindow):
         elif name == 'tiny':
             prefs['library cover size'] = constants.SIZE_TINY
         elif name == 'custom':
-            dialog = message_dialog.MessageDialog(self._library, Gtk.DialogFlags.DESTROY_WITH_PARENT,
-                Gtk.MessageType.INFO, buttons=Gtk.ButtonsType.OK)
+            dialog = message_dialog.MessageDialog(
+                self._library,
+                flags=Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                message_type=Gtk.MessageType.INFO,
+                buttons=Gtk.ButtonsType.OK)
             dialog.set_auto_destroy(False)
             dialog.set_text(_('Set library cover size'))
 
@@ -563,7 +566,7 @@ class _BookArea(Gtk.ScrolledWindow):
         if request_response:
 
             choice_dialog = message_dialog.MessageDialog(
-                parent=self._library,
+                self._library,
                 flags=Gtk.DialogFlags.MODAL,
                 message_type=Gtk.MessageType.QUESTION,
                 buttons=Gtk.ButtonsType.NONE)

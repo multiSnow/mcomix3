@@ -662,9 +662,13 @@ class OpenWithEditor(Gtk.Dialog):
             self.hide()
         else:
             if self._changed:
-                confirm_diag = message_dialog.MessageDialog(self, Gtk.DialogFlags.MODAL,
-                    Gtk.MessageType.INFO, Gtk.ButtonsType.YES_NO)
-                confirm_diag.set_text(_('Save changes to commands?'),
+                confirm_diag = message_dialog.MessageDialog(
+                    self,
+                    flags=Gtk.DialogFlags.MODAL,
+                    message_type=Gtk.MessageType.INFO,
+                    buttons=Gtk.ButtonsType.YES_NO)
+                confirm_diag.set_text(
+                    _('Save changes to commands?'),
                     _('You have made changes to the list of external commands that '
                       'have not been saved yet. Press "Yes" to save all changes, '
                       'or "No" to discard them.'))

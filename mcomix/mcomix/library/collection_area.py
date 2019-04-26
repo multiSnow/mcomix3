@@ -145,8 +145,11 @@ class _CollectionArea(Gtk.ScrolledWindow):
 
     def add_collection(self, *args):
         '''Add a new collection to the library, through a dialog.'''
-        add_dialog = message_dialog.MessageDialog(self._library, 0, Gtk.MessageType.INFO,
-            Gtk.ButtonsType.OK_CANCEL)
+        add_dialog = message_dialog.MessageDialog(
+            self._library,
+            flags=0,
+            message_type=Gtk.MessageType.INFO,
+            buttons=Gtk.ButtonsType.OK_CANCEL)
         add_dialog.set_auto_destroy(False)
         add_dialog.set_default_response(Gtk.ResponseType.OK)
         add_dialog.set_text(
@@ -239,8 +242,11 @@ class _CollectionArea(Gtk.ScrolledWindow):
             old_name = self._library.backend.get_collection_name(collection)
         except Exception:
             return
-        rename_dialog = message_dialog.MessageDialog(self._library, 0,
-            Gtk.MessageType.INFO, Gtk.ButtonsType.OK_CANCEL)
+        rename_dialog = message_dialog.MessageDialog(
+            self._library,
+            flags=0,
+            message_type=Gtk.MessageType.INFO,
+            buttons=Gtk.ButtonsType.OK_CANCEL)
         rename_dialog.set_auto_destroy(False)
         rename_dialog.set_text(
             _('Rename collection?'),

@@ -9,17 +9,13 @@ from mcomix.preferences import prefs
 
 class MessageDialog(Gtk.MessageDialog):
 
-    def __init__(self, parent=None, flags=0, message_type=0, buttons=0):
+    def __init__(self, parent, flags=0, message_type=0, buttons=0):
         ''' Creates a dialog window.
         @param parent: Parent window
         @param flags: Dialog flags
         @param type: Dialog icon/type
         @param buttons: Dialog buttons. Can only be a predefined BUTTONS_XXX constant.
         '''
-        if parent is None:
-            # Fix "mapped without a transient parent" Gtk warning.
-            from mcomix import main
-            parent = main.main_window()
         super(MessageDialog, self).__init__(
             message_type=message_type, buttons=buttons,
             modal=flags & Gtk.DialogFlags.MODAL,

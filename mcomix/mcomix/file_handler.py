@@ -349,8 +349,11 @@ class FileHandler(object):
 
         read_date = self.last_read_page.get_date(path)
 
-        dialog = message_dialog.MessageDialog(self._window, Gtk.DialogFlags.MODAL, Gtk.MessageType.INFO,
-            Gtk.ButtonsType.YES_NO)
+        dialog = message_dialog.MessageDialog(
+            self._window,
+            flags=Gtk.DialogFlags.MODAL,
+            message_type=Gtk.MessageType.INFO,
+            buttons=Gtk.ButtonsType.YES_NO)
         dialog.set_default_response(Gtk.ResponseType.YES)
         dialog.set_should_remember_choice('resume-from-last-read-page',
             (Gtk.ResponseType.YES, Gtk.ResponseType.NO))

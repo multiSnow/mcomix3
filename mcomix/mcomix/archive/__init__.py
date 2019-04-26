@@ -2,13 +2,17 @@
 
 from gi.repository import Gtk
 
+from mcomix import main
 from mcomix import message_dialog
 
 def ask_for_password(archive):
     """ Openes an input dialog to ask for a password. Returns either
     an Unicode string (the password), or None."""
-    dialog = message_dialog.MessageDialog(None, Gtk.DialogFlags.MODAL,
-            Gtk.MessageType.QUESTION, Gtk.ButtonsType.OK_CANCEL)
+    dialog = message_dialog.MessageDialog(
+        main.main_window(),
+        flags=Gtk.DialogFlags.MODAL,
+        message_type=Gtk.MessageType.QUESTION,
+        buttons=Gtk.ButtonsType.OK_CANCEL)
     dialog.set_text(
         _("The archive is password-protected:"),
         archive + '\n\n' +
