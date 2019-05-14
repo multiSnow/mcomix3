@@ -8,7 +8,7 @@ import re
 import sys
 import operator
 
-from gi.repository import GdkPixbuf, Gdk, GLib, Gtk
+from gi.repository import GdkPixbuf, Gdk, Gio, GLib, Gtk
 from PIL import Image
 from PIL import ImageEnhance
 from PIL import ImageOps
@@ -586,7 +586,8 @@ def get_image_info(path):
         info = (_('Unknown filetype'), 0, 0)
     return info
 
-SUPPORTED_IMAGE_EXTS=[]
+SUPPORTED_IMAGE_EXTS=set()
+SUPPORTED_IMAGE_MIMES=set()
 SUPPORTED_IMAGE_FORMATS={}
 
 def init_supported_formats():
@@ -594,37 +595,47 @@ def init_supported_formats():
     # Make sure all supported formats are registered.
     Image.init()
     for ext,name in Image.EXTENSION.items():
-        fmt=SUPPORTED_IMAGE_FORMATS.setdefault(name,([],[]))
-        fmt[1].append(ext.lower())
-        if name not in Image.MIME:
-            continue
-        mime=Image.MIME[name].lower()
-        if mime not in fmt[0]:
-            fmt[0].append(mime)
+        fmt=SUPPORTED_IMAGE_FORMATS.setdefault(name,(set(),set()))
+        fmt[1].add(ext.lower())
+        mime=Image.MIME.get(
+            name, Gio.content_type_guess(filename='file'+ext)[0]).lower()
+        if mime and mime != 'application/octet-stream':
+            fmt[0].add(mime)
 
     # formats supported by gdk-pixbuf
     for gdkfmt in GdkPixbuf.Pixbuf.get_formats():
-        fmt=SUPPORTED_IMAGE_FORMATS.setdefault(gdkfmt.get_name().upper(),([],[]))
+        fmt=SUPPORTED_IMAGE_FORMATS.setdefault(
+            gdkfmt.get_name().upper(),(set(),set()))
         for m in map(lambda s:s.lower(),gdkfmt.get_mime_types()):
-            if m not in fmt[0]:
-                fmt[0].append(m)
+            fmt[0].add(m)
         # get_extensions() return extensions without '.'
         for e in map(lambda s:'.'+s.lower(),gdkfmt.get_extensions()):
-            if e not in fmt[1]:
-                fmt[1].append(e)
+            fmt[1].add(e)
+            m = Gio.content_type_guess(filename='file'+e)[0].lower()
+            if m and m != 'application/octet-stream':
+                fmt[0].add(m)
 
     # cache a supported extensions list
     for mimes,exts in SUPPORTED_IMAGE_FORMATS.values():
-        SUPPORTED_IMAGE_EXTS.extend(exts)
+        SUPPORTED_IMAGE_EXTS.update(exts)
+        SUPPORTED_IMAGE_MIMES.update(mimes)
 
 def get_supported_formats():
     if not SUPPORTED_IMAGE_FORMATS:
         init_supported_formats()
     return SUPPORTED_IMAGE_FORMATS
 
-def is_image_file(path):
+def is_image_file(path, check_mimetype=False):
+    # if check_mimetype is True,
+    # read starting bytes and using Gio.content_type_guess
+    # to guess if path is supported, ignoring file extension.
     if not SUPPORTED_IMAGE_FORMATS:
         init_supported_formats()
-    return os.path.splitext(path)[1].lower() in SUPPORTED_IMAGE_EXTS
+    if prefs['check image mimetype'] and check_mimetype and os.path.isfile(path):
+        with open(path, mode='rb') as fd:
+            magic = fd.read(10)
+        mime, uncertain = Gio.content_type_guess(data=magic)
+        return mime.lower() in SUPPORTED_IMAGE_MIMES
+    return path.lower().endswith(tuple(SUPPORTED_IMAGE_EXTS))
 
 # vim: expandtab:sw=4:ts=4
