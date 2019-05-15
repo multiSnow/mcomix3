@@ -14,10 +14,11 @@ from PIL import ImageEnhance
 from PIL import ImageOps
 from PIL import ImageSequence
 
-from mcomix.preferences import prefs
+from mcomix import anime_tools
 from mcomix import constants
 from mcomix import log
-from mcomix import anime_tools
+from mcomix.lib import reader
+from mcomix.preferences import prefs
 
 # Fallback pixbuf for missing images.
 MISSING_IMAGE_ICON = None
@@ -412,7 +413,7 @@ def load_pixbuf(path):
     ''' Loads a pixbuf from a given image file. '''
     enable_anime = prefs['animation mode'] != constants.ANIMATION_DISABLED
     try:
-        with Image.open(path) as im:
+        with Image.open(reader.LockedFileIO(path)) as im:
             # make sure n_frames loaded
             im.load()
             if enable_anime and getattr(im,'is_animated',False):
@@ -431,7 +432,7 @@ def load_pixbuf_size(path, width, height):
     ''' Loads a pixbuf from a given image file and scale it to fit
     inside (width, height). '''
     try:
-        with Image.open(path) as im:
+        with Image.open(reader.LockedFileIO(path)) as im:
             im.thumbnail((width, height), resample=Image.BOX)
             return pil_to_pixbuf(im, keep_orientation=True)
     except:
@@ -574,7 +575,7 @@ def get_image_info(path):
     '''
     info = None
     try:
-        with Image.open(path) as im:
+        with Image.open(reader.LockedFileIO(path)) as im:
             return (im.format,) + im.size
     except:
         info = GdkPixbuf.Pixbuf.get_file_info(path)

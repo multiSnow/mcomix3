@@ -13,17 +13,18 @@ from urllib.request import pathname2url
 
 from hashlib import md5
 
-from mcomix.preferences import prefs
 from mcomix import archive_extractor
-from mcomix import constants
 from mcomix import archive_tools
-from mcomix import tools
-from mcomix import image_tools
-from mcomix import portability
-from mcomix import i18n
 from mcomix import callback
+from mcomix import constants
+from mcomix import i18n
+from mcomix import image_tools
 from mcomix import log
 from mcomix import mimetypes
+from mcomix import portability
+from mcomix import tools
+from mcomix.lib import reader
+from mcomix.preferences import prefs
 
 
 class Thumbnailer(object):
@@ -228,7 +229,7 @@ class Thumbnailer(object):
             if os.path.isfile(thumbpath):
                 # Check the thumbnail's stored mTime
                 try:
-                    img = Image.open(thumbpath)
+                    img = Image.open(reader.LockedFileIO(thumbpath))
                 except IOError:
                     return False
 
