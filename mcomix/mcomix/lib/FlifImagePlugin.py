@@ -17,6 +17,7 @@
 import io
 import ctypes
 import ctypes.util as cutil
+import threading
 
 from PIL import Image,ImageFile,ImagePalette
 
@@ -31,6 +32,8 @@ _COLORS_MODE={
     4:'RGBA',
 }
 
+_LOCK=threading.Lock()
+
 class FLIF_DECODER(ctypes.Structure):pass
 class FLIF_IMAGE(ctypes.Structure):pass
 class FLIF_INFO(ctypes.Structure):pass
@@ -42,6 +45,7 @@ def _getloader():
         path=cutil.find_library('flif')
         flif=ctypes.CDLL(path)
         if not hasattr(flif,'flif_create_decoder'):
+            _LIBFLIF['failed']=True
             return
         _LIBFLIF['cdll']=flif
 
@@ -71,6 +75,7 @@ def _getloader():
 
 class FlifDecoder:
     def __init__(self,data):
+        _LOCK.acquire()
         self.ctx=_getloader()
         self.decoder=self.ctx.flif_create_decoder()
         rc=self.ctx.flif_decoder_decode_memory(
@@ -88,6 +93,7 @@ class FlifDecoder:
         if self.decoder is not None:
             self.ctx.flif_destroy_decoder(self.decoder)
             self.decoder=None
+        _LOCK.release()
 
     def __enter__(self):
         return self
