@@ -42,7 +42,7 @@ def _getloader():
     if _LIBFLIF['failed']:
         return
     if _LIBFLIF['cdll'] is None:
-        path=cutil.find_library('flif')
+        path=cutil.find_library('flif_dec') or cutil.find_library('flif')
         flif=ctypes.CDLL(path)
         if not hasattr(flif,'flif_create_decoder'):
             _LIBFLIF['failed']=True
