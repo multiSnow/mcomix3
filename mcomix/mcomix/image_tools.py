@@ -18,6 +18,7 @@ from mcomix import anime_tools
 from mcomix import constants
 from mcomix import log
 from mcomix.lib import reader
+from mcomix.lib import FlifImagePlugin
 from mcomix.preferences import prefs
 
 # Fallback pixbuf for missing images.
