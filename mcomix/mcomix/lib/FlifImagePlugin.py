@@ -85,6 +85,7 @@ def decodeflif(data,path,loop,
     decoder=flif.flif_create_decoder()
     flif.flif_decoder_set_crc_check(decoder,1)
     if not flif.flif_decoder_decode_memory(decoder,data,len(data)):
+        flif.flif_destroy_decoder(decoder)
         exit(DECODE_ERROR)
     _read_func_map={8:{
         'RGBA':flif.flif_image_read_row_RGBA8,
@@ -102,6 +103,7 @@ def decodeflif(data,path,loop,
     try:
         loop.value=flif.flif_decoder_num_loops(decoder)
     except:
+        flif.flif_destroy_decoder(decoder)
         exit(DECODE_ERROR)
 
     for n in range(num_images):
@@ -123,6 +125,7 @@ def decodeflif(data,path,loop,
 
         reader=_read_func_map[depth][mode]
         if reader is None:
+            flif.flif_destroy_decoder(decoder)
             exit(UNSUPPORTED_FORMAT)
         rowsize=len(mode)*width
         d=ctypes.create_string_buffer(rowsize)
@@ -150,8 +153,8 @@ def decodeflif(data,path,loop,
             palettelist.append(palette)
             rawlist.append(raw)
         except:
+            flif.flif_destroy_decoder(decoder)
             exit(DECODE_ERROR)
-
 
     flif.flif_destroy_decoder(decoder)
     exit(0)
