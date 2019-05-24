@@ -18,6 +18,7 @@ import io
 import ctypes
 import ctypes.util as cutil
 import multiprocessing
+import sys
 
 from PIL import Image,ImageFile,ImagePalette
 
@@ -74,7 +75,7 @@ class ImageNS:
         self.raw=raw
         self.size=width,height
 
-def decodeflif(data,path,loop,
+def decodeflif(data,path,draft_width,draft_height,loop,
                modelist,widthlist,heightlist,depthlist,delaylist,
                exiflist,palettelist,rawlist):
     if not path:
@@ -84,6 +85,9 @@ def decodeflif(data,path,loop,
     flif.flif_decoder_get_image.restype=ctypes.POINTER(FLIF_IMAGE)
     decoder=flif.flif_create_decoder()
     flif.flif_decoder_set_crc_check(decoder,1)
+    if draft_width and draft_height:
+        # TODO: flif_decoder_set_fit should be used, which caused segfault
+        flif.flif_decoder_set_resize(decoder,draft_width,draft_height)
     if not flif.flif_decoder_decode_memory(decoder,data,len(data)):
         flif.flif_destroy_decoder(decoder)
         exit(DECODE_ERROR)
@@ -185,6 +189,8 @@ class FlifImageFile(ImageFile.ImageFile):
         self.fp.close()
         self.fp=None
         self._data=data
+        self._draft_width=0
+        self._draft_height=0
 
         self._images=[] # list of FlifImage
         self._pos=0 # position of currect frame
@@ -196,6 +202,9 @@ class FlifImageFile(ImageFile.ImageFile):
         self.mode='RGB' if mode=='RGBX' else mode
         self.tile=[]
 
+    def load(self):
+        if self._images:
+            return super().load()
         with multiprocessing.Manager() as manager:
             modelist=manager.list()
             widthlist=manager.list()
@@ -210,7 +219,7 @@ class FlifImageFile(ImageFile.ImageFile):
             loop=manager.Value('b',-1)
             proc=multiprocessing.Process(
                 target=decodeflif,
-                args=(data,path,loop,
+                args=(self._data,path,self._draft_width,self._draft_height,loop,
                       modelist,widthlist,heightlist,depthlist,delaylist,
                       exiflist,palettelist,rawlist))
             proc.start()
@@ -223,7 +232,22 @@ class FlifImageFile(ImageFile.ImageFile):
                              exiflist,palettelist,rawlist):
                 self._images.append(ImageNS(*attrs))
 
-        return self.seek(0)
+        return self.seek(self._pos)
+
+    def draft(self,mode,size):
+        if mode:
+            print('W: setting mode in draft is not supported.',file=sys.stderr)
+        # TODO:
+        # pass twice of the size to decoder and load, then let PIL to resize it,
+        # so only first draft has effect.
+        # it is because flif_decoder_set_resize typically causes a smaller image.
+        # also see TODO in decodeflif
+        w,h=size
+        w_,h_=self._size
+        size=min(w*2,w_),min(h*2,h_)
+        self._draft_width,self._draft_height=size
+        self._size=size
+        self.load()
 
     def tobytes(self):
         self.load()
