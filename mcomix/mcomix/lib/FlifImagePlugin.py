@@ -74,21 +74,18 @@ class ImageNS:
         self.raw=raw
         self.size=width,height
 
-def decodeflif(data,path,rc,loop,
+def decodeflif(data,path,loop,
                modelist,widthlist,heightlist,depthlist,delaylist,
                exiflist,palettelist,rawlist):
     if not path:
-        rc.value=FLIF_NOT_FOUND
-        return
+        exit(FLIF_NOT_FOUND)
     flif=ctypes.CDLL(path)
     flif.flif_create_decoder.restype=ctypes.POINTER(FLIF_DECODER)
     flif.flif_decoder_get_image.restype=ctypes.POINTER(FLIF_IMAGE)
     decoder=flif.flif_create_decoder()
     flif.flif_decoder_set_crc_check(decoder,1)
-    flif.flif_decoder_decode_memory(decoder,data,len(data))
-    if not rc:
-        rc.value=DECODE_ERROR
-        return
+    if not flif.flif_decoder_decode_memory(decoder,data,len(data)):
+        exit(DECODE_ERROR)
     _read_func_map={8:{
         'RGBA':flif.flif_image_read_row_RGBA8,
         'RGBX':flif.flif_image_read_row_RGBA8,
@@ -102,7 +99,10 @@ def decodeflif(data,path,rc,loop,
     },}
 
     num_images=flif.flif_decoder_num_images(decoder)
-    loop.value=flif.flif_decoder_num_loops(decoder)
+    try:
+        loop.value=flif.flif_decoder_num_loops(decoder)
+    except:
+        exit(DECODE_ERROR)
 
     for n in range(num_images):
         image=flif.flif_decoder_get_image(decoder,n)
@@ -123,8 +123,7 @@ def decodeflif(data,path,rc,loop,
 
         reader=_read_func_map[depth][mode]
         if reader is None:
-            rc.value=UNSUPPORTED_FORMAT
-            return
+            exit(UNSUPPORTED_FORMAT)
         rowsize=len(mode)*width
         d=ctypes.create_string_buffer(rowsize)
         buf=io.BytesIO()
@@ -141,18 +140,21 @@ def decodeflif(data,path,rc,loop,
                 image,b'eXif',ctypes.byref(metaptr),ctypes.byref(metalen)):
             exif=bytes(bytearray(metaptr[:metalen.value]))
 
-        modelist.append(mode)
-        widthlist.append(width)
-        heightlist.append(height)
-        depthlist.append(depth)
-        delaylist.append(delay)
-        exiflist.append(exif)
-        palettelist.append(palette)
-        rawlist.append(raw)
+        try:
+            modelist.append(mode)
+            widthlist.append(width)
+            heightlist.append(height)
+            depthlist.append(depth)
+            delaylist.append(delay)
+            exiflist.append(exif)
+            palettelist.append(palette)
+            rawlist.append(raw)
+        except:
+            exit(DECODE_ERROR)
+
 
     flif.flif_destroy_decoder(decoder)
-    rc.value=0
-    return
+    exit(0)
 
 def _getloader():
     if _LIBFLIF['failed']:
@@ -202,18 +204,17 @@ class FlifImageFile(ImageFile.ImageFile):
             rawlist=manager.list()
 
             path=_getloader()
-            rc=manager.Value('b',-1)
             loop=manager.Value('b',-1)
             proc=multiprocessing.Process(
                 target=decodeflif,
-                args=(data,path,rc,loop,
+                args=(data,path,loop,
                       modelist,widthlist,heightlist,depthlist,delaylist,
                       exiflist,palettelist,rawlist))
             proc.start()
             proc.join()
 
-            if rc.value:
-                raise RuntimeError('failed to decode.')
+            if proc.exitcode:
+                raise RuntimeError('failed to decode, {}.',proc.exitcode)
             self.info['loop']=loop.value
             for attrs in zip(modelist,widthlist,heightlist,depthlist,delaylist,
                              exiflist,palettelist,rawlist):
