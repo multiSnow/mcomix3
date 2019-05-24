@@ -17,12 +17,12 @@
 import io
 import ctypes
 import ctypes.util as cutil
-import threading
+import multiprocessing
 
 from PIL import Image,ImageFile,ImagePalette
 
 _LIBFLIF={
-    'cdll':None,
+    'path':None,
     'failed':False,
 }
 
@@ -32,162 +32,16 @@ _COLORS_MODE={
     4:'RGBA',
 }
 
-_LOCK=threading.Lock()
+FLIF_NOT_FOUND,DECODE_ERROR,UNSUPPORTED_FORMAT=range(3)
 
 class FLIF_DECODER(ctypes.Structure):pass
 class FLIF_IMAGE(ctypes.Structure):pass
 class FLIF_INFO(ctypes.Structure):pass
 
-def _getloader():
-    if _LIBFLIF['failed']:
-        return
-    if _LIBFLIF['cdll'] is None:
-        path=cutil.find_library('flif_dec') or cutil.find_library('flif')
-        flif=ctypes.CDLL(path)
-        if not hasattr(flif,'flif_create_decoder'):
-            _LIBFLIF['failed']=True
-            return
-        _LIBFLIF['cdll']=flif
-
-        # set restype of some functions
-
-        # image functions
-        flif.flif_create_image.restype=ctypes.POINTER(FLIF_IMAGE)
-        flif.flif_create_image_RGB.restype=ctypes.POINTER(FLIF_IMAGE)
-        flif.flif_create_image_GRAY.restype=ctypes.POINTER(FLIF_IMAGE)
-        flif.flif_create_image_GRAY16.restype=ctypes.POINTER(FLIF_IMAGE)
-        flif.flif_create_image_PALETTE.restype=ctypes.POINTER(FLIF_IMAGE)
-        flif.flif_create_image_HDR.restype=ctypes.POINTER(FLIF_IMAGE)
-        flif.flif_import_image_RGBA.restype=ctypes.POINTER(FLIF_IMAGE)
-        flif.flif_import_image_RGB.restype=ctypes.POINTER(FLIF_IMAGE)
-        flif.flif_import_image_GRAY.restype=ctypes.POINTER(FLIF_IMAGE)
-        flif.flif_import_image_GRAY16.restype=ctypes.POINTER(FLIF_IMAGE)
-        flif.flif_import_image_PALETTE.restype=ctypes.POINTER(FLIF_IMAGE)
-        flif.flif_image_get_metadata.restype=ctypes.POINTER(ctypes.c_bool)
-        # decoder functions
-        flif.flif_create_decoder.restype=ctypes.POINTER(FLIF_DECODER)
-        flif.flif_decoder_get_image.restype=ctypes.POINTER(FLIF_IMAGE)
-        # info functions
-        flif.flif_read_info_from_memory.restype=ctypes.POINTER(FLIF_INFO)
-
-    return _LIBFLIF['cdll']
-
-
-class FlifDecoder:
-    def __init__(self,data):
-        _LOCK.acquire()
-        self.ctx=_getloader()
-        self.decoder=self.ctx.flif_create_decoder()
-        rc=self.ctx.flif_decoder_decode_memory(
-            self.decoder,data,len(data))
-        if not rc:
-            self.decoder=None
-            raise RuntimeError('failed to decode.')
-        self.num_images=self.ctx.flif_decoder_num_images(self.decoder)
-        self.num_loops=self.ctx.flif_decoder_num_loops(self.decoder)
-
-    def get_image(self,index=0):
-        return FlifImage(self.ctx.flif_decoder_get_image(self.decoder,index))
-
-    def close(self):
-        if self.decoder is not None:
-            self.ctx.flif_destroy_decoder(self.decoder)
-            self.decoder=None
-        _LOCK.release()
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self,etype,value,tb):
-        self.close()
-
-
-class FlifImage:
-    def __init__(self,image,size=(1,1),mode='RGBA'):
-        self.ctx=_getloader()
-        if image is None:
-            funcmap={
-                'RGBA':self.ctx.flif_create_image,
-                'RGBX':self.ctx.flif_create_image_RGB,
-                'L'   :self.ctx.flif_create_image_GRAY,
-                'P'   :self.ctx.flif_create_image_PALETTE,
-            }
-            if mode not in funcmap:
-                raise KeyError('mode {} is not supported.'.format(mode))
-            image=funcmap[mode](*size)
-
-            self.palette_size=0
-            self.nb_channels=self.ctx.flif_image_get_nb_channels(image)
-            self.mode=mode
-
-        else:
-            # guess mode by nb_channels and palette size
-            self.palette_size=self.ctx.flif_image_get_palette_size(image)
-            self.nb_channels=self.ctx.flif_image_get_nb_channels(image)
-            self.mode='P' if self.palette_size else _COLORS_MODE[self.nb_channels]
-
-        self.width=self.ctx.flif_image_get_width(image)
-        self.height=self.ctx.flif_image_get_height(image)
-        self.size=self.width,self.height
-        self.depth=self.ctx.flif_image_get_depth(image)
-        self.delay=self.ctx.flif_image_get_frame_delay(image)
-
-        self.palette=None
-        if self.palette_size:
-            d=ctypes.create_string_buffer(self.palette_size*4) # RGBA colors
-            self.ctx.flif_image_get_palette(image,ctypes.byref(d))
-            self.palette=d.raw
-
-        self._write_func_map={8:{
-            'RGBA':self.ctx.flif_image_write_row_RGBA8,
-            'RGBX':self.ctx.flif_image_write_row_RGBA8,
-            'L':   self.ctx.flif_image_write_row_GRAY8,
-            'P':   self.ctx.flif_image_write_row_PALETTE8,
-        },16:{
-            'RGBA':self.ctx.flif_image_write_row_RGBA16,
-            'RGBX':self.ctx.flif_image_write_row_RGBA16,
-            'L':   self.ctx.flif_image_write_row_GRAY16,
-            'P':   None,
-        },}
-        self._read_func_map={8:{
-            'RGBA':self.ctx.flif_image_read_row_RGBA8,
-            'RGBX':self.ctx.flif_image_read_row_RGBA8,
-            'L':   self.ctx.flif_image_read_row_GRAY8,
-            'P':   self.ctx.flif_image_read_row_PALETTE8,
-        },16:{
-            'RGBA':self.ctx.flif_image_read_row_RGBA16,
-            'RGBX':self.ctx.flif_image_read_row_RGBA16,
-            'L':   self.ctx.flif_image_read_row_GRAY16,
-            'P':   None,
-        },}
-
-        reader=self._read_func_map[self.depth][self.mode]
-        if reader is None:
-            raise NotImplementedError(
-                'unsupported, depth: {}, mode: {}'.format(self.depth,self.mode))
-
-        rowsize=len(self.mode)*self.width
-        d=ctypes.create_string_buffer(rowsize)
-
-        buf=io.BytesIO()
-        for r in range(self.height):
-            reader(image,r,ctypes.byref(d),rowsize)
-            buf.write(d.raw)
-        self.raw=buf.getvalue()
-        buf.close()
-
-        self.exif=None
-        metalen=ctypes.c_uint()
-        metaptr=ctypes.POINTER(ctypes.c_ubyte)()
-        rc=self.ctx.flif_image_get_metadata(
-            image,b'eXif',ctypes.byref(metaptr),ctypes.byref(metalen))
-        if rc:
-            self.exif=bytes(bytearray(metaptr[:metalen.value]))
-
-
 class FlifInfo:
     def __init__(self,data):
-        self.ctx=_getloader()
+        self.ctx=ctypes.CDLL(_getloader())
+        self.ctx.flif_read_info_from_memory.restype=ctypes.POINTER(FLIF_INFO)
         self.info=self.ctx.flif_read_info_from_memory(data[:32],32)
 
         self.depth=self.ctx.flif_image_get_depth(self.info)
@@ -208,6 +62,109 @@ class FlifInfo:
     def __exit__(self,etype,value,tb):
         self.close()
 
+class ImageNS:
+    def __init__(self,mode,width,height,depth,delay,exif,palette,raw):
+        self.mode=mode
+        self.width=width
+        self.height=height
+        self.depth=depth
+        self.delay=delay
+        self.exif=exif
+        self.palette=palette
+        self.raw=raw
+        self.size=width,height
+
+def decodeflif(data,path,rc,loop,
+               modelist,widthlist,heightlist,depthlist,delaylist,
+               exiflist,palettelist,rawlist):
+    if not path:
+        rc.value=FLIF_NOT_FOUND
+        return
+    flif=ctypes.CDLL(path)
+    flif.flif_create_decoder.restype=ctypes.POINTER(FLIF_DECODER)
+    flif.flif_decoder_get_image.restype=ctypes.POINTER(FLIF_IMAGE)
+    decoder=flif.flif_create_decoder()
+    flif.flif_decoder_set_crc_check(decoder,1)
+    flif.flif_decoder_decode_memory(decoder,data,len(data))
+    if not rc:
+        rc.value=DECODE_ERROR
+        return
+    _read_func_map={8:{
+        'RGBA':flif.flif_image_read_row_RGBA8,
+        'RGBX':flif.flif_image_read_row_RGBA8,
+        'L':   flif.flif_image_read_row_GRAY8,
+        'P':   flif.flif_image_read_row_PALETTE8,
+    },16:{
+        'RGBA':flif.flif_image_read_row_RGBA16,
+        'RGBX':flif.flif_image_read_row_RGBA16,
+        'L':   flif.flif_image_read_row_GRAY16,
+        'P':   None,
+    },}
+
+    num_images=flif.flif_decoder_num_images(decoder)
+    loop.value=flif.flif_decoder_num_loops(decoder)
+
+    for n in range(num_images):
+        image=flif.flif_decoder_get_image(decoder,n)
+        palette_size=flif.flif_image_get_palette_size(image)
+        nb_channels=flif.flif_image_get_nb_channels(image)
+
+        mode='P' if palette_size else _COLORS_MODE[nb_channels]
+        width=flif.flif_image_get_width(image)
+        height=flif.flif_image_get_height(image)
+        depth=flif.flif_image_get_depth(image)
+        delay=flif.flif_image_get_frame_delay(image)
+
+        palette=None
+        if palette_size:
+            d=ctypes.create_string_buffer(palette_size*4) # RGBA colors
+            flif.flif_image_get_palette(image,ctypes.byref(d))
+            palette=d.raw
+
+        reader=_read_func_map[depth][mode]
+        if reader is None:
+            rc.value=UNSUPPORTED_FORMAT
+            return
+        rowsize=len(mode)*width
+        d=ctypes.create_string_buffer(rowsize)
+        buf=io.BytesIO()
+        for r in range(height):
+            reader(image,r,ctypes.byref(d),rowsize)
+            buf.write(d.raw)
+        raw=buf.getvalue()
+        buf.close()
+
+        exif=None
+        metalen=ctypes.c_uint()
+        metaptr=ctypes.POINTER(ctypes.c_ubyte)()
+        if flif.flif_image_get_metadata(
+                image,b'eXif',ctypes.byref(metaptr),ctypes.byref(metalen)):
+            exif=bytes(bytearray(metaptr[:metalen.value]))
+
+        modelist.append(mode)
+        widthlist.append(width)
+        heightlist.append(height)
+        depthlist.append(depth)
+        delaylist.append(delay)
+        exiflist.append(exif)
+        palettelist.append(palette)
+        rawlist.append(raw)
+
+    flif.flif_destroy_decoder(decoder)
+    rc.value=0
+    return
+
+def _getloader():
+    if _LIBFLIF['failed']:
+        return
+    if _LIBFLIF['path'] is None:
+        path=cutil.find_library('flif_dec') or cutil.find_library('flif')
+        if not hasattr(ctypes.CDLL(path),'flif_create_decoder'):
+            _LIBFLIF['failed']=True
+            return
+        _LIBFLIF['path']=path
+
+    return _LIBFLIF['path']
 
 def _accept(head):
     if _getloader() is None:
@@ -233,11 +190,36 @@ class FlifImageFile(ImageFile.ImageFile):
             mode=_COLORS_MODE[info.nb_channels]
         self.mode='RGB' if mode=='RGBX' else mode
         self.tile=[]
-        with FlifDecoder(self._data) as dec:
-            self.info['loop']=dec.num_loops
-            for n in range(dec.num_images):
-                self._images.append(dec.get_image(index=n))
-        self.seek(0)
+
+        with multiprocessing.Manager() as manager:
+            modelist=manager.list()
+            widthlist=manager.list()
+            heightlist=manager.list()
+            depthlist=manager.list()
+            delaylist=manager.list()
+            exiflist=manager.list()
+            palettelist=manager.list()
+            rawlist=manager.list()
+
+            path=_getloader()
+            rc=manager.Value('b',-1)
+            loop=manager.Value('b',-1)
+            proc=multiprocessing.Process(
+                target=decodeflif,
+                args=(data,path,rc,loop,
+                      modelist,widthlist,heightlist,depthlist,delaylist,
+                      exiflist,palettelist,rawlist))
+            proc.start()
+            proc.join()
+
+            if rc.value:
+                raise RuntimeError('failed to decode.')
+            self.info['loop']=loop.value
+            for attrs in zip(modelist,widthlist,heightlist,depthlist,delaylist,
+                             exiflist,palettelist,rawlist):
+                self._images.append(ImageNS(*attrs))
+
+        return self.seek(0)
 
     def tobytes(self):
         self.load()
