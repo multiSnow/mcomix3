@@ -111,7 +111,7 @@ class ImageHandler(object):
                     del self._raw_pixbufs[index]
             log.debug('Caching page(s) %s',
                       ' '.join([str(index + 1) for index in wanted_pixbufs]))
-            self._wanted_pixbufs = wanted_pixbufs
+            self._wanted_pixbufs[:] = wanted_pixbufs
             # Start caching available images not already in cache.
             wanted_pixbufs = [index for index in wanted_pixbufs
                               if index in self._available_images]
@@ -124,6 +124,9 @@ class ImageHandler(object):
         with self._cache_lock[index]:
             if index in self._raw_pixbufs:
                 return
+            with self._lock:
+                if index not in self._wanted_pixbufs:
+                    return
             log.debug('Caching page %u', index + 1)
             try:
                 pixbuf = image_tools.load_pixbuf(self._image_files[index])
@@ -219,7 +222,9 @@ class ImageHandler(object):
         self._current_image_index = None
         self._available_images.clear()
         self._raw_pixbufs.clear()
-        self._cache_lock.clear()
+        for index, lock in self._cache_lock.items():
+            with lock:
+                pass
 
     def page_is_available(self, page=None):
         ''' Returns True if <page> is available and calls to get_pixbufs
