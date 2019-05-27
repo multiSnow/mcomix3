@@ -217,14 +217,15 @@ class ImageHandler(object):
         self.last_wanted = 1
 
         self._thread.renew()
+        self._wanted_pixbufs.clear()
+        while self._cache_lock:
+            index, lock = self._cache_lock.popitem()
+            with lock:pass
         self._base_path = None
         self._image_files.clear()
         self._current_image_index = None
         self._available_images.clear()
         self._raw_pixbufs.clear()
-        for index, lock in self._cache_lock.items():
-            with lock:
-                pass
 
     def page_is_available(self, page=None):
         ''' Returns True if <page> is available and calls to get_pixbufs
