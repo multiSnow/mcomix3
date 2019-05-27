@@ -75,9 +75,10 @@ class ImageNS:
         self.raw=raw
         self.size=width,height
 
-def decodeflif(data,path,draft_width,draft_height,loop,
+def decodeflif(const,loop,
                modelist,widthlist,heightlist,depthlist,delaylist,
                exiflist,palettelist,rawlist):
+    data,path,draft_width,draft_height=const
     if not path:
         exit(FLIF_NOT_FOUND)
     flif=ctypes.CDLL(path)
@@ -215,11 +216,13 @@ class FlifImageFile(ImageFile.ImageFile):
             palettelist=manager.list()
             rawlist=manager.list()
 
-            path=_getloader()
+            const=manager.list([self._data,_getloader(),
+                                self._draft_width,self._draft_height])
+
             loop=manager.Value('b',-1)
             proc=multiprocessing.Process(
                 target=decodeflif,
-                args=(self._data,path,self._draft_width,self._draft_height,loop,
+                args=(const,loop,
                       modelist,widthlist,heightlist,depthlist,delaylist,
                       exiflist,palettelist,rawlist))
             proc.start()
