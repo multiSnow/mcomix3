@@ -569,7 +569,7 @@ class _BookArea(Gtk.ScrolledWindow):
         if len(paths) == 1:
             model = self._iconview.get_model()
             iter = model.get_iter(paths[0])
-            book_path = model.get_value(iter, 2)
+            book_path = os.path.abspath(model.get_value(iter, 2))
 
             self._library._window.clipboard.copy_book_path(book_path)
 
