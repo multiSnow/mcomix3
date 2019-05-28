@@ -193,8 +193,6 @@ class EventHandler(object):
                          self._window.close_program)
         manager.register('save_and_quit',
                          self._window.save_and_terminate_program)
-        manager.register('delete',
-                         self._window.delete)
         manager.register('extract_page',
                          self._window.extract_page)
         manager.register('refresh_archive',
