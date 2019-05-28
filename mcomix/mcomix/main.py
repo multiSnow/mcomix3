@@ -1042,58 +1042,6 @@ class MainWindow(Gtk.Window):
 
         save_dialog.destroy()
 
-    def delete(self, *args):
-        ''' The currently opened file/archive will be deleted after showing
-        a confirmation dialog. '''
-
-        current_file = self.imagehandler.get_real_path()
-        dialog = message_dialog.MessageDialog(
-            parent=self,
-            flags=Gtk.DialogFlags.MODAL,
-            message_type=Gtk.MessageType.QUESTION,
-            buttons=Gtk.ButtonsType.NONE)
-        dialog.add_buttons(
-            Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-            Gtk.STOCK_DELETE, Gtk.ResponseType.OK)
-        dialog.set_default_response(Gtk.ResponseType.OK)
-        dialog.set_should_remember_choice(
-            'delete-opend-file',
-            (Gtk.ResponseType.OK,))
-        dialog.set_text(
-                _('Delete "%s"?') % os.path.basename(current_file),
-                _('The file will be permanently deleted from your drive.'))
-        result = dialog.run()
-
-        if result == Gtk.ResponseType.OK:
-            # Go to next page/archive, and delete current file
-            if self.filehandler.archive_type is not None:
-                self.filehandler.last_read_page.clear_page(current_file)
-
-                next_opened = self.filehandler._open_next_archive()
-                if not next_opened:
-                    next_opened = self.filehandler._open_previous_archive()
-                if not next_opened:
-                    self.filehandler.close_file()
-
-                if os.path.isfile(current_file):
-                    os.unlink(current_file)
-            else:
-                if self.imagehandler.get_number_of_pages() > 1:
-                    # Open the next/previous file
-                    if self.imagehandler.get_current_page() >= self.imagehandler.get_number_of_pages():
-                        self.flip_page(-1)
-                    else:
-                        self.flip_page(+1)
-                    # Unlink the desired file
-                    if os.path.isfile(current_file):
-                        os.unlink(current_file)
-                    # Refresh the directory
-                    self.filehandler.refresh_file()
-                else:
-                    self.filehandler.close_file()
-                    if os.path.isfile(current_file):
-                        os.unlink(current_file)
-
     def show_info_panel(self):
         ''' Shows an OSD displaying information about the current page. '''
 

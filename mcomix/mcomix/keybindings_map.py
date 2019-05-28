@@ -152,8 +152,6 @@ BINDING_INFO = {
                   'group': _('User interface')},
 
     # File operations
-    'delete': {'title': _('Delete'),
-               'group': _('File')},
     'refresh_archive': {'title': _('Refresh'),
                         'group': _('File')},
     'close': {'title': _('Close'),
@@ -287,7 +285,6 @@ DEFAULT_BINDINGS = {
     'slideshow':['<Control>S'],
 
     # File operations
-    'delete':['Delete'],
     'refresh_archive':['<control><shift>R'],
     'close':['<Control>W'],
     'quit':['<Control>Q'],

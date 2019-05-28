@@ -104,7 +104,6 @@ class _BookArea(Gtk.ScrolledWindow):
                 <separator />
                 <menuitem action="remove from collection" />
                 <menuitem action="remove from library" />
-                <menuitem action="completely remove" />
                 <separator />
                 <menuitem action="copy path to clipboard" />
                 <menuitem action="copy cover to clipboard" />
@@ -152,12 +151,8 @@ class _BookArea(Gtk.ScrolledWindow):
              self._remove_books_from_collection),
             ('remove from library', Gtk.STOCK_REMOVE,
              _('Remove from the _library'), None,
-             _('Completely removes the selected books from the library.'),
+             _('Removes the selected books from the library.'),
              self._remove_books_from_library),
-            ('completely remove', Gtk.STOCK_DELETE,
-             _('_Remove and delete from disk'), None,
-             _('Deletes the selected books from disk.'),
-             self._completely_remove_book),
             ('copy path to clipboard', Gtk.STOCK_COPY,
              _('_Copy'), None,
              _('Copies the selected book\'s path to clipboard.'),
@@ -558,51 +553,6 @@ class _BookArea(Gtk.ScrolledWindow):
             len(selected))
         self._library.set_status_message(msg % len(selected))
 
-    def _completely_remove_book(self, request_response=True, *args):
-        '''Remove the currently selected books from the library and the
-        hard drive.
-        '''
-
-        if request_response:
-
-            choice_dialog = message_dialog.MessageDialog(
-                self._library,
-                flags=Gtk.DialogFlags.MODAL,
-                message_type=Gtk.MessageType.QUESTION,
-                buttons=Gtk.ButtonsType.NONE)
-            choice_dialog.add_buttons(
-                Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-                Gtk.STOCK_DELETE, Gtk.ResponseType.OK)
-            choice_dialog.set_default_response(Gtk.ResponseType.OK)
-            choice_dialog.set_should_remember_choice(
-                'library-remove-book-from-disk',
-                (Gtk.ResponseType.OK,))
-            choice_dialog.set_text(
-                _('Delete selected books?'),
-                _('The selected books will be permanently deleted from your drive.'))
-            response = choice_dialog.run()
-
-        # if no request is needed or the user has told us they definitely want to delete the book
-        if not request_response or (request_response and response == Gtk.ResponseType.OK):
-
-            # get the array of currently selected books in the book window
-            selected_books = self._iconview.get_selected_items()
-            book_ids = [self.get_book_at_path(book) for book in selected_books]
-            paths = [self._library.backend.get_book_path(book_id) for book_id in book_ids]
-
-            # Remove books from library
-            self._remove_books_from_library()
-
-            # Remove from the harddisk
-            for book_path in paths:
-                try:
-                    # try to delete the book.
-                    # this can throw an exception if the path points to folder instead
-                    # of a single file
-                    os.remove(book_path)
-                except Exception:
-                    log.error(_('! Could not remove file "%s"'), book_path)
-
     def _copy_selected_cover(self, *args):
         ''' Copies the currently selected item's path to clipboard. '''
         paths = self._iconview.get_selected_items()
@@ -642,7 +592,7 @@ class _BookArea(Gtk.ScrolledWindow):
         collection = self._library.collection_area.get_current_collection()
         is_collection_all = collection == _COLLECTION_ALL
 
-        for action in ('open', 'open keep library', 'remove from library', 'completely remove'):
+        for action in ('open', 'open keep library', 'remove from library'):
             self._set_sensitive(action, books_selected)
 
         self._set_sensitive('_title', False)
