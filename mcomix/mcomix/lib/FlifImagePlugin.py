@@ -17,7 +17,7 @@
 import io
 import ctypes
 import ctypes.util as cutil
-import multiprocessing
+import multiprocessing as mp
 import sys
 
 from PIL import Image,ImageFile,ImagePalette
@@ -39,30 +39,6 @@ class FLIF_DECODER(ctypes.Structure):pass
 class FLIF_IMAGE(ctypes.Structure):pass
 class FLIF_INFO(ctypes.Structure):pass
 
-class FlifInfo:
-    def __init__(self,data):
-        self.ctx=ctypes.CDLL(_getloader())
-        self.ctx.flif_read_info_from_memory.restype=ctypes.POINTER(FLIF_INFO)
-        self.info=self.ctx.flif_read_info_from_memory(data[:32],32)
-
-        self.depth=self.ctx.flif_image_get_depth(self.info)
-        self.width=self.ctx.flif_info_get_width(self.info)
-        self.height=self.ctx.flif_info_get_height(self.info)
-        self.size=self.width,self.height
-        self.nb_channels=self.ctx.flif_info_get_nb_channels(self.info)
-        self.num_images=self.ctx.flif_info_num_images(self.info)
-
-    def close(self):
-        if self.info is not None:
-            self.ctx.flif_destroy_info(self.info)
-            self.info=None
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self,etype,value,tb):
-        self.close()
-
 class ImageNS:
     def __init__(self,mode,width,height,depth,delay,exif,palette,raw):
         self.mode=mode
@@ -74,6 +50,34 @@ class ImageNS:
         self.palette=palette
         self.raw=raw
         self.size=width,height
+
+def getflifinfo(const,flifinfo):
+    data,path=const
+    if not path:
+        exit(FLIF_NOT_FOUND)
+    flif=ctypes.CDLL(path)
+    flif.flif_read_info_from_memory.restype=ctypes.POINTER(FLIF_INFO)
+
+    info=flif.flif_read_info_from_memory(data[:32],32)
+
+    width=flif.flif_info_get_width(info)
+    height=flif.flif_info_get_height(info)
+    nb_channels=flif.flif_info_get_nb_channels(info)
+    num_images=flif.flif_info_num_images(info)
+    mode=_COLORS_MODE[nb_channels]
+    mode='RGB' if mode=='RGBX' else mode
+
+    try:
+        flifinfo.width=width
+        flifinfo.height=height
+        flifinfo.n_frames=num_images
+        flifinfo.mode=mode
+    except:
+        flif.flif_destroy_info(info)
+        exit(DECODE_ERROR)
+
+    flif.flif_destroy_info(info)
+    exit(0)
 
 def decodeflif(const,loop,
                modelist,widthlist,heightlist,depthlist,delaylist,
@@ -196,17 +200,25 @@ class FlifImageFile(ImageFile.ImageFile):
         self._images=[] # list of FlifImage
         self._pos=0 # position of currect frame
 
-        with FlifInfo(self._data) as info:
-            self._size=info.width,info.height
-            self._n_frames=info.num_images
-            mode=_COLORS_MODE[info.nb_channels]
-        self.mode='RGB' if mode=='RGBX' else mode
+        with mp.Manager() as manager:
+            flifinfo=manager.Namespace()
+            const=manager.list([self._data[:32],_getloader()])
+            proc=mp.Process(
+                target=getflifinfo,args=(const,flifinfo))
+            proc.start()
+            proc.join()
+            if proc.exitcode:
+                raise RuntimeError('failed to decode, {}.',proc.exitcode)
+            self._size=flifinfo.width,flifinfo.height
+            self._n_frames=flifinfo.n_frames
+            self.mode=flifinfo.mode
+
         self.tile=[]
 
     def load(self):
         if self._images:
             return super().load()
-        with multiprocessing.Manager() as manager:
+        with mp.Manager() as manager:
             modelist=manager.list()
             widthlist=manager.list()
             heightlist=manager.list()
@@ -220,7 +232,7 @@ class FlifImageFile(ImageFile.ImageFile):
                                 self._draft_width,self._draft_height])
 
             loop=manager.Value('b',-1)
-            proc=multiprocessing.Process(
+            proc=mp.Process(
                 target=decodeflif,
                 args=(const,loop,
                       modelist,widthlist,heightlist,depthlist,delaylist,
