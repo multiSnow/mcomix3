@@ -80,6 +80,7 @@ class Packer(object):
 
                 except Exception as e:
                     log.error(_('! Could not create archive, {}').format(e))
+                    return
 
             # full data of zipfile is completed here
             archivedata = buf.getvalue()
