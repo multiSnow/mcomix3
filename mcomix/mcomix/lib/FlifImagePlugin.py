@@ -15,8 +15,6 @@
 # PERFORMANCE OF THIS SOFTWARE.
 
 import io
-import ctypes
-import ctypes.util as cutil
 import multiprocessing as mp
 import sys
 
@@ -35,9 +33,6 @@ _COLORS_MODE={
 
 FLIF_NOT_FOUND,DECODE_ERROR,UNSUPPORTED_FORMAT=range(3)
 
-class FLIF_DECODER(ctypes.Structure):pass
-class FLIF_IMAGE(ctypes.Structure):pass
-class FLIF_INFO(ctypes.Structure):pass
 
 class ImageNS:
     def __init__(self,mode,width,height,depth,delay,exif,palette,raw):
@@ -51,10 +46,15 @@ class ImageNS:
         self.raw=raw
         self.size=width,height
 
+
 def getflifinfo(const,flifinfo):
     data,path=const
     if not path:
         exit(FLIF_NOT_FOUND)
+
+    import ctypes
+    class FLIF_INFO(ctypes.Structure):pass
+
     flif=ctypes.CDLL(path)
     flif.flif_read_info_from_memory.restype=ctypes.POINTER(FLIF_INFO)
 
@@ -79,12 +79,18 @@ def getflifinfo(const,flifinfo):
     flif.flif_destroy_info(info)
     exit(0)
 
+
 def decodeflif(const,loop,
                modelist,widthlist,heightlist,depthlist,delaylist,
                exiflist,palettelist,rawlist):
     data,path,draft_width,draft_height=const
     if not path:
         exit(FLIF_NOT_FOUND)
+
+    import ctypes
+    class FLIF_DECODER(ctypes.Structure):pass
+    class FLIF_IMAGE(ctypes.Structure):pass
+
     flif=ctypes.CDLL(path)
     flif.flif_create_decoder.restype=ctypes.POINTER(FLIF_DECODER)
     flif.flif_decoder_get_image.restype=ctypes.POINTER(FLIF_IMAGE)
@@ -168,22 +174,40 @@ def decodeflif(const,loop,
     flif.flif_destroy_decoder(decoder)
     exit(0)
 
+
+def testlibrary(path):
+
+    import ctypes
+    import ctypes.util as cutil
+    libname=cutil.find_library('flif_dec') or cutil.find_library('flif')
+    rc=hasattr(ctypes.CDLL(libname),'flif_create_decoder')
+    if rc:
+        path.name=libname
+    exit(0 if rc else 1)
+
+
 def _getloader():
     if _LIBFLIF['failed']:
         return
     if _LIBFLIF['path'] is None:
-        path=cutil.find_library('flif_dec') or cutil.find_library('flif')
-        if not hasattr(ctypes.CDLL(path),'flif_create_decoder'):
-            _LIBFLIF['failed']=True
-            return
-        _LIBFLIF['path']=path
+        with mp.Manager() as manager:
+            path=manager.Namespace()
+            proc=mp.Process(target=testlibrary,args=(path,))
+            proc.start()
+            proc.join()
+            if proc.exitcode:
+                _LIBFLIF['failed']=True
+                return
+            _LIBFLIF['path']=path.name
 
     return _LIBFLIF['path']
+
 
 def _accept(head):
     if _getloader() is None:
         return False
     return head[:4]==b'FLIF'
+
 
 class FlifImageFile(ImageFile.ImageFile):
     format='FLIF'
@@ -310,6 +334,7 @@ class FlifImageFile(ImageFile.ImageFile):
     @property
     def is_animated(self):
         return self._n_frames>1
+
 
 if _getloader() is not None:
     Image.register_open(FlifImageFile.format,FlifImageFile,_accept)
