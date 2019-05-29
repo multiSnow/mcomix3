@@ -14,6 +14,45 @@
 # TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 # PERFORMANCE OF THIS SOFTWARE.
 
+
+# NOTE
+# Currently, flif encode/decode library provided by official reference
+# is still not stable enough.
+#
+# One of the most problem is that it is not thread-safe,
+# caused by global variables of the library, which is already reported in
+# https://github.com/FLIF-hub/FLIF/issues/517
+#
+# Usually there are two ways to easily deal with a not thread-safe library,
+# one is lock and the other is child process.
+# Here meets another problem.
+#
+# If a shared library is opened in a process (by using ctypes, of cource),
+# and some code of the library crashed, e.g. segfault,
+# the process also dead without any cleanup by python.
+#
+# TL;DR
+# Load libflif_dec/libflif in a child process to avoid main process crashed.
+
+# 注意
+# (这篇中文注意是为了避免我糟糕的英语可能产生的歧义)
+#
+# FLIF的官方编解码库尚不稳定。
+# 一个主要的问题是线程不安全，这是由编解码库中使用了全局变量而导致的。
+# 官方的代码库已经有人报告了这个问题。
+# 而由于ctypes调用外部函数时并没有被GIL锁定，调用时应当采取额外的措施。
+# 例如使用线程锁，或在子进程中调用。
+# 这里就牵涉到另一个问题。
+#
+# 理所当然地，如果一个进程调用的外部函数执行了错误的行为，
+# 这将导致系统对其发出立即中止的信号，例如段错误，那么该进程将立即中止。
+# 这不是python的try语句或会话管理能够处理的情况。
+# 这很危险，会造成无法预料的后果。
+#
+# 简而言之，就是：
+# 把ctypes的调用全部隔离到子进程。
+
+
 import io
 import multiprocessing as mp
 import sys
