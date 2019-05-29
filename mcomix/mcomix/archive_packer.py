@@ -1,8 +1,10 @@
 '''archive_packer.py - Archive creation class.'''
 
+import io
 import os
-import zipfile
+import shutil
 import threading
+import zipfile
 
 from mcomix import log
 
@@ -52,65 +54,55 @@ class Packer(object):
         return self._packing_successful
 
     def _thread_pack(self):
-        try:
-            zfile = zipfile.ZipFile(self._archive_path, 'w')
-        except Exception:
-            log.error(_('! Could not create archive at path "%s"'),
-                      self._archive_path)
+
+        used = set()
+        fmt = '{{page:0{}d}} - {}{{ext}}'.format(
+            len(str(len(self._image_files))), self._base_name)
+        with io.BytesIO() as buf:
+            with zipfile.ZipFile(buf, mode='w', allowZip64=True) as zfile:
+                try:
+                    for i, path in enumerate(self._image_files, start=1):
+                        b, e = os.path.splitext(path)
+                        fname = fmt.format(page=i, ext=e)
+                        used.add(fname)
+                        zfile.write(path, arcname=fname,
+                                    compress_type=zipfile.ZIP_DEFLATED,
+                                    compresslevel=9)
+
+                    for path in self._other_files:
+                        fname = os.path.basename(path)
+                        while fname in used:
+                            fname = '_{}'.format(fname)
+                        used.add(fname)
+                        zfile.write(path, arcname=fname,
+                                    compress_type=zipfile.ZIP_DEFLATED,
+                                    compresslevel=9)
+
+                except Exception as e:
+                    log.error(_('! Could not create archive, {}').format(e))
+
+            # full data of zipfile is completed here
+            archivedata = buf.getvalue()
+
+        archive_dir = os.path.dirname(self._archive_path)
+        archive_len = len(archivedata)
+        if shutil.disk_usage(archive_dir).free < archive_len:
+            log.error(_('! Directory {} is out of space, {} needed.').format(
+                archive_dir, tools.format_byte_size(archive_len)
+            ))
             return
 
-        used_names = []
-        pattern = '%%0%dd - %s%%s' % (len(str(len(self._image_files))),
-            self._base_name)
-
-        for i, path in enumerate(self._image_files):
-            filename = pattern % (i + 1, os.path.splitext(path)[1])
-
+        try:
+            with open(self._archive_path, mode='wb') as fp:
+                fp.write(archivedata)
+        except Exception as e:
+            log.error(_('! Could not create archive at path "%s", {}').format(e),
+                      self._archive_path)
             try:
-                zfile.write(path, filename, zipfile.ZIP_STORED)
-            except Exception:
-                log.error(_('! Could not add file %(sourcefile)s '
-                            'to archive %(archivefile)s, aborting...'),
-                          {'sourcefile': path,
-                           'archivefile': self._archive_path})
-
-                zfile.close()
-
-                try:
-                    os.remove(self._archive_path)
-                except:
-                    pass
-
-                return
-
-            used_names.append(filename)
-
-        for path in self._other_files:
-            filename = os.path.basename(path)
-
-            while filename in used_names:
-                filename = '_%s' % filename
-
-            try:
-                zfile.write(path, filename, zipfile.ZIP_DEFLATED)
-            except Exception:
-                log.error(_('! Could not add file %(sourcefile)s '
-                            'to archive %(archivefile)s, aborting...'),
-                          {'sourcefile': path,
-                           'archivefile': self._archive_path})
-
-                zfile.close()
-
-                try:
-                    os.remove(self._archive_path)
-                except:
-                    pass
-
-                return
-
-            used_names.append(filename)
-
-        zfile.close()
-        self._packing_successful = True
+                os.remove(self._archive_path)
+            except:
+                pass
+        else:
+            self._packing_successful = True
 
 # vim: expandtab:sw=4:ts=4
