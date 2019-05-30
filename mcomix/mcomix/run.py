@@ -29,7 +29,7 @@ def wait_and_exit():
 
 def print_version():
     '''Print the version number and exit.'''
-    print(constants.APPNAME + ' ' + constants.VERSION)
+    print(constants.APPNAME, constants.VERSION)
     sys.exit(0)
 
 def parse_arguments():
@@ -179,7 +179,7 @@ def run():
             p = os.path.join(constants.STARTDIR, open_path[n])
             p = os.path.normpath(p)
             if not os.path.exists(p):
-                log.error(_('{} not exists.'.format(p)))
+                log.error(_('{} not exists.').format(p))
                 open_path.pop(n)
                 continue
             open_path[n] = p
