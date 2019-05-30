@@ -149,12 +149,22 @@ class _EditArchiveDialog(Gtk.Dialog):
 
             src_path = self.file_handler.get_path_to_base()
 
+            archive_name = os.path.basename(src_path)
+            if os.path.isfile(src_path):
+                archive_name = os.path.splitext(archive_name)[0]
+
             dialog.set_current_directory(os.path.dirname(src_path))
-            dialog.set_save_name('%s.cbz' % os.path.splitext(
-                os.path.basename(src_path))[0])
-            dialog.filechooser.set_extra_widget(Gtk.Label(label=
-                _('Archives are stored as ZIP files.')))
-            dialog.add_archive_filters()
+            dialog.set_save_name(archive_name+'.zip')
+            dialog.filechooser.set_extra_widget(Gtk.Label(
+                label=_('Archives are stored as ZIP files.')))
+
+            ffilter = Gtk.FileFilter()
+            ffilter.set_name(_('ZIP archives'))
+            dialog.filechooser.add_filter(ffilter)
+            for ext, mime in constants.ZIP_FORMATS:
+                ffilter.add_mime_type(mime)
+                ffilter.add_pattern('*'+ext)
+
             dialog.run()
 
             paths = dialog.get_paths()
