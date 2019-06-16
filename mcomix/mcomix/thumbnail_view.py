@@ -109,7 +109,9 @@ class ThumbnailViewBase(object):
             if self._taskid != taskid:
                 return
             iter, pixbuf, model = params
-            model.set(iter, self._status_column, True, self._pixbuf_column, pixbuf)
+            GLib.idle_add(
+                model.set,
+                iter, self._status_column, True, self._pixbuf_column, pixbuf)
 
 class ThumbnailIconView(Gtk.IconView, ThumbnailViewBase):
     def __init__(self, model, uid_column, pixbuf_column, status_column):
