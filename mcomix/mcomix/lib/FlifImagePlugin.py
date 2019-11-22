@@ -375,7 +375,8 @@ class FlifImageFile(ImageFile.ImageFile):
         return self._n_frames>1
 
 
-if _getloader() is not None:
+def _init_plugin():
+    if _getloader() is None:return
     Image.register_open(FlifImageFile.format,FlifImageFile,_accept)
     Image.register_extension(FlifImageFile.format,'.flif')
     Image.register_mime(FlifImageFile.format,'image/flif')

@@ -34,6 +34,9 @@ assert MISSING_IMAGE_ICON
 GTK_GDK_COLOR_BLACK = Gdk.color_parse('black')
 GTK_GDK_COLOR_WHITE = Gdk.color_parse('white')
 
+if prefs['try FLIF support']:
+    FlifImagePlugin._init_plugin()
+
 def _getexif(im):
     exif={}
     try:
