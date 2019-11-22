@@ -344,6 +344,11 @@ class _PreferencesDialog(Gtk.Dialog):
         page.add_row(Gtk.Label(label=_('Sort archives by:')),
             self._create_archive_sort_by_control())
 
+        page.add_row(self._create_pref_check_button(
+            _('Ignore file extension to sort archives'),
+            'ignore archive file extension',
+            _('Do not use file extension when sorting archives. This permits to sort x before x.5.')))
+
         page.new_section(_('File detection'))
 
         page.add_row(self._create_pref_check_button(

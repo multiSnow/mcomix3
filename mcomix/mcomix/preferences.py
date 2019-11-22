@@ -22,6 +22,7 @@ prefs = {
     'sort order': constants.SORT_ASCENDING,
     'sort archive by': constants.SORT_NAME,  # Files in archives
     'sort archive order': constants.SORT_ASCENDING,
+    'ignore archive file extension': False,
     'bg colour': [0, 0, 0, 0],
     'thumb bg colour': [0, 0, 0, 0],
     'smart bg': False,

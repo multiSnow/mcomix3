@@ -71,11 +71,13 @@ class FileProvider(object):
             yield from os.listdir(root)
 
     @staticmethod
-    def sort_files(files):
+    def sort_files(files, mode=None):
         ''' Sorts a list of C{files} depending on the current preferences.
         The list is sorted in-place. '''
         if prefs['sort by'] == constants.SORT_NAME:
-            tools.alphanumeric_sort(files)
+            tools.alphanumeric_sort(files,
+                                    mode == FileProvider.ARCHIVES and
+                                    prefs['ignore archive file extension'])
         elif prefs['sort by'] == constants.SORT_LAST_MODIFIED:
             # Most recently modified file first
             files.sort(key=lambda filename: os.path.getmtime(filename)*-1)
@@ -143,7 +145,7 @@ class OrderedFileProvider(FileProvider):
                         self.base_dir)
             return []
 
-        FileProvider.sort_files(files)
+        FileProvider.sort_files(files, mode)
         return [fname_map[fpath] for fpath in files]
 
     def next_directory(self):

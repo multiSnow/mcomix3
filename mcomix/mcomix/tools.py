@@ -20,7 +20,7 @@ def cmp(x,y):
     if x<y:return -1
     return 0
 
-def alphanumeric_sort(filenames):
+def alphanumeric_sort(filenames, ignore_extension=False):
     '''Do an in-place alphanumeric sort of the strings in <filenames>,
     such that for an example "1.jpg", "2.jpg", "10.jpg" is a sorted
     ordering.
@@ -31,7 +31,8 @@ def alphanumeric_sort(filenames):
 
         return 1,s.lower()
 
-    filenames.sort(key=lambda s: list(map(_format_substring, NUMERIC_REGEXP.findall(s))))
+    filenames.sort(key=lambda s: list(map(_format_substring, NUMERIC_REGEXP.findall(
+        os.path.splitext(s)[0] if ignore_extension else s))))
 
 def alphanumeric_compare(s1, s2):
     ''' Compares two strings by their natural order (i.e. 1 before 10)
