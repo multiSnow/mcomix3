@@ -418,9 +418,9 @@ class EventHandler(object):
 
                 # over flip with shift pressed
                 if event.get_state() & Gdk.ModifierType.SHIFT_MASK:
-                    distance *= 10
+                    direction *= 10
 
-                self._flip_page(distance * direction)
+                self._flip_page(distance)
 
             else:
                 self._window.was_out_of_focus = False
