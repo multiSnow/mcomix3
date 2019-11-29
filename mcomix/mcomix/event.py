@@ -420,7 +420,7 @@ class EventHandler(object):
                 if event.get_state() & Gdk.ModifierType.SHIFT_MASK:
                     direction *= 10
 
-                self._flip_page(distance)
+                self._flip_page(direction)
 
             else:
                 self._window.was_out_of_focus = False
