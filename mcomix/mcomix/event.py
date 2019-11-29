@@ -403,16 +403,24 @@ class EventHandler(object):
 
         self._window.cursor_handler.set_cursor_type(constants.NORMAL_CURSOR)
 
-        if (event.button == 1):
+        if event.button == 1:
 
             if event.x_root == self._pressed_pointer_pos_x and \
                event.y_root == self._pressed_pointer_pos_y and \
                not self._window.was_out_of_focus:
 
+                # right to next, left to previous, no matter the double page mode
+                direction = 1 if event.x > widget.get_property('width') // 2 else -1
+
+                # if in manga mode, left to next, right to previous
+                if self._window.is_manga_mode:
+                    direction *= -1
+
+                # over flip with shift pressed
                 if event.get_state() & Gdk.ModifierType.SHIFT_MASK:
-                    self._flip_page(10)
-                else:
-                    self._flip_page(1)
+                    distance *= 10
+
+                self._flip_page(distance * direction)
 
             else:
                 self._window.was_out_of_focus = False
