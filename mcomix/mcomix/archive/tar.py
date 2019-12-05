@@ -21,7 +21,7 @@ class TarArchive(archive_base.NonUnicodeArchive):
         # {unicode_name: TarInfo}
         self._contents_info = collections.OrderedDict()
         for member in self._tar.getmembers():
-            if tarfile.ENCODING is 'utf-8':
+            if tarfile.ENCODING == 'utf-8':
                 # filename is utf8 encoded
                 self._contents_info[member.name] = member
             else:
