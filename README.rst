@@ -34,7 +34,7 @@ Install:
 
 then:
 
-``python3 <somewere>/mcomix/mcomixstarter.py <diretory, archive or image>``
+``python3 <somewere>/mcomix/mcomixstarter.py <directory, archive or image>``
 
 .. _original mcomix: https://sourceforge.net/projects/mcomix/
 .. _1: https://www.python.org/downloads/
