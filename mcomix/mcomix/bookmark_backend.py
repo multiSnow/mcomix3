@@ -6,6 +6,7 @@ from gi.repository import Gtk
 import operator
 import datetime
 import time
+import shutil
 
 from mcomix import constants
 from mcomix import log
@@ -141,8 +142,8 @@ class __BookmarksStore(object):
             try:
                 mtime = os.stat(path).st_mtime
                 with open(path, 'rb') as fd:
-                    version = pickle.load(fd)
-                    packs = pickle.load(fd)
+                    version = pickle.load(fd, encoding='latin1')
+                    packs = pickle.load(fd, encoding='latin1')
 
                     for pack in packs:
                         # Handle old bookmarks without date_added attribute
@@ -155,6 +156,13 @@ class __BookmarksStore(object):
 
             except Exception:
                 log.error(_('! Could not parse bookmarks file %s'), path)
+                backup_path = path + '.bak'
+                if not os.path.exists(backup_path):
+                    log.warning(_('! Backing up bookmarks file to %s'), backup_path)
+                    shutil.copyfile(path, backup_path)
+                else:
+                    log.error(_('! Cannot create backup bookmarks file at %s'), backup_path)
+                    raise
 
         return bookmarks, mtime
 
