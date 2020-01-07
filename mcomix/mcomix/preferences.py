@@ -2,7 +2,6 @@
 write them.  '''
 
 import os
-import pickle
 import json
 
 from mcomix import constants

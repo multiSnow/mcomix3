@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 '''file_handler.py - File handler that takes care of opening archives and images.'''
 
+import json
 import os
 import re
-import pickle
+
 from gi.repository import Gtk
 
 from mcomix.preferences import prefs
@@ -631,23 +632,23 @@ class FileHandler(object):
             page_index = self._window.imagehandler.get_current_page() - 1
             current_file_info = [path, page_index]
 
-            with open(constants.FILEINFO_PICKLE_PATH, 'wb') as config:
-                pickle.dump(current_file_info, config, pickle.HIGHEST_PROTOCOL)
+            with open(constants.FILEINFO_JSON_PATH, mode='wt', encoding='utf8') as config:
+                json.dump(current_file_info, config)
 
     def read_fileinfo_file(self):
         '''Read last loaded file info from disk.'''
 
         fileinfo = None
 
-        if os.path.isfile(constants.FILEINFO_PICKLE_PATH):
+        if os.path.isfile(constants.FILEINFO_JSON_PATH):
             try:
-                with open(constants.FILEINFO_PICKLE_PATH, 'rb') as config:
-                    fileinfo = pickle.load(config)
+                with open(constants.FILEINFO_JSON_PATH, mode='rt', encoding='utf8') as config:
+                    fileinfo = json.load(config)
             except Exception as ex:
                 log.error(_('! Corrupt preferences file "%s", deleting...'),
-                          constants.FILEINFO_PICKLE_PATH )
+                          constants.FILEINFO_JSON_PATH )
                 log.info('Error was: %s', ex)
-                os.remove(constants.FILEINFO_PICKLE_PATH)
+                os.remove(constants.FILEINFO_JSON_PATH)
 
         return fileinfo
 

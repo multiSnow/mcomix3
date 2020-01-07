@@ -1,11 +1,11 @@
 '''bookmark_backend.py - Bookmarks handler.'''
 
-import os
-import pickle
-from gi.repository import Gtk
+import json
 import operator
-import datetime
+import os
 import time
+
+from gi.repository import Gtk
 
 from mcomix import constants
 from mcomix import log
@@ -48,10 +48,11 @@ class __BookmarksStore(object):
                 bookmark._window = window
                 bookmark._file_handler = window.filehandler
 
-    def add_bookmark_by_values(self, name, path, page, numpages, archive_type, date_added):
+    def add_bookmark_by_values(self, name, path, page, numpages, archive_type, epoch):
         '''Create a bookmark and add it to the list.'''
-        bookmark = bookmark_menu_item._Bookmark(self._window, self._file_handler,
-            name, path, page, numpages, archive_type, date_added)
+        bookmark = bookmark_menu_item._Bookmark(
+            self._window, self._file_handler,
+            name, path, page, numpages, archive_type, epoch)
 
         self.add_bookmark(bookmark)
 
@@ -82,7 +83,7 @@ class __BookmarksStore(object):
         page = self._image_handler.get_current_page()
         numpages = self._image_handler.get_number_of_pages()
         archive_type = self._file_handler.archive_type
-        date_added = datetime.datetime.now()
+        epoch = time.time()
 
         same_file_bookmarks = []
 
@@ -107,8 +108,8 @@ class __BookmarksStore(object):
             elif response not in (Gtk.ResponseType.YES, Gtk.ResponseType.NO):
                 return
 
-        self.add_bookmark_by_values(name, path, page, numpages,
-            archive_type, date_added)
+        self.add_bookmark_by_values(
+            name, path, page, numpages, archive_type, epoch)
 
     def clear_bookmarks(self):
         '''Remove all bookmarks from the list.'''
@@ -133,35 +134,28 @@ class __BookmarksStore(object):
         @return: Tuple of (bookmarks, file mtime)
         '''
 
-        path = constants.BOOKMARK_PICKLE_PATH
+        path = constants.BOOKMARK_JSON_PATH
         bookmarks = []
         mtime = 0
 
         if os.path.isfile(path):
             try:
                 mtime = os.stat(path).st_mtime
-                with open(path, 'rb') as fd:
-                    version = pickle.load(fd)
-                    packs = pickle.load(fd)
-
-                    for pack in packs:
-                        # Handle old bookmarks without date_added attribute
-                        if len(pack) == 5:
-                            pack = pack + (datetime.datetime.now(),)
-
-                        bookmark = bookmark_menu_item._Bookmark(self._window,
-                                                                self._file_handler, *pack)
-                        bookmarks.append(bookmark)
-
+                with open(path, mode='rt', encoding='utf8') as fd:
+                    version,packs = json.load(fd)
             except Exception:
                 log.error(_('! Could not parse bookmarks file %s'), path)
+            else:
+                for pack in packs:
+                    bookmarks.append(bookmark_menu_item._Bookmark(
+                        self._window, self._file_handler, *pack))
 
         return bookmarks, mtime
 
     def file_was_modified(self):
         ''' Checks the bookmark store's mtime to see if it has been modified
         since it was last read. '''
-        path = constants.BOOKMARK_PICKLE_PATH
+        path = constants.BOOKMARK_JSON_PATH
         if os.path.isfile(path):
             try:
                 mtime = os.stat(path).st_mtime
@@ -183,11 +177,9 @@ class __BookmarksStore(object):
             new_bookmarks, _ = self.load_bookmarks()
             self._bookmarks = list(set(self._bookmarks + new_bookmarks))
 
-        with open(constants.BOOKMARK_PICKLE_PATH, 'wb') as fd:
-            pickle.dump(constants.VERSION, fd, pickle.HIGHEST_PROTOCOL)
-
+        with open(constants.BOOKMARK_JSON_PATH, mode='wt', encoding='utf8') as fd:
             packs = [bookmark.pack() for bookmark in self._bookmarks]
-            pickle.dump(packs, fd, pickle.HIGHEST_PROTOCOL)
+            json.dump((constants.VERSION, packs), fd, separators=(',', ':'))
 
         self._bookmarks_mtime = time.time()
 
