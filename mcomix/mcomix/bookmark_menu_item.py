@@ -1,4 +1,5 @@
 '''bookmark_menu_item.py - A signle bookmark item.'''
+from datetime import datetime
 
 from gi.repository import Gtk
 
@@ -8,7 +9,7 @@ class _Bookmark(Gtk.ImageMenuItem):
     and is thus put directly in the bookmarks menu.
     '''
 
-    def __init__(self, window, file_handler, name, path, page, numpages, archive_type, date_added):
+    def __init__(self, window, file_handler, name, path, page, numpages, archive_type, epoch):
 
         self._name = name
         self._path = path
@@ -17,7 +18,7 @@ class _Bookmark(Gtk.ImageMenuItem):
         self._window = window
         self._archive_type = archive_type
         self._file_handler = file_handler
-        self._date_added = date_added
+        self._date_added = datetime.utcfromtimestamp(epoch)
 
         super(_Bookmark, self).__init__(label=str(self), use_underline=False)
 
@@ -68,7 +69,7 @@ class _Bookmark(Gtk.ImageMenuItem):
         re-created using the values in the tuple.
         '''
         return (self._name, self._path, self._page, self._numpages,
-                self._archive_type, self._date_added)
+                self._archive_type, self._date_added.timestamp())
 
     def clone(self):
         ''' Creates a copy of the provided Bookmark menu item. This is necessary
@@ -82,7 +83,7 @@ class _Bookmark(Gtk.ImageMenuItem):
             self._page,
             self._numpages,
             self._archive_type,
-            self._date_added)
+            self._date_added.timestamp())
 
     def __eq__(self, other):
         ''' Equality comparison for Bookmark items. '''
