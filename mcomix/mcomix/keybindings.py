@@ -58,10 +58,6 @@ class _KeybindingManager(object):
         '''
         assert name in keybindings_map.BINDING_INFO, '"%s" isn\'t a valid keyboard action.' % name
 
-        # use default bindings if not provided
-        if not bindings:
-            bindings=keybindings_map.DEFAULT_BINDINGS.get(name,[])
-
         # Load stored keybindings, or fall back to passed arguments
         keycodes = self._action_to_bindings[name]
         if keycodes == []:
@@ -180,7 +176,7 @@ class _KeybindingManager(object):
             with open(constants.KEYBINDINGS_CONF_PATH, 'r') as fp:
                 stored_action_bindings = json.load(fp)
         except:
-            stored_action_bindings = {}
+            stored_action_bindings = keybindings_map.DEFAULT_BINDINGS.copy()
 
         for action in keybindings_map.BINDING_INFO.keys():
             if action in stored_action_bindings:
