@@ -12,7 +12,7 @@ from functools import reduce
 
 ROOTPATH=os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 _PORTABLE_MODE=[]
-NUMERIC_REGEXP = re.compile(r'\d+|\D+')  # Split into numerics and characters
+NUMERIC_REGEXP = re.compile(r'\d+[.]{1}\d+|\d+|\D+') # Split into float, int, and characters
 PREFIXED_BYTE_UNITS = ('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB')
 
 def cmp(x,y):
@@ -25,13 +25,21 @@ def alphanumeric_sort(filenames):
     such that for an example "1.jpg", "2.jpg", "10.jpg" is a sorted
     ordering.
     '''
-    def _format_substring(s):
-        if s.isdigit():
-            return 0,int(s)
 
-        return 1,s.lower()
+    def _isfloat(p):
+        try:
+            return 0,float(p)
+        except ValueError:
+            return 1,p.lower()
 
-    filenames.sort(key=lambda s: list(map(_format_substring, NUMERIC_REGEXP.findall(s))))
+    def keyfunc(s):
+        s,e=os.path.splitext(s)
+        if e[1:].isdigit(): # extension with only digital is not extension
+            s+=e
+            e=''
+        return [_isfloat(p) for p in (*NUMERIC_REGEXP.findall(s),e)]
+
+    filenames.sort(key=keyfunc)
 
 def alphanumeric_compare(s1, s2):
     ''' Compares two strings by their natural order (i.e. 1 before 10)
