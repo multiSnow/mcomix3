@@ -14,8 +14,6 @@ from mcomix import callback
 
 
 DEBUGGING_CONTEXT, NO_FILE_CONTEXT, IMAGE_FILE_CONTEXT, ARCHIVE_CONTEXT = -1, 0, 1, 2
-PREFNAME = 'external commands'
-
 
 class OpenWithException(Exception): pass
 
@@ -23,25 +21,11 @@ class OpenWithException(Exception): pass
 class OpenWithManager(object):
     def __init__(self):
         ''' Constructor. '''
-        # convert old style command if exists
-        for label, command, *params in prefs['openwith commands']:
-            if not params:
-                params.extend(('', False))
-            for c in ('{','}'):
-                command = command.replace(c, c*2)
-            cmd = OpenWithCommand(label, command, *params)
-            newcmd_args = cmd._commandline_to_arguments_old(
-                cmd.get_command(), None, None)
-            new_command = ' '.join(map(shlex.quote, newcmd_args))
-            prefs[PREFNAME].append(
-                (cmd.get_label(), new_command,
-                 cmd.get_cwd(), cmd.is_disabled_for_archives())
-            )
-        prefs['openwith commands'].clear()
+        pass
 
     @callback.Callback
     def set_commands(self, cmds):
-        prefs[PREFNAME] = [
+        prefs['external commands'] = [
             (cmd.get_label(), cmd.get_command(),
              cmd.get_cwd(), cmd.is_disabled_for_archives())
             for cmd in cmds]
@@ -50,7 +34,7 @@ class OpenWithManager(object):
         try:
             return [OpenWithCommand(label, command, cwd, disabled_for_archives)
                     for label, command, cwd, disabled_for_archives
-                    in prefs[PREFNAME]]
+                    in prefs['external commands']]
         except ValueError as e:
             OpenWithException(_('external commands error: {}.').format(e))
 
@@ -199,130 +183,6 @@ class OpenWithCommand(object):
             return string.format(**variables, **os.environ)
         except KeyError as e:
             raise OpenWithException(_('Unknown variable: {}.').format(e))
-
-    def _commandline_to_arguments_old(self, line, window, context_type):
-        ''' Parse a command line string into a list containing
-        the parts to pass to Popen. The following two functions have
-        been contributed by Ark <aaku@users.sf.net>. '''
-        result = []
-        buf = ''
-        quote = False
-        escape = False
-        inarg = False
-        for c in line:
-            if escape:
-                if c == '%' or c == '"':
-                    buf += c
-                else:
-                    buf += self._expand_variable(c, window, context_type)
-                escape = False
-            elif c == ' ' or c == '\t':
-                if quote:
-                    buf += c
-                elif inarg:
-                    result.append(buf)
-                    buf = ''
-                    inarg = False
-            else:
-                if c == '"':
-                    quote = not quote
-                elif c == '%':
-                    escape = True
-                else:
-                    buf += c
-                inarg = True
-
-        if escape:
-            raise OpenWithException(
-                _('Incomplete escape sequence. '
-                  'For a literal "%", use "%%".'))
-        if quote:
-            raise OpenWithException(
-                _('Incomplete quote sequence. '
-                  'For a literal "\'", use "%\'".'))
-
-        if inarg:
-            result.append(buf)
-        return result
-
-    def _expand_variable(self, identifier, window, context_type):
-        identifier_map = {
-            '/': os.path.sep,
-            'F': '{image}',
-            'f': '{imagebase}',
-            'D': '{imagedir}',
-            'd': '{imagedirbase}',
-            'A': '{archive}',
-            'a': '{archivebase}',
-            'C': '{archivedir}',
-            'c': '{archivedirbase}',
-            'B': '{container}',
-            'b': '{containerbase}',
-            'S': '{containerdir}',
-            's': '{containerdirbase}',
-        }
-        try:
-            return identifier_map[identifier]
-        except:
-            raise OpenWithException(
-                _('Invalid escape sequence: %%%s') % identifier)
-
-    def _expand_variable_old(self, identifier, window, context_type):
-        ''' Replaces variables with their respective file
-        or archive path. '''
-
-        if context_type == DEBUGGING_CONTEXT:
-            return '%' + identifier
-
-        if not (context_type & IMAGE_FILE_CONTEXT) and identifier in ('f', 'd', 'b', 's', 'F', 'D', 'B', 'S'):
-            raise OpenWithException(
-                _('File-related variables can only be used for files.'))
-
-        if not (context_type & ARCHIVE_CONTEXT) and identifier in ('a', 'c', 'A', 'C'):
-            raise OpenWithException(
-                _('Archive-related variables can only be used for archives.'))
-
-        if identifier == '/':
-            return os.path.sep
-        elif identifier == 'a':
-            return window.filehandler.get_base_filename()
-        elif identifier == 'd':
-            return os.path.basename(os.path.dirname(window.imagehandler.get_path_to_page()))
-        elif identifier == 'f':
-            return window.imagehandler.get_page_filename()
-        elif identifier == 'c':
-            return os.path.basename(os.path.dirname(window.filehandler.get_path_to_base()))
-        elif identifier == 'b':
-            if (context_type & ARCHIVE_CONTEXT):
-                return window.filehandler.get_base_filename() # same as %a
-            else:
-                return os.path.basename(os.path.dirname(window.imagehandler.get_path_to_page())) # same as %d
-        elif identifier == 's':
-            if (context_type & ARCHIVE_CONTEXT):
-                return os.path.basename(os.path.dirname(window.filehandler.get_path_to_base())) # same as %c
-            else:
-                return os.path.basename(os.path.dirname(os.path.dirname(window.imagehandler.get_path_to_page())))
-        elif identifier == 'A':
-            return window.filehandler.get_path_to_base()
-        elif identifier == 'D':
-            return os.path.normpath(os.path.dirname(window.imagehandler.get_path_to_page()))
-        elif identifier == 'F':
-            return os.path.normpath(window.imagehandler.get_path_to_page())
-        elif identifier == 'C':
-            return os.path.dirname(window.filehandler.get_path_to_base())
-        elif identifier == 'B':
-            if (context_type & ARCHIVE_CONTEXT):
-                return window.filehandler.get_path_to_base() # same as %A
-            else:
-                return os.path.normpath(os.path.dirname(window.imagehandler.get_path_to_page())) # same as %D
-        elif identifier == 'S':
-            if (context_type & ARCHIVE_CONTEXT):
-                return os.path.dirname(window.filehandler.get_path_to_base()) # same as %C
-            else:
-                return os.path.dirname(os.path.dirname(window.imagehandler.get_path_to_page()))
-        else:
-            raise OpenWithException(
-                _('Invalid escape sequence: %%%s') % identifier)
 
     def _get_context_type(self, window, check_restrictions=True):
         if not check_restrictions:

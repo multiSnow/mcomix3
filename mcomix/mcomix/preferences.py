@@ -139,10 +139,9 @@ def read_preferences_file():
     if saved_prefs and 'external commands' not in saved_prefs:
         from mcomix import upgrade_tools
         # TODO:
-        # 1, convert 'openwith commands' to 'external commands' in 'saved_prefs'
-        #    (already done in openwith.OpenWithManager, move it to upgrade_tools)
         # 2, backup and convert 'bookmarks.pickle' to 'bookmarks.json'
         # 3, backup and convert 'file.pickle' to 'file.json'
+        upgrade_tools.openwith_conv(saved_prefs)
 
     prefs.update(filter(lambda i:i[0] in prefs,saved_prefs.items()))
 
