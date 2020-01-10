@@ -18,7 +18,7 @@ class _Bookmark(Gtk.ImageMenuItem):
         self._window = window
         self._archive_type = archive_type
         self._file_handler = file_handler
-        self._date_added = datetime.utcfromtimestamp(epoch)
+        self._date_added = datetime.fromtimestamp(epoch)
 
         super(_Bookmark, self).__init__(label=str(self), use_underline=False)
 
