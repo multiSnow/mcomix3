@@ -142,6 +142,10 @@ def read_preferences_file():
         # 2, backup and convert 'bookmarks.pickle' to 'bookmarks.json'
         # 3, backup and convert 'file.pickle' to 'file.json'
         upgrade_tools.openwith_conv(saved_prefs)
+        bookmarks_pickle = os.path.join(constants.DATA_DIR, 'bookmarks.pickle')
+        if os.path.exists(bookmarks_pickle):
+            upgrade_tools.bookmarks_conv(
+                bookmarks_pickle, constants.BOOKMARK_JSON_PATH)
 
     prefs.update(filter(lambda i:i[0] in prefs,saved_prefs.items()))
 

@@ -1,10 +1,29 @@
 # -*- coding: utf-8 -*-
 ''' functions to backup and upgrade config files come from mcomix 1.2.1 '''
 
+import json
+import pickle
 import os
 import shlex
 
 from mcomix import log
+
+def legacy_pickle_loader(fp):
+    return pickle.Unpickler(fp,fix_imports=True,encoding='latin1')
+
+def bookmarks_conv(bookmarks_pickle,bookmarks_json):
+    try:
+        with open(bookmarks_pickle,mode='rb') as f:
+            loader=legacy_pickle_loader(f)
+            version=loader.load()
+            bookmarks=[(name,path,page,numpages,packtype,date.timestamp())
+                       for name,path,page,numpages,packtype,date in loader.load()]
+    except Exception as e:
+        log.warning('! Failed to upgrade {}, {}'.format(bookmarks_pickle,str(e)))
+    else:
+        with open(bookmarks_json,mode='wt',encoding='utf8') as f:
+            json.dump((version,bookmarks),f,separators=(',',':'))
+        os.rename(bookmarks_pickle,bookmarks_pickle+'.bak')
 
 def openwith_conv(prefs):
 
