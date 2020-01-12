@@ -139,9 +139,9 @@ def read_preferences_file():
     if saved_prefs and 'external commands' not in saved_prefs:
         from mcomix import upgrade_tools
         # TODO:
-        # 2, backup and convert 'bookmarks.pickle' to 'bookmarks.json'
         # 3, backup and convert 'file.pickle' to 'file.json'
         upgrade_tools.openwith_conv(saved_prefs)
+        os.rename(constants.PREFERENCE_PATH, constants.PREFERENCE_PATH+'.bak')
         bookmarks_pickle = os.path.join(constants.DATA_DIR, 'bookmarks.pickle')
         if os.path.exists(bookmarks_pickle):
             upgrade_tools.bookmarks_conv(
