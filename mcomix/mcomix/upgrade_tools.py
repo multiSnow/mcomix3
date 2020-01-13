@@ -11,6 +11,18 @@ from mcomix import log
 def legacy_pickle_loader(fp):
     return pickle.Unpickler(fp,fix_imports=True,encoding='latin1')
 
+def fileinfo_conv(fileinfo_pickle,fileinfo_json):
+    try:
+        with open(fileinfo_pickle,mode='rb') as f:
+            loader=legacy_pickle_loader(f)
+            fileinfo=loader.load()
+    except Exception as e:
+        log.warning('! Failed to upgrade {}, {}'.format(fileinfo_pickle,str(e)))
+    else:
+        with open(fileinfo_json,mode='wt',encoding='utf8') as f:
+            json.dump(fileinfo,f)
+        os.rename(fileinfo_pickle,fileinfo_pickle+'.bak')
+
 def bookmarks_conv(bookmarks_pickle,bookmarks_json):
     try:
         with open(bookmarks_pickle,mode='rb') as f:
