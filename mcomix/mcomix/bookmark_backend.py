@@ -179,7 +179,7 @@ class __BookmarksStore(object):
 
         with open(constants.BOOKMARK_JSON_PATH, mode='wt', encoding='utf8') as fd:
             packs = [bookmark.pack() for bookmark in self._bookmarks]
-            json.dump((constants.VERSION, packs), fd, indent=2)
+            json.dump((constants.VERSION, packs), fd, ensure_ascii=False, indent=2)
 
         self._bookmarks_mtime = time.time()
 
