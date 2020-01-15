@@ -35,12 +35,12 @@ class EventHandler(object):
 
     def window_state_event(self, widget, event):
         is_fullscreen = self._window.is_fullscreen
+        # Disable action if window is fullscreen, else enable it
+        toggleaction = self._window.actiongroup.get_action('fullscreen')
+        toggleaction.set_sensitive(not is_fullscreen)
         if self._window.was_fullscreen != is_fullscreen:
             # Fullscreen state changed.
             self._window.was_fullscreen = is_fullscreen
-            # Re-enable control, now that transition is complete.
-            toggleaction = self._window.actiongroup.get_action('fullscreen')
-            toggleaction.set_sensitive(True)
             if is_fullscreen:
                 redraw = True
             else:

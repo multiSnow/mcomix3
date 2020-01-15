@@ -790,8 +790,6 @@ class MainWindow(Gtk.Window):
         return 0 != (window_state & Gdk.WindowState.FULLSCREEN)
 
     def change_fullscreen(self, toggleaction):
-        # Disable action until transition if complete.
-        toggleaction.set_sensitive(False)
         if toggleaction.get_active():
             self.save_window_geometry()
             self.fullscreen()
