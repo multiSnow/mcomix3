@@ -117,6 +117,26 @@ prefs = {
     'try FLIF support': False,
 }
 
+def check_old_preferences(saved_prefs):
+    bookmarks_pickle = os.path.join(constants.DATA_DIR, 'bookmarks.pickle')
+    fileinfo_pickle = os.path.join(constants.DATA_DIR, 'file.pickle')
+
+    old_bookmarks = os.path.exists(bookmarks_pickle)
+    old_fileinfo = os.path.exists(fileinfo_pickle)
+    old_prefs = saved_prefs and 'external commands' not in saved_prefs
+
+    if old_bookmarks or old_fileinfo or old_prefs:
+        from mcomix import upgrade_tools
+        if old_prefs:
+            upgrade_tools.openwith_conv(saved_prefs)
+            os.rename(constants.PREFERENCE_PATH, constants.PREFERENCE_PATH+'.bak')
+        if old_bookmarks:
+            upgrade_tools.bookmarks_conv(
+                bookmarks_pickle, constants.BOOKMARK_JSON_PATH)
+        if old_fileinfo:
+            upgrade_tools.fileinfo_conv(
+                fileinfo_pickle, constants.FILEINFO_JSON_PATH)
+
 def read_preferences_file():
     '''Read preferences data from disk.'''
 
@@ -136,18 +156,7 @@ def read_preferences_file():
 
             os.rename(constants.PREFERENCE_PATH, corrupt_name)
 
-    if saved_prefs and 'external commands' not in saved_prefs:
-        from mcomix import upgrade_tools
-        upgrade_tools.openwith_conv(saved_prefs)
-        os.rename(constants.PREFERENCE_PATH, constants.PREFERENCE_PATH+'.bak')
-        bookmarks_pickle = os.path.join(constants.DATA_DIR, 'bookmarks.pickle')
-        if os.path.exists(bookmarks_pickle):
-            upgrade_tools.bookmarks_conv(
-                bookmarks_pickle, constants.BOOKMARK_JSON_PATH)
-        fileinfo_pickle = os.path.join(constants.DATA_DIR, 'file.pickle')
-        if os.path.exists(fileinfo_pickle):
-            upgrade_tools.fileinfo_conv(
-                fileinfo_pickle, constants.FILEINFO_JSON_PATH)
+    check_old_preferences(saved_prefs)
 
     prefs.update(filter(lambda i:i[0] in prefs,saved_prefs.items()))
 
