@@ -633,7 +633,7 @@ class FileHandler(object):
             current_file_info = [path, page_index]
 
             with open(constants.FILEINFO_JSON_PATH, mode='wt', encoding='utf8') as config:
-                json.dump(current_file_info, config)
+                json.dump(current_file_info, config, indent=2)
 
     def read_fileinfo_file(self):
         '''Read last loaded file info from disk.'''

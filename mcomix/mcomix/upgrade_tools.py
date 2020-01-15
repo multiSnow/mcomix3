@@ -20,7 +20,7 @@ def fileinfo_conv(fileinfo_pickle,fileinfo_json):
         log.warning('! Failed to upgrade {}, {}'.format(fileinfo_pickle,str(e)))
     else:
         with open(fileinfo_json,mode='wt',encoding='utf8') as f:
-            json.dump(fileinfo,f)
+            json.dump(fileinfo,f,indent=2)
         os.rename(fileinfo_pickle,fileinfo_pickle+'.bak')
 
 def bookmarks_conv(bookmarks_pickle,bookmarks_json):
@@ -34,7 +34,7 @@ def bookmarks_conv(bookmarks_pickle,bookmarks_json):
         log.warning('! Failed to upgrade {}, {}'.format(bookmarks_pickle,str(e)))
     else:
         with open(bookmarks_json,mode='wt',encoding='utf8') as f:
-            json.dump((version,bookmarks),f,separators=(',',':'))
+            json.dump((version,bookmarks),f,indent=2)
         os.rename(bookmarks_pickle,bookmarks_pickle+'.bak')
 
 def openwith_conv(prefs):
