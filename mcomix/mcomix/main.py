@@ -790,12 +790,14 @@ class MainWindow(Gtk.Window):
         return 0 != (window_state & Gdk.WindowState.FULLSCREEN)
 
     def change_fullscreen(self, toggleaction):
-        # Disable action until transition if complete.
-        toggleaction.set_sensitive(False)
-        if toggleaction.get_active():
+        is_fullscreen = self.is_fullscreen
+        # Set fullscreen only if window is not fillscreen,
+        # and exit fullscreen only if window is fullscreen.
+        # Also see comment in event.EventHandler.window_state_event
+        if toggleaction.get_active() and not is_fullscreen:
             self.save_window_geometry()
             self.fullscreen()
-        else:
+        elif is_fullscreen and not toggleaction.get_active():
             self.unfullscreen()
         # No need to call draw_image explicitely,
         # as we'll be receiving a window state

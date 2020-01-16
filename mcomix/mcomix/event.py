@@ -35,12 +35,16 @@ class EventHandler(object):
 
     def window_state_event(self, widget, event):
         is_fullscreen = self._window.is_fullscreen
+        # Some window manager has special methods to set or exit fullscreen.
+        # (e.g. gesture on touchscreen)
+        # In this case, toggleaction will not be correctly set.
+        # So, set the activation of toggleaction again with window-state-event.
+        # Also see comment in main.MainWindow.change_fullscreen
+        toggleaction = self._window.actiongroup.get_action('fullscreen')
+        toggleaction.set_active(is_fullscreen)
         if self._window.was_fullscreen != is_fullscreen:
             # Fullscreen state changed.
             self._window.was_fullscreen = is_fullscreen
-            # Re-enable control, now that transition is complete.
-            toggleaction = self._window.actiongroup.get_action('fullscreen')
-            toggleaction.set_sensitive(True)
             if is_fullscreen:
                 redraw = True
             else:
@@ -231,7 +235,7 @@ class EventHandler(object):
         manager.register('minimize',
                          self._window.minimize)
         manager.register('fullscreen',
-                         self._window.actiongroup.get_action('fullscreen').activate)
+                         lambda:self._window.actiongroup.get_action('fullscreen').set_active(True))
         manager.register('toolbar',
                          self._window.actiongroup.get_action('toolbar').activate)
         manager.register('menubar',
