@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 ''' pixbuf_cache.py - Caches book covers for the library display.'''
 
-import threading
+from collections import OrderedDict
+from threading import Lock
 
 __all__ = ['get_pixbuf_cache']
 
@@ -18,41 +19,31 @@ class _PixbufCache(object):
         assert size > 0
         self.cachesize = size
         #: Store book id => pixbuf
-        self._cache = {}
+        self._cache = OrderedDict()
         #: Ensure thread safety
-        self._lock = threading.RLock()
+        self._lock = Lock()
 
-    def add(self, id, pixbuf):
-        ''' Adds a cache object with <id> and associates it with the
-        passed pixbuf. '''
-
+    def add(self, path, pixbuf):
+        ''' Add a pixbuf to cache with path as key. '''
         with self._lock:
-            if len(self._cache) > self.cachesize:
-                first = self._cache.items()[0]
-                self.invalidate(first[0])
+            if path in self._cache:
+                return
+            while len(self._cache) > self.cachesize:
+                self._cache.popitem(last=False)
+            self._cache[path] = pixbuf
 
-            self._cache[id] = pixbuf
-
-    def exists(self, id):
-        ''' Checks if there is an entry for the given id in the cache. '''
-        return id in self._cache
-
-    def get(self, id):
-        ''' Returns the pixbuf for the given cache id, or None, if such
-        an entry does not exist. '''
-        if id in self._cache:
-            return self._cache[id]
-        else:
-            return None
-
-    def invalidate(self, id):
-        ''' Invalidates the object with the specified cache ID. '''
+    def get(self, path):
+        ''' Return the pixbuf for the given cache path, or None if not exists. '''
         with self._lock:
-            if id in self._cache:
-                del self._cache[id]
+            return self._cache.get(path, None)
 
-    def invalidate_all(self):
-        ''' Invalidates all cached objects. '''
+    def pop(self, path):
+        ''' Remove the object with the given cache path. '''
+        with self._lock:
+            self._cache.pop(path, None)
+
+    def clear(self):
+        ''' Clear all cached objects. '''
         with self._lock:
             self._cache.clear()
 
@@ -62,12 +53,10 @@ _cache = None
 def get_pixbuf_cache():
     global _cache
 
-    if _cache:
-        return _cache
-    else:
+    if _cache is None:
         # 500 items is about 130 MB of RAM with 500px thumbnails,
         # and about 35 MB at 250px.
         _cache = _PixbufCache(500)
-        return _cache
+    return _cache
 
 # vim: expandtab:sw=4:ts=4

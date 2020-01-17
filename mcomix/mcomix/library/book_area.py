@@ -293,7 +293,7 @@ class _BookArea(Gtk.ScrolledWindow):
         iterator = self._liststore.get_iter(path)
         filepath = self._liststore.get_value(iterator, 2)
         self._liststore.remove(iterator)
-        self._cache.invalidate(filepath)
+        self._cache.pop(filepath)
 
     def get_book_at_path(self, path):
         '''Return the book ID corresponding to the IconView <path>.'''
@@ -418,7 +418,7 @@ class _BookArea(Gtk.ScrolledWindow):
                 prefs['library cover size'] = size
 
         if prefs['library cover size'] != old_size:
-            self._cache.invalidate_all()
+            self._cache.clear()
             collection = self._library.collection_area.get_current_collection()
             GLib.idle_add(self.display_covers, collection)
 
@@ -432,9 +432,8 @@ class _BookArea(Gtk.ScrolledWindow):
         ''' Get or create the thumbnail for the selected book <uid>. '''
         assert isinstance(uid, int)
         book = self._library.backend.get_book_by_id(uid)
-        if self._cache.exists(book.path):
-            pixbuf = self._cache.get(book.path)
-        else:
+        pixbuf = self._cache.get(book.path)
+        if pixbuf is None:
             width, height = self._pixbuf_size(border_size=0)
             # cover thumbnail of book
             cover = self._library.backend.get_book_thumbnail(book.path)
