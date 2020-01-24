@@ -236,6 +236,8 @@ class EventHandler(object):
                          self._window.minimize)
         manager.register('fullscreen',
                          lambda:self._window.actiongroup.get_action('fullscreen').set_active(True))
+        manager.register('toggle_fullscreen',
+                         self._window.actiongroup.get_action('fullscreen').activate)
         manager.register('toolbar',
                          self._window.actiongroup.get_action('toolbar').activate)
         manager.register('menubar',
