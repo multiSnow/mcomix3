@@ -10,7 +10,19 @@ from subprocess import run,DEVNULL
 
 msgfmt_cmd=shlex.split(environ.get('MSGFMT',default='msgfmt'))
 
-def copy(srcdir,filename,dstdir,pool):
+def fixdirtime(args):
+    srcdir,filename,target=args
+    while True:
+        sstat,d=stat(srcdir),join(target,srcdir)
+        if not isdir(d):return
+        times_ns=(sstat.st_atime_ns,sstat.st_mtime_ns)
+        utime(d,ns=times_ns,times=None)
+        chmod(d,sstat.st_mode)
+        srcdir=dirname(srcdir)
+        if not srcdir:return
+
+def copy(srcdir,filename,target,pool):
+    dstdir=join(target,srcdir)
     finame,foname=join(srcdir,filename),join(dstdir,filename)
     fistat=stat(finame)
     times_ns=(fistat.st_atime_ns,fistat.st_mtime_ns)
@@ -20,6 +32,7 @@ def copy(srcdir,filename,dstdir,pool):
     utime(foname,ns=times_ns,times=None)
     chmod(foname,fistat.st_mode)
     print('install:',finame,foname)
+    fixdirtime((srcdir,filename,target))
 
 def check_msgfmt():
     try:
@@ -30,16 +43,18 @@ def check_msgfmt():
         print('msgfmt not found')
         return
 
-def msgfmt(srcdir,filename,dstdir,pool):
+def msgfmt(srcdir,filename,target,pool):
     if not msgfmt_cmd:return
     if pool:
-        pool.apply_async(msgfmt,(srcdir,filename,dstdir,None))
+        pool.apply_async(msgfmt,(srcdir,filename,target,None),callback=fixdirtime)
         return
+    dstdir=join(target,srcdir)
     b,e=splitext(filename)
     finame,foname=join(srcdir,filename),join(dstdir,'{}.mo'.format(b))
     makedirs(dstdir,exist_ok=True)
     run(msgfmt_cmd+['-o',foname,finame])
     print('msgfmt:',foname,finame)
+    return srcdir,filename,target
 
 install_methods={'.1':copy,
                  '.py':copy,
@@ -49,15 +64,7 @@ install_methods={'.1':copy,
 def install(srcdir,filename,target,pool):
     b,e=splitext(filename)
     if e not in install_methods:return
-    install_methods[e](srcdir,filename,join(target,srcdir),pool)
-    while True:
-        sstat,d=stat(srcdir),join(target,srcdir)
-        if not isdir(d):return
-        times_ns=(sstat.st_atime_ns,sstat.st_mtime_ns)
-        utime(d,ns=times_ns,times=None)
-        chmod(d,sstat.st_mode)
-        srcdir=dirname(srcdir)
-        if not srcdir:return
+    install_methods[e](srcdir,filename,target,pool)
 
 def scandir(root,dest,pool=None):
     for r,dl,fl in walk(root):
