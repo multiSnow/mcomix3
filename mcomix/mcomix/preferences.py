@@ -4,8 +4,12 @@ write them.  '''
 import os
 import json
 
+from hashlib import md5
+
 from mcomix import constants
 from mcomix import log
+
+_prefs_status={'md5':None}
 
 # All the preferences are stored here.
 prefs = {
@@ -117,6 +121,9 @@ prefs = {
     'try FLIF support': False,
 }
 
+def _md5str(s):
+    return md5(s.encode('utf8')).hexdigest()
+
 def check_old_preferences(saved_prefs):
     bookmarks_pickle = os.path.join(constants.DATA_DIR, 'bookmarks.pickle')
     fileinfo_pickle = os.path.join(constants.DATA_DIR, 'file.pickle')
@@ -144,7 +151,7 @@ def read_preferences_file():
 
     if os.path.isfile(constants.PREFERENCE_PATH):
         try:
-            with open(constants.PREFERENCE_PATH, 'r') as config_file:
+            with open(constants.PREFERENCE_PATH, mode='rt') as config_file:
                 saved_prefs.update(json.load(config_file))
         except:
             # Gettext might not be installed yet at this point.
@@ -160,15 +167,23 @@ def read_preferences_file():
 
     prefs.update(filter(lambda i:i[0] in prefs,saved_prefs.items()))
 
+    _prefs_status['md5'] = _md5str(json.dumps(prefs, indent=2, sort_keys=True))
+
 def write_preferences_file():
     '''Write preference data to disk.'''
+    # XXX: constants.VERSION? It's *preferable* to not complicate the YAML
+    # file by adding a `{'version': constants.VERSION, 'prefs': config}`
+    # dict or a list.  Adding an extra init line sounds bad too.
+    json_prefs = json.dumps(prefs, indent=2, sort_keys=True)
+    md5hash = _md5str(json_prefs)
+    if md5hash == _prefs_status['md5']:
+        # nothing changed, nothing to write
+        return
+    _prefs_status['md5'] = md5hash
     # TODO: it might be better to save only those options that were (ever)
     # explicitly changed by the used, leaving everything else as default
     # and available (if really needed) to change of defaults on upgrade.
-    with open(constants.PREFERENCE_PATH, 'w') as config_file:
-        # XXX: constants.VERSION? It's *preferable* to not complicate the YAML
-        # file by adding a `{'version': constants.VERSION, 'prefs': config}`
-        # dict or a list.  Adding an extra init line sounds bad too.
-        json.dump(prefs, config_file, indent=2)
+    with open(constants.PREFERENCE_PATH, mode='wt') as config_file:
+        print(json_prefs, file=config_file)
 
 # vim: expandtab:sw=4:ts=4
