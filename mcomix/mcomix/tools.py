@@ -12,6 +12,7 @@ from functools import reduce
 
 ROOTPATH=os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 _PORTABLE_MODE=[]
+_NOGUI=[]
 NUMERIC_REGEXP = re.compile(r'\d+[.]{1}\d+|\d+|\D+') # Split into float, int, and characters
 PREFIXED_BYTE_UNITS = ('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB')
 
@@ -173,6 +174,12 @@ def is_portable_mode():
             # chdir to rootdir early
             os.chdir(rootdir())
     return _PORTABLE_MODE[0]
+
+def nogui():
+    _NOGUI.append(0)
+
+def use_gui():
+    return not bool(_NOGUI)
 
 def splitpath(path):
     # split path to a list of every level

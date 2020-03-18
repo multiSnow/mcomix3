@@ -8,7 +8,7 @@ import re
 import sys
 import operator
 
-from gi.repository import GdkPixbuf, Gdk, Gio, GLib, Gtk
+from gi.repository import GdkPixbuf, Gio, GLib
 from PIL import Image
 from PIL import ImageEnhance
 from PIL import ImageOps
@@ -17,22 +17,26 @@ from PIL import ImageSequence
 from mcomix import anime_tools
 from mcomix import constants
 from mcomix import log
+from mcomix import tools
 from mcomix.lib import reader
 from mcomix.lib import FlifImagePlugin
 from mcomix.preferences import prefs
 
-# Fallback pixbuf for missing images.
-MISSING_IMAGE_ICON = None
+if tools.use_gui():
+    from gi.repository import Gdk, Gtk
 
-_missing_icon_dialog = Gtk.Dialog()
-_missing_icon_pixbuf = _missing_icon_dialog.render_icon(
-    Gtk.STOCK_MISSING_IMAGE, Gtk.IconSize.LARGE_TOOLBAR
-)
-MISSING_IMAGE_ICON = _missing_icon_pixbuf
-assert MISSING_IMAGE_ICON
+    # Fallback pixbuf for missing images.
+    MISSING_IMAGE_ICON = None
 
-GTK_GDK_COLOR_BLACK = Gdk.color_parse('black')
-GTK_GDK_COLOR_WHITE = Gdk.color_parse('white')
+    _missing_icon_dialog = Gtk.Dialog()
+    _missing_icon_pixbuf = _missing_icon_dialog.render_icon(
+        Gtk.STOCK_MISSING_IMAGE, Gtk.IconSize.LARGE_TOOLBAR
+    )
+    MISSING_IMAGE_ICON = _missing_icon_pixbuf
+    assert MISSING_IMAGE_ICON
+
+    GTK_GDK_COLOR_BLACK = Gdk.color_parse('black')
+    GTK_GDK_COLOR_WHITE = Gdk.color_parse('white')
 
 if prefs['try FLIF support']:
     FlifImagePlugin._init_plugin()

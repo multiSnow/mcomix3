@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 
-from gi.repository import Gtk
+from mcomix import tools
+if tools.use_gui():
+    from gi.repository import Gtk
 
-from mcomix import main
-from mcomix import message_dialog
+    from mcomix import main
+    from mcomix import message_dialog
 
 def ask_for_password(archive):
+    if not tools.use_gui():
+        return None
     """ Openes an input dialog to ask for a password. Returns either
     an Unicode string (the password), or None."""
     dialog = message_dialog.MessageDialog(

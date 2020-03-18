@@ -15,15 +15,12 @@ from urllib.parse import unquote
 
 from gi import require_version
 
-require_version('PangoCairo', '1.0')
 require_version('GdkPixbuf', '2.0')
-require_version('Gdk', '3.0')
-require_version('Gtk', '3.0')
 
 CURDIR=getcwd()
 
-from mcomix import i18n
-i18n.install_gettext()
+from mcomix import tools
+tools.nogui()
 from mcomix import thumbnail_tools
 from mcomix import portability
 
