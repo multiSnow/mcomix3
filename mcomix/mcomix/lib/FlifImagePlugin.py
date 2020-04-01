@@ -320,7 +320,7 @@ class FlifImageFile(ImageFile.ImageFile):
         # so only first draft has effect.
         # it is because flif_decoder_set_resize typically causes a smaller image.
         # also see TODO in decodeflif
-        w,h=size
+        w,h=map(int,size)
         w_,h_=self._size
         size=min(w*2,w_),min(h*2,h_)
         self._draft_width,self._draft_height=size
