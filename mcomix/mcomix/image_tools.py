@@ -413,7 +413,7 @@ def load_animation(im):
     frameiter=ImageSequence.Iterator(im)
     for n,frame in enumerate(frameiter):
         anime.add_frame(n,pil_to_pixbuf(frame),
-                        frame.info.get('duration',0),
+                        int(frame.info.get('duration',0)),
                         background=background)
     return anime.create_animation()
 
