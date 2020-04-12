@@ -14,6 +14,7 @@ from mcomix import log
 from mcomix.archive import (
     archivemount,
     lha_external,
+    mobi,
     pdf_external,
     rar,
     rar_external,
@@ -68,6 +69,9 @@ _HANDLERS = {
         squashfs.SquashfsArchive,
         sevenzip_external.SevenZipArchive,
     ),
+    constants.MOBI: (
+        mobi.MobiArchive,
+    ),
 }
 
 def _get_handler(archive_type):
@@ -98,6 +102,9 @@ def pdf_available():
 def squashfs_available():
     return _is_available(constants.SQUASHFS)
 
+def mobi_available():
+    return _is_available(constants.MOBI)
+
 SUPPORTED_ARCHIVE_EXTS=set()
 SUPPORTED_ARCHIVE_FORMATS={}
 
@@ -110,6 +117,7 @@ def init_supported_formats():
         ('LHA', constants.LHA_FORMATS , lha_available() ),
         ('PDF', constants.PDF_FORMATS , pdf_available() ),
         ('SquashFS', constants.SQUASHFS_FORMATS , squashfs_available() ),
+        ('MobiPocket', constants.MOBI_FORMATS , mobi_available() ),
     ):
         if not is_available:
             continue
@@ -147,6 +155,8 @@ def archive_mime_type(path):
 
             with open(path, 'rb') as fd:
                 magic = fd.read(10)
+                fd.seek(60)
+                magic2 = fd.read(8)
 
             try:
                 istarfile = tarfile.is_tarfile(path)
@@ -178,6 +188,9 @@ def archive_mime_type(path):
 
             if magic.startswith((b'sqsh',b'hsqs')):
                 return constants.SQUASHFS
+
+            if magic2 == b'BOOKMOBI':
+                return constants.MOBI
 
     except Exception:
         log.warning(_('! Could not read %s'), path)
