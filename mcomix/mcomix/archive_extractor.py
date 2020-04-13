@@ -106,12 +106,12 @@ class Extractor(object):
         '''Signal the extractor to stop extracting and kill the extracting
         thread. Blocks until the extracting thread has terminated.
         '''
+        self._threadpool.terminate()
+        self._threadpool.join()
         self._threadpool.renew()
         if self._setupped:
-            if self._extract_started:
-                self._extract_thread.stop()
-                self._extract_started = False
-            self.setupped = False
+            self._extract_started = False
+            self._setupped = False
 
     def extract(self):
         '''Start extracting the files in the file list one by one using a
