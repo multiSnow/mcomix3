@@ -170,6 +170,8 @@ class Extractor(object):
         log.debug('Extracting from "%s" to "%s": "%s"',
                   self._src, self._dst, '", "'.join(files))
         for name in self._archive.iter_extract(files, self._dst):
+            if self._threadpool.closed:
+                break
             self._extraction_finished(name)
 
     def _extract_file(self, name):
