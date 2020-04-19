@@ -1,4 +1,4 @@
 [Thumbnailer Entry]
 TryExec=comicthumb
-Exec=comicthumb %u %o %s
+Exec=comicthumb %i %o %s
 MimeType=application/vnd.comicbook-rar;application/vnd.comicbook+zip;application/x-cb7;application/x-cbt;application/pdf
