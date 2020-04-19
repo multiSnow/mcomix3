@@ -43,7 +43,7 @@ def main():
     parser.add_argument('size',nargs='?',default=THUMB_SIZE,metavar='SIZE',
                         help='size of thumbnail (default: {})'.format(THUMB_SIZE))
     ns=parser.parse_args()
-    in_path=abspath(ns.infile)
+    in_path=ns.infile
     out_path=abspath(ns.outfile)
     if in_path.startswith(URL_PREFIX):
         in_path=unquote(in_path[len(URL_PREFIX):])
