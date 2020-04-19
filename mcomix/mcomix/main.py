@@ -1142,11 +1142,11 @@ class MainWindow(Gtk.Window):
 
         self.write_config_files()
 
+        self.slideshow.stop()
         self.filehandler.close_file()
         if main_dialog._dialog is not None:
             main_dialog._dialog.close()
         backend.LibraryBackend().close()
-        self.slideshow.stop()
 
 #: Main window instance
 __main_window = None
