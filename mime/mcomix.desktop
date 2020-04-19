@@ -19,4 +19,4 @@ Terminal=false
 Type=Application
 StartupNotify=true
 Categories=Graphics;Viewer;
-MimeType=application/x-cb7;application/x-ext-cb7;application/x-cbr;application/x-ext-cbr;application/x-cbt;application/x-ext-cbt;application/x-cbz;application/x-ext-cbz;application/pdf;application/x-pdf;application/x-ext-pdf;image/bmp;image/x-MS-bmp;image/x-bmp;image/gif;image/jpeg;image/png;image/tiff;image/x-portable-bitmap;image/x-portable-graymap;image/x-portable-pixmap;
+MimeType=application/vnd.comicbook-rar;application/vnd.comicbook+zip;application/x-cb7;application/x-cbt;application/pdf;image/bmp;image/gif;image/jpeg;image/png;image/tiff;image/x-portable-bitmap;image/x-portable-graymap;image/x-portable-pixmap;

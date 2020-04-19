@@ -1,8 +1,8 @@
 <gconfschemafile>
     <schemalist>
         <schema>
-            <key>/schemas/desktop/gnome/thumbnailers/application@x-cbr/enable</key>
-            <applyto>/desktop/gnome/thumbnailers/application@x-cbr/enable</applyto>
+            <key>/schemas/desktop/gnome/thumbnailers/application@vnd.comicbook-rar/enable</key>
+            <applyto>/desktop/gnome/thumbnailers/application@vnd.comicbook-rar/enable</applyto>
             <owner>comicthumb</owner>
             <type>bool</type>
             <default>true</default>
@@ -12,8 +12,8 @@
             </locale>
         </schema>
         <schema>
-            <key>/schemas/desktop/gnome/thumbnailers/application@x-cbr/command</key>
-            <applyto>/desktop/gnome/thumbnailers/application@x-cbr/command</applyto>
+            <key>/schemas/desktop/gnome/thumbnailers/application@vnd.comicbook-rar/command</key>
+            <applyto>/desktop/gnome/thumbnailers/application@vnd.comicbook-rar/command</applyto>
             <owner>comicthumb</owner>
             <type>string</type>
             <default>comicthumb %i %o %s</default>
@@ -23,8 +23,8 @@
             </locale>
         </schema>
         <schema>
-            <key>/schemas/desktop/gnome/thumbnailers/application@x-cbz/enable</key>
-            <applyto>/desktop/gnome/thumbnailers/application@x-cbz/enable</applyto>
+            <key>/schemas/desktop/gnome/thumbnailers/application@vnd.comicbook+zip/enable</key>
+            <applyto>/desktop/gnome/thumbnailers/application@vnd.comicbook+zip/enable</applyto>
             <owner>comicthumb</owner>
             <type>bool</type>
             <default>true</default>
@@ -34,8 +34,30 @@
             </locale>
         </schema>
         <schema>
-            <key>/schemas/desktop/gnome/thumbnailers/application@x-cbz/command</key>
-            <applyto>/desktop/gnome/thumbnailers/application@x-cbz/command</applyto>
+            <key>/schemas/desktop/gnome/thumbnailers/application@vnd.comicbook+zip/command</key>
+            <applyto>/desktop/gnome/thumbnailers/application@vnd.comicbook+zip/command</applyto>
+            <owner>comicthumb</owner>
+            <type>string</type>
+            <default>comicthumb %i %o %s</default>
+            <locale name="C">
+                <short></short>
+                <long></long>
+            </locale>
+        </schema>
+        <schema>
+            <key>/schemas/desktop/gnome/thumbnailers/application@x-cb7/enable</key>
+            <applyto>/desktop/gnome/thumbnailers/application@x-cb7/enable</applyto>
+            <owner>comicthumb</owner>
+            <type>bool</type>
+            <default>true</default>
+            <locale name="C">
+                <short></short>
+                <long></long>
+            </locale>
+        </schema>
+        <schema>
+            <key>/schemas/desktop/gnome/thumbnailers/application@x-cb7/command</key>
+            <applyto>/desktop/gnome/thumbnailers/application@x-cb7/command</applyto>
             <owner>comicthumb</owner>
             <type>string</type>
             <default>comicthumb %i %o %s</default>
@@ -67,8 +89,8 @@
             </locale>
         </schema>
         <schema>
-            <key>/schemas/desktop/gnome/thumbnailers/application@x-cb7/enable</key>
-            <applyto>/desktop/gnome/thumbnailers/application@x-cb7/enable</applyto>
+            <key>/schemas/desktop/gnome/thumbnailers/application@pdf/enable</key>
+            <applyto>/desktop/gnome/thumbnailers/application@pdf/enable</applyto>
             <owner>comicthumb</owner>
             <type>bool</type>
             <default>true</default>
@@ -78,8 +100,8 @@
             </locale>
         </schema>
         <schema>
-            <key>/schemas/desktop/gnome/thumbnailers/application@x-cb7/command</key>
-            <applyto>/desktop/gnome/thumbnailers/application@x-cb7/command</applyto>
+            <key>/schemas/desktop/gnome/thumbnailers/application@pdf/command</key>
+            <applyto>/desktop/gnome/thumbnailers/application@pdf/command</applyto>
             <owner>comicthumb</owner>
             <type>string</type>
             <default>comicthumb %i %o %s</default>
