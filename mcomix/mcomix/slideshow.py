@@ -1,6 +1,6 @@
 '''slideshow.py - Slideshow handler.'''
 
-from gi.repository import Gtk
+from gi.repository import GLib, Gtk
 
 from mcomix.lib import mt
 from mcomix.preferences import prefs
@@ -11,10 +11,7 @@ class Slideshow(object):
 
     def __init__(self, window):
         self._window = window
-        self._interval = mt.Interval(
-            prefs['slideshow delay'], Slideshow._next,
-            args=(self._window,
-                  prefs['number of pixels to scroll per slideshow event']))
+        self._interval = mt.Interval(prefs['slideshow delay'], self.next)
 
     def start(self):
         if self.is_running():
@@ -30,6 +27,13 @@ class Slideshow(object):
 
     def is_running(self):
         return self._interval.is_running()
+
+    def next(self):
+        if not self.is_running():
+            return
+        return GLib.idle_add(
+            Slideshow._next, self._window,
+            prefs['number of pixels to scroll per slideshow event'])
 
     @staticmethod
     def _next(window, pixels):
