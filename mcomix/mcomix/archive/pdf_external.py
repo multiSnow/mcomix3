@@ -2,7 +2,6 @@
 
 ''' PDF handler. '''
 
-from distutils.version import LooseVersion
 import math
 import os
 import re
@@ -85,16 +84,17 @@ class PdfArchive(archive_base.BaseArchive):
             _mutool_exec.append(mutool)
             # Find MuPDF version; assume 1.6 version since
             # the '-v' switch is only supported from 1.7 onward...
-            version = '1.6'
+            version = (1,6)
             with process.popen([mutool, '-v'],
                                stdout=process.NULL,
                                stderr=process.PIPE,
                                universal_newlines=True) as proc:
-                output = proc.stderr.read()
-                if output.startswith('mutool version '):
-                    version = output[15:].rstrip()
-            version = LooseVersion(version)
-            if version >= LooseVersion('1.8'):
+                output = re.match(r'mutool version '
+                                  r'(?P<version>[\d.]+)([^\d].*)?',
+                                  proc.stderr.read())
+                if output:
+                    version = tuple(map(int,output.group('version').split('.')))
+            if version >= (1,8):
                 # Mutool executable with draw support.
                 _mudraw_exec.extend((mutool, 'draw', '-q'))
                 _mudraw_trace_args.extend(('-F', 'trace'))
@@ -106,13 +106,14 @@ class PdfArchive(archive_base.BaseArchive):
                     log.debug('mudraw executable not found')
                 else:
                     _mudraw_exec.append(mudraw)
-                    if version >= LooseVersion('1.7'):
+                    if version >= (1,7):
                         _mudraw_trace_args.extend(('-F', 'trace'))
                     else:
                         _mudraw_trace_args.append('-x')
                     _pdf_possible = True
         if _pdf_possible:
-            log.info('Using MuPDF version: %s', version)
+            log.info('Using MuPDF version: %s',
+                     '.'.join(map(str,version)))
             log.debug('mutool: %s', ' '.join(_mutool_exec))
             log.debug('mudraw: %s', ' '.join(_mudraw_exec))
             log.debug('mudraw trace arguments: %s', ' '.join(_mudraw_trace_args))
