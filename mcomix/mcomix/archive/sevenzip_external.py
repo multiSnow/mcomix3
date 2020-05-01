@@ -12,13 +12,14 @@ from mcomix.archive import archive_base
 # Filled on-demand by SevenZipArchive
 _7z_executable = -1
 
-def is_7z_support_rar5():
-    '''Check whether p7zip has Rar.so, which is needed to support Rar 5.0 format'''
+def is_7z_support_rar():
+    '''Check whether p7zip has Rar.so, which is needed to Rar format'''
     if sys.platform=='win32':
-        # assume 7z in windows already support rar5
+        # assume 7z in windows already support rar
         return True
     has_rar_so=False
-    with process.popen(('7z','i'),universal_newlines=True) as proc:
+    with process.popen((SevenZipArchive._find_7z_executable(),'i'),
+                       universal_newlines=True) as proc:
         libsblock=False
         for line in proc.stdout:
             line=line.rstrip()

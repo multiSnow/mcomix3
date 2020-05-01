@@ -168,12 +168,8 @@ def archive_mime_type(path):
                 else:
                     return constants.TAR
 
-            if magic.startswith(b'Rar!\x1a\x07\x00'):
-                return constants.RAR
-
-            # test Rar 5.0 format
-            if magic.startswith(b'Rar!\x1a\x07\x01'):
-                if sevenzip_external.is_7z_support_rar5():
+            if magic.startswith(b'Rar!\x1a\x07'):
+                if sevenzip_external.is_7z_support_rar():
                     return constants.RAR5
                 else:
                     return constants.RAR
