@@ -17,7 +17,8 @@ Required:
 Recommended:
 ------------
 - **unrar**, **rar** or **libunrar** to extract RAR archives. `4`_
-- **7z** `5`_ (**p7zip** `6`_ for POSIX system) to extract 7Z and LHA archives. Note that 7z might be able to extract RAR archives as well, but this might require additional software (for example, **p7zip-rar** on Debian-like systems), and it might fail to open certain RAR archives, especially newer ones.
+- **7z** `5`_ (**p7zip** `6`_ for POSIX system) to extract 7Z and LHA archives.
+- **p7zip** with rar codec (**p7zip-rar** on Debian-like systems, providing ``Codecs/Rar.so`` file) to extract RAR archives.
 - **lha** `7`_ to extract LHA archives.
 - **mupdf** `8`_ for PDF support.
 - **libflif_dec** or **libflif** `9`_ for FLIF support.
