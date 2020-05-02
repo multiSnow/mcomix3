@@ -170,9 +170,9 @@ def archive_mime_type(path):
 
             if magic.startswith(b'Rar!\x1a\x07'):
                 if sevenzip_external.is_7z_support_rar():
-                    return constants.RAR5
-                else:
                     return constants.RAR
+                else:
+                    return constants.RAR5
 
             if magic[0:6] == b'7z\xbc\xaf\x27\x1c':
                 return constants.SEVENZIP
