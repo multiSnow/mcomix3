@@ -14,6 +14,7 @@ from mcomix import log
 from mcomix.archive import (
     archivemount,
     lha_external,
+    packarc_external,
     pdf_external,
     rar,
     rar_external,
@@ -68,6 +69,9 @@ _HANDLERS = {
         squashfs.SquashfsArchive,
         sevenzip_external.SevenZipArchive,
     ),
+    constants.PACKARC: (
+        packarc_external.PackARCArchive,
+    ),
 }
 
 def _get_handler(archive_type):
@@ -92,6 +96,9 @@ def rar_available():
 def lha_available():
     return _is_available(constants.LHA)
 
+def packarc_available():
+    return _is_available(constants.PACKARC)
+
 def pdf_available():
     return _is_available(constants.PDF)
 
@@ -108,6 +115,7 @@ def init_supported_formats():
         ('RAR', constants.RAR_FORMATS , rar_available() ),
         ('7z' , constants.SZIP_FORMATS, szip_available()),
         ('LHA', constants.LHA_FORMATS , lha_available() ),
+        ('PackARC', constants.PACKARC_FORMATS , packarc_available() ),
         ('PDF', constants.PDF_FORMATS , pdf_available() ),
         ('SquashFS', constants.SQUASHFS_FORMATS , squashfs_available() ),
     ):
@@ -178,6 +186,9 @@ def archive_mime_type(path):
 
             if magic.startswith((b'sqsh',b'hsqs')):
                 return constants.SQUASHFS
+
+            if packarc_external.PackARCArchive.test_if_archive(path):
+                return constants.PACKARC
 
     except Exception:
         log.warning(_('! Could not read %s'), path)

@@ -37,11 +37,12 @@ def _get_creationflags():
 
 # Cannot spawn processes with PythonW/Win32 unless stdin
 # and stderr are redirected to a pipe/devnull as well.
-def call(args, stdin=NULL, stdout=NULL, stderr=NULL, universal_newlines=False):
+def call(args, stdin=NULL, stdout=NULL, stderr=NULL, universal_newlines=False, **kwargs):
     return 0 == subprocess.call(_fix_args(args), stdin=stdin,
                                 stdout=stdout,
                                 universal_newlines=universal_newlines,
-                                creationflags=_get_creationflags())
+                                creationflags=_get_creationflags(),
+                                **kwargs)
 
 def popen(args, stdin=NULL, stdout=PIPE, stderr=NULL, universal_newlines=False):
     return subprocess.Popen(_fix_args(args), stdin=stdin,
