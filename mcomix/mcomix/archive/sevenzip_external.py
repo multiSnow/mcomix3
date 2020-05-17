@@ -12,6 +12,28 @@ from mcomix.archive import archive_base
 # Filled on-demand by SevenZipArchive
 _7z_executable = -1
 
+def is_7z_support_rar():
+    '''Check whether p7zip has Rar.so, which is needed to Rar format'''
+    if sys.platform=='win32':
+        # assume 7z in windows already support rar
+        return True
+    has_rar_so=False
+    with process.popen((SevenZipArchive._find_7z_executable(),'i'),
+                       universal_newlines=True) as proc:
+        libsblock=False
+        for line in proc.stdout:
+            line=line.rstrip()
+            if line=='Libs:':
+                libsblock=True
+                continue
+            if libsblock and not line:
+                break
+            if libsblock:
+                idx,path=line.strip().split()
+                if os.path.basename(path)=='Rar.so':
+                    has_rar_so=True
+    return has_rar_so
+
 class SevenZipArchive(archive_base.ExternalExecutableArchive):
     ''' 7z file extractor using the 7z executable. '''
 

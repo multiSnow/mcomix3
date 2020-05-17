@@ -54,6 +54,10 @@ _HANDLERS = {
         # Last resort: some versions of 7z support RAR.
         sevenzip_external.SevenZipArchive,
     ),
+    constants.RAR5: (
+        rar.RarArchive,
+        rar_external.RarArchive,
+    ),
     constants.LHA: (
         # Prefer 7z over lha executable for Unicode support.
         sevenzip_external.SevenZipArchive,
@@ -173,7 +177,10 @@ def archive_mime_type(path):
                     return constants.TAR
 
             if magic.startswith(b'Rar!\x1a\x07'):
-                return constants.RAR
+                if sevenzip_external.is_7z_support_rar():
+                    return constants.RAR
+                else:
+                    return constants.RAR5
 
             if magic[0:6] == b'7z\xbc\xaf\x27\x1c':
                 return constants.SEVENZIP
