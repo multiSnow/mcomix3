@@ -112,6 +112,8 @@ class _BaseFileChooserDialog(Gtk.Dialog):
         '''Add a filter, called <name>, for each mime type in <mimes> and
         each pattern in <patterns> to the filechooser.
         '''
+        patterns = [pattern.lower() for pattern in patterns]
+
         ffilter = Gtk.FileFilter()
         ffilter.add_custom(
                 Gtk.FileFilterFlags.FILENAME | Gtk.FileFilterFlags.MIME_TYPE,
@@ -161,12 +163,10 @@ class _BaseFileChooserDialog(Gtk.Dialog):
 
         match_patterns, match_mimes = data
 
-        matches_mime = bool(filter(
-            lambda match_mime: match_mime == filter_info.mime_type,
-            match_mimes))
-        matches_pattern = bool(filter(
-            lambda match_pattern: fnmatch.fnmatch(filter_info.filename, match_pattern),
-            match_patterns))
+        norm_filename = filter_info.filename.lower()
+
+        matches_mime = filter_info.mime_type in match_mimes
+        matches_pattern = any(fnmatch.fnmatch(norm_filename, pattern) for pattern in match_patterns)
 
         return matches_mime or matches_pattern
 
