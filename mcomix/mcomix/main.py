@@ -1044,6 +1044,55 @@ class MainWindow(Gtk.Window):
 
         save_dialog.destroy()
 
+    def delete(self, *args):
+        """ The currently opened file/archive will be deleted after showing
+        a confirmation dialog. """
+
+        current_file = self.imagehandler.get_real_path()
+        dialog = message_dialog.MessageDialog(
+                self,
+                flags=Gtk.DialogFlags.MODAL,
+                message_type=Gtk.MessageType.QUESTION,
+                buttons=Gtk.ButtonsType.NONE)
+        dialog.set_markup('<span weight="bold" size="larger">'
+                + _('Delete "%s"?') % os.path.basename(current_file)
+                + '</span>')
+        dialog.format_secondary_markup(_('The file will be deleted from your harddisk.'))
+        dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
+        dialog.add_button(Gtk.STOCK_DELETE, Gtk.ResponseType.OK)
+        dialog.set_default_response(Gtk.ResponseType.OK)
+
+        result = dialog.run()
+        dialog.destroy()
+
+        if result == Gtk.ResponseType.OK:
+            # Go to next page/archive, and delete current file
+            if self.filehandler.archive_type is not None:
+                next_opened = self.filehandler._open_next_archive()
+                if not next_opened:
+                    next_opened = self.filehandler._open_previous_archive()
+                if not next_opened:
+                    self.filehandler.close_file()
+
+                if os.path.isfile(current_file):
+                    os.unlink(current_file)
+            else:
+                if self.imagehandler.get_number_of_pages() > 1:
+                    # Open the next/previous file
+                    if self.imagehandler.get_current_page() >= self.imagehandler.get_number_of_pages():
+                        self.flip_page(-1)
+                    else:
+                        self.flip_page(1)
+                    # Unlink the desired file
+                    if os.path.isfile(current_file):
+                        os.unlink(current_file)
+                    # Refresh the directory
+                    self.filehandler.refresh_file(self.imagehandler.get_current_page())
+                else:
+                    self.filehandler.close_file()
+                    if os.path.isfile(current_file):
+                        os.unlink(current_file)
+
     def show_info_panel(self):
         ''' Shows an OSD displaying information about the current page. '''
 
