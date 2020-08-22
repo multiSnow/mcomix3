@@ -3,6 +3,7 @@
     switching to the next/previous directory. '''
 
 import functools
+import locale
 import os
 import re
 
@@ -82,7 +83,10 @@ class FileProvider(object):
         elif prefs['sort by'] == constants.SORT_SIZE:
             # Smallest file first
             files.sort(key=lambda filename: os.stat(filename).st_size)
-        # else: don't sort at all: use OS ordering.
+        elif prefs['sort by'] == constants.SORT_LOCALE:
+            # Use the user's local to match ordering in most applications.
+            files.sort(key=locale.strxfrm)
+        # else: don't sort at all: use arbitrary ordering.
 
         # Default is ascending.
         if prefs['sort order'] == constants.SORT_DESCENDING:

@@ -518,7 +518,8 @@ class _PreferencesDialog(Gtk.Dialog):
                 (_('No sorting'), 0),
                 (_('File name'), constants.SORT_NAME),
                 (_('File size'), constants.SORT_SIZE),
-                (_('Last modified'), constants.SORT_LAST_MODIFIED))
+                (_('Last modified'), constants.SORT_LAST_MODIFIED),
+                (_('File name (locale aware)'), constants.SORT_LOCALE))
 
         sortkey_box = self._create_combobox(sortkey_items, prefs['sort by'],
             self._sort_by_changed_cb)
