@@ -123,6 +123,8 @@ class Thumbnailer(object):
         else:
             mime = None
         if mime is not None:
+            if not archive_tools.is_archive_file(filepath):
+                return None, None
             with archive_tools.get_recursive_archive_handler(
                     filepath, type=mime,
                     prefix='mcomix_archive_thumb.') as archive:

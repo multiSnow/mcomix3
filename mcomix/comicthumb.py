@@ -63,7 +63,13 @@ def main():
                                               store_on_disk=False,
                                               size=(size, size))
     thumb = thumbnailer.thumbnail(in_path)
-    thumb.savev(out_path, 'png', [], [])
+    if thumb:
+        thumb.savev(out_path, 'png', [], [])
+    else:
+        print('unsupported file:',in_path)
+        print('please see https://github.com/multiSnow/mcomix3/blob/gtk3/README.rst')
+        print('for supported format and required library/tool.')
+        return 1
 
 if __name__ == '__main__':
     exit(main())
