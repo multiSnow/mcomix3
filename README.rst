@@ -21,7 +21,7 @@ Recommended:
 - **p7zip** with rar codec (**p7zip-rar** on Debian-like systems, providing ``Codecs/Rar.so`` file) to extract RAR archives.
 - **lha** `7`_ to extract LHA archives.
 - **mupdf** `8`_ for PDF support.
-- **libflif_dec** or **libflif** `9`_ for FLIF support.
+- (FLIF is not supported anymore. `9`_)
 
 Run:
 ----
@@ -47,4 +47,4 @@ then:
 .. _6: http://p7zip.sourceforge.net/
 .. _7: https://fragglet.github.io/lhasa/
 .. _8: https://mupdf.com/
-.. _9: https://github.com/FLIF-hub/FLIF
+.. _9: https://github.com/FLIF-hub/FLIF/commit/188d331a03f4c76cc4bc8a1b32f82dd569511be0

@@ -19,7 +19,6 @@ from mcomix import constants
 from mcomix import log
 from mcomix import tools
 from mcomix.lib import reader
-from mcomix.lib import FlifImagePlugin
 from mcomix.preferences import prefs
 
 if tools.use_gui():
@@ -37,9 +36,6 @@ if tools.use_gui():
 
     GTK_GDK_COLOR_BLACK = Gdk.color_parse('black')
     GTK_GDK_COLOR_WHITE = Gdk.color_parse('white')
-
-if prefs['try FLIF support']:
-    FlifImagePlugin._init_plugin()
 
 def _getexif(im):
     exif={}

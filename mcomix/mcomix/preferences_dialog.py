@@ -351,12 +351,6 @@ class _PreferencesDialog(Gtk.Dialog):
             'check image mimetype',
             _('Detect image file(s) by mimetypes.')))
 
-        page.add_row(self._create_pref_check_button(
-            _('Try loading FLIF file(s) (restart required)'),
-            'try FLIF support',
-            _('Try loading FLIF files if flif_dec or flif library is found in system.\n'
-              'Since the official reference is still not stable, mcomix may failed to load FLIF even if library found.')))
-
         page.new_section(_('Extraction and cache'))
 
         page.add_row(

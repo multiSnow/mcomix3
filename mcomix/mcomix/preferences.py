@@ -118,7 +118,6 @@ prefs = {
     'userstyle': None,  # None to disable userstyle
     'mount': False,
     'check image mimetype': False,
-    'try FLIF support': False,
 }
 
 def _md5str(s):
