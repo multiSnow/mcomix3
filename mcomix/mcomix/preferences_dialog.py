@@ -5,6 +5,8 @@
 import sys
 
 from gi.repository import Gdk, GdkPixbuf, Gtk, GObject
+import PIL
+from PIL import Image # for PIL interpolation prefs
 
 from mcomix.languages import languages
 from mcomix.preferences import prefs
@@ -660,7 +662,11 @@ class _PreferencesDialog(Gtk.Dialog):
         items = (
                 (_('Normal (fast)'), int(GdkPixbuf.InterpType.TILES)),
                 (_('Bilinear'), int(GdkPixbuf.InterpType.BILINEAR)),
-                (_('Hyperbolic (slow)'), int(GdkPixbuf.InterpType.HYPER)))
+                (_('Hyperbolic (slow)'), int(GdkPixbuf.InterpType.HYPER)),
+                (_('Lanczos (slow)'), int(GdkPixbuf.InterpType.HYPER) + int(PIL.Image.LANCZOS)), # PIL type 1. Type 0 is 'nearest-neighbor,' which is in GDK Pixbuf already.
+                (_('Bicubic (slow)'), int(GdkPixbuf.InterpType.HYPER) + int(PIL.Image.BICUBIC)), # PIL type 3. PIL Type 2 is bilinear, which we already have from GDK Pixbuf, so we skip it here.
+                (_('Box'), int(GdkPixbuf.InterpType.HYPER) + int(PIL.Image.BOX)), # PIL type 4. When upscaling, is like NEAREST (type 0 in both PIL and PixBuf). Good for pixel art enlargement.
+                (_('Hamming (slow)'), int(GdkPixbuf.InterpType.HYPER) + int(PIL.Image.HAMMING))) # PIL type 5.
 
         selection = prefs['scaling quality']
 

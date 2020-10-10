@@ -144,7 +144,7 @@ def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False,
 
     If <src> has an alpha channel it gets a checkboard background.
     '''
-    # "Unbounded" really means "bounded to 10000 px" - for simplicity.
+    # "Unbounded" really means "bounded to 100000 px" - for simplicity.
     # MComix would probably choke on larger images anyway.
     if width < 0:
         width = 100000
@@ -179,10 +179,33 @@ def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False,
             # Using anything other than nearest interpolation will result in a
             # modified image if no resizing takes place (even if it's opaque).
             scaling_quality = GdkPixbuf.InterpType.NEAREST
-        src = src.composite_color_simple(width, height, scaling_quality,
-                                         255, check_size, color1, color2)
+        # scaling_quality is an integer value; 0-3 are the kinds of resampling
+        # offered by GdkPixbuf (though nearest-neighbor isn't offered by the
+        # program). PIL also uses integer constants for interpolation methods,
+        # so we make those types 4 and up and subtract the highest GdkPixbuf type to get PIL interpolation types.
+        if int(scaling_quality) > int(GdkPixbuf.InterpType.HYPER):
+            # resize using PIL, and _then_ composite with checkerboard pattern.
+            # don't use any filtering on the compositing step, since image was
+            # already scaled by PIL.
+            src = pil_to_pixbuf(pixbuf_to_pil(src).resize(
+                [ width, height ],
+                resample=(scaling_quality - int(GdkPixbuf.InterpType.HYPER))
+            )).composite_color_simple(width, height,
+                                      GdkPixbuf.InterpType.NEAREST, 255,
+                                      check_size, color1, color2)
+        else: # scaling using GDK PixBuf
+            src = src.composite_color_simple(width, height, scaling_quality,
+                                             255, check_size, color1, color2)
     elif width != src_width or height != src_height:
-        src = src.scale_simple(width, height, scaling_quality)
+        if int(scaling_quality) > int(GdkPixbuf.InterpType.HYPER):
+            src = pil_to_pixbuf(
+                pixbuf_to_pil(src).resize(
+                    [ width, height ],
+                    resample=(scaling_quality - int(GdkPixbuf.InterpType.HYPER))
+                ))
+        else:
+            # Use GdkPixbuf to do the scaling for the first 3 methods.
+            src = src.scale_simple(width, height, scaling_quality)
 
     src = rotate_pixbuf(src, rotation)
 
