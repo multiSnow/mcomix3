@@ -305,6 +305,9 @@ class _PreferencesDialog(Gtk.Dialog):
         page.add_row(Gtk.Label(label=_('Scaling mode')),
             self._create_scaling_quality_combobox())
 
+        page.add_row(Gtk.Label(label=_('High-quality scaling for main area')),
+            self._create_pil_scaling_filter_combobox())
+
         return page
 
     def _init_animation_tab(self):
@@ -662,11 +665,7 @@ class _PreferencesDialog(Gtk.Dialog):
         items = (
                 (_('Normal (fast)'), int(GdkPixbuf.InterpType.TILES)),
                 (_('Bilinear'), int(GdkPixbuf.InterpType.BILINEAR)),
-                (_('Hyperbolic (slow)'), int(GdkPixbuf.InterpType.HYPER)),
-                (_('Lanczos (slow)'), int(GdkPixbuf.InterpType.HYPER) + int(PIL.Image.LANCZOS)), # PIL type 1. Type 0 is 'nearest-neighbor,' which is in GDK Pixbuf already.
-                (_('Bicubic (slow)'), int(GdkPixbuf.InterpType.HYPER) + int(PIL.Image.BICUBIC)), # PIL type 3. PIL Type 2 is bilinear, which we already have from GDK Pixbuf, so we skip it here.
-                (_('Box'), int(GdkPixbuf.InterpType.HYPER) + int(PIL.Image.BOX)), # PIL type 4. When upscaling, is like NEAREST (type 0 in both PIL and PixBuf). Good for pixel art enlargement.
-                (_('Hamming (slow)'), int(GdkPixbuf.InterpType.HYPER) + int(PIL.Image.HAMMING))) # PIL type 5.
+                (_('Hyperbolic (slow)'), int(GdkPixbuf.InterpType.HYPER)))
 
         selection = prefs['scaling quality']
 
@@ -683,6 +682,31 @@ class _PreferencesDialog(Gtk.Dialog):
             value = combobox.get_model().get_value(iter, 1)
             last_value = prefs['scaling quality']
             prefs['scaling quality'] = value
+
+            if value != last_value:
+                self._window.draw_image()
+
+    def _create_pil_scaling_filter_combobox(self):
+        ''' Creates combo box for PIL filter to scale with in main view '''
+        items = (
+                (_('Off'), -1), # -1 defers to 'scaling quality'
+                (_('Lanczos'), int(PIL.Image.LANCZOS))) # PIL type 1.
+
+        selection = prefs['pil scaling filter']
+
+        box = self._create_combobox(items, selection, self._pil_scaling_filter_changed_cb)
+        box.set_tooltip_text(
+            _('If set, a scaling filter from PIL will be preferred over the "scaling quality" selection, in the main view only. This will impact performance.'))
+
+        return box
+
+    def _pil_scaling_filter_changed_cb(self, combobox, *args):
+        ''' Called whan PIL filter selection changes. '''
+        iter = combobox.get_active_iter()
+        if combobox.get_model().iter_is_valid(iter):
+            value = combobox.get_model().get_value(iter, 1)
+            last_value = prefs['pil scaling filter']
+            prefs['pil scaling filter'] = value
 
             if value != last_value:
                 self._window.draw_image()

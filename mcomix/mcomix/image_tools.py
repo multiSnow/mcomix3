@@ -128,7 +128,7 @@ def fit_pixbuf_to_rectangle(src, rect, rotation):
                             scale_up=True)
 
 def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False,
-                     rotation=0, scaling_quality=None):
+                     rotation=0, scaling_quality=None, pil_filter=None):
     '''Scale (and return) a pixbuf so that it fits in a rectangle with
     dimensions <width> x <height>. A negative <width> or <height>
     means an unbounded dimension - both cannot be negative.
@@ -162,6 +162,9 @@ def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False,
     if scaling_quality is None:
         scaling_quality = prefs['scaling quality']
 
+    if pil_filter is None:
+        pil_filter = prefs['pil scaling filter']
+
     src_width = src.get_width()
     src_height = src.get_height()
 
@@ -179,33 +182,25 @@ def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False,
             # Using anything other than nearest interpolation will result in a
             # modified image if no resizing takes place (even if it's opaque).
             scaling_quality = GdkPixbuf.InterpType.NEAREST
-        # scaling_quality is an integer value; 0-3 are the kinds of resampling
-        # offered by GdkPixbuf (though nearest-neighbor isn't offered by the
-        # program). PIL also uses integer constants for interpolation methods,
-        # so we make those types 4 and up and subtract the highest GdkPixbuf type to get PIL interpolation types.
-        if int(scaling_quality) > int(GdkPixbuf.InterpType.HYPER):
-            # resize using PIL, and _then_ composite with checkerboard pattern.
-            # don't use any filtering on the compositing step, since image was
-            # already scaled by PIL.
-            src = pil_to_pixbuf(pixbuf_to_pil(src).resize(
-                [ width, height ],
-                resample=(scaling_quality - int(GdkPixbuf.InterpType.HYPER))
-            )).composite_color_simple(width, height,
-                                      GdkPixbuf.InterpType.NEAREST, 255,
-                                      check_size, color1, color2)
-        else: # scaling using GDK PixBuf
             src = src.composite_color_simple(width, height, scaling_quality,
                                              255, check_size, color1, color2)
-    elif width != src_width or height != src_height:
-        if int(scaling_quality) > int(GdkPixbuf.InterpType.HYPER):
-            src = pil_to_pixbuf(
-                pixbuf_to_pil(src).resize(
-                    [ width, height ],
-                    resample=(scaling_quality - int(GdkPixbuf.InterpType.HYPER))
-                ))
+        elif pil_filter == -1: # scale; use GDK PixBuf only
+            src = src.composite_color_simple(width, height, scaling_quality,
+                                             255, check_size, color1, color2)
         else:
-            # Use GdkPixbuf to do the scaling for the first 3 methods.
+            # use PIL filter and then composite. Since PIL already resized,
+            # use NEAREST for the composition step.
+            src = pil_to_pixbuf(pixbuf_to_pil(src).resize(
+                [width,height], resample=pil_filter)).composite_color_simple(
+                    width, height, GdkPixbuf.InterpType.NEAREST, 255,
+                    check_size, color1, color2)
+
+    elif width != src_width or height != src_height: # opaque and needs resized
+        if pil_filter == -1:
             src = src.scale_simple(width, height, scaling_quality)
+        else:
+            src = pil_to_pixbuf(
+                pixbuf_to_pil(src).resize([width,height],resample=pil_filter))
 
     src = rotate_pixbuf(src, rotation)
 
