@@ -5,8 +5,7 @@
 import sys
 
 from gi.repository import Gdk, GdkPixbuf, Gtk, GObject
-import PIL
-from PIL import Image # for PIL interpolation prefs
+import PIL.Image # for PIL interpolation prefs
 
 from mcomix.languages import languages
 from mcomix.preferences import prefs
