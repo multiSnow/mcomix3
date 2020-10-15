@@ -305,7 +305,9 @@ class _PreferencesDialog(Gtk.Dialog):
         page.add_row(Gtk.Label(label=_('Scaling mode')),
             self._create_scaling_quality_combobox())
 
-        page.add_row(Gtk.Label(label=_('High-quality scaling for main area')),
+        page.new_section(_('Advanced filters'))
+
+        page.add_row(Gtk.Label(label=_('Apply a high-quality scaling filter (main viewing area only):')),
             self._create_pil_scaling_filter_combobox())
 
         return page
@@ -689,14 +691,14 @@ class _PreferencesDialog(Gtk.Dialog):
     def _create_pil_scaling_filter_combobox(self):
         ''' Creates combo box for PIL filter to scale with in main view '''
         items = (
-                (_('Off'), -1), # -1 defers to 'scaling quality'
+                (_('None'), -1), # -1 defers to 'scaling quality'
                 (_('Lanczos'), int(PIL.Image.LANCZOS))) # PIL type 1.
 
         selection = prefs['pil scaling filter']
 
         box = self._create_combobox(items, selection, self._pil_scaling_filter_changed_cb)
         box.set_tooltip_text(
-            _('If set, a scaling filter from PIL will be preferred over the "scaling quality" selection, in the main view only. This will impact performance.'))
+            _('If set, a scaling filter from PIL will be used instead of the "scaling quality" selection in the main view only. This will impact performance and memory usage.'))
 
         return box
 
