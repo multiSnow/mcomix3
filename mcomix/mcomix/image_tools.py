@@ -172,25 +172,27 @@ def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False,
                                      (width, height),
                                      keep_ratio=keep_ratio,
                                      scale_up=scale_up)
-    if (width != src_width or height != src_height) and pil_filter > -1:
+
+    if (width, height) != (src_width, src_height) and pil_filter > -1:
         # scale by PIL interpolation filter
         src = pil_to_pixbuf(pixbuf_to_pil(src).resize(
             [width,height], resample=pil_filter))
         src_width = src.get_width()
         src_height = src.get_height()
+        assert (width, height) == (src_width, src_height),'PIL resize bug'
 
     if src.get_has_alpha():
         if prefs['checkered bg for transparent images']:
             check_size, color1, color2 = 8, 0x777777, 0x999999
         else:
             check_size, color1, color2 = 1024, 0xFFFFFF, 0xFFFFFF
-        if width == src_width and height == src_height:
+        if (width, height) == (src_width, src_height):
             # Using anything other than nearest interpolation will result in a
             # modified image if no resizing takes place (even if it's opaque).
             scaling_quality = GdkPixbuf.InterpType.NEAREST
         src = src.composite_color_simple(width, height, scaling_quality,
                                          255, check_size, color1, color2)
-    elif width != src_width or height != src_height:
+    elif (width, height) != (src_width, src_height):
         src = src.scale_simple(width, height, scaling_quality)
 
     src = rotate_pixbuf(src, rotation)
