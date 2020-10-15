@@ -144,6 +144,10 @@ def check_old_preferences(saved_prefs):
             upgrade_tools.fileinfo_conv(
                 fileinfo_pickle, constants.FILEINFO_JSON_PATH)
 
+    if saved_prefs['scaling quality']==3:
+        # deprecate GdkPixbuf.InterpType.HYPER with GdkPixbuf.InterpType.BILINEAR
+        saved_prefs['scaling quality']=2
+
 def read_preferences_file():
     '''Read preferences data from disk.'''
 

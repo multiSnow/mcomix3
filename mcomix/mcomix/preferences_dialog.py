@@ -665,8 +665,7 @@ class _PreferencesDialog(Gtk.Dialog):
         ''' Creates combo box for image scaling quality '''
         items = (
                 (_('Normal (fast)'), int(GdkPixbuf.InterpType.TILES)),
-                (_('Bilinear'), int(GdkPixbuf.InterpType.BILINEAR)),
-                (_('Hyperbolic (slow)'), int(GdkPixbuf.InterpType.HYPER)))
+                (_('Bilinear'), int(GdkPixbuf.InterpType.BILINEAR)))
 
         selection = prefs['scaling quality']
 
