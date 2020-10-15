@@ -5,6 +5,8 @@
 import sys
 
 from gi.repository import Gdk, GdkPixbuf, Gtk, GObject
+import PIL
+from PIL import Image # for PIL interpolation prefs
 
 from mcomix.languages import languages
 from mcomix.preferences import prefs
@@ -302,6 +304,11 @@ class _PreferencesDialog(Gtk.Dialog):
 
         page.add_row(Gtk.Label(label=_('Scaling mode')),
             self._create_scaling_quality_combobox())
+
+        page.new_section(_('Advanced filters'))
+
+        page.add_row(Gtk.Label(label=_('Apply a high-quality scaling filter (main viewing area only):')),
+            self._create_pil_scaling_filter_combobox())
 
         return page
 
@@ -677,6 +684,31 @@ class _PreferencesDialog(Gtk.Dialog):
             value = combobox.get_model().get_value(iter, 1)
             last_value = prefs['scaling quality']
             prefs['scaling quality'] = value
+
+            if value != last_value:
+                self._window.draw_image()
+
+    def _create_pil_scaling_filter_combobox(self):
+        ''' Creates combo box for PIL filter to scale with in main view '''
+        items = (
+                (_('None'), -1), # -1 defers to 'scaling quality'
+                (_('Lanczos'), int(PIL.Image.LANCZOS))) # PIL type 1.
+
+        selection = prefs['pil scaling filter']
+
+        box = self._create_combobox(items, selection, self._pil_scaling_filter_changed_cb)
+        box.set_tooltip_text(
+            _('If set, a scaling filter from PIL will be used instead of the "scaling quality" selection in the main view only. This will impact performance and memory usage.'))
+
+        return box
+
+    def _pil_scaling_filter_changed_cb(self, combobox, *args):
+        ''' Called whan PIL filter selection changes. '''
+        iter = combobox.get_active_iter()
+        if combobox.get_model().iter_is_valid(iter):
+            value = combobox.get_model().get_value(iter, 1)
+            last_value = prefs['pil scaling filter']
+            prefs['pil scaling filter'] = value
 
             if value != last_value:
                 self._window.draw_image()

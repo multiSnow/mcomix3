@@ -128,7 +128,7 @@ def fit_pixbuf_to_rectangle(src, rect, rotation):
                             scale_up=True)
 
 def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False,
-                     rotation=0, scaling_quality=None):
+                     rotation=0, scaling_quality=None, pil_filter=None):
     '''Scale (and return) a pixbuf so that it fits in a rectangle with
     dimensions <width> x <height>. A negative <width> or <height>
     means an unbounded dimension - both cannot be negative.
@@ -144,7 +144,7 @@ def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False,
 
     If <src> has an alpha channel it gets a checkboard background.
     '''
-    # "Unbounded" really means "bounded to 10000 px" - for simplicity.
+    # "Unbounded" really means "bounded to 100000 px" - for simplicity.
     # MComix would probably choke on larger images anyway.
     if width < 0:
         width = 100000
@@ -162,6 +162,9 @@ def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False,
     if scaling_quality is None:
         scaling_quality = prefs['scaling quality']
 
+    if pil_filter is None:
+        pil_filter = prefs['pil scaling filter']
+
     src_width = src.get_width()
     src_height = src.get_height()
 
@@ -169,6 +172,12 @@ def fit_in_rectangle(src, width, height, keep_ratio=True, scale_up=False,
                                      (width, height),
                                      keep_ratio=keep_ratio,
                                      scale_up=scale_up)
+    if (width != src_width or height != src_height) and pil_filter > -1:
+        # scale by PIL interpolation filter
+        src = pil_to_pixbuf(pixbuf_to_pil(src).resize(
+            [width,height], resample=pil_filter))
+        src_width = src.get_width()
+        src_height = src.get_height()
 
     if src.get_has_alpha():
         if prefs['checkered bg for transparent images']:

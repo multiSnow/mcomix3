@@ -100,6 +100,7 @@ prefs = {
     'max extract threads': 1,
     'wrap mouse scroll': False,
     'scaling quality': 2,  # GdkPixbuf.InterpType.BILINEAR
+    'pil scaling filter': -1, # Use a PIL filter (just lanczos for now) in main viewing area. -1 to just use GdkPixbuf
     'escape quits': False,
     'fit to size mode': constants.ZOOM_MODE_HEIGHT,
     'fit to size px': 1800,
