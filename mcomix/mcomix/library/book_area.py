@@ -361,8 +361,8 @@ class _BookArea(Gtk.ScrolledWindow):
         elif path2 is None:
             return -1
 
-        name1 = os.path.split(path1)[1].lower()
-        name2 = os.path.split(path2)[1].lower()
+        name1 = os.path.basename(path1).lower()
+        name2 = os.path.basename(path2).lower()
 
         return tools.alphanumeric_compare(name1, name2)
 

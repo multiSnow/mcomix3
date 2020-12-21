@@ -1026,9 +1026,9 @@ class MainWindow(Gtk.Window):
             archive_name = self.filehandler.get_pretty_current_filename()
             file_name = self.imagehandler.get_path_to_page()
             suggested_name = os.path.splitext(archive_name)[0] + \
-                '_' + os.path.split(file_name)[-1]
+                '_' + os.path.basename(file_name)
         else:
-            suggested_name = os.path.split(self.imagehandler.get_path_to_page())[-1]
+            suggested_name = os.path.basename(self.imagehandler.get_path_to_page())
 
         save_dialog = Gtk.FileChooserDialog(title=_('Save page as'),
                                             action=Gtk.FileChooserAction.SAVE)
