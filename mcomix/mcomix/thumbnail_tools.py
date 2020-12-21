@@ -268,7 +268,7 @@ class Thumbnailer(object):
                        files)
         # Ignore credit files if possible.
         files = filter(lambda filename:
-                       'credit' not in os.path.split(filename)[1].lower(), files)
+                       'credit' not in os.path.basename(filename).lower(), files)
 
         images = [f for f in files if image_tools.is_image_file(f)]
 
