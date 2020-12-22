@@ -539,9 +539,12 @@ class FileHandler(object):
             path = files[prefs['open first file in prev directory']-1]
         else:
             path = self._file_provider.get_directory()
-
-        self.open_file(path, prefs['open first file in prev directory']-1,
-                       keep_fileprovider=True)
+        
+        if prefs['open first file in prev archive']:
+            self.open_file(path, 0, keep_fileprovider=True)
+        else:
+            self.open_file(path, prefs['open first file in prev directory']-1,
+                            keep_fileprovider=True)
         return True
 
     def file_is_available(self, filepath):
