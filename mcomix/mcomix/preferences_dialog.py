@@ -195,12 +195,12 @@ class _PreferencesDialog(Gtk.Dialog):
             _('Automatically open next directory'),
             'auto open next directory',
             _('Automatically open the first file in the next sibling directory when flipping past the last page of the last file in a directory, or the previous directory when flipping past the first page of the first file.')))
-        
+
         page.add_row(self._create_pref_check_button(
             _('Open first file when navigating to previous archive'), 
             'open first file in prev archive',
             _('Automatically open the first file of the previous archive when navigating to it, instead of opening the last file of the previous archive.')))
-        
+
         page.add_row(self._create_pref_check_button(
             _('Open first file when navigating to previous directory'), 
             'open first file in prev directory',

@@ -482,10 +482,8 @@ class FileHandler(object):
             for path in reversed(files[:current_index]):
                 if archive_tools.archive_mime_type(path) is not None:
                     self._close()
-                    if prefs['open first file in prev archive']:
-                        self.open_file(path, 0, keep_fileprovider=True)
-                    else:
-                        self.open_file(path, -1, keep_fileprovider=True)
+                    self.open_file(path, prefs['open first file in prev archive']-1,
+                                   keep_fileprovider=True)
                     return True
 
         return False
@@ -538,17 +536,12 @@ class FileHandler(object):
         files = self._file_provider.list_files(listmode)
         self._close()
         if len(files) > 0:
-            if prefs['open first file in prev directory']:
-                path = files[0]
-            else:
-                path = files[-1]
+            path = files[prefs['open first file in prev directory']-1]
         else:
             path = self._file_provider.get_directory()
-        
-        if prefs['open first file in prev directory']:
-            self.open_file(path, 0, keep_fileprovider=True)
-        else:
-            self.open_file(path, -1, keep_fileprovider=True)
+
+        self.open_file(path, prefs['open first file in prev directory']-1,
+                       keep_fileprovider=True)
         return True
 
     def file_is_available(self, filepath):
