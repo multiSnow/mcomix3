@@ -135,6 +135,19 @@ class _KeybindingManager(object):
         self._action_to_callback = {}
         self._action_to_bindings = defaultdict(list)
         self._binding_to_action = {}
+        
+        stored_action_bindings = keybindings_map.DEFAULT_BINDINGS.copy()
+
+        for action in keybindings_map.BINDING_INFO.keys():
+            if action in stored_action_bindings:
+                bindings = [
+                    Gtk.accelerator_parse(keyname)
+                    for keyname in stored_action_bindings[action] ]
+                self._action_to_bindings[action] = bindings
+                for binding in bindings:
+                    self._binding_to_action[binding] = action
+            else:
+                self._action_to_bindings[action] = []
 
     def execute(self, keybinding):
         ''' Executes an action that has been registered for the
