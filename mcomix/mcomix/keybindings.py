@@ -135,7 +135,7 @@ class _KeybindingManager(object):
         self._action_to_callback = {}
         self._action_to_bindings = defaultdict(list)
         self._binding_to_action = {}
-        
+
         stored_action_bindings = keybindings_map.DEFAULT_BINDINGS.copy()
 
         for action in keybindings_map.BINDING_INFO.keys():
