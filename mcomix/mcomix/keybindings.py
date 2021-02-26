@@ -129,8 +129,8 @@ class _KeybindingManager(object):
 
         self.save()
 
-    def clear_all(self):
-        ''' Removes all keybindings. The changes are only persisted if
+    def reset_keybindings(self):
+        ''' Reset all keybindings. The changes are only persisted if
         save() is called afterwards. '''
         self._action_to_callback = {}
         self._action_to_bindings = defaultdict(list)
