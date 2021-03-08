@@ -31,7 +31,6 @@ class ThumbnailViewBase(object):
         self._threadpool = mt.ThreadPool(
             name=self.__class__.__name__,
             processes=prefs['max thumbnail threads'] or None)
-        self._lock = mt.Lock()
         self._done = set()
         self._taskid = 0
 
@@ -40,64 +39,59 @@ class ThumbnailViewBase(object):
         raise NotImplementedError()
 
     def stop_update(self):
+        GLib.idle_add(self._stop_update)
+
+    def _stop_update(self):
         ''' Stops generation of pixbufs. '''
-        with self._lock:
-            self._taskid = 0
-            self._done.clear()
+        self._taskid = 0
+        self._done.clear()
 
     def draw_thumbnails_on_screen(self, *args):
         ''' Prepares valid thumbnails for currently displayed icons.
         This method is supposed to be called from the expose-event
         callback function. '''
 
-        # 'draw' event called too frequently
-        if not self._lock.acquire(blocking=False):
+        visible = self.get_visible_range()
+        if not visible:
+            # No valid paths available
             return
-        try:
-            visible = self.get_visible_range()
-            if not visible:
-                # No valid paths available
-                return
 
-            start = visible[0][0]
-            end = visible[1][0]
+        start = visible[0][0]
+        end = visible[1][0]
 
-            # Currently invisible icons are always cached
-            # only after the visible icons completed.
-            mid = (start + end) // 2 + 1
-            harf = end - start + 1 # twice of current visible length
-            required = set(range(mid - harf, mid + harf))
+        # Currently invisible icons are always cached
+        # only after the visible icons completed.
+        mid = (start + end) // 2 + 1
+        harf = end - start + 1 # twice of current visible length
+        required = set(range(mid - harf, mid + harf))
 
-            taskid = self._taskid
-            if not taskid:
-                taskid = uuid.uuid4().int
+        taskid = self._taskid
+        if not taskid:
+            taskid = uuid.uuid4().int
 
-            model = self.get_model()
-            required &= set(range(len(model))) # filter invalid paths.
-            for path in required:
-                iter = model.get_iter(path)
-                uid, generated = model.get(
-                    iter, self._uid_column, self._status_column)
-                # Do not queue again if thumbnail was already created.
-                if generated:
-                    continue
-                if uid in self._done:
-                    continue
-                self._taskid = taskid
-                self._done.add(uid)
-                self._threadpool.apply_async(
-                    self._pixbuf_worker, args=(uid, iter, model),
-                    callback=functools.partial(
-                        self._pixbuf_finished, taskid=taskid))
-        finally:
-            self._lock.release()
+        model = self.get_model()
+        required &= set(range(len(model))) # filter invalid paths.
+        for path in required:
+            iter = model.get_iter(path)
+            uid, generated = model.get(
+                iter, self._uid_column, self._status_column)
+            # Do not queue again if thumbnail was already created.
+            if generated:
+                continue
+            if uid in self._done:
+                continue
+            self._taskid = taskid
+            self._done.add(uid)
+            self._threadpool.apply_async(
+                self._pixbuf_worker,
+                args=(uid, iter, model),
+                callback=functools.partial(self._pixbuf_finished, taskid=taskid))
 
     def _pixbuf_worker(self, uid, iter, model):
         ''' Run by a worker thread to generate the thumbnail for a path.'''
         pixbuf = self.generate_thumbnail(uid)
         if pixbuf is None:
-            self._done.discard(uid)
-            raise Exception('no pixbuf, skip callback.')
+            GLib.idle_add(self._done.discard, uid)
         return iter, pixbuf, model
 
     def _pixbuf_finished(self, params, taskid=-1):
@@ -105,13 +99,13 @@ class ThumbnailViewBase(object):
         into the view store. C{params} is a tuple containing
         (index, pixbuf, model). '''
 
-        with self._lock:
-            if self._taskid != taskid:
-                return
-            iter, pixbuf, model = params
-            GLib.idle_add(
-                model.set,
-                iter, self._status_column, True, self._pixbuf_column, pixbuf)
+        iter, pixbuf, model = params
+        GLib.idle_add(self._set_pixbuf, iter, pixbuf, model, taskid)
+
+    def _set_pixbuf(self, iter, pixbuf, model, taskid):
+        if self._taskid != taskid:
+            return
+        model.set(iter, self._status_column, True, self._pixbuf_column, pixbuf)
 
 class ThumbnailIconView(Gtk.IconView, ThumbnailViewBase):
     def __init__(self, model, uid_column, pixbuf_column, status_column):
