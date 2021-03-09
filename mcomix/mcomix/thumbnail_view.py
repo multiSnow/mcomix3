@@ -33,18 +33,16 @@ class ThumbnailViewBase(object):
             processes=prefs['max thumbnail threads'] or None)
         self._done = set()
         self._taskid = 0
+        self._lock = mt.Lock()
 
     def generate_thumbnail(self, uid):
         ''' This function must return the thumbnail for C{uid}. '''
         raise NotImplementedError()
 
     def stop_update(self):
-        GLib.idle_add(self._stop_update)
-
-    def _stop_update(self):
-        ''' Stops generation of pixbufs. '''
-        self._taskid = 0
-        self._done.clear()
+        with self._lock:
+            self._taskid = 0
+            self._done.clear()
 
     def draw_thumbnails_on_screen(self, *args):
         ''' Prepares valid thumbnails for currently displayed icons.
@@ -84,11 +82,14 @@ class ThumbnailViewBase(object):
             self._done.add(uid)
             self._threadpool.apply_async(
                 self._pixbuf_worker,
-                args=(uid, iter, model),
+                args=(uid, iter, model, taskid),
                 callback=functools.partial(self._pixbuf_finished, taskid=taskid))
 
-    def _pixbuf_worker(self, uid, iter, model):
+    def _pixbuf_worker(self, uid, iter, model, taskid):
         ''' Run by a worker thread to generate the thumbnail for a path.'''
+        with self._lock:
+            if self._taskid != taskid:
+                return
         pixbuf = self.generate_thumbnail(uid)
         if pixbuf is None:
             GLib.idle_add(self._done.discard, uid)
@@ -99,13 +100,16 @@ class ThumbnailViewBase(object):
         into the view store. C{params} is a tuple containing
         (index, pixbuf, model). '''
 
+        if params is None:
+            return
         iter, pixbuf, model = params
         GLib.idle_add(self._set_pixbuf, iter, pixbuf, model, taskid)
 
     def _set_pixbuf(self, iter, pixbuf, model, taskid):
-        if self._taskid != taskid:
-            return
-        model.set(iter, self._status_column, True, self._pixbuf_column, pixbuf)
+        with self._lock:
+            if self._taskid != taskid:
+                return
+            model.set(iter, self._status_column, True, self._pixbuf_column, pixbuf)
 
 class ThumbnailIconView(Gtk.IconView, ThumbnailViewBase):
     def __init__(self, model, uid_column, pixbuf_column, status_column):
