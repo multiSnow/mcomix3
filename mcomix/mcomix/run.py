@@ -195,7 +195,7 @@ def run():
 
     # Some languages require a RTL layout
     if preferences.prefs['language'] in ('he', 'fa'):
-        Gtk.widget_set_default_direction(Gtk.TextDirection.RTL)
+        Gtk.Widget.set_default_direction(Gtk.TextDirection.RTL)
 
     Gdk.set_program_class(constants.APPNAME)
 
