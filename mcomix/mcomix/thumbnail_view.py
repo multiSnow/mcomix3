@@ -44,10 +44,8 @@ class ThumbnailViewBase(object):
             self._taskid = 0
             self._done.clear()
 
-    def draw_thumbnails_on_screen(self, *args):
-        ''' Prepares valid thumbnails for currently displayed icons.
-        This method is supposed to be called from the expose-event
-        callback function. '''
+    def _get_required(self, model):
+        ''' Get required paths of thumbnail. '''
 
         visible = self.get_visible_range()
         if not visible:
@@ -62,14 +60,40 @@ class ThumbnailViewBase(object):
         mid = (start + end) // 2 + 1
         harf = end - start + 1 # twice of current visible length
         required = set(range(mid - harf, mid + harf))
+        yield from required & set(range(len(model))) # filter invalid paths.
+
+    def draw_thumbnails(self, *args):
+        ''' Draw thumbnails in single thread. '''
+
+        with self._lock:
+
+            model = self.get_model()
+            for path in self._get_required(model):
+                iter = model.get_iter(path)
+                uid, generated = model.get(
+                    iter, self._uid_column, self._status_column)
+                # Do not queue again if thumbnail was already created.
+                if generated:
+                    continue
+                if uid in self._done:
+                    continue
+                pixbuf = self.generate_thumbnail(uid)
+                if pixbuf is None:
+                    continue
+                self._done.add(uid)
+                model.set(iter, self._status_column, True, self._pixbuf_column, pixbuf)
+
+    def draw_thumbnails_on_screen(self, *args):
+        ''' Prepares valid thumbnails for currently displayed icons.
+        This method is supposed to be called from the expose-event
+        callback function. '''
 
         taskid = self._taskid
         if not taskid:
             taskid = uuid.uuid4().int
 
         model = self.get_model()
-        required &= set(range(len(model))) # filter invalid paths.
-        for path in required:
+        for path in self._get_required(model):
             iter = model.get_iter(path)
             uid, generated = model.get(
                 iter, self._uid_column, self._status_column)
@@ -118,8 +142,11 @@ class ThumbnailIconView(Gtk.IconView, ThumbnailViewBase):
         ThumbnailViewBase.__init__(self, uid_column, pixbuf_column, status_column)
         self.set_pixbuf_column(pixbuf_column)
 
-        # Connect events
-        self.connect('draw', self.draw_thumbnails_on_screen)
+        # TODO:
+        # I feel tired to fix a unreproducible issue in a feature I never used.
+        # Freeze everything until thumbnails prepared.
+        # See https://github.com/multiSnow/mcomix3/issues/85
+        self.connect('draw', self.draw_thumbnails)
 
 class ThumbnailTreeView(Gtk.TreeView, ThumbnailViewBase):
     def __init__(self, model, uid_column, pixbuf_column, status_column):
