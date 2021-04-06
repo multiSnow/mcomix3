@@ -4,7 +4,7 @@
 
 from gi.repository import Gtk
 
-from mcomix import keybindings_map
+from mcomix import keybindings_map, openwith
 
 
 class KeybindingEditorWindow(Gtk.ScrolledWindow):
@@ -73,8 +73,15 @@ class KeybindingEditorWindow(Gtk.ScrolledWindow):
         # Sort actions by action name
         actions = sorted(keybindings_map.BINDING_INFO.items(),
                          key=lambda item: item[1]['title'])
+
+        commands = [cmd for cmd in openwith.OpenWithManager().get_commands() if not cmd.is_separator()]
+
         for action_name, action_data in actions:
             title = action_data['title']
+            if action_data['group'] == 'External commands':
+                ext_command_num = int(action_name.split('_')[-1], 10) - 1
+                if ext_command_num < len(commands) :
+                    title = commands[ext_command_num].label
             group_name = action_data['group']
             old_bindings = self.keymanager.get_bindings_for_action(action_name)
             acc_list = [''] * self.accel_column_num
