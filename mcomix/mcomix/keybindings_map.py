@@ -182,10 +182,10 @@ BINDING_INFO = {
                 'group': _('File')},
 }
 
-# Generate 9 entries for executing command 1 to 9
-for i in range(1, 10):
-    BINDING_INFO['execute_command_%d' %i] = {
-            'title' : _('Execute external command') + ' (%d)' % i,
+# Generate 20 entries for executing command 1 to 20
+for i in range(1, 21):
+    BINDING_INFO['execute_command_%02d' %i] = {
+            'title' : _('Execute external command') + ' (%02d)' % i,
             'group' : _('External commands')
     }
 
@@ -306,4 +306,4 @@ DEFAULT_BINDINGS = {
 
 # Execute external command. Bind keys from 1 to 9 to commands 1 to 9.
 for i in range(1, 10):
-    DEFAULT_BINDINGS['execute_command_%d' % i] = [str(i)]
+    DEFAULT_BINDINGS['execute_command_%02d' % i] = [str(i)]

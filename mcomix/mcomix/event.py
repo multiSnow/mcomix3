@@ -253,9 +253,9 @@ class EventHandler(object):
         manager.register('slideshow',
                          self._window.actiongroup.get_action('slideshow').activate)
 
-        # Execute external command. Bind keys from 1 to 9 to commands 1 to 9.
-        for i in range(1, 10):
-            manager.register('execute_command_%d' % i,
+        # Execute external command. Bind keys from 1 to 20 to commands 1 to 20.
+        for i in range(1, 21):
+            manager.register('execute_command_%02d' % i,
                              self._execute_command, args=[i - 1])
 
     def key_press_event(self, widget, event, *args):
@@ -633,7 +633,7 @@ class EventHandler(object):
         self._flip_page(-number_of_pages if self._window.is_manga_mode else number_of_pages)
 
     def _execute_command(self, cmdindex):
-        ''' Execute an external command. cmdindex should be an integer from 0 to 9,
+        ''' Execute an external command. cmdindex should be an integer from 0 to 19,
         representing the command that should be executed. '''
         manager = openwith.OpenWithManager()
         commands = [cmd for cmd in manager.get_commands() if not cmd.is_separator()]
