@@ -4,6 +4,7 @@
 import urllib
 from gi.repository import Gdk, Gtk
 
+from mcomix.keybindings_map import CUSTOM_COMMAND_FORMAT
 from mcomix.preferences import prefs
 from mcomix import constants
 from mcomix import portability
@@ -255,7 +256,7 @@ class EventHandler(object):
 
         # Execute external command. Bind keys from 1 to 9 to commands 1 to 9.
         for i in range(1, 10):
-            manager.register('execute_command_%d' % i,
+            manager.register(CUSTOM_COMMAND_FORMAT % i,
                              self._execute_command, args=[i - 1])
 
     def key_press_event(self, widget, event, *args):

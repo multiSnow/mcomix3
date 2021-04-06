@@ -1,3 +1,7 @@
+
+CUSTOM_COMMAND_PREFIX = 'execute_command_'
+CUSTOM_COMMAND_FORMAT = CUSTOM_COMMAND_PREFIX + '%d'
+
 # Bindings defined in this dictionary will appear in the configuration dialog.
 # If 'group' is None, the binding cannot be modified from the preferences dialog.
 BINDING_INFO = {
@@ -184,7 +188,7 @@ BINDING_INFO = {
 
 # Generate 9 entries for executing command 1 to 9
 for i in range(1, 10):
-    BINDING_INFO['execute_command_%d' %i] = {
+    BINDING_INFO[CUSTOM_COMMAND_FORMAT % i] = {
             'title' : _('Execute external command') + ' (%d)' % i,
             'group' : _('External commands')
     }
@@ -306,4 +310,4 @@ DEFAULT_BINDINGS = {
 
 # Execute external command. Bind keys from 1 to 9 to commands 1 to 9.
 for i in range(1, 10):
-    DEFAULT_BINDINGS['execute_command_%d' % i] = [str(i)]
+    DEFAULT_BINDINGS[CUSTOM_COMMAND_FORMAT % i] = [str(i)]
