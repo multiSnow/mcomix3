@@ -79,9 +79,9 @@ class KeybindingEditorWindow(Gtk.ScrolledWindow):
 
         for action_name, action_data in actions:
             title = action_data['title']
-                ext_command_num = int(action_name.split('_')[-1], 10) - 1
-                if ext_command_num < len(commands) :
             if action_name.startswith(CUSTOM_COMMAND_PREFIX):
+                ext_command_num = int(action_name[len(CUSTOM_COMMAND_PREFIX):], 10) - 1
+                if ext_command_num < len(commands):
                     title = commands[ext_command_num].label
             group_name = action_data['group']
             old_bindings = self.keymanager.get_bindings_for_action(action_name)
