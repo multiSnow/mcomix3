@@ -7,6 +7,7 @@ import sys
 from gi.repository import Gtk
 from gi.repository import GLib, GObject
 
+from mcomix.keybindings_map import CUSTOM_COMMAND_PREFIX
 from mcomix.preferences import prefs
 from mcomix import message_dialog
 from mcomix import process
@@ -37,6 +38,17 @@ class OpenWithManager(object):
                     in prefs['external commands']]
         except ValueError as e:
             OpenWithException(_('external commands error: {}.').format(e))
+
+    def get_command(self, binding_key):
+        if not binding_key.startswith(CUSTOM_COMMAND_PREFIX):
+            return None
+
+        command_num = int(binding_key[len(CUSTOM_COMMAND_PREFIX):], 10) - 1
+        if len(prefs['external commands']) < command_num:
+            return None
+
+        requested_command = prefs['external commands'][command_num]
+        return OpenWithCommand(*requested_command)
 
 
 class OpenWithCommand(object):

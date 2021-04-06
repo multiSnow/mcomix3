@@ -5,7 +5,6 @@
 from gi.repository import Gtk
 
 from mcomix import keybindings_map, openwith
-from mcomix.keybindings_map import CUSTOM_COMMAND_PREFIX
 
 
 class KeybindingEditorWindow(Gtk.ScrolledWindow):
@@ -71,18 +70,14 @@ class KeybindingEditorWindow(Gtk.ScrolledWindow):
             )
 
         action_treeiter_map = self.action_treeiter_map = {}
+
+        command_manager = openwith.OpenWithManager()
         # Sort actions by action name
         actions = sorted(keybindings_map.BINDING_INFO.items(),
                          key=lambda item: item[1]['title'])
-
-        commands = [cmd for cmd in openwith.OpenWithManager().get_commands() if not cmd.is_separator()]
-
         for action_name, action_data in actions:
-            title = action_data['title']
-            if action_name.startswith(CUSTOM_COMMAND_PREFIX):
-                ext_command_num = int(action_name[len(CUSTOM_COMMAND_PREFIX):], 10) - 1
-                if ext_command_num < len(commands):
-                    title = commands[ext_command_num].label
+            command = command_manager.get_command(action_name)
+            title = command.label if command else action_data['title']
             group_name = action_data['group']
             old_bindings = self.keymanager.get_bindings_for_action(action_name)
             acc_list = [''] * self.accel_column_num
