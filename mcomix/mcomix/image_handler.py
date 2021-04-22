@@ -57,7 +57,7 @@ class ImageHandler(object):
         '''Return the pixbuf indexed by <index> from cache.
         Pixbufs not found in cache are fetched from disk first.
         '''
-        self._cache_pixbuf(index)
+        self._cache_pixbuf(index, force=True)
         return self._raw_pixbufs[index]
 
     def get_pixbufs(self, number_of_bufs):
@@ -119,13 +119,13 @@ class ImageHandler(object):
         finally:
             self._lock.release()
 
-    def _cache_pixbuf(self, index):
+    def _cache_pixbuf(self, index, force=False):
         self._wait_on_page(index + 1)
         with self._cache_lock[index]:
             if index in self._raw_pixbufs:
                 return
             with self._lock:
-                if index not in self._wanted_pixbufs:
+                if not force and index not in self._wanted_pixbufs:
                     return
             log.debug('Caching page %u', index + 1)
             try:
@@ -451,7 +451,7 @@ class ImageHandler(object):
             num_pages = min(10, len(total_pages))
 
         page -= 1
-        harf = num_pages // 2 - 1
+        harf = num_pages // 2
         start = max(0, page - harf)
         end = start + num_pages
         page_list = list(total_pages[start:end])
