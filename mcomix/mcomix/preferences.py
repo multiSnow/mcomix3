@@ -121,6 +121,10 @@ prefs = {
     'userstyle': None,  # None to disable userstyle
     'mount': False,
     'check image mimetype': False,
+    'keyhandler cmd': [],
+    'keyhandler timeout': 3000, # millisecond
+    'keyhandler close delay': 1000, # millisecond
+    'keyhandler show result': True,
 }
 
 def _md5str(s):

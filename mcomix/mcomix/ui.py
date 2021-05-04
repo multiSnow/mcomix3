@@ -434,6 +434,9 @@ class MainUI(Gtk.UIManager):
         self.get_widget('/Tool/expander').set_expand(True)
         self.get_widget('/Tool/expander').set_sensitive(False)
 
+        self._actiongroup.get_action('keyhandler_open').set_sensitive(
+            bool(prefs['keyhandler cmd']))
+
     def set_sensitivities(self):
         '''Sets the main UI's widget's sensitivities appropriately.'''
         general = ('properties',
@@ -483,7 +486,12 @@ class MainUI(Gtk.UIManager):
         self.bookmarks_popup.set_sensitive(general_sensitive)
 
     def _keyhandler_open(self, action):
-        dialog = keyhandler.KeyHandlerDialog(self._window)
+        dialog = keyhandler.KeyHandlerDialog(
+            self._window,
+            cmd = prefs['keyhandler cmd'],
+            timeout = prefs['keyhandler timeout'],
+            delay = prefs['keyhandler close delay'],
+            show_result = prefs['keyhandler show result'])
         dialog.show_all()
 
 # vim: expandtab:sw=4:ts=4

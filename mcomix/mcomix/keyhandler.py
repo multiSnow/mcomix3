@@ -37,12 +37,16 @@ def _get_keystr(event):
     return '-'.join(prefix)
 
 class KeyHandlerDialog(Gtk.Window):
-    def __init__(self,parent,timeout=3,delay=1):
+    def __init__(self,parent,cmd=[],timeout=3000,delay=1000,show_result=True):
+        assert cmd
         super().__init__(modal=True,destroy_with_parent=True)
         self._window=parent
         self.set_transient_for(parent)
-        self._timeout=max(timeout,0)
-        self._delay=max(delay,0)
+
+        self._cmd=cmd.copy()
+        self._timeout=max(timeout/1000,0)
+        self._delay=max(delay/1000,0)
+        self._show_result=show_result
 
         self._timer=None
         self._start_timestamp=0
@@ -100,6 +104,7 @@ class KeyHandlerDialog(Gtk.Window):
             Timer(self._delay,GLib.idle_add,args=(self.destroy,)).start()
         else:
             self.destroy()
+        self._cmd.append(keystr)
         # TODO: call keyhandler
 
     def _key_release_event(self,dialog,event):
