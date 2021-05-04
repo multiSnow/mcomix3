@@ -13,6 +13,7 @@ from mcomix import dialog_handler
 from mcomix import constants
 from mcomix import status
 from mcomix import file_chooser_main_dialog
+from mcomix import keyhandler
 from mcomix.preferences import prefs
 from mcomix.library import main_dialog as library_main_dialog
 
@@ -93,6 +94,8 @@ class MainUI(Gtk.UIManager):
             ('menu_toolbars', None, _('T_oolbars')),
             ('menu_edit', None, _('_Edit')),
             ('menu_open_with', Gtk.STOCK_OPEN, _('Open _with'), ''),
+            ('keyhandler_open', None, _('Start _key-handler'),
+             None, _('Start key-handler'), self._keyhandler_open),
             ('menu_open_with_popup', Gtk.STOCK_OPEN, _('Open _with'), ''),
             ('menu_file', None, _('_File')),
             ('menu_view', None, _('_View')),
@@ -238,6 +241,7 @@ class MainUI(Gtk.UIManager):
                     <menuitem action="properties" />
                     <separator />
                     <menu action="menu_open_with"></menu>
+                    <menuitem action="keyhandler_open" />
                     <separator />
                     <menuitem action="minimize" />
                     <menuitem action="close" />
@@ -388,6 +392,7 @@ class MainUI(Gtk.UIManager):
                 <menuitem action="library" />
                 <separator />
                 <menu action="menu_open_with_popup"></menu>
+                <menuitem action="keyhandler_open" />
                 <separator />
                 <menuitem action="preferences" />
                 <separator />
@@ -476,5 +481,9 @@ class MainUI(Gtk.UIManager):
 
         self.bookmarks.set_sensitive(general_sensitive)
         self.bookmarks_popup.set_sensitive(general_sensitive)
+
+    def _keyhandler_open(self, action):
+        dialog = keyhandler.KeyHandlerDialog(self._window)
+        dialog.show_all()
 
 # vim: expandtab:sw=4:ts=4
