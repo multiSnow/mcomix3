@@ -1,6 +1,7 @@
 '''keyhandler.py - Key handler.
 '''
 
+from os.path import normpath
 from threading import Lock,Thread,Timer
 from time import time_ns
 
@@ -52,11 +53,33 @@ class KeyHandlerDialog(Gtk.Window):
         self._start_timestamp=0
         self._waiting=False
 
+        self._archivepath=''
+        self._imagepath=''
+        if parent.filehandler.archive_type is not None:
+            self._archivepath=normpath(parent.filehandler.get_path_to_base())
+        if parent.imagehandler.get_current_page():
+            self._imagepath=normpath(parent.imagehandler.get_path_to_page())
+
+        stdin=f'archivepath: {self._archivepath}\nimagepath: {self._imagepath}'
+
+        if isinstance(self._archivepath,str):
+            self._archivepath=self._archivepath.encode('utf8')
+        if isinstance(self._imagepath,str):
+            self._imagepath=self._imagepath.encode('utf8')
+
+        box=Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+
         self._progressbar=Gtk.ProgressBar()
         self._progressbar.set_show_text(True)
         self._progressbar.set_text(_('Wait for key...'))
         self._progressbar.set_fraction(1)
-        self.add(self._progressbar)
+        box.add(self._progressbar)
+
+        _stdinview=Gtk.TextView(editable=False,monospace=True)
+        _stdinview.get_buffer().set_text(stdin)
+        box.add(_stdinview)
+
+        self.add(box)
 
         self.connect('show',self._keyhandler_started)
         self.connect('destroy',self._keyhandler_closed)
