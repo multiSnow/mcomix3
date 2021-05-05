@@ -50,6 +50,7 @@ class KeyHandlerDialog(Gtk.Window):
 
         self._timer=None
         self._start_timestamp=0
+        self._waiting=False
 
         self._progressbar=Gtk.ProgressBar()
         self._progressbar.set_show_text(True)
@@ -77,6 +78,7 @@ class KeyHandlerDialog(Gtk.Window):
                 lock.acquire(timeout=10**-3)
 
     def _keyhandler_started(self,dialog):
+        self._waiting=True
         if self._timeout:
             self._timer=Timer(self._timeout,GLib.idle_add,args=(self._keyhandler_timeout,))
             self._timer.start()
@@ -84,6 +86,7 @@ class KeyHandlerDialog(Gtk.Window):
             Thread(target=self._update_progressbar).start()
 
     def _keyhandler_timeout(self):
+        self._waiting=False
         self._timer=None
         if self._delay:
             self._progressbar.set_text(_('Timeout'))
@@ -95,8 +98,9 @@ class KeyHandlerDialog(Gtk.Window):
         self._cancal_timer()
 
     def _key_press_event(self,dialog,event):
-        if (keystr:=_get_keystr(event)) is None:
+        if not self._waiting or (keystr:=_get_keystr(event)) is None:
             return
+        self._waiting=False
         if self._delay:
             msg=_('Call key-handler')
             self._progressbar.set_text(f'{msg}:\n{keystr}')
