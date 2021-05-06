@@ -19,6 +19,11 @@ from mcomix import keybindings_editor
 
 _dialog = None
 
+def _codeview(code):
+    codeview=Gtk.TextView(editable=False,monospace=True)
+    codeview.get_buffer().set_text(code)
+    return codeview
+
 class _PreferencesDialog(Gtk.Dialog):
 
     '''The preferences dialog where most (but not all) settings that are
@@ -376,7 +381,23 @@ class _PreferencesDialog(Gtk.Dialog):
             'keyhandler show result',
             _('Show command, stdin/stdout/stderr and return code of key handler.')))
 
-        # TODO: show some documents of keyhandler
+        page.new_section(_('Hints'))
+
+        page.add_row(Gtk.Label(label=_('Key handler will be called as such command line:')))
+        page.add_row(_codeview('<keyhandler> <keystr> <imagepath> <archivepath>'))
+        page.add_row(Gtk.Label())
+        page.add_row(Gtk.Label(label=_('<keyhandler> could have arguments:')))
+        page.add_row(_codeview('python3 "/absolute path to keyhandler.py"'))
+        page.add_row(Gtk.Label(label=_('<keystr> is a emacs-like key string:')))
+        page.add_row(_codeview('<mask1>-<mask2>-...-<keyname>'))
+        page.add_row(Gtk.Label(label=_('Recognized masks in order:')))
+        page.add_row(_codeview('''C - Ctrl
+M - Mod1, normally the 'Alt' key
+S - Super, normally the 'Windows' key
+F - Shift, only appeared if not used to translate characters'''))
+        page.add_row(Gtk.Label(label=_('<imagepath>/<archivepath> is the absolute path to the opened image/archive,\nor an empty string if no image/archive opened.')))
+        page.add_row(Gtk.Label())
+        page.add_row(Gtk.Label(label=_('There is a example in the source tree, named as "keyhandler-example.sh".')))
 
         return page
 
