@@ -2,6 +2,7 @@
 '''
 
 from os.path import normpath
+from shlex import quote
 from subprocess import run
 from threading import Lock,Thread,Timer
 from time import time_ns
@@ -38,12 +39,17 @@ def _get_keystr(event):
     prefix.append(keyname)
     return '-'.join(prefix)
 
+def show_result_dialog(window,args,returncode,stdout,stderr):
+    dialog=KeyHandlerResultDialog(window,args,returncode,stdout,stderr)
+    dialog.show_all()
+
 def execute(cmd,window,show_result):
     returncode=(process:=run(cmd,capture_output=True)).returncode
     stdout=process.stdout
     stderr=process.stderr
+    args=process.args
     if show_result:
-        pass # TODO: show result
+        GLib.idle_add(show_result_dialog,window,args,returncode,stdout,stderr)
 
 class KeyHandlerDialog(Gtk.Window):
     def __init__(self,parent,cmd=[],timeout=3000,delay=1000,show_result=True):
@@ -60,6 +66,7 @@ class KeyHandlerDialog(Gtk.Window):
         self._timer=None
         self._start_timestamp=0
         self._waiting=False
+        self._keystr=None
 
         self._archivepath=''
         self._imagepath=''
@@ -69,11 +76,6 @@ class KeyHandlerDialog(Gtk.Window):
             self._imagepath=normpath(parent.imagehandler.get_path_to_page())
 
         stdin=f'archivepath: {self._archivepath}\nimagepath: {self._imagepath}'
-
-        if isinstance(self._archivepath,str):
-            self._archivepath=self._archivepath.encode('utf8')
-        if isinstance(self._imagepath,str):
-            self._imagepath=self._imagepath.encode('utf8')
 
         box=Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
@@ -119,6 +121,7 @@ class KeyHandlerDialog(Gtk.Window):
     def _keyhandler_timeout(self):
         self._waiting=False
         self._timer=None
+        self._keystr=None
         if self._delay:
             self._progressbar.set_text(_('Timeout'))
             Timer(self._delay,GLib.idle_add,args=(self.destroy,)).start()
@@ -127,11 +130,17 @@ class KeyHandlerDialog(Gtk.Window):
 
     def _keyhandler_closed(self,dialog):
         self._cancal_timer()
+        if self._keystr is None:
+            return
+        self._cmd.extend((self._keystr,self._imagepath,self._archivepath))
+        Thread(target=execute,args=(self._cmd,self._window,self._show_result),
+               daemon=True).start()
 
     def _key_press_event(self,dialog,event):
         if not self._waiting or (keystr:=_get_keystr(event)) is None:
             return
         self._waiting=False
+        self._keystr=keystr
         if self._delay:
             msg=_('Call key-handler')
             self._progressbar.set_text(f'{msg}:\n{keystr}')
@@ -139,13 +148,44 @@ class KeyHandlerDialog(Gtk.Window):
             Timer(self._delay,GLib.idle_add,args=(self.destroy,)).start()
         else:
             self.destroy()
-        self._cmd.extend((keystr,self._imagepath,self._archivepath))
-        Thread(target=execute,args=(self._cmd,self._window,self._show_result),
-               daemon=True).start()
 
     def _key_release_event(self,dialog,event):
         # XXX: ignore key-release-event for now.
         pass
+
+class KeyHandlerResultDialog(Gtk.Dialog):
+    def __init__(self,parent,cmd,returncode,stdout,stderr):
+        super().__init__(modal=True,destroy_with_parent=True)
+        self._window=parent
+        self.set_transient_for(parent)
+
+        self._box=self.get_content_area()
+
+        self._add_result(f'returncode: {returncode}',' '.join(map(quote,cmd)))
+        if stdout:
+            try:
+                self._add_result(f'stdout:',stdout.decode('utf8'))
+            except UnicodeDecodeError:
+                self._add_result('stdout:','<binary data>')
+        if stderr:
+            try:
+                self._add_result(f'stderr:',stderr.decode('utf8'))
+            except UnicodeDecodeError:
+                self._add_result('stderr:','<binary data>')
+
+    def _add_result(self,labeltext,text):
+        label=Gtk.Label()
+        label.set_text(labeltext)
+        textarea=Gtk.TextView(editable=False,monospace=True)
+        textarea.get_buffer().set_text(text)
+        scrolled=Gtk.ScrolledWindow(
+            max_content_width=480,
+            min_content_width=320,
+            max_content_height=360,
+        )
+        scrolled.add(textarea)
+        self._box.add(label)
+        self._box.add(scrolled)
 
 # Local Variables:
 # coding: utf-8
