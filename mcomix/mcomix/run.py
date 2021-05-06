@@ -127,22 +127,16 @@ def run():
         wait_and_exit()
 
     try:
-        #FIXME
-        # check Pillow version carefully here.
-        # from 5.1.0 to 5.4.1, PILLOW_VERSION is used,
-        # but since 6.0.0, only __version__ should be used.
-        # clean up these code once python 3.6 goes EOL (maybe 2021)
-        # (https://pillow.readthedocs.io/en/stable/releasenotes/5.2.0.html)
-        import PIL.Image
-        pilver=getattr(PIL.Image,'__version__',None)
-        if not pilver:
-            pilver=getattr(PIL.Image,'PILLOW_VERSION')
-            log.warning(_('Please download latest version of Pillow from {}').format(
-                'https://pypi.org/project/Pillow/'))
-            setattr(PIL.Image,'__version__',pilver)
+        import PIL
+        assert [int(n) for n in PIL.__version__.split('.')[:3]] >= [int(n) for n in constants.REQUIRED_PIL_VERSION.split('.')]
 
     except AttributeError:
         log.error(_('You don\'t have the required version of the Pillow installed.'))
+        log.error(_('Required Pillow version is: %s or higher') % constants.REQUIRED_PIL_VERSION)
+        wait_and_exit()
+
+    except ValueError:
+        log.error(_('Unrecognized Pillow version: %s') % PIL.__version__)
         log.error(_('Required Pillow version is: %s or higher') % constants.REQUIRED_PIL_VERSION)
         wait_and_exit()
 
@@ -151,15 +145,14 @@ def run():
         log.error(_('No version of the Pillow was found on your system.'))
         wait_and_exit()
 
-    else:
-        if pilver < constants.REQUIRED_PIL_VERSION:
-            log.error(_('You don\'t have the required version of the Pillow installed.'))
-            log.error(_('Installed PIL version is: %s') % pilver)
-            log.error(_('Required Pillow version is: %s or higher') % constants.REQUIRED_PIL_VERSION)
-            wait_and_exit()
+    except AssertionError:
+        log.error(_('You don\'t have the required version of the Pillow installed.'))
+        log.error(_('Installed PIL version is: %s') % PIL.__version__)
+        log.error(_('Required Pillow version is: %s or higher') % constants.REQUIRED_PIL_VERSION)
+        wait_and_exit()
 
     log.info('Image loaders: Pillow [%s], GDK [%s])',
-             PIL.Image.__version__,GdkPixbuf.PIXBUF_VERSION)
+             PIL.__version__,GdkPixbuf.PIXBUF_VERSION)
 
     if not os.path.exists(constants.DATA_DIR):
         os.makedirs(constants.DATA_DIR, 0o700)
