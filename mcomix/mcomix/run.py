@@ -102,6 +102,16 @@ def run():
     # First things first: set the log level.
     log.setLevel(log.levels[args.loglevel])
 
+    # Check Python version
+    try:
+        assert sys.version_info[:3] >= constants.REQUIRED_PYTHON_VERSION
+
+    except AssertionError:
+        log.error(_('You don\'t have the required version of the Python installed.'))
+        log.error(_('Installed Python version is: %s') % '.'.join(str(n) for n in sys.version_info))
+        log.error(_('Required Python version is: %s or higher') % '.'.join(str(n) for n in constants.REQUIRED_PYTHON_VERSION))
+        wait_and_exit()
+
     # Check for PyGTK and PIL dependencies.
     try:
         from gi import version_info as gi_version_info
