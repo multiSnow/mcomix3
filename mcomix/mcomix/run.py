@@ -115,7 +115,7 @@ def run():
     # Check for PyGTK and PIL dependencies.
     try:
         from gi import version_info as gi_version_info
-        if gi_version_info < (3,21,0):
+        if gi_version_info < (3, 30, 0):
             log.error(_('You do not have the required versions of PyGObject installed.'))
             wait_and_exit()
 
@@ -126,6 +126,10 @@ def run():
         require_version('Gdk', '3.0')
 
         from gi.repository import Gdk, GdkPixbuf, Gtk, GLib
+
+        if (Gtk.get_major_version(), Gtk.get_minor_version()) < (3, 24):
+            log.error(_('You do not have the required versions of GTK+ 3 gir bindings installed.'))
+            wait_and_exit()
 
     except ValueError:
         log.error(_('You do not have the required versions of GTK+ 3.0 installed.'))
