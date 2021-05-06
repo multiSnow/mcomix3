@@ -2,6 +2,7 @@
 '''
 
 from os.path import normpath
+from subprocess import run
 from threading import Lock,Thread,Timer
 from time import time_ns
 
@@ -36,6 +37,13 @@ def _get_keystr(event):
         prefix.append('F')
     prefix.append(keyname)
     return '-'.join(prefix)
+
+def execute(cmd,window,show_result):
+    returncode=(process:=run(cmd,capture_output=True)).returncode
+    stdout=process.stdout
+    stderr=process.stderr
+    if show_result:
+        pass # TODO: show result
 
 class KeyHandlerDialog(Gtk.Window):
     def __init__(self,parent,cmd=[],timeout=3000,delay=1000,show_result=True):
@@ -131,8 +139,9 @@ class KeyHandlerDialog(Gtk.Window):
             Timer(self._delay,GLib.idle_add,args=(self.destroy,)).start()
         else:
             self.destroy()
-        self._cmd.append(keystr)
-        # TODO: call keyhandler
+        self._cmd.extend((keystr,self._imagepath,self._archivepath))
+        Thread(target=execute,args=(self._cmd,self._window,self._show_result),
+               daemon=True).start()
 
     def _key_release_event(self,dialog,event):
         # XXX: ignore key-release-event for now.
