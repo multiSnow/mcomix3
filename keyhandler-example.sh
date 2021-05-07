@@ -3,10 +3,13 @@
 keystr="${1}"
 
 image="${2}"
-imagebase="`basename "${image}"`"
-imagedir="`dirname "${image}"`"
-imagedirbase="`basename "${imagedir}"`"
 archive="${3}"
+
+if test "x${image}" != "x"; then
+    imagebase="`basename "${image}"`"
+    imagedir="`dirname "${image}"`"
+    imagedirbase="`basename "${imagedir}"`"
+fi
 
 if test "x${archive}" = "x"; then
     container="${imagedir}"
@@ -17,9 +20,11 @@ else
     archivedirbase="`basename "${archivedir}"`"
 fi
 
-containerbase="`basename "${container}"`"
-containerdir="`dirname "${container}"`"
-containerdirbase="`basename "${containerdir}"`"
+if test "x${container}" != "x"; then
+    containerbase="`basename "${container}"`"
+    containerdir="`dirname "${container}"`"
+    containerdirbase="`basename "${containerdir}"`"
+fi
 
 rc=0
 
