@@ -181,7 +181,7 @@ def openwith_conv(prefs):
         except Exception as e:
             log.warning('! '+str(e))
             continue
-        new_command = ' '.join(map(shlex.quote, newcmd_args))
+        new_command = shlex.join(newcmd_args)
         prefs['external commands'].append(
             (label, new_command, cwd.strip(), bool(disabled_for_archives))
         )

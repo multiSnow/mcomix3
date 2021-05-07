@@ -10,8 +10,8 @@ from mcomix import tools
 APPNAME = 'MComix'
 VERSION = '1.3.0.dev0'
 
-REQUIRED_PYTHON_VERSION = (3, 6, 0)
-REQUIRED_PIL_VERSION = '6.0.0'
+REQUIRED_PYTHON_VERSION = (3, 8, 0)
+REQUIRED_PIL_VERSION = '6.2.1'
 
 CPU_COUNT = os.cpu_count()
 STARTDIR = os.getcwd()

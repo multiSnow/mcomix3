@@ -180,6 +180,9 @@ BINDING_INFO = {
                       'group': _('File')},
     'library': {'title': _('Library'),
                 'group': _('File')},
+
+    'keyhandler_open': {'title': _('Start KeyHandler'),
+                        'group': _('External commands')},
 }
 
 # Generate 9 entries for executing command 1 to 9
@@ -302,6 +305,8 @@ DEFAULT_BINDINGS = {
     'open':['<Control>O'],
     'enhance_image':['e'],
     'library':['<Control>L'],
+
+    'keyhandler_open':[],
 }
 
 # Execute external command. Bind keys from 1 to 9 to commands 1 to 9.

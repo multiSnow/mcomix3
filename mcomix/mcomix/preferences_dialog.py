@@ -2,6 +2,7 @@
 
 '''preferences_dialog.py - Preferences dialog.'''
 
+import shlex
 import sys
 
 from gi.repository import Gdk, GdkPixbuf, Gtk, GObject
@@ -17,6 +18,11 @@ from mcomix import keybindings
 from mcomix import keybindings_editor
 
 _dialog = None
+
+def _codeview(code):
+    codeview=Gtk.TextView(editable=False,monospace=True)
+    codeview.get_buffer().set_text(code)
+    return codeview
 
 class _PreferencesDialog(Gtk.Dialog):
 
@@ -53,6 +59,8 @@ class _PreferencesDialog(Gtk.Dialog):
         notebook.append_page(display, Gtk.Label(label=_('Display')))
         animation = self._init_animation_tab()
         notebook.append_page(animation, Gtk.Label(label=_('Animation')))
+        keyhandler = self._init_keyhandler_tab()
+        notebook.append_page(keyhandler, Gtk.Label(label=_('Keyhandler')))
         advanced = self._init_advanced_tab()
         notebook.append_page(advanced, Gtk.Label(label=_('Advanced')))
         shortcuts = self.shortcuts = self._init_shortcuts_tab()
@@ -342,6 +350,54 @@ class _PreferencesDialog(Gtk.Dialog):
             _('Enable transform on animation'),
             'animation transform',
             _('Enable scale, rotate, flip and enhance operation on animation')))
+
+        return page
+
+    def _init_keyhandler_tab(self):
+        # ----------------------------------------------------------------
+        # The "Keyhandler" tab.
+        # ----------------------------------------------------------------
+        page = preferences_page._PreferencePage(None)
+
+        page.new_section(_('Keyhandler'))
+
+        page.add_row(Gtk.Label(label=_('Key handler:')),
+                     self._create_keyhandler_cmd_entry())
+
+        page.add_row(Gtk.Label(label=_('Key handler timeout (in millisecond):')),
+                     self._create_pref_spinner(
+                         'keyhandler timeout',
+                         1, 0, 30000, 1, 100, 0,
+                         _('Key handler will be closed if no key input.')))
+
+        page.add_row(Gtk.Label(label=_('Key handler close delay (in millisecond):')),
+                     self._create_pref_spinner(
+                         'keyhandler close delay',
+                         1, 0, 30000, 1, 100, 0,
+                         _('Key handler will show input before closed.')))
+
+        page.add_row(self._create_pref_check_button(
+            _('Show result of key handler'),
+            'keyhandler show result',
+            _('Show command, stdin/stdout/stderr and return code of key handler.')))
+
+        page.new_section(_('Hints'))
+
+        page.add_row(Gtk.Label(label=_('Key handler will be called as such command line:')))
+        page.add_row(_codeview('<keyhandler> <keystr> <imagepath> <archivepath>'))
+        page.add_row(Gtk.Label())
+        page.add_row(Gtk.Label(label=_('<keyhandler> could have arguments:')))
+        page.add_row(_codeview('python3 "/absolute path to keyhandler.py"'))
+        page.add_row(Gtk.Label(label=_('<keystr> is a emacs-like key string:')))
+        page.add_row(_codeview('<mask1>-<mask2>-...-<keyname>'))
+        page.add_row(Gtk.Label(label=_('Recognized masks in order:')))
+        page.add_row(_codeview('''C - Ctrl
+M - Mod1, normally the 'Alt' key
+S - Super, normally the 'Windows' key
+F - Shift, only appeared if not used to translate characters'''))
+        page.add_row(Gtk.Label(label=_('<imagepath>/<archivepath> is the absolute path to the opened image/archive,\nor an empty string if no image/archive opened.')))
+        page.add_row(Gtk.Label())
+        page.add_row(Gtk.Label(label=_('There is a example in the source tree, named as "keyhandler-example.sh".')))
 
         return page
 
@@ -799,6 +855,16 @@ class _PreferencesDialog(Gtk.Dialog):
         return entry
 
 
+    def _create_keyhandler_cmd_entry(self):
+        entry = Gtk.Entry()
+        entry.set_size_request(200, -1)
+        entry.set_text(shlex.join(prefs['keyhandler cmd']))
+        entry.connect('activate', self._entry_keyhandler_cmd_cb)
+        entry.connect('focus_out_event', self._entry_keyhandler_cmd_cb)
+        entry.set_tooltip_text(_('Command line of key handler.'))
+        return entry
+
+
     def _create_pref_check_button(self, label, prefkey, tooltip_text):
         button = Gtk.CheckButton(label=label)
         button.set_active(prefs[prefkey])
@@ -970,6 +1036,9 @@ class _PreferencesDialog(Gtk.Dialog):
         elif preference == 'osd timeout':
             prefs[preference] = value
 
+        elif preference in ('keyhandler timeout', 'keyhandler close delay'):
+            prefs[preference] = int(value)
+
 
     def _entry_cb(self, entry, event=None):
         '''Callback for entry-type preferences.'''
@@ -977,6 +1046,13 @@ class _PreferencesDialog(Gtk.Dialog):
         extensions = [e.strip() for e in text.split(',')]
         prefs['comment extensions'] = [e for e in extensions if e]
         self._window.filehandler.update_comment_extensions()
+
+
+    def _entry_keyhandler_cmd_cb(self, entry, event=None):
+        '''Callback for keyhandler cmd entry preferences.'''
+        prefs['keyhandler cmd'] = shlex.split(entry.get_text())
+        self._window.actiongroup.get_action('keyhandler_open').set_sensitive(
+            bool(prefs['keyhandler cmd']))
 
 
     def _create_pref_path_chooser(self, preference, folder=False, default=None):

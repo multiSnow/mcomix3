@@ -10,9 +10,9 @@ Only tested under Linux.
 
 Required:
 ---------
-- **Python3** 3.6 or later. `1`_
+- **Python3** 3.8 or later. `1`_
 - **PyGObject** 3.27 or later `2`_, with **GTK+ 3 gir bindings** 3.24 or later.
-- **Pillow** 6.0.0 or later. `3`_ (`Latest version`_ is always recommended)
+- **Pillow** 6.2.1 or later. `3`_ (`Latest version`_ is always recommended)
 
 Recommended:
 ------------

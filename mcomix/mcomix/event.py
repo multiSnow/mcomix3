@@ -253,6 +253,9 @@ class EventHandler(object):
         manager.register('slideshow',
                          self._window.actiongroup.get_action('slideshow').activate)
 
+        manager.register('keyhandler_open',
+                         self._window.actiongroup.get_action('keyhandler_open').activate)
+
         # Execute external command. Bind keys from 1 to 9 to commands 1 to 9.
         for i in range(1, 10):
             manager.register('execute_command_%d' % i,
