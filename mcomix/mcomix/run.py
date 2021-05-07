@@ -102,10 +102,20 @@ def run():
     # First things first: set the log level.
     log.setLevel(log.levels[args.loglevel])
 
+    # Check Python version
+    try:
+        assert sys.version_info[:3] >= constants.REQUIRED_PYTHON_VERSION
+
+    except AssertionError:
+        log.error(_('You don\'t have the required version of the Python installed.'))
+        log.error(_('Installed Python version is: %s') % '.'.join(str(n) for n in sys.version_info))
+        log.error(_('Required Python version is: %s or higher') % '.'.join(str(n) for n in constants.REQUIRED_PYTHON_VERSION))
+        wait_and_exit()
+
     # Check for PyGTK and PIL dependencies.
     try:
         from gi import version_info as gi_version_info
-        if gi_version_info < (3,21,0):
+        if gi_version_info < (3, 30, 0):
             log.error(_('You do not have the required versions of PyGObject installed.'))
             wait_and_exit()
 
@@ -117,6 +127,10 @@ def run():
 
         from gi.repository import Gdk, GdkPixbuf, Gtk, GLib
 
+        if (Gtk.get_major_version(), Gtk.get_minor_version()) < (3, 24):
+            log.error(_('You do not have the required versions of GTK+ 3 gir bindings installed.'))
+            wait_and_exit()
+
     except ValueError:
         log.error(_('You do not have the required versions of GTK+ 3.0 installed.'))
         wait_and_exit()
@@ -127,22 +141,16 @@ def run():
         wait_and_exit()
 
     try:
-        #FIXME
-        # check Pillow version carefully here.
-        # from 5.1.0 to 5.4.1, PILLOW_VERSION is used,
-        # but since 6.0.0, only __version__ should be used.
-        # clean up these code once python 3.6 goes EOL (maybe 2021)
-        # (https://pillow.readthedocs.io/en/stable/releasenotes/5.2.0.html)
-        import PIL.Image
-        pilver=getattr(PIL.Image,'__version__',None)
-        if not pilver:
-            pilver=getattr(PIL.Image,'PILLOW_VERSION')
-            log.warning(_('Please download latest version of Pillow from {}').format(
-                'https://pypi.org/project/Pillow/'))
-            setattr(PIL.Image,'__version__',pilver)
+        import PIL
+        assert [int(n) for n in PIL.__version__.split('.')[:3]] >= [int(n) for n in constants.REQUIRED_PIL_VERSION.split('.')]
 
     except AttributeError:
         log.error(_('You don\'t have the required version of the Pillow installed.'))
+        log.error(_('Required Pillow version is: %s or higher') % constants.REQUIRED_PIL_VERSION)
+        wait_and_exit()
+
+    except ValueError:
+        log.error(_('Unrecognized Pillow version: %s') % PIL.__version__)
         log.error(_('Required Pillow version is: %s or higher') % constants.REQUIRED_PIL_VERSION)
         wait_and_exit()
 
@@ -151,15 +159,14 @@ def run():
         log.error(_('No version of the Pillow was found on your system.'))
         wait_and_exit()
 
-    else:
-        if pilver < constants.REQUIRED_PIL_VERSION:
-            log.error(_('You don\'t have the required version of the Pillow installed.'))
-            log.error(_('Installed PIL version is: %s') % pilver)
-            log.error(_('Required Pillow version is: %s or higher') % constants.REQUIRED_PIL_VERSION)
-            wait_and_exit()
+    except AssertionError:
+        log.error(_('You don\'t have the required version of the Pillow installed.'))
+        log.error(_('Installed PIL version is: %s') % PIL.__version__)
+        log.error(_('Required Pillow version is: %s or higher') % constants.REQUIRED_PIL_VERSION)
+        wait_and_exit()
 
     log.info('Image loaders: Pillow [%s], GDK [%s])',
-             PIL.Image.__version__,GdkPixbuf.PIXBUF_VERSION)
+             PIL.__version__,GdkPixbuf.PIXBUF_VERSION)
 
     if not os.path.exists(constants.DATA_DIR):
         os.makedirs(constants.DATA_DIR, 0o700)
