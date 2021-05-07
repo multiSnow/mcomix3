@@ -295,8 +295,7 @@ class OpenWithEditor(Gtk.Dialog):
             return
 
         try:
-            args = map(shlex.quote, command.parse(self._window))
-            self._test_field.set_text(' '.join(args))
+            self._test_field.set_text(shlex.join(args))
             self._run_button.set_sensitive(True)
 
             if not command.is_valid_workdir(self._window, allow_empty=True):
