@@ -90,7 +90,6 @@ class KeyHandlerDialog(Gtk.Window):
         self.connect('show',self._keyhandler_started)
         self.connect('destroy',self._keyhandler_closed)
         self.connect('key-press-event',self._key_press_event)
-        self.connect('key-release-event', self._key_release_event)
 
     def _cancal_timer(self):
         if self._timer is not None:
@@ -144,10 +143,6 @@ class KeyHandlerDialog(Gtk.Window):
             Timer(self._delay,GLib.idle_add,args=(self.destroy,)).start()
         else:
             self.destroy()
-
-    def _key_release_event(self,dialog,event):
-        # XXX: ignore key-release-event for now.
-        pass
 
 class KeyHandlerResultDialog(Gtk.Dialog):
     def __init__(self,parent,cmd,returncode,stdout,stderr):
