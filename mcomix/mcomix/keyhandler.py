@@ -179,10 +179,10 @@ class KeyHandlerResultDialog(Gtk.Dialog):
         textarea=Gtk.TextView(editable=False,monospace=True)
         textarea.get_buffer().set_text(text)
         scrolled=Gtk.ScrolledWindow(
-            max_content_width=480,
-            min_content_width=320,
-            max_content_height=360,
+            min_content_width=800,
+            max_content_height=600,
         )
+        scrolled.set_policy(Gtk.PolicyType.AUTOMATIC,Gtk.PolicyType.NEVER)
         scrolled.add(textarea)
         self._box.add(label)
         self._box.add(scrolled)
