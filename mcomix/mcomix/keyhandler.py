@@ -170,8 +170,7 @@ class KeyHandlerResultDialog(Gtk.Dialog):
                 self._add_result('stderr:','<binary data>')
 
     def _add_result(self,labeltext,text):
-        label=Gtk.Label()
-        label.set_text(labeltext)
+        label=Gtk.Label(label=labeltext)
         textarea=Gtk.TextView(editable=False,monospace=True)
         textarea.get_buffer().set_text(text)
         scrolled=Gtk.ScrolledWindow(
