@@ -1,18 +1,46 @@
 #!/bin/sh
 
 keystr="${1}"
-imagepath="${2}"
-archivepath="${3}"
-rc=1
+
+image="${2}"
+imagebase="`basename "${image}"`"
+imagedir="`dirname "${image}"`"
+imagedirbase="`basename "${imagedir}"`"
+archive="${3}"
+
+if test "x${archive}" = "x"; then
+    container="${imagedir}"
+else
+    container="${archive}"
+    archivebase="`basename "${archive}"`"
+    archivedir="`dirname "${archive}"`"
+    archivedirbase="`basename "${archivedir}"`"
+fi
+
+containerbase="`basename "${container}"`"
+containerdir="`dirname "${container}"`"
+containerdirbase="`basename "${containerdir}"`"
+
+rc=0
 
 case "${keystr}" in
     'C-s')
-        echo 'imagepath:' "${imagepath}"
-        echo 'archivepath:' "${archivepath}"
-        rc=0
+        echo "image: ${image}"
+        echo "imagebase: ${imagebase}"
+        echo "imagedir: ${imagedir}"
+        echo "imagedirbase: ${imagedirbase}"
+        echo "archive: ${archive}"
+        echo "archivebase: ${archivebase}"
+        echo "archivedir: ${archivedir}"
+        echo "archivedirbase: ${archivedirbase}"
+        echo "container: ${container}"
+        echo "containerbase: ${containerbase}"
+        echo "containerdir: ${containerdir}"
+        echo "containerdirbase: ${containerdirbase}"
         ;;
     *)
         echo "unknown key: ${keystr}"
+        rc=1
         ;;
 esac
 
