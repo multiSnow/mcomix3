@@ -85,10 +85,6 @@ class KeyHandlerDialog(Gtk.Window):
         self._progressbar.set_fraction(1)
         box.add(self._progressbar)
 
-        _stdinview=Gtk.TextView(editable=False,monospace=True)
-        _stdinview.get_buffer().set_text(stdin)
-        box.add(_stdinview)
-
         self.add(box)
 
         self.connect('show',self._keyhandler_started)
