@@ -75,8 +75,6 @@ class KeyHandlerDialog(Gtk.Window):
         if parent.imagehandler.get_current_page():
             self._imagepath=normpath(parent.imagehandler.get_path_to_page())
 
-        stdin=f'archivepath: {self._archivepath}\nimagepath: {self._imagepath}'
-
         box=Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
         self._progressbar=Gtk.ProgressBar()
