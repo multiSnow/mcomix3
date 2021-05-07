@@ -2,7 +2,7 @@
 '''
 
 from os.path import normpath
-from shlex import quote
+from shlex import join,quote
 from subprocess import run
 from threading import Lock,Thread,Timer
 from time import time_ns
@@ -161,7 +161,7 @@ class KeyHandlerResultDialog(Gtk.Dialog):
 
         self._box=self.get_content_area()
 
-        self._add_result(f'returncode: {returncode}',' '.join(map(quote,cmd)))
+        self._add_result(f'returncode: {returncode}',join(cmd))
         if stdout:
             try:
                 self._add_result(f'stdout:',stdout.decode('utf8'))
