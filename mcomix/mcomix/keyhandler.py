@@ -75,15 +75,13 @@ class KeyHandlerDialog(Gtk.Window):
         if parent.imagehandler.get_current_page():
             self._imagepath=normpath(parent.imagehandler.get_path_to_page())
 
-        box=Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self._progressbar=Gtk.ProgressBar(
+            show_text=True,
+            text=_('Wait for key...'),
+            fraction=1,
+        )
 
-        self._progressbar=Gtk.ProgressBar()
-        self._progressbar.set_show_text(True)
-        self._progressbar.set_text(_('Wait for key...'))
-        self._progressbar.set_fraction(1)
-        box.add(self._progressbar)
-
-        self.add(box)
+        self.add(self._progressbar)
 
         self.connect('show',self._keyhandler_started)
         self.connect('destroy',self._keyhandler_closed)
