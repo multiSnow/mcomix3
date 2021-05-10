@@ -17,8 +17,13 @@ def is_7z_support_rar():
     if sys.platform=='win32':
         # assume 7z in windows already support rar
         return True
+
+    _7z_executable = SevenZipArchive._find_7z_executable()
+    if not _7z_executable:
+        return False
+
     has_rar_so=False
-    with process.popen((SevenZipArchive._find_7z_executable(),'i'),
+    with process.popen((_7z_executable, 'i'),
                        universal_newlines=True) as proc:
         libsblock=False
         for line in proc.stdout:
