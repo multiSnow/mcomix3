@@ -74,7 +74,7 @@ class MagnifyingLens(object):
         window = self._window._main_layout.get_bin_window()
         window.begin_paint_rect(draw_region)
 
-        self._clear_lens()
+        self._clear_lens(rectangle)
 
         cr = window.cairo_create()
         surface = Gdk.cairo_surface_create_from_pixbuf(pixbuf, 0, window)
@@ -109,9 +109,49 @@ class MagnifyingLens(object):
             return
 
         window = self._window._main_layout.get_bin_window()
+
+        lrect = Gdk.Rectangle()
+        lrect.x, lrect.y, lrect.width, lrect.height = self._last_lens_rect
+
+        if not current_lens_region:
+            window.invalidate_rect(lrect, True)
+            return
+
         crect = Gdk.Rectangle()
-        crect.x, crect.y, crect.width, crect.height = self._last_lens_rect
-        window.invalidate_rect(crect, True)
+        crect.x, crect.y, crect.width, crect.height = current_lens_region
+        rwidth = crect.width
+        rheigt = crect.height
+
+        intersectV = Gdk.Rectangle()
+        #movement to the right
+        if crect.x - lrect.x > 0:
+          intersectV.x=lrect.x
+          intersectV.y=lrect.y
+          intersectV.width = crect.x - lrect.x
+          intersectV.height = rheigt
+        else: #movement to the left
+          intersectV.x=crect.x + rwidth
+          intersectV.y=crect.y
+          intersectV.width = lrect.x - crect.x
+          intersectV.height = rheigt
+
+        window.invalidate_rect(intersectV, True)
+
+        intersectH = Gdk.Rectangle()
+        # movement down
+        if crect.y - lrect.y > 0:
+          intersectH.x = lrect.x
+          intersectH.y = lrect.y
+          intersectH.width = rwidth
+          intersectH.height = crect.y - lrect.y 
+        else: #movement up
+          intersectH.x = lrect.x
+          intersectH.y = rheigt + crect.y
+          intersectH.width = rwidth
+          intersectH.height = lrect.y - crect.y
+
+        window.invalidate_rect(intersectH, True)
+
         window.process_updates(True)
         self._last_lens_rect = None
 
