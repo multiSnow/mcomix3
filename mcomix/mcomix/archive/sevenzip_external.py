@@ -10,29 +10,32 @@ from mcomix import process
 from mcomix.archive import archive_base
 
 # Filled on-demand by SevenZipArchive
-_7z_executable = -1
+_7z_executable = {}
 
-def is_7z_support_rar():
-    '''Check whether p7zip has Rar.so, which is needed to Rar format'''
+def _has_rar_so():
+    if not (_7z:=SevenZipArchive._find_7z_executable()):
+        return False
     if sys.platform=='win32':
         # assume 7z in windows already support rar
         return True
-    has_rar_so=False
-    with process.popen((SevenZipArchive._find_7z_executable(),'i'),
-                       universal_newlines=True) as proc:
-        libsblock=False
-        for line in proc.stdout:
-            line=line.rstrip()
-            if line=='Libs:':
-                libsblock=True
-                continue
-            if libsblock and not line:
-                break
-            if libsblock:
-                idx,path=line.strip().split()
-                if os.path.basename(path)=='Rar.so':
-                    has_rar_so=True
-    return has_rar_so
+    with process.popen((_7z,'i'),universal_newlines=True) as proc:
+        lines=proc.stdout.read().splitlines()
+        try:
+            del lines[:lines.index('Libs:')+1]
+            del lines[lines.index(''):]
+        except ValueError:
+            # no library found
+            return False
+        for line in lines:
+            if line.endswith('/Rar.so'):
+                return True
+    return False
+
+def is_7z_support_rar():
+    '''Check whether p7zip has Rar.so, which is needed to Rar format'''
+    if 'support_rar' not in _7z_executable:
+        _7z_executable['support_rar'] = _has_rar_so()
+    return _7z_executable['support_rar']
 
 class SevenZipArchive(archive_base.ExternalExecutableArchive):
     ''' 7z file extractor using the 7z executable. '''
@@ -208,10 +211,9 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
     def _find_7z_executable():
         ''' Tries to start 7z, and returns either '7z' if
         it was started successfully or None otherwise. '''
-        global _7z_executable
-        if _7z_executable == -1:
-            _7z_executable = process.find_executable(('7z',))
-        return _7z_executable
+        if 'path' not in _7z_executable:
+            _7z_executable['path'] = process.find_executable(('7z',))
+        return _7z_executable['path']
 
     @staticmethod
     def is_available():
