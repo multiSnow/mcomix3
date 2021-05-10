@@ -667,7 +667,7 @@ class FileHandler(object):
         # Do not store first page (first page is default
         # behaviour and would waste space unnecessarily)
         try:
-            if page == 1:
+            if page in (0, 1):
                 self.last_read_page.clear_page(archive_path)
             else:
                 self.last_read_page.set_page(archive_path, page)
