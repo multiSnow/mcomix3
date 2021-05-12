@@ -11,15 +11,9 @@ from mcomix import callback
 from mcomix import tools
 from mcomix.preferences import prefs
 from mcomix.library import backend_types
+from mcomix.sqlite3 import sqlite3
 # Only for importing legacy data from last-read module
 from mcomix import last_read_page
-
-try:
-    import sqlite3
-    log.debug('SQLite: {0.sqlite_version} sqlite3 version: {0.version}'.format(sqlite3))
-except ImportError:
-    log.warning( _('! Could find sqlite3.') )
-    sqlite3 = None
 
 
 #: Identifies the 'Recent' collection that stores recently read books.

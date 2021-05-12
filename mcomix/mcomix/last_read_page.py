@@ -2,17 +2,8 @@
 
 import os
 
-from mcomix import log
 from mcomix import constants
-
-# This import is only used for legacy data that is imported
-# into the library at upgrade.
-try:
-    import sqlite3
-    log.debug('SQLite: {0.sqlite_version} sqlite3 version: {0.version}'.format(sqlite3))
-except ImportError:
-    log.warning( _('! Could find sqlite3.') )
-    sqlite3 = None
+from mcomix.sqlite3 import sqlite3
 
 
 class LastReadPage(object):
