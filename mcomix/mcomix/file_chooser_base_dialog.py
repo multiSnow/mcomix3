@@ -296,6 +296,10 @@ class _BaseFileChooserDialog(Gtk.Dialog):
         # during startup.
 
         from mcomix import main
-        return main.main_window().filehandler.get_path_to_base()
+        try:
+            return main.main_window().filehandler.get_path_to_base()
+        except:
+            # no file is opened.
+            return None
 
 # vim: expandtab:sw=4:ts=4
