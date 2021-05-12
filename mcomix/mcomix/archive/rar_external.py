@@ -10,7 +10,33 @@ from mcomix import process
 from mcomix.archive import archive_base
 
 # Filled on-demand by RarArchive
-_rar_executable = -1
+_rar_executable = {}
+
+def _is_not_unrar_free(path):
+    if 'win32' == sys.platform:
+        return True
+    if os.path.realpath(path).endswith(f'{os.path.sep}unrar-free'):
+        log.warning(f'RAR executable {path} is unrar-free, ignoring')
+        return False
+    return True
+
+def _find_unrar_executable():
+    ''' Tries to start rar/unrar, and returns either 'rar' or 'unrar' if
+        one of them was started successfully.
+        Returns None if neither could be started. '''
+
+    if 'path' not in _rar_executable:
+        path = process.find_executable(('unrar-nonfree', 'unrar', 'rar'),
+                                       is_valid_candidate=_is_not_unrar_free)
+        _rar_executable['path'] = path
+        if path is not None:
+            with process.popen([path], universal_newlines=True) as proc:
+                # only check first line
+                line = proc.stdout.read().strip().splitlines()[0].split()
+                if line[0]=='UNRAR':
+                    log.debug('unrar version: %s', line[1])
+
+    return _rar_executable['path']
 
 class RarArchive(archive_base.ExternalExecutableArchive):
     ''' RAR file extractor using the unrar/rar executable. '''
@@ -29,7 +55,7 @@ class RarArchive(archive_base.ExternalExecutableArchive):
         self.is_encrypted = self._has_encryption()
 
     def _get_executable(self):
-        return self._find_unrar_executable()
+        return _find_unrar_executable()
 
     def _get_password_argument(self):
         if not self.is_encrypted:
@@ -164,29 +190,7 @@ class RarArchive(archive_base.ExternalExecutableArchive):
                     break
 
     @staticmethod
-    def _find_unrar_executable():
-        ''' Tries to start rar/unrar, and returns either 'rar' or 'unrar' if
-        one of them was started successfully.
-        Returns None if neither could be started. '''
-        global _rar_executable
-        if _rar_executable == -1:
-            if 'win32' == sys.platform:
-                is_not_unrar_free = lambda exe: True
-            else:
-                def is_not_unrar_free(exe):
-                    real_exe = exe
-                    while os.path.islink(real_exe):
-                          real_exe = os.readlink(real_exe)
-                    if real_exe.endswith(os.path.sep + 'unrar-free'):
-                        log.warning('RAR executable %s is unrar-free, ignoring', exe)
-                        return False
-                    return True
-            _rar_executable = process.find_executable(('unrar-nonfree', 'unrar', 'rar'),
-                                                      is_valid_candidate=is_not_unrar_free)
-        return _rar_executable
-
-    @staticmethod
     def is_available():
-        return bool(RarArchive._find_unrar_executable())
+        return _find_unrar_executable() is not None
 
 # vim: expandtab:sw=4:ts=4
