@@ -6,6 +6,7 @@ import os
 import sys
 import tempfile
 
+from mcomix import log
 from mcomix import process
 from mcomix.archive import archive_base
 
@@ -35,6 +36,10 @@ def is_7z_support_rar():
     '''Check whether p7zip has Rar.so, which is needed to Rar format'''
     if 'support_rar' not in _7z_executable:
         _7z_executable['support_rar'] = _has_rar_so()
+        if _7z_executable['support_rar']:
+            log.debug('rar format supported by 7z')
+        else:
+            log.debug('rar format not supported by 7z')
     return _7z_executable['support_rar']
 
 class SevenZipArchive(archive_base.ExternalExecutableArchive):
