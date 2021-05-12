@@ -100,7 +100,7 @@ class RarArchive(archive_base.BaseArchive):
     @staticmethod
     def is_available():
         ''' Returns True if unrar.dll can be found, False otherwise. '''
-        return bool(_get_unrar_dll())
+        return _get_unrar_dll() is not None
 
     def __init__(self, archive):
         ''' Initialize Unrar.dll. '''
@@ -315,65 +315,48 @@ class UnrarException(Exception):
             return 'Unkown error'
 
 # Filled on-demand by _get_unrar_dll
-_unrar_dll = -1
+_unrar_dll = {}
+
+def _get_unrar_dll_win32():
+    ''' Load unrar.dll on win32 '''
+    # file name of x64 version of unrar.dll is unrar64.dll
+    dllname = 'unrar64.dll' if sys.maxsize > 2**32 else 'unrar.dll'
+    for path in \
+        filter(None, (ctypes.util.find_library(dllname),
+                      os.path.join(constants.BASE_PATH, dllname),
+                      dllname)):
+        try:
+            return ctypes.windll.LoadLibrary(path)
+        except WindowsError:
+            pass
+    return
+
+def _get_unrar_dll_unix():
+    ''' Load libunrar.so on UNIX '''
+
+    # find_library on UNIX uses various mechanisms to determine the path
+    # of a library, so one could assume the library is not installed
+    # when find_library fails
+    for path in \
+        filter(None, (ctypes.util.find_library('unrar') or '/usr/lib/libunrar.so',
+                      os.path.join(os.getcwd(), 'libunrar.so'))):
+        try:
+            return ctypes.cdll.LoadLibrary(path)
+        except OSError:
+            pass
+    return
 
 def _get_unrar_dll():
     ''' Tries to load libunrar and will return a handle of it.
     Returns None if an error occured or the library couldn't be found. '''
-    global _unrar_dll
-    if _unrar_dll != -1:
-        return _unrar_dll
+    if 'context' not in _unrar_dll:
+        dll = _get_unrar_dll_win32() if sys.platform == 'win32' else _get_unrar_dll_unix()
+        _unrar_dll['context'] = dll
+        if dll is not None:
+            dll.RARGetDllVersion.restype = ctypes.c_int
+            dll.RARGetDllVersion.argtypes = []
+            log.debug('unrar dll version: %d', dll.RARGetDllVersion())
 
-    # Load unrar.dll on win32
-    if sys.platform == 'win32':
-        # file name of x64 version of unrar.dll is unrar64.dll
-        dllname = 'unrar64.dll' if sys.maxsize > 2**32 else 'unrar.dll'
-
-        # First, search for unrar.dll in PATH
-        unrar_path = ctypes.util.find_library(dllname)
-        if unrar_path:
-            try:
-                _unrar_dll = ctypes.windll.LoadLibrary(unrar_path)
-                return _unrar_dll
-            except WindowsError:
-                pass
-
-        # The file wasn't found in PATH, try MComix' root directory
-        try:
-            _unrar_dll = ctypes.windll.LoadLibrary(os.path.join(constants.BASE_PATH, dllname))
-            return _unrar_dll
-        except WindowsError:
-            pass
-
-        # Last attempt, just use the current directory
-        try:
-            _unrar_dll = ctypes.windll.LoadLibrary(dllname)
-        except WindowsError:
-            _unrar_dll = None
-
-        return _unrar_dll
-
-    # Load libunrar.so on UNIX
-    else:
-        # find_library on UNIX uses various mechanisms to determine the path
-        # of a library, so one could assume the library is not installed
-        # when find_library fails
-        unrar_path = ctypes.util.find_library('unrar') or \
-            '/usr/lib/libunrar.so'
-
-        if unrar_path:
-            try:
-                _unrar_dll = ctypes.cdll.LoadLibrary(unrar_path)
-                return _unrar_dll
-            except OSError:
-                pass
-
-        # Last attempt, try the current directory
-        try:
-            _unrar_dll = ctypes.cdll.LoadLibrary(os.path.join(os.getcwd(), 'libunrar.so'))
-        except OSError:
-            _unrar_dll = None
-
-        return _unrar_dll
+    return _unrar_dll['context']
 
 # vim: expandtab:sw=4:ts=4
