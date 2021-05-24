@@ -6,14 +6,15 @@
 # Manuel Quiñones <manuel.por.aca@gmail.com>.
 # Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2006.
 # Carlos Feliu <carlos.feliu.holguera@gmail.com>, 2012.
+# Antonio Calvo <acrv01@gmail.com>, 2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: comix.HEAD\n"
 "Report-Msgid-Bugs-To: NAME@HO.ST\n"
 "POT-Creation-Date: 2018-12-07 10:35+0100\n"
-"PO-Revision-Date: 2012-09-06 18:00+0100\n"
-"Last-Translator: Carlos Feliu <carlos.feliu.holguera@gmail.com>\n"
+"PO-Revision-Date: 2021-05-23 20:31:02\n"
+"Last-Translator: Antonio Calvo <acrv01@gmail.com>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
@@ -54,7 +55,7 @@ msgstr "Formato de archivador no soportado: %s"
 #: mcomix/mcomix/archive_extractor.py:206
 #, python-format
 msgid "! Extraction error: %s"
-msgstr "! Error de extración: %s"
+msgstr "! Error de extracción: %s"
 
 #: mcomix/mcomix/archive_packer.py:58
 #, python-format
@@ -385,7 +386,7 @@ msgid ""
 "reading will resume on page %(page)d. Otherwise, the first page will be "
 "loaded."
 msgstr ""
-"Dejó de leer aquí en %(date)s, %(time)s. Si elige \"Yes\", la lectura se "
+"Dejó de leer aquí en %(date)s, %(time)s. Si elige \"Si\", la lectura se "
 "reanudará en la página %(page)d. Si no es así, se cargará la primera página."
 
 #: mcomix/mcomix/file_handler.py:653
@@ -424,7 +425,7 @@ msgstr "Página anterior"
 #: mcomix/mcomix/keybindings.py:54 mcomix/mcomix/keybindings.py:55
 #: mcomix/mcomix/keybindings.py:56
 msgid "Navigation"
-msgstr ""
+msgstr "Navegación"
 
 #
 # File: src/ui.py, line: 285
@@ -439,35 +440,35 @@ msgstr "Guardar página como"
 
 #: mcomix/mcomix/keybindings.py:43
 msgid "Forward ten pages"
-msgstr ""
+msgstr "Avanzar diez páginas"
 
 #
 # File: src/ui.py, line: 284
 #: mcomix/mcomix/keybindings.py:44
 #, fuzzy
 msgid "Previous page (dynamic)"
-msgstr "Página anterior"
+msgstr "Página anterior (dinamico)"
 
 #
 # File: src/ui.py, line: 285
 #: mcomix/mcomix/keybindings.py:45
 #, fuzzy
 msgid "Next page (dynamic)"
-msgstr "Página siguiente"
+msgstr "Página siguiente (dinamico)"
 
 #
 # File: src/ui.py, line: 284
 #: mcomix/mcomix/keybindings.py:46
 #, fuzzy
 msgid "Previous page (always one page)"
-msgstr "Página anterior"
+msgstr "Página anterior (siempre una página)"
 
 #
 # File: src/ui.py, line: 285
 #: mcomix/mcomix/keybindings.py:47
 #, fuzzy
 msgid "Next page (always one page)"
-msgstr "Página siguiente"
+msgstr "Página siguiente (siempre una página)"
 
 #
 # File: src/ui.py, line: 282
@@ -655,15 +656,15 @@ msgstr "Voltear _verticalmente"
 
 #: mcomix/mcomix/keybindings.py:90
 msgid "Never autorotate"
-msgstr ""
+msgstr "Nunca autorotar"
 
 #: mcomix/mcomix/keybindings.py:92 mcomix/mcomix/keybindings.py:93
 msgid "Autorotate by width"
-msgstr ""
+msgstr "Autorotar por ancho"
 
 #: mcomix/mcomix/keybindings.py:94 mcomix/mcomix/keybindings.py:95
 msgid "Autorotate by height"
-msgstr ""
+msgstr "Autorotar por alto"
 
 #
 # File: src/preferences.py, line: 177
@@ -767,26 +768,26 @@ msgstr "Pantalla completa"
 
 #: mcomix/mcomix/keybindings.py:116
 msgid "Show/hide toolbar"
-msgstr ""
+msgstr "Mostrar/Ocultar barra de herramientas"
 
 #: mcomix/mcomix/keybindings.py:117
 #, fuzzy
 msgid "Show/hide menubar"
-msgstr "Mostrar números de archivo"
+msgstr "Mostrar/Ocultar barra de menu"
 
 #
 # File: src/ui.py, line: 83
 #: mcomix/mcomix/keybindings.py:118
 #, fuzzy
 msgid "Show/hide statusbar"
-msgstr "Barra de _estado"
+msgstr "Mostrar/Ocultar Barra de _estado"
 
 #
 # File: src/ui.py, line: 85
 #: mcomix/mcomix/keybindings.py:119
 #, fuzzy
 msgid "Show/hide scrollbars"
-msgstr "Barras de _desplazamiento"
+msgstr "Mostrar/Ocultar Barras de _desplazamiento"
 
 #
 # File: src/preferences.py, line: 109
@@ -806,7 +807,7 @@ msgstr "_Ocultar todo"
 #: mcomix/mcomix/keybindings.py:122 mcomix/mcomix/slideshow.py:47
 #: mcomix/mcomix/ui.py:135
 msgid "Start slideshow"
-msgstr "Empezar diapositivas"
+msgstr "Empezar presentación de diapositivas"
 
 #: mcomix/mcomix/keybindings.py:125
 #, fuzzy
@@ -824,7 +825,7 @@ msgstr "_Eliminar"
 #: mcomix/mcomix/keybindings.py:139
 #, fuzzy
 msgid "File"
-msgstr "Archivos"
+msgstr "Archivo"
 
 #: mcomix/mcomix/keybindings.py:126
 #, fuzzy
@@ -882,18 +883,18 @@ msgstr "Biblioteca"
 
 #: mcomix/mcomix/keybindings.py:145
 msgid "Execute external command"
-msgstr ""
+msgstr "Ejecutar comando externo"
 
 #: mcomix/mcomix/keybindings.py:146
 #, fuzzy
 msgid "External commands"
-msgstr "Editar marcadores"
+msgstr "Comandos externos"
 
 #: mcomix/mcomix/keybindings.py:182
 #, python-format
 msgid "Keybinding for \"%(action)s\" overrides hotkey for another action."
 msgstr ""
-"La combinación de teclas para \"%(action)s\" anula la hotkey para otra "
+"La combinación de teclas para \"%(action)s\" sobreescribe otra "
 "acción."
 
 #: mcomix/mcomix/keybindings.py:292
@@ -904,7 +905,7 @@ msgstr "No se pudieron cargar las combinaciones de teclas: %s"
 #: mcomix/mcomix/keybindings_editor.py:42
 #, python-format
 msgid "Key %d"
-msgstr ""
+msgstr "Tecla %d"
 
 #: mcomix/mcomix/last_read_page.py:13 mcomix/mcomix/library/backend.py:18
 #, fuzzy
@@ -943,51 +944,51 @@ msgstr "No preguntar de nuevo."
 #: mcomix/mcomix/openwith.py:69
 #, python-format
 msgid "'%s' is disabled for archives."
-msgstr ""
+msgstr "'%s' esta esactivado para los archivos."
 
 #: mcomix/mcomix/openwith.py:84
 #, python-format
 msgid "Could not run command %(cmdlabel)s: %(exception)s"
-msgstr ""
+msgstr "No pude ejecutar el comando %(cmdlabel)s: %(exception)s"
 
 #: mcomix/mcomix/openwith.py:132
 msgid "Command line is empty."
-msgstr ""
+msgstr "La linea de comandos esta vacia."
 
 #: mcomix/mcomix/openwith.py:175
 msgid "Incomplete escape sequence. For a literal '%', use '%%'."
-msgstr ""
+msgstr "Secuencia de escape incorrecta. Para '%' utilize '%%'."
 
 #: mcomix/mcomix/openwith.py:179
 msgid "Incomplete quote sequence. For a literal '\"', use '%\"'."
-msgstr ""
+msgstr "Secuencia de cita imcompleta. Para '\"' se '%\"'."
 
 #
 # File: src/edit.py, line: 115
 #: mcomix/mcomix/openwith.py:195
 #, fuzzy
 msgid "File-related variables can only be used for files."
-msgstr "Los archivadores se guardan como paquetes ZIP."
+msgstr "Las variables asociadas a ficheros solo pueden usarse con estos."
 
 #
 # File: src/edit.py, line: 115
 #: mcomix/mcomix/openwith.py:199
 #, fuzzy
 msgid "Archive-related variables can only be used for archives."
-msgstr "Los archivadores se guardan como paquetes ZIP."
+msgstr "Las variables asociadas archivadores solo pueden usarse con estos."
 
 #: mcomix/mcomix/openwith.py:241
 #, python-format
 msgid "Invalid escape sequence: %%%s"
-msgstr ""
+msgstr "Secuencia de escape invalida: %%%s"
 
 #: mcomix/mcomix/openwith.py:264
 msgid "Edit external commands"
-msgstr ""
+msgstr "Editar comandos externos"
 
 #: mcomix/mcomix/openwith.py:274
 msgid "Add _separator"
-msgstr ""
+msgstr "Añadir _separador"
 
 #
 # File: src/comment.py, line: 16
@@ -995,21 +996,21 @@ msgstr ""
 #: mcomix/mcomix/openwith.py:285
 #, fuzzy
 msgid "Run _command"
-msgstr "Comentarios"
+msgstr "Ejecutar _comando"
 
 #: mcomix/mcomix/openwith.py:348
 msgid "This is a separator pseudo-command."
-msgstr ""
+msgstr "Esto es un seudo-comando separador."
 
 #: mcomix/mcomix/openwith.py:359
 #, python-format
 msgid "\"%s\" does not have a valid working directory."
-msgstr ""
+msgstr "\"%s\" no tiene una carpeta de trabajo valida."
 
 #: mcomix/mcomix/openwith.py:362
 #, python-format
 msgid "\"%s\" does not appear to have a valid executable."
-msgstr ""
+msgstr "\"%s\" no parece tener un ejecutable valido."
 
 #
 # File: src/comment.py, line: 16
@@ -1017,14 +1018,14 @@ msgstr ""
 #: mcomix/mcomix/openwith.py:371
 #, fuzzy
 msgid "Command label"
-msgstr "Comentarios"
+msgstr "Etiqueta de comando"
 
 #
 # File: src/ui.py, line: 36
 #: mcomix/mcomix/openwith.py:464
 #, fuzzy
 msgid "Preview:"
-msgstr "Página _anterior"
+msgstr "Previsualización"
 
 #: mcomix/mcomix/openwith.py:472
 #, python-format
@@ -1032,10 +1033,12 @@ msgid ""
 "Please refer to the <a href=\"%s\">external command documentation</a> for a "
 "list of usable variables and other hints."
 msgstr ""
+"Consulte la <a href=\"%s\">documentacion de comandos externos</a> para una "
+"lista de variables utilizables y otras pistas."
 
 #: mcomix/mcomix/openwith.py:480
 msgid "Label"
-msgstr ""
+msgstr "Etiqueta"
 
 #
 # File: src/comment.py, line: 16
@@ -1059,13 +1062,16 @@ msgstr "Archivadores Tar"
 
 #: mcomix/mcomix/openwith.py:549
 msgid "Save changes to commands?"
-msgstr ""
+msgstr "¿Guardar cambios a los comandos?"
 
 #: mcomix/mcomix/openwith.py:550
 msgid ""
 "You have made changes to the list of external commands that have not been "
 "saved yet. Press \"Yes\" to save all changes, or \"No\" to discard them."
 msgstr ""
+"Tiene cambios a los comandos externos sin guardar aún. "
+"saved yet. Seleccione \"Si\" para guardar todos los cambios, o \"No\" para descartarlos."
+
 
 #: mcomix/mcomix/openwith_menu.py:22
 #, fuzzy
@@ -1114,7 +1120,7 @@ msgstr "Avanzado"
 
 #: mcomix/mcomix/preferences_dialog.py:51
 msgid "Shortcuts"
-msgstr ""
+msgstr "Atajos"
 
 #: mcomix/mcomix/preferences_dialog.py:67
 msgid "Language (needs restart):"
@@ -1496,7 +1502,7 @@ msgstr "Orden de archivos"
 
 #: mcomix/mcomix/preferences_dialog.py:259
 msgid "Sort files and directories by:"
-msgstr ""
+msgstr "Ordenar ficheros y carpetas por:"
 
 #
 # File: src/filechooser.py, line: 86
@@ -1507,7 +1513,7 @@ msgstr "Archivadores Tar"
 
 #: mcomix/mcomix/preferences_dialog.py:265
 msgid "Extraction and cache"
-msgstr ""
+msgstr "Extracción y cache"
 
 #: mcomix/mcomix/preferences_dialog.py:267
 #, fuzzy
@@ -1599,15 +1605,15 @@ msgstr "Mejorar la imagen"
 
 #: mcomix/mcomix/preferences_dialog.py:301
 msgid "Animation mode:"
-msgstr ""
+msgstr "Mode de animacion:"
 
 #: mcomix/mcomix/preferences_dialog.py:319
 msgid "_Reset keys"
-msgstr ""
+msgstr "_Restaurar teclas"
 
 #: mcomix/mcomix/preferences_dialog.py:321
 msgid "Resets all keyboard shortcuts to their default values."
-msgstr ""
+msgstr "Restaurar todos los atajos de teclado a sus valores por defecto."
 
 #: mcomix/mcomix/preferences_dialog.py:324
 #, fuzzy
@@ -1721,6 +1727,9 @@ msgid ""
 "Natural order will sort numbered files based on their natural order, i.e. 1, "
 "2, ..., 10, while literal order uses standard C sorting, i.e. 1, 2, 34, 5."
 msgstr ""
+"Los ficheros dentro de los archivos se ordenaran de acuerdo a lo aqui especificado. "
+"El orden Natural ordenara los ficheros numerados en su orden natural, ie. 1,2, ..., 10 "
+"mientras que el orden literal usa el ordenamiento standard de C, ie. 1, 2, 34, 5."
 
 #
 # File: src/preferences.py, line: 219
@@ -1771,7 +1780,7 @@ msgstr "Normal"
 
 #: mcomix/mcomix/preferences_dialog.py:623
 msgid "Controls how animated images should be displayed."
-msgstr ""
+msgstr "Controla como se muestran las imagenes animadas."
 
 #
 # File: src/preferences.py, line: 295
@@ -2014,7 +2023,7 @@ msgstr "Archivador tar comprimido con gzip"
 
 #: mcomix/mcomix/strings.py:15
 msgid "PDF document"
-msgstr ""
+msgstr "Documento PDF"
 
 #: mcomix/mcomix/strings.py:16
 msgid "7z archive"
@@ -2407,15 +2416,15 @@ msgstr "_Transformar imagen"
 
 #: mcomix/mcomix/ui.py:105
 msgid "_Auto-rotate image"
-msgstr ""
+msgstr "_Auto-rotar imagen"
 
 #: mcomix/mcomix/ui.py:106
 msgid "...when width exceeds height"
-msgstr ""
+msgstr "... cuando el ancho es mayor que el alto"
 
 #: mcomix/mcomix/ui.py:107
 msgid "...when height exceeds width"
-msgstr ""
+msgstr "... cuando el alto es mayor que el ancho"
 
 #
 # File: src/ui.py, line: 75
