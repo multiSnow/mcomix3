@@ -4,7 +4,7 @@ VERSION=`sed -nr "s%^VERSION = '([.0-9a-z]+)'$%\1%p" ${ROOTDIR}/constants.py`
 MAINTAINER="NAME@HO.ST"
 
 find ${ROOTDIR} -name '*.py' -exec \
-     echo xgettext --sort-by-file --language=Python --output=mcomix.pot \
+     xgettext --sort-by-file --language=Python --output=mcomix.pot \
      --output-dir=${ROOTDIR}/messages/ --add-comments=TRANSLATORS \
      --from-code=utf-8 --package-name=MComix --package-version=${VERSION} \
      --msgid-bugs-address=${MAINTAINER} {} +
