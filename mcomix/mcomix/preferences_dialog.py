@@ -195,6 +195,11 @@ class _PreferencesDialog(Gtk.Dialog):
             _('Flip pages when scrolling "off the page" with the scroll wheel or with the arrow keys. It takes n consecutive "steps" with the scroll wheel or the arrow keys for the pages to be flipped.')))
 
         page.add_row(self._create_pref_check_button(
+            _('Flip pages with left-click'),
+            'flip with click',
+            _('Click on the page to turn to the next one.')))
+
+        page.add_row(self._create_pref_check_button(
             _('Automatically open the next archive'),
             'auto open next archive',
             _('Automatically open the next archive in the directory when flipping past the last page, or the previous archive when flipping past the first page.')))
