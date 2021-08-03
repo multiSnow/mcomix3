@@ -416,7 +416,8 @@ class EventHandler(object):
 
             if event.x_root == self._pressed_pointer_pos_x and \
                event.y_root == self._pressed_pointer_pos_y and \
-               not self._window.was_out_of_focus:
+               not self._window.was_out_of_focus and \
+               prefs['flip with click']:
 
                 # right to next, left to previous, no matter the double page mode
                 direction = 1 if event.x > widget.get_property('width') // 2 else -1
