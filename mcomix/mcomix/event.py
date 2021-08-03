@@ -414,10 +414,16 @@ class EventHandler(object):
 
         if event.button == 1:
 
-            if event.x_root == self._pressed_pointer_pos_x and \
-               event.y_root == self._pressed_pointer_pos_y and \
-               not self._window.was_out_of_focus and \
-               prefs['flip with click']:
+            if self._window.was_out_of_focus:
+                # main window should always focused before the release event occured.
+                # it should be a bug of gtk if interpreter goes to here.
+                return
+
+            if not prefs['flip with click']:
+                return
+
+            if (self._pressed_pointer_pos_x, self._pressed_pointer_pos_y) == \
+               (event.x_root, event.y_root):
 
                 # right to next, left to previous, no matter the double page mode
                 direction = 1 if event.x > widget.get_property('width') // 2 else -1
@@ -431,9 +437,6 @@ class EventHandler(object):
                     direction *= 10
 
                 self._flip_page(direction)
-
-            else:
-                self._window.was_out_of_focus = False
 
         elif event.button == 2:
             self._window.actiongroup.get_action('lens').set_active(False)
