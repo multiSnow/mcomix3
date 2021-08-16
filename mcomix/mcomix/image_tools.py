@@ -427,12 +427,16 @@ def load_animation(im):
 def load_pixbuf(path):
     ''' Loads a pixbuf from a given image file. '''
     enable_anime = prefs['animation mode'] != constants.ANIMATION_DISABLED
+    n_frames = None
+    loop = None
     try:
         with reader.LockedFileIO(path) as fio:
             with Image.open(fio) as im:
                 # make sure n_frames loaded
                 im.load()
                 if enable_anime and getattr(im,'is_animated',False):
+                    n_frames = im.n_frames
+                    loop = im.info['loop']
                     return load_animation(im)
                 return pil_to_pixbuf(im, keep_orientation=True)
     except:
@@ -441,6 +445,19 @@ def load_pixbuf(path):
         pixbuf = GdkPixbuf.PixbufAnimation.new_from_file(path)
         if pixbuf.is_static_image():
             return pixbuf.get_static_image()
+        # assume PIL and GdkPixbuf count frames in same way.
+        if n_frames>1:
+            anime=anime_tools.AnimeFrameBuffer(n_frames,loop=loop)
+            cur=GLib.TimeVal()
+            frame_iter=pixbuf.get_iter(cur)
+            for n in range(im.n_frames):
+                anime.add_frame(n,frame:=frame_iter.get_pixbuf().copy(),
+                                frame_iter.get_delay_time())
+                frame.copy_options(frame)
+                while not frame_iter.advance(cur):
+                    cur.add(frame_iter.get_delay_time())
+                    continue
+            return anime.create_animation()
         return pixbuf
     return GdkPixbuf.Pixbuf.new_from_file(path)
 
