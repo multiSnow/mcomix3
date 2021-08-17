@@ -441,25 +441,31 @@ def load_pixbuf(path):
                 return pil_to_pixbuf(im, keep_orientation=True)
     except:
         pass
-    if enable_anime:
-        pixbuf = GdkPixbuf.PixbufAnimation.new_from_file(path)
-        if pixbuf.is_static_image():
-            return pixbuf.get_static_image()
-        # assume PIL and GdkPixbuf count frames in same way.
-        if n_frames>1:
-            anime=anime_tools.AnimeFrameBuffer(n_frames,loop=loop)
-            cur=GLib.TimeVal()
-            frame_iter=pixbuf.get_iter(cur)
-            for n in range(im.n_frames):
-                anime.add_frame(n,frame:=frame_iter.get_pixbuf().copy(),
-                                frame_iter.get_delay_time())
-                frame.copy_options(frame)
-                while not frame_iter.advance(cur):
-                    cur.add(frame_iter.get_delay_time())
-                    continue
-            return anime.create_animation()
+    if not enable_anime:
+        return GdkPixbuf.Pixbuf.new_from_file(path)
+    if (pixbuf:=GdkPixbuf.PixbufAnimation.new_from_file(path)).is_static_image():
+        return pixbuf.get_static_image()
+    if n_frames is None:
+        # not recognized by PIL or not animation
         return pixbuf
-    return GdkPixbuf.Pixbuf.new_from_file(path)
+    if n_frames<2:
+        # only one frame
+        return pixbuf
+    # assume PIL and GdkPixbuf count frames in same way.
+    anime=anime_tools.AnimeFrameBuffer(n_frames,loop=loop)
+    frame_iter=pixbuf.get_iter(cur:=GLib.TimeVal())
+    for n in range(n_frames):
+        cur.add((delay:=frame_iter.get_delay_time())*1000)
+        frame=(frame_ref:=frame_iter.get_pixbuf()).copy()
+        frame_ref.copy_options(frame)
+        anime.add_frame(n,frame,delay)
+        if n==n_frames-1:
+            # end of animation
+            break
+        while not frame_iter.advance(cur):
+            cur.add(frame_iter.get_delay_time()*1000)
+            continue
+    return anime.create_animation()
 
 def load_pixbuf_size(path, width, height):
     ''' Loads a pixbuf from a given image file and scale it to fit
