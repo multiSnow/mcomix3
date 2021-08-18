@@ -45,6 +45,18 @@ def _getexif(im):
         pass
     return exif
 
+class GioStreamIO(Gio.MemoryInputStream):
+    def __init__(self,data=b''):
+        super().__init__()
+        if data:
+            self.add_data(data)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self,etype,value,tb):
+        self.close()
+
 class Mage:
     def __init__(self):
 
@@ -72,6 +84,8 @@ class Mage:
         self._rotation=0
         # scale filter of cache.
         self._filter=None
+        # size of cache
+        self._size=None
 
         # thumbnail as Pixbuf.
         # fast scale filter, no icc, no animation.
@@ -97,6 +111,7 @@ class Mage:
         self._bgcolor=0
         self._icc=im.info.get('icc_profile')
         self._exif.update(_getexif(im))
+        self._size=im.size
 
     @property
     def frames(self):
@@ -122,6 +137,16 @@ class Mage:
         # set or update cached image, close previous cache and update cache parameters.
         raise NotImplementedError('setter: Mage.cache')
 
+    def purge_cache(self):
+        # purge cached image and all cached frames
+        if self._cache is not None:
+            _cache=self._cache
+            self._cache=None
+            _cache.close()
+            while self._cache_frames:
+                im,duration=self._cache_frames.pop()
+                im.close()
+
     @property
     def original_size(self):
         # get the (width, height) of the original image
@@ -130,15 +155,47 @@ class Mage:
     @property
     def size(self):
         # get the (width, height) of the cached image
-        raise NotImplementedError('property: Mage.size')
+        return self._size
+
+    @size.setter
+    def size(self,width,height):
+        # set the width and height of the cached image
+        if tuple(self.size)!=(width,height):
+            self.purge_cache()
+        self._size=(width,height)
 
     @property
     def rotation(self):
+        # get the rotation of the cached image
         return self._rotation
 
     @rotation.setter
     def rotation(self,rotation):
-        raise NotImplementedError('setter: Mage.rotation')
+        if rotation!=self.rotation:
+            self.purge_cache()
+        self._rotation=rotation
+
+    def _load_fallback(self,data,animation=False,n_frames=1):
+        # load image from data using GdkPixbuf.
+        loader=GdkPixbuf.PixbufAnimation if animation else GdkPixbuf.Pixbuf
+        with GioStreamIO(data) as stream:
+            pixbuf=loader.new_from_stream(stream)
+            if not animation or n_frames<2:
+                # return static image if n_frames is less than 2.
+                # GdkPixbuf.PixbufAnimation does not report total frames.
+                self.image=_pixbuf2pil(pixbuf)
+                return
+            self.image=_pixbuf2pil(pixbuf.get_static_image())
+            frame_iter=pixbuf.get_iter(cur:=GLib.TimeVal())
+            for n in range(im.n_frames):
+                cur.add((delay:=frame_iter.get_delay_time())*1000)
+                frame=(frame_ref:=frame_iter.get_pixbuf()).copy()
+                frame_ref.copy_options(frame)
+                self.add_frame(_pixbuf2pil(frame),delay)
+                if n==im.n_frames-1:
+                    return
+                while not frame_iter.advance(cur):
+                    cur.add(frame_iter.get_delay_time()*1000)
 
     def load(self,data,enable_anime=False):
         # load image from data, set to self.image and append to self.frames.
@@ -148,44 +205,23 @@ class Mage:
         except:
             # unsupported by PIL, fallback to GdkPixbuf.
             # disable animation if unsupported by PIL.
-            stream=Gio.MemoryInputStream.new_from_bytes(data)
-            pixbuf=GdkPixbuf.Pixbuf.new_from_stream(stream)
-            stream.close()
-            self.image=_pixbuf2pil(pixbuf)
-            return
+            return self._load_fallback(data)
         if not (enable_anime and getattr(im,'is_animated',False)):
             self.image=im
             return
         if im.format=='GIF' and im.mode=='P':
             # fallback to GdkPixbuf for gif animation
             # See https://github.com/python-pillow/Pillow/labels/GIF
-            stream=Gio.MemoryInputStream.new_from_bytes(data)
-            GdkPixbuf.PixbufAnimation.new_from_stream(stream)
-            stream.close()
-            frame_iter=pixbuf.get_iter(cur:=GLib.TimeVal())
-            for n in range(im.n_frames):
-                cur.add((delay:=frame_iter.get_delay_time())*1000)
-                frame=(frame_ref:=frame_iter.get_pixbuf()).copy()
-                frame_ref.copy_options(frame)
-                if n==0:
-                    # save first frame as original image
-                    self.image=_pixbuf2pil(frame)
-                    self.add_frame(self.image,delay)
-                else:
-                    self.add_frame(_pixbuf2pil(frame),delay)
-                if n==im.n_frames-1:
-                    return
-                while not frame_iter.advance(cur):
-                    cur.add(frame_iter.get_delay_time()*1000)
-            return
-        for n,frame in enumerate(ImageSequence.Iterator(im)):
-            if n==0:
-                self.image=frame
-            self.add_frame(frame,int(frame.info.get('duration',0)))
-        if isinstance(background:=im.info.get('background',0),tuple):
-            self._bgcolor=int(''.join(f'{c:02x}' for c in background),16)
+            self._load_fallback(data,animation=True,n_frames=im.n_frames)
         else:
-            self._bgcolor=background
+            for n,frame in enumerate(ImageSequence.Iterator(im)):
+                if n==0:
+                    self.image=frame
+                self.add_frame(frame,int(frame.info.get('duration',0)))
+            if isinstance(background:=im.info.get('background',0),tuple):
+                self._bgcolor=int(''.join(f'{c:02x}' for c in background),16)
+            else:
+                self._bgcolor=background
         self._loop=im.info['loop']
 
     # TODO: more property and method
