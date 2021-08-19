@@ -69,6 +69,8 @@ class Mage:
         self._loop=False
         # original background color as int (#RRGGBBAA).
         self._bgcolor=0
+        # implied rotation
+        self._implied_rotation=None
         # bytes data of color profile, or None.
         self._icc=None
         # dictionary of exif, or None.
@@ -107,6 +109,7 @@ class Mage:
             _im.close()
             self._exif.clear()
             self.purge_frames()
+            self.purge_cache()
         self._im=im
         self._bgcolor=0
         self._icc=im.info.get('icc_profile')
@@ -114,9 +117,30 @@ class Mage:
         self._size=im.size
 
     @property
+    def implied_rotation(self):
+        if self._implied_rotation is None:
+            # set implied rotation from exif
+            self._implied_rotation={3:180,6:90,8:270}.get(self.exif.get(274,0),0)
+        return self._implied_rotation
+
+    @implied_rotation.setter
+    def implied_rotation(self,rotation):
+        # set to 0 to disable auto rotate from exif
+        # set to None to enable auto rotate from exif
+        # other value is not allowed
+        assert rotation in (0,None),f'unsupported implied_rotation: {rotation}'
+        self._implied_rotation=rotation
+
+    @property
     def frames(self):
         # access to original frames
         return self._frames
+
+    @property
+    def exif(self):
+        # access to exif of original image
+        self.image
+        return self._exif
 
     def add_frame(self,frame,duration):
         self.frames.append((frame,duration))
@@ -130,12 +154,10 @@ class Mage:
     @property
     def cache(self):
         # get cached image, generate if not cached yet.
-        raise NotImplementedError('property: Mage.cache')
-
-    @cache.setter
-    def cache(self,im):
-        # set or update cached image, close previous cache and update cache parameters.
-        raise NotImplementedError('setter: Mage.cache')
+        if self._cache is None:
+            # TODO
+            pass
+        return self._cache
 
     def purge_cache(self):
         # purge cached image and all cached frames
@@ -153,27 +175,61 @@ class Mage:
         return self.image.size
 
     @property
-    def size(self):
-        # get the (width, height) of the cached image
-        return self._size
+    def background(self):
+        # get the background color of the cached image
+        return self._bg
 
-    @size.setter
-    def size(self,width,height):
-        # set the width and height of the cached image
-        if tuple(self.size)!=(width,height):
+    @background.setter
+    def background(self,color):
+        if color!=self._bg:
             self.purge_cache()
-        self._size=(width,height)
+        self._bg=color
 
     @property
     def rotation(self):
         # get the rotation of the cached image
+        # this rotation is not include the implied rotation
         return self._rotation
 
     @rotation.setter
     def rotation(self,rotation):
+        rotation%=360
+        assert rotation%90,f'unsupported rotation: {rotation}'
         if rotation!=self.rotation:
             self.purge_cache()
         self._rotation=rotation
+
+    @property
+    def scale_filter(self):
+        if self._filter is None:
+            width,height=self.original_size
+            if self.size!=(width,height):
+                # scale_filter is required for scale
+                raise ValueError('scale_filter is not set')
+        return self._filter
+
+    @scale_filter.setter
+    def scale_filter(self,pil_filter):
+        if pil_filter!=self._filter:
+            self.purge_cache()
+        self._filter=pil_filter
+
+    @property
+    def size(self):
+        # get the (width, height) of the cached image before any rotation
+        if self._size is None:
+            # use original size if not set
+            self.size=self.original_size
+        return self._size
+
+    @size.setter
+    def size(self,size):
+        # set the size of the cached image
+        # it should be the size before any rotation
+        width,height=size
+        if self.size!=(width,height):
+            self.purge_cache()
+        self._size=(width,height)
 
     def _load_fallback(self,data,animation=False,n_frames=1):
         # load image from data using GdkPixbuf.
@@ -184,6 +240,12 @@ class Mage:
                 # return static image if n_frames is less than 2.
                 # GdkPixbuf.PixbufAnimation does not report total frames.
                 self.image=_pixbuf2pil(pixbuf)
+                try:
+                    orientation=int(pixbuf.get_option('orientation'))
+                except:
+                    pass
+                else:
+                    self.exif[274]=orientation
                 return
             self.image=_pixbuf2pil(pixbuf.get_static_image())
             frame_iter=pixbuf.get_iter(cur:=GLib.TimeVal())
