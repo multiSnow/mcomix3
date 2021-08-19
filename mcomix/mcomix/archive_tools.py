@@ -207,7 +207,7 @@ def get_archive_info(path):
 
         return (mime, num_pages, size)
 
-def get_archive_handler(path, type=None):
+def get_archive_handler(path, type=None, terminator_func=None):
     ''' Returns a fitting extractor handler for the archive passed
     in <path> (with optional mime type <type>. Returns None if no matching
     extractor was found.
@@ -221,13 +221,15 @@ def get_archive_handler(path, type=None):
     if handler is None:
         return None
 
-    return handler(path)
+    archive = handler(path)
+    archive._terminator_func = terminator_func
+    return archive
 
-def get_recursive_archive_handler(path, type=None, **kwargs):
+def get_recursive_archive_handler(path, type=None, terminator_func=None, **kwargs):
     ''' Same as <get_archive_handler> but the handler will transparently handle
     archives within archives.
     '''
-    archive = get_archive_handler(path, type=type)
+    archive = get_archive_handler(path, type, terminator_func)
     if archive is None:
         return None
     # XXX: Deferred import to avoid circular dependency

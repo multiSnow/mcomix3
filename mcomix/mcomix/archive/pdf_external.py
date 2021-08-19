@@ -67,7 +67,14 @@ class PdfArchive(archive_base.BaseArchive):
         # Render...
         cmd = _mudraw_exec + ['-r', str(max_dpi), '-o', destination_path, '--', self.archive, str(page_num)]
         log.debug('rendering %s: %s', filename, ' '.join(cmd))
-        process.call(cmd)
+        with process.popen(cmd) as proc:
+            while proc.poll() is None:
+                try:
+                    proc.wait(0.25)
+                except:
+                    pass
+                if self._terminator_func and self._terminator_func():
+                    proc.terminate()
         return destination_path
 
     @staticmethod

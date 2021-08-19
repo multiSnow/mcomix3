@@ -41,7 +41,8 @@ class Extractor(object):
         self._files = []
         self._extracted = set()
         self._archive = archive_tools.get_recursive_archive_handler(
-            src, type=type, prefix='mcomix.extractor.')
+            src, type=type, prefix='mcomix.extractor.',
+            terminator_func=lambda: self._threadpool.closed)
         if self._archive is None:
             msg = _('Non-supported archive format: %s') % os.path.basename(src)
             log.warning(msg)
@@ -179,6 +180,8 @@ class Extractor(object):
         '''
         log.debug('Extracting from "%s" to "%s": "%s"',
                   self._src, self._dst, name)
+        if self._threadpool.closed:
+            return name
         self._archive.extract(name)
         return name
 
