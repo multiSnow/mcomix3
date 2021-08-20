@@ -106,6 +106,8 @@ class Extractor(object):
         '''Signal the extractor to stop extracting and kill the extracting
         thread. Blocks until the extracting thread has terminated.
         '''
+        if self._archive:
+            self._archive.stop()
         self._threadpool.terminate()
         self._threadpool.join()
         self._threadpool.renew()

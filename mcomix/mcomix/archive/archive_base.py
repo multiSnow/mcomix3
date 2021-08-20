@@ -71,6 +71,10 @@ class BaseArchive(object):
             if not wanted:
                 break
 
+    def stop(self):
+        ''' Stop extracting. '''
+        pass
+
     def close(self):
         ''' Closes the archive and releases held resources. '''
         pass

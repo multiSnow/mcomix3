@@ -154,6 +154,11 @@ class RecursiveArchive(archive_base.BaseArchive):
                 return True
         return False
 
+    def stop(self):
+        # stop extracting of all archives
+        for archive in reversed(self._archive_list):
+            archive.stop()
+
     def close(self):
         # close all archives before cleanup temporary directory
         for archive in reversed(self._archive_list):

@@ -5,6 +5,7 @@
 import math
 import os
 import re
+from threading import Lock
 
 from mcomix import log
 from mcomix import process
@@ -29,6 +30,8 @@ class PdfArchive(archive_base.BaseArchive):
 
     def __init__(self, archive):
         super(PdfArchive, self).__init__(archive)
+        self._pdf_procs = {}
+        self._pdf_procs_lock = Lock()
 
     def iter_contents(self):
         with process.popen(_mutool_exec + ['show', '--', self.archive, 'pages'],
@@ -67,8 +70,18 @@ class PdfArchive(archive_base.BaseArchive):
         # Render...
         cmd = _mudraw_exec + ['-r', str(max_dpi), '-o', destination_path, '--', self.archive, str(page_num)]
         log.debug('rendering %s: %s', filename, ' '.join(cmd))
-        process.call(cmd)
+        with process.popen(cmd,stdout=process.NULL) as proc:
+            with self._pdf_procs_lock:
+                self._pdf_procs[(pid:=proc.pid)]=proc
+            proc.wait()
+            with self._pdf_procs_lock:
+                self._pdf_procs.pop(pid)
         return destination_path
+
+    def stop(self):
+        with self._pdf_procs_lock:
+            for proc in self._pdf_procs.values():
+                proc.terminate()
 
     @staticmethod
     def is_available():
