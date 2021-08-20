@@ -155,27 +155,21 @@ class ThreadPool:
             self._caller,(func,args,kwargs,None,error_callback,True),
             callback=callback)
 
-    def cbmap(self,func,iterable,chunksize=None,
-              callback=None,error_callback=None,block=False):
+    def cbmap(self,func,iterable,callback=None,error_callback=None):
         # shortcut of:
         #
         # for item in iterable:
-        #     apply_async(func,args=(items,),kwargs={},
+        #     apply_async(func,args=(item,),kwargs={},
         #                 callback=callback,error_callback=error_callback)
         #
         # always return None
-        # block if block set to True
-        (self.starmap if block else self.starmap_async)(
-            self._caller,
-            ((func,(item,),{},callback,error_callback,not block)
-             for item in iterable),
-            chunksize=chunksize)
+        for item in iterable:
+            self.apply_async(func,args=(item,),
+                             callback=callback,error_callback=error_callback)
 
-    def ucbmap(self,func,iterable,chunksize=None,
-               callback=None,error_callback=None,block=False):
+    def ucbmap(self,func,iterable,callback=None,error_callback=None):
         # unique version of ThreadPool.cbmap
-        return self.cbmap(func,self._uiter(iterable),chunksize,
-                          callback,error_callback,block)
+        return self.cbmap(func,self._uiter(iterable),callback,error_callback)
 
     def umap(self,func,iterable,chunksize=None):
         # unique version of ThreadPool.map
