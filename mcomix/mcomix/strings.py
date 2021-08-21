@@ -24,6 +24,8 @@ AUTHORS = (
     ('Moritz Brunner', _('MComix developer')),
     ('Ark', _('MComix developer')),
     ('Benoit Pierre', _('MComix developer')),
+    ('multiSnow', _('MComix3 developer')),
+    ('jNullj', _('MComix3 contributor')),
 )
 
 TRANSLATORS = (

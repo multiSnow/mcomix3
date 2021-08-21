@@ -7,7 +7,7 @@ import operator
 
 from mcomix import tools
 
-APPNAME = 'MComix'
+APPNAME = 'MComix3'
 VERSION = '1.3.0.dev0'
 
 REQUIRED_PYTHON_VERSION = (3, 8, 0)

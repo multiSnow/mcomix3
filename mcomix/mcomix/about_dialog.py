@@ -18,8 +18,8 @@ class _AboutDialog(Gtk.AboutDialog):
         self.set_name(constants.APPNAME)
         self.set_program_name(constants.APPNAME)
         self.set_version(constants.VERSION)
-        self.set_website('https://sourceforge.net/p/mcomix/wiki/')
-        self.set_copyright('Copyright © 2005-2016')
+        self.set_website('https://github.com/multiSnow/mcomix3')
+        self.set_copyright('Copyright © 2005-2021')
 
         icon_data = tools.read_binary('images', 'mcomix.png')
         pixbuf = image_tools.load_pixbuf_data(icon_data)
