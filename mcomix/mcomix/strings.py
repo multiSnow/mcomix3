@@ -24,6 +24,15 @@ AUTHORS = (
     ('Moritz Brunner', _('MComix developer')),
     ('Ark', _('MComix developer')),
     ('Benoit Pierre', _('MComix developer')),
+    ('multiSnow', _('MComix3 developer')),
+    ('chelovechishko', _('MComix3 developer')),
+    ('pirate486743186', _('MComix3 developer')),
+    ('Winter-Stormer', _('MComix3 developer')),
+    ('awused', _('MComix3 developer')),
+    ('wyatt8740', _('MComix3 developer')),
+    ('con-f-use', _('MComix3 developer')),
+    ('completesomething', _('MComix3 developer')),
+    ('jNullj', _('MComix3 developer')),
 )
 
 TRANSLATORS = (
@@ -68,6 +77,8 @@ TRANSLATORS = (
     ('Jonatan Nyberg', _('Swedish translation')),
     ('Isratine Citizen', _('Hebrew translation')),
     ('Zygi Mantus', _('Lithuanian translation')),
+    ('Vistaus', _('Dutch translation')),
+    ('MarongHappy', _('Korean translation')),
 )
 
 ARTISTS = (
