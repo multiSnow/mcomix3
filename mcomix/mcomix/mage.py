@@ -1,6 +1,5 @@
 '''mage.py - the i(nternal)mage class.'''
 
-from binascii import unhexlify
 from io import BytesIO
 
 from gi.repository import Gio
@@ -14,36 +13,6 @@ def _pixbuf2pil(pixbuf):
     mode='RGBA' if pixbuf.get_has_alpha() else 'RGB'
     return Image.frombuffer(mode,(pixbuf.get_width(),pixbuf.get_height()),
                             pixbuf.get_pixels(),'raw',mode,pixbuf.get_rowstride(),1)
-
-def _getexif(im):
-    exif={}
-    try:
-        exif.update(im.getexif())
-    except AttributeError:
-        pass
-    if exif:
-        return exif
-
-    # exif of PNG is still buggy in Pillow 6.0.0
-    try:
-        l1,l2,size,*lines=im.info.get('Raw profile type exif').splitlines()
-    except:
-        # invalid exif data.
-        return {}
-    if l2!='exif':
-        # invalid exif data.
-        return {}
-    if len(data:=unhexlify(''.join(lines)))!=int(size):
-        # size not match.
-        return {}
-    im.info['exif']=data
-
-    # reload exif
-    try:
-        exif.update(im.getexif())
-    except AttributeError:
-        pass
-    return exif
 
 class GioStreamIO(Gio.MemoryInputStream):
     def __init__(self,data=b''):
@@ -75,6 +44,7 @@ class Mage:
         self._icc=None
         # dictionary of exif, or None.
         self._exif={}
+        # TODO: enhance/flip/flop
 
         # cached image as PImage
         self._cache=None
@@ -113,8 +83,29 @@ class Mage:
         self._im=im
         self._bgcolor=0
         self._icc=im.info.get('icc_profile')
-        self._exif.update(_getexif(im))
-        self._size=im.size
+        try:
+            self._exif.update(im.getexif())
+        except AttributeError:
+            # no exif support
+            return
+        # TODO: remove code below and increase PIL required version
+        if self._exif:
+            # exif recognized by PIL
+            return
+        # exif of PNG no recognized by PIL until 8.3.1
+        try:
+            l1,l2,size,*lines=im.info.get('Raw profile type exif').splitlines()
+            assert l2=='exif'
+            assert len(data:=bytes.fromhex(''.join(lines)))==int(size)
+        except:
+            # invalid exif data.
+            return
+        im.info['exif']=data
+        # reload exif
+        try:
+            self._exif.update(im.getexif())
+        except AttributeError:
+            return
 
     @property
     def implied_rotation(self):
@@ -129,7 +120,14 @@ class Mage:
         # set to None to enable auto rotate from exif
         # other value is not allowed
         assert rotation in (0,None),f'unsupported implied_rotation: {rotation}'
+        if rotation==0 and self.implied_rotation!=0:
+            # exif has rotation but will be disabled
+            self.purge_cache()
+        old_rotation=self.implied_rotation%360
         self._implied_rotation=rotation
+        if rotation is None and old_rotation==0 and self.implied_rotation:
+            # enable exif rotation that had been disabled
+            self.purge_cache()
 
     @property
     def frames(self):
@@ -151,13 +149,38 @@ class Mage:
             im,duration=self.frames.pop()
             im.close()
 
+    def _create_cache(self,im):
+        copy=im.copy()
+        width,height=self.original_size
+        if self.size!=(width,height):
+            if self.scale_filter is None:
+                # scale_filter is required for scale
+                raise ValueError('scale_filter is not set')
+            # TODO: reducing_gap
+            old_copy=copy
+            copy=old_copy.resize(self.size,resample=self.scale_filter)
+            old_copy.close()
+        if rotation:=(self.implied_rotation+self.rotation)%360:
+            old_copy=copy
+            copy=self.transpose({90:ROTATE_90,180:ROTATE_180,270:ROTATE_270}[rotation])
+            old_copy.close()
+        # TODO: enhance/flip/flop
+        return copy
+
     @property
     def cache(self):
         # get cached image, generate if not cached yet.
         if self._cache is None:
-            # TODO
-            pass
+            self._cache=self._create_cache(self.image)
         return self._cache
+
+    @property
+    def cache_frames(self):
+        # get cached frames, generate if not cached yet.
+        if self.frames and not self._cache_frames:
+            for im,duration in self.frames:
+                self._cache_frames.append(self._create_cache(im),duration)
+        return self._cache_frames
 
     def purge_cache(self):
         # purge cached image and all cached frames
@@ -201,17 +224,15 @@ class Mage:
 
     @property
     def scale_filter(self):
-        if self._filter is None:
-            width,height=self.original_size
-            if self.size!=(width,height):
-                # scale_filter is required for scale
-                raise ValueError('scale_filter is not set')
         return self._filter
 
     @scale_filter.setter
     def scale_filter(self,pil_filter):
         if pil_filter!=self._filter:
-            self.purge_cache()
+            width,height=self.original_size
+            if self.size!=(width,height):
+                # onlu purge cache if scaled
+                self.purge_cache()
         self._filter=pil_filter
 
     @property
