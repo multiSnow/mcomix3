@@ -455,16 +455,15 @@ def load_pixbuf(path):
     anime=anime_tools.AnimeFrameBuffer(n_frames,loop=loop)
     frame_iter=pixbuf.get_iter(cur:=GLib.TimeVal())
     for n in range(n_frames):
-        cur.add((delay:=frame_iter.get_delay_time())*1000)
         frame=(frame_ref:=frame_iter.get_pixbuf()).copy()
         frame_ref.copy_options(frame)
+        cur.tv_usec+=(delay:=frame_iter.get_delay_time())*1000
+        while not frame_iter.advance(cur):
+            cur.tv_usec+=(delay:=delay+frame_iter.get_delay_time())*1000
         anime.add_frame(n,frame,delay)
         if n==n_frames-1:
             # end of animation
             break
-        while not frame_iter.advance(cur):
-            cur.add(frame_iter.get_delay_time()*1000)
-            continue
     return anime.create_animation()
 
 def load_pixbuf_size(path, width, height):
