@@ -2,17 +2,25 @@
 
 from io import BytesIO
 
-from gi.repository import Gio
+from gi.repository import Gio,GLib
 
 # the 'Pixbuf' instance
 from gi.repository import GdkPixbuf
 # the 'PImage' instance
 from PIL import Image
 
+_ROTATE_DICT={
+    90 :Image.ROTATE_90,
+    180:Image.ROTATE_180,
+    270:Image.ROTATE_270,
+}
+
 def _pixbuf2pil(pixbuf):
     mode='RGBA' if pixbuf.get_has_alpha() else 'RGB'
-    return Image.frombuffer(mode,(pixbuf.get_width(),pixbuf.get_height()),
-                            pixbuf.get_pixels(),'raw',mode,pixbuf.get_rowstride(),1)
+    with Image.frombuffer(mode,(pixbuf.get_width(),pixbuf.get_height()),
+                          pixbuf.get_pixels(),'raw',mode,pixbuf.get_rowstride(),1) as im:
+        im.load()
+        return im
 
 class GioStreamIO(Gio.MemoryInputStream):
     def __init__(self,data=b''):
@@ -157,13 +165,9 @@ class Mage:
                 # scale_filter is required for scale
                 raise ValueError('scale_filter is not set')
             # TODO: reducing_gap
-            old_copy=copy
-            copy=old_copy.resize(self.size,resample=self.scale_filter)
-            old_copy.close()
+            copy=copy.resize(self.size,resample=self.scale_filter)
         if rotation:=(self.implied_rotation+self.rotation)%360:
-            old_copy=copy
-            copy=self.transpose({90:ROTATE_90,180:ROTATE_180,270:ROTATE_270}[rotation])
-            old_copy.close()
+            copy=copy.transpose(_ROTATE_DICT[rotation])
         # TODO: enhance/flip/flop
         return copy
 
@@ -179,7 +183,7 @@ class Mage:
         # get cached frames, generate if not cached yet.
         if self.frames and not self._cache_frames:
             for im,duration in self.frames:
-                self._cache_frames.append(self._create_cache(im),duration)
+                self._cache_frames.append((self._create_cache(im),duration))
         return self._cache_frames
 
     def purge_cache(self):
@@ -217,8 +221,9 @@ class Mage:
     @rotation.setter
     def rotation(self,rotation):
         rotation%=360
-        assert rotation%90,f'unsupported rotation: {rotation}'
+        assert not rotation%90,f'unsupported rotation: {rotation}'
         if rotation!=self.rotation:
+            # TODO: keep cache if only rotation changed.
             self.purge_cache()
         self._rotation=rotation
 
@@ -240,7 +245,7 @@ class Mage:
         # get the (width, height) of the cached image before any rotation
         if self._size is None:
             # use original size if not set
-            self.size=self.original_size
+            self._size=tuple(self.original_size)
         return self._size
 
     @size.setter
@@ -248,7 +253,7 @@ class Mage:
         # set the size of the cached image
         # it should be the size before any rotation
         width,height=size
-        if self.size!=(width,height):
+        if self._size!=(width,height):
             self.purge_cache()
         self._size=(width,height)
 
@@ -270,21 +275,21 @@ class Mage:
                 return
             self.image=_pixbuf2pil(pixbuf.get_static_image())
             frame_iter=pixbuf.get_iter(cur:=GLib.TimeVal())
-            for n in range(im.n_frames):
-                cur.add((delay:=frame_iter.get_delay_time())*1000)
+            for n in range(n_frames):
                 frame=(frame_ref:=frame_iter.get_pixbuf()).copy()
                 frame_ref.copy_options(frame)
-                self.add_frame(_pixbuf2pil(frame),delay)
-                if n==im.n_frames-1:
-                    return
+                cur.tv_usec+=(delay:=frame_iter.get_delay_time())*1000
                 while not frame_iter.advance(cur):
-                    cur.add(frame_iter.get_delay_time()*1000)
+                    cur.tv_usec+=(delay:=delay+frame_iter.get_delay_time())*1000
+                self.add_frame(_pixbuf2pil(frame),delay)
+                if n==n_frames-1:
+                    return
 
     def load(self,data,enable_anime=False):
         # load image from data, set to self.image and append to self.frames.
         try:
-            im=Image.open(BytesIO(data))
-            im.load()
+            with Image.open(BytesIO(data)) as im:
+                im.load()
         except:
             # unsupported by PIL, fallback to GdkPixbuf.
             # disable animation if unsupported by PIL.
@@ -308,6 +313,34 @@ class Mage:
         self._loop=im.info['loop']
 
     # TODO: more property and method
+
+if __name__=='__main__':
+    import sys
+    m=Mage()
+    with open(sys.argv[1],mode='rb') as f:
+        m.load(f.read(),enable_anime=True)
+    print('untouched')
+    m.cache.load()
+    print(m.cache,m.cache.entropy())
+    for im,duration in m.cache_frames:
+        im.load()
+        print(duration,im,im.entropy())
+    print('rotate')
+    m.rotation=270
+    m.cache.load()
+    print(m.cache,m.cache.entropy())
+    for im,duration in m.cache_frames:
+        im.load()
+        print(duration,im,im.entropy())
+    print('scale')
+    m.scale_filter=Image.LANCZOS
+    w,h=m.size
+    m.size=(w*2,h*2)
+    print(m.cache,m.cache.entropy())
+    for im,duration in m.cache_frames:
+        im.load()
+        print(duration,im,im.entropy())
+    input('end')
 
 # Local Variables:
 # coding: utf-8
