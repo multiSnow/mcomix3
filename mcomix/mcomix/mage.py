@@ -15,6 +15,15 @@ _ROTATE_DICT={
     270:Image.ROTATE_270,
 }
 
+_PIL_FILTERS=(
+    Image.NEAREST,
+    Image.BILINEAR,
+    Image.BICUBIC,
+    Image.LANCZOS,
+    Image.BOX,
+    Image.HAMMING
+)
+
 def _pixbuf2pil(pixbuf):
     mode='RGBA' if pixbuf.get_has_alpha() else 'RGB'
     with Image.frombuffer(mode,(pixbuf.get_width(),pixbuf.get_height()),
@@ -34,6 +43,169 @@ class GioStreamIO(Gio.MemoryInputStream):
     def __exit__(self,etype,value,tb):
         self.close()
 
+class MageProp:
+    # pixel-related attribute
+    _attrib_pixel=(
+        # resize
+        'size','resample','reducing','position','viewsize',
+        # enhance
+        'enhance_colorbalance','enhance_contrast',
+        'enhance_brightness','enhance_sharpness',
+        'autocontrast',
+    )
+    # pixel-unrelated attribute
+    _attrib_trans=(
+        # transposition
+        'rotation','exif_rotation','implied_rotation',
+        'vflip','hflip',
+    )
+
+    def __init__(self,im=None):
+        # the full image size before any transposition
+        self._size=(0,0)
+        # PIL resample filter
+        self._resample=Image.NEAREST
+        # position of view, (x,y)
+        self._position=(0,0)
+        # output size of view, (width, height)
+        self._viewsize=self._size
+        # reduce level
+        self.reducing=None
+        # enhancement
+        self.enhance_colorbalance=1
+        self.enhance_contrast=1
+        self.enhance_brightness=1
+        self.enhance_sharpness=1
+        self.autocontrast=False
+        # additional rotation
+        self._rotation=0
+        # 'orientation' of exif
+        self._exif_rotation=0
+        # whether to apply exif rotation
+        self._implied_rotation=False
+        # vertical flip (top to bottom)
+        self._vflip=False
+        # horizontal flip (left to right)
+        self._hflip=False
+        # TODO: Image.TRANSPOSE and Image.TRANSVERSE
+
+        if im is not None:
+            self.size=im.size
+            try:
+                self.exif_rotation={3:180,6:90,8:270}.get(im.getexif().get(274,0),0)
+            except:
+                pass
+
+    @property
+    def size(self):
+        return self._size
+
+    @size.setter
+    def size(self,size):
+        self._size=tuple(size)
+
+    @property
+    def resample(self):
+        return self._resample
+
+    @resample.setter
+    def resample(self,resample_filter):
+        assert resample_filter in _PIL_FILTERS,f'unsupported filter: {resample_filter}'
+        self._resample=resample_filter
+
+    @property
+    def position(self):
+        return self._position
+
+    @position.setter
+    def position(self,position):
+        self._position=tuple(position)
+
+    @property
+    def viewsize(self):
+        return self._viewsize
+
+    @viewsize.setter
+    def viewsize(self,viewsize):
+        self._viewsize=tuple(viewsize)
+
+    @property
+    def rotation(self):
+        return self._rotation
+
+    @rotation.setter
+    def rotation(self,rotation):
+        assert not rotation%90,f'unsupported rotation: {rotation}'
+        self._rotation=rotation
+
+    @property
+    def exif_rotation(self):
+        return self._exif_rotation
+
+    @exif_rotation.setter
+    def exif_rotation(self,rotation):
+        assert not rotation%90,f'unsupported rotation: {rotation}'
+        self._exif_rotation=rotation
+
+    @property
+    def implied_rotation(self):
+        return self._implied_rotation
+
+    @implied_rotation.setter
+    def implied_rotation(self,use_implied_rotation):
+        self._implied_rotation=use_implied_rotation
+
+    @property
+    def vflip(self):
+        return self._vflip
+
+    @vflip.setter
+    def vflip(self,is_flip):
+        self._vflip=is_flip
+        self.merge_transposition()
+
+    @property
+    def hflip(self):
+        return self._hflip
+
+    @hflip.setter
+    def hflip(self,is_flip):
+        self._hflip=is_flip
+        self.merge_transposition()
+
+    @property
+    def total_rotation(self):
+        return (self.rotation+(self.exif_rotation if self.implied_rotation else 0))%360
+
+    def merge_transposition(self):
+        if self.vflip and self.hflip:
+            self.vflip=False
+            self.hflip=False
+            self.rotation+=180
+
+    def keys(self):
+        yield from self._attrib_pixel
+        yield from self._attrib_trans
+
+    def copy(self):
+        # deep copy
+        copy=MageProp()
+        for key in self.keys():
+            setattr(copy,key,getattr(self,key))
+        assert self==copy
+        return copy
+
+    def __eq__(self,other):
+        assert isinstance(other,MageProp)
+        for key in self._attrib_pixel:
+            if getattr(self,key)!=getattr(other,key):
+                return False
+        return self.total_rotation==other.total_rotation
+
+    def __repr__(self):
+        s=', '.join(f'{key}={getattr(self,key)}' for key in self.keys())
+        return f'MageProp({s})'
+
 class Mage:
     def __init__(self):
 
@@ -42,30 +214,27 @@ class Mage:
         # a list of (PImage,int), as the frame and duration
         # if image is not animation, it should be empty.
         self._frames=[]
+        # property of original image
+        self._im_prop=None
         # loop animation
         self._loop=False
         # original background color as int (#RRGGBBAA).
         self._bgcolor=0
-        # implied rotation
-        self._implied_rotation=None
         # bytes data of color profile, or None.
         self._icc=None
         # dictionary of exif, or None.
         self._exif={}
-        # TODO: enhance/flip/flop
 
         # cached image as PImage
         self._cache=None
         # cached image object, a list of (PImage,int)
         self._cache_frames=[]
+        # property of cached image
+        self._cache_prop=None
+        # property of required image
+        self._required_prop=None
         # background color of cache as int (#RRGGBBAA) or checkered bg as -1
         self._bg=0
-        # rotation of cache from original, should be in (0, 90, 180, 270).
-        self._rotation=0
-        # scale filter of cache.
-        self._filter=None
-        # size of cache
-        self._size=None
 
         # thumbnail as Pixbuf.
         # fast scale filter, no icc, no animation.
@@ -116,26 +285,10 @@ class Mage:
             return
 
     @property
-    def implied_rotation(self):
-        if self._implied_rotation is None:
-            # set implied rotation from exif
-            self._implied_rotation={3:180,6:90,8:270}.get(self.exif.get(274,0),0)
-        return self._implied_rotation
-
-    @implied_rotation.setter
-    def implied_rotation(self,rotation):
-        # set to 0 to disable auto rotate from exif
-        # set to None to enable auto rotate from exif
-        # other value is not allowed
-        assert rotation in (0,None),f'unsupported implied_rotation: {rotation}'
-        if rotation==0 and self.implied_rotation!=0:
-            # exif has rotation but will be disabled
-            self.purge_cache()
-        old_rotation=self.implied_rotation%360
-        self._implied_rotation=rotation
-        if rotation is None and old_rotation==0 and self.implied_rotation:
-            # enable exif rotation that had been disabled
-            self.purge_cache()
+    def image_prop(self):
+        if self._im_prop is None:
+            self._im_prop=MageProp(self.image)
+        return self._im_prop
 
     @property
     def frames(self):
@@ -159,23 +312,26 @@ class Mage:
 
     def _create_cache(self,im):
         copy=im.copy()
-        width,height=self.original_size
-        if self.size!=(width,height):
-            if self.scale_filter is None:
-                # scale_filter is required for scale
-                raise ValueError('scale_filter is not set')
-            # TODO: reducing_gap
-            copy=copy.resize(self.size,resample=self.scale_filter)
-        if rotation:=(self.implied_rotation+self.rotation)%360:
+        if self.size!=self.original_size:
+            # TODO: box/reducing_gap
+            copy=copy.resize(self.size,resample=self.required_prop.resample)
+        if rotation:=self.required_prop.total_rotation:
             copy=copy.transpose(_ROTATE_DICT[rotation])
-        # TODO: enhance/flip/flop
+        if self.required_prop.vflip:
+            copy=copy.transpose(Image.FLIP_TOP_BOTTOM)
+        if self.required_prop.hflip:
+            copy=copy.transpose(Image.FLIP_LEFT_RIGHT)
+        # TODO: enhance
         return copy
 
     @property
     def cache(self):
-        # get cached image, generate if not cached yet.
+        # get cached image, generate if not cached yet or need to be changed.
+        if self.cache_prop!=self.required_prop:
+            self.purge_cache()
         if self._cache is None:
             self._cache=self._create_cache(self.image)
+            self._cache_prop=self.required_prop.copy()
         return self._cache
 
     @property
@@ -186,6 +342,18 @@ class Mage:
                 self._cache_frames.append((self._create_cache(im),duration))
         return self._cache_frames
 
+    @property
+    def cache_prop(self):
+        if self._cache_prop is None:
+            self._cache_prop=self.image_prop.copy()
+        return self._cache_prop
+
+    @property
+    def required_prop(self):
+        if self._required_prop is None:
+            self._required_prop=self.cache_prop.copy()
+        return self._required_prop
+
     def purge_cache(self):
         # purge cached image and all cached frames
         if self._cache is not None:
@@ -195,6 +363,7 @@ class Mage:
             while self._cache_frames:
                 im,duration=self._cache_frames.pop()
                 im.close()
+        self._cache_prop=None
 
     @property
     def original_size(self):
@@ -202,60 +371,35 @@ class Mage:
         return self.image.size
 
     @property
-    def background(self):
-        # get the background color of the cached image
-        return self._bg
-
-    @background.setter
-    def background(self,color):
-        if color!=self._bg:
-            self.purge_cache()
-        self._bg=color
-
-    @property
-    def rotation(self):
-        # get the rotation of the cached image
-        # this rotation is not include the implied rotation
-        return self._rotation
-
-    @rotation.setter
-    def rotation(self,rotation):
-        rotation%=360
-        assert not rotation%90,f'unsupported rotation: {rotation}'
-        if rotation!=self.rotation:
-            # TODO: keep cache if only rotation changed.
-            self.purge_cache()
-        self._rotation=rotation
-
-    @property
-    def scale_filter(self):
-        return self._filter
-
-    @scale_filter.setter
-    def scale_filter(self,pil_filter):
-        if pil_filter!=self._filter:
-            width,height=self.original_size
-            if self.size!=(width,height):
-                # onlu purge cache if scaled
-                self.purge_cache()
-        self._filter=pil_filter
-
-    @property
     def size(self):
-        # get the (width, height) of the cached image before any rotation
-        if self._size is None:
-            # use original size if not set
-            self._size=tuple(self.original_size)
-        return self._size
+        # get the (width, height) of required image
+        # no rotation applied
+        return self.required_prop.size
 
     @size.setter
     def size(self,size):
-        # set the size of the cached image
-        # it should be the size before any rotation
-        width,height=size
-        if self._size!=(width,height):
-            self.purge_cache()
-        self._size=(width,height)
+        # set the (width, height) of required image
+        self.required_prop.size=size
+
+    @property
+    def resample(self):
+        # get the resample filter of required image
+        return self.required_prop.resample
+
+    @resample.setter
+    def resample(self,resample_filter):
+        # set the resample filter of required image
+        self.required_prop.resample=resample_filter
+
+    @property
+    def rotation(self):
+        # get the rotation of required image
+        return self.required_prop.rotation
+
+    @rotation.setter
+    def rotation(self,rotation):
+        # set the rotation of required image
+        self.required_prop.rotation=rotation
 
     def _load_fallback(self,data,animation=False,n_frames=1):
         # load image from data using GdkPixbuf.
@@ -333,7 +477,7 @@ if __name__=='__main__':
         im.load()
         print(duration,im,im.entropy())
     print('scale')
-    m.scale_filter=Image.LANCZOS
+    m.resample=Image.LANCZOS
     w,h=m.size
     m.size=(w*2,h*2)
     print(m.cache,m.cache.entropy())
