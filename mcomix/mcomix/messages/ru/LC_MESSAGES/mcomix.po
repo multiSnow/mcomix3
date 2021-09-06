@@ -3050,6 +3050,22 @@ msgstr ""
 msgid "Automatically scan for new books when library is _opened"
 msgstr "Автоматически добавить книги в эту коллекцию."
 
+#: mcomix/mcomix/preferences_dialog.py:193
+msgid "Consider mouse position when going to next/prev page"
+msgstr "Учитывать положение курсора мыши при переходе на предыдущую/следующую страницу"
+
+#: mcomix/mcomix/preferences_dialog.py:195
+msgid "With this preference set, the mouse position affects the "
+msgstr "Если включено, то позиция курсора мыши влияет "
+
+#: mcomix/mcomix/preferences_dialog.py:196
+msgid "way how navigation works. If set, clicking on left side of "
+msgstr "на то как работает навигация. При включении, клик на левой стороне"
+
+#: mcomix/mcomix/preferences_dialog.py:197
+msgid "the screen leads to the previos page, not to the next one."
+msgstr "экрана перемещает на предыдущее изображение, а не на следующее."
+
 #~ msgid "Installed GTK+ version is: %s"
 #~ msgstr "Установленная версия GTK+ : %s"
 

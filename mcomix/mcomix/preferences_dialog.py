@@ -190,6 +190,13 @@ class _PreferencesDialog(Gtk.Dialog):
               'try to follow the natural reading order of the comic book.')))
 
         page.add_row(self._create_pref_check_button(
+            _('Consider mouse position when going to next/prev page'),
+            'mouse position affects navigation',
+            _('With this preference set, the mouse position affects the '
+              'way how navigation works. If set, clicking on left side of '
+              'the screen leads to the previos page, not to the next one.')))
+
+        page.add_row(self._create_pref_check_button(
             _('Flip pages when scrolling off the edges of the page'),
             'flip with wheel',
             _('Flip pages when scrolling "off the page" with the scroll wheel or with the arrow keys. It takes n consecutive "steps" with the scroll wheel or the arrow keys for the pages to be flipped.')))

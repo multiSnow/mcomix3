@@ -425,8 +425,16 @@ class EventHandler(object):
             if (self._pressed_pointer_pos_x, self._pressed_pointer_pos_y) == \
                (event.x_root, event.y_root):
 
-                # right to next, left to previous, no matter the double page mode
-                direction = 1 if event.x > widget.get_property('width') // 2 else -1
+                # only when "mouse position affects navigation" is set consider we
+                # consider mouse position
+                direction = 1
+
+                if prefs['mouse position affects navigation']:
+                    # right to next, left to previous, no matter the double page mode
+                    if event.x > widget.get_property('width') // 2 :
+                        direction = 1
+                    else:
+                        direction = -1
 
                 # if in manga mode, left to next, right to previous
                 if self._window.is_manga_mode:

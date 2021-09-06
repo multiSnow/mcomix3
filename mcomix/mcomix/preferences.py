@@ -54,6 +54,7 @@ prefs = {
     'slideshow can go to next archive': True,
     'number of pixels to scroll per slideshow event': 50,
     'smart scroll': True,
+    'mouse position affects navigation': True,
     'invert smart scroll': False,
     'smart scroll percentage': 0.5,
     'flip with wheel': True,
