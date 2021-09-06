@@ -45,16 +45,13 @@ class GioStreamIO(Gio.MemoryInputStream):
 
 class MageProp:
     # pixel-related attribute
-    _attrib_pixel=(
+    _attrib_=(
         # resize
         'size','resample','reducing','position','viewsize',
         # enhance
         'enhance_colorbalance','enhance_contrast',
         'enhance_brightness','enhance_sharpness',
         'autocontrast',
-    )
-    # pixel-unrelated attribute
-    _attrib_trans=(
         # transposition
         'rotation','exif_rotation','implied_rotation',
         'vflip','hflip',
@@ -88,6 +85,7 @@ class MageProp:
         # horizontal flip (left to right)
         self._hflip=False
         # TODO: Image.TRANSPOSE and Image.TRANSVERSE
+        # TODO: color profile
 
         if im is not None:
             self.size=im.size
@@ -177,15 +175,65 @@ class MageProp:
     def total_rotation(self):
         return (self.rotation+(self.exif_rotation if self.implied_rotation else 0))%360
 
+    @property
+    def pixel(self):
+        w,h=self.size
+        return w*h
+
     def merge_transposition(self):
         if self.vflip and self.hflip:
             self.vflip=False
             self.hflip=False
             self.rotation+=180
 
+    def is_resized(self,other):
+        # True if self is resized compared to other
+        assert isinstance(other,MageProp)
+        return (
+            self.size,self.resample,self.reducing,
+        )!=(
+            other.size,other.resample,other.reducing,
+        )
+
+    def is_view_moved(self,other):
+        # True if view of self is moved compared to other
+        assert isinstance(other,MageProp)
+        return (self.position,self.viewsize)!=(other.position,other.viewsize)
+
+    def is_enhanced(self,other):
+        # True if self is enhanced compared to other
+        assert isinstance(other,MageProp)
+        return (
+            self.enhance_colorbalance,self.enhance_contrast,
+            self.enhance_brightness,self.enhance_sharpness,
+            self.autocontrast,
+        )!=(
+            other.enhance_colorbalance,other.enhance_contrast,
+            other.enhance_brightness,other.enhance_sharpness,
+            other.autocontrast,
+        )
+
+    def is_rotated(self,other):
+        # True if self is rotated compared to other
+        assert isinstance(other,MageProp)
+        return self.total_rotation!=other.total_rotation
+
+    def is_flipped(self,other):
+        # True if self is flipped compared to other
+        assert isinstance(other,MageProp)
+        return (self.vflip,self.hflip)!=(other.vflip,other.hflip)
+
+    def is_pixel_changed(self,other):
+        # True if any pixel of self should be changed compared to other
+        # (resized, view changed, enhanced, icc applied)
+        return self.is_resized(other) or self.is_view_moved(other) or self.is_enhanced(other)
+
+    def is_transposed(self,other):
+        # True if self is transposed compared to other
+        return self.is_rotated(other) or self.is_flipped(other)
+
     def keys(self):
-        yield from self._attrib_pixel
-        yield from self._attrib_trans
+        yield from self._attrib_
 
     def copy(self):
         # deep copy
@@ -196,11 +244,7 @@ class MageProp:
         return copy
 
     def __eq__(self,other):
-        assert isinstance(other,MageProp)
-        for key in self._attrib_pixel:
-            if getattr(self,key)!=getattr(other,key):
-                return False
-        return self.total_rotation==other.total_rotation
+        return not self.is_pixel_changed(other)
 
     def __repr__(self):
         s=', '.join(f'{key}={getattr(self,key)}' for key in self.keys())
@@ -231,6 +275,8 @@ class Mage:
         self._cache_frames=[]
         # property of cached image
         self._cache_prop=None
+        # property of cache frames. (property of each frame should be same)
+        self._frame_prop=None
         # property of required image
         self._required_prop=None
         # background color of cache as int (#RRGGBBAA) or checkered bg as -1
@@ -310,36 +356,34 @@ class Mage:
             im,duration=self.frames.pop()
             im.close()
 
-    def _create_cache(self,im):
-        copy=im.copy()
-        if self.size!=self.original_size:
-            # TODO: box/reducing_gap
-            copy=copy.resize(self.size,resample=self.required_prop.resample)
-        if rotation:=self.required_prop.total_rotation:
-            copy=copy.transpose(_ROTATE_DICT[rotation])
-        if self.required_prop.vflip:
-            copy=copy.transpose(Image.FLIP_TOP_BOTTOM)
-        if self.required_prop.hflip:
-            copy=copy.transpose(Image.FLIP_LEFT_RIGHT)
-        # TODO: enhance
-        return copy
-
     @property
     def cache(self):
         # get cached image, generate if not cached yet or need to be changed.
+        assert self.image is not None # ensure original image is loaded
         if self.cache_prop!=self.required_prop:
+            # pixel changed, purge all cached image and frames
             self.purge_cache()
-        if self._cache is None:
-            self._cache=self._create_cache(self.image)
-            self._cache_prop=self.required_prop.copy()
+        self._cache=self._create_cache(self._cache,self.cache_prop)
+        self._cache_prop=self.required_prop.copy()
         return self._cache
 
     @property
     def cache_frames(self):
         # get cached frames, generate if not cached yet.
-        if self.frames and not self._cache_frames:
+        assert self.cache is not None # ensure cache purged if needed
+        if not self.frames:
+            # no animation
+            return []
+        if not self._cache_frames:
+            # cached frames not exists, generate new ones
             for im,duration in self.frames:
-                self._cache_frames.append((self._create_cache(im),duration))
+                self._cache_frames.append([self._create_cache(im,self.frame_prop),duration])
+            self._frame_prop=self.required_prop.copy()
+        elif self.required_prop.is_transposed(self.frame_prop):
+            # cached frames still exists, modify in-place if needed
+            for frame in self._cache_frames:
+                frame[0]=self._create_cache(frame[0],self.frame_prop)
+            self._frame_prop=self.required_prop.copy()
         return self._cache_frames
 
     @property
@@ -347,6 +391,12 @@ class Mage:
         if self._cache_prop is None:
             self._cache_prop=self.image_prop.copy()
         return self._cache_prop
+
+    @property
+    def frame_prop(self):
+        if self._frame_prop is None:
+            self._frame_prop=self.image_prop.copy()
+        return self._frame_prop
 
     @property
     def required_prop(self):
@@ -364,22 +414,33 @@ class Mage:
                 im,duration=self._cache_frames.pop()
                 im.close()
         self._cache_prop=None
+        self._frame_prop=None
 
     @property
     def original_size(self):
-        # get the (width, height) of the original image
-        return self.image.size
+        # get the width and height of the original image
+        return self.image_prop.size
+
+    @property
+    def original_pixel(self):
+        # get the total pixel of the original image
+        return self.image_prop.pixel
 
     @property
     def size(self):
-        # get the (width, height) of required image
+        # get the width and height of required image
         # no rotation applied
         return self.required_prop.size
 
     @size.setter
     def size(self,size):
-        # set the (width, height) of required image
+        # set the width and height of required image
         self.required_prop.size=size
+
+    @property
+    def pixel(self):
+        # get the total pixel of required image
+        return self.required_prop.pixel
 
     @property
     def resample(self):
@@ -400,6 +461,64 @@ class Mage:
     def rotation(self,rotation):
         # set the rotation of required image
         self.required_prop.rotation=rotation
+
+    def _rotate(self,im):
+        # apply rotation on im and return rotated copy
+        with im.transpose(_ROTATE_DICT[self.required_prop.total_rotation]) as copy:
+            return copy
+
+    def _flip(self,im):
+        # apply flip on im and return flipped copy
+        # NOTE: vflip and hflip should never be both True
+        if self.required_prop.vflip:
+            with im.transpose(Image.FLIP_TOP_BOTTOM) as copy:
+                return copy
+        if self.required_prop.hflip:
+            with im.transpose(Image.FLIP_LEFT_RIGHT) as copy:
+                return copy
+        return im
+
+    def _scale(self,im,right_angle=False):
+        # apply scale on im and return scaled copy
+        # reverse width and height if right_angle is True
+        # TODO: box/reducing_gap
+        with im.resize(reversed(self.size) if right_angle else self.size,
+                       resample=self.resample) as copy:
+            return copy
+
+    def _enhance(self,im):
+        # apply enhance on im and return enhanced copy
+        # TODO
+        with im.copy() as copy:
+            return copy
+
+    def _precache(self,im,right_angle=False):
+        # create a pixel-changed only copy of im
+        # NOTE: do scale at first no matter upscale or downscale
+        return self._enhance(self._scale(im,right_angle=right_angle))
+
+    def _transpose(self,im):
+        # create a transposed only copy of im
+        return self._rotate(self._flip(im))
+
+    def _create_cache(self,im,prop):
+        # create a cached copy of im. prop is the prop of im.
+        if im is None:
+            # use original image
+            with self.image.copy() as im:pass
+        if self.required_prop.is_pixel_changed(prop):
+            # pixel changed
+            if self.original_pixel>self.pixel:
+                # image downscaled, do precache before transpose
+                return self._transpose(self._precache(im))
+            if self.original_pixel<self.pixel:
+                # image upscaled, do transpose before precache
+                return self._precache(self._transpose(im),right_angle=True)
+        if self.required_prop.is_transposed(prop):
+            # pixel not changed, but still need to do transpose
+            return self._transpose(im)
+        # nothing changed
+        return im
 
     def _load_fallback(self,data,animation=False,n_frames=1):
         # load image from data using GdkPixbuf.
@@ -460,30 +579,41 @@ class Mage:
 
 if __name__=='__main__':
     import sys
+    import time
+
+    class Timer:
+        def __init__(self,prefix):
+            self.prefix=prefix
+            self.start=time.time()
+        def __enter__(self):
+            return self
+        def __exit__(self,etype,value,tb):
+            print(self.prefix,time.time()-self.start)
+
     m=Mage()
     with open(sys.argv[1],mode='rb') as f:
         m.load(f.read(),enable_anime=True)
-    print('untouched')
-    m.cache.load()
-    print(m.cache,m.cache.entropy())
-    for im,duration in m.cache_frames:
-        im.load()
-        print(duration,im,im.entropy())
-    print('rotate')
-    m.rotation=270
-    m.cache.load()
-    print(m.cache,m.cache.entropy())
-    for im,duration in m.cache_frames:
-        im.load()
-        print(duration,im,im.entropy())
-    print('scale')
-    m.resample=Image.LANCZOS
-    w,h=m.size
-    m.size=(w*2,h*2)
-    print(m.cache,m.cache.entropy())
-    for im,duration in m.cache_frames:
-        im.load()
-        print(duration,im,im.entropy())
+    with Timer('untouched'):
+        print(m.cache,m.cache.entropy())
+        for im,duration in m.cache_frames:
+            print(duration,im,im.entropy())
+    with Timer('rotate'):
+        m.rotation=270
+        print(m.cache,m.cache.entropy())
+        for im,duration in m.cache_frames:
+            print(duration,im,im.entropy())
+    with Timer('scale'):
+        m.resample=Image.LANCZOS
+        w,h=m.size
+        m.size=(w*2,h*2)
+        print(m.cache,m.cache.entropy())
+        for im,duration in m.cache_frames:
+            print(duration,im,im.entropy())
+    with Timer('rotate after scale'):
+        m.rotation=90
+        print(m.cache,m.cache.entropy())
+        for im,duration in m.cache_frames:
+            print(duration,im,im.entropy())
     input('end')
 
 # Local Variables:
