@@ -65,7 +65,7 @@ TRANSLATORS = (
     ('Artyom Smirnov', _('Russian translation')),
     ('Евгений Лежнин', _('Russian translation')),
     ('Adrian C.', _('Croatian translation')),
-    ('김민기', _('Korean translation')),
+    ('이정희','김민기', _('Korean translation')),
     ('Gyeongmin Bak', _('Korean translation')),
     ('Minho Jeung', _('Korean translation')),
     ('Maryam Sanaat', _('Persian translation')),
