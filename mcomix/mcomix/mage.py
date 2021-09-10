@@ -286,6 +286,19 @@ class Mage:
         # fast scale filter, no icc, no animation.
         self._thumbnail=None
 
+    def __del__(self):
+        self.close()
+
+    def close(self):
+        if self._im is not None:
+            _im=self._im
+            self._im=None
+            _im.close()
+            self._exif.clear()
+            self.purge_frames()
+            self.purge_cache()
+        self._im_prop=None
+
     @property
     def image(self):
         # access to original image.
@@ -296,13 +309,7 @@ class Mage:
     @image.setter
     def image(self,im):
         # set or update original image, close previous image.
-        if self._im is not None:
-            _im=self._im
-            self._im=None
-            _im.close()
-            self._exif.clear()
-            self.purge_frames()
-            self.purge_cache()
+        self.close()
         self._im=im
         self._bgcolor=0
         self._icc=im.info.get('icc_profile')
@@ -525,28 +532,26 @@ class Mage:
         loader=GdkPixbuf.PixbufAnimation if animation else GdkPixbuf.Pixbuf
         with GioStreamIO(data) as stream:
             pixbuf=loader.new_from_stream(stream)
-            if not animation or n_frames<2:
-                # return static image if n_frames is less than 2.
+            self.image=_pixbuf2pil(pixbuf.get_static_image() if animation else pixbuf)
+            try:
+                orientation=int(pixbuf.get_option('orientation'))
+            except:
+                pass
+            else:
+                self.exif[274]=orientation
+            if animation and n_frames>1:
+                # only parse frames if recognized by PIL
                 # GdkPixbuf.PixbufAnimation does not report total frames.
-                self.image=_pixbuf2pil(pixbuf)
-                try:
-                    orientation=int(pixbuf.get_option('orientation'))
-                except:
-                    pass
-                else:
-                    self.exif[274]=orientation
-                return
-            self.image=_pixbuf2pil(pixbuf.get_static_image())
-            frame_iter=pixbuf.get_iter(cur:=GLib.TimeVal())
-            for n in range(n_frames):
-                frame=(frame_ref:=frame_iter.get_pixbuf()).copy()
-                frame_ref.copy_options(frame)
-                cur.tv_usec+=(delay:=frame_iter.get_delay_time())*1000
-                while not frame_iter.advance(cur):
-                    cur.tv_usec+=(delay:=delay+frame_iter.get_delay_time())*1000
-                self.add_frame(_pixbuf2pil(frame),delay)
-                if n==n_frames-1:
-                    return
+                frame_iter=pixbuf.get_iter(cur:=GLib.TimeVal())
+                for n in range(n_frames):
+                    frame=(frame_ref:=frame_iter.get_pixbuf()).copy()
+                    frame_ref.copy_options(frame)
+                    cur.tv_usec+=(delay:=frame_iter.get_delay_time())*1000
+                    while not frame_iter.advance(cur):
+                        cur.tv_usec+=(delay:=delay+frame_iter.get_delay_time())*1000
+                    self.add_frame(_pixbuf2pil(frame),delay)
+                    if n==n_frames-1:
+                        return
 
     def load(self,data,enable_anime=False):
         # load image from data, set to self.image and append to self.frames.
