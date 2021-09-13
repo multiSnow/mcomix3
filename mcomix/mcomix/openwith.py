@@ -70,21 +70,18 @@ class OpenWithCommand(object):
                             self.get_label())
             return
 
-        current_dir = os.getcwd()
         try:
+            workdir = None
             if self.is_valid_workdir(window):
                 workdir = self.parse(window, text=self.get_cwd())[0]
-                os.chdir(workdir)
 
             args = self.parse(window)
-            process.call_thread(args)
+            process.call_thread(args, cwd=workdir)
 
         except Exception as e:
             text = _('Could not run command %(cmdlabel)s: %(exception)s') % \
                 {'cmdlabel': self.get_label(), 'exception': str(e)}
             window.osd.show(text)
-        finally:
-            os.chdir(current_dir)
 
     def is_executable(self, window):
         ''' Check if a name is executable. This name can be either
