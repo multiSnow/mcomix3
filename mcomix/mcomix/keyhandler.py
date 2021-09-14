@@ -44,10 +44,16 @@ def show_result_dialog(window,args,returncode,stdout,stderr):
     dialog.show_all()
 
 def execute(cmd,window,show_result):
-    returncode=(process:=run(cmd,capture_output=True)).returncode
-    stdout=process.stdout
-    stderr=process.stderr
-    args=process.args
+    try:
+        returncode=(process:=run(cmd,capture_output=True)).returncode
+        stdout=process.stdout
+        stderr=process.stderr
+        args=process.args
+    except Exception as e:
+        returncode=-130
+        stdout=b''
+        stderr=str(e).encode('utf8')
+        args=cmd
     if show_result:
         GLib.idle_add(show_result_dialog,window,args,returncode,stdout,stderr)
 

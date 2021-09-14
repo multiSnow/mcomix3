@@ -413,10 +413,7 @@ def load_animation(im):
     anime=anime_tools.AnimeFrameBuffer(im.n_frames,loop=im.info['loop'])
     background=im.info.get('background',None)
     if isinstance(background,tuple):
-        color=0
-        for n,c in enumerate(background):
-            color|=c<<n*8
-        background=color
+        background=pixel2int(color)
     frameiter=ImageSequence.Iterator(im)
     for n,frame in enumerate(frameiter):
         anime.add_frame(n,pil_to_pixbuf(frame),
@@ -588,8 +585,13 @@ def combine_pixbufs( pixbuf1, pixbuf2, are_in_manga_mode ):
 
     return new_pix_buf
 
-def convert_rgb16list_to_rgba8int(c):
-    return 0x000000FF | (c[0] >> 8 << 24) | (c[1] >> 8 << 16) | (c[2] >> 8 << 8)
+def pixel2int(pixel):
+    # (r,g,b) => 0xRRGGBB
+    # (r,g,b,a) => 0xRRGGBBAA
+    color=0
+    for n,c in enumerate(reversed(pixel)):
+        color|=c<<n*8
+    return color&0xFFFFFFFF
 
 def rgb_to_y_601(color):
     return color[0] * 0.299 + color[1] * 0.587 + color[2] * 0.114
