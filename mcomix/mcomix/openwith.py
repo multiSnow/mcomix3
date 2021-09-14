@@ -412,7 +412,8 @@ class OpenWithEditor(Gtk.Dialog):
 
         content.pack_start(self._exec_label, False, False, 0)
 
-        hints_expander = Gtk.Expander.new(_('Hints of variables in command'))
+        hints_expander = Gtk.Expander.new(
+            _('Hints of variables in command and working directory'))
         content.pack_start(hints_expander, False, False, 0)
 
         hints_grid = Gtk.Grid()
@@ -437,12 +438,18 @@ class OpenWithEditor(Gtk.Dialog):
             ('{{{}}}'.format(_('<environ name>')), _('System Environment')),
         )]
 
+        max_y=0
         for x, hints in enumerate(hints_all):
+            max_y=max(len(hints), max_y)
             for y, (key, desc) in enumerate(hints):
                 hints_grid.attach(Gtk.Label(label=key, halign=Gtk.Align.CENTER, margin=4),
                                   x*2, y, 1, 1)
                 hints_grid.attach(Gtk.Label(label=desc, halign=Gtk.Align.START, margin=4),
                                   x*2+1, y, 1, 1)
+        hints_grid.attach(Gtk.Label(
+            label=_('Remember to quote Working directory.'),
+            halign=Gtk.Align.CENTER, margin=4),
+                          0, max_y, 4, 1)
 
         return # keep infomations below for reference
         linklabel = Gtk.Label()
