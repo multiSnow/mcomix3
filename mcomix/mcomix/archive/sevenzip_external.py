@@ -19,7 +19,7 @@ def _has_rar_so():
     if sys.platform=='win32':
         # assume 7z in windows already support rar
         return True
-    with process.popen((_7z,'i'),universal_newlines=True) as proc:
+    with process.popen((_7z,'i'),text=True) as proc:
         lines=proc.stdout.read().splitlines()
         try:
             del lines[:lines.index('Libs:')+1]
@@ -127,7 +127,7 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
     def _has_encryption(self):
         with process.popen(self._get_list_arguments(),
                            stderr=process.STDOUT,
-                           universal_newlines=True) as proc:
+                           text=True) as proc:
             for line in proc.stdout:
                 if line.startswith('Encrypted = +'):
                     return True
@@ -150,7 +150,8 @@ class SevenZipArchive(archive_base.ExternalExecutableArchive):
             self._state = self.STATE_HEADER
             #: Current path while listing contents.
             self._path = None
-            with process.popen(self._get_list_arguments(), stderr=process.STDOUT, universal_newlines=True) as proc:
+            with process.popen(self._get_list_arguments(),
+                               stderr=process.STDOUT, text=True) as proc:
                 try:
                     for line in proc.stdout:
                         filename = self._parse_list_output_line(line.rstrip(os.linesep))

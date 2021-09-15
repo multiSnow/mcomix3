@@ -31,7 +31,7 @@ def _find_mupdf():
     # the '-v' switch is only supported from 1.7 onward...
     _mupdf['version'] = (1,6)
     with process.popen([mutool, '-v'], stdout=process.NULL, stderr=process.PIPE,
-                       universal_newlines=True) as proc:
+                       text=True) as proc:
         if output:=re.match(r'mutool version (?P<version>[\d.]+)([^\d].*)?',
                             proc.stderr.read()):
             _mupdf['version'] = tuple(map(int,output.group('version').split('.')))
@@ -65,7 +65,7 @@ class PdfArchive(archive_base.BaseArchive):
 
     def iter_contents(self):
         with process.popen(_mupdf['mutool'] + ['show', '--', self.archive, 'pages'],
-                           universal_newlines=True) as proc:
+                           text=True) as proc:
             for line in proc.stdout:
                 if line.startswith('page '):
                     yield line.split()[1] + '.png'
@@ -77,7 +77,7 @@ class PdfArchive(archive_base.BaseArchive):
         # Try to find optimal DPI.
         cmd = _mupdf['mudraw'] + _mupdf['mudraw_trace_args'] + ['--', self.archive, str(page_num)]
         log.debug('finding optimal DPI for %s: %s', filename, ' '.join(cmd))
-        with process.popen(cmd, universal_newlines=True) as proc:
+        with process.popen(cmd, text=True) as proc:
             max_size = 0
             max_dpi = PDF_RENDER_DPI_DEF
             for line in proc.stdout:

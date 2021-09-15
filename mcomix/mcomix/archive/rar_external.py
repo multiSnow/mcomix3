@@ -30,7 +30,7 @@ def _find_unrar_executable():
                                        is_valid_candidate=_is_not_unrar_free)
         _rar_executable['path'] = path
         if path is not None:
-            with process.popen([path], universal_newlines=True) as proc:
+            with process.popen([path], text=True) as proc:
                 # only check first line
                 line = proc.stdout.read().strip().splitlines()[0].split()
                 if line[0]=='UNRAR':
@@ -109,7 +109,7 @@ class RarArchive(archive_base.ExternalExecutableArchive):
     def _has_encryption(self):
         with process.popen(self._get_list_arguments(),
                            stderr=process.STDOUT,
-                           universal_newlines=True) as proc:
+                           text=True) as proc:
             for line in proc.stdout:
                 line=line.strip()
                 if line.startswith('Details: ') and 'encrypted headers' in line:
@@ -130,7 +130,8 @@ class RarArchive(archive_base.ExternalExecutableArchive):
             self._state = self.STATE_HEADER
             #: Current path while listing contents.
             self._path = None
-            with process.popen(self._get_list_arguments(), stderr=process.STDOUT, universal_newlines=True) as proc:
+            with process.popen(self._get_list_arguments(),
+                               stderr=process.STDOUT, text=True) as proc:
                 try:
                     for line in proc.stdout:
                         filename = self._parse_list_output_line(line.rstrip(os.linesep))

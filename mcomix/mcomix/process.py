@@ -16,42 +16,35 @@ NULL = subprocess.DEVNULL
 PIPE = subprocess.PIPE
 STDOUT = subprocess.STDOUT
 CREATIONFLAGS = subprocess.CREATE_NO_WINDOW if 'win32' == sys.platform else 0
+FNAME_ENCODING = sys.getfilesystemencoding()
 
 # Convert argument vector to system's file encoding where necessary
 # to prevent automatic conversion when appending Unicode strings
 # to byte strings later on.
 def _fix_args(args):
-    fixed_args = []
-    for arg in args:
-        if isinstance(arg, str):
-            fixed_args.append(arg.encode(sys.getfilesystemencoding()))
-        else:
-            fixed_args.append(arg)
-    return fixed_args
+    return [c.encode(FNAME_ENCODING) if isinstance(c, str) else c
+            for c in args]
 
 # Cannot spawn processes with PythonW/Win32 unless stdin
 # and stderr are redirected to a pipe/devnull as well.
-def call(args, stdin=NULL, stdout=NULL, stderr=NULL, universal_newlines=False):
-    return 0 == subprocess.call(_fix_args(args), stdin=stdin,
-                                stdout=stdout,
-                                universal_newlines=universal_newlines,
-                                creationflags=CREATIONFLAGS)
+def call(args, **kwds):
+    params=dict(stdout=NULL,stderr=NULL,
+                creationflags=CREATIONFLAGS)
+    params.update(kwds)
+    return not subprocess.run(_fix_args(args), **params).returncode
 
-def popen(args, stdin=NULL, stdout=PIPE, stderr=NULL, universal_newlines=False):
-    return subprocess.Popen(_fix_args(args), stdin=stdin,
-                            stdout=stdout, stderr=stderr,
-                            universal_newlines=universal_newlines,
-                            creationflags=CREATIONFLAGS)
+def popen(args, **kwds):
+    params=dict(stdout=PIPE,stderr=NULL,
+                creationflags=CREATIONFLAGS)
+    params.update(kwds)
+    return subprocess.Popen(_fix_args(args), **params)
 
-def call_thread(args, cwd=None):
+def call_thread(args, **kwds):
     # call command in thread, so drop std* and set no buffer
-    params=dict(
-        stdin=NULL,stdout=NULL,stderr=NULL,
-        bufsize=0,creationflags=CREATIONFLAGS,
-        cwd=cwd
-    )
-    thread=Thread(target=subprocess.call,
-                  args=(args,),kwargs=params,daemon=True)
+    params=dict(stdout=NULL,stderr=NULL,bufsize=0,
+                creationflags=CREATIONFLAGS)
+    params.update(kwds)
+    thread=Thread(target=subprocess.run,args=(_fix_args(args),),kwargs=params,daemon=True)
     thread.start()
 
 if 'win32' == sys.platform:
