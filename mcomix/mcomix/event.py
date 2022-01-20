@@ -371,16 +371,10 @@ class EventHandler(object):
                 self._scroll_with_flipping(0, prefs['number of pixels to scroll per mouse wheel event'])
 
         elif direction == Gdk.ScrollDirection.RIGHT:
-            if not self._window.is_manga_mode:
-                self._window.flip_page(+1)
-            else:
-                self._previous_page_with_protection()
+            self._scroll_with_flipping(prefs['number of pixels to scroll per mouse wheel event'], 0)
 
         elif direction == Gdk.ScrollDirection.LEFT:
-            if not self._window.is_manga_mode:
-                self._previous_page_with_protection()
-            else:
-                self._window.flip_page(+1)
+            self._scroll_with_flipping(-prefs['number of pixels to scroll per mouse wheel event'], 0)
 
     def mouse_press_event(self, widget, event):
         '''Handle mouse click events on the main layout area.'''
