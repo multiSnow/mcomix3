@@ -35,7 +35,7 @@ def get_default_locale():
         code = windll.GetUserDefaultUILanguage()
         return locale.windows_locale[code]
     else:
-        lang, _ = locale.getdefaultlocale(['LANGUAGE', 'LC_ALL', 'LC_MESSAGES', 'LANG'])
+        lang, _ = locale.getlocale()
         if lang:
             return lang
         else:
